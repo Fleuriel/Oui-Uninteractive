@@ -19,7 +19,16 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Source\engineFrame.cpp" />
     <ClCompile Include="Source\main.cpp" />
+    <ClCompile Include="Source\MainSetup.cpp" />
+    <ClCompile Include="Source\InputKeys.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Include\engineFrame.h" />
+    <ClInclude Include="Include\keyDefinition.h" />
+    <ClInclude Include="Include\MainSetup.h" />
+    <ClInclude Include="Include\InputKeys.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
