@@ -2,7 +2,7 @@
 #include <OpenGLApplication.h>
 #include <InputKeys.h>
 #include <keyDefinition.h>
-
+#include <RandomUtilities.h>
 
 
 
@@ -48,8 +48,6 @@ void OpenGLInit()
 
 void OpenGLUpdate()
 {
-
-
 	while (!glfwWindowShouldClose(window))
 	{
 		glClear(GL_COLOR_BUFFER_BIT);
@@ -67,7 +65,6 @@ void OpenGLUpdate()
 
 
 		glClearColor(0.2f, 0.3f, 0.4f, 1.0f);
-
 
 
 
