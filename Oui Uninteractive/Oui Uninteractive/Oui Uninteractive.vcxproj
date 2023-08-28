@@ -19,15 +19,15 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Source\engineFrame.cpp" />
+    <ClCompile Include="Source\OpenGLShaders.cpp" />
     <ClCompile Include="Source\main.cpp" />
-    <ClCompile Include="Source\MainSetup.cpp" />
+    <ClCompile Include="Source\OpenGLApplication.cpp" />
     <ClCompile Include="Source\InputKeys.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Include\engineFrame.h" />
+    <ClInclude Include="Include\OpenGLShaders.h" />
     <ClInclude Include="Include\keyDefinition.h" />
-    <ClInclude Include="Include\MainSetup.h" />
+    <ClInclude Include="Include\OpenGLApplication.h" />
     <ClInclude Include="Include\InputKeys.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

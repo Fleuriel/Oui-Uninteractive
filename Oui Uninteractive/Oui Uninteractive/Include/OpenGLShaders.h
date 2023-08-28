@@ -1,7 +1,7 @@
 #include <GL/glew.h>
 #include <glm/glm.hpp>
 #include <vector>
-
+#include <string>
 
 
 
@@ -12,12 +12,13 @@ public:
 	OpenGLShader() : pgm_handle(0), is_linked(GL_FALSE) { /* empty by design */ }
 
 	GLboolean CompileLinkValidate(std::vector<std::pair<GLenum, std::string>>);
-
+	GLboolean CompileShaderFromFile(GLenum shader_type, const std::string& file_name);
+	GLboolean CompileShaderFromString(GLenum shader_type, const std::string& shader_src);
 	GLboolean Link();
 	void Use();
 	void UnUse();
 	GLuint GetHandle() const;
-
+	GLboolean Validate();
 
 
 
@@ -59,67 +60,13 @@ private:
 	GLboolean is_linked = GL_FALSE; // has the program successfully linked?
 	std::string log_string; // log for OpenGL compiler and linker messages
 
-protected:
+	// use OpenGL API to return the location of an uniform variable with
+  // name "name" using program handle encapsulated by object of this class type
+	GLint GetUniformLocation(GLchar const* name);
 
-
+	// return true if file (given in relative path) exists, false otherwise
+	GLboolean FileExists(std::string const& file_name);
 
 }; 
 
 
-
-void OpenGLShader::PrintActiveAttribs() const {
-#if 1
-	GLint max_length, num_attribs;
-	glGetProgramiv(pgm_handle, GL_ACTIVE_ATTRIBUTE_MAX_LENGTH, &max_length);
-	glGetProgramiv(pgm_handle, GL_ACTIVE_ATTRIBUTES, &num_attribs);
-	GLchar* pname = new GLchar[max_length];
-	std::cout << "Index\t|\tName\n";
-	std::cout << "----------------------------------------------------------------------\n";
-	for (GLint i = 0; i < num_attribs; ++i) {
-		GLsizei written;
-		GLint size;
-		GLenum type;
-		glGetActiveAttrib(pgm_handle, i, max_length, &written, &size, &type, pname);
-		GLint loc = glGetAttribLocation(pgm_handle, pname);
-		std::cout << loc << "\t\t" << pname << std::endl;
-	}
-	std::cout << "----------------------------------------------------------------------\n";
-	delete[] pname;
-#else
-	GLint numAttribs;
-	glGetProgramInterfaceiv(pgm_handle, GL_PROGRAM_INPUT, GL_ACTIVE_RESOURCES, &numAttribs);
-	GLenum properties[] = { GL_NAME_LENGTH, GL_TYPE, GL_LOCATION };
-	std::cout << "Active attributes:" << std::endl;
-	for (GLint i = 0; i < numAttribs; ++i) {
-		GLint results[3];
-		glGetProgramResourceiv(pgm_handle, GL_PROGRAM_INPUT, i, 3, properties, 3, NULL, results);
-
-		GLint nameBufSize = results[0] + 1;
-		GLchar* pname = new GLchar[nameBufSize];
-		glGetProgramResourceName(pgm_handle, GL_PROGRAM_INPUT, i, nameBufSize, NULL, pname);
-		//   std::cout << results[2] << " " << pname << " " << getTypeString(results[1]) << std::endl;
-		std::cout << results[2] << " " << pname << " " << results[1] << std::endl;
-		delete[] pname;
-	}
-#endif
-}
-
-void OpenGLShader::PrintActiveUniforms() const {
-	GLint max_length;
-	glGetProgramiv(pgm_handle, GL_ACTIVE_UNIFORM_MAX_LENGTH, &max_length);
-	GLchar* pname = new GLchar[max_length];
-	GLint num_uniforms;
-	glGetProgramiv(pgm_handle, GL_ACTIVE_UNIFORMS, &num_uniforms);
-	std::cout << "Location\t|\tName\n";
-	std::cout << "----------------------------------------------------------------------\n";
-	for (GLint i = 0; i < num_uniforms; ++i) {
-		GLsizei written;
-		GLint size;
-		GLenum type;
-		glGetActiveUniform(pgm_handle, i, max_length, &written, &size, &type, pname);
-		GLint loc = glGetUniformLocation(pgm_handle, pname);
-		std::cout << loc << "\t\t" << pname << std::endl;
-	}
-	std::cout << "----------------------------------------------------------------------\n";
-	delete[] pname;
-}

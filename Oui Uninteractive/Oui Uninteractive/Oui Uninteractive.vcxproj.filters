@@ -21,10 +21,10 @@
     <ClCompile Include="Source\InputKeys.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Source\engineFrame.cpp">
+    <ClCompile Include="Source\OpenGLShaders.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Source\MainSetup.cpp">
+    <ClCompile Include="Source\OpenGLApplication.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -35,10 +35,10 @@
     <ClInclude Include="Include\InputKeys.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Include\engineFrame.h">
+    <ClInclude Include="Include\OpenGLShaders.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Include\MainSetup.h">
+    <ClInclude Include="Include\OpenGLApplication.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

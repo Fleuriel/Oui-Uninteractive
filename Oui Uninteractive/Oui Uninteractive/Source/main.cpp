@@ -1,5 +1,5 @@
 #include <iostream>
-#include <MainSetup.h>
+#include <OpenGLApplication.h>
 
 
 
