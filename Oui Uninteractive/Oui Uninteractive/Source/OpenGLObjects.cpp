@@ -1,9 +1,8 @@
+
+#include <GL/glew.h> // for access to OpenGL API declarations  (PUT THIS ON TOP OR ELSE HAVE ERROR)
 #include <GLFW/glfw3.h>
 #include <OpenGLObjects.h>
-#include <GL/GL.h>
-#include <GL/glew.h> // for access to OpenGL API declarations 
 #include <glm/glm.hpp>
-#include <glm/gtc/type_ptr.hpp>
 
 void OpenGLObject::CreateObject()
 {
