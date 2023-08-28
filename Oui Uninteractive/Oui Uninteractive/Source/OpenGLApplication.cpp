@@ -13,36 +13,7 @@ GLfloat squareX = 0.0f, squareY = 0.0f;
 
 void OpenGLInit()
 {
-	if (!glfwInit())
-	{
-		return;
-	}
-
-	// Print to check if it pass through this line ...
-	std::cout << "Initialization Graphics Pipeline\n";
-
-	// Create Windows
-	window = glfwCreateWindow(1366, 768, "Temporary Test", NULL, NULL);
-
-
-	// Receives Key input/output [Checks for Key Presses]
-	glfwSetKeyCallback(window, keyCallBack);
-
-	// Make the current window the current context
-	glfwMakeContextCurrent(window);
-
-	// Set input mode for the window with the cursor (Enables Cursor Input)
-	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
-
-
-
-	if (!window)
-	{
-		glfwTerminate();
-		return;
-	}
-
-
+	OpenGLWindowInitialization(window);
 
 }
 
@@ -103,4 +74,38 @@ void OpenGLUpdate()
 void OpenGLCleanup()
 {
 	glfwTerminate();
+}
+
+
+// Anything that requires Windows
+void OpenGLWindowInitialization(GLFWwindow* window)
+{
+	if (!glfwInit())
+	{
+		return;
+	}
+
+	// Print to check if it pass through this line ...
+	std::cout << "Initialization Graphics Pipeline\n";
+
+	// Create Windows
+	window = glfwCreateWindow(1366, 768, "Temporary Test", NULL, NULL);
+
+
+	// Receives Key input/output [Checks for Key Presses]
+	glfwSetKeyCallback(window, keyCallBack);
+
+	// Make the current window the current context
+	glfwMakeContextCurrent(window);
+
+	// Set input mode for the window with the cursor (Enables Cursor Input)
+	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+
+
+
+	if (!window)
+	{
+		glfwTerminate();
+		return;
+	}
 }

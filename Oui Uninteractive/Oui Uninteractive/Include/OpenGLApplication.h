@@ -8,4 +8,5 @@
 
 void OpenGLInit();
 void OpenGLUpdate();
-void OpenGLCleanup();
+void OpenGLCleanup(); 
+void OpenGLWindowInitialization(GLFWwindow* window);
