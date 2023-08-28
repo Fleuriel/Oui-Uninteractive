@@ -1,133 +1,50 @@
-/*!
-@file    main.cpp
-@author  pghali@digipen.edu
-@date    10/11/2016
-
-This file uses functionality defined in types GLHelper and GLApp to initialize
-an OpenGL context and implement a game loop.
-
-*//*__________________________________________________________________________*/
-
-
-/*                                                                   includes
------------------------------------------------------------------------------ */
-// Extension loader library's header must be included before GLFW's header!!!
-#include <glhelper.h>
-#include <glapp.h>
 #include <iostream>
+#include <GLFW/glfw3.h>
 
-/*                                                   type declarations
------------------------------------------------------------------------------ */
+int main()
+{
 
-/*                                                      function declarations
------------------------------------------------------------------------------ */
-static void draw();
-static void update();
-static void init();
-static void cleanup();
 
-/*                                                      function definitions
------------------------------------------------------------------------------ */
-/*  _________________________________________________________________________ */
-/*! main
+	std::cout << "Hello world\n";
 
-@param none
 
-@return int
+	glfwInit();
 
-Indicates how the program existed. Normal exit is signaled by a return value of
-0. Abnormal termination is signaled by a non-zero return value.
-Note that the C++ compiler will insert a return 0 statement if one is missing.
-*/
-int main() {
-    // Part 1
-    init();
 
-    // Part 2
-    while (!glfwWindowShouldClose(GLHelper::ptr_window)) {
-        // Part 2a
-        update();
-        // Part 2b
-        draw();
-    }
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 5);
 
-    // Part 3
-    cleanup();
-}
 
-/*  _________________________________________________________________________ */
-/*! update
-@param none
-@return none
+	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
-Uses GLHelper::GLFWWindow* to get handle to OpenGL context.
-For now, there are no objects to animate nor keyboard, mouse button click,
-mouse movement, and mouse scroller events to be processed.
-*/
-static void update() {
-    // Part 1
-    glfwPollEvents();
+	GLFWwindow* window = glfwCreateWindow(800, 600, "OpenGL Program", NULL, NULL);
+	if (window == NULL)
+	{
+		glfwTerminate();
+		return -1;
+	}
+	glfwMakeContextCurrent(window);
 
-    // Part 2
-    GLHelper::update_time(1.0);
 
-    // Part 3
-    GLApp::update();
-}
 
-/*  _________________________________________________________________________ */
-/*! draw
-@param none
-@return none
+	while (!glfwWindowShouldClose(window))
+	{
 
-Call application to draw and then swap front and back frame buffers ...
-Uses GLHelper::GLFWWindow* to get handle to OpenGL context.
-*/
-static void draw() {
-    // Part 1
-    GLApp::draw();
+		glClearColor(0.2f, 0.3f, 0.4f, 1.0f);
+		glClear(GL_COLOR_BUFFER_BIT);
 
-    // Part 2: swap buffers: front <-> back
-    glfwSwapBuffers(GLHelper::ptr_window);
-}
+		glfwSwapBuffers(window);
+		glfwPollEvents();
 
-/*  _________________________________________________________________________ */
-/*! init
-@param none
-@return none
 
-The OpenGL context initialization stuff is abstracted away in GLHelper::init.
-The specific initialization of OpenGL state and geometry data is
-abstracted away in GLApp::init
-*/
-static void init() {
-    // Part 1
-    //1366x768 dimension
-    if (!GLHelper::init(1366, 768, "Tutorial 1")) {
-        std::cout << "Unable to create OpenGL context" << std::endl;
-        std::exit(EXIT_FAILURE);
-    }
 
-    // Part 2
-    GLHelper::print_specs();
 
-    // Part 3
-    GLApp::init();
-}
 
-/*  _________________________________________________________________________ */
-/*! cleanup
-@param none
-@return none
+	}
 
-Return allocated resources for window and OpenGL context thro GLFW back
-to system.
-Return graphics memory claimed through
-*/
-void cleanup() {
-    // Part 1
-    GLApp::cleanup();
 
-    // Part 2
-    GLHelper::cleanup();
+	//Terminate
+	glfwTerminate();
+
+	return 0;
 }

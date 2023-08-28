@@ -18,6 +18,9 @@
       <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Source\main.cpp" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
@@ -130,18 +133,6 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
   </ItemDefinitionGroup>
-  <ItemGroup>
-    <ClInclude Include="Include\glapp.h" />
-    <ClInclude Include="Include\glhelper.h" />
-    <ClInclude Include="Include\glslshader.h" />
-    <ClInclude Include="Include\keyDefinition.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="Source\glapp.cpp" />
-    <ClCompile Include="Source\glhelper.cpp" />
-    <ClCompile Include="Source\glslshader.cpp" />
-    <ClCompile Include="Source\main.cpp" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
