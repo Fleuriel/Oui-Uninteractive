@@ -3,6 +3,7 @@
 #include <InputKeys.h>
 #include <keyDefinition.h>
 #include <RandomUtilities.h>
+#include <OpenGLObjects.h>
 
 
 
@@ -14,7 +15,7 @@ GLfloat squareX = 0.0f, squareY = 0.0f;
 void OpenGLInit()
 {
 	OpenGLWindowInitialization(window);
-
+	
 }
 
 void OpenGLUpdate()
@@ -108,4 +109,11 @@ void OpenGLWindowInitialization(GLFWwindow* window)
 		glfwTerminate();
 		return;
 	}
+}
+
+
+
+void OpenGLObjectsInitialization()
+{
+
 }

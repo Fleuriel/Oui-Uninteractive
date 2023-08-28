@@ -10,3 +10,4 @@ void OpenGLInit();
 void OpenGLUpdate();
 void OpenGLCleanup(); 
 void OpenGLWindowInitialization(GLFWwindow* window);
+void OpenGLObjectsInitialization();
