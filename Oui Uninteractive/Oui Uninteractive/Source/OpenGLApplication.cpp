@@ -1,5 +1,5 @@
 #include <iostream>
-#include <MainSetup.h>
+#include <OpenGLApplication.h>
 #include <InputKeys.h>
 #include <keyDefinition.h>
 
@@ -18,19 +18,21 @@ void OpenGLInit()
 		return;
 	}
 
-
+	// Print to check if it pass through this line ...
 	std::cout << "Initialization Graphics Pipeline\n";
 
+	// Create Windows
 	window = glfwCreateWindow(1366, 768, "Temporary Test", NULL, NULL);
 
 
+	// Receives Key input/output [Checks for Key Presses]
 	glfwSetKeyCallback(window, keyCallBack);
 
-
+	// Make the current window the current context
 	glfwMakeContextCurrent(window);
 
+	// Set input mode for the window with the cursor (Enables Cursor Input)
 	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
-
 
 
 
@@ -59,7 +61,6 @@ void OpenGLUpdate()
 		glVertex2f(squareX - 0.1f, squareY - 0.1f);
 		glVertex2f(squareX + 0.1f, squareY - 0.1f);
 		glVertex2f(squareX + 0.1f, squareY + 0.1f);
-
 
 
 		glEnd();
