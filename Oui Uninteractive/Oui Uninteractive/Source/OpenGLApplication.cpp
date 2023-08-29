@@ -12,7 +12,7 @@ GLFWwindow* window;
 GLfloat squareX = 0.0f, squareY = 0.0f;
 
 
-void OpenGLInit()
+void OpenGLApplication::OpenGLInit(short width, short height)
 {
 	OpenGLWindowInitialization(window);
 	if (!glfwInit())
@@ -24,7 +24,7 @@ void OpenGLInit()
 	std::cout << "Initialization Graphics Pipeline\n";
 
 	// Create Windows
-	window = glfwCreateWindow(1366, 768, "Temporary Test", NULL, NULL);
+	window = glfwCreateWindow(width, height, "Temporary Test", NULL, NULL);
 
 
 	// Receives Key input/output [Checks for Key Presses]
@@ -45,7 +45,7 @@ void OpenGLInit()
 	}
 }
 
-void OpenGLUpdate()
+void OpenGLApplication::OpenGLUpdate()
 {
 	while (!glfwWindowShouldClose(window))
 	{
@@ -99,21 +99,21 @@ void OpenGLUpdate()
 }
 
 
-void OpenGLCleanup()
+void OpenGLApplication::OpenGLCleanup()
 {
 	glfwTerminate();
 }
 
 
 // Anything that requires Windows
-void OpenGLWindowInitialization(GLFWwindow* window)
+void OpenGLApplication::OpenGLWindowInitialization(GLFWwindow* window)
 {
 
 }
 
 
 
-void OpenGLObjectsInitialization()
+void OpenGLApplication::OpenGLObjectsInitialization()
 {
 
 }

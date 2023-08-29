@@ -10,11 +10,11 @@ int main()
 	std::cout << "Hello World\n";
 
 	// Initialize Graphics Pipeline
-	OpenGLInit();
+	OpenGLApplication::OpenGLInit(1366,768);
 	
-	OpenGLUpdate();
+	OpenGLApplication::OpenGLUpdate();
 
-	OpenGLCleanup();
+	OpenGLApplication::OpenGLCleanup();
 
 	return 0;
 }
