@@ -11,11 +11,11 @@ class OpenGLApplication {
 public:
 
 	// Functions to set data ...
-	void OpenGLInit(short width, short height);
-	void OpenGLUpdate();
-	void OpenGLCleanup();
-	void OpenGLWindowInitialization(GLFWwindow* window);
-	void OpenGLObjectsInitialization();
+	static void OpenGLInit(short width, short height);
+	static void OpenGLUpdate();
+	static void OpenGLCleanup();
+	static void OpenGLWindowInitialization(GLFWwindow* window);
+	static void OpenGLObjectsInitialization();
 
 
 // Models
