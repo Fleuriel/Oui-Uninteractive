@@ -5,7 +5,7 @@
 #ifndef INPUTKEYS_H
 #define INPUTKEYS_H
 
-
+// A = 0, B = 1, C = 2 ... Z = 25
 extern std::vector<bool> keyStatesAlphabet;
 
 // Might need to change ...
