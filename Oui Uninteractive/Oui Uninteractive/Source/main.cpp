@@ -18,7 +18,7 @@ int main()
 	
 	while (CurrentGameState != State_STOP)
 	{
-#ifdef _DEBU G
+#ifdef _DEBUG
 		std::cout << "State is not Stop\n";
 #endif
 		while (NextGameState == CurrentGameState)

@@ -71,7 +71,7 @@ void keyCallBack(GLFWwindow* window, int key, int scancode, int action, int mod)
 
 
 
-#ifndef _DEBUG
+#ifdef _DEBUG
 		std::cout << "Pressed Keys\n";
 #endif
 	}
