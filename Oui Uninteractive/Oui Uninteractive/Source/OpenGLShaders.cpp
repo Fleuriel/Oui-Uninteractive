@@ -5,6 +5,27 @@
 
 
 
+void OpenGLShader::Init() {
+    const char* VertexShader =
+        "#version 330 core\n"
+        "layout (location = 0) in vec2 aPos;\n"
+        "void main()\n"
+        "{\n"
+        "	gl_Position = vec4(aPos.x, aPos.y, 0.0, 1.0);\n"
+        "}\n";
+
+    const char* FragmentShader =
+        "#version 330 core\n"
+        "out vec4 FragColor;\n"
+        "void main()\n"
+        "{\n"
+        "   FragColor = vec4(1.0, 0.5, 0.2, 1.0);\n"
+        "}\0";
+
+
+
+}
+
 
 GLboolean OpenGLShader::Link() {
     if (GL_TRUE == is_linked) {
@@ -65,6 +86,14 @@ GLboolean OpenGLShader::Validate() {
     }
 }
 
+std::string OpenGLShader::GetLog() const {
+    return log_string;
+}
+
+GLboolean OpenGLShader::IsLinked() const {
+    return is_linked;
+}
+
 GLboolean OpenGLShader::CompileLinkValidate(std::vector<std::pair<GLenum, std::string>> vec) {
     for (auto& elem : vec) {
         if (GL_FALSE == CompileShaderFromFile(elem.first, elem.second.c_str())) {
@@ -108,6 +137,12 @@ GLboolean OpenGLShader::CompileShaderFromFile(GLenum shader_type, const std::str
     return CompileShaderFromString(shader_type, buffer.str());
 }
 
+void
+OpenGLShader::DeleteShaderProgram() {
+    if (pgm_handle > 0) {
+        glDeleteProgram(pgm_handle);
+    }
+}
 
 GLboolean
 OpenGLShader::CompileShaderFromString(GLenum shader_type,

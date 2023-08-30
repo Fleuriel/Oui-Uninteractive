@@ -33,7 +33,7 @@ void keyCallBack(GLFWwindow* window, int key, int scancode, int action, int mod)
 			keyStatesAlphabet[key - GLFW_KEY_A] = true;
 		}
 
-#ifndef _DEBUG
+#ifdef _DEBUG
 		std::cout << "Pressed Keys\n";
 #endif
 	}
@@ -46,7 +46,7 @@ void keyCallBack(GLFWwindow* window, int key, int scancode, int action, int mod)
 		{
 			keyStatesAlphabet[key - GLFW_KEY_A] = false;
 		}
-#ifndef _DEBUG
+#ifdef _DEBUG
 		std::cout << (char)key << '\n';
 
 		std::cout << "Released Keys\n";

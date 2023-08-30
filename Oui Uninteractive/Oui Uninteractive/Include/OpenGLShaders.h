@@ -15,6 +15,11 @@ class OpenGLShader
 public:
 	OpenGLShader() : pgm_handle(0), is_linked(GL_FALSE) { /* empty by design */ }
 
+
+	//
+	static void Init();
+
+
 	GLboolean CompileLinkValidate(std::vector<std::pair<GLenum, std::string>>);
 	GLboolean CompileShaderFromFile(GLenum shader_type, const std::string& file_name);
 	GLboolean CompileShaderFromString(GLenum shader_type, const std::string& shader_src);
@@ -24,7 +29,10 @@ public:
 	GLuint GetHandle() const;
 	GLboolean Validate();
 
+	GLboolean IsLinked() const;
+	std::string GetLog() const;
 
+	void DeleteShaderProgram();
 
 	void SetUniform(GLchar const* name, GLboolean val);
 	void SetUniform(GLchar const* name, GLint val);
