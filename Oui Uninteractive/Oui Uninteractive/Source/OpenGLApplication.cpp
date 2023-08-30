@@ -105,28 +105,147 @@ void OpenGLApplication::OpenGLUpdate()
 		glClearColor(0.2f, 0.3f, 0.4f, 1.0f);
 
 
+		/*-----------------------------------------------------------------------------
+		|                               INPUT UPDATES                                 |
+		-----------------------------------------------------------------------------*/
+		// This is where you change what each key does when pressed.
 
-		if (keyStatesAlphabet[KEY_A])
-		{
+		/*-----------------------------------
+		|            ALPHABETS              |
+		-----------------------------------*/
+		if (keyStates[KEY_A]) {
+			std::cout << "A\n";
 			squareX -= 0.0025;
 		}
 
-		if (keyStatesAlphabet[KEY_D])
-		{
+		if (keyStates[KEY_B])
+			std::cout << "B\n";
+
+		if (keyStates[KEY_C])
+			std::cout << "C\n";
+
+		if (keyStates[KEY_D]) {
+			std::cout << "D\n";
 			squareX += 0.0025;
 		}
 
-		if (keyStatesAlphabet[KEY_W])
-		{
-			squareY += 0.01;
-		}
-		if (keyStatesAlphabet[KEY_S])
-		{
+		if (keyStates[KEY_E])
+			std::cout << "E\n";
+
+		if (keyStates[KEY_F])
+			std::cout << "F\n";
+
+		if (keyStates[KEY_G])
+			std::cout << "G\n";
+
+		if (keyStates[KEY_H])
+			std::cout << "H\n";
+
+		if (keyStates[KEY_I])
+			std::cout << "I\n";
+
+		if (keyStates[KEY_J])
+			std::cout << "J\n";
+
+		if (keyStates[KEY_K])
+			std::cout << "K\n";
+
+		if (keyStates[KEY_L])
+			std::cout << "L\n";
+
+		if (keyStates[KEY_M])
+			std::cout << "M\n";
+
+		if (keyStates[KEY_N])
+			std::cout << "N\n";
+
+		if (keyStates[KEY_O])
+			std::cout << "O\n";
+
+		if (keyStates[KEY_P])
+			std::cout << "P\n";
+
+		if (keyStates[KEY_Q])
+			std::cout << "Q\n";
+
+		if (keyStates[KEY_R])
+			std::cout << "R\n";
+
+		if (keyStates[KEY_S]) {
+			std::cout << "S\n";
 			squareY -= 0.01;
 		}
 
+		if (keyStates[KEY_T])
+			std::cout << "T\n";
+
+		if (keyStates[KEY_U])
+			std::cout << "U\n";
+
+		if (keyStates[KEY_V])
+			std::cout << "V\n";
+
+		if (keyStates[KEY_W]) {
+			std::cout << "W\n";
+			squareY += 0.01;
+		}
+
+		if (keyStates[KEY_X])
+			std::cout << "X\n";
+
+		if (keyStates[KEY_Y])
+			std::cout << "Y\n";
+
+		if (keyStates[KEY_Z])
+			std::cout << "Z\n";
 
 
+		/*-----------------------------------
+		|             NUMBERS               |
+		-----------------------------------*/
+		if (keyStates[KEY_0])
+			std::cout << "0\n";
+		if (keyStates[KEY_1])
+			std::cout << "1\n";
+		if (keyStates[KEY_2])
+			std::cout << "2\n";
+		if (keyStates[KEY_3])
+			std::cout << "3\n";
+		if (keyStates[KEY_4])
+			std::cout << "4\n";
+		if (keyStates[KEY_5])
+			std::cout << "5\n";
+		if (keyStates[KEY_6])
+			std::cout << "6\n";
+		if (keyStates[KEY_7])
+			std::cout << "7\n";
+		if (keyStates[KEY_8])
+			std::cout << "8\n";
+		if (keyStates[KEY_9])
+			std::cout << "9\n";
+
+
+		/*-----------------------------------
+		|              OTHERS               |
+		-----------------------------------*/
+		if (keyStates[KEY_SPACE])
+			std::cout << "SPACE\n";
+		if (keyStates[KEY_ALT])
+			std::cout << "ALT\n";
+		if (keyStates[KEY_CTRL])
+			std::cout << "CTRL\n";
+		if (keyStates[KEY_SHIFT])
+			std::cout << "SHIFT\n";
+		if (keyStates[KEY_CAPS])
+			std::cout << "CAPS\n";
+		if (keyStates[KEY_TAB])
+			std::cout << "TAB\n";
+		if (keyStates[KEY_ESC])
+			std::cout << "ESC\n";
+		if (keyStates[KEY_ENTER])
+			std::cout << "ENTER\n";
+
+		/*---------------------------------------------------------------------------*/
 
 
 		// swap the front and back buffers ....

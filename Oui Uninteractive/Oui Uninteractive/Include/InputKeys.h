@@ -6,7 +6,7 @@
 #define INPUTKEYS_H
 
 // A = 0, B = 1, C = 2 ... Z = 25
-extern std::vector<bool> keyStatesAlphabet;
+extern std::vector<bool> keyStates;
 
 // Might need to change ...
 extern std::vector<bool> mouseStates;
