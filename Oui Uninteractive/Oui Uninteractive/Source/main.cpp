@@ -18,12 +18,18 @@ int main()
 	
 	while (CurrentGameState != State_STOP)
 	{
-		std::cout << "hello\n";
+#ifdef _DEBUG
+		std::cout << "State is not Stop\n";
+#endif
 		while (NextGameState == CurrentGameState)
 		{
+#ifdef _DEBUG 
+			std::cout << "Running Game\n";
+#endif
 			GameStateInit(1366, 768);
 
 			GameStateUpdate();
+
 
 
 			// Get FPS .. (Will do later)
@@ -34,9 +40,11 @@ int main()
 		// Free & Unload
 		GameStateCleanup();
 
+		std::cout << CurrentGameState << '\n';
 
-		PreviousGameState = CurrentGameState;
-		CurrentGameState = NextGameState;
+
+
+		break;
 	}
 
 

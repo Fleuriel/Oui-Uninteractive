@@ -5,6 +5,7 @@
 #include <RandomUtilities.h>
 #include <OpenGLObjects.h>
 #include <glm/gtc/matrix_transform.hpp>
+#include <InitializeEngine.h>
 
 
 
@@ -12,10 +13,14 @@ GLFWwindow* window;
 
 GLfloat squareX = 0.0f, squareY = 0.0f;
 
-//OpenGLObject Objects;
+OpenGLObject Objects;
 
 void OpenGLApplication::OpenGLInit(short width, short height)
 {
+	// Enable Object Creation
+	Objects.Init();
+
+
 	OpenGLWindowInitialization(window);
 	if (!glfwInit())
 	{
@@ -40,17 +45,24 @@ void OpenGLApplication::OpenGLInit(short width, short height)
 	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
 
 
+	glewInit();
 
 	// Create Vertex Buffers for the primitives (Shapes).
-	//unsigned int vertexBuffer;
-	//glGenBuffers(1, &vertexBuffer);
-	//glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer);
-	//glBufferData(GL_ARRAY_BUFFER, 6 * sizeof(float), Objects.Triangle.data(), GL_STATIC_DRAW);
+	unsigned int vertexBuffer;
+	glGenBuffers(1, &vertexBuffer);
+
+	glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer);
+	glBufferData(GL_ARRAY_BUFFER, 6 * sizeof(float), Objects.Triangle.data(), GL_STATIC_DRAW);
+	glEnableVertexAttribArray(0);
+	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), 0);
+
+	
 
 
 	if (!window)
 	{
 		glfwTerminate();
+
 		return;
 	}
 
@@ -66,16 +78,20 @@ void OpenGLApplication::OpenGLUpdate()
 {
 	while (!glfwWindowShouldClose(window))
 	{
+
+
+
 		glClear(GL_COLOR_BUFFER_BIT);
 
 		glBegin(GL_QUADS);
 
 		// This is using NDC coordinates ... Take Note
-		glVertex2f(squareX - 0.1f, squareY + 0.1f);
-		glVertex2f(squareX - 0.1f, squareY - 0.1f);
-		glVertex2f(squareX + 0.1f, squareY - 0.1f);
-		glVertex2f(squareX + 0.1f, squareY + 0.1f);
+		//glVertex2f(squareX - 0.1f, squareY + 0.1f);
+		//glVertex2f(squareX - 0.1f, squareY - 0.1f);
+		//glVertex2f(squareX + 0.1f, squareY - 0.1f);
+		//glVertex2f(squareX + 0.1f, squareY + 0.1f);
 
+		glDrawArrays(GL_TRIANGLES, 0, 3);
 
 
 		//glVertex2f(-5.0f, 5.0f);
@@ -111,10 +127,11 @@ void OpenGLApplication::OpenGLUpdate()
 
 
 
+
+
 		// swap the front and back buffers ....
 		glfwSwapBuffers(window);
 		glfwPollEvents();
-
 
 	}
 

@@ -8,6 +8,7 @@
 
 
 
+extern GLFWwindow* window;
 
 class OpenGLApplication {
 

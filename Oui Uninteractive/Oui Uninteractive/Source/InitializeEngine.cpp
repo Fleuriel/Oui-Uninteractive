@@ -30,6 +30,12 @@ void EngineUpdate()
 	if (CurrentGameState == 4)
 		return;
 
+	if (glfwWindowShouldClose(window))
+	{
+		CurrentGameState = State_STOP;
+		return;
+	}
+
 
 	switch (CurrentGameState)
 	{
@@ -44,6 +50,10 @@ void EngineUpdate()
 
 	case State_LevelTest:
 
+
+	case State_STOP:
+		
+		return;
 
 	default:
 		break;

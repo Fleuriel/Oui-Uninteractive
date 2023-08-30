@@ -2,6 +2,7 @@
 #include <GLFW/glfw3.h>
 #include <InputKeys.h>
 #include <iostream>
+#include <InitializeEngine.h>
 
 
  std::vector<bool> keyStatesAlphabet(26, false);
@@ -21,8 +22,11 @@ void keyCallBack(GLFWwindow* window, int key, int scancode, int action, int mod)
 	if (action == GLFW_PRESS)
 	{
 		if (GLFW_KEY_ESCAPE == key)
+		{
 			glfwSetWindowShouldClose(window, GLFW_TRUE);
-
+			//glfwWindowShouldClose(window);
+			CurrentGameState = State_STOP;
+		}
 
 		if (key >= GLFW_KEY_A && key <= GLFW_KEY_Z)
 		{
