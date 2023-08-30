@@ -1,3 +1,6 @@
+#ifndef KEYDEFINITION_H
+#define KEYDEFINITION_H
+
 #define KEY_A 'A' - 'A'
 #define KEY_B 'B' - 'A'
 #define KEY_C 'C' - 'A'
@@ -24,3 +27,4 @@
 #define KEY_X 'X' - 'A'
 #define KEY_Y 'Y' - 'A'
 #define KEY_Z 'Z' - 'A'
+#endif // KEY_DEFINITION_H

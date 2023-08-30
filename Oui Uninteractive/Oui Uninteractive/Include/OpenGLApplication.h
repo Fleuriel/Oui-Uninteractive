@@ -1,4 +1,7 @@
 
+#ifndef OPENGL_APPLICATION_H
+#define OPENGL_APPLICATION_H
+
 #include <GL/glew.h> // for access to OpenGL API declarations 
 #include <GLFW/glfw3.h>
 #include <OpenGLShaders.h>
@@ -22,9 +25,10 @@ public:
 
 
 	//Shaders
-	std::vector<OpenGLShader> Shader;
-	static void OpenGLShadersInitialization();
+//	std::vector<OpenGLShader> Shader;
+	//static void OpenGLShadersInitialization();
 
 
 };
 
+#endif // OPENGL_APPLICATION_H

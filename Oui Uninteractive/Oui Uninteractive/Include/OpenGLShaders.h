@@ -1,3 +1,7 @@
+
+#ifndef OPENGL_SHADERS_H
+#define OPENGL_SHADERS_H
+
 #include <GL/glew.h>
 #include <glm/glm.hpp>
 #include <vector>
@@ -19,9 +23,6 @@ public:
 	void UnUse();
 	GLuint GetHandle() const;
 	GLboolean Validate();
-
-
-
 
 
 
@@ -70,3 +71,4 @@ private:
 }; 
 
 
+#endif // OPENGL_SHADERS_H

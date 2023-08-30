@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Source\InitializeEngine.cpp" />
     <ClCompile Include="Source\OpenGLObjects.cpp" />
     <ClCompile Include="Source\OpenGLShaders.cpp" />
     <ClCompile Include="Source\main.cpp" />
@@ -27,6 +28,7 @@
     <ClCompile Include="Source\RandomUtilities.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Include\InitializeEngine.h" />
     <ClInclude Include="Include\OpenGLObjects.h" />
     <ClInclude Include="Include\OpenGLShaders.h" />
     <ClInclude Include="Include\keyDefinition.h" />

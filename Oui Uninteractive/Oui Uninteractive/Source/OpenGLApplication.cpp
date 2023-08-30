@@ -12,6 +12,7 @@ GLFWwindow* window;
 
 GLfloat squareX = 0.0f, squareY = 0.0f;
 
+//OpenGLObject Objects;
 
 void OpenGLApplication::OpenGLInit(short width, short height)
 {
@@ -40,6 +41,13 @@ void OpenGLApplication::OpenGLInit(short width, short height)
 
 
 
+	// Create Vertex Buffers for the primitives (Shapes).
+	//unsigned int vertexBuffer;
+	//glGenBuffers(1, &vertexBuffer);
+	//glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer);
+	//glBufferData(GL_ARRAY_BUFFER, 6 * sizeof(float), Objects.Triangle.data(), GL_STATIC_DRAW);
+
+
 	if (!window)
 	{
 		glfwTerminate();
@@ -63,17 +71,17 @@ void OpenGLApplication::OpenGLUpdate()
 		glBegin(GL_QUADS);
 
 		// This is using NDC coordinates ... Take Note
-		//glVertex2f(squareX - 0.1f, squareY + 0.1f);
-		//glVertex2f(squareX - 0.1f, squareY - 0.1f);
-		//glVertex2f(squareX + 0.1f, squareY - 0.1f);
-		//glVertex2f(squareX + 0.1f, squareY + 0.1f);
+		glVertex2f(squareX - 0.1f, squareY + 0.1f);
+		glVertex2f(squareX - 0.1f, squareY - 0.1f);
+		glVertex2f(squareX + 0.1f, squareY - 0.1f);
+		glVertex2f(squareX + 0.1f, squareY + 0.1f);
 
 
 
-		glVertex2f(-5.0f, 5.0f);
-		glVertex2f(-5.0f, -5.0f);
-		glVertex2f(5.0f, -5.0f);
-		glVertex2f(5.0f, 5.0f);
+		//glVertex2f(-5.0f, 5.0f);
+		//glVertex2f(-5.0f, -5.0f);
+		//glVertex2f(5.0f, -5.0f);
+		//glVertex2f(5.0f, 5.0f);
 
 		glEnd();
 
@@ -134,23 +142,23 @@ void OpenGLApplication::OpenGLObjectsInitialization()
 }
 
 
-void OpenGLApplication::OpenGLShadersInitialization()
-{
-	const char* VertexShader =
-		"#version 330 core\n"
-		"layout (location = 0) in vec2 aPos;\n"
-		"void main()\n"
-		"{\n"
-		"	gl_Position = vec4(aPos.x, aPos.y, 0.0, 1.0);\n"
-		"}\n";
-
-	const char* FragmentShader =
-		"#version 330 core\n"
-		"out vec4 FragColor;\n"
-		"void main()\n"
-		"{\n"
-		"   FragColor = vec4(1.0, 0.5, 0.2, 1.0);\n"
-		"}\0";
-
-
-}
+//void OpenGLApplication::OpenGLShadersInitialization()
+//{
+//	const char* VertexShader =
+//		"#version 330 core\n"
+//		"layout (location = 0) in vec2 aPos;\n"
+//		"void main()\n"
+//		"{\n"
+//		"	gl_Position = vec4(aPos.x, aPos.y, 0.0, 1.0);\n"
+//		"}\n";
+//
+//	const char* FragmentShader =
+//		"#version 330 core\n"
+//		"out vec4 FragColor;\n"
+//		"void main()\n"
+//		"{\n"
+//		"   FragColor = vec4(1.0, 0.5, 0.2, 1.0);\n"
+//		"}\0";
+//
+//
+//}
