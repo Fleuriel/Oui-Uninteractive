@@ -18,7 +18,7 @@ int main()
 	
 	while (CurrentGameState != State_STOP)
 	{
-#ifdef _DEBUG
+#ifdef _DEBU G
 		std::cout << "State is not Stop\n";
 #endif
 		while (NextGameState == CurrentGameState)
@@ -31,7 +31,7 @@ int main()
 			GameStateUpdate();
 
 
-
+			break;
 			// Get FPS .. (Will do later)
 			// GameApplication_Time = ;
 			// GameApplication_Time += Game_DeltaTime;
