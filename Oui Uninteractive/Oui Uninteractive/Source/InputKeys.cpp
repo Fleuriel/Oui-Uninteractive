@@ -58,7 +58,7 @@ void keyCallBack(GLFWwindow* window, int key, int scancode, int action, int mod)
 			keyStates[KEY_SHIFT] = true;
 
 		if (key == GLFW_KEY_CAPS_LOCK)
-			keyStates[KEY_CAPS] = true;
+			keyStates[KEY_CAPS] = !keyStates[KEY_CAPS];
 
 		if (key == GLFW_KEY_TAB)
 			keyStates[KEY_TAB] = true;
@@ -99,8 +99,7 @@ void keyCallBack(GLFWwindow* window, int key, int scancode, int action, int mod)
 		if (key == GLFW_KEY_LEFT_SHIFT || key == GLFW_KEY_RIGHT_SHIFT)
 			keyStates[KEY_SHIFT] = false;
 		
-		if (key == GLFW_KEY_CAPS_LOCK)
-			keyStates[KEY_CAPS] = false;
+		if (key == GLFW_KEY_CAPS_LOCK) {}
 
 		if (key == GLFW_KEY_TAB)
 			keyStates[KEY_TAB] = false;
