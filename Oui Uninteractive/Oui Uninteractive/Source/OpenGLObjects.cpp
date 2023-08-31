@@ -14,6 +14,10 @@ std::vector<glm::vec2> OpenGLObject::Square;
 std::vector<glm::vec2> OpenGLObject::Triangle;
 std::vector<std::string> OpenGLObject::Mesh_Directory;
 
+
+std::vector<OpenGLShader> OpenGLObject::Shader{};
+OpenGLShader OpenGLObject::ShaderProgram{};
+
 std::map<std::string, OpenGLObject::OpenGLModel> OpenGLObject::Model_Storage;
 
 GLuint OpenGLObject::vaoID;									// how many indices in element buffer
@@ -34,6 +38,7 @@ void OpenGLObject::Init()
 	Objects.Color = { 0.5,0.2,0.1f };
 	
 
+	OpenGLShadersInitialization();
 	Setup_Quad_VAO();
 }
 
@@ -297,6 +302,8 @@ void OpenGLObject::Update(GLdouble delta_time)
 
 void OpenGLObject::Cleanup()
 {
+
+	ShaderProgram.DeleteShaderProgram();
 	glDeleteVertexArrays(1, &vaoID);
 	glDeleteBuffers(1, &pboID);
 	glDeleteTextures(1, &textureID);
@@ -314,4 +321,103 @@ void OpenGLObject::VAO_Object::SetTexture(float s, float t)
 {
 	Texture.s = s;
 	Texture.t = t;
+}
+
+
+
+
+void OpenGLObject::OpenGLShadersInitialization()
+{
+
+	std::cout << "Shaders Initialized\n";
+	OpenGLObject::VectorPairStrStr ShaderCodex;
+
+	std::vector<std::pair<GLenum, std::string>> ShaderFiles;
+
+	std::string vert{}, frag{};
+
+	vert =
+
+		R"(
+		#version 450 core
+
+		layout(location = 0) in vec2 aVertexPosition;
+		layout(location = 1) in vec3 aVertexColor;
+
+		out vec3 vColor;
+
+		uniform mat4 uModel_to_NDC;
+
+		void main()
+		{
+			gl_Position = uModel_to_NDC * vec4(aVertexPosition, 0.0, 1.0);
+			vColor = aVertexColor;
+		}
+	)";
+
+	frag =
+
+		R"(
+		#version 450 core
+
+		in vec3 vColor;
+		
+		out vec4 fFragColor;
+		
+		uniform vec3 uBaseColor; // Uniform variable for the base color
+		
+		void main()
+		{
+		    fFragColor = vec4(uBaseColor * vColor, 1.0);
+		}
+	)";
+
+	// Adding vertex shader ...
+	ShaderFiles.emplace_back(std::make_pair(GL_VERTEX_SHADER, vert));
+
+	// Adding fragment shader ...
+	ShaderFiles.emplace_back(std::make_pair(GL_FRAGMENT_SHADER, frag));
+
+	ShaderProgram.CompileLinkValidate(ShaderFiles);
+
+
+
+	std::cout << ShaderFiles[0].second << '\n';
+	std::cout << ShaderFiles[1].second << '\n';
+
+
+
+	for (std::pair<GLenum, std::string> x : ShaderFiles)
+	{
+		if (!ShaderProgram.CompileShaderFromString(x.first, x.second))
+		{
+			std::cout << "Unable to compile shader programs from string" << "\n";
+			std::cout << ShaderProgram.GetLog() << std::endl;
+			std::exit(EXIT_FAILURE);
+		}
+	}
+	if (!ShaderProgram.Link())
+	{
+		std::cout << "Unable to link shader programs" << "\n";
+		std::cout << ShaderProgram.GetLog() << std::endl;
+		std::exit(EXIT_FAILURE);
+	}
+
+	if (!ShaderProgram.Validate())
+	{
+		std::cout << "Unable to validate shader programs" << "\n";
+		std::cout << ShaderProgram.GetLog() << std::endl;
+		std::exit(EXIT_FAILURE);
+	}
+
+	//shdr_pgm.Link(shdr_files);
+	if (GL_FALSE == ShaderProgram.IsLinked())
+	{
+		std::cout << "Unable to compile/link/validate shader programs" << "\n";
+		std::cout << ShaderProgram.GetLog() << std::endl;
+		std::exit(EXIT_FAILURE);
+	}
+
+
+
 }

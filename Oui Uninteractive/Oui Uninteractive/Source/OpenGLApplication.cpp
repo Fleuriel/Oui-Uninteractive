@@ -10,8 +10,6 @@
 
 
 GLFWwindow* window;
-std::vector<OpenGLShader> OpenGLApplication::Shader{};
-OpenGLShader OpenGLApplication::ShaderProgram{};
 std::map<std::string, OpenGLObject> OpenGLApplication::Object_Storage;
 
 
@@ -52,7 +50,6 @@ void OpenGLApplication::OpenGLInit(short width, short height)
 	glewInit();
 
 	Objects.Init();
-	OpenGLShadersInitialization();
 
 	// Create Vertex Buffers for the primitives (Shapes).
 	unsigned int vertexBuffer;
@@ -123,7 +120,7 @@ void OpenGLApplication::OpenGLUpdate()
 
 			if (keyStates[KEY_A]) {
 				std::cout << "A\n";
-				squareX -= 0.0025;
+				squareX -= (float)0.0025;
 			}
 
 			if (keyStates[KEY_B])
@@ -134,7 +131,7 @@ void OpenGLApplication::OpenGLUpdate()
 
 			if (keyStates[KEY_D]) {
 				std::cout << "D\n";
-				squareX += 0.0025;
+				squareX += (float)0.0025;
 			}
 
 			if (keyStates[KEY_E])
@@ -182,6 +179,7 @@ void OpenGLApplication::OpenGLUpdate()
 			if (keyStates[KEY_S]) {
 				std::cout << "S\n";
 				squareY -= 0.01;
+				Draw();
 			}
 
 			if (keyStates[KEY_T])
@@ -195,7 +193,7 @@ void OpenGLApplication::OpenGLUpdate()
 
 			if (keyStates[KEY_W]) {
 				std::cout << "W\n";
-				squareY += 0.01;
+				squareY += (float)0.01;
 			}
 
 			if (keyStates[KEY_X]) {
@@ -208,7 +206,7 @@ void OpenGLApplication::OpenGLUpdate()
 
 			if (keyStates[KEY_Z]) {
 				std::cout << "Z\n";
-				render_square(glm::vec2(1.0f, 1.0f), glm::vec2(0.0f, 0.0f));
+				//render_square(glm::vec2(1.0f, 1.0f), glm::vec2(0.0f, 0.0f));
 			}
 		}
 
@@ -217,7 +215,7 @@ void OpenGLApplication::OpenGLUpdate()
 
 			if (keyStates[KEY_A]) {
 				std::cout << "a\n";
-				squareX -= 0.0025;
+				squareX -= (float)0.0025;
 			}
 
 			if (keyStates[KEY_B])
@@ -228,7 +226,7 @@ void OpenGLApplication::OpenGLUpdate()
 
 			if (keyStates[KEY_D]) {
 				std::cout << "d\n";
-				squareX += 0.0025;
+				squareX += (float)0.0025;
 			}
 
 			if (keyStates[KEY_E])
@@ -275,7 +273,7 @@ void OpenGLApplication::OpenGLUpdate()
 
 			if (keyStates[KEY_S]) {
 				std::cout << "s\n";
-				squareY -= 0.01;
+				squareY -= (float)0.01;
 			}
 
 			if (keyStates[KEY_T])
@@ -289,7 +287,7 @@ void OpenGLApplication::OpenGLUpdate()
 
 			if (keyStates[KEY_W]) {
 				std::cout << "w\n";
-				squareY += 0.01;
+				squareY += (float)0.01;
 			}
 
 			if (keyStates[KEY_X]) {
@@ -302,7 +300,7 @@ void OpenGLApplication::OpenGLUpdate()
 
 			if (keyStates[KEY_Z]) {
 				std::cout << "z\n";
-				render_square(glm::vec2(1.0f, 1.0f), glm::vec2(0.0f, 0.0f));
+				//render_square(glm::vec2(1.0f, 1.0f), glm::vec2(0.0f, 0.0f));
 			}
 		}
 
@@ -366,55 +364,53 @@ void OpenGLApplication::OpenGLUpdate()
 
 void OpenGLApplication::OpenGLCleanup()
 {
-	ShaderProgram.DeleteShaderProgram();
 
 
 
 	glfwTerminate();
 }
 
-
-void OpenGLApplication::render_square(glm::vec2 scaling, glm::vec2 position)
-{
-	glm::mat4 Model_to_NDC_Transform = glm::mat4(1.0f);
-
-
-	Model_to_NDC_Transform = glm::translate(Model_to_NDC_Transform, glm::vec3(position.x, position.y, 0.0f)); // Corrected translation
-	Model_to_NDC_Transform = glm::scale(Model_to_NDC_Transform, glm::vec3(scaling.x, scaling.y, 1.0f)); // Corrected scaling
-
-
-	ShaderProgram.Use();
-	ShaderProgram.SetUniform("vColor", Objects.Color); // Using (255, 255, 120) as RGB values
-	ShaderProgram.SetUniform("uModel", Model_to_NDC_Transform);
-
-
-	glBindVertexArray(Object_Storage["Square"].vaoID); // Replace with the actual VAO name for the square
-	std::cout << Object_Storage["Triangle"].vaoID << "VAOID\n";
-	
-
-
-	glDrawArrays(GL_TRIANGLES, 0, 4);
-
-
-
-	// Unbind the Vertex Array
-	glBindVertexArray(0);
-
-
-
-}
+//
+//void OpenGLApplication::render_square(glm::vec2 scaling, glm::vec2 position)
+//{
+//	glm::mat4 Model_to_NDC_Transform = glm::mat4(1.0f);
+//
+//
+//	Model_to_NDC_Transform = glm::translate(Model_to_NDC_Transform, glm::vec3(position.x, position.y, 0.0f)); // Corrected translation
+//	Model_to_NDC_Transform = glm::scale(Model_to_NDC_Transform, glm::vec3(scaling.x, scaling.y, 1.0f)); // Corrected scaling
+//
+//
+//	ShaderProgram.Use();
+//	ShaderProgram.SetUniform("vColor", Objects.Color); // Using (255, 255, 120) as RGB values
+//	ShaderProgram.SetUniform("uModel", Model_to_NDC_Transform);
+//
+//
+//	glBindVertexArray(Object_Storage["Square"].vaoID); // Replace with the actual VAO name for the square
+//	std::cout << Object_Storage["Triangle"].vaoID << "VAOID\n";
+//	
+//
+//
+//	glDrawArrays(GL_TRIANGLES, 0, 4);
+//
+//
+//
+//	// Unbind the Vertex Array
+//	glBindVertexArray(0);
+//
+//
+//
+//}
 
 
 
 void OpenGLApplication::Draw() {
 
-	glBindVertexArray(Objects.vaoID);
 
-	ShaderProgram.Use();
+	for (auto& x : Object_Storage)
+	{
+		x.second.Draw();
+	}
 
-	glDrawElements(GL_TRIANGLE_STRIP, 4, GL_UNSIGNED_SHORT, nullptr);
-
-	glBindVertexArray(0);
 
 }
 
@@ -425,99 +421,3 @@ void OpenGLApplication::OpenGLObjectsInitialization()
 
 }
 
-
-void OpenGLApplication::OpenGLShadersInitialization()
-{
-
-	std::cout << "Shaders Initialized\n";
-	OpenGLApplication::VectorPairStrStr ShaderCodex;
-
-	std::vector<std::pair<GLenum, std::string>> ShaderFiles;
-
-	std::string vert{}, frag{};
-
-	vert =
-
-		R"(
-		#version 450 core
-
-		layout(location = 0) in vec2 aVertexPosition;
-		layout(location = 1) in vec3 aVertexColor;
-
-		out vec3 vColor;
-
-		uniform mat4 uModel;
-
-		void main()
-		{
-			gl_Position = uModel * vec4(aVertexPosition, 0.0, 1.0);
-			vColor = aVertexColor;
-		}
-	)";
-
-	frag =
-
-		R"(
-		#version 450 core
-
-		in vec3 vColor;
-		
-		out vec4 fFragColor;
-		
-		uniform vec3 uBaseColor; // Uniform variable for the base color
-		
-		void main()
-		{
-		    fFragColor = vec4(uBaseColor * vColor, 1.0);
-		}
-	)";
-
-	// Adding vertex shader ...
-	ShaderFiles.emplace_back(std::make_pair(GL_VERTEX_SHADER, vert));
-
-	// Adding fragment shader ...
-	ShaderFiles.emplace_back(std::make_pair(GL_FRAGMENT_SHADER, frag));
-
-	ShaderProgram.CompileLinkValidate(ShaderFiles);
-
-
-
-	std::cout << ShaderFiles[0].second << '\n';
-	std::cout << ShaderFiles[1].second << '\n';
-
-
-
-	for (std::pair<GLenum, std::string> x : ShaderFiles)
-	{
-		if (!ShaderProgram.CompileShaderFromString(x.first, x.second))
-		{
-			std::cout << "Unable to compile shader programs from string" << "\n";
-			std::cout << ShaderProgram.GetLog() << std::endl;
-			std::exit(EXIT_FAILURE);
-		}
-	}
-	if (!ShaderProgram.Link())
-	{
-		std::cout << "Unable to link shader programs" << "\n";
-		std::cout << ShaderProgram.GetLog() << std::endl;
-		std::exit(EXIT_FAILURE);
-	}
-
-	if (!ShaderProgram.Validate())
-	{
-		std::cout << "Unable to validate shader programs" << "\n";
-		std::cout << ShaderProgram.GetLog() << std::endl;
-		std::exit(EXIT_FAILURE);
-	}
-
-	//shdr_pgm.Link(shdr_files);
-	if (GL_FALSE == ShaderProgram.IsLinked())
-	{
-		std::cout << "Unable to compile/link/validate shader programs" << "\n";
-		std::cout << ShaderProgram.GetLog() << std::endl;
-		std::exit(EXIT_FAILURE);
-	}
-
-
-
-}

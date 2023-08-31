@@ -23,18 +23,13 @@ public:
 	static void OpenGLCleanup();
 //	static void OpenGLWindowInitialization(GLFWwindow*& window, GLint width, GLint height);
 	static void OpenGLObjectsInitialization();
-	static void render_square(glm::vec2 scaling, glm::vec2 position);
+//	static void render_square(glm::vec2 scaling, glm::vec2 position);
 
 	static std::map<std::string, OpenGLObject> Object_Storage;
 
 
 	static void Draw();
 
-	//Shaders
-	static std::vector<OpenGLShader> Shader;
-	using VectorPairStrStr = std::vector <std::pair<std::string, std::string>>;
-	static void OpenGLShadersInitialization();
-	static OpenGLShader ShaderProgram;
 
 
 

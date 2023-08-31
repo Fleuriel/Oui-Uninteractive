@@ -13,7 +13,9 @@
 class OpenGLObject
 {
 public:
-	
+	OpenGLObject() : Scaling(0.5, 0.5), Rotation(0.0, 0.0f), Position(0, 0), Model_to_NDC_xform(glm::mat3(1.0f)), Color(1.0, 1.0, 1.0f) {};
+
+
 	glm::vec2 Scaling; // scaling
 	glm::vec2 Rotation;
 	glm::vec2 Position; // translation
@@ -47,6 +49,15 @@ public:
 	static void Cleanup();
 	static void Setup_Quad_VAO();
 
+
+
+	//Shaders
+	static std::vector<OpenGLShader> Shader;
+	using VectorPairStrStr = std::vector <std::pair<std::string, std::string>>;
+	static void OpenGLShadersInitialization();
+	static OpenGLShader ShaderProgram;
+
+	
 
 	static void Load_Files();
 	static void Load_Meshes();
