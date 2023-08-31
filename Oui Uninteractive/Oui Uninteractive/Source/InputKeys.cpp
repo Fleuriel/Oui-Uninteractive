@@ -22,12 +22,12 @@ void keyCallBack(GLFWwindow* window, int key, int scancode, int action, int mod)
 /***********************************************************************/
 	if (action == GLFW_PRESS)
 	{
-		/*if (GLFW_KEY_ESCAPE == key)
+		if (GLFW_KEY_ESCAPE == key)
 		{
 			glfwSetWindowShouldClose(window, GLFW_TRUE);
 			//glfwWindowShouldClose(window);
 			CurrentGameState = State_STOP;
-		}*/
+		}
 
 
 		/*-----------------------------------
@@ -73,6 +73,7 @@ void keyCallBack(GLFWwindow* window, int key, int scancode, int action, int mod)
 
 #ifdef _DEBUG
 		std::cout << "Pressed Keys\n";
+		std::cout << (char)key << '\n';
 #endif
 	}
 

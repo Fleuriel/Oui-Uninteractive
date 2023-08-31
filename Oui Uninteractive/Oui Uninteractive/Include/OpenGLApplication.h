@@ -11,6 +11,7 @@
 
 
 extern GLFWwindow* window;
+extern OpenGLObject Objects;
 
 class OpenGLApplication {
 

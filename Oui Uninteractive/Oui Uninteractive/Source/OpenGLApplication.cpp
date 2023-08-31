@@ -90,10 +90,10 @@ void OpenGLApplication::OpenGLUpdate()
 		glBegin(GL_QUADS);
 
 		// This is using NDC coordinates ... Take Note
-		//glVertex2f(squareX - 0.1f, squareY + 0.1f);
-		//glVertex2f(squareX - 0.1f, squareY - 0.1f);
-		//glVertex2f(squareX + 0.1f, squareY - 0.1f);
-		//glVertex2f(squareX + 0.1f, squareY + 0.1f);
+		glVertex2f(squareX - 0.1f, squareY + 0.1f);
+		glVertex2f(squareX - 0.1f, squareY - 0.1f);
+		glVertex2f(squareX + 0.1f, squareY - 0.1f);
+		glVertex2f(squareX + 0.1f, squareY + 0.1f);
 
 		glDrawArrays(GL_TRIANGLES, 0, 3);
 
@@ -119,19 +119,21 @@ void OpenGLApplication::OpenGLUpdate()
 		|            ALPHABETS              |
 		-----------------------------------*/
 		if (keyStates[KEY_A]) {
-			std::cout << "A\n";
-			squareX -= 0.0025;
+			//std::cout << "A\n";
+			squareX -= (float)0.0025;
 		}
 
 		if (keyStates[KEY_B])
 			std::cout << "B\n";
 
 		if (keyStates[KEY_C])
+		{
+			
 			std::cout << "C\n";
-
+		}
 		if (keyStates[KEY_D]) {
-			std::cout << "D\n";
-			squareX += 0.0025;
+			//std::cout << "D\n";
+			squareX += (float)0.0025;
 		}
 
 		if (keyStates[KEY_E])
@@ -177,8 +179,8 @@ void OpenGLApplication::OpenGLUpdate()
 			std::cout << "R\n";
 
 		if (keyStates[KEY_S]) {
-			std::cout << "S\n";
-			squareY -= 0.01;
+			//std::cout << "S\n";
+			squareY -= (float)0.01;
 		}
 
 		if (keyStates[KEY_T])
@@ -191,8 +193,8 @@ void OpenGLApplication::OpenGLUpdate()
 			std::cout << "V\n";
 
 		if (keyStates[KEY_W]) {
-			std::cout << "W\n";
-			squareY += 0.01;
+			//std::cout << "W\n";
+			squareY += (float)0.01;
 		}
 
 		if (keyStates[KEY_X]){
@@ -279,23 +281,28 @@ void OpenGLApplication::OpenGLCleanup()
 
 void OpenGLApplication::render_square(glm::vec2 scaling, glm::vec2 position)
 {
-	glm::mat4 modelMatrix = glm::mat4(1.0f);
+	glm::mat4 Model_to_NDC_Transform = glm::mat4(1.0f);
 
 
-	modelMatrix = glm::translate(modelMatrix, glm::vec3(position.x, position.y, 0.0f)); // Corrected translation
-	modelMatrix = glm::scale(modelMatrix, glm::vec3(scaling.x, scaling.y, 1.0f)); // Corrected scaling
+	Model_to_NDC_Transform = glm::translate(Model_to_NDC_Transform, glm::vec3(position.x, position.y, 0.0f)); // Corrected translation
+	Model_to_NDC_Transform = glm::scale(Model_to_NDC_Transform, glm::vec3(scaling.x, scaling.y, 1.0f)); // Corrected scaling
 
 
 	ShaderProgram.Use();
-	//ShaderProgram.SetUniform("uModel", modelMatrix);
-	ShaderProgram.SetUniform("vColor", glm::vec3(0.0f, 1.0f, 0.47f)); // Using (255, 255, 120) as RGB values
+	ShaderProgram.SetUniform("vColor", Objects.Color); // Using (255, 255, 120) as RGB values
+	ShaderProgram.SetUniform("uModel", Model_to_NDC_Transform);
 
 
 	glBindVertexArray(Object_Storage["Square"].vaoID); // Replace with the actual VAO name for the square
+	std::cout << Object_Storage["Triangle"].vaoID << "VAOID\n";
+	
 
 
 	glDrawArrays(GL_TRIANGLES, 0, 4);
 
+
+
+	// Unbind the Vertex Array
 	glBindVertexArray(0);
 
 
@@ -377,6 +384,13 @@ void OpenGLApplication::OpenGLShadersInitialization()
 	ShaderFiles.emplace_back(std::make_pair(GL_FRAGMENT_SHADER, frag));
 
 	ShaderProgram.CompileLinkValidate(ShaderFiles);
+
+
+
+	std::cout << ShaderFiles[0].second << '\n';
+	std::cout << ShaderFiles[1].second << '\n';
+
+
 
 	for (std::pair<GLenum, std::string> x : ShaderFiles)
 	{

@@ -6,20 +6,43 @@
 #include <vector>
 #include <map>
 #include <string>
+#include <iterator>
+#include <OpenGLShaders.h>
+
 
 class OpenGLObject
 {
 public:
 	
 	glm::vec2 Scaling; // scaling
-	GLfloat Angle_Speed, Angle_Displacement; // orientation
+	glm::vec2 Rotation;
 	glm::vec2 Position; // translation
 	glm::mat3 Model_to_NDC_xform;
-	GLuint mdl_ref, shd_ref;
+	glm::vec3 Color;
+
+
+
+	// encapsulates state required to render a geometrical model
+	struct OpenGLModel {
+		GLenum primitive_type;
+		GLuint primitive_cnt;
+		GLuint vaoid;
+		GLuint draw_cnt;
+
+		GLuint model_cnt;			// added to check model count
+
+		OpenGLModel() : primitive_type(0), primitive_cnt(0), vaoid(0), draw_cnt(0), model_cnt(0) {}
+
+		void init(std::string);	//Added function to initialize model ...
+
+	};
+
+	std::map<std::string, OpenGLModel>::iterator mdl_ref;
+	std::map<std::string, OpenGLShader>::iterator shd_ref;
 
 	// set up initial state
-	static void Init();
-	static void Draw();
+	static void Init(); 
+	void Draw() const;
 	static void Update(GLdouble delta_time);
 	static void Cleanup();
 	static void Setup_Quad_VAO();
@@ -56,20 +79,6 @@ public:
 
 
 
-	// encapsulates state required to render a geometrical model
-	struct OpenGLModel {
-		GLenum primitive_type;
-		GLuint primitive_cnt;
-		GLuint vaoid;
-		GLuint draw_cnt;
-
-		GLuint model_cnt;			// added to check model count
-
-		OpenGLModel() : primitive_type(0), primitive_cnt(0), vaoid(0), draw_cnt(0), model_cnt(0) {}
-
-		void init(std::string);	//Added function to initialize model ...
-
-	};
 
 	// Store Models inside:
 	static std::map<std::string, OpenGLModel> Model_Storage;

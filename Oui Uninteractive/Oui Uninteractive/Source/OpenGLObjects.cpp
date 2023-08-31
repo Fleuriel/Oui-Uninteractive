@@ -31,6 +31,8 @@ void OpenGLObject::Init()
 	std::cout << "Hello'\t" << Mesh_Directory[0] << '\n';
 	std::cout << "Hello'\t" << Mesh_Directory[1] << '\n';
 	std::cout << "Hello'\t" << Mesh_Directory[2] << '\n';
+	Objects.Color = { 0.5,0.2,0.1f };
+	
 
 	Setup_Quad_VAO();
 }
@@ -262,10 +264,29 @@ void OpenGLObject::Load_Meshes() {
 
 
 
-void OpenGLObject::Draw()
+void OpenGLObject::Draw() const
 {
+	shd_ref->second.Use();
+
+	// Part 2: Bind object's VAO handle
+	glBindVertexArray(mdl_ref->second.vaoid); // Bind object's VAO handle
+
+	// Part 3: Copy object's 3x3 model-to-NDC matrix to vertex shader
+	shd_ref->second.SetUniform("uColor", Color);
+	shd_ref->second.SetUniform("uModel_to_NDC", Model_to_NDC_xform);
 
 
+	// Part 4: Render using glDrawElements or glDrawArrays
+	glDrawElements(
+		mdl_ref->second.primitive_type,
+		mdl_ref->second.draw_cnt,
+		GL_UNSIGNED_SHORT, NULL);
+
+
+	// Part 5: Clean up
+	glBindVertexArray(0); // Unbind the VAO
+
+	shd_ref->second.UnUse();
 
 }
 void OpenGLObject::Update(GLdouble delta_time)
