@@ -36,7 +36,6 @@ void EngineUpdate()
 		return;
 	}
 
-
 	switch (CurrentGameState)
 	{
 	case State_GraphicsTest:

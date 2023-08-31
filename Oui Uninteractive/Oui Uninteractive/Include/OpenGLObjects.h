@@ -24,6 +24,8 @@ public:
 
 
 
+	static GLuint VAO, VBO;
+
 	// encapsulates state required to render a geometrical model
 	struct OpenGLModel {
 		GLenum primitive_type;
@@ -55,7 +57,7 @@ public:
 	static std::vector<OpenGLShader> Shader;
 	using VectorPairStrStr = std::vector <std::pair<std::string, std::string>>;
 	static void OpenGLShadersInitialization();
-	static OpenGLShader ShaderProgram;
+	static GLuint ShaderProgram;
 	static std::map<std::string, OpenGLShader> shdrpgms;
 	
 
@@ -73,19 +75,19 @@ public:
 	static GLuint textureID;
 
 
-	struct VAO_Object
-	{
-		glm::vec2 Position;
-		glm::vec3 Color;
-		glm::vec2 Texture;
-
-		VAO_Object() : Position(0.0, 0.0), Color(0.0, 0.0, 0.0), Texture(0, 0) {}
-
-		void SetValue(float, float);
-
-		void SetTexture(float, float);
-
-	};
+	//struct VAO_Object
+	//{
+	//	glm::vec2 Position;
+	//	glm::vec3 Color;
+	//	glm::vec2 Texture;
+	//
+	//	VAO_Object() : Position(0.0, 0.0), Color(0.0, 0.0, 0.0), Texture(0, 0) {}
+	//
+	//	void SetValue(float, float);
+	//
+	//	void SetTexture(float, float);
+	//
+	//};
 
 
 

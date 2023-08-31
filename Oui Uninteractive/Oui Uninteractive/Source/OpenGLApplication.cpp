@@ -35,6 +35,14 @@ void OpenGLApplication::OpenGLInit(short width, short height)
 	// Create Windows
 	window = glfwCreateWindow(width, height, "Temporary Test", NULL, NULL);
 
+	// Tell GLFW we are using OpenGL 4.5
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 5);
+
+	// Tell GLFW that we are using the CORE Profile
+	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+
+
 	glViewport(0, 0, width, height);
 
 	// Receives Key input/output [Checks for Key Presses]
@@ -54,13 +62,13 @@ void OpenGLApplication::OpenGLInit(short width, short height)
 	Objects.Init();
 
 	// Create Vertex Buffers for the primitives (Shapes).
-	unsigned int vertexBuffer;
-	glGenBuffers(1, &vertexBuffer);
-
-	glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer);
-	glBufferData(GL_ARRAY_BUFFER, 6 * sizeof(float), Objects.Triangle.data(), GL_STATIC_DRAW);
-	glEnableVertexAttribArray(0);
-	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), 0);
+	//unsigned int vertexBuffer;
+	//glGenBuffers(1, &vertexBuffer);
+	//
+	//glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer);
+	//glBufferData(GL_ARRAY_BUFFER, 6 * sizeof(float), Objects.Triangle.data(), GL_STATIC_DRAW);
+	//glEnableVertexAttribArray(0);
+	//glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), 0);
 
 	
 
@@ -74,41 +82,48 @@ void OpenGLApplication::OpenGLInit(short width, short height)
 
 
 	// Set up the projection matrix for world coordinates
-	float worldWidth = 20.0f;
-	float worldHeight = 20.0f * (height / (float)width);
-	glm::mat4 projection = glm::ortho(-worldWidth / 2, worldWidth / 2, -worldHeight / 2, worldHeight / 2, -1.0f, 1.0f);
+	//float worldWidth = 20.0f;
+	//float worldHeight = 20.0f * (height / (float)width);
+	//glm::mat4 projection = glm::ortho(-worldWidth / 2, worldWidth / 2, -worldHeight / 2, worldHeight / 2, -1.0f, 1.0f);
 
 }
 
 void OpenGLApplication::OpenGLUpdate()
 {
+	float tmpspeed{ 0.04 };
 	while (!glfwWindowShouldClose(window))
 	{
 		glClear(GL_COLOR_BUFFER_BIT);
 
-		glBegin(GL_QUADS);
-
-		// This is using NDC coordinates ... Take Note
-		glVertex2f(squareX - 0.1f, squareY + 0.1f);
-		glVertex2f(squareX - 0.1f, squareY - 0.1f);
-		glVertex2f(squareX + 0.1f, squareY - 0.1f);
-		glVertex2f(squareX + 0.1f, squareY + 0.1f);
-
+		glClearColor(0.07f, 0.13f, 0.17f, 1.0f);
+		glUseProgram(Objects.ShaderProgram);
+		glBindVertexArray(Objects.VAO);
 		glDrawArrays(GL_TRIANGLES, 0, 3);
 
 
-		//glVertex2f(-5.0f, 5.0f);
-		//glVertex2f(-5.0f, -5.0f);
-		//glVertex2f(5.0f, -5.0f);
-		//glVertex2f(5.0f, 5.0f);
-
-		glEnd();
+		//glBegin(GL_QUADS);
+		//
+		//// This is using NDC coordinates ... Take Note
+		//glVertex2f(squareX - 0.1f, squareY + 0.1f);
+		//glVertex2f(squareX - 0.1f, squareY - 0.1f);
+		//glVertex2f(squareX + 0.1f, squareY - 0.1f);
+		//glVertex2f(squareX + 0.1f, squareY + 0.1f);
+		//
+		//glDrawArrays(GL_TRIANGLES, 0, 3);
+		//
+		//
+		//
+		////glVertex2f(-5.0f, 5.0f);
+		////glVertex2f(-5.0f, -5.0f);
+		////glVertex2f(5.0f, -5.0f);
+		////glVertex2f(5.0f, 5.0f);
+		//
+		//glEnd();
 
 
 		glClearColor(0.2f, 0.3f, 0.4f, 1.0f);
 
 
-		float tmpspeed{ 0.04 };
 		/*-----------------------------------------------------------------------------
 		|                               INPUT UPDATES                                 |
 		-----------------------------------------------------------------------------*/
@@ -189,8 +204,11 @@ void OpenGLApplication::OpenGLUpdate()
 		if (keyStates[KEY_0])
 			std::cout << "0\n";
 		if (keyStates[KEY_1])
-			std::cout << "1\n";
-		if (keyStates[KEY_2])
+		{
+			std::cout << Object_Storage.size() << '\n';
+			//std::cout << "1\n";
+		}
+			if (keyStates[KEY_2])
 			std::cout << "2\n";
 		if (keyStates[KEY_3])
 			std::cout << "3\n";
@@ -205,8 +223,10 @@ void OpenGLApplication::OpenGLUpdate()
 		if (keyStates[KEY_8])
 			std::cout << "8\n";
 		if (keyStates[KEY_9])
-			std::cout << "9\n";
+		{
 
+			std::cout << "9\n";
+		}
 
 		/*-----------------------------------
 		|              OTHERS               |
@@ -259,42 +279,12 @@ void OpenGLApplication::OpenGLCleanup()
 	glfwTerminate();
 }
 
-//
-//void OpenGLApplication::render_square(glm::vec2 scaling, glm::vec2 position)
-//{
-//	glm::mat4 Model_to_NDC_Transform = glm::mat4(1.0f);
-//
-//
-//	Model_to_NDC_Transform = glm::translate(Model_to_NDC_Transform, glm::vec3(position.x, position.y, 0.0f)); // Corrected translation
-//	Model_to_NDC_Transform = glm::scale(Model_to_NDC_Transform, glm::vec3(scaling.x, scaling.y, 1.0f)); // Corrected scaling
-//
-//
-//	ShaderProgram.Use();
-//	ShaderProgram.SetUniform("vColor", Objects.Color); // Using (255, 255, 120) as RGB values
-//	ShaderProgram.SetUniform("uModel", Model_to_NDC_Transform);
-//
-//
-//	glBindVertexArray(Object_Storage["Square"].vaoID); // Replace with the actual VAO name for the square
-//	std::cout << Object_Storage["Triangle"].vaoID << "VAOID\n";
-//	
-//
-//
-//	glDrawArrays(GL_TRIANGLES, 0, 4);
-//
-//
-//
-//	// Unbind the Vertex Array
-//	glBindVertexArray(0);
-//
-//
-//
-//}
+
 
 
 
 void OpenGLApplication::Draw() {
 
-	std::cout << Object_Storage.size() << '\n';
 
 	for (auto& x : Object_Storage)
 	{

@@ -12,10 +12,7 @@ int main()
 
 
 	EngineStartUp(State_GraphicsTest);
-
-
-
-	
+		
 	while (CurrentGameState != State_STOP)
 	{
 #ifdef _DEBUG
