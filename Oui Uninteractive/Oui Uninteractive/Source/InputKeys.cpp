@@ -69,24 +69,40 @@ void keyCallBack(GLFWwindow* window, int key, int scancode, int action, int mod)
 		if (key == GLFW_KEY_ENTER)
 			keyStates[KEY_ENTER] = true;
 
+		/*-----------------------------------
+		|             COMMANDS              |
+		-----------------------------------*/
+		if (key == GLFW_KEY_C && mod & GLFW_MOD_CONTROL)
+			keyStates[KEY_COPY] = true;
 
+		if (key == GLFW_KEY_V && mod & GLFW_MOD_CONTROL && keyStates[KEY_COPY])
+			keyStates[KEY_PASTE] = true;
 
 #ifdef _DEBUG
 		std::cout << "Pressed Keys\n";
-		std::cout << (char)key << '\n';
 #endif
 	}
 
 /***********************************************************************/
-
+	
 	if (action == GLFW_RELEASE)
 	{
+
+		/*-----------------------------------
+		|            ALPHABETS              |
+		-----------------------------------*/
 		if (key >= GLFW_KEY_A && key <= GLFW_KEY_Z)
 			keyStates[key - GLFW_KEY_A] = false;
 
+		/*-----------------------------------
+		|             NUMBERS               |
+		-----------------------------------*/
 		if (key >= GLFW_KEY_0 && key <= GLFW_KEY_9)
 			keyStates[key - GLFW_KEY_0 + KEY_0] = false;
 
+		/*-----------------------------------
+		|              OTHERS               |
+		-----------------------------------*/
 		if (key == GLFW_KEY_SPACE)
 			keyStates[KEY_SPACE] = false;
 
@@ -100,7 +116,7 @@ void keyCallBack(GLFWwindow* window, int key, int scancode, int action, int mod)
 			keyStates[KEY_SHIFT] = false;
 		
 		if (key == GLFW_KEY_CAPS_LOCK) {}
-
+		
 		if (key == GLFW_KEY_TAB)
 			keyStates[KEY_TAB] = false;
 
@@ -109,10 +125,14 @@ void keyCallBack(GLFWwindow* window, int key, int scancode, int action, int mod)
 
 		if (key == GLFW_KEY_ENTER)
 			keyStates[KEY_ENTER] = false;
+		
+		/*-----------------------------------
+		|             COMMANDS              |
+		-----------------------------------*/
+		keyStates[KEY_PASTE] = false;
+
 
 #ifndef _DEBUG
-		std::cout << (char)key << '\n';
-
 		std::cout << "Released Keys\n";
 #endif
 	}
@@ -130,3 +150,5 @@ void keyCallBack(GLFWwindow* window, int key, int scancode, int action, int mod)
 /***********************************************************************/
 
 }
+
+// mouseCallBack(GLFWwindow* window, int key, int scancode, int action, int mod)

@@ -40,6 +40,8 @@ void OpenGLApplication::OpenGLInit(short width, short height)
 	// Receives Key input/output [Checks for Key Presses]
 	glfwSetKeyCallback(window, keyCallBack);
 
+	//glfwSetMouseButtonCallback(window, mouseCallBack);
+
 	// Make the current window the current context
 	glfwMakeContextCurrent(window);
 
@@ -106,6 +108,7 @@ void OpenGLApplication::OpenGLUpdate()
 		glClearColor(0.2f, 0.3f, 0.4f, 1.0f);
 
 
+		float tmpspeed{ 0.04 };
 		/*-----------------------------------------------------------------------------
 		|                               INPUT UPDATES                                 |
 		-----------------------------------------------------------------------------*/
@@ -115,99 +118,44 @@ void OpenGLApplication::OpenGLUpdate()
 		/*-----------------------------------
 		|            ALPHABETS              |
 		-----------------------------------*/
+
+		if (keyStates[KEY_CTRL]) {
+			if (keyStates[KEY_A]) {
+				squareX -= tmpspeed / 4;
+			}
+
+			if (keyStates[KEY_D]) {
+				squareX += tmpspeed / 4;
+			}
+
+			if (keyStates[KEY_S]) {
+				squareY -= tmpspeed / 4;
+			}
+
+			if (keyStates[KEY_W]) {
+				squareY += tmpspeed / 4;
+			}
+		}
+		else
 		// IF BIG LETTERS
 		if ((keyStates[KEY_SHIFT] && !keyStates[KEY_CAPS]) + (!keyStates[KEY_SHIFT] && keyStates[KEY_CAPS])) {
 
 			if (keyStates[KEY_A]) {
-				std::cout << "A\n";
-				squareX -= (float)0.005;
+				squareX -= tmpspeed/2;
 			}
-
-			if (keyStates[KEY_B])
-				std::cout << "B\n";
-
-			if (keyStates[KEY_C])
-				std::cout << "C\n";
 
 			if (keyStates[KEY_D]) {
-				std::cout << "D\n";
-				squareX += (float)0.005;
+				squareX += tmpspeed/2;
 			}
-
-			if (keyStates[KEY_E])
-				std::cout << "E\n";
-
-			if (keyStates[KEY_F])
-				std::cout << "F\n";
-
-			if (keyStates[KEY_G])
-				std::cout << "G\n";
-
-			if (keyStates[KEY_H])
-				std::cout << "H\n";
-
-			if (keyStates[KEY_I])
-				std::cout << "I\n";
-
-			if (keyStates[KEY_J])
-				std::cout << "J\n";
-
-			if (keyStates[KEY_K])
-				std::cout << "K\n";
-
-			if (keyStates[KEY_L])
-				std::cout << "L\n";
-
-			if (keyStates[KEY_M])
-				std::cout << "M\n";
-
-			if (keyStates[KEY_N])
-				std::cout << "N\n";
-
-			if (keyStates[KEY_O])
-				std::cout << "O\n";
-
-			if (keyStates[KEY_P])
-				std::cout << "P\n";
-
-			if (keyStates[KEY_Q])
-				std::cout << "Q\n";
-
-			if (keyStates[KEY_R])
-				std::cout << "R\n";
 
 			if (keyStates[KEY_S]) {
-				std::cout << "S\n";
-				squareY -= 0.01;
-				OpenGLApplication::Draw();
+				squareY -= tmpspeed/2;
 			}
-
-			if (keyStates[KEY_T])
-				std::cout << "T\n";
-
-			if (keyStates[KEY_U])
-				std::cout << "U\n";
-
-			if (keyStates[KEY_V])
-				std::cout << "V\n";
 
 			if (keyStates[KEY_W]) {
-				std::cout << "W\n";
-				squareY += (float)0.01;
+				squareY += tmpspeed/2;
 			}
 
-			if (keyStates[KEY_X]) {
-				std::cout << "X\n";
-				en = false;
-			}
-
-			if (keyStates[KEY_Y])
-				std::cout << "Y\n";
-
-			if (keyStates[KEY_Z]) {
-				std::cout << "Z\n";
-				//render_square(glm::vec2(1.0f, 1.0f), glm::vec2(0.0f, 0.0f));
-			}
 		}
 
 		// IF SMALL LETTERS
@@ -215,94 +163,24 @@ void OpenGLApplication::OpenGLUpdate()
 
 			if (keyStates[KEY_A]) {
 				std::cout << "a\n";
-				squareX -= (float)0.005;
+				squareX -= tmpspeed;
 			}
-
-			if (keyStates[KEY_B])
-				std::cout << "b\n";
-
-			if (keyStates[KEY_C])
-				std::cout << "c\n";
 
 			if (keyStates[KEY_D]) {
 				std::cout << "d\n";
-				squareX += (float)0.005;
+				squareX += tmpspeed;
 			}
-
-			if (keyStates[KEY_E])
-				std::cout << "e\n";
-
-			if (keyStates[KEY_F])
-				std::cout << "f\n";
-
-			if (keyStates[KEY_G])
-				std::cout << "g\n";
-
-			if (keyStates[KEY_H])
-				std::cout << "h\n";
-
-			if (keyStates[KEY_I])
-				std::cout << "i\n";
-
-			if (keyStates[KEY_J])
-				std::cout << "j\n";
-
-			if (keyStates[KEY_K])
-				std::cout << "k\n";
-
-			if (keyStates[KEY_L])
-				std::cout << "l\n";
-
-			if (keyStates[KEY_M])
-				std::cout << "m\n";
-
-			if (keyStates[KEY_N])
-				std::cout << "n\n";
-
-			if (keyStates[KEY_O])
-				std::cout << "o\n";
-
-			if (keyStates[KEY_P])
-				std::cout << "p\n";
-
-			if (keyStates[KEY_Q])
-				std::cout << "q\n";
-
-			if (keyStates[KEY_R])
-				std::cout << "r\n";
 
 			if (keyStates[KEY_S]) {
 				std::cout << "s\n";
-				squareY -= (float)0.01;
-				OpenGLApplication::Draw();
+				squareY -= tmpspeed;
 			}
-
-			if (keyStates[KEY_T])
-				std::cout << "t\n";
-
-			if (keyStates[KEY_U])
-				std::cout << "u\n";
-
-			if (keyStates[KEY_V])
-				std::cout << "v\n";
 
 			if (keyStates[KEY_W]) {
 				std::cout << "w\n";
-				squareY += (float)0.01;
+				squareY += tmpspeed;
 			}
 
-			if (keyStates[KEY_X]) {
-				std::cout << "x\n";
-				en = false;
-			}
-
-			if (keyStates[KEY_Y])
-				std::cout << "y\n";
-
-			if (keyStates[KEY_Z]) {
-				std::cout << "z\n";
-				//render_square(glm::vec2(1.0f, 1.0f), glm::vec2(0.0f, 0.0f));
-			}
 		}
 
 		/*-----------------------------------
@@ -349,6 +227,16 @@ void OpenGLApplication::OpenGLUpdate()
 			std::cout << "ESC\n";
 		if (keyStates[KEY_ENTER])
 			std::cout << "ENTER\n";
+
+		/*-----------------------------------
+		|             COMMANDS              |
+		-----------------------------------*/
+
+		if (keyStates[KEY_COPY])
+			std::cout << "COPY\n";
+
+		if (keyStates[KEY_PASTE])
+			std::cout << "PASTE\n";
 
 		/*---------------------------------------------------------------------------*/
 
