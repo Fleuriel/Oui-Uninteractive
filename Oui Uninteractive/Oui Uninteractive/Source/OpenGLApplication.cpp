@@ -179,7 +179,7 @@ void OpenGLApplication::OpenGLUpdate()
 			if (keyStates[KEY_S]) {
 				std::cout << "S\n";
 				squareY -= 0.01;
-				Draw();
+				OpenGLApplication::Draw();
 			}
 
 			if (keyStates[KEY_T])
@@ -274,6 +274,7 @@ void OpenGLApplication::OpenGLUpdate()
 			if (keyStates[KEY_S]) {
 				std::cout << "s\n";
 				squareY -= (float)0.01;
+				OpenGLApplication::Draw();
 			}
 
 			if (keyStates[KEY_T])
@@ -405,9 +406,11 @@ void OpenGLApplication::OpenGLCleanup()
 
 void OpenGLApplication::Draw() {
 
+	std::cout << Object_Storage.size() << '\n';
 
 	for (auto& x : Object_Storage)
 	{
+		std::cout << x.first << '\n';
 		x.second.Draw();
 	}
 

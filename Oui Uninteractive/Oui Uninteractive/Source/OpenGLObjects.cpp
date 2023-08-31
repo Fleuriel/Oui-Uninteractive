@@ -15,6 +15,7 @@ std::vector<glm::vec2> OpenGLObject::Triangle;
 std::vector<std::string> OpenGLObject::Mesh_Directory;
 
 
+std::map<std::string, OpenGLShader> OpenGLObject::shdrpgms;
 std::vector<OpenGLShader> OpenGLObject::Shader{};
 OpenGLShader OpenGLObject::ShaderProgram{};
 
@@ -115,6 +116,7 @@ void OpenGLObject::Setup_Quad_VAO()
 
 
 }
+
 void OpenGLObject::Load_Files()
 {
 	std::string directoryPath = "../meshes";
@@ -381,10 +383,9 @@ void OpenGLObject::OpenGLShadersInitialization()
 	ShaderProgram.CompileLinkValidate(ShaderFiles);
 
 
-
-	std::cout << ShaderFiles[0].second << '\n';
-	std::cout << ShaderFiles[1].second << '\n';
-
+	
+	
+	shdrpgms["Oui_Uninteractive"] = ShaderProgram;
 
 
 	for (std::pair<GLenum, std::string> x : ShaderFiles)

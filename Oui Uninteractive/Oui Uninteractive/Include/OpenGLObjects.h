@@ -56,7 +56,7 @@ public:
 	using VectorPairStrStr = std::vector <std::pair<std::string, std::string>>;
 	static void OpenGLShadersInitialization();
 	static OpenGLShader ShaderProgram;
-
+	static std::map<std::string, OpenGLShader> shdrpgms;
 	
 
 	static void Load_Files();
