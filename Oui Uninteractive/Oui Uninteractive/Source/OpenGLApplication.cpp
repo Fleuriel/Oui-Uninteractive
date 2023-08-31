@@ -120,7 +120,7 @@ void OpenGLApplication::OpenGLUpdate()
 
 			if (keyStates[KEY_A]) {
 				std::cout << "A\n";
-				squareX -= (float)0.0025;
+				squareX -= (float)0.005;
 			}
 
 			if (keyStates[KEY_B])
@@ -131,7 +131,7 @@ void OpenGLApplication::OpenGLUpdate()
 
 			if (keyStates[KEY_D]) {
 				std::cout << "D\n";
-				squareX += (float)0.0025;
+				squareX += (float)0.005;
 			}
 
 			if (keyStates[KEY_E])
@@ -215,7 +215,7 @@ void OpenGLApplication::OpenGLUpdate()
 
 			if (keyStates[KEY_A]) {
 				std::cout << "a\n";
-				squareX -= (float)0.0025;
+				squareX -= (float)0.005;
 			}
 
 			if (keyStates[KEY_B])
@@ -226,7 +226,7 @@ void OpenGLApplication::OpenGLUpdate()
 
 			if (keyStates[KEY_D]) {
 				std::cout << "d\n";
-				squareX += (float)0.0025;
+				squareX += (float)0.005;
 			}
 
 			if (keyStates[KEY_E])
