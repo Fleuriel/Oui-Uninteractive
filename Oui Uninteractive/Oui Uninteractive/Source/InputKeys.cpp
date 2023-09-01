@@ -6,7 +6,7 @@
 #include <InitializeEngine.h>
 
 
- std::vector<bool> keyStates(Number_of_working_keys, false);
+ std::vector<bool> InputStates(Number_of_working_keys, false);
 
  std::vector<bool> mouseStates(3, false);
 
@@ -34,49 +34,55 @@ void keyCallBack(GLFWwindow* window, int key, int scancode, int action, int mod)
         |            ALPHABETS              |
         -----------------------------------*/
 		if (key >= GLFW_KEY_A && key <= GLFW_KEY_Z)
-			keyStates[key - GLFW_KEY_A] = true;
+			InputStates[key - GLFW_KEY_A] = true;
 
 		/*-----------------------------------
 		|             NUMBERS               |
 		-----------------------------------*/
 		if (key >= GLFW_KEY_0 && key <= GLFW_KEY_9)
-			keyStates[key - GLFW_KEY_0 + KEY_0] = true;
+			InputStates[key - GLFW_KEY_0 + KEY_0] = true;
 
 		/*-----------------------------------
 		|              OTHERS               |
 		-----------------------------------*/
 		if (key == GLFW_KEY_SPACE)
-			keyStates[KEY_SPACE] = true;
+			InputStates[KEY_SPACE] = true;
 
 		if (key == GLFW_KEY_LEFT_ALT || key == GLFW_KEY_RIGHT_ALT)
-			keyStates[KEY_ALT] = true;
+			InputStates[KEY_ALT] = true;
 
 		if (key == GLFW_KEY_LEFT_CONTROL || key == GLFW_KEY_RIGHT_CONTROL)
-			keyStates[KEY_CTRL] = true;
+			InputStates[KEY_CTRL] = true;
 
 		if (key == GLFW_KEY_LEFT_SHIFT || key == GLFW_KEY_RIGHT_SHIFT)
-			keyStates[KEY_SHIFT] = true;
+			InputStates[KEY_SHIFT] = true;
 
 		if (key == GLFW_KEY_CAPS_LOCK)
-			keyStates[KEY_CAPS] = !keyStates[KEY_CAPS];
+			InputStates[KEY_CAPS] = !InputStates[KEY_CAPS];
 
 		if (key == GLFW_KEY_TAB)
-			keyStates[KEY_TAB] = true;
+			InputStates[KEY_TAB] = true;
 
 		if (key == GLFW_KEY_ESCAPE)
-			keyStates[KEY_ESC] = true;
+			InputStates[KEY_ESC] = true;
 
 		if (key == GLFW_KEY_ENTER)
-			keyStates[KEY_ENTER] = true;
+			InputStates[KEY_ENTER] = true;
 
 		/*-----------------------------------
 		|             COMMANDS              |
 		-----------------------------------*/
 		if (key == GLFW_KEY_C && mod & GLFW_MOD_CONTROL)
-			keyStates[KEY_COPY] = true;
+			InputStates[KEY_COPY] = true;
 
-		if (key == GLFW_KEY_V && mod & GLFW_MOD_CONTROL && keyStates[KEY_COPY])
-			keyStates[KEY_PASTE] = true;
+		if (key == GLFW_KEY_V && mod & GLFW_MOD_CONTROL && InputStates[KEY_COPY])
+			InputStates[KEY_PASTE] = true;
+
+		if (key == GLFW_KEY_X && mod & GLFW_MOD_CONTROL)
+			InputStates[KEY_CUT] = true;
+
+		if (key == GLFW_KEY_Z && mod & GLFW_MOD_CONTROL)
+			InputStates[KEY_UNDO] = true;
 
 #ifdef _DEBUG
 		std::cout << "Pressed Keys\n";
@@ -92,44 +98,45 @@ void keyCallBack(GLFWwindow* window, int key, int scancode, int action, int mod)
 		|            ALPHABETS              |
 		-----------------------------------*/
 		if (key >= GLFW_KEY_A && key <= GLFW_KEY_Z)
-			keyStates[key - GLFW_KEY_A] = false;
+			InputStates[key - GLFW_KEY_A] = false;
 
 		/*-----------------------------------
 		|             NUMBERS               |
 		-----------------------------------*/
 		if (key >= GLFW_KEY_0 && key <= GLFW_KEY_9)
-			keyStates[key - GLFW_KEY_0 + KEY_0] = false;
+			InputStates[key - GLFW_KEY_0 + KEY_0] = false;
 
 		/*-----------------------------------
 		|              OTHERS               |
 		-----------------------------------*/
 		if (key == GLFW_KEY_SPACE)
-			keyStates[KEY_SPACE] = false;
+			InputStates[KEY_SPACE] = false;
 
 		if (key == GLFW_KEY_LEFT_ALT || key == GLFW_KEY_RIGHT_ALT)
-			keyStates[KEY_ALT] = false;
+			InputStates[KEY_ALT] = false;
 
 		if (key == GLFW_KEY_LEFT_CONTROL || key == GLFW_KEY_RIGHT_CONTROL)
-			keyStates[KEY_CTRL] = false;
+			InputStates[KEY_CTRL] = false;
 
 		if (key == GLFW_KEY_LEFT_SHIFT || key == GLFW_KEY_RIGHT_SHIFT)
-			keyStates[KEY_SHIFT] = false;
+			InputStates[KEY_SHIFT] = false;
 		
 		if (key == GLFW_KEY_CAPS_LOCK) {}
 		
 		if (key == GLFW_KEY_TAB)
-			keyStates[KEY_TAB] = false;
+			InputStates[KEY_TAB] = false;
 
 		if (key == GLFW_KEY_ESCAPE)
-			keyStates[KEY_ESC] = false;
+			InputStates[KEY_ESC] = false;
 
 		if (key == GLFW_KEY_ENTER)
-			keyStates[KEY_ENTER] = false;
+			InputStates[KEY_ENTER] = false;
 		
 		/*-----------------------------------
 		|             COMMANDS              |
 		-----------------------------------*/
-		keyStates[KEY_PASTE] = false;
+		InputStates[KEY_PASTE] = false;
+		InputStates[KEY_CUT] = false;
 
 
 #ifndef _DEBUG
@@ -137,18 +144,38 @@ void keyCallBack(GLFWwindow* window, int key, int scancode, int action, int mod)
 #endif
 	}
 
-/***********************************************************************/
-
-
-	//// checks for each of the keys if they are pressed ...
-	//if (key >= GLFW_KEY_A && key <= GLFW_KEY_Z)
-	//{
-	//	keyStates[key - GLFW_KEY_A] = true;
-	//}
-
-
-/***********************************************************************/
-
 }
 
-// mouseCallBack(GLFWwindow* window, int key, int scancode, int action, int mod)
+void mouseCallBack(GLFWwindow* window, int button, int action, int mod) {
+	switch (button) {
+		case GLFW_MOUSE_BUTTON_LEFT:
+			switch (action)
+			{
+				case GLFW_PRESS:
+					InputStates[KEY_LCLICK] = true;
+					break;
+				case GLFW_RELEASE:
+					InputStates[KEY_LCLICK] = false;
+					break;
+				default:
+					break;
+			}
+			break;
+		case GLFW_MOUSE_BUTTON_RIGHT:
+			switch (action)
+			{
+				case GLFW_PRESS:
+					InputStates[KEY_RCLICK] = true;
+					break;
+				case GLFW_RELEASE:
+					InputStates[KEY_RCLICK] = false;
+					break;
+				default:
+					break;
+			}
+			break;
+		default:
+			break;
+	}
+
+}

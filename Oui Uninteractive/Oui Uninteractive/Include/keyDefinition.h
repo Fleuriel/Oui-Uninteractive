@@ -1,8 +1,6 @@
 #ifndef KEYDEFINITION_H
 #define KEYDEFINITION_H
 
-#define Number_of_working_keys 48
-
 /*---------------------------------------
 |              ALPHABETS                |
 ---------------------------------------*/
@@ -67,4 +65,11 @@
 #define KEY_CUT		3  + KEY_ENTER	// 46
 #define KEY_UNDO	4  + KEY_ENTER	// 47
 
+/*---------------------------------------
+|                MOUSE                  |
+---------------------------------------*/
+#define KEY_LCLICK  1  + KEY_UNDO	// 48
+#define KEY_RCLICK  2  + KEY_UNDO	// 49
+
+#define Number_of_working_keys 1 + KEY_RCLICK // 50
 #endif // KEY_DEFINITION_H
