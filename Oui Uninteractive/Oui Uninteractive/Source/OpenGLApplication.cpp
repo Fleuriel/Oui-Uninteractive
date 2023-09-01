@@ -19,7 +19,8 @@ OpenGLObject Objects;
 
 bool en = true;
 
-float timer = 0;
+extern float mouse_scroll_total_Y_offset;
+
 
 void OpenGLApplication::OpenGLInit(short width, short height)
 {
@@ -50,7 +51,10 @@ void OpenGLApplication::OpenGLInit(short width, short height)
 	// Receives Key input/output [Checks for Key Presses]
 	glfwSetKeyCallback(window, keyCallBack);
 
+	// Receives Mouse input/output [Checks for Mouse Clicks]
 	glfwSetMouseButtonCallback(window, mouseCallBack);
+
+	glfwSetScrollCallback(window, scrollCallBack);
 
 	// Make the current window the current context
 	glfwMakeContextCurrent(window);
@@ -136,40 +140,40 @@ void OpenGLApplication::OpenGLUpdate()
 		|            ALPHABETS              |
 		-----------------------------------*/
 
-		if (InputStates[KEY_CTRL]) {
-			if (InputStates[KEY_A]) {
+		if (InputStates[INPUT_CTRL]) {
+			if (InputStates[INPUT_A]) {
 				squareX -= tmpspeed / 4;
 			}
 
-			if (InputStates[KEY_D]) {
+			if (InputStates[INPUT_D]) {
 				squareX += tmpspeed / 4;
 			}
 
-			if (InputStates[KEY_S]) {
+			if (InputStates[INPUT_S]) {
 				squareY -= tmpspeed / 4;
 			}
 
-			if (InputStates[KEY_W]) {
+			if (InputStates[INPUT_W]) {
 				squareY += tmpspeed / 4;
 			}
 		}
 		else
 		// IF BIG LETTERS
-		if ((InputStates[KEY_SHIFT] && !InputStates[KEY_CAPS]) + (!InputStates[KEY_SHIFT] && InputStates[KEY_CAPS])) {
+		if ((InputStates[INPUT_SHIFT] && !InputStates[INPUT_CAPS]) + (!InputStates[INPUT_SHIFT] && InputStates[INPUT_CAPS])) {
 
-			if (InputStates[KEY_A]) {
+			if (InputStates[INPUT_A]) {
 				squareX -= tmpspeed/2;
 			}
 
-			if (InputStates[KEY_D]) {
+			if (InputStates[INPUT_D]) {
 				squareX += tmpspeed/2;
 			}
 
-			if (InputStates[KEY_S]) {
+			if (InputStates[INPUT_S]) {
 				squareY -= tmpspeed/2;
 			}
 
-			if (InputStates[KEY_W]) {
+			if (InputStates[INPUT_W]) {
 				squareY += tmpspeed/2;
 			}
 
@@ -178,22 +182,22 @@ void OpenGLApplication::OpenGLUpdate()
 		// IF SMALL LETTERS
 		else {
 
-			if (InputStates[KEY_A]) {
+			if (InputStates[INPUT_A]) {
 				std::cout << "a\n";
 				squareX -= tmpspeed;
 			}
 
-			if (InputStates[KEY_D]) {
+			if (InputStates[INPUT_D]) {
 				std::cout << "d\n";
 				squareX += tmpspeed;
 			}
 
-			if (InputStates[KEY_S]) {
+			if (InputStates[INPUT_S]) {
 				std::cout << "s\n";
 				squareY -= tmpspeed;
 			}
 
-			if (InputStates[KEY_W]) {
+			if (InputStates[INPUT_W]) {
 				std::cout << "w\n";
 				squareY += tmpspeed;
 			}
@@ -203,77 +207,91 @@ void OpenGLApplication::OpenGLUpdate()
 		/*-----------------------------------
 		|             NUMBERS               |
 		-----------------------------------*/
-		if (InputStates[KEY_0])
+		if (InputStates[INPUT_0])
 			std::cout << "0\n";
-		if (InputStates[KEY_1])
+		if (InputStates[INPUT_1])
 		{
 			std::cout << Object_Storage.size() << '\n';
 			//std::cout << "1\n";
 		}
-			if (InputStates[KEY_2])
+			if (InputStates[INPUT_2])
 			std::cout << "2\n";
-		if (InputStates[KEY_3])
+		if (InputStates[INPUT_3])
 			std::cout << "3\n";
-		if (InputStates[KEY_4])
+		if (InputStates[INPUT_4])
 			std::cout << "4\n";
-		if (InputStates[KEY_5])
+		if (InputStates[INPUT_5])
 			std::cout << "5\n";
-		if (InputStates[KEY_6])
+		if (InputStates[INPUT_6])
 			std::cout << "6\n";
-		if (InputStates[KEY_7])
+		if (InputStates[INPUT_7])
 			std::cout << "7\n";
-		if (InputStates[KEY_8])
+		if (InputStates[INPUT_8])
 			std::cout << "8\n";
-		if (InputStates[KEY_9])
-		{
-
+		if (InputStates[INPUT_9])
 			std::cout << "9\n";
-		}
 
 		/*-----------------------------------
 		|              OTHERS               |
 		-----------------------------------*/
-		if (InputStates[KEY_SPACE])
+		if (InputStates[INPUT_SPACE])
 			std::cout << "SPACE\n";
-		if (InputStates[KEY_ALT])
+		if (InputStates[INPUT_ALT])
 			std::cout << "ALT\n";
-		if (InputStates[KEY_CTRL])
+		if (InputStates[INPUT_CTRL])
 			std::cout << "CTRL\n";
-		if (InputStates[KEY_SHIFT])
+		if (InputStates[INPUT_SHIFT])
 			std::cout << "SHIFT\n";
-		if (InputStates[KEY_CAPS])
+		if (InputStates[INPUT_CAPS])
 			std::cout << "CAPS\n";
-		if (InputStates[KEY_TAB])
+		if (InputStates[INPUT_TAB])
 			std::cout << "TAB\n";
-		if (InputStates[KEY_ESC])
+		if (InputStates[INPUT_ESC])
 			std::cout << "ESC\n";
-		if (InputStates[KEY_ENTER])
+		if (InputStates[INPUT_ENTER])
 			std::cout << "ENTER\n";
 
 		/*-----------------------------------
 		|             COMMANDS              |
 		-----------------------------------*/
 
-		if (InputStates[KEY_COPY])
+		if (InputStates[INPUT_COPY])
 			std::cout << "COPY\n";
 
 		//requires timer
-		if (InputStates[KEY_PASTE])
+		if (InputStates[INPUT_PASTE])
 			std::cout << "PASTE\n";
-		if (InputStates[KEY_CUT])
+		if (InputStates[INPUT_CUT])
 			std::cout << "CUT\n";
-		if (InputStates[KEY_UNDO])
+		if (InputStates[INPUT_UNDO])
 			std::cout << "UNDO\n";
 
 		/*-----------------------------------
 		|              Mouse                |
 		-----------------------------------*/
 
-		if (InputStates[KEY_LCLICK])
-			std::cout << "LCLICK";
-		if (InputStates[KEY_RCLICK])
-			std::cout << "RCLICK";
+		if (InputStates[INPUT_LCLICK])
+			std::cout << "LCLICK\n";
+		if (InputStates[INPUT_RCLICK])
+			std::cout << "RCLICK\n";
 
+		/*-----------------------------------
+		|              Scroll               |
+		-----------------------------------*/
+
+
+		if (InputStates[INPUT_SCROLLUP]) {
+			std::cout << "SCROLL UP\n";
+			std::cout << "Total Scroll Y Offset:" << mouse_scroll_total_Y_offset << "\n";
+		}
+		if (InputStates[INPUT_SCROLLDOWN]) {
+			std::cout << "SCROLL DOWN\n";
+			std::cout << "Total Scroll Y Offset:" << mouse_scroll_total_Y_offset << "\n";
+		}
+
+
+		InputStates[INPUT_SCROLLUP] = false;		// DO NOT TOUCH
+		InputStates[INPUT_SCROLLDOWN] = false;		// DO NOT TOUCH
 
 		/*---------------------------------------------------------------------------*/
 
