@@ -100,6 +100,8 @@ void OpenGLApplication::OpenGLUpdate()
 		glBindVertexArray(Objects.VAO);
 		glDrawArrays(GL_TRIANGLES, 0, 3);
 
+//		glDrawElements(GL_TRIANGLES, 9, GL_UNSIGNED_INT, 0);
+
 
 		//glBegin(GL_QUADS);
 		//

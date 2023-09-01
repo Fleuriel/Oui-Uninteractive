@@ -10,6 +10,11 @@
 #include <OpenGLShaders.h>
 
 
+#define TRIANGLE "Triangle"
+#define SQUARE   "Square"
+#define CIRCLE   "Circle"
+
+
 class OpenGLObject
 {
 public:
@@ -35,10 +40,11 @@ public:
 
 		GLuint model_cnt;			// added to check model count
 
+		
+		std::vector <glm::vec2> Position_Vertex;
+
+
 		OpenGLModel() : primitive_type(0), primitive_cnt(0), vaoid(0), draw_cnt(0), model_cnt(0) {}
-
-		void init(std::string);	//Added function to initialize model ...
-
 	};
 
 	std::map<std::string, OpenGLModel>::iterator mdl_ref;
@@ -91,10 +97,10 @@ public:
 
 
 
-
-
 	// Store Models inside:
 	static std::map<std::string, OpenGLModel> Model_Storage;
+
+
 
 
 

@@ -47,17 +47,21 @@ void OpenGLObject::Init()
 	const char* vertexShaderSource =
 		"#version 450 core\n"
 		"layout (location = 0) in vec3 aPos;\n"
+		"layout (location = 1) in vec3 aColor;\n"
+		"out vec3 FragColor;\n"
 		"void main()\n"
 		"{\n"
 		"	gl_Position = vec4(aPos.x, aPos.y, aPos.z, 1.0);\n"
+		"	FragColor = aColor;"
 		"}\0";
 
 	const char* fragmentShaderSource = 
 		"#version 450 core\n"
-		"out vec4 FragColor;\n"
+		"in vec3 FragColor;\n"
+		"out vec4 FragColorOutput;\n"
 		"void main()\n"
 		"{\n"
-		"	FragColor = vec4(0.1,0.2,0.6, 1.0f);\n"
+		"	FragColorOutput = vec4(FragColor, 1.0);\n"
 		"}\n\0";
 
 //	OpenGLShadersInitialization();
@@ -66,11 +70,16 @@ void OpenGLObject::Init()
 
 	GLfloat vertices[] =
 	{
-		-0.5f, -0.5f * float(sqrt(3)) / 3, 0.0f,
-		0.5f, -0.5f * float(sqrt(3)) / 3, 0.0f,
-		0.0f, 0.5f * float(sqrt(3)) * 2/ 3, 0.0f
+		-0.5f, -0.5f * float(sqrt(3)) / 3, 0.0f,  // Position for vertex 0
+		1.0f, 0.0f, 0.0f,  // Color for vertex 0 (red)
 
+		0.5f, -0.5f * float(sqrt(3)) / 3, 0.0f,  // Position for vertex 1
+		0.0f, 1.0f, 0.0f,  // Color for vertex 1 (green)
+
+		0.0f, 0.5f * float(sqrt(3)) * 2 / 3, 0.0f,  // Position for vertex 2
+		0.0f, 0.0f, 1.0f  // Color for vertex 2 (blue)
 	};
+
 
 
 	GLuint vertexShader = glCreateShader(GL_VERTEX_SHADER);
@@ -87,9 +96,8 @@ void OpenGLObject::Init()
 	glAttachShader(ShaderProgram, vertexShader);
 	glAttachShader(ShaderProgram, fragmentShader);
 
-	glDeleteShader(vertexShader);
-	glDeleteShader(fragmentShader);
-
+	//glDeleteShader(vertexShader);
+	//glDeleteShader(fragmentShader);
 
 	
 	glGenVertexArrays(1, &VAO);
@@ -100,8 +108,11 @@ void OpenGLObject::Init()
 	glBindBuffer(GL_ARRAY_BUFFER, VBO);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)0);
 	glEnableVertexAttribArray(0);
+
+	glVertexAttribPointer(1, 3, GL_FLOAT, GL_TRUE, 6 * sizeof(float), (void*)(3 * sizeof(float)));
+	glEnableVertexAttribArray(1);
 
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 	glBindVertexArray(0);
@@ -249,14 +260,14 @@ void OpenGLObject::Load_Files()
 void OpenGLObject::Load_Meshes() {
 
 
-	std::vector<glm::vec2> Position_Vertex{};
-	std::vector <GLushort> Indices_Vertex{};
-	OpenGLObject::OpenGLModel Model;
-	std::string Mesh_Name{};
+
 
 	
 	for (int i = 0; i < Mesh_Directory.size(); i++)
 	{
+		std::vector <GLushort> Indices_Vertex{};
+		OpenGLObject::OpenGLModel Model;
+		std::string Mesh_Name{};
 		std::ifstream inputFileStream{ Mesh_Directory[i], std::ios::in };			// Input file...
 
 		if (inputFileStream.fail())											// Check if file exist ...
@@ -293,7 +304,7 @@ void OpenGLObject::Load_Meshes() {
 				line_sStream >> vert_Position.x;							// Assign values of Vertex Position into Container x
 				line_sStream >> vert_Position.y;							// Assign values of Vertex Position into Container y
 
-				Position_Vertex.emplace_back(vert_Position);						// Emplace back the vertex position into the position_vertex container
+				Model.Position_Vertex.push_back(vert_Position);						// Emplace back the vertex position into the position_vertex container
 				break;
 			}
 			case 't':														// [2] t
@@ -341,7 +352,7 @@ void OpenGLObject::Load_Meshes() {
 
 		GLuint VBO_Handler{};
 		glCreateBuffers(1, &VBO_Handler);
-		glNamedBufferStorage(VBO_Handler, sizeof(glm::vec2) * Position_Vertex.size(), Position_Vertex.data(), GL_DYNAMIC_STORAGE_BIT);
+		glNamedBufferStorage(VBO_Handler, sizeof(glm::vec2) * Model.Position_Vertex.size(), Model.Position_Vertex.data(), GL_DYNAMIC_STORAGE_BIT);
 
 		glCreateVertexArrays(1, &vaoID);
 
@@ -361,15 +372,27 @@ void OpenGLObject::Load_Meshes() {
 
 		Model.vaoid = vaoID;
 		Model.draw_cnt = Indices_Vertex.size();
-		Model.primitive_cnt = 2;
+	//	Model.primitive_cnt = 2;
 
 		Model_Storage[Mesh_Name] = Model;
-		std::cout << "Vaoid: " << Model_Storage[Mesh_Name].vaoid << '\n';
-		std::cout << Model_Storage[Mesh_Name].primitive_type << '\n';
-		std::cout << Model_Storage[Mesh_Name].draw_cnt << '\n';
-	}
+		//std::cout << "Vaoid: " << Model_Storage[Mesh_Name].vaoid << '\n';
+		//std::cout << Model_Storage[Mesh_Name].primitive_type << '\n';
+		//std::cout << Model_Storage[Mesh_Name].draw_cnt << '\n';
+
+
+		//std::cout << "Mesh Name: " << Mesh_Name << '\n';
+
+		//std::cout << Model_Storage["triangle"].Position_Vertex << '\n';
 
 	
+	}
+
+	for (auto const& x : Model_Storage[TRIANGLE].Position_Vertex)
+	{
+		std::cout << x.x << "," << x.y << '\n';
+
+	}
+
 }
 
 

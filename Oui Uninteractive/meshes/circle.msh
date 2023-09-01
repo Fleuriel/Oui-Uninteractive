@@ -1,4 +1,4 @@
-n circle
+n Circle
 v 0 0                        # prefix v indicates vertex position attribute
 v 1 0
 v 0.999962 0.00873005

@@ -23,7 +23,7 @@ int main()
 #ifdef _DEBUG 
 			std::cout << "Running Game\n";
 #endif
-			GameStateInit(1366, 768);
+			GameStateInit(900, 900);
 
 			GameStateUpdate();
 
