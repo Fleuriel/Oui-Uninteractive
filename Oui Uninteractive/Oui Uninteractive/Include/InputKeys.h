@@ -5,11 +5,8 @@
 #ifndef INPUTKEYS_H
 #define INPUTKEYS_H
 
-// A = 0, B = 1, C = 2 ... Z = 25
+// REFER TO keyDefinition.h for the index values
 extern std::vector<bool> InputStates;
-
-// Might need to change ...
-extern std::vector<bool> mouseStates;
 
 void keyCallBack(GLFWwindow* window, int key, int scancode, int action, int mod);
 

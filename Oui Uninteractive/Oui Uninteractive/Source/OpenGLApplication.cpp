@@ -216,7 +216,7 @@ void OpenGLApplication::OpenGLUpdate()
 			std::cout << Object_Storage.size() << '\n';
 			//std::cout << "1\n";
 		}
-			if (InputStates[INPUT_2])
+		if (InputStates[INPUT_2])
 			std::cout << "2\n";
 		if (InputStates[INPUT_3])
 			std::cout << "3\n";
