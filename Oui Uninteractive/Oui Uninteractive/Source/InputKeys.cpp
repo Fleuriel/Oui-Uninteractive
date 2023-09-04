@@ -6,7 +6,7 @@
 #include <InitializeEngine.h>
 
 
- std::vector<bool> InputStates(Number_of_Input_States, false);
+ std::vector<bool> InputStates(NUMBER_OF_INPUT_STATES, false);
 
 #define UNREFERENCED_PARAMETER(P)(P)
 
