@@ -19,7 +19,9 @@ OpenGLObject Objects;
 
 bool en = true;
 
+// For Input
 extern float mouse_scroll_total_Y_offset;
+extern int lastkeyedcommand;
 
 
 void OpenGLApplication::OpenGLInit(short width, short height)
@@ -96,7 +98,7 @@ void OpenGLApplication::OpenGLInit(short width, short height)
 
 void OpenGLApplication::OpenGLUpdate()
 {
-	float tmpspeed{ 0.04 };
+
 	while (!glfwWindowShouldClose(window))
 	{
 		glClear(GL_COLOR_BUFFER_BIT);
@@ -144,40 +146,42 @@ void OpenGLApplication::OpenGLUpdate()
 
 		if (InputStates[INPUT_CTRL]) {
 			if (InputStates[INPUT_A]) {
-				squareX -= tmpspeed / 4;
+				std::cout << "CROUCH LEFT";
 			}
 
 			if (InputStates[INPUT_D]) {
-				squareX += tmpspeed / 4;
+				std::cout << "CROUCH RIGHT";
 			}
 
 			if (InputStates[INPUT_S]) {
-				squareY -= tmpspeed / 4;
+				std::cout << "CROUCH DOWN";
 			}
 
 			if (InputStates[INPUT_W]) {
-				squareY += tmpspeed / 4;
+				std::cout << "CROUCH UP";
 			}
 		}
 		else
+
 		// IF BIG LETTERS
 		if ((InputStates[INPUT_SHIFT] && !InputStates[INPUT_CAPS]) + (!InputStates[INPUT_SHIFT] && InputStates[INPUT_CAPS])) {
 
 			if (InputStates[INPUT_A]) {
-				squareX -= tmpspeed/2;
+				std::cout << "RUN LEFT\n";
 			}
 
 			if (InputStates[INPUT_D]) {
-				squareX += tmpspeed/2;
+				std::cout << "RUN RIGHT\n";
 			}
 
 			if (InputStates[INPUT_S]) {
-				squareY -= tmpspeed/2;
+				std::cout << "RUN DOWN\n";
 			}
 
 			if (InputStates[INPUT_W]) {
-				squareY += tmpspeed/2;
+				std::cout << "RUN UP\n";
 			}
+
 
 		}
 
@@ -185,23 +189,19 @@ void OpenGLApplication::OpenGLUpdate()
 		else {
 
 			if (InputStates[INPUT_A]) {
-				std::cout << "a\n";
-				squareX -= tmpspeed;
+				std::cout << "WALK LEFT\n";
 			}
 
 			if (InputStates[INPUT_D]) {
-				std::cout << "d\n";
-				squareX += tmpspeed;
+				std::cout << "WALK RIGHT\n";
 			}
 
 			if (InputStates[INPUT_S]) {
-				std::cout << "s\n";
-				squareY -= tmpspeed;
+				std::cout << "WALK DOWN\n";
 			}
 
 			if (InputStates[INPUT_W]) {
-				std::cout << "w\n";
-				squareY += tmpspeed;
+				std::cout << "WALK UP\n";
 			}
 
 		}
@@ -261,11 +261,11 @@ void OpenGLApplication::OpenGLUpdate()
 			std::cout << "COPY\n";
 
 		//requires timer
-		if (InputStates[INPUT_PASTE])
+		if (InputStates[INPUT_PASTE] && lastkeyedcommand == INPUT_PASTE)
 			std::cout << "PASTE\n";
-		if (InputStates[INPUT_CUT])
+		if (InputStates[INPUT_CUT] && lastkeyedcommand == INPUT_CUT)
 			std::cout << "CUT\n";
-		if (InputStates[INPUT_UNDO])
+		if (InputStates[INPUT_UNDO] && lastkeyedcommand == INPUT_UNDO)
 			std::cout << "UNDO\n";
 
 		/*-----------------------------------

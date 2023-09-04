@@ -10,6 +10,7 @@
 
 #define UNREFERENCED_PARAMETER(P)(P)
 
+ int lastkeyedcommand;
 
 void keyCallBack(GLFWwindow* window, int key, int scancode, int action, int mod)
 {
@@ -70,17 +71,25 @@ void keyCallBack(GLFWwindow* window, int key, int scancode, int action, int mod)
 		/*-----------------------------------
 		|             COMMANDS              |
 		-----------------------------------*/
-		if (key == GLFW_KEY_C && mod & GLFW_MOD_CONTROL)
+		if (key == GLFW_KEY_C && mod & GLFW_MOD_CONTROL) {
 			InputStates[INPUT_COPY] = true;
+			lastkeyedcommand = INPUT_COPY;
+		}
 
-		if (key == GLFW_KEY_V && mod & GLFW_MOD_CONTROL && InputStates[INPUT_COPY])
+		if (key == GLFW_KEY_V && mod & GLFW_MOD_CONTROL && InputStates[INPUT_COPY]) {
 			InputStates[INPUT_PASTE] = true;
+			lastkeyedcommand = INPUT_PASTE;
+		}
 
-		if (key == GLFW_KEY_X && mod & GLFW_MOD_CONTROL)
+		if (key == GLFW_KEY_X && mod & GLFW_MOD_CONTROL) {
 			InputStates[INPUT_CUT] = true;
+			lastkeyedcommand = INPUT_CUT;
+		}
 
-		if (key == GLFW_KEY_Z && mod & GLFW_MOD_CONTROL)
+		if (key == GLFW_KEY_Z && mod & GLFW_MOD_CONTROL) {
 			InputStates[INPUT_UNDO] = true;
+			lastkeyedcommand = INPUT_UNDO;
+		}
 
 #ifdef _DEBUG
 		std::cout << "Pressed Keys\n";
