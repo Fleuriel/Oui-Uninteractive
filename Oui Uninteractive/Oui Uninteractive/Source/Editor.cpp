@@ -9,3 +9,19 @@
  *************************************************************************/
 
 #include <Editor.h>
+
+void UsingImGui::Init() {
+
+}
+
+void UsingImGui::Update() {
+
+}
+
+void UsingImGui::Draw() {
+
+}
+
+void UsingImGui::Exit() {
+
+}

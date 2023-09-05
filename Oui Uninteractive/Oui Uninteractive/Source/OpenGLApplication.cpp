@@ -20,7 +20,7 @@
 
 GLFWwindow* window;
 std::map<std::string, OpenGLObject> OpenGLApplication::Object_Storage;
-
+UsingImGui myImGui; // Creating imGui object
 
 GLfloat squareX = 0.0f, squareY = 0.0f;
 
@@ -73,6 +73,8 @@ void OpenGLApplication::OpenGLInit(short width, short height)
 	// Set input mode for the window with the cursor (Enables Cursor Input)
 	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
 
+	// Initializing ImGui
+	myImGui.Init();
 
 	glewInit();
 
@@ -309,8 +311,8 @@ void OpenGLApplication::OpenGLUpdate()
 		/*-----------------------------------
 		|       ImGui Stuff Testing         |
 		-----------------------------------*/
-		ImGui::NewFrame();
-		ImGui::Begin("Hello World");
+		myImGui.Update();
+		myImGui.Draw();
 
 
 		// swap the front and back buffers ....
@@ -327,7 +329,7 @@ void OpenGLApplication::OpenGLCleanup()
 {
 
 
-
+	myImGui.Exit();
 	glfwTerminate();
 }
 

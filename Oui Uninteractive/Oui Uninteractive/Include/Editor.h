@@ -17,5 +17,5 @@ public:
 	void Init();
 	virtual void Update();
 	void Draw();
-	void Shutdown();
+	void Exit();
 };
