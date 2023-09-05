@@ -1,3 +1,12 @@
+/**************************************************************************
+ * @file OpenGLObjects.cpp
+ * @author 
+ * @par DP email: 
+ * @par Course: CSD 2401
+ * @par Software Engineering Project 3
+ * @date 09-05-2023
+ * @brief 
+ *************************************************************************/
 
 #include <GL/glew.h> // for access to OpenGL API declarations  (PUT THIS ON TOP OR ELSE HAVE ERROR)
 #include <GLFW/glfw3.h>

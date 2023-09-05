@@ -1,3 +1,13 @@
+/**************************************************************************
+ * @file OpenGLObjects.h
+ * @author 
+ * @par DP email: 
+ * @par Course: CSD 2401
+ * @par Software Engineering Project 3
+ * @date 09-05-2023
+ * @brief 
+ *************************************************************************/
+
 #ifndef OPENGL_OBJECTS_H
 #define OPENGL_OBJECTS_H
 #include <GL/glew.h>

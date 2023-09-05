@@ -1,3 +1,12 @@
+/**************************************************************************
+ * @file OpenGLShaders.h
+ * @author 
+ * @par DP email: 
+ * @par Course: CSD 2401
+ * @par Software Engineering Project 3
+ * @date 09-05-2023
+ * @brief 
+ *************************************************************************/
 
 #ifndef OPENGL_SHADERS_H
 #define OPENGL_SHADERS_H
@@ -70,7 +79,7 @@ private:
 	std::string log_string; // log for OpenGL compiler and linker messages
 
 	// use OpenGL API to return the location of an uniform variable with
-  // name "name" using program handle encapsulated by object of this class type
+    // name "name" using program handle encapsulated by object of this class type
 	GLint GetUniformLocation(GLchar const* name);
 
 	// return true if file (given in relative path) exists, false otherwise
