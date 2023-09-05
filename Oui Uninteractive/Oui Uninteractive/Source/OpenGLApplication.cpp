@@ -53,6 +53,8 @@ void OpenGLApplication::OpenGLInit(short width, short height)
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 5);
 
+	const char* glsl_vers = "#version 130";
+
 	// Tell GLFW that we are using the CORE Profile
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
@@ -74,7 +76,7 @@ void OpenGLApplication::OpenGLInit(short width, short height)
 	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
 
 	// Initializing ImGui
-	myImGui.Init();
+	myImGui.Init(window, glsl_vers);
 
 	glewInit();
 
@@ -308,16 +310,18 @@ void OpenGLApplication::OpenGLUpdate()
 
 		/*---------------------------------------------------------------------------*/
 
+		// swap the front and back buffers ....
+		
+		glfwPollEvents();
+
 		/*-----------------------------------
 		|       ImGui Stuff Testing         |
 		-----------------------------------*/
+		myImGui.CreateFrame();
 		myImGui.Update();
 		myImGui.Draw();
 
-
-		// swap the front and back buffers ....
 		glfwSwapBuffers(window);
-		glfwPollEvents();
 
 	}
 
