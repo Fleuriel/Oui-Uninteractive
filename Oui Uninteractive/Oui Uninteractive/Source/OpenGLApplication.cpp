@@ -16,8 +16,7 @@
 #include <OpenGLObjects.h>
 #include <glm/gtc/matrix_transform.hpp>
 #include <InitializeEngine.h>
-
-
+#include <Editor.h>
 
 GLFWwindow* window;
 std::map<std::string, OpenGLObject> OpenGLApplication::Object_Storage;
@@ -306,6 +305,12 @@ void OpenGLApplication::OpenGLUpdate()
 		InputStates[INPUT_SCROLLDOWN] = false;		// DO NOT TOUCH
 
 		/*---------------------------------------------------------------------------*/
+
+		/*-----------------------------------
+		|       ImGui Stuff Testing         |
+		-----------------------------------*/
+		ImGui::NewFrame();
+		ImGui::Begin("Hello World");
 
 
 		// swap the front and back buffers ....
