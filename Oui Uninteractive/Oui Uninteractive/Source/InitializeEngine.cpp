@@ -49,11 +49,18 @@ void EngineUpdate()
 	switch (CurrentGameState)
 	{
 	case State_GraphicsTest:
-		GameStateInit = OpenGLApplication::OpenGLInit;
-		GameStateUpdate = OpenGLApplication::OpenGLUpdate;
-		GameStateCleanup = OpenGLApplication::OpenGLCleanup;
+		GameStateInit = SceneGameTesting::GameTestingInit;
+		GameStateUpdate = SceneGameTesting::GameTestingUpdate;
+		GameStateCleanup = SceneGameTesting::GameTestingCleanup;
+		//GameStateInit = OpenGLApplication::OpenGLInit;
+		//GameStateUpdate = OpenGLApplication::OpenGLUpdate;
+		//GameStateCleanup = OpenGLApplication::OpenGLCleanup;
 		break;
 	case State_GameTesting:
+		GameStateInit = SceneGameTesting2::GameTesting2Init;
+		GameStateUpdate = SceneGameTesting2::GameTesting2Update;
+		GameStateCleanup = SceneGameTesting2::GameTesting2Cleanup;
+		break;
 
 
 

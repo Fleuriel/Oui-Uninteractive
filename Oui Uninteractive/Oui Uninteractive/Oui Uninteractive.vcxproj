@@ -33,6 +33,8 @@
     <ClCompile Include="Source\OpenGLApplication.cpp" />
     <ClCompile Include="Source\InputKeys.cpp" />
     <ClCompile Include="Source\RandomUtilities.cpp" />
+    <ClCompile Include="Source\SceneGameTesting.cpp" />
+    <ClCompile Include="Source\SceneGameTesting2.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Include\Editor.h" />
@@ -43,6 +45,8 @@
     <ClInclude Include="Include\OpenGLApplication.h" />
     <ClInclude Include="Include\InputKeys.h" />
     <ClInclude Include="Include\RandomUtilities.h" />
+    <ClInclude Include="Include\SceneGameTesting.h" />
+    <ClInclude Include="Include\SceneGameTesting2.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>

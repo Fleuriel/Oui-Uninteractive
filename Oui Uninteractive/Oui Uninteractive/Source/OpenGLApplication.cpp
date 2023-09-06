@@ -112,8 +112,8 @@ void OpenGLApplication::OpenGLInit(short width, short height)
 void OpenGLApplication::OpenGLUpdate()
 {
 
-	while (!glfwWindowShouldClose(window))
-	{
+	//while (!glfwWindowShouldClose(window))
+	//{
 		glfwPollEvents();
 		glClear(GL_COLOR_BUFFER_BIT);
 
@@ -319,8 +319,19 @@ void OpenGLApplication::OpenGLUpdate()
 		myImGui.Draw();
 
 		// Swap the front and back buffers
+
+		/*---------------------------------------------------------------------------*/
+
+		/*-----------------------------------
+		|       Scene swap testing          |
+		-----------------------------------*/
+		//if (InputStates[INPUT_M]) {
+		//	std::cout << "TESTING SCENE\n";
+			//NextGameState = State_GameTesting;
+			//break;
+		//}
 		glfwSwapBuffers(window);
-	}
+	//}
 
 
 }

@@ -18,6 +18,8 @@ int Mode;
 int main()
 {
 	std::cout << "Hello World\n";
+	//test.OpenGLInit(1000, 800);
+	OpenGLApplication::OpenGLInit(1000, 800);
 
 
 
@@ -26,8 +28,9 @@ int main()
 	while (CurrentGameState != State_STOP)
 	{
 #ifdef _DEBUG
-		std::cout << "State is not Stop\n";
-#endif
+		//std::cout << "State is not Stop\n";
+#endif	
+		EngineUpdate();
 		while (NextGameState == CurrentGameState)
 		{
 #ifdef _DEBUG 
@@ -38,7 +41,7 @@ int main()
 			GameStateUpdate();
 
 
-			break;
+			//break;
 			// Get FPS .. (Will do later)
 			// GameApplication_Time = ;
 			// GameApplication_Time += Game_DeltaTime;
@@ -47,18 +50,17 @@ int main()
 		// Free & Unload
 		GameStateCleanup();
 
-		std::cout << CurrentGameState << '\n';
+		std::cout << CurrentGameState << " state \n";
 
-
-
-		break;
+		PreviousGameState = CurrentGameState;
+		CurrentGameState = NextGameState;
 	}
 
 
 	// Free System if any before main closes.
 
 
-
+	OpenGLApplication::OpenGLCleanup();
 	return 0;
 }
 

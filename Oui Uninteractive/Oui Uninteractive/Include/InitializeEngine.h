@@ -10,6 +10,8 @@
 
 #include <InputKeys.h>
 #include <OpenGLApplication.h>
+#include <SceneGameTesting.h>
+#include <SceneGameTesting2.h>
 #include <OpenGLObjects.h>
 #include <OpenGLShaders.h>
 
