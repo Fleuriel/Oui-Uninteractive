@@ -17,6 +17,7 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <InitializeEngine.h>
 #include <Editor.h>
+#include <string>
 
 GLFWwindow* window;
 std::map<std::string, OpenGLObject> OpenGLApplication::Object_Storage;
@@ -31,6 +32,14 @@ bool en = true;
 // For Input
 extern float mouse_scroll_total_Y_offset;
 extern int lastkeyedcommand;
+
+std::chrono::high_resolution_clock::time_point OpenGLApplication::currentTime;
+std::chrono::high_resolution_clock::time_point OpenGLApplication::previousTime; 
+std::chrono::duration<double> OpenGLApplication::deltaTime;
+
+std::string title = "Hello";
+
+double seconds;
 
 
 void OpenGLApplication::OpenGLInit(short width, short height)
@@ -47,7 +56,7 @@ void OpenGLApplication::OpenGLInit(short width, short height)
 	std::cout << "Initialization Graphics Pipeline\n";
 
 	// Create Windows
-	window = glfwCreateWindow(width, height, "Temporary Test", NULL, NULL);
+	window = glfwCreateWindow(width, height, title.c_str(), NULL, NULL);
 
 	// Tell GLFW we are using OpenGL 4.5
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
@@ -91,7 +100,7 @@ void OpenGLApplication::OpenGLInit(short width, short height)
 	//glEnableVertexAttribArray(0);
 	//glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), 0);
 
-	
+	seconds = 0;
 
 
 	if (!window)
@@ -111,9 +120,14 @@ void OpenGLApplication::OpenGLInit(short width, short height)
 
 void OpenGLApplication::OpenGLUpdate()
 {
+	OpenGLApplication::previousTime = std::chrono::high_resolution_clock::now();
 
 	while (!glfwWindowShouldClose(window))
 	{
+		currentTime = std::chrono::high_resolution_clock::now();
+		deltaTime = std::chrono::duration_cast<std::chrono::duration<double>>(currentTime - previousTime);
+		previousTime = currentTime;
+
 		glfwPollEvents();
 		glClear(GL_COLOR_BUFFER_BIT);
 
@@ -309,6 +323,14 @@ void OpenGLApplication::OpenGLUpdate()
 		InputStates[INPUT_SCROLLUP] = false;		// DO NOT TOUCH
 		InputStates[INPUT_SCROLLDOWN] = false;		// DO NOT TOUCH
 
+		
+		//std::cout << GetFPS() << '\n';
+		seconds += GetDeltaTime();
+		if (seconds > 1.0f)
+		{
+			Draw();
+			seconds = 0;
+		}
 		/*---------------------------------------------------------------------------*/
 
 		/*-----------------------------------
@@ -347,7 +369,13 @@ void OpenGLApplication::Draw() {
 		x.second.Draw();
 	}
 
+	std::stringstream sStr;
 
+	sStr << title.c_str() << " | "
+		<< std::fixed << std::setprecision(2)
+		<< "FPS:  | " << GetFPS();
+
+	glfwSetWindowTitle(window, sStr.str().c_str());
 }
 
 
@@ -357,3 +385,13 @@ void OpenGLApplication::OpenGLObjectsInitialization()
 
 }
 
+
+double OpenGLApplication::GetDeltaTime()
+{
+	return deltaTime.count();
+}
+
+double OpenGLApplication::GetFPS()
+{
+	return 1 / deltaTime.count();
+}
