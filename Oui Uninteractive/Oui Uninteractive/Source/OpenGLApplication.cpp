@@ -18,6 +18,7 @@
 #include <InitializeEngine.h>
 #include <Editor.h>
 #include <string>
+#include <Mapping.h>
 
 GLFWwindow* window;
 std::map<std::string, OpenGLObject> OpenGLApplication::Object_Storage;
@@ -129,9 +130,9 @@ void OpenGLApplication::OpenGLUpdate()
 		previousTime = currentTime;
 
 		glfwPollEvents();
+		OpenGLSetBackgroundColor(1.0f, 0.0f, 0.0f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
 
-		glClearColor(0.07f, 0.13f, 0.17f, 1.0f);
 		glUseProgram(Objects.ShaderProgram);
 		glBindVertexArray(Objects.VAO);
 		glDrawArrays(GL_TRIANGLES, 0, 3);
@@ -159,7 +160,8 @@ void OpenGLApplication::OpenGLUpdate()
 		//glEnd();
 
 
-		glClearColor(0.2f, 0.3f, 0.4f, 1.0f);
+
+		
 
 
 		/*-----------------------------------------------------------------------------
@@ -230,6 +232,15 @@ void OpenGLApplication::OpenGLUpdate()
 
 			if (InputStates[INPUT_W]) {
 				std::cout << "WALK UP\n";
+			}
+
+			if (InputStates[INPUT_M]) {
+				int test[]{ 1,0,0,2,0,0,3,0,0 };
+				//Mapping::MapBuilder(3, 3, test, "hi");
+			}
+
+			if (InputStates[INPUT_R]) {
+				//Mapping::MapReader("hi");
 			}
 
 		}
@@ -309,7 +320,6 @@ void OpenGLApplication::OpenGLUpdate()
 		|              Scroll               |
 		-----------------------------------*/
 
-
 		if (InputStates[INPUT_SCROLLUP]) {
 			std::cout << "SCROLL UP\n";
 			std::cout << "Total Scroll Y Offset:" << mouse_scroll_total_Y_offset << "\n";
@@ -362,20 +372,24 @@ void OpenGLApplication::OpenGLCleanup()
 
 void OpenGLApplication::Draw() {
 
-
 	for (auto& x : Object_Storage)
 	{
 		std::cout << x.first << '\n';
 		x.second.Draw();
 	}
 
+	// setting up the text to be displayed as the window title
 	std::stringstream sStr;
-
 	sStr << title.c_str() << " | "
 		<< std::fixed << std::setprecision(2)
 		<< "FPS:  | " << GetFPS();
 
+	// setting the text as the window title
 	glfwSetWindowTitle(window, sStr.str().c_str());
+}
+
+void OpenGLApplication::OpenGLSetBackgroundColor(float r, float g, float b, float a) {
+	glClearColor(r, g, b, a);
 }
 
 

@@ -39,7 +39,7 @@ public:
 
 	static void Draw();
 
-
+	static void OpenGLSetBackgroundColor(float r, float g, float b, float a);
 
 
 	// < TIME >
