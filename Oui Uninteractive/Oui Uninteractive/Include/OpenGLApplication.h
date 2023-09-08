@@ -16,7 +16,7 @@
 #include <OpenGLShaders.h>
 #include <map>
 #include <OpenGLObjects.h>
-
+#include <chrono>
 
 
 extern GLFWwindow* window;
@@ -39,6 +39,15 @@ public:
 
 	static void Draw();
 
+
+
+
+	// < TIME >
+	static double GetDeltaTime();
+	static double GetFPS();
+	static std::chrono::high_resolution_clock::time_point currentTime;
+	static std::chrono::high_resolution_clock::time_point previousTime;
+	static std::chrono::duration<double> deltaTime;
 
 
 

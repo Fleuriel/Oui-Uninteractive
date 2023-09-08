@@ -80,14 +80,20 @@ void OpenGLObject::Init()
 	GLfloat vertices[] =
 	{
 		-0.5f, -0.5f * float(sqrt(3)) / 3, 0.0f,  // Position for vertex 0
-		1.0f, 0.0f, 0.0f,  // Color for vertex 0 (red)
+		1.0f, 0.0f, 0.0f,  
 
 		0.5f, -0.5f * float(sqrt(3)) / 3, 0.0f,  // Position for vertex 1
-		0.0f, 1.0f, 0.0f,  // Color for vertex 1 (green)
+		0.0f, 1.0f, 0.0f, 
 
 		0.0f, 0.5f * float(sqrt(3)) * 2 / 3, 0.0f,  // Position for vertex 2
-		0.0f, 0.0f, 1.0f  // Color for vertex 2 (blue)
+		0.0f, 0.0f, 1.0f  
 	};
+
+
+	glm::mat4 model = glm::mat4(1.0f);
+	glm::vec3 translation = glm::vec3(0.0f, 0.0f, 0.0f);
+	translation.x += 0.001f;
+
 
 
 
