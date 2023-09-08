@@ -25,6 +25,7 @@
     <ClCompile Include="..\lib\imgui-1.89.9\imgui_draw.cpp" />
     <ClCompile Include="..\lib\imgui-1.89.9\imgui_tables.cpp" />
     <ClCompile Include="..\lib\imgui-1.89.9\imgui_widgets.cpp" />
+    <ClCompile Include="ISystem.h" />
     <ClCompile Include="Source\Editor.cpp" />
     <ClCompile Include="Source\InitializeEngine.cpp" />
     <ClCompile Include="Source\Matrix3x3.cpp" />
@@ -37,6 +38,8 @@
     <ClCompile Include="Source\Vector2D.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Event.h" />
+    <ClInclude Include="IComponent.h" />
     <ClInclude Include="Include\Editor.h" />
     <ClInclude Include="Include\InitializeEngine.h" />
     <ClInclude Include="Include\Matrix3x3.h" />

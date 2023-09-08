@@ -22,8 +22,14 @@
     <Filter Include="Header Files\Component">
       <UniqueIdentifier>{b406be9f-d76f-44da-bad1-f5225d8d1065}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Component">
-      <UniqueIdentifier>{d17bde1d-f441-4c8e-99a6-01dc32646c40}</UniqueIdentifier>
+    <Filter Include="Header Files\Systems">
+      <UniqueIdentifier>{40d34a43-1f72-4578-887d-cb74c35fb6e9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Components">
+      <UniqueIdentifier>{28f76e6e-0e87-4e9e-884f-0baaada32702}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Systems">
+      <UniqueIdentifier>{b32d1c14-c486-4e72-9dba-0bcbc75910fd}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -75,6 +81,9 @@
     <ClCompile Include="Source\Vector2D.cpp">
       <Filter>Source Files\Math</Filter>
     </ClCompile>
+    <ClCompile Include="ISystem.h">
+      <Filter>Header Files\Systems</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Include\keyDefinition.h">
@@ -106,6 +115,12 @@
     </ClInclude>
     <ClInclude Include="Include\Vector2D.h">
       <Filter>Header Files\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Event.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="IComponent.h">
+      <Filter>Header Files\Component</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
