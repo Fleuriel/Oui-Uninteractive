@@ -26,6 +26,8 @@
     <ClCompile Include="..\lib\imgui-1.89.9\imgui_tables.cpp" />
     <ClCompile Include="..\lib\imgui-1.89.9\imgui_widgets.cpp" />
     <ClCompile Include="ISystem.h" />
+    <ClCompile Include="Physics.cpp" />
+    <ClCompile Include="PhysicsBody.cpp" />
     <ClCompile Include="Source\Editor.cpp" />
     <ClCompile Include="Source\InitializeEngine.cpp" />
     <ClCompile Include="Source\Matrix3x3.cpp" />
@@ -50,6 +52,8 @@
     <ClInclude Include="Include\InputKeys.h" />
     <ClInclude Include="Include\RandomUtilities.h" />
     <ClInclude Include="Include\Vector2D.h" />
+    <ClInclude Include="Physics.h" />
+    <ClInclude Include="PhysicsBody.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>

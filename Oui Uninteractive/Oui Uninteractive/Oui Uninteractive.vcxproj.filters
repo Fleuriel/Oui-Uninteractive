@@ -84,6 +84,12 @@
     <ClCompile Include="ISystem.h">
       <Filter>Header Files\Systems</Filter>
     </ClCompile>
+    <ClCompile Include="Physics.cpp">
+      <Filter>Source Files\Systems</Filter>
+    </ClCompile>
+    <ClCompile Include="PhysicsBody.cpp">
+      <Filter>Source Files\Components</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Include\keyDefinition.h">
@@ -120,6 +126,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="IComponent.h">
+      <Filter>Header Files\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="Physics.h">
+      <Filter>Header Files\Systems</Filter>
+    </ClInclude>
+    <ClInclude Include="PhysicsBody.h">
       <Filter>Header Files\Component</Filter>
     </ClInclude>
   </ItemGroup>
