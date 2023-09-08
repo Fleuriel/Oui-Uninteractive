@@ -25,6 +25,9 @@
     <Filter Include="Source Files\Component">
       <UniqueIdentifier>{d17bde1d-f441-4c8e-99a6-01dc32646c40}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\ImGui">
+      <UniqueIdentifier>{3f077572-cad8-4e9a-866a-4d22716a1e85}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\main.cpp">
@@ -48,24 +51,6 @@
     <ClCompile Include="Source\InitializeEngine.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\lib\imgui-1.89.9\backends\imgui_impl_glfw.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\lib\imgui-1.89.9\backends\imgui_impl_opengl3.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\lib\imgui-1.89.9\imgui.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\lib\imgui-1.89.9\imgui_draw.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\lib\imgui-1.89.9\imgui_tables.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\lib\imgui-1.89.9\imgui_widgets.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Editor.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -75,8 +60,23 @@
     <ClCompile Include="Source\Vector2D.cpp">
       <Filter>Source Files\Math</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Mapping.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="..\lib\imgui-1.89.9\imgui.cpp">
+      <Filter>Source Files\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\lib\imgui-1.89.9\imgui_draw.cpp">
+      <Filter>Source Files\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\lib\imgui-1.89.9\backends\imgui_impl_glfw.cpp">
+      <Filter>Source Files\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\lib\imgui-1.89.9\backends\imgui_impl_opengl3.cpp">
+      <Filter>Source Files\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\lib\imgui-1.89.9\imgui_tables.cpp">
+      <Filter>Source Files\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\lib\imgui-1.89.9\imgui_widgets.cpp">
+      <Filter>Source Files\ImGui</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
