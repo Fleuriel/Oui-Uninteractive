@@ -21,5 +21,5 @@ public:
 
 	// Terminate the system
 	//virtual void Terminiate();
-	virtual ~ISystem() = 0;
+	virtual ~ISystem() {};
 };

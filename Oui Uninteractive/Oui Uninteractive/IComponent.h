@@ -19,5 +19,5 @@ public:
 	//Serialize()
 
 	virtual void Initialize() = 0;
-	virtual ~IComponent() = 0;
+	virtual ~IComponent() {};
 };
