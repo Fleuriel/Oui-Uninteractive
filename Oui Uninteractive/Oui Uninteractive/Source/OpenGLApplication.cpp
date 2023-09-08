@@ -235,12 +235,18 @@ void OpenGLApplication::OpenGLUpdate()
 			}
 
 			if (InputStates[INPUT_M]) {
-				int test[]{ 1,0,0,2,0,0,3,0,0 };
-				//Mapping::MapBuilder(3, 3, test, "hi");
+				Mapping map;
+				map.rows = 4;
+				map.columns = 5;
+				map.entitymap = { 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20 };
+				map.filename = "hi";
+				Mapping::MapBuilder(map);
 			}
 
 			if (InputStates[INPUT_R]) {
-				//Mapping::MapReader("hi");
+				Mapping map;
+				map.filename = "hi";
+				Mapping::MapReader(map);
 			}
 
 		}

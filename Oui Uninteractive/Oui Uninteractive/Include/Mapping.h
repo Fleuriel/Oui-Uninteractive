@@ -1,14 +1,15 @@
-//
-//#include <vector>
-//
-//class Mapping
-//{
-//public:
-//
-//	int rows;
-//	int columns;
-//	std::vector<int> entitymap;
-//
-//	static bool MapBuilder(const char* mapname);
-//	static bool MapReader(const char* mapname);
-//};
+
+#include <vector>
+
+class Mapping
+{
+public:
+
+	int rows{};
+	int columns{};
+	std::vector<int> entitymap{};
+	const char* filename{};
+
+	static bool MapBuilder(Mapping map);
+	static bool MapReader(Mapping map);
+};
