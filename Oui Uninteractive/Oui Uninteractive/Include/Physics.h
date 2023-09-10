@@ -1,8 +1,6 @@
 #pragma once
-#include "ISystem.h"
-#include "IComponent.h"
-#include "Vector2D.h"
 
+#include "PhysicsHeaders.h"
 //Physics system should act on physics body component
 class Physics : public ISystem{
 	Physics();
@@ -11,7 +9,7 @@ class Physics : public ISystem{
 	void Initialize();
 	
 
-	//linked list of all physics body components
+	//insert linked list of all physics body components
 
 //	void addForce(Vec2 force);
 	//void setPosition(Vec2 pos);

@@ -25,9 +25,6 @@
     <ClCompile Include="..\lib\imgui-1.89.9\imgui_draw.cpp" />
     <ClCompile Include="..\lib\imgui-1.89.9\imgui_tables.cpp" />
     <ClCompile Include="..\lib\imgui-1.89.9\imgui_widgets.cpp" />
-    <ClCompile Include="ISystem.h" />
-    <ClCompile Include="Physics.cpp" />
-    <ClCompile Include="PhysicsBody.cpp" />
     <ClCompile Include="Source\Editor.cpp" />
     <ClCompile Include="Source\InitializeEngine.cpp" />
     <ClCompile Include="Source\Matrix3x3.cpp" />
@@ -36,15 +33,19 @@
     <ClCompile Include="Source\main.cpp" />
     <ClCompile Include="Source\OpenGLApplication.cpp" />
     <ClCompile Include="Source\InputKeys.cpp" />
+    <ClCompile Include="Source\Physics.cpp" />
+    <ClCompile Include="Source\PhysicsBody.cpp" />
     <ClCompile Include="Source\RandomUtilities.cpp" />
+    <ClCompile Include="Source\Transform.cpp" />
     <ClCompile Include="Source\Vector2D.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Event.h" />
     <ClInclude Include="GameObject.h" />
-    <ClInclude Include="IComponent.h" />
     <ClInclude Include="Include\Editor.h" />
+    <ClInclude Include="Include\IComponent.h" />
     <ClInclude Include="Include\InitializeEngine.h" />
+    <ClInclude Include="Include\ISystem.h" />
     <ClInclude Include="Include\Matrix3x3.h" />
     <ClInclude Include="Include\OpenGLObjects.h" />
     <ClInclude Include="Include\OpenGLShaders.h" />
@@ -52,9 +53,9 @@
     <ClInclude Include="Include\OpenGLApplication.h" />
     <ClInclude Include="Include\InputKeys.h" />
     <ClInclude Include="Include\RandomUtilities.h" />
+    <ClInclude Include="Include\Transform.h" />
     <ClInclude Include="Include\Vector2D.h" />
-    <ClInclude Include="Physics.h" />
-    <ClInclude Include="PhysicsBody.h" />
+    <ClInclude Include="PhysicsHeaders.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
