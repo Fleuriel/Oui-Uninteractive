@@ -52,6 +52,8 @@
     <ClInclude Include="Include\keyDefinition.h" />
     <ClInclude Include="Include\OpenGLApplication.h" />
     <ClInclude Include="Include\InputKeys.h" />
+    <ClInclude Include="Include\Physics.h" />
+    <ClInclude Include="Include\PhysicsHeaders.h" />
     <ClInclude Include="Include\RandomUtilities.h" />
     <ClInclude Include="Include\Transform.h" />
     <ClInclude Include="Include\Vector2D.h" />
