@@ -2,7 +2,7 @@
 Physics* physicsSys = nullptr;
 Physics::Physics() {
 	if (physicsSys != nullptr) {
-		
+		//instantiate physics system
 	}
 	else {
 		physicsSys = this;
