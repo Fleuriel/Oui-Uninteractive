@@ -55,7 +55,6 @@
     <ClInclude Include="Include\RandomUtilities.h" />
     <ClInclude Include="Include\Transform.h" />
     <ClInclude Include="Include\Vector2D.h" />
-    <ClInclude Include="PhysicsHeaders.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>

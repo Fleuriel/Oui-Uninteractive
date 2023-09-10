@@ -131,9 +131,6 @@
     <ClInclude Include="Include\Transform.h">
       <Filter>Header Files\Component</Filter>
     </ClInclude>
-    <ClInclude Include="PhysicsHeaders.h">
-      <Filter>Header Files\Component</Filter>
-    </ClInclude>
     <ClInclude Include="Include\IComponent.h">
       <Filter>Header Files\Component</Filter>
     </ClInclude>
