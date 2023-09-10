@@ -1,5 +1,7 @@
 #pragma once
-#include "PhysicsHeaders.h"
+#include "IComponent.h"
+#include "Transform.h"
+#include "Vector2D.h"
 
 class PhysicsBody : public IComponent {
 public:

@@ -2,10 +2,9 @@
 
 #include "ISystem.h"
 #include "PhysicsBody.h"
-
-#include "Vector2D.h"
 #include <list>
 //Physics system should act on physics body component
+
 class Physics : public ISystem{
 	Physics();
 	
@@ -20,4 +19,4 @@ class Physics : public ISystem{
 	//void setPosition(Vec2 pos);
 	//void setVelocity(Vec2 vel);
 };
-extern Physics* physicSys;
+extern Physics* physicsSys;

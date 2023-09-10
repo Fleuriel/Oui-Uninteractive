@@ -1,10 +1,11 @@
 #include "Physics.h"
+Physics* physicsSys = nullptr;
 Physics::Physics() {
-	if (physicSys != nullptr) {
+	if (physicsSys != nullptr) {
 		
 	}
 	else {
-		physicSys = this;
+		physicsSys = this;
 	}
 	
 }
