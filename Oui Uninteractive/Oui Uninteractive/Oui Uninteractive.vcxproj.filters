@@ -143,5 +143,8 @@
     <ClInclude Include="Include\PhysicsHeaders.h">
       <Filter>Header Files\Systems</Filter>
     </ClInclude>
+    <ClInclude Include="Include\PhysicsBody.h">
+      <Filter>Header Files\Component</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

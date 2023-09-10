@@ -1,6 +1,10 @@
 #pragma once
 
-#include "PhysicsHeaders.h"
+#include "ISystem.h"
+#include "PhysicsBody.h"
+
+#include "Vector2D.h"
+#include <list>
 //Physics system should act on physics body component
 class Physics : public ISystem{
 	Physics();
@@ -10,6 +14,7 @@ class Physics : public ISystem{
 	
 
 	//insert linked list of all physics body components
+	std::list<PhysicsBody> bodyList;
 
 //	void addForce(Vec2 force);
 	//void setPosition(Vec2 pos);

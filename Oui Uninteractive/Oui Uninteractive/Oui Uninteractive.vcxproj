@@ -53,6 +53,7 @@
     <ClInclude Include="Include\OpenGLApplication.h" />
     <ClInclude Include="Include\InputKeys.h" />
     <ClInclude Include="Include\Physics.h" />
+    <ClInclude Include="Include\PhysicsBody.h" />
     <ClInclude Include="Include\PhysicsHeaders.h" />
     <ClInclude Include="Include\RandomUtilities.h" />
     <ClInclude Include="Include\Transform.h" />
