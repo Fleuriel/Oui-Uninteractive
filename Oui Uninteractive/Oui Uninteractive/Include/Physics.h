@@ -13,7 +13,7 @@ class Physics : public ISystem{
 	
 
 	//insert linked list of all physics body components
-	std::list<PhysicsBody> bodyList;
+	std::list<PhysicsBody*> bodyList;
 
 //	void addForce(Vec2 force);
 	//void setPosition(Vec2 pos);
