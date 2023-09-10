@@ -9,14 +9,21 @@
  *************************************************************************/
 #pragma once
 
+#include "ComponentType.h"
+
 class IComponent {
 private:
+
 	// Pointer to base owning composition
 
 public:
 	//GetOwner() {return base};
 	//HasSibling()
 	//Serialize()
+
+
+	// Specify the type of component
+	ComponentType componentType;
 
 	virtual void Initialize() = 0;
 	virtual ~IComponent() {};
