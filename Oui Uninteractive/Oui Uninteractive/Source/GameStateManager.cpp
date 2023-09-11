@@ -11,57 +11,74 @@
 #include <GameStateManager.h>
 
 
-unsigned int InitializationGameState;
 unsigned int CurrentGameState;
 unsigned int PreviousGameState;
 unsigned int NextGameState;
 
+bool changeStates = true;
 
-void (*GameStateInit)(short width, short height)    = 0;
-void (*GameStateUpdate)()  = 0;
-void (*GameStateCleanup)() = 0;
+/************************************************************************************
+CreateWindow(short width, short height)
 
-void EngineStartUp(unsigned int Initialize)
+@brief creates a window application.
+************************************************************************************/
+void (*CreateWindow)(unsigned short width, unsigned short height) = OpenGLApplication::OpenGLWindowInit;
+void (*WindowCleanup)() = OpenGLApplication::OpenGLWindowCleanup;
+
+
+/************************************************************************************
+Function Pointers
+
+GameInit()
+GameUpdate()
+GameCleanup()
+
+@brief creates a window application.
+************************************************************************************/
+void (*GameInit)()								= 0;
+void (*GameUpdate)()							= 0;
+void (*GameCleanup)()							= 0;
+
+#include <iostream>
+void GameStateManagerInit(unsigned int setGameState)
 {
-	InitializationGameState = Initialize;
-
-	CurrentGameState	= InitializationGameState;
-	PreviousGameState	= InitializationGameState;
-	NextGameState		= InitializationGameState;
+	CurrentGameState = setGameState;
+	
+	PreviousGameState = NextGameState = CurrentGameState;
 
 
-	EngineUpdate();
+	GameStateManagerUpdate();	
 }
 
 
-void EngineUpdate()
+void GameStateManagerUpdate()
 {
-	if (CurrentGameState == 4)
+	if (CurrentGameState == STATE_QUIT)
 		return;
 
 	if (glfwWindowShouldClose(window))
 	{
-		CurrentGameState = State_STOP;
+		CurrentGameState = STATE_QUIT;
 		return;
 	}
 
 	switch (CurrentGameState)
 	{
-	case State_GraphicsTest:
-		GameStateInit = OpenGLApplication::OpenGLInit;
-		GameStateUpdate = OpenGLApplication::OpenGLUpdate;
-		GameStateCleanup = OpenGLApplication::OpenGLCleanup;
+	case STATE_GRAPHICS_TEST:
+		GameInit = OpenGLApplication::OpenGLInit;
+		GameUpdate = OpenGLApplication::OpenGLUpdate;
+		GameCleanup = OpenGLApplication::OpenGLCleanup;
 		break;
-	case State_GameTesting:
+	case STATE_LEVEL_TEST:
+		GameInit = OpenGLApplication::OpenGLInit;
+		GameUpdate = OpenGLApplication::OpenGLTestChangingStates;
+		GameCleanup = OpenGLApplication::OpenGLCleanup;
+		//
+		break;
 
 
+	case STATE_GAME_TEST:
 
-	case State_LevelTest:
-
-
-	case State_STOP:
-		
-		return;
 
 	default:
 		break;

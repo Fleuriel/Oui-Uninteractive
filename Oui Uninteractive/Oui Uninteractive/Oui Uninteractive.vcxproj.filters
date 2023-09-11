@@ -34,21 +34,18 @@
     <Filter Include="Source Files\ImGui">
       <UniqueIdentifier>{3f077572-cad8-4e9a-866a-4d22716a1e85}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\EventHandlers">
+      <UniqueIdentifier>{a2b3d80c-e830-4c00-8aa7-1f394dd84c59}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Graphics">
+      <UniqueIdentifier>{b850807c-cc0b-4cd6-9f77-e56f58fe6902}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Source\InputKeys.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\OpenGLShaders.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\OpenGLApplication.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\OpenGLObjects.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Source\RandomUtilities.cpp">
@@ -103,7 +100,16 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Source\GameStateManager.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\EventHandlers</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\OpenGLApplication.cpp">
+      <Filter>Source Files\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\OpenGLObjects.cpp">
+      <Filter>Source Files\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\OpenGLShaders.cpp">
+      <Filter>Source Files\Graphics</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -27,9 +27,12 @@ class OpenGLApplication {
 public:
 
 	// Functions to set data ...
-	static void OpenGLInit(short width, short height);
+	static void OpenGLTestChangingStates();
+	static void OpenGLWindowInit(unsigned short width, unsigned short height);
+	static void OpenGLInit();
 	static void OpenGLUpdate();
 	static void OpenGLCleanup();
+	static void OpenGLWindowCleanup();
 //	static void OpenGLWindowInitialization(GLFWwindow*& window, GLint width, GLint height);
 	static void OpenGLObjectsInitialization();
 //	static void render_square(glm::vec2 scaling, glm::vec2 position);

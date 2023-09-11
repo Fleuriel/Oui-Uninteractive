@@ -8,42 +8,50 @@
  * @brief 
  *************************************************************************/
 
+#ifndef GAME_STATE_MGR_H
+#define GAME_STATE_MGR_H
+
 #include <InputKeys.h>
 #include <OpenGLApplication.h>
 #include <OpenGLObjects.h>
 #include <OpenGLShaders.h>
+
+
 
 extern unsigned int InitializationGameState;
 extern unsigned int CurrentGameState;
 extern unsigned int PreviousGameState;
 extern unsigned int NextGameState;
 
-extern void (*GameStateInit)(short width, short height);
-extern void (*GameStateUpdate)();
-extern void (*GameStateCleanup)();
-
+extern void (*CreateWindow)(unsigned short width, unsigned short height);
+extern void (*WindowCleanup)();
+extern void (*GameInit)();
+extern void (*GameUpdate)();
+extern void (*GameCleanup)();
 // Game Time per Loop ....
 
 extern double GameApplication_Time;
 extern double Game_DeltaTime;
 
+extern bool changeStates;
 
 enum GameStateList
 {
-	//State_GAMEPLAY = 0,
-	//State_RESTART,
-	//State_QUIT,
-	//State_LEVEL_EDITOR
-	State_GraphicsTest = 1,
-	State_LevelTest,
-	State_GameTesting,
-	State_STOP
+	STATE_MENU_TEST = 1,
+	STATE_GRAPHICS_TEST,
+	STATE_LEVEL_TEST,
+	STATE_GAME_TEST,
+	STATE_RESTART,
+	STATE_QUIT
 };
 
 
 
-void EngineStartUp(unsigned int Initialize);
+void GameStateManagerInit(unsigned int setGameState);
 
-void EngineUpdate();
+void GameStateChanger(unsigned int setGameState);
+
+void GameStateManagerUpdate();
 
 
+#endif

@@ -29,8 +29,8 @@ std::vector<OpenGLShader> OpenGLObject::Shader{};
 GLuint OpenGLObject::ShaderProgram{};
 
 std::map<std::string, OpenGLObject::OpenGLModel> OpenGLObject::Model_Storage;
-GLuint OpenGLObject::VAO;
-GLuint OpenGLObject::VBO;
+GLuint OpenGLObject::VAO = 0;
+GLuint OpenGLObject::VBO = 0;
 
 
 
@@ -133,6 +133,7 @@ void OpenGLObject::Init()
 	glBindVertexArray(0);
 
 
+	std::cout << "Asd" << '\n';
 
 
 

@@ -18,45 +18,63 @@ int Mode;
 int main()
 {
 	std::cout << "Hello World\n";
+	if (!glfwInit())
+		return -1;
 
-
-
-	EngineStartUp(State_GraphicsTest);
+	CreateWindow(900, 900);
 		
-	while (CurrentGameState != State_STOP)
+
+	// Initialize the GameStateManager
+	// Someone needs to put 
+	GameStateManagerInit(STATE_GRAPHICS_TEST);
+	
+	// The Main Window.
+	while (!glfwWindowShouldClose(window))
 	{
-#ifdef _DEBUG
-		std::cout << "State is not Stop\n";
-#endif
-		while (NextGameState == CurrentGameState)
+
+		if (CurrentGameState != NextGameState)
 		{
-#ifdef _DEBUG 
-			std::cout << "Running Game\n";
-#endif
-			GameStateInit(900, 900);
-
-			GameStateUpdate();
-
-
-			break;
-			// Get FPS .. (Will do later)
-			// GameApplication_Time = ;
-			// GameApplication_Time += Game_DeltaTime;
+			GameStateManagerUpdate();
+		}
+		else
+		{
+			NextGameState = CurrentGameState = PreviousGameState;
 		}
 
-		// Free & Unload
-		GameStateCleanup();
 
-		std::cout << CurrentGameState << '\n';
+		// Happen ONLY once,
+		GameInit();
+
+		while (CurrentGameState == NextGameState)
+		{
+			glfwPollEvents();
+			GameUpdate();
 
 
 
-		break;
+			glfwSwapBuffers(window);
+			if (CurrentGameState == STATE_QUIT)
+				break;
+		}
+
+		GameCleanup();
+
+		if (CurrentGameState == STATE_QUIT)
+			break;
+		std::cout << "hello\n";
+
+		GameStateManagerUpdate();
+
+
+
+		PreviousGameState = CurrentGameState;
+		CurrentGameState = NextGameState;
 	}
 
 
 	// Free System if any before main closes.
 
+	WindowCleanup();
 
 
 	return 0;

@@ -28,7 +28,7 @@
 class OpenGLObject
 {
 public:
-	OpenGLObject() : Scaling(0.5, 0.5), Rotation(0.0, 0.0f), Position(0, 0), Model_to_NDC_xform(glm::mat3(1.0f)), Color(1.0, 1.0, 1.0f) {};
+	OpenGLObject() : Scaling(0.5, 0.5), Rotation(0.0, 0.0f), Position(0, 0), Model_to_NDC_xform(glm::mat3(1.0f)), Color(1.0, 1.0, 1.0f){};
 
 
 	glm::vec2 Scaling; // scaling

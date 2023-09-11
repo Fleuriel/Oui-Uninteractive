@@ -59,7 +59,7 @@ void keyCallBack(GLFWwindow* window, int key, int scancode, int action, int mod)
 		{
 			glfwSetWindowShouldClose(window, GLFW_TRUE);
 			//glfwWindowShouldClose(window);
-			CurrentGameState = State_STOP;
+			CurrentGameState = STATE_QUIT;
 		}
 
 
