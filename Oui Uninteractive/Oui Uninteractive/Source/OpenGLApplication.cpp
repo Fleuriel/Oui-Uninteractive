@@ -35,10 +35,6 @@ bool en = true;
 extern float mouse_scroll_total_Y_offset;
 extern int lastkeyedcommand;
 
-std::chrono::high_resolution_clock::time_point OpenGLApplication::currentTime;
-std::chrono::high_resolution_clock::time_point OpenGLApplication::previousTime; 
-std::chrono::duration<double> OpenGLApplication::deltaTime;
-
 std::string title = "Hello";
 
 double seconds;
@@ -142,12 +138,7 @@ void OpenGLApplication::OpenGLInit()
 
 void OpenGLApplication::OpenGLUpdate()
 {
-	OpenGLApplication::previousTime = std::chrono::high_resolution_clock::now();
 
-	
-		currentTime = std::chrono::high_resolution_clock::now();
-		deltaTime = std::chrono::duration_cast<std::chrono::duration<double>>(currentTime - previousTime);
-		previousTime = currentTime;
 
 		OpenGLSetBackgroundColor(1.0f, 0.0f, 0.0f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
@@ -362,7 +353,8 @@ void OpenGLApplication::OpenGLUpdate()
 
 		
 		//std::cout << GetFPS() << '\n';
-		seconds += GetDeltaTime();
+		
+		seconds += GetDT();
 		if (seconds > 1.0f)
 		{
 			Draw();
@@ -432,15 +424,7 @@ void OpenGLApplication::OpenGLObjectsInitialization()
 }
 
 
-double OpenGLApplication::GetDeltaTime()
-{
-	return deltaTime.count();
-}
 
-double OpenGLApplication::GetFPS()
-{
-	return 1 / deltaTime.count();
-}
 
 
 void OpenGLApplication::OpenGLTestChangingStates()

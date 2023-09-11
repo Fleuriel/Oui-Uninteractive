@@ -27,7 +27,8 @@ int main()
 	// Initialize the GameStateManager
 	// Someone needs to put 
 	GameStateManagerInit(STATE_GRAPHICS_TEST);
-	
+	previousTime = std::chrono::high_resolution_clock::now();
+
 	// The Main Window.
 	while (!glfwWindowShouldClose(window))
 	{
@@ -47,12 +48,23 @@ int main()
 
 		while (CurrentGameState == NextGameState)
 		{
+			TimeUpdate();
+			
+
 			glfwPollEvents();
+
+
 			GameUpdate();
 
 
-
 			glfwSwapBuffers(window);
+
+
+
+			//std::cout << GetDeltaTime() << '\n';
+			
+			std::cout << GetGameRunTime() << '\n';
+
 			if (CurrentGameState == STATE_QUIT)
 				break;
 		}

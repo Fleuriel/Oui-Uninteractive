@@ -16,7 +16,13 @@
 #include <OpenGLObjects.h>
 #include <OpenGLShaders.h>
 
+#include <chrono>
 
+ // < TIME >
+
+extern std::chrono::high_resolution_clock::time_point currentTime;
+extern std::chrono::high_resolution_clock::time_point previousTime;
+extern std::chrono::duration<double> deltaTime;
 
 extern unsigned int InitializationGameState;
 extern unsigned int CurrentGameState;
@@ -53,5 +59,12 @@ void GameStateChanger(unsigned int setGameState);
 
 void GameStateManagerUpdate();
 
+// Time Functions
+void TimeUpdate();
 
+double GetDT();
+
+double GetFPS();
+
+double GetGameRunTime();
 #endif

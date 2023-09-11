@@ -17,6 +17,13 @@ unsigned int NextGameState;
 
 bool changeStates = true;
 
+
+std::chrono::high_resolution_clock::time_point currentTime;
+std::chrono::high_resolution_clock::time_point previousTime;
+std::chrono::duration<double> deltaTime;
+
+double gameRunTime = 0;
+
 /************************************************************************************
 CreateWindow(short width, short height)
 
@@ -83,4 +90,29 @@ void GameStateManagerUpdate()
 	default:
 		break;
 	}
+}
+
+
+void TimeUpdate()
+{
+	currentTime = std::chrono::high_resolution_clock::now();
+	deltaTime = std::chrono::duration_cast<std::chrono::duration<double>>(currentTime - previousTime);
+	previousTime = currentTime;
+}
+
+double GetDT()
+{
+	return deltaTime.count();
+}
+
+double GetFPS()
+{
+	return 1 / deltaTime.count();
+}
+
+double GetGameRunTime()
+{
+	gameRunTime += GetDT();
+
+	return gameRunTime;
 }
