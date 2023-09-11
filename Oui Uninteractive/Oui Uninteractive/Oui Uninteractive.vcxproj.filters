@@ -31,6 +31,9 @@
     <Filter Include="Source Files\Systems">
       <UniqueIdentifier>{b32d1c14-c486-4e72-9dba-0bcbc75910fd}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\ImGui">
+      <UniqueIdentifier>{3f077572-cad8-4e9a-866a-4d22716a1e85}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\main.cpp">
@@ -54,25 +57,34 @@
     <ClCompile Include="Source\InitializeEngine.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\lib\imgui-1.89.9\backends\imgui_impl_glfw.cpp">
+    <ClCompile Include="Source\Editor.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\lib\imgui-1.89.9\backends\imgui_impl_opengl3.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="Source\Matrix3x3.cpp">
+      <Filter>Source Files\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Vector2D.cpp">
+      <Filter>Source Files\Math</Filter>
     </ClCompile>
     <ClCompile Include="..\lib\imgui-1.89.9\imgui.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\ImGui</Filter>
     </ClCompile>
     <ClCompile Include="..\lib\imgui-1.89.9\imgui_draw.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\lib\imgui-1.89.9\backends\imgui_impl_glfw.cpp">
+      <Filter>Source Files\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\lib\imgui-1.89.9\backends\imgui_impl_opengl3.cpp">
+      <Filter>Source Files\ImGui</Filter>
     </ClCompile>
     <ClCompile Include="..\lib\imgui-1.89.9\imgui_tables.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\ImGui</Filter>
     </ClCompile>
     <ClCompile Include="..\lib\imgui-1.89.9\imgui_widgets.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\ImGui</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Editor.cpp">
+    <ClCompile Include="Source\Mapping.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Source\Matrix3x3.cpp">
@@ -121,6 +133,9 @@
     </ClInclude>
     <ClInclude Include="Include\Vector2D.h">
       <Filter>Header Files\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\Mapping.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Event.h">
       <Filter>Header Files</Filter>
