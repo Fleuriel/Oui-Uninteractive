@@ -9,7 +9,7 @@
  *************************************************************************/
 
 #include <iostream>
-#include <InitializeEngine.h>
+#include <GameStateManager.h>
 
 
 int Mode;

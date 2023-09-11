@@ -27,7 +27,7 @@
     <ClCompile Include="..\lib\imgui-1.89.9\imgui_widgets.cpp" />
     <ClCompile Include="Source\Editor.cpp" />
     <ClCompile Include="Source\GameObject.cpp" />
-    <ClCompile Include="Source\InitializeEngine.cpp" />
+    <ClCompile Include="Source\GameStateManager.cpp" />
     <ClCompile Include="Source\Mapping.cpp" />
     <ClCompile Include="Source\Matrix3x3.cpp" />
     <ClCompile Include="Source\OpenGLObjects.cpp" />
@@ -46,8 +46,8 @@
     <ClInclude Include="Include\Editor.h" />
     <ClInclude Include="Include\Event.h" />
     <ClInclude Include="Include\GameObject.h" />
+    <ClInclude Include="Include\GameStateManager.h" />
     <ClInclude Include="Include\IComponent.h" />
-    <ClInclude Include="Include\InitializeEngine.h" />
     <ClInclude Include="Include\Mapping.h" />
     <ClInclude Include="Include\ISystem.h" />
     <ClInclude Include="Include\Matrix3x3.h" />

@@ -15,7 +15,7 @@
 #include <RandomUtilities.h>
 #include <OpenGLObjects.h>
 #include <glm/gtc/matrix_transform.hpp>
-#include <InitializeEngine.h>
+#include <GameStateManager.h>
 #include <Editor.h>
 #include <string>
 #include <Mapping.h>

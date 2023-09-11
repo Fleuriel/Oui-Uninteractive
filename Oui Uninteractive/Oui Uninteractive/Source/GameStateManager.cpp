@@ -8,8 +8,7 @@
  * @brief 
  *************************************************************************/
 
-#include <InitializeEngine.h>
-
+#include <GameStateManager.h>
 
 
 unsigned int InitializationGameState;
