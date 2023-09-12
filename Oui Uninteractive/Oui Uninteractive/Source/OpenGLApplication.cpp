@@ -353,7 +353,7 @@ void OpenGLApplication::OpenGLUpdate()
 		//std::cout << GetFPS() << '\n';
 		
 		
-		if (GetFPS())
+		if (IsTimeElapsed(1))
 		{
 			Draw();
 		}
@@ -441,7 +441,7 @@ void OpenGLApplication::OpenGLTestChangingStates()
 
 
 
-	if (GetFPS())
+	if (IsTimeElapsed(1))
 	{
 		Draw();
 	}

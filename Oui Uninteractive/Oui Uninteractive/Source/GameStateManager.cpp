@@ -113,11 +113,11 @@ double GetFrames()
 	return 1 / deltaTime.count();
 }
 #include <iostream>
-bool GetFPS()
+bool IsTimeElapsed(unsigned int time)
 {
 	seconds += GetDT();
 	std::cout << seconds << GetDT() << '\n';
-	if (seconds >= 1)
+	if (seconds >= time)
 	{
 		seconds = 0;
 		return true;

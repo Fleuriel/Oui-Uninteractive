@@ -62,7 +62,7 @@ double GetDT();
 
 double GetFrames();
 
-bool GetFPS();
+bool IsTimeElapsed(unsigned int time);
 
 double GetGameRunTime();
 #endif
