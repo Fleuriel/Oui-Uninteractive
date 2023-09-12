@@ -39,8 +39,6 @@ extern void (*GameCleanup)();
 extern double GameApplication_Time;
 extern double Game_DeltaTime;
 
-extern bool changeStates;
-
 enum GameStateList
 {
 	STATE_MENU_TEST = 1,
@@ -55,8 +53,6 @@ enum GameStateList
 
 void GameStateManagerInit(unsigned int setGameState);
 
-void GameStateChanger(unsigned int setGameState);
-
 void GameStateManagerUpdate();
 
 // Time Functions
@@ -64,7 +60,9 @@ void TimeUpdate();
 
 double GetDT();
 
-double GetFPS();
+double GetFrames();
+
+bool GetFPS();
 
 double GetGameRunTime();
 #endif

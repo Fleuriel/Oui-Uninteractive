@@ -32,53 +32,65 @@ int main()
 	// The Main Window.
 	while (!glfwWindowShouldClose(window))
 	{
-
+		// Changing in CurrentGameState would make it TRUE for this,
+		// so it will update the manager, to change the state.
 		if (CurrentGameState != NextGameState)
 		{
 			GameStateManagerUpdate();
 		}
+		// else initialize all states to be the same.
 		else
 		{
 			NextGameState = CurrentGameState = PreviousGameState;
 		}
 
 
-		// Happen ONLY once,
+		// Happen ONLY once, 
+		// ONLY if changing of states
 		GameInit();
 
 		while (CurrentGameState == NextGameState)
 		{
+			// Acquire Time Updates, setup for deltaTime
+			// For FPS, DeltaTime and Runtime
 			TimeUpdate();
 			
-
+			// Poll the events from the window. [OpenGL Function]
 			glfwPollEvents();
 
 
 			GameUpdate();
 
 
+			// Swap Buffers with the window, similar to GOL in Y1T1 [OpenGL Function]
 			glfwSwapBuffers(window);
 
 
 
 			//std::cout << GetDeltaTime() << '\n';
 			
+			// Running the Runtime in cout, will need to change eventually.
 			std::cout << GetGameRunTime() << '\n';
 
+
+			// At the end, if check the state is quite else go away.
 			if (CurrentGameState == STATE_QUIT)
 				break;
 		}
 
+		// Before anything, cleanup as it is out of the state loop
 		GameCleanup();
 
+		// QUIT [ After cleanup ]
 		if (CurrentGameState == STATE_QUIT)
 			break;
-		std::cout << "hello\n";
+
+		std::cout << "State is NOT Quit\n";
 
 		GameStateManagerUpdate();
 
 
-
+		// Set the states.
 		PreviousGameState = CurrentGameState;
 		CurrentGameState = NextGameState;
 	}
@@ -86,6 +98,7 @@ int main()
 
 	// Free System if any before main closes.
 
+	// Cleanup the window.
 	WindowCleanup();
 
 

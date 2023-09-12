@@ -46,7 +46,10 @@ void (*GameInit)()								= 0;
 void (*GameUpdate)()							= 0;
 void (*GameCleanup)()							= 0;
 
-#include <iostream>
+
+double seconds = 0;
+
+
 void GameStateManagerInit(unsigned int setGameState)
 {
 	CurrentGameState = setGameState;
@@ -105,9 +108,26 @@ double GetDT()
 	return deltaTime.count();
 }
 
-double GetFPS()
+double GetFrames()
 {
 	return 1 / deltaTime.count();
+}
+#include <iostream>
+bool GetFPS()
+{
+	seconds += GetDT();
+	std::cout << seconds << GetDT() << '\n';
+	if (seconds >= 1)
+	{
+		seconds = 0;
+		return true;
+
+	}
+	else
+		return false;
+
+
+
 }
 
 double GetGameRunTime()

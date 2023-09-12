@@ -37,7 +37,6 @@ extern int lastkeyedcommand;
 
 std::string title = "Hello";
 
-double seconds;
 
 static bool glewInitialized = false;
 static bool imguiInitialized = false;
@@ -124,7 +123,6 @@ void OpenGLApplication::OpenGLInit()
 	//glEnableVertexAttribArray(0);
 	//glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), 0);
 
-	seconds = 0;
 
 
 
@@ -354,11 +352,10 @@ void OpenGLApplication::OpenGLUpdate()
 		
 		//std::cout << GetFPS() << '\n';
 		
-		seconds += GetDT();
-		if (seconds > 1.0f)
+		
+		if (GetFPS())
 		{
 			Draw();
-			seconds = 0;
 		}
 		/*---------------------------------------------------------------------------*/
 
@@ -406,7 +403,7 @@ void OpenGLApplication::Draw() {
 	std::stringstream sStr;
 	sStr << title.c_str() << " | "
 		<< std::fixed << std::setprecision(2)
-		<< "FPS:  | " << GetFPS();
+		<< "FPS:  | " << GetFrames();
 
 	// setting the text as the window title
 	glfwSetWindowTitle(window, sStr.str().c_str());
@@ -429,7 +426,7 @@ void OpenGLApplication::OpenGLObjectsInitialization()
 
 void OpenGLApplication::OpenGLTestChangingStates()
 {
-	OpenGLSetBackgroundColor(1.0f, 1.0f, 0.0f, 1.0f);
+	OpenGLSetBackgroundColor(1.0f, 0.0f, 1.0f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT);
 
 	glUseProgram(Objects.ShaderProgram);
@@ -442,4 +439,10 @@ void OpenGLApplication::OpenGLTestChangingStates()
 		CurrentGameState = STATE_GRAPHICS_TEST;
 	}
 
+
+
+	if (GetFPS())
+	{
+		Draw();
+	}
 }
