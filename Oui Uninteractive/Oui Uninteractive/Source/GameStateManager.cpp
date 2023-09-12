@@ -116,7 +116,7 @@ double GetFrames()
 bool IsTimeElapsed(unsigned int time)
 {
 	seconds += GetDT();
-	std::cout << seconds << GetDT() << '\n';
+	//std::cout << seconds << GetDT() << '\n';
 	if (seconds >= time)
 	{
 		seconds = 0;
