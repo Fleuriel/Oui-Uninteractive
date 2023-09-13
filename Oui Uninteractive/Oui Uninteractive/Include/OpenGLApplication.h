@@ -16,7 +16,6 @@
 #include <OpenGLShaders.h>
 #include <map>
 #include <OpenGLObjects.h>
-#include <chrono>
 
 
 extern GLFWwindow* window;
@@ -27,9 +26,12 @@ class OpenGLApplication {
 public:
 
 	// Functions to set data ...
-	static void OpenGLInit(short width, short height);
+	static void OpenGLTestChangingStates();
+	static void OpenGLWindowInit(unsigned short width, unsigned short height);
+	static void OpenGLInit();
 	static void OpenGLUpdate();
 	static void OpenGLCleanup();
+	static void OpenGLWindowCleanup();
 //	static void OpenGLWindowInitialization(GLFWwindow*& window, GLint width, GLint height);
 	static void OpenGLObjectsInitialization();
 //	static void render_square(glm::vec2 scaling, glm::vec2 position);
@@ -42,12 +44,6 @@ public:
 	static void OpenGLSetBackgroundColor(float r, float g, float b, float a);
 
 
-	// < TIME >
-	static double GetDeltaTime();
-	static double GetFPS();
-	static std::chrono::high_resolution_clock::time_point currentTime;
-	static std::chrono::high_resolution_clock::time_point previousTime;
-	static std::chrono::duration<double> deltaTime;
 
 
 

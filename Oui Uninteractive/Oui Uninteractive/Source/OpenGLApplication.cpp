@@ -15,12 +15,13 @@
 #include <RandomUtilities.h>
 #include <OpenGLObjects.h>
 #include <glm/gtc/matrix_transform.hpp>
-#include <InitializeEngine.h>
+#include <GameStateManager.h>
 #include <Editor.h>
 #include <string>
 #include <Mapping.h>
 
 GLFWwindow* window;
+
 std::map<std::string, OpenGLObject> OpenGLApplication::Object_Storage;
 UsingImGui myImGui; // Creating imGui object
 
@@ -34,36 +35,29 @@ bool en = true;
 extern float mouse_scroll_total_Y_offset;
 extern int lastkeyedcommand;
 
-std::chrono::high_resolution_clock::time_point OpenGLApplication::currentTime;
-std::chrono::high_resolution_clock::time_point OpenGLApplication::previousTime; 
-std::chrono::duration<double> OpenGLApplication::deltaTime;
-
 std::string title = "Hello";
 
-double seconds;
 
+static bool glewInitialized = false;
+static bool imguiInitialized = false;
 
-void OpenGLApplication::OpenGLInit(short width, short height)
+void OpenGLApplication::OpenGLWindowInit(unsigned short width, unsigned short height)
 {
-	// Enable Object Creation
-
-
-	if (!glfwInit())
+	std::cout << "First\n";
+	window = glfwCreateWindow(width, height, "hello", NULL, NULL);
+	if (!window)
 	{
+		glfwTerminate();
+
+		std::cout << "Problem\n";
 		return;
 	}
-
-	// Print to check if it pass through this line ...
-	std::cout << "Initialization Graphics Pipeline\n";
-
-	// Create Windows
-	window = glfwCreateWindow(width, height, title.c_str(), NULL, NULL);
+	std::cout << "second\n";
 
 	// Tell GLFW we are using OpenGL 4.5
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 5);
 
-	const char* glsl_vers = "#version 130";
 
 	// Tell GLFW that we are using the CORE Profile
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
@@ -85,12 +79,40 @@ void OpenGLApplication::OpenGLInit(short width, short height)
 	// Set input mode for the window with the cursor (Enables Cursor Input)
 	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
 
-	// Initializing ImGui
-	myImGui.Init(window, glsl_vers);
 
-	glewInit();
+
+}
+
+
+
+void OpenGLApplication::OpenGLInit()
+{
+
+	if (!glewInitialized) {
+		GLenum err = glewInit();
+		if (err != GLEW_OK) {
+			// Handle initialization error
+			// You can print an error message or take appropriate action here.
+			return;
+		}
+		glewInitialized = true;
+	}
+
+	
+	// Print to check if it pass through this line ...
+	std::cout << "Initialization Graphics Pipeline\n";
+
+	const char* glsl_vers = "#version 130";
 
 	Objects.Init();
+
+	// Initializing ImGui
+	if (!imguiInitialized)
+	{
+		myImGui.Init(window, glsl_vers);
+		imguiInitialized = true;
+	}
+
 
 	// Create Vertex Buffers for the primitives (Shapes).
 	//unsigned int vertexBuffer;
@@ -101,15 +123,8 @@ void OpenGLApplication::OpenGLInit(short width, short height)
 	//glEnableVertexAttribArray(0);
 	//glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), 0);
 
-	seconds = 0;
 
 
-	if (!window)
-	{
-		glfwTerminate();
-
-		return;
-	}
 
 
 	// Set up the projection matrix for world coordinates
@@ -121,15 +136,8 @@ void OpenGLApplication::OpenGLInit(short width, short height)
 
 void OpenGLApplication::OpenGLUpdate()
 {
-	OpenGLApplication::previousTime = std::chrono::high_resolution_clock::now();
 
-	while (!glfwWindowShouldClose(window))
-	{
-		currentTime = std::chrono::high_resolution_clock::now();
-		deltaTime = std::chrono::duration_cast<std::chrono::duration<double>>(currentTime - previousTime);
-		previousTime = currentTime;
 
-		glfwPollEvents();
 		OpenGLSetBackgroundColor(1.0f, 0.0f, 0.0f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
 
@@ -220,10 +228,12 @@ void OpenGLApplication::OpenGLUpdate()
 
 			if (InputStates[INPUT_A]) {
 				std::cout << "WALK LEFT\n";
+				CurrentGameState = STATE_LEVEL_TEST;
 			}
 
 			if (InputStates[INPUT_D]) {
 				std::cout << "WALK RIGHT\n";
+				CurrentGameState = STATE_GRAPHICS_TEST;
 			}
 
 			if (InputStates[INPUT_S]) {
@@ -341,11 +351,11 @@ void OpenGLApplication::OpenGLUpdate()
 
 		
 		//std::cout << GetFPS() << '\n';
-		seconds += GetDeltaTime();
-		if (seconds > 1.0f)
+		
+		
+		if (IsTimeElapsed(1))
 		{
 			Draw();
-			seconds = 0;
 		}
 		/*---------------------------------------------------------------------------*/
 
@@ -357,8 +367,7 @@ void OpenGLApplication::OpenGLUpdate()
 		myImGui.Draw();
 
 		// Swap the front and back buffers
-		glfwSwapBuffers(window);
-	}
+	
 
 
 }
@@ -366,12 +375,18 @@ void OpenGLApplication::OpenGLUpdate()
 
 void OpenGLApplication::OpenGLCleanup()
 {
+	Objects.Cleanup();
+	OpenGLSetBackgroundColor(0.0f, 0.0f, 0.0f,0.0f);
 
 
+}
+
+
+void OpenGLApplication::OpenGLWindowCleanup()
+{
 	myImGui.Exit();
 	glfwTerminate();
 }
-
 
 
 
@@ -388,7 +403,7 @@ void OpenGLApplication::Draw() {
 	std::stringstream sStr;
 	sStr << title.c_str() << " | "
 		<< std::fixed << std::setprecision(2)
-		<< "FPS:  | " << GetFPS();
+		<< "FPS:  | " << GetFrames();
 
 	// setting the text as the window title
 	glfwSetWindowTitle(window, sStr.str().c_str());
@@ -406,12 +421,28 @@ void OpenGLApplication::OpenGLObjectsInitialization()
 }
 
 
-double OpenGLApplication::GetDeltaTime()
-{
-	return deltaTime.count();
-}
 
-double OpenGLApplication::GetFPS()
+
+
+void OpenGLApplication::OpenGLTestChangingStates()
 {
-	return 1 / deltaTime.count();
+	OpenGLSetBackgroundColor(1.0f, 0.0f, 1.0f, 1.0f);
+	glClear(GL_COLOR_BUFFER_BIT);
+
+	glUseProgram(Objects.ShaderProgram);
+	glBindVertexArray(Objects.VAO);
+	glDrawArrays(GL_TRIANGLES, 0, 3);
+
+
+	if (InputStates[INPUT_D]) {
+		std::cout << "WALK RIGHT\n";
+		CurrentGameState = STATE_GRAPHICS_TEST;
+	}
+
+
+
+	if (IsTimeElapsed(1))
+	{
+		Draw();
+	}
 }

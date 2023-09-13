@@ -13,7 +13,7 @@
 #include <InputKeys.h>
 #include <keyDefinition.h>
 #include <iostream>
-#include <InitializeEngine.h>
+#include <GameStateManager.h>
 
 
  std::vector<bool> InputStates(NUMBER_OF_INPUT_STATES, false);
@@ -59,7 +59,7 @@ void keyCallBack(GLFWwindow* window, int key, int scancode, int action, int mod)
 		{
 			glfwSetWindowShouldClose(window, GLFW_TRUE);
 			//glfwWindowShouldClose(window);
-			CurrentGameState = State_STOP;
+			CurrentGameState = STATE_QUIT;
 		}
 
 
