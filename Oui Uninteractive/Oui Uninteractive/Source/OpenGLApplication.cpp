@@ -24,6 +24,7 @@ GLFWwindow* window;
 
 std::map<std::string, OpenGLObject> OpenGLApplication::Object_Storage;
 UsingImGui myImGui; // Creating imGui object
+Editor myEditor; // Creating editor object
 
 GLfloat squareX = 0.0f, squareY = 0.0f;
 
@@ -107,12 +108,12 @@ void OpenGLApplication::OpenGLInit()
 	Objects.Init();
 
 	// Initializing ImGui
-	if (!imguiInitialized)
-	{
+	if (!imguiInitialized) {
 		myImGui.Init(window, glsl_vers);
 		imguiInitialized = true;
 	}
-
+	// Initializing Editor
+	myEditor.Init();
 
 	// Create Vertex Buffers for the primitives (Shapes).
 	//unsigned int vertexBuffer;

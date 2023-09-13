@@ -70,7 +70,7 @@ int main()
 			//std::cout << GetDeltaTime() << '\n';
 			
 			// Running the Runtime in cout, will need to change eventually.
-			std::cout << GetGameRunTime() << '\n';
+			//std::cout << GetGameRunTime() << '\n';
 
 
 			// At the end, if check the state is quite else go away.

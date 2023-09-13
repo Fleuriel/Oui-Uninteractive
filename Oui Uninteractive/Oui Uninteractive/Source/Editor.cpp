@@ -67,3 +67,92 @@ void UsingImGui::Exit() {
 	ImGui_ImplGlfw_Shutdown();
 	ImGui::DestroyContext();
 }
+
+/* ============================================ 
+	Use this helper function to read json files
+	@param[in] filePath
+		path to your file
+	@param[in] docRef
+		reference to the rapidjson document
+	@return
+		Returns true if successfull, false otherwise
+   ============================================ */
+bool Editor::ReadJSONFile(const char* filePath, rapidjson::Document &docRef) {
+	// Open file
+	std::ifstream file(filePath);
+	// Check if file can be opened
+	if (!file.is_open()) {
+		std::cout << "File not found" << std::endl;
+		return false;
+	}
+	// Read the entire file content into a string
+	std::string fileContent((std::istreambuf_iterator<char>(file)), std::istreambuf_iterator<char>());
+	// Close the file
+	file.close();
+	// Parse JSON data from the string
+	docRef.Parse(fileContent.c_str()); 
+	// Check for parsing errors
+	if (docRef.HasParseError()) {
+		std::cout << "Parsing error";
+		return false;
+	}
+	return true; // Successfull
+}
+
+
+/* ============================================
+	Use this helper function to write to json files
+	@param[in] filePath
+		path to your file
+	@param[in] docRef
+		reference to the rapidjson document
+	@return
+		Returns true if successfull, false otherwise
+   ============================================ */
+bool Editor::WriteJSONFile(const char* filePath, rapidjson::Document& docRef) {
+	// Open file
+	std::ofstream file(filePath);
+	// Check if file can be opened
+	if (!file.is_open()) {
+		std::cout << "File not found" << std::endl;
+		return false;
+	}
+	// Setup stream and writer
+	rapidjson::StringBuffer stringBuffer;
+	rapidjson::Writer<rapidjson::StringBuffer> writer(stringBuffer);
+	// Serialize JSON document to a string
+	docRef.Accept(writer);
+	// Write serialized data to output file
+	file << stringBuffer.GetString() << std::endl;
+	file.close();
+	return true;
+}
+
+tempObjData tempObjList;
+void Editor::Init() {
+	// Define path
+	const char* filePath = "../Editor/objekt.json";
+	// Create rapidjson doc object
+	rapidjson::Document objDoc;
+	// Read data from file
+	if (ReadJSONFile(filePath, objDoc)) { // Printing out to console to see
+		tempObjList.name = objDoc["name"].GetString();
+		std::cout << objDoc["name"].GetString() << std::endl;
+		tempObjList.size = objDoc["size"].GetInt();
+		std::cout << objDoc["size"].GetInt() << std::endl;
+		tempObjList.colour = objDoc["colour"].GetString();
+		std::cout << objDoc["colour"].GetString() << std::endl;
+		tempObjList.smell = objDoc["smell"].GetFloat();
+		std::cout << objDoc["smell"].GetFloat() << std::endl;
+		tempObjList.alive = objDoc["alive"].GetBool();
+		std::cout << objDoc["alive"].GetBool() << std::endl;
+	}
+	// Simulate size change
+	int finalSize = tempObjList.size *= 2;
+	objDoc["size"] = finalSize;
+	
+	if (WriteJSONFile(filePath, objDoc)) {
+		std::cout << "If you open the file again and see the size double then Yay everything works";
+	}
+}
+
