@@ -17,7 +17,7 @@ void UsingImGui::Init(GLFWwindow* window, const char* glsl_vers) {
 	ImGuiIO& io = ImGui::GetIO();
 
 	// Config Flags
-	
+	io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
 	// Setup bindins
 	ImGui_ImplGlfw_InitForOpenGL(window, true);
 	ImGui_ImplOpenGL3_Init(glsl_vers);
@@ -51,6 +51,12 @@ void UsingImGui::Draw() {
 		ImGui::Text("Please stop wasting time here");
 	}
 	ImGui::End();
+
+	// 2nd test window
+	ImGui::Begin("This should be another window");
+	ImGui::Text("Hello there");
+	ImGui::End();
+
 	ImGui::Render();
 	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
