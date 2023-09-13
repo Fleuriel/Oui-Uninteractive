@@ -54,5 +54,7 @@ void UsingImGui::Draw() {
 }
 
 void UsingImGui::Exit() {
-
+	ImGui_ImplOpenGL3_Shutdown();
+	ImGui_ImplGlfw_Shutdown();
+	ImGui::DestroyContext();
 }
