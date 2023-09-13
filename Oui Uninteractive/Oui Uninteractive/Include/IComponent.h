@@ -17,14 +17,18 @@ private:
 	// Pointer to base owning composition
 
 public:
-	//GetOwner() {return base};
 	//HasSibling()
 	//Serialize()
 
-
 	// Specify the type of component
 	ComponentType componentType;
-
+	
+	// Initialize component
 	virtual void Initialize() = 0;
+
+	// Get order of component
+	//GetOwner() {return base};
+
+
 	virtual ~IComponent() {};
 };

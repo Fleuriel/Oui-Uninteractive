@@ -111,6 +111,9 @@
     <ClCompile Include="Source\OpenGLShaders.cpp">
       <Filter>Source Files\Graphics</Filter>
     </ClCompile>
+    <ClCompile Include="Source\ObjectFactory.cpp">
+      <Filter>Source Files\Systems</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Include\keyDefinition.h">
@@ -172,6 +175,12 @@
     </ClInclude>
     <ClInclude Include="Include\GameStateManager.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\ObjectFactory.h">
+      <Filter>Header Files\Systems</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\ComponentFactory.h">
+      <Filter>Header Files\Component</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -30,6 +30,7 @@
     <ClCompile Include="Source\GameStateManager.cpp" />
     <ClCompile Include="Source\Mapping.cpp" />
     <ClCompile Include="Source\Matrix3x3.cpp" />
+    <ClCompile Include="Source\ObjectFactory.cpp" />
     <ClCompile Include="Source\OpenGLObjects.cpp" />
     <ClCompile Include="Source\OpenGLShaders.cpp" />
     <ClCompile Include="Source\main.cpp" />
@@ -42,6 +43,7 @@
     <ClCompile Include="Source\Vector2D.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Include\ComponentFactory.h" />
     <ClInclude Include="Include\ComponentType.h" />
     <ClInclude Include="Include\Editor.h" />
     <ClInclude Include="Include\Event.h" />
@@ -51,6 +53,7 @@
     <ClInclude Include="Include\Mapping.h" />
     <ClInclude Include="Include\ISystem.h" />
     <ClInclude Include="Include\Matrix3x3.h" />
+    <ClInclude Include="Include\ObjectFactory.h" />
     <ClInclude Include="Include\OpenGLObjects.h" />
     <ClInclude Include="Include\OpenGLShaders.h" />
     <ClInclude Include="Include\keyDefinition.h" />
