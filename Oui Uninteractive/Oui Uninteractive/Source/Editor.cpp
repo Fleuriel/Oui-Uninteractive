@@ -15,6 +15,9 @@ void UsingImGui::Init(GLFWwindow* window, const char* glsl_vers) {
 	IMGUI_CHECKVERSION();
 	ImGui::CreateContext();
 	ImGuiIO& io = ImGui::GetIO();
+
+	// Config Flags
+	
 	// Setup bindins
 	ImGui_ImplGlfw_InitForOpenGL(window, true);
 	ImGui_ImplOpenGL3_Init(glsl_vers);
