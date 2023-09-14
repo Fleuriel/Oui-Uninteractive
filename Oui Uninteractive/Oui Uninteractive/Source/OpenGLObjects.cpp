@@ -441,6 +441,7 @@ void OpenGLObject::Draw() const
 void OpenGLObject::Update(GLdouble delta_time)
 {
 	std::cout << "Object Update\n";
+	
 }
 
 

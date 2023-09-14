@@ -353,6 +353,13 @@ void OpenGLApplication::OpenGLUpdate()
 		
 		//std::cout << GetFPS() << '\n';
 		
+
+		// Update objects
+		for (auto& x : Object_Storage)
+		{
+			std::cout << x.first << '\n';
+			x.second.Update(GetDT());
+		}
 		
 		if (IsTimeElapsed(1))
 		{
@@ -399,7 +406,7 @@ void OpenGLApplication::Draw() {
 		std::cout << x.first << '\n';
 		x.second.Draw();
 	}
-
+	
 	// setting up the text to be displayed as the window title
 	std::stringstream sStr;
 	sStr << title.c_str() << " | "
