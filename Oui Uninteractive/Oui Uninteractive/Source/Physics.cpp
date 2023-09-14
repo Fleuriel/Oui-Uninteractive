@@ -3,6 +3,7 @@ Physics* physicsSys = nullptr;
 Physics::Physics() {
 	if (physicsSys != nullptr) {
 		//instantiate physics system
+		physicsSys = this;
 	}
 	else {
 		physicsSys = this;
@@ -10,16 +11,28 @@ Physics::Physics() {
 	
 }
 void Physics::Initialize() {
+	//Register Component creator of Body here
 
 }
 void Physics::Update(float dt) {
-	//might need to store pointers to body component , KIV
+
 	for (PhysicsBody* body : bodyList) {
 		if (body->isStatic) {
 			continue;
 		}
 		body->position = body->position + body->velocity * dt;
 		body->velocity = body->velocity + body->acceleration * dt;
+		body->txPtr->position = body->position;
 	}
 
+}
+void Physics::addForce(Vec2 force) {
+	for (PhysicsBody* body : bodyList) {
+		body->accumulatedForce += force;
+	}
+}
+void Physics::setPosition(Vec2 pos) {
+	for (PhysicsBody* body : bodyList) {
+		body->position = pos;
+	}
 }
