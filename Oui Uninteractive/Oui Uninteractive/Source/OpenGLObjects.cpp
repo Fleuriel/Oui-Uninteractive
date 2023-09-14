@@ -441,7 +441,23 @@ void OpenGLObject::Draw() const
 void OpenGLObject::Update(GLdouble delta_time)
 {
 	std::cout << "Object Update\n";
-	
+	//// Update object rotations
+	//this->Rotation[0] += (this->Rotation[1] * static_cast<float>(delta_time));
+	//// Compute model-to-world matrix
+	//glm::mat3 scaleMatrix = { Scaling.x,   0.0f    , 0.0f,
+	//							 0.0f  , Scaling.y , 0.0f,
+	//							 0.0f  ,   0.0f    , 1.0f };
+
+	//glm::mat3 rotMatrix = { cos(Rotation[0]) , sin(Rotation[0]), 0.0f,
+	//						-sin(Rotation[0]), cos(Rotation[0]), 0.0f,
+	//							  0.0f      ,       0.0f     , 1.0f };
+
+	//glm::mat3 transMatrix = {     1.0f    ,     0.0f   , 0.0f,
+	//							  0.0f    ,     1.f    , 0.0f,
+	//						  Position[0] , Position[1], 1.0f };
+	//// Compute final transformation matrix  
+	//// Assign the final transformation matrix to the member variable
+	//this->Model_to_NDC_xform = camera2d.world_to_ndc_xform * transMatrix * rotMatrix * scaleMatrix;
 }
 
 
