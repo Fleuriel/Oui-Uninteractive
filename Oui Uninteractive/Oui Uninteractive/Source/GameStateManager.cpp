@@ -29,7 +29,7 @@ CreateWindow(short width, short height)
 
 @brief creates a window application.
 ************************************************************************************/
-void (*CreateWindow)(unsigned short width, unsigned short height) = OpenGLApplication::OpenGLWindowInit;
+void (*CreateWindow)() = OpenGLApplication::OpenGLWindowInit;
 void (*WindowCleanup)() = OpenGLApplication::OpenGLWindowCleanup;
 
 
