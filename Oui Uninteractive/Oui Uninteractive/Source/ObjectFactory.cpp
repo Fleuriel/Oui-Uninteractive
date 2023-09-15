@@ -18,6 +18,7 @@ ObjectFactory::ObjectFactory() : gameObjectCurrentID{} {
 	if (objectFactory != NULL) {
 		return;
 	}
+	std::cout << "Component Fac: " << componentFactoryMap.size() << "\n";
 	objectFactory = this;
 }
 // No serialization as of now
@@ -114,6 +115,19 @@ void ObjectFactory::AddComponentFactory(std::string componentName, ComponentFact
 {
 	//componentFactoryMap[componentName] = componentFactory;
 	componentFactoryMap.insert(std::pair(componentName, componentFactory));
+}
+
+void ObjectFactory::Update(float dt) {
+	std::set<GameObject*>::iterator it = gameObjectDestroyList.begin();
+
+	for (; it != gameObjectDestroyList.end(); it++) {
+		GameObject* gameObject = *it;
+
+
+		//Insert double free protection here
+		delete gameObject;
+	}
+	gameObjectDestroyList.clear();
 }
 /*bool ObjectFactory::AddComponent(std::string componentName) {
 	std::map<std::string, ComponentFactoryBase*>::iterator it = componentFactoryMap.find(componentName);

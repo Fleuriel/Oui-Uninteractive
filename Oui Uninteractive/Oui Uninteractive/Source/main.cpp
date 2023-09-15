@@ -12,10 +12,10 @@
 #include <GameStateManager.h>
 #include "Physics.h"
 #include "SystemManager.h"
+#include "ObjectFactory.h"
 
 
-int Mode;
-
+void TimeUpdate();
 
 int main()
 {
@@ -25,7 +25,7 @@ int main()
 
 	CreateWindow();
 	SystemManager* sysManager = new SystemManager();
-
+	sysManager->AddSystem(new ObjectFactory());
 	sysManager->AddSystem(new Physics());
 	sysManager->Initialize();
 	// Set callback for window close button (top right button).
@@ -120,3 +120,10 @@ int main()
 
 
 
+
+void TimeUpdate()
+{
+	currentTime = std::chrono::high_resolution_clock::now();
+	deltaTime = std::chrono::duration_cast<std::chrono::duration<double>>(currentTime - previousTime);
+	previousTime = currentTime;
+}

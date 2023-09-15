@@ -96,12 +96,6 @@ void GameStateManagerUpdate()
 }
 
 
-void TimeUpdate()
-{
-	currentTime = std::chrono::high_resolution_clock::now();
-	deltaTime = std::chrono::duration_cast<std::chrono::duration<double>>(currentTime - previousTime);
-	previousTime = currentTime;
-}
 
 double GetDT()
 {

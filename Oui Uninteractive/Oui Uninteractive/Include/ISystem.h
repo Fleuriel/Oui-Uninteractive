@@ -14,7 +14,7 @@ private:
 
 public:
 	// Initialize the system
-	virtual void Initialize() = 0;
+	virtual void Initialize() {};
 
 	// Update the system
 	virtual void Update(float dt) = 0;
