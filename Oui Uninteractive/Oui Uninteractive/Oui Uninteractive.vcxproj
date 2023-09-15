@@ -19,12 +19,12 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\lib\imgui-1.89.9\backends\imgui_impl_glfw.cpp" />
-    <ClCompile Include="..\lib\imgui-1.89.9\backends\imgui_impl_opengl3.cpp" />
-    <ClCompile Include="..\lib\imgui-1.89.9\imgui.cpp" />
-    <ClCompile Include="..\lib\imgui-1.89.9\imgui_draw.cpp" />
-    <ClCompile Include="..\lib\imgui-1.89.9\imgui_tables.cpp" />
-    <ClCompile Include="..\lib\imgui-1.89.9\imgui_widgets.cpp" />
+    <ClCompile Include="..\lib\imgui-docking\backends\imgui_impl_glfw.cpp" />
+    <ClCompile Include="..\lib\imgui-docking\backends\imgui_impl_opengl3.cpp" />
+    <ClCompile Include="..\lib\imgui-docking\imgui.cpp" />
+    <ClCompile Include="..\lib\imgui-docking\imgui_draw.cpp" />
+    <ClCompile Include="..\lib\imgui-docking\imgui_tables.cpp" />
+    <ClCompile Include="..\lib\imgui-docking\imgui_widgets.cpp" />
     <ClCompile Include="Source\Editor.cpp" />
     <ClCompile Include="Source\GameObject.cpp" />
     <ClCompile Include="Source\GameStateManager.cpp" />

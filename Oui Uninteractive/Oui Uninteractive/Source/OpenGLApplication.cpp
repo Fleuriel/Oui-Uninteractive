@@ -24,6 +24,7 @@ GLFWwindow* window;
 
 std::map<std::string, OpenGLObject> OpenGLApplication::Object_Storage;
 UsingImGui myImGui; // Creating imGui object
+Editor myEditor; // Creating editor object
 
 GLfloat squareX = 0.0f, squareY = 0.0f;
 
@@ -107,12 +108,12 @@ void OpenGLApplication::OpenGLInit()
 	Objects.Init();
 
 	// Initializing ImGui
-	if (!imguiInitialized)
-	{
+	if (!imguiInitialized) {
 		myImGui.Init(window, glsl_vers);
 		imguiInitialized = true;
 	}
-
+	// Initializing Editor
+	myEditor.Init();
 
 	// Create Vertex Buffers for the primitives (Shapes).
 	//unsigned int vertexBuffer;
@@ -352,6 +353,13 @@ void OpenGLApplication::OpenGLUpdate()
 		
 		//std::cout << GetFPS() << '\n';
 		
+
+		// Update objects
+		for (auto& x : Object_Storage)
+		{
+			std::cout << x.first << '\n';
+			x.second.Update(GetDT());
+		}
 		
 		if (IsTimeElapsed(1))
 		{
@@ -398,7 +406,7 @@ void OpenGLApplication::Draw() {
 		std::cout << x.first << '\n';
 		x.second.Draw();
 	}
-
+	
 	// setting up the text to be displayed as the window title
 	std::stringstream sStr;
 	sStr << title.c_str() << " | "

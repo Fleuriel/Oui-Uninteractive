@@ -63,7 +63,7 @@ public:
 	// set up initial state
 	static void Init(); 
 	void Draw() const;
-	static void Update(GLdouble delta_time);
+	void Update(GLdouble delta_time);
 	static void Cleanup();
 	static void Setup_Quad_VAO();
 
