@@ -10,6 +10,8 @@
 
 #include <iostream>
 #include <GameStateManager.h>
+#include "Physics.h"
+#include "SystemManager.h"
 
 
 void TimeUpdate();
@@ -20,8 +22,11 @@ int main()
 	if (!glfwInit())
 		return -1;
 
-	CreateWindow(900, 900);
+	CreateWindow();
+	SystemManager* sysManager = new SystemManager();
 
+	sysManager->AddSystem(new Physics());
+	sysManager->Initialize();
 	// Set callback for window close button (top right button).
 	glfwSetWindowCloseCallback(window, windowCloseCallback);
 
@@ -29,6 +34,7 @@ int main()
 	// Initialize the GameStateManager
 	// Someone needs to put 
 	GameStateManagerInit(STATE_GRAPHICS_TEST);
+	
 	previousTime = std::chrono::high_resolution_clock::now();
 
 	// The Main Window.
@@ -60,8 +66,10 @@ int main()
 			// Poll the events from the window. [OpenGL Function]
 			glfwPollEvents();
 
-			// Update game depending on GameState
 			GameUpdate();
+			sysManager->UpdateSystems(GetDT());
+			//needs to be changed, currently input is being checked before physics
+		//	physicsSys->Update(GetDT());
 
 
 			// Swap Buffers with the window, similar to GOL in Y1T1 [OpenGL Function]
@@ -100,7 +108,10 @@ int main()
 	// Free System if any before main closes.
 
 	// Cleanup the window.
+
 	WindowCleanup();
+	sysManager->DestroySystem();
+	delete sysManager;
 
 
 	return 0;

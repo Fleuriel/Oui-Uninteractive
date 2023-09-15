@@ -1,16 +1,25 @@
 #pragma once
-
+#include "ComponentType.h"
 class IComponent;
 
-template <typename T>
-class ComponentFactory {
-private:
-
+class ComponentFactoryBase 
+{
 public:
-	size_t type;
+	ComponentType type;
 
-	ComponentFactory(size_t componentType) : type{componentType} {}
-	~ComponentFactory() {}
+	ComponentFactoryBase(ComponentType componentType) : type{ componentType } {};
+	virtual ~ComponentFactoryBase() {}
+	virtual IComponent* CreateComponent() = 0;
+	
+};
+template <typename T>
+class ComponentFactory : public ComponentFactoryBase {
+public:
+	ComponentFactory(ComponentType id) : ComponentFactoryBase(id) {
 
-	IComponent* CreateComponent() { return new T() };
+	}
+
+	virtual IComponent* CreateComponent() {
+		return new T();
+	}
 };

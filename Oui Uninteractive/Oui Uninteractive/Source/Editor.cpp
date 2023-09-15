@@ -77,7 +77,7 @@ void UsingImGui::Exit() {
 	@return
 		Returns true if successfull, false otherwise
    ============================================ */
-bool Editor::ReadJSONFile(const char* filePath, rapidjson::Document &docRef) {
+bool Editor::ReadJSONFile(std::string filePath, rapidjson::Document &docRef) {
 	// Open file
 	std::ifstream file(filePath);
 	// Check if file can be opened
@@ -109,7 +109,7 @@ bool Editor::ReadJSONFile(const char* filePath, rapidjson::Document &docRef) {
 	@return
 		Returns true if successfull, false otherwise
    ============================================ */
-bool Editor::WriteJSONFile(const char* filePath, rapidjson::Document& docRef) {
+bool Editor::WriteJSONFile(std::string filePath, rapidjson::Document& docRef) {
 	// Open file
 	std::ofstream file(filePath);
 	// Check if file can be opened

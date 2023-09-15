@@ -41,6 +41,7 @@
     <ClCompile Include="Source\Physics.cpp" />
     <ClCompile Include="Source\PhysicsBody.cpp" />
     <ClCompile Include="Source\RandomUtilities.cpp" />
+    <ClCompile Include="Source\SystemManager.cpp" />
     <ClCompile Include="Source\Transform.cpp" />
     <ClCompile Include="Source\Vector2D.cpp" />
   </ItemGroup>
@@ -49,6 +50,7 @@
     <ClInclude Include="Include\ComponentFactory.h" />
     <ClInclude Include="Include\ComponentType.h" />
     <ClInclude Include="Include\Editor.h" />
+    <ClInclude Include="Include\EngineHeaders.h" />
     <ClInclude Include="Include\Event.h" />
     <ClInclude Include="Include\GameObject.h" />
     <ClInclude Include="Include\GameStateManager.h" />
@@ -69,6 +71,7 @@
     <ClInclude Include="Include\PhysicsHeaders.h" />
     <ClInclude Include="Include\RandomUtilities.h" />
     <ClInclude Include="Include\ReadMe.h" />
+    <ClInclude Include="Include\SystemManager.h" />
     <ClInclude Include="Include\Transform.h" />
     <ClInclude Include="Include\Vector2D.h" />
   </ItemGroup>

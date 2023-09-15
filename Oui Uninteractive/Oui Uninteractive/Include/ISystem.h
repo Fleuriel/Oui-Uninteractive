@@ -17,7 +17,7 @@ public:
 	virtual void Initialize() = 0;
 
 	// Update the system
-	virtual void Update() = 0;
+	virtual void Update(float dt) = 0;
 
 	// Terminate the system
 	//virtual void Terminiate();

@@ -33,8 +33,8 @@ public:
 class Editor {
 public:
 	void Init();
-	bool ReadJSONFile(const char* filePath, rapidjson::Document &docRef);
-	bool WriteJSONFile(const char* filePath, rapidjson::Document& docRef);
+	static bool ReadJSONFile(std::string filePath, rapidjson::Document &docRef);
+	static bool WriteJSONFile(std::string filePath, rapidjson::Document& docRef);
 private:
 
 };
