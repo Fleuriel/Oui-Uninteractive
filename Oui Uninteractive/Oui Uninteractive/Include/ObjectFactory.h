@@ -36,7 +36,7 @@ public:
 	// Create a new game object during run-time
 	GameObject* BuildObjectRunTime();
 
-	
+	virtual void Update(float dt);
 
 	// Add a to-be-destroyed game object to the destroy list
 	void DestroyObject(GameObject* gameObject);

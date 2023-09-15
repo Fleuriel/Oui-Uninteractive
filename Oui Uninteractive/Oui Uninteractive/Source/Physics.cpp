@@ -15,11 +15,13 @@ Physics::Physics() {
 }
 void Physics::Initialize() {
 	//Register Component creator of Body here
-	//objectFactory->AddComponentFactory("PhysicsBody", new ComponentFactory<PhysicsBody>(ComponentType::PhysicsBody));
+	//ComponentFactory<PhysicsBody>* testPtr = new ComponentFactory<PhysicsBody>(ComponentType::PhysicsBody);
+	//objectFactory->AddComponentFactory("PhysicsBody", testPtr);
 	std::cout << "I WILL ADD THE PHYSICS BODY FACTORY HERE";
 }
 void Physics::Update(float dt) {
 
+	std::cout << "UPDATE PHYSICS\n";
 	for (PhysicsBody* body : bodyList) {
 		if (body->isStatic) {
 			continue;
