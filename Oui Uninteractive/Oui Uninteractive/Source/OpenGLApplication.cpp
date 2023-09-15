@@ -20,6 +20,7 @@
 #include <string>
 #include <Mapping.h>
 #include "ObjectFactory.h"
+#include "Physics.h"
 #include <Global.h>
 
 GLFWwindow* window;
@@ -160,8 +161,11 @@ void OpenGLApplication::OpenGLInit()
 	//float worldWidth = 20.0f;
 	//float worldHeight = 20.0f * (height / (float)width);
 	//glm::mat4 projection = glm::ortho(-worldWidth / 2, worldWidth / 2, -worldHeight / 2, worldHeight / 2, -1.0f, 1.0f);
+
+	//init a game object in run time
 	objectFactory->BuildObjectRunTime();
 	objectFactory->AddComponent("PhysicsBody", objectFactory->GetGameObjectByID(0));
+	objectFactory->GetGameObjectByID(0)->Initialize();
 
 }
 
@@ -227,6 +231,7 @@ void OpenGLApplication::OpenGLUpdate()
 
 			if (InputStates[INPUT_W]) {
 				std::cout << "CROUCH UP";
+				
 			}
 		}
 		else
@@ -248,6 +253,7 @@ void OpenGLApplication::OpenGLUpdate()
 
 			if (InputStates[INPUT_W]) {
 				std::cout << "RUN UP\n";
+				
 			}
 
 
@@ -271,7 +277,11 @@ void OpenGLApplication::OpenGLUpdate()
 			}
 
 			if (InputStates[INPUT_W]) {
+				physicsSys->setVelocity(Vec2(0.0f, 10.f));
 				std::cout << "WALK UP\n";
+			}
+			else {
+				physicsSys->setVelocity(Vec2(0.0f, 0.0f));
 			}
 
 			if (InputStates[INPUT_M]) {
@@ -360,6 +370,7 @@ void OpenGLApplication::OpenGLUpdate()
 		-----------------------------------*/
 
 		if (InputStates[INPUT_LCLICK])
+			
 			std::cout << "LCLICK\n";
 		if (InputStates[INPUT_RCLICK])
 			std::cout << "RCLICK\n";

@@ -4,7 +4,7 @@
 #include <iostream>
 Physics* physicsSys = nullptr;
 Physics::Physics() {
-	if (physicsSys == nullptr) {
+	if (physicsSys != nullptr) {
 		//instantiate physics system
 		return;
 	}
@@ -20,14 +20,15 @@ void Physics::Initialize() {
 }
 void Physics::Update(float dt) {
 
-	std::cout << "UPDATE PHYSICS\n";
 	for (PhysicsBody* body : bodyList) {
 		if (body->isStatic) {
 			continue;
 		}
 		body->position = body->position + body->velocity * dt;
 		body->velocity = body->velocity + body->acceleration * dt;
-		body->txPtr->position = body->position;
+	//	body->txPtr->position = body->position;
+
+		std::cout << "X: " << body->position.x << "Y: " << body->position.y << "\n";
 	}
 
 }
@@ -39,5 +40,10 @@ void Physics::addForce(Vec2 force) {
 void Physics::setPosition(Vec2 pos) {
 	for (PhysicsBody* body : bodyList) {
 		body->position = pos;
+	}
+}
+void Physics::setVelocity(Vec2 newVelocity) {
+	for (PhysicsBody* body : bodyList) {
+		body->velocity = newVelocity;
 	}
 }

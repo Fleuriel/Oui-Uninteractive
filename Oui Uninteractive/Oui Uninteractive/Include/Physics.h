@@ -6,12 +6,13 @@
 //Physics system should act on physics body component
 
 class Physics : public ISystem{
+public:
 	void addForce(Vec2 force);
 	void setPosition(Vec2 pos);
 	//gonna add an overload to set a particular object
 	// void setPosition(Vec2 pos, objectID ID)
-	//void setVelocity(Vec2 vel);
-public:
+	void setVelocity(Vec2 vel);
+
 	Physics();
 
 	virtual void Update(float dt);
