@@ -11,6 +11,7 @@
 #include <iostream>
 #include <GameStateManager.h>
 #include "Physics.h"
+#include "SystemManager.h"
 
 
 int Mode;
@@ -22,8 +23,11 @@ int main()
 	if (!glfwInit())
 		return -1;
 
+	SystemManager* sysManager = new SystemManager();
 	CreateWindow(900, 900);
 
+	sysManager->AddSystem(new Physics());
+	sysManager->Initialize();
 	// Set callback for window close button (top right button).
 	glfwSetWindowCloseCallback(window, windowCloseCallback);
 
@@ -64,6 +68,7 @@ int main()
 			glfwPollEvents();
 
 			GameUpdate();
+			sysManager->UpdateSystems(GetDT());
 			//needs to be changed, currently input is being checked before physics
 		//	physicsSys->Update(GetDT());
 
@@ -104,7 +109,10 @@ int main()
 	// Free System if any before main closes.
 
 	// Cleanup the window.
+
 	WindowCleanup();
+	sysManager->DestroySystem();
+	delete sysManager;
 
 
 	return 0;

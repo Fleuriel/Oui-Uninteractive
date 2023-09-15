@@ -124,9 +124,9 @@ void OpenGLObject::Init()
 	
 
 #ifdef _DEBUG
-	std::cout << "Mesh Directories for : '\t" << Mesh_Directory[0] << '\n';
-	std::cout << "Mesh Directories for : '\t" << Mesh_Directory[1] << '\n';
-	std::cout << "Mesh Directories for : '\t" << Mesh_Directory[2] << '\n';
+	std::cout << "Mesh Directories for : '\t" << mesh_Directory[0] << '\n';
+	std::cout << "Mesh Directories for : '\t" << mesh_Directory[1] << '\n';
+	std::cout << "Mesh Directories for : '\t" << mesh_Directory[2] << '\n';
 	std::cout << '\n';
 #endif
 
