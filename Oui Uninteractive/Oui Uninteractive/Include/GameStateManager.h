@@ -29,7 +29,7 @@ extern unsigned int CurrentGameState;
 extern unsigned int PreviousGameState;
 extern unsigned int NextGameState;
 
-extern void (*CreateWindow)(unsigned short width, unsigned short height);
+extern void (*CreateWindow)();
 extern void (*WindowCleanup)();
 extern void (*GameInit)();
 extern void (*GameUpdate)();

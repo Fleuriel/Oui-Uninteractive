@@ -27,7 +27,7 @@ public:
 
 	// Functions to set data ...
 	static void OpenGLTestChangingStates();
-	static void OpenGLWindowInit(unsigned short width, unsigned short height);
+	static void OpenGLWindowInit();
 	static void OpenGLInit();
 	static void OpenGLUpdate();
 	static void OpenGLCleanup();

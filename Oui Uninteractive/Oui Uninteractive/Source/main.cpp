@@ -23,8 +23,7 @@ int main()
 	if (!glfwInit())
 		return -1;
 
-	SystemManager* sysManager = new SystemManager();
-	CreateWindow(900, 900);
+	CreateWindow();
 
 	sysManager->AddSystem(new Physics());
 	sysManager->Initialize();
