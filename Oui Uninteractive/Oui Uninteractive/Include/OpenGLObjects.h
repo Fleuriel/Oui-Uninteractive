@@ -28,14 +28,14 @@
 class OpenGLObject
 {
 public:
-	OpenGLObject() : Scaling(0.5, 0.5), Rotation(0.0, 0.0f), Position(0, 0), Model_to_NDC_xform(glm::mat3(1.0f)), Color(1.0, 1.0, 1.0f){};
+	OpenGLObject() : scaling(0.5, 0.5), orientation(0.0, 0.0f), position(0, 0), model_To_NDC_xform(glm::mat3(1.0f)), color(1.0, 1.0, 1.0f){};
 
 
-	glm::vec2 Scaling; // scaling
-	glm::vec2 Rotation;
-	glm::vec2 Position; // translation
-	glm::mat3 Model_to_NDC_xform;
-	glm::vec3 Color;
+	glm::vec2 scaling; // scaling
+	glm::vec2 orientation; 
+	glm::vec2 position; // translation
+	glm::mat3 model_To_NDC_xform;
+	glm::vec3 color;
 
 
 
@@ -62,29 +62,36 @@ public:
 
 	// set up initial state
 	static void Init(); 
-	void Draw() const;
+
 	void Update(GLdouble delta_time);
+	//static void OpenGLShadersInitialization();
+
+	void Draw() const;
+
+	void InitObjects();
 	static void Cleanup();
-	static void Setup_Quad_VAO();
+//	static void Setup_Quad_VAO();
+	static void init_scenes(std::string);
+	static void Insert_Shader_Program(std::string shdr_pgm_name, std::string vtx_shdr_name, std::string frg_shdr_name);
+
 
 
 
 	//Shaders
-	static std::vector<OpenGLShader> Shader;
+	static std::vector<OpenGLShader> shader;
 	using VectorPairStrStr = std::vector <std::pair<std::string, std::string>>;
-	static void OpenGLShadersInitialization();
 	static GLuint ShaderProgram;
 	static std::map<std::string, OpenGLShader> shdrpgms;
-	
+
 
 	static void Load_Files();
 	static void Load_Meshes();
 
 
 	// Data for Square and Triangles
-	static std::vector<glm::vec2> Square;
-	static std::vector<glm::vec2> Triangle;
-	static std::vector<std::string> Mesh_Directory;
+	static std::vector<glm::vec2> square;
+	static std::vector<glm::vec2> triangle;
+	static std::vector<std::string> mesh_Directory;
 	
 	static GLuint vaoID;
 	static GLuint pboID;
@@ -109,7 +116,7 @@ public:
 
 	// Store Models inside:
 	static std::map<std::string, OpenGLModel> Model_Storage;
-
+	static std::map<std::string, OpenGLObject> Object_Storage;
 
 
 

@@ -36,7 +36,6 @@ public:
 	static void OpenGLObjectsInitialization();
 //	static void render_square(glm::vec2 scaling, glm::vec2 position);
 
-	static std::map<std::string, OpenGLObject> Object_Storage;
 
 
 	static void Draw();

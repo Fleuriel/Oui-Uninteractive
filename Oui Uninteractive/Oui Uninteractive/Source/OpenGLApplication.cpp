@@ -23,7 +23,6 @@
 
 GLFWwindow* window;
 
-std::map<std::string, OpenGLObject> OpenGLApplication::Object_Storage;
 UsingImGui myImGui; // Creating imGui object
 Editor myEditor; // Creating editor object
 
@@ -87,6 +86,14 @@ void OpenGLApplication::OpenGLWindowInit(unsigned short width, unsigned short he
 
 
 
+void OpenGLApplication::OpenGLWindowCleanup()
+{
+	myImGui.Exit();
+	glfwTerminate();
+}
+
+
+
 void OpenGLApplication::OpenGLInit()
 {
 
@@ -136,11 +143,12 @@ void OpenGLApplication::OpenGLInit()
 
 }
 
+
 void OpenGLApplication::OpenGLUpdate()
 {
 
 
-		OpenGLSetBackgroundColor(1.0f, 0.0f, 0.0f, 1.0f);
+		OpenGLSetBackgroundColor(0.5f, 0.5f, 0.5f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
 
 		glUseProgram(Objects.ShaderProgram);
@@ -168,8 +176,6 @@ void OpenGLApplication::OpenGLUpdate()
 		////glVertex2f(5.0f, 5.0f);
 		//
 		//glEnd();
-
-
 
 		
 
@@ -270,7 +276,7 @@ void OpenGLApplication::OpenGLUpdate()
 			std::cout << "0\n";
 		if (InputStates[INPUT_1])
 		{
-			std::cout << Object_Storage.size() << '\n';
+			std::cout << OpenGLObject::Object_Storage.size() << '\n';
 			//std::cout << "1\n";
 		}
 		if (InputStates[INPUT_2])
@@ -354,18 +360,12 @@ void OpenGLApplication::OpenGLUpdate()
 		
 		//std::cout << GetFPS() << '\n';
 		
-
-		// Update objects
-		for (auto& x : Object_Storage)
-		{
-			std::cout << x.first << '\n';
-			x.second.Update(GetDT());
-		}
+		// Draws every second...
 		
-		if (IsTimeElapsed(1))
-		{
-			Draw();
-		}
+		Draw();
+	
+		
+
 		/*---------------------------------------------------------------------------*/
 
 		/*-----------------------------------
@@ -391,31 +391,38 @@ void OpenGLApplication::OpenGLCleanup()
 }
 
 
-void OpenGLApplication::OpenGLWindowCleanup()
-{
-	myImGui.Exit();
-	glfwTerminate();
-}
 
 
 
 
 void OpenGLApplication::Draw() {
 
-	for (auto& x : Object_Storage)
+	std::cout << OpenGLObject::Object_Storage.size();
+
+	// update object transforms
+	for (auto& x : OpenGLObject::Object_Storage)
 	{
+		if (x.first == "Camera")
+			continue;
+
 		std::cout << x.first << '\n';
+		std::cout << "YES\n";
 		x.second.Draw();
 	}
 	
-	// setting up the text to be displayed as the window title
-	std::stringstream sStr;
-	sStr << title.c_str() << " | "
-		<< std::fixed << std::setprecision(2)
-		<< "FPS:  | " << GetFrames();
+	// to prevent spamming
+	if (IsTimeElapsed(1))
+	{	
+		// setting up the text to be displayed as the window title
+		std::stringstream sStr;
+		sStr << title.c_str() << " | "
+			<< std::fixed << std::setprecision(2)
+			<< "FPS:  | " << GetFrames();
 
-	// setting the text as the window title
-	glfwSetWindowTitle(window, sStr.str().c_str());
+		// setting the text as the window title
+		glfwSetWindowTitle(window, sStr.str().c_str());
+	}
+
 }
 
 void OpenGLApplication::OpenGLSetBackgroundColor(float r, float g, float b, float a) {
@@ -435,7 +442,7 @@ void OpenGLApplication::OpenGLObjectsInitialization()
 
 void OpenGLApplication::OpenGLTestChangingStates()
 {
-	OpenGLSetBackgroundColor(1.0f, 0.0f, 1.0f, 1.0f);
+	OpenGLSetBackgroundColor(0.1f, 0.1f, 0.1f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT);
 
 	glUseProgram(Objects.ShaderProgram);

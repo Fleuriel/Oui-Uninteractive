@@ -23,7 +23,10 @@ int main()
 		return -1;
 
 	CreateWindow(900, 900);
-		
+
+	// Set callback for window close button (top right button).
+	glfwSetWindowCloseCallback(window, windowCloseCallback);
+
 
 	// Initialize the GameStateManager
 	// Someone needs to put 
@@ -67,7 +70,6 @@ int main()
 
 			// Swap Buffers with the window, similar to GOL in Y1T1 [OpenGL Function]
 			glfwSwapBuffers(window);
-
 
 
 			//std::cout << GetDeltaTime() << '\n';

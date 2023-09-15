@@ -284,3 +284,10 @@ void scrollCallBack(GLFWwindow* window, double xOffset, double yOffset ) {
 	InputStates[INPUT_SCROLLDOWN] = (yOffset < 0) ? true : false;
 
 }
+
+
+
+void windowCloseCallback(GLFWwindow* window)
+{
+	NextGameState = STATE_QUIT;
+}
