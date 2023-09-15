@@ -320,7 +320,7 @@ void OpenGLObject::Load_Meshes() {
 				line_sStream >> vert_Position.x;							// Assign values of Vertex Position into Container x
 				line_sStream >> vert_Position.y;							// Assign values of Vertex Position into Container y
 
-				Model.Position_Vertex.push_back(vert_Position);						// Emplace back the vertex position into the position_vertex container
+				Model.Position_Vertex.push_back(vert_Position);				// Emplace back the vertex position into the position_vertex container
 				break;
 			}
 			case 't':														// [2] t

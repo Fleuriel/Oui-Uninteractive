@@ -24,5 +24,6 @@ void mouseCallBack(GLFWwindow* window, int button, int action, int mod);
 
 void scrollCallBack(GLFWwindow* window, double xOffset, double yOffset);
 
+void windowCloseCallback(GLFWwindow* window);
 
 #endif // INPUTKEYS_H

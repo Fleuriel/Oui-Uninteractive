@@ -23,7 +23,7 @@ int main()
 
 	CreateWindow(900, 900);
 		
-
+	glfwSetWindowCloseCallback(window, windowCloseCallback);
 	// Initialize the GameStateManager
 	// Someone needs to put 
 	GameStateManagerInit(STATE_GRAPHICS_TEST);
