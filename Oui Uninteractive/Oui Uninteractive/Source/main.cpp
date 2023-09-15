@@ -24,6 +24,7 @@ int main()
 		return -1;
 
 	CreateWindow();
+	SystemManager* sysManager = new SystemManager();
 
 	sysManager->AddSystem(new Physics());
 	sysManager->Initialize();

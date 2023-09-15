@@ -15,7 +15,7 @@ Physics::Physics() {
 }
 void Physics::Initialize() {
 	//Register Component creator of Body here
-	objectFactory->AddComponentFactory("PhysicsBody", new ComponentFactory<PhysicsBody>(ComponentType::PhysicsBody));
+	//objectFactory->AddComponentFactory("PhysicsBody", new ComponentFactory<PhysicsBody>(ComponentType::PhysicsBody));
 	std::cout << "I WILL ADD THE PHYSICS BODY FACTORY HERE";
 }
 void Physics::Update(float dt) {

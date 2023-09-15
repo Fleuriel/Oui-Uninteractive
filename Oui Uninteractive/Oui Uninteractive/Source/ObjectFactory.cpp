@@ -57,7 +57,8 @@ GameObject* ObjectFactory::GetGameObjectByID(size_t gameObjectID)
 // Add component factory to map
 void ObjectFactory::AddComponentFactory(std::string componentName, ComponentFactoryBase* componentFactory)
 {
-	componentFactoryMap[componentName] = componentFactory;
+	//componentFactoryMap[componentName] = componentFactory;
+	componentFactoryMap.insert(std::pair(componentName, componentFactory));
 }
 /*bool ObjectFactory::AddComponent(std::string componentName) {
 	std::map<std::string, ComponentFactoryBase*>::iterator it = componentFactoryMap.find(componentName);
