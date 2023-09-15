@@ -87,7 +87,7 @@ void OpenGLApplication::OpenGLWindowInit()
 	// Set input mode for the window with the cursor (Enables Cursor Input)
 	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
 
-	//objectFactory->Initialize();
+	
 
 }
 
@@ -159,6 +159,8 @@ void OpenGLApplication::OpenGLInit()
 	//float worldWidth = 20.0f;
 	//float worldHeight = 20.0f * (height / (float)width);
 	//glm::mat4 projection = glm::ortho(-worldWidth / 2, worldWidth / 2, -worldHeight / 2, worldHeight / 2, -1.0f, 1.0f);
+	objectFactory->BuildObjectRunTime();
+	objectFactory->AddComponent("PhysicsBody", objectFactory->GetGameObjectByID(0));
 
 }
 

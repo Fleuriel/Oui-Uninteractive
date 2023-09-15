@@ -38,7 +38,7 @@ public:
 	}
 	
 	*/
-	virtual void Serialize(const std::string& filePath, JsonSerializer& serializer) = 0;
+	virtual void Serialize(const std::string& filePath, JsonSerializer& serializer) {};
 
 
 	virtual ~IComponent() {};
