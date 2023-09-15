@@ -29,6 +29,7 @@
     <ClCompile Include="Source\Editor.cpp" />
     <ClCompile Include="Source\GameObject.cpp" />
     <ClCompile Include="Source\GameStateManager.cpp" />
+    <ClCompile Include="Source\Global.cpp" />
     <ClCompile Include="Source\JsonSerializer.cpp" />
     <ClCompile Include="Source\Mapping.cpp" />
     <ClCompile Include="Source\Matrix3x3.cpp" />

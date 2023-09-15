@@ -16,6 +16,7 @@
 #include <GameStateManager.h>
 
 
+
  std::vector<bool> InputStates(NUMBER_OF_INPUT_STATES, false);
 
 #define UNREFERENCED_PARAMETER(P)(P)

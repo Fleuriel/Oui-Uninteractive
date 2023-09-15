@@ -20,6 +20,7 @@
 #include <string>
 #include <Mapping.h>
 #include "ObjectFactory.h"
+#include <Global.h>
 
 GLFWwindow* window;
 
