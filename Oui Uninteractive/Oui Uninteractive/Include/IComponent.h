@@ -10,6 +10,7 @@
 #pragma once
 
 #include "ComponentType.h"
+#include "JsonSerializer.h"
 
 class IComponent {
 private:
@@ -18,7 +19,6 @@ private:
 
 public:
 	//HasSibling()
-	//Serialize()
 
 	// Specify the type of component
 	ComponentType componentType;
@@ -28,6 +28,17 @@ public:
 
 	// Get order of component
 	//GetOwner() {return base};
+	
+	// Each component to serialize their own data
+	/* Usage(to change*):
+	
+	rapidjson::Document objDoc;
+	if (serializer.ReadJSONFile(filePath, objDoc)) {
+		body.someVar = objDoc["body"]["someVar"].GetString();
+	}
+	
+	*/
+	virtual void Serialize(const std::string& filePath, JsonSerializer& serializer) = 0;
 
 
 	virtual ~IComponent() {};
