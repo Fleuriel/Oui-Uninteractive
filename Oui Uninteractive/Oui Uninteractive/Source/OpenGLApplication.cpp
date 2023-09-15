@@ -147,7 +147,7 @@ void OpenGLApplication::OpenGLUpdate()
 {
 
 
-		OpenGLSetBackgroundColor(1.0f, 0.0f, 0.0f, 1.0f);
+		OpenGLSetBackgroundColor(0.5f, 0.5f, 0.5f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
 
 		glUseProgram(Objects.ShaderProgram);
@@ -175,8 +175,6 @@ void OpenGLApplication::OpenGLUpdate()
 		////glVertex2f(5.0f, 5.0f);
 		//
 		//glEnd();
-
-
 
 		
 
@@ -443,7 +441,7 @@ void OpenGLApplication::OpenGLObjectsInitialization()
 
 void OpenGLApplication::OpenGLTestChangingStates()
 {
-	OpenGLSetBackgroundColor(1.0f, 0.0f, 1.0f, 1.0f);
+	OpenGLSetBackgroundColor(0.1f, 0.1f, 0.1f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT);
 
 	glUseProgram(Objects.ShaderProgram);
