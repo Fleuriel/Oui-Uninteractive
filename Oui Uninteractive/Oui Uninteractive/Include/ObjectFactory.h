@@ -6,7 +6,7 @@
 #include "ISystem.h"
 #include "GameObject.h"
 
-class ComponentFactory;
+class ComponentFactoryBase;
 
 class ObjectFactory : public ISystem {
 private:
@@ -20,10 +20,10 @@ private:
 	std::set<GameObject*> gameObjectDestroyList;
 
 	// Map of component factories
-	std::map<std::string, ComponentFactory*> componentFactoryMap;
+	std::map<std::string, ComponentFactoryBase*> componentFactoryMap;
 
 public:
-	ObjectFactory() : gameObjectCurrentID{} {}
+	ObjectFactory();
 	~ObjectFactory() {}
 
 	// Create a new game object from a file
@@ -35,6 +35,8 @@ public:
 
 	// Create a new game object during run-time
 	GameObject* BuildObjectRunTime();
+
+	
 
 	// Add a to-be-destroyed game object to the destroy list
 	void DestroyObject(GameObject* gameObject);
@@ -54,5 +56,7 @@ public:
 	// messaging...
 
 	// Add component factory to map
-	void AddComponentFactory(std::string componentName, ComponentFactory* componentFactory);
+	void AddComponentFactory(std::string componentName, ComponentFactoryBase* componentFactory);
+	//bool AddComponent(std::string name);
 };
+extern ObjectFactory* objectFactory;

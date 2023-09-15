@@ -1,5 +1,12 @@
 #include "ObjectFactory.h"
+ObjectFactory* objectFactory = NULL;
 
+ObjectFactory::ObjectFactory() : gameObjectCurrentID{} {
+	if (objectFactory != NULL) {
+		return;
+	}
+	objectFactory = this;
+}
 // No serialization as of now
 GameObject* ObjectFactory::BuildObjectFromFile(std::string componentName) {
 	//GameObject* object{new GameObject()};
@@ -48,7 +55,19 @@ GameObject* ObjectFactory::GetGameObjectByID(size_t gameObjectID)
 }
 
 // Add component factory to map
-void ObjectFactory::AddComponentFactory(std::string componentName, ComponentFactory* componentFactory)
+void ObjectFactory::AddComponentFactory(std::string componentName, ComponentFactoryBase* componentFactory)
 {
 	componentFactoryMap[componentName] = componentFactory;
 }
+/*bool ObjectFactory::AddComponent(std::string componentName) {
+	std::map<std::string, ComponentFactoryBase*>::iterator it = componentFactoryMap.find(componentName);
+	if (it != componentFactoryMap.end()) {
+		ComponentFactoryBase* factory = it->second;
+		
+		//IComponent* component = factory->create();
+	}
+	else {
+		return false;
+	}
+	return true;
+}*/

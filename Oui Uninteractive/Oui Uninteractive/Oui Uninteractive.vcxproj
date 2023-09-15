@@ -25,6 +25,7 @@
     <ClCompile Include="..\lib\imgui-docking\imgui_draw.cpp" />
     <ClCompile Include="..\lib\imgui-docking\imgui_tables.cpp" />
     <ClCompile Include="..\lib\imgui-docking\imgui_widgets.cpp" />
+    <ClCompile Include="Source\Collision.cpp" />
     <ClCompile Include="Source\Editor.cpp" />
     <ClCompile Include="Source\GameObject.cpp" />
     <ClCompile Include="Source\GameStateManager.cpp" />
@@ -36,6 +37,7 @@
     <ClCompile Include="Source\main.cpp" />
     <ClCompile Include="Source\OpenGLApplication.cpp" />
     <ClCompile Include="Source\InputKeys.cpp" />
+    <ClCompile Include="Source\ParticleSystem.cpp" />
     <ClCompile Include="Source\Physics.cpp" />
     <ClCompile Include="Source\PhysicsBody.cpp" />
     <ClCompile Include="Source\RandomUtilities.cpp" />
@@ -43,12 +45,15 @@
     <ClCompile Include="Source\Vector2D.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Include\Collision.h" />
     <ClInclude Include="Include\ComponentFactory.h" />
     <ClInclude Include="Include\ComponentType.h" />
     <ClInclude Include="Include\Editor.h" />
+    <ClInclude Include="Include\EngineHeaders.h" />
     <ClInclude Include="Include\Event.h" />
     <ClInclude Include="Include\GameObject.h" />
     <ClInclude Include="Include\GameStateManager.h" />
+    <ClInclude Include="Include\Global.h" />
     <ClInclude Include="Include\IComponent.h" />
     <ClInclude Include="Include\Mapping.h" />
     <ClInclude Include="Include\ISystem.h" />
@@ -59,10 +64,12 @@
     <ClInclude Include="Include\keyDefinition.h" />
     <ClInclude Include="Include\OpenGLApplication.h" />
     <ClInclude Include="Include\InputKeys.h" />
+    <ClInclude Include="Include\ParticleSystem.h" />
     <ClInclude Include="Include\Physics.h" />
     <ClInclude Include="Include\PhysicsBody.h" />
     <ClInclude Include="Include\PhysicsHeaders.h" />
     <ClInclude Include="Include\RandomUtilities.h" />
+    <ClInclude Include="Include\ReadMe.h" />
     <ClInclude Include="Include\Transform.h" />
     <ClInclude Include="Include\Vector2D.h" />
   </ItemGroup>

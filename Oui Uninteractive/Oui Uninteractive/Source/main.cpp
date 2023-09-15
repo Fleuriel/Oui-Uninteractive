@@ -10,6 +10,7 @@
 
 #include <iostream>
 #include <GameStateManager.h>
+#include "Physics.h"
 
 
 int Mode;
@@ -22,11 +23,15 @@ int main()
 		return -1;
 
 	CreateWindow(900, 900);
-		
+
+	// Set callback for window close button (top right button).
 	glfwSetWindowCloseCallback(window, windowCloseCallback);
+
+
 	// Initialize the GameStateManager
 	// Someone needs to put 
 	GameStateManagerInit(STATE_GRAPHICS_TEST);
+	
 	previousTime = std::chrono::high_resolution_clock::now();
 
 	// The Main Window.
@@ -58,13 +63,13 @@ int main()
 			// Poll the events from the window. [OpenGL Function]
 			glfwPollEvents();
 
-
 			GameUpdate();
+			//needs to be changed, currently input is being checked before physics
+		//	physicsSys->Update(GetDT());
 
 
 			// Swap Buffers with the window, similar to GOL in Y1T1 [OpenGL Function]
 			glfwSwapBuffers(window);
-
 
 
 			//std::cout << GetDeltaTime() << '\n';
