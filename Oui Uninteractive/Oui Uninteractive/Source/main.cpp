@@ -22,7 +22,7 @@ int main()
 	if (!glfwInit())
 		return -1;
 
-	CreateWindow(900, 900);
+	CreateWindow();
 
 	// Set callback for window close button (top right button).
 	glfwSetWindowCloseCallback(window, windowCloseCallback);

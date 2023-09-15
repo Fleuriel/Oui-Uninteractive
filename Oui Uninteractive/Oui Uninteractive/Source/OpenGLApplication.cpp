@@ -42,9 +42,17 @@ std::string title = "Hello";
 static bool glewInitialized = false;
 static bool imguiInitialized = false;
 
-void OpenGLApplication::OpenGLWindowInit(unsigned short width, unsigned short height)
+void OpenGLApplication::OpenGLWindowInit()
 {
-	std::cout << "First\n";
+	// Read window size from JSON
+	std::string filePath = "../window-data/window-data.JSON";
+	rapidjson::Document windowDoc;
+	// Initialize window dimensions from JSON
+	unsigned short width, height;
+	if (Editor::ReadJSONFile(filePath, windowDoc)) {
+		width = windowDoc["windowX"].GetInt();
+		height = windowDoc["windowY"].GetInt();
+	}
 	window = glfwCreateWindow(width, height, "hello", NULL, NULL);
 	if (!window)
 	{
@@ -53,7 +61,6 @@ void OpenGLApplication::OpenGLWindowInit(unsigned short width, unsigned short he
 		std::cout << "Problem\n";
 		return;
 	}
-	std::cout << "second\n";
 
 	// Tell GLFW we are using OpenGL 4.5
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
@@ -88,6 +95,18 @@ void OpenGLApplication::OpenGLWindowInit(unsigned short width, unsigned short he
 
 void OpenGLApplication::OpenGLWindowCleanup()
 {
+	// Get window dimensions
+	int width, height;
+	glfwGetWindowSize(window, &width, &height);
+	// Save window size
+	std::string filePath = "../window-data/window-data.JSON";
+	rapidjson::Document windowDoc;
+	if (Editor::ReadJSONFile(filePath, windowDoc)) {
+		windowDoc["windowX"] = width;
+		windowDoc["windowY"] = height;
+		Editor::WriteJSONFile(filePath, windowDoc);
+	}
+
 	myImGui.Exit();
 	glfwTerminate();
 }
@@ -389,7 +408,6 @@ void OpenGLApplication::OpenGLCleanup()
 
 
 }
-
 
 
 
