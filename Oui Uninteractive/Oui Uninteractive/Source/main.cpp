@@ -10,6 +10,7 @@
 
 #include <iostream>
 #include <GameStateManager.h>
+#include "Physics.h"
 
 
 int Mode;
@@ -27,6 +28,7 @@ int main()
 	// Initialize the GameStateManager
 	// Someone needs to put 
 	GameStateManagerInit(STATE_GRAPHICS_TEST);
+	
 	previousTime = std::chrono::high_resolution_clock::now();
 
 	// The Main Window.
@@ -58,8 +60,9 @@ int main()
 			// Poll the events from the window. [OpenGL Function]
 			glfwPollEvents();
 
-
 			GameUpdate();
+			//needs to be changed, currently input is being checked before physics
+		//	physicsSys->Update(GetDT());
 
 
 			// Swap Buffers with the window, similar to GOL in Y1T1 [OpenGL Function]

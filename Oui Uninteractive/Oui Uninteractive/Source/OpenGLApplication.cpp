@@ -19,6 +19,7 @@
 #include <Editor.h>
 #include <string>
 #include <Mapping.h>
+#include "ObjectFactory.h"
 
 GLFWwindow* window;
 
@@ -80,7 +81,7 @@ void OpenGLApplication::OpenGLWindowInit(unsigned short width, unsigned short he
 	// Set input mode for the window with the cursor (Enables Cursor Input)
 	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
 
-
+	//objectFactory->Initialize();
 
 }
 

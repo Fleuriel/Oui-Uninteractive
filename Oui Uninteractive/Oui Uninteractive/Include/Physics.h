@@ -8,8 +8,6 @@
 class Physics : public ISystem{
 	Physics();
 	
-	virtual void Update(float dt);
-	void Initialize();
 	
 
 	
@@ -20,6 +18,9 @@ class Physics : public ISystem{
 	// void setPosition(Vec2 pos, objectID ID)
 	//void setVelocity(Vec2 vel);
 public:
+	virtual void Update(float dt);
+	void Initialize();
+
 	//insert linked list of all physics body components
 	std::list<PhysicsBody*> bodyList;
 

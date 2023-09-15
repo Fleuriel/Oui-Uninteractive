@@ -182,5 +182,8 @@
     <ClInclude Include="Include\ComponentFactory.h">
       <Filter>Header Files\Component</Filter>
     </ClInclude>
+    <ClInclude Include="Include\EngineHeaders.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

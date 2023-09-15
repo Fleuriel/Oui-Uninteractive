@@ -46,6 +46,7 @@
     <ClInclude Include="Include\ComponentFactory.h" />
     <ClInclude Include="Include\ComponentType.h" />
     <ClInclude Include="Include\Editor.h" />
+    <ClInclude Include="Include\EngineHeaders.h" />
     <ClInclude Include="Include\Event.h" />
     <ClInclude Include="Include\GameObject.h" />
     <ClInclude Include="Include\GameStateManager.h" />
