@@ -19,10 +19,10 @@
 #include <Editor.h>
 #include <string>
 #include <Mapping.h>
+#include "ObjectFactory.h"
 
 GLFWwindow* window;
 
-std::map<std::string, OpenGLObject> OpenGLApplication::Object_Storage;
 UsingImGui myImGui; // Creating imGui object
 Editor myEditor; // Creating editor object
 
@@ -42,9 +42,17 @@ std::string title = "Hello";
 static bool glewInitialized = false;
 static bool imguiInitialized = false;
 
-void OpenGLApplication::OpenGLWindowInit(unsigned short width, unsigned short height)
+void OpenGLApplication::OpenGLWindowInit()
 {
-	std::cout << "First\n";
+	// Read window size from JSON
+	std::string filePath = "../window-data/window-data.JSON";
+	rapidjson::Document windowDoc;
+	// Initialize window dimensions from JSON
+	unsigned short width, height;
+	if (Editor::ReadJSONFile(filePath, windowDoc)) {
+		width = windowDoc["windowX"].GetInt();
+		height = windowDoc["windowY"].GetInt();
+	}
 	window = glfwCreateWindow(width, height, "hello", NULL, NULL);
 	if (!window)
 	{
@@ -53,7 +61,6 @@ void OpenGLApplication::OpenGLWindowInit(unsigned short width, unsigned short he
 		std::cout << "Problem\n";
 		return;
 	}
-	std::cout << "second\n";
 
 	// Tell GLFW we are using OpenGL 4.5
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
@@ -80,8 +87,28 @@ void OpenGLApplication::OpenGLWindowInit(unsigned short width, unsigned short he
 	// Set input mode for the window with the cursor (Enables Cursor Input)
 	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
 
+	//objectFactory->Initialize();
+
+}
 
 
+
+void OpenGLApplication::OpenGLWindowCleanup()
+{
+	// Get window dimensions
+	int width, height;
+	glfwGetWindowSize(window, &width, &height);
+	// Save window size
+	std::string filePath = "../window-data/window-data.JSON";
+	rapidjson::Document windowDoc;
+	if (Editor::ReadJSONFile(filePath, windowDoc)) {
+		windowDoc["windowX"] = width;
+		windowDoc["windowY"] = height;
+		Editor::WriteJSONFile(filePath, windowDoc);
+	}
+
+	myImGui.Exit();
+	glfwTerminate();
 }
 
 
@@ -135,11 +162,12 @@ void OpenGLApplication::OpenGLInit()
 
 }
 
+
 void OpenGLApplication::OpenGLUpdate()
 {
 
 
-		OpenGLSetBackgroundColor(1.0f, 0.0f, 0.0f, 1.0f);
+		OpenGLSetBackgroundColor(0.5f, 0.5f, 0.5f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
 
 		glUseProgram(Objects.ShaderProgram);
@@ -167,8 +195,6 @@ void OpenGLApplication::OpenGLUpdate()
 		////glVertex2f(5.0f, 5.0f);
 		//
 		//glEnd();
-
-
 
 		
 
@@ -269,7 +295,7 @@ void OpenGLApplication::OpenGLUpdate()
 			std::cout << "0\n";
 		if (InputStates[INPUT_1])
 		{
-			std::cout << Object_Storage.size() << '\n';
+			std::cout << OpenGLObject::Object_Storage.size() << '\n';
 			//std::cout << "1\n";
 		}
 		if (InputStates[INPUT_2])
@@ -353,18 +379,12 @@ void OpenGLApplication::OpenGLUpdate()
 		
 		//std::cout << GetFPS() << '\n';
 		
-
-		// Update objects
-		for (auto& x : Object_Storage)
-		{
-			std::cout << x.first << '\n';
-			x.second.Update(GetDT());
-		}
+		// Draws every second...
 		
-		if (IsTimeElapsed(1))
-		{
-			Draw();
-		}
+		Draw();
+	
+		
+
 		/*---------------------------------------------------------------------------*/
 
 		/*-----------------------------------
@@ -390,31 +410,37 @@ void OpenGLApplication::OpenGLCleanup()
 }
 
 
-void OpenGLApplication::OpenGLWindowCleanup()
-{
-	myImGui.Exit();
-	glfwTerminate();
-}
-
 
 
 
 void OpenGLApplication::Draw() {
 
-	for (auto& x : Object_Storage)
+	std::cout << OpenGLObject::Object_Storage.size();
+
+	// update object transforms
+	for (auto& x : OpenGLObject::Object_Storage)
 	{
+		if (x.first == "Camera")
+			continue;
+
 		std::cout << x.first << '\n';
+		std::cout << "YES\n";
 		x.second.Draw();
 	}
 	
-	// setting up the text to be displayed as the window title
-	std::stringstream sStr;
-	sStr << title.c_str() << " | "
-		<< std::fixed << std::setprecision(2)
-		<< "FPS:  | " << GetFrames();
+	// to prevent spamming
+	if (IsTimeElapsed(1))
+	{	
+		// setting up the text to be displayed as the window title
+		std::stringstream sStr;
+		sStr << title.c_str() << " | "
+			<< std::fixed << std::setprecision(2)
+			<< "FPS:  | " << GetFrames();
 
-	// setting the text as the window title
-	glfwSetWindowTitle(window, sStr.str().c_str());
+		// setting the text as the window title
+		glfwSetWindowTitle(window, sStr.str().c_str());
+	}
+
 }
 
 void OpenGLApplication::OpenGLSetBackgroundColor(float r, float g, float b, float a) {
@@ -434,7 +460,7 @@ void OpenGLApplication::OpenGLObjectsInitialization()
 
 void OpenGLApplication::OpenGLTestChangingStates()
 {
-	OpenGLSetBackgroundColor(1.0f, 0.0f, 1.0f, 1.0f);
+	OpenGLSetBackgroundColor(0.1f, 0.1f, 0.1f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT);
 
 	glUseProgram(Objects.ShaderProgram);

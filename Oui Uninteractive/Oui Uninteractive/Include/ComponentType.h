@@ -10,5 +10,8 @@
 #pragma once
 
 enum class ComponentType {
-	None = 0
+	None = 0,
+	PhysicsBody,
+	Transform
+	
 };

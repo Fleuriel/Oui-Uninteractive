@@ -27,7 +27,7 @@ public:
 
 	// Functions to set data ...
 	static void OpenGLTestChangingStates();
-	static void OpenGLWindowInit(unsigned short width, unsigned short height);
+	static void OpenGLWindowInit();
 	static void OpenGLInit();
 	static void OpenGLUpdate();
 	static void OpenGLCleanup();
@@ -36,7 +36,6 @@ public:
 	static void OpenGLObjectsInitialization();
 //	static void render_square(glm::vec2 scaling, glm::vec2 position);
 
-	static std::map<std::string, OpenGLObject> Object_Storage;
 
 
 	static void Draw();

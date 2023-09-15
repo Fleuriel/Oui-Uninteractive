@@ -1,9 +1,12 @@
 #include "Physics.h"
+#include "ComponentFactory.h"
+#include "ObjectFactory.h"
+#include <iostream>
 Physics* physicsSys = nullptr;
 Physics::Physics() {
-	if (physicsSys != nullptr) {
+	if (physicsSys == nullptr) {
 		//instantiate physics system
-		physicsSys = this;
+		return;
 	}
 	else {
 		physicsSys = this;
@@ -12,7 +15,8 @@ Physics::Physics() {
 }
 void Physics::Initialize() {
 	//Register Component creator of Body here
-
+	//objectFactory->AddComponentFactory("PhysicsBody", new ComponentFactory<PhysicsBody>(ComponentType::PhysicsBody));
+	std::cout << "I WILL ADD THE PHYSICS BODY FACTORY HERE";
 }
 void Physics::Update(float dt) {
 
