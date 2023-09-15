@@ -15,9 +15,14 @@
 
 }*/
 
-// Initialize
+/**************************************************************************
+* @brief Initialize game object
+*************************************************************************/
 void GameObject::Initialize() {
-
+	// Initialize each component in componentList
+	for (size_t i{}; i < componentList.size(); ++i) {
+		componentList[i]->Initialize();
+	}
 }
 
 /**************************************************************************

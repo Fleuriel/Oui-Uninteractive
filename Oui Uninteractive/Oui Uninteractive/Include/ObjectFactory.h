@@ -1,3 +1,12 @@
+/**************************************************************************
+ * @file		  ObjectFactory.h
+ * @author
+ * @par DP email:
+ * @par Course:	  CSD 2401
+ * @par			  Software Engineering Project 3
+ * @date		  09-13-2023
+ * @brief
+ *************************************************************************/
 #pragma once
 
 #include <string>
@@ -28,10 +37,10 @@ public:
 
 	// Create a new game object from a file
 	// To change parameter to the filename when implementing serialization in the future
-	GameObject* BuildObjectFromFile(std::string componentName);
+	GameObject* BuildObjectFromFile(const std::string& filePath);
 
 	// Serialize a game object
-	// To be implemented when serialization is figured out
+	GameObject* SerializeObject(const std::string& filePath);
 
 	// Create a new game object during run-time
 	GameObject* BuildObjectRunTime();
