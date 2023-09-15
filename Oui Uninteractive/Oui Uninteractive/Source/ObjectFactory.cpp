@@ -63,6 +63,8 @@ GameObject* ObjectFactory::SerializeObject(const std::string& filePath) {
 				gameObject->AddComponent(component, componentFactory->type);
 			}
 		}
+		// Assign an ID to the game object
+		AssignObjectID(gameObject);
 
 		return gameObject;
 	}
