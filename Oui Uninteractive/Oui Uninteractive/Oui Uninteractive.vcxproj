@@ -25,6 +25,7 @@
     <ClCompile Include="..\lib\imgui-docking\imgui_draw.cpp" />
     <ClCompile Include="..\lib\imgui-docking\imgui_tables.cpp" />
     <ClCompile Include="..\lib\imgui-docking\imgui_widgets.cpp" />
+    <ClCompile Include="Source\Collision.cpp" />
     <ClCompile Include="Source\Editor.cpp" />
     <ClCompile Include="Source\GameObject.cpp" />
     <ClCompile Include="Source\GameStateManager.cpp" />
@@ -43,6 +44,7 @@
     <ClCompile Include="Source\Vector2D.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Include\Collision.h" />
     <ClInclude Include="Include\ComponentFactory.h" />
     <ClInclude Include="Include\ComponentType.h" />
     <ClInclude Include="Include\Editor.h" />
