@@ -29,6 +29,7 @@
     <ClCompile Include="Source\Editor.cpp" />
     <ClCompile Include="Source\GameObject.cpp" />
     <ClCompile Include="Source\GameStateManager.cpp" />
+    <ClCompile Include="Source\Global.cpp" />
     <ClCompile Include="Source\JsonSerializer.cpp" />
     <ClCompile Include="Source\Mapping.cpp" />
     <ClCompile Include="Source\Matrix3x3.cpp" />
@@ -42,6 +43,7 @@
     <ClCompile Include="Source\Physics.cpp" />
     <ClCompile Include="Source\PhysicsBody.cpp" />
     <ClCompile Include="Source\RandomUtilities.cpp" />
+    <ClCompile Include="Source\Sound.cpp" />
     <ClCompile Include="Source\SystemManager.cpp" />
     <ClCompile Include="Source\Transform.cpp" />
     <ClCompile Include="Source\Vector2D.cpp" />
@@ -74,6 +76,7 @@
     <ClInclude Include="Include\PhysicsHeaders.h" />
     <ClInclude Include="Include\RandomUtilities.h" />
     <ClInclude Include="Include\ReadMe.h" />
+    <ClInclude Include="Include\Sound.h" />
     <ClInclude Include="Include\SystemManager.h" />
     <ClInclude Include="Include\Transform.h" />
     <ClInclude Include="Include\Vector2D.h" />

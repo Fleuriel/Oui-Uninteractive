@@ -5,7 +5,8 @@
 Variables/function parameters: inputExampleHere, oneTwoThree
 Defines: #define PLAYER_HEALTH 5 , INPUT_SPACE …
 Global: using namespace //////
-Functions: void ShootGun();
+Functions/structs/classes/enums: void ShootGun();
+Enum contents: ALL CAPS = 0;
 
 
 *******************************
