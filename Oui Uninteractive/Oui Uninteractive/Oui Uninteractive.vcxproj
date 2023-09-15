@@ -30,6 +30,7 @@
     <ClCompile Include="Source\GameObject.cpp" />
     <ClCompile Include="Source\GameStateManager.cpp" />
     <ClCompile Include="Source\Global.cpp" />
+    <ClCompile Include="Source\JsonSerializer.cpp" />
     <ClCompile Include="Source\Mapping.cpp" />
     <ClCompile Include="Source\Matrix3x3.cpp" />
     <ClCompile Include="Source\ObjectFactory.cpp" />
@@ -57,6 +58,8 @@
     <ClInclude Include="Include\GameStateManager.h" />
     <ClInclude Include="Include\Global.h" />
     <ClInclude Include="Include\IComponent.h" />
+    <ClInclude Include="Include\ISerializer.h" />
+    <ClInclude Include="Include\JsonSerializer.h" />
     <ClInclude Include="Include\Mapping.h" />
     <ClInclude Include="Include\ISystem.h" />
     <ClInclude Include="Include\Matrix3x3.h" />
