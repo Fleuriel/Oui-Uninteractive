@@ -26,8 +26,11 @@ private:
 	std::vector<IComponent*> componentList;	// may use typedef to represent vector in the future
 
 public:
-	//GameObject();
-	//=~GameObject();
+	// Set ObjectFactory as friend class to access gameObjectID
+	friend class ObjectFactory;
+
+	GameObject() : gameObjectID{} {}
+	~GameObject() {}
 
 	// Game object factory stuff here
 	

@@ -27,7 +27,7 @@ void GameObject::Initialize() {
 *************************************************************************/
 void GameObject::AddComponent(IComponent* c, ComponentType t) {
 	c->componentType = t;
-	componentList.push_back(c); 
+	componentList.push_back(c);
 }
 
 /**************************************************************************
