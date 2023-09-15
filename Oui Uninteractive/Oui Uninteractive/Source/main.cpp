@@ -12,8 +12,7 @@
 #include <GameStateManager.h>
 
 
-int Mode;
-
+void TimeUpdate();
 
 int main()
 {
@@ -109,3 +108,10 @@ int main()
 
 
 
+
+void TimeUpdate()
+{
+	currentTime = std::chrono::high_resolution_clock::now();
+	deltaTime = std::chrono::duration_cast<std::chrono::duration<double>>(currentTime - previousTime);
+	previousTime = currentTime;
+}

@@ -53,11 +53,12 @@ public:
 		
 		std::vector <glm::vec2> Position_Vertex;
 
+		void init(std::string);
 
 		OpenGLModel() : primitive_type(0), primitive_cnt(0), vaoid(0), draw_cnt(0), model_cnt(0) {}
 	};
 
-	std::map<std::string, OpenGLModel>::iterator mdl_ref;
+	 std::map<std::string, OpenGLModel>::iterator mdl_ref;
 	std::map<std::string, OpenGLShader>::iterator shd_ref;
 
 	// set up initial state
@@ -85,7 +86,7 @@ public:
 
 
 	static void Load_Files();
-	static void Load_Meshes();
+	static void Load_Meshes(std::string);
 
 
 	// Data for Square and Triangles
@@ -93,8 +94,6 @@ public:
 	static std::vector<glm::vec2> triangle;
 	static std::vector<std::string> mesh_Directory;
 	
-	static GLuint vaoID;
-	static GLuint pboID;
 	static GLuint textureID;
 
 

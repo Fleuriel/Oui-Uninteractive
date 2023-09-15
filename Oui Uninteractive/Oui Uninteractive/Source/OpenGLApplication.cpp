@@ -150,9 +150,9 @@ void OpenGLApplication::OpenGLUpdate()
 		OpenGLSetBackgroundColor(0.5f, 0.5f, 0.5f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
 
-		glUseProgram(Objects.ShaderProgram);
-		glBindVertexArray(Objects.VAO);
-		glDrawArrays(GL_TRIANGLES, 0, 3);
+		//glUseProgram(Objects.ShaderProgram);
+		//glBindVertexArray(Objects.VAO);
+		//glDrawArrays(GL_TRIANGLES, 0, 3);
 
 //		glDrawElements(GL_TRIANGLES, 9, GL_UNSIGNED_INT, 0);
 
@@ -275,7 +275,9 @@ void OpenGLApplication::OpenGLUpdate()
 			std::cout << "0\n";
 		if (InputStates[INPUT_1])
 		{
+#ifdef _DEBUG
 			std::cout << OpenGLObject::Object_Storage.size() << '\n';
+#endif
 			//std::cout << "1\n";
 		}
 		if (InputStates[INPUT_2])
@@ -396,17 +398,22 @@ void OpenGLApplication::OpenGLCleanup()
 
 void OpenGLApplication::Draw() {
 
-	std::cout << OpenGLObject::Object_Storage.size();
+#ifdef _DEBUG
+	std::cout << "Object Storage Size:" << OpenGLObject::Object_Storage.size() << '\n';
 
+
+#endif
 	// update object transforms
-	for (auto& x : OpenGLObject::Object_Storage)
+	for (auto const& obj : OpenGLObject::Object_Storage)
 	{
-		if (x.first == "Camera")
+		if (obj.first == "Camera")
 			continue;
-
-		std::cout << x.first << '\n';
+#ifdef _DEBUG
+		//std::cout << x.first << '\n';
 		std::cout << "YES\n";
-		x.second.Draw();
+#endif
+		obj.second.Draw();
+
 	}
 	
 	// to prevent spamming
@@ -427,15 +434,6 @@ void OpenGLApplication::Draw() {
 void OpenGLApplication::OpenGLSetBackgroundColor(float r, float g, float b, float a) {
 	glClearColor(r, g, b, a);
 }
-
-
-
-void OpenGLApplication::OpenGLObjectsInitialization()
-{
-
-}
-
-
 
 
 
