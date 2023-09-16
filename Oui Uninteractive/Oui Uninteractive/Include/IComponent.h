@@ -43,6 +43,6 @@ public:
 
 	virtual ~IComponent() {};
 };
-GameObject* IComponent::GetOwner() {
+/*GameObject* IComponent::GetOwner() {
 	return base;
-}
+}*/
