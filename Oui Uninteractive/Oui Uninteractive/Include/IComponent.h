@@ -27,8 +27,10 @@ public:
 	virtual void Initialize() = 0;
 
 	// Get order of component
-	GameObject* GetOwner();
-	
+	GameObject* GetOwner() {
+		return base;
+	}
+
 	// Each component to serialize their own data
 	/* Usage(to change*):
 	
@@ -43,6 +45,4 @@ public:
 
 	virtual ~IComponent() {};
 };
-/*GameObject* IComponent::GetOwner() {
-	return base;
-}*/
+
