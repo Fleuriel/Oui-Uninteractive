@@ -50,12 +50,17 @@ public:
 	void RemoveComponent(IComponent* c);
 
 	// Check if component is in componentList
-	bool Has(IComponent* c);
+	int Has(ComponentType type);
+
+	
 
 	// Get game object ID
 	size_t GetGameObjectID();
 
 	// Get component
+	IComponent* GetComponent(ComponentType typeID);
 
 	// Get component type
+	template <typename T> T* GetComponentType(ComponentType typeID);
 };
+
