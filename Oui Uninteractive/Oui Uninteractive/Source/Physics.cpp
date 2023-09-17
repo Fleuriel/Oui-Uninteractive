@@ -44,8 +44,19 @@ void Physics::setPosition(Vec2 pos) {
 		body->position = pos;
 	}
 }
+void Physics::setPosition(Vec2 pos, size_t ID) {
+	
+	if (ID < bodyList.size()) {
+		bodyList.at(ID)->position = pos;	
+	}
+}
 void Physics::setVelocity(Vec2 newVelocity) {
 	for (PhysicsBody* body : bodyList) {
 		body->velocity = newVelocity;
+	}
+}
+void Physics::setVelocity(Vec2 velocity, size_t ID) {
+	if (ID < bodyList.size()) {
+		bodyList.at(ID)->velocity = velocity;
 	}
 }

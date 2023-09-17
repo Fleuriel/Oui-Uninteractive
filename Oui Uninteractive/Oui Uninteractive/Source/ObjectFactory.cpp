@@ -100,7 +100,12 @@ void ObjectFactory::AssignObjectID(GameObject* gameObject) {
 
 // Destroy all game objects
 void ObjectFactory::DestroyAllObjects() {
+	std::map<size_t, GameObject*>::iterator it = gameObjectIDMap.begin();
 
+	while (it != gameObjectIDMap.end()) {
+		delete it->second;
+		it++;
+	}
 }
 
 // Get a game object by ID
