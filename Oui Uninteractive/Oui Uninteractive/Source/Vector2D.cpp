@@ -40,8 +40,7 @@ Vector2D& Vector2D::operator-=(const Vector2D& rhs)
 /**************************************************************************/
 Vector2D& Vector2D::operator*=(float rhs)
 {
-	x *= rhs;
-	y *= rhs;
+	*this = *this * rhs;
 	return *this;
 }
 
@@ -52,8 +51,7 @@ Vector2D& Vector2D::operator*=(float rhs)
 /**************************************************************************/
 Vector2D& Vector2D::operator/=(float rhs)
 {
-	x /= rhs;
-	y /= rhs;
+	*this = *this / rhs;
 	return *this;
 }
 
@@ -64,10 +62,7 @@ Vector2D& Vector2D::operator/=(float rhs)
 /**************************************************************************/
 Vector2D Vector2D::operator-() const
 {
-	Vector2D temp;
-	temp.x = -x;
-	temp.y = -y;
-	return temp;
+	return Vector2D(-x,-y);
 }
 
 /**************************************************************************/
@@ -162,10 +157,9 @@ float Vector2DDistance(const Vector2D& pVec0, const Vector2D& pVec1)
 	return Vector2DLength(Vector2D(pVec1.x - pVec0.x, pVec1.y - pVec0.y));
 }
 
-float Vector2DDistance(const Coordinates& coordOne, const Coordinates& coordTwo) {
-
-	return Vector2DDistance(Vector2D{ coordOne.GetCoords(0), coordOne.GetCoords(1) }, Vector2D{ coordTwo.GetCoords(0), coordTwo.GetCoords(1) });
-}
+//float Vector2DDistance(const Coordinates& coordOne, const Coordinates& coordTwo) {
+//	return Vector2DDistance(Vector2D{ coordOne.GetCoords(0), coordOne.GetCoords(1) }, Vector2D{ coordTwo.GetCoords(0), coordTwo.GetCoords(1) });
+//}
 
 /**************************************************************************/
 /*!

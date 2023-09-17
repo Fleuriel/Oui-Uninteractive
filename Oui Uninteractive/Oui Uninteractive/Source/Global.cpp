@@ -12,7 +12,7 @@
  * @return The requested coordinate value as a float.
  *************************************************************************/
 float Coordinates::GetCoords(bool coordIndex) const { 
-    return (coordIndex == X_INDEX) ? xCoords : yCoords;
+    return (coordIndex == X_INDEX) ? Coords.x : Coords.y;
 }
 
 /**************************************************************************
@@ -25,8 +25,7 @@ float Coordinates::GetCoords(bool coordIndex) const {
  * @param y The new y-coordinate value.
  *************************************************************************/
 void Coordinates::SetCoords(float x, float y) {
-    xCoords = x;
-    yCoords = y;
+    Coords = Vector2D(x, y);
 }
 
 /**************************************************************************
@@ -41,5 +40,5 @@ void Coordinates::SetCoords(float x, float y) {
  * @param val        The value to add to the selected coordinate.
  *************************************************************************/
 void Coordinates::AddCoords(bool coordIndex, float val) {
-    ((coordIndex == X_INDEX) ? xCoords : yCoords) += val;
+    ((coordIndex == X_INDEX) ? Coords.x : Coords.y) += val;
 }
