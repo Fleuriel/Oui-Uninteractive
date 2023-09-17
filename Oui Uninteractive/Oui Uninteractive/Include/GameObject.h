@@ -63,4 +63,7 @@ public:
 	// Get component type
 	template <typename T> T* GetComponentType(ComponentType typeID);
 };
+template <typename T> T* GameObject::GetComponentType(ComponentType typeID) {
+	return static_cast<T*>(GetComponent(typeID));
+}
 

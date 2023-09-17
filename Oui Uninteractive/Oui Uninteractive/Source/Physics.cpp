@@ -17,6 +17,8 @@ void Physics::Initialize() {
 	//Register Component creator of Body here
 	ComponentFactory<PhysicsBody>* testPtr = new ComponentFactory<PhysicsBody>(ComponentType::PhysicsBody);
 	objectFactory->AddComponentFactory("PhysicsBody", testPtr);
+	ComponentFactory<Transform>* testPtr2 = new ComponentFactory<Transform>(ComponentType::Transform);
+	objectFactory->AddComponentFactory("Transform", testPtr2);
 }
 void Physics::Update(float dt) {
 
@@ -26,7 +28,7 @@ void Physics::Update(float dt) {
 		}
 		body->position = body->position + body->velocity * dt;
 		body->velocity = body->velocity + body->acceleration * dt;
-	//	body->txPtr->position = body->position;
+		body->txPtr->position = body->position;
 
 		std::cout << "X: " << body->position.x << "Y: " << body->position.y << "\n";
 	}

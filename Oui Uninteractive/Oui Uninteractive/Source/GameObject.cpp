@@ -74,6 +74,3 @@ IComponent* GameObject::GetComponent(ComponentType typeID) {
 	}
 	return nullptr;
 }
-template <typename T> T* GameObject::GetComponentType(ComponentType typeID) {
-	return static_cast<T*>(GetComponent(typeID));
-}

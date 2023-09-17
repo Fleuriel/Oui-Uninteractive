@@ -24,7 +24,7 @@ public:
 	ComponentType componentType;
 	
 	// Initialize component
-	virtual void Initialize() = 0;
+	virtual void Initialize() {};
 
 	// Get order of component
 	GameObject* GetOwner() {

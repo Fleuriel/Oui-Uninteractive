@@ -165,6 +165,7 @@ void OpenGLApplication::OpenGLInit()
 	//init a game object in run time
 	objectFactory->BuildObjectRunTime();
 	objectFactory->AddComponent("PhysicsBody", objectFactory->GetGameObjectByID(0));
+	objectFactory->AddComponent("Transform", objectFactory->GetGameObjectByID(0));
 	objectFactory->GetGameObjectByID(0)->Initialize();
 
 }
