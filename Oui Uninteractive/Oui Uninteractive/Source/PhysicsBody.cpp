@@ -20,3 +20,6 @@ void PhysicsBody::Initialize() {
 	physicsSys->bodyList.push_back(this);
 
 }
+void PhysicsBody::Serialize(std::string str, JsonSerializer serializer) {
+
+}

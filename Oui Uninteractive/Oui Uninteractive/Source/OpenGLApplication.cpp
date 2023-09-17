@@ -168,6 +168,9 @@ void OpenGLApplication::OpenGLInit()
 	objectFactory->AddComponent("Transform", objectFactory->GetGameObjectByID(0));
 	objectFactory->GetGameObjectByID(0)->Initialize();
 
+	//init object from file
+	//objectFactory->BuildObjectFromFile("test.json");
+
 }
 
 
