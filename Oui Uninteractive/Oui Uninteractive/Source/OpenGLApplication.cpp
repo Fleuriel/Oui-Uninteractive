@@ -11,13 +11,11 @@
 #include <iostream>
 #include <OpenGLApplication.h>
 #include <InputKeys.h>
-#include <keyDefinition.h>
 #include <RandomUtilities.h>
 #include <OpenGLObjects.h>
 #include <glm/gtc/matrix_transform.hpp>
 #include <GameStateManager.h>
 #include <Editor.h>
-#include <string>
 #include <Mapping.h>
 #include "ObjectFactory.h"
 #include "Physics.h"
@@ -187,7 +185,7 @@ void OpenGLApplication::OpenGLUpdate()
 		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 		
 		//WireFrame Mode:
-		if (InputStates[INPUT_P])
+		if (keyStates[GLFW_KEY_P])
 		{
 			toggleMode =  !toggleMode;
 		}
@@ -236,20 +234,20 @@ void OpenGLApplication::OpenGLUpdate()
 		|            ALPHABETS              |
 		-----------------------------------*/
 
-		if (InputStates[INPUT_CTRL]) {
-			if (InputStates[INPUT_A]) {
+		if (keyStates[GLFW_KEY_RIGHT_CONTROL] || keyStates[GLFW_KEY_LEFT_CONTROL]) {
+			if (keyStates[GLFW_KEY_A]) {
 				std::cout << "CROUCH LEFT";
 			}
 
-			if (InputStates[INPUT_D]) {
+			if (keyStates[GLFW_KEY_D]) {
 				std::cout << "CROUCH RIGHT";
 			}
 
-			if (InputStates[INPUT_S]) {
+			if (keyStates[GLFW_KEY_S]) {
 				std::cout << "CROUCH DOWN";
 			}
 
-			if (InputStates[INPUT_W]) {
+			if (keyStates[GLFW_KEY_W]) {
 				std::cout << "CROUCH UP";
 				
 			}
@@ -257,21 +255,21 @@ void OpenGLApplication::OpenGLUpdate()
 		else
 
 		// IF BIG LETTERS
-		if ((InputStates[INPUT_SHIFT] && !InputStates[INPUT_CAPS]) + (!InputStates[INPUT_SHIFT] && InputStates[INPUT_CAPS])) {
+		if (((keyStates[GLFW_KEY_RIGHT_SHIFT] || keyStates[GLFW_KEY_LEFT_SHIFT]) && !keyStates[GLFW_KEY_CAPS_LOCK]) + (!(keyStates[GLFW_KEY_RIGHT_SHIFT] || keyStates[GLFW_KEY_LEFT_SHIFT]) && keyStates[GLFW_KEY_CAPS_LOCK])) {
 
-			if (InputStates[INPUT_A]) {
+			if (keyStates[GLFW_KEY_A]) {
 				std::cout << "RUN LEFT\n";
 			}
 
-			if (InputStates[INPUT_D]) {
+			if (keyStates[GLFW_KEY_D]) {
 				std::cout << "RUN RIGHT\n";
 			}
 
-			if (InputStates[INPUT_S]) {
+			if (keyStates[GLFW_KEY_S]) {
 				std::cout << "RUN DOWN\n";
 			}
 
-			if (InputStates[INPUT_W]) {
+			if (keyStates[GLFW_KEY_W]) {
 				std::cout << "RUN UP\n";
 				
 			}
@@ -282,21 +280,21 @@ void OpenGLApplication::OpenGLUpdate()
 		// IF SMALL LETTERS
 		else {
 
-			if (InputStates[INPUT_A]) {
+			if (keyStates[GLFW_KEY_A]) {
 				std::cout << "WALK LEFT\n";
 				CurrentGameState = STATE_LEVEL_TEST;
 			}
 
-			if (InputStates[INPUT_D]) {
+			if (keyStates[GLFW_KEY_D]) {
 				std::cout << "WALK RIGHT\n";
 				CurrentGameState = STATE_GRAPHICS_TEST;
 			}
 
-			if (InputStates[INPUT_S]) {
+			if (keyStates[GLFW_KEY_S]) {
 				std::cout << "WALK DOWN\n";
 			}
 
-			if (InputStates[INPUT_W]) {
+			if (keyStates[GLFW_KEY_W]) {
 				physicsSys->setVelocity(Vec2(0.0f, 10.f));
 				std::cout << "WALK UP\n";
 			}
@@ -304,7 +302,7 @@ void OpenGLApplication::OpenGLUpdate()
 				physicsSys->setVelocity(Vec2(0.0f, 0.0f));
 			}
 
-			if (InputStates[INPUT_M]) {
+			if (keyStates[GLFW_KEY_M]) {
 				Mapping map;
 				map.rows = 4;
 				map.columns = 5;
@@ -313,7 +311,7 @@ void OpenGLApplication::OpenGLUpdate()
 				Mapping::MapBuilder(map);
 			}
 
-			if (InputStates[INPUT_R]) {
+			if (keyStates[GLFW_KEY_R]) {
 				Mapping map;
 				map.filename = "hi";
 				Mapping::MapReader(map);
@@ -324,93 +322,75 @@ void OpenGLApplication::OpenGLUpdate()
 		/*-----------------------------------
 		|             NUMBERS               |
 		-----------------------------------*/
-		if (InputStates[INPUT_0])
+		if (keyStates[GLFW_KEY_0])
 			std::cout << "0\n";
-		if (InputStates[INPUT_1])
+		if (keyStates[GLFW_KEY_1])
 		{
 #ifdef _DEBUG
 //			std::cout << OpenGLObject::Object_Storage.size() << '\n';
 #endif
 			//std::cout << "1\n";
 		}
-		if (InputStates[INPUT_2])
+		if (keyStates[GLFW_KEY_2])
 			std::cout << "2\n";
-		if (InputStates[INPUT_3])
+		if (keyStates[GLFW_KEY_3])
 			std::cout << "3\n";
-		if (InputStates[INPUT_4])
+		if (keyStates[GLFW_KEY_4])
 			std::cout << "4\n";
-		if (InputStates[INPUT_5])
+		if (keyStates[GLFW_KEY_5])
 			std::cout << "5\n";
-		if (InputStates[INPUT_6])
+		if (keyStates[GLFW_KEY_6])
 			std::cout << "6\n";
-		if (InputStates[INPUT_7])
+		if (keyStates[GLFW_KEY_7])
 			std::cout << "7\n";
-		if (InputStates[INPUT_8])
+		if (keyStates[GLFW_KEY_8])
 			std::cout << "8\n";
-		if (InputStates[INPUT_9])
+		if (keyStates[GLFW_KEY_9])
 			std::cout << "9\n";
 
 		/*-----------------------------------
 		|              OTHERS               |
 		-----------------------------------*/
-		if (InputStates[INPUT_SPACE])
+		if (keyStates[GLFW_KEY_SPACE])
 			std::cout << "SPACE\n";
-		if (InputStates[INPUT_ALT])
+		if (keyStates[GLFW_KEY_LEFT_ALT] || keyStates[GLFW_KEY_RIGHT_ALT])
 			std::cout << "ALT\n";
-		if (InputStates[INPUT_CTRL])
+		if (keyStates[GLFW_KEY_LEFT_CONTROL] || keyStates[GLFW_KEY_RIGHT_CONTROL])
 			std::cout << "CTRL\n";
-		if (InputStates[INPUT_SHIFT])
+		if (keyStates[GLFW_KEY_LEFT_SHIFT] || keyStates[GLFW_KEY_RIGHT_SHIFT])
 			std::cout << "SHIFT\n";
-		if (InputStates[INPUT_CAPS])
+		if (keyStates[GLFW_KEY_CAPS_LOCK])
 			std::cout << "CAPS\n";
-		if (InputStates[INPUT_TAB])
+		if (keyStates[GLFW_KEY_TAB])
 			std::cout << "TAB\n";
-		if (InputStates[INPUT_ESC])
+		if (keyStates[GLFW_KEY_ESCAPE])
 			std::cout << "ESC\n";
-		if (InputStates[INPUT_ENTER])
+		if (keyStates[GLFW_KEY_ENTER])
 			std::cout << "ENTER\n";
-
-		/*-----------------------------------
-		|             COMMANDS              |
-		-----------------------------------*/
-
-		if (InputStates[INPUT_COPY])
-			std::cout << "COPY\n";
-
-		//requires timer
-		if (InputStates[INPUT_PASTE] && lastkeyedcommand == INPUT_PASTE)
-			std::cout << "PASTE\n";
-		if (InputStates[INPUT_CUT] && lastkeyedcommand == INPUT_CUT)
-			std::cout << "CUT\n";
-		if (InputStates[INPUT_UNDO] && lastkeyedcommand == INPUT_UNDO)
-			std::cout << "UNDO\n";
 
 		/*-----------------------------------
 		|              Mouse                |
 		-----------------------------------*/
 
-		if (InputStates[INPUT_LCLICK])
-			
+		if (keyStates[GLFW_MOUSE_BUTTON_LEFT])
 			std::cout << "LCLICK\n";
-		if (InputStates[INPUT_RCLICK])
+		if (keyStates[GLFW_MOUSE_BUTTON_RIGHT])
 			std::cout << "RCLICK\n";
 
 		/*-----------------------------------
 		|              Scroll               |
 		-----------------------------------*/
 
-		if (InputStates[INPUT_SCROLLUP]) {
+		if (mouseScrollState == 1) {
 			std::cout << "SCROLL UP\n";
 			std::cout << "Total Scroll Y Offset:" << mouse_scroll_total_Y_offset << "\n";
 		}
-		if (InputStates[INPUT_SCROLLDOWN]) {
+		if (mouseScrollState==-1) {
 			std::cout << "SCROLL DOWN\n";
 			std::cout << "Total Scroll Y Offset:" << mouse_scroll_total_Y_offset << "\n";
 		}
 
-
-		InputStates[INPUT_SCROLLUP] = false;		// DO NOT TOUCH
-		InputStates[INPUT_SCROLLDOWN] = false;		// DO NOT TOUCH
+		mouseScrollState = 0;
 
 		
 		//std::cout << GetFPS() << '\n';
@@ -500,7 +480,7 @@ void OpenGLApplication::OpenGLTestChangingStates()
 	glDrawArrays(GL_TRIANGLES, 0, 3);
 
 
-	if (InputStates[INPUT_D]) {
+	if (keyStates[GLFW_KEY_D]) {
 		std::cout << "WALK RIGHT\n";
 		CurrentGameState = STATE_GRAPHICS_TEST;
 	}

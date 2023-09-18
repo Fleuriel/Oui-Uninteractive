@@ -68,7 +68,6 @@
     <ClInclude Include="Include\ObjectFactory.h" />
     <ClInclude Include="Include\OpenGLObjects.h" />
     <ClInclude Include="Include\OpenGLShaders.h" />
-    <ClInclude Include="Include\keyDefinition.h" />
     <ClInclude Include="Include\OpenGLApplication.h" />
     <ClInclude Include="Include\InputKeys.h" />
     <ClInclude Include="Include\ParticleSystem.h" />

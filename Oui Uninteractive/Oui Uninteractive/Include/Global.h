@@ -1,4 +1,5 @@
 
 // includes
-#include <iostream>;
-
+#include <iostream>
+#include <array>
+#include <string>
