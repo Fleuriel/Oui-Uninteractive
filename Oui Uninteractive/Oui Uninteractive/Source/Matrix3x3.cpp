@@ -8,7 +8,7 @@
 * @brief
 *************************************************************************/
 #include "Matrix3x3.h"
-#include <math.h>
+#include <cmath>
 
 constexpr float PI = 3.14159265358f;
 

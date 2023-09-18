@@ -8,7 +8,7 @@
 * @brief
 *************************************************************************/
 #include "Vector2D.h"
-#include <math.h>
+#include <cmath>
 #include <Global.h>
 
 /**************************************************************************/
@@ -156,10 +156,6 @@ float Vector2DDistance(const Vector2D& pVec0, const Vector2D& pVec1)
 {
 	return Vector2DLength(Vector2D(pVec1.x - pVec0.x, pVec1.y - pVec0.y));
 }
-
-//float Vector2DDistance(const Coordinates& coordOne, const Coordinates& coordTwo) {
-//	return Vector2DDistance(Vector2D{ coordOne.GetCoords(0), coordOne.GetCoords(1) }, Vector2D{ coordTwo.GetCoords(0), coordTwo.GetCoords(1) });
-//}
 
 /**************************************************************************/
 /*!

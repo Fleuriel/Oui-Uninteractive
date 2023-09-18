@@ -33,6 +33,7 @@ GLfloat squareX = 0.0f, squareY = 0.0f;
 OpenGLObject Objects;
 
 bool en = true;
+bool toggleMode = true;
 
 // For Input
 extern float mouse_scroll_total_Y_offset;
@@ -180,10 +181,25 @@ void OpenGLApplication::OpenGLUpdate()
 
 		OpenGLSetBackgroundColor(0.5f, 0.5f, 0.5f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
+		
+		glUseProgram(Objects.ShaderProgram);
+		glBindVertexArray(Objects.VAO);
+		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+		
+		//WireFrame Mode:
+		if (InputStates[INPUT_P])
+		{
+			toggleMode =  !toggleMode;
+		}
 
-		//glUseProgram(Objects.ShaderProgram);
-		//glBindVertexArray(Objects.VAO);
-		//glDrawArrays(GL_TRIANGLES, 0, 3);
+		if (toggleMode == true)
+		{
+			glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+		}
+		if (toggleMode == false)
+		{
+			glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+		}
 
 //		glDrawElements(GL_TRIANGLES, 9, GL_UNSIGNED_INT, 0);
 
@@ -313,7 +329,7 @@ void OpenGLApplication::OpenGLUpdate()
 		if (InputStates[INPUT_1])
 		{
 #ifdef _DEBUG
-			std::cout << OpenGLObject::Object_Storage.size() << '\n';
+//			std::cout << OpenGLObject::Object_Storage.size() << '\n';
 #endif
 			//std::cout << "1\n";
 		}
@@ -436,7 +452,7 @@ void OpenGLApplication::OpenGLCleanup()
 void OpenGLApplication::Draw() {
 
 #ifdef _DEBUG
-	std::cout << "Object Storage Size:" << OpenGLObject::Object_Storage.size() << '\n';
+//	std::cout << "Object Storage Size:" << OpenGLObject::Object_Storage.size() << '\n';
 
 
 #endif
@@ -447,7 +463,7 @@ void OpenGLApplication::Draw() {
 			continue;
 #ifdef _DEBUG
 		//std::cout << x.first << '\n';
-		std::cout << "YES\n";
+		//std::cout << "YES\n";
 #endif
 		obj.second.Draw();
 
