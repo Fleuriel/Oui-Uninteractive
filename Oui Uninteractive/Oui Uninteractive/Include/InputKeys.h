@@ -16,7 +16,7 @@
 #define INPUTKEYS_H
 
 // Define an array to keep track of key states
-extern std::array<bool, GLFW_KEY_LAST + 1> keyStates;
+extern std::array<int, GLFW_KEY_LAST + 1> keyStates;
 
 // Define an array to keep track of mouse button states
 extern std::array<bool, GLFW_MOUSE_BUTTON_LAST + 1> mouseButtonStates;

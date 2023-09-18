@@ -18,7 +18,7 @@
 
 
 // Define an array to keep track of key states
-std::array<bool, GLFW_KEY_LAST + 1> keyStates;
+std::array<int, GLFW_KEY_LAST + 1> keyStates;
 
 // Define an array to keep track of mouse button states
 std::array<bool, GLFW_MOUSE_BUTTON_LAST + 1> mouseButtonStates;
@@ -65,7 +65,7 @@ void keyCallBack(GLFWwindow* window, int key, int scancode, int action, int mod)
 {
 	UNREFERENCED_PARAMETER(scancode);
 	
-	keyStates[key] = (action == GLFW_PRESS || action == GLFW_REPEAT);
+	keyStates[key] = (action == GLFW_PRESS) ? 1 : (action == GLFW_REPEAT) ? 2 : 0;
 
 /***********************************************************************/
 	if (action == GLFW_PRESS)
@@ -122,7 +122,7 @@ void mouseCallBack(GLFWwindow* window, int button, int action, int mod) {
 	//UNREFERENCED_PARAMETER(window);
 	//UNREFERENCED_PARAMETER(mod);
 
-	mouseButtonStates[button] = (action == GLFW_PRESS || action == GLFW_REPEAT);
+	mouseButtonStates[button] = (action == GLFW_PRESS) ? 1 : 0;
 
 }
 
@@ -158,8 +158,6 @@ void scrollCallBack(GLFWwindow* window, double xOffset, double yOffset ) {
 
 	//Update variable to track total vertical scrolling
 	mouse_scroll_total_Y_offset += yOffset;
-
-	std::cout << mouse_scroll_total_Y_offset;
 
 	//Change the scroll states based on y offset value
 	mouseScrollState = (yOffset > 0) ? 1 : (yOffset == 0) ? 0 : -1;

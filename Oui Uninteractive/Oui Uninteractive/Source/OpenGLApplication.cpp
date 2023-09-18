@@ -185,7 +185,7 @@ void OpenGLApplication::OpenGLUpdate()
 		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 		
 		//WireFrame Mode:
-		if (keyStates[GLFW_KEY_P])
+		if (keyStates[GLFW_KEY_P]==2)
 		{
 			toggleMode =  !toggleMode;
 		}
@@ -372,9 +372,9 @@ void OpenGLApplication::OpenGLUpdate()
 		|              Mouse                |
 		-----------------------------------*/
 
-		if (keyStates[GLFW_MOUSE_BUTTON_LEFT])
+		if (mouseButtonStates[GLFW_MOUSE_BUTTON_LEFT])
 			std::cout << "LCLICK\n";
-		if (keyStates[GLFW_MOUSE_BUTTON_RIGHT])
+		if (mouseButtonStates[GLFW_MOUSE_BUTTON_RIGHT])
 			std::cout << "RCLICK\n";
 
 		/*-----------------------------------
