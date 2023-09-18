@@ -52,8 +52,6 @@ public:
 	// Check if component is in componentList
 	int Has(ComponentType type);
 
-	
-
 	// Get game object ID
 	size_t GetGameObjectID();
 

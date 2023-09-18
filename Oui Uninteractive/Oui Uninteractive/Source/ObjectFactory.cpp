@@ -82,9 +82,17 @@ GameObject* ObjectFactory::BuildObjectRunTime() {
 	return objectRunTime;
 }
 
-// Add a to-be-destroyed game object to the destroy list
-void ObjectFactory::DestroyObject(GameObject* gameObject) {
+// Update each game obejct in object factory
+void ObjectFactory::Update(float dt) {
+	std::set<GameObject*>::iterator it = gameObjectDestroyList.begin();
 
+	for (; it != gameObjectDestroyList.end(); it++) {
+		GameObject* gameObject = *it;
+
+		//Insert double free protection here
+		delete gameObject;
+	}
+	gameObjectDestroyList.clear();
 }
 
 // Assign an ID to a game object and add it to the map of game objects
@@ -97,6 +105,11 @@ void ObjectFactory::AssignObjectID(GameObject* gameObject) {
 
 	// Increment ID
 	++gameObjectCurrentID;
+}
+
+// Add a to-be-destroyed game object to the destroy list
+void ObjectFactory::DestroyObject(GameObject* gameObject) {
+	gameObjectDestroyList.insert(gameObject);
 }
 
 // Destroy all game objects
@@ -119,34 +132,26 @@ GameObject* ObjectFactory::GetGameObjectByID(size_t gameObjectID)
 }
 
 // Add component factory to map
-void ObjectFactory::AddComponentFactory(std::string componentName, ComponentFactoryBase* componentFactory)
-{
-	//componentFactoryMap[componentName] = componentFactory;
+void ObjectFactory::AddComponentFactory(std::string componentName, ComponentFactoryBase* componentFactory) {
 	componentFactoryMap.insert(std::pair(componentName, componentFactory));
 }
 
-void ObjectFactory::Update(float dt) {
-	std::set<GameObject*>::iterator it = gameObjectDestroyList.begin();
-
-	for (; it != gameObjectDestroyList.end(); it++) {
-		GameObject* gameObject = *it;
-
-
-		//Insert double free protection here
-		delete gameObject;
-	}
-	gameObjectDestroyList.clear();
-}
+// Add component with a specified component name to game object
 bool ObjectFactory::AddComponent(std::string componentName, GameObject* object) {
+	// Get component factory
 	std::map<std::string, ComponentFactoryBase*>::iterator it = componentFactoryMap.find(componentName);
+
+	// Check if component factory exists
 	if (it != componentFactoryMap.end()) {
+		// Add component to game object
 		ComponentFactoryBase* factory = it->second;
-		
 		IComponent* component = factory->CreateComponent();
+
 		object->AddComponent(component, factory->type);
 	}
 	else {
 		return false;
 	}
+
 	return true;
 }
