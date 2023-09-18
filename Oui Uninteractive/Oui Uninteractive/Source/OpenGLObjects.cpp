@@ -18,6 +18,8 @@
 #include <sstream>
 #include <fstream>
 #include <filesystem>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
 
 std::vector<glm::vec2> OpenGLObject::square;
 std::vector<glm::vec2> OpenGLObject::triangle;
@@ -53,14 +55,29 @@ void OpenGLObject::Init()
 	
 
 
+
+	glm::vec4 vec(1.0f, 0.0f, 0.0f, 1.0f);
+	glm::mat4 trans = glm::mat4(1.0f);
+	trans = glm::translate(trans, glm::vec3(1.0, 1.0f, 0.0f));
+	vec = trans * vec;
+
+	trans = glm::rotate(trans, glm::radians(90.0f), glm::vec3(0.0, 0.0, 1.0));
+	trans = glm::scale(trans, glm::vec3(0.5, 0.5, 0.5));
+
+
 	const char* vertexShaderSource =
 
 		R"(#version 450 core
 		layout(location = 0) in vec3 aPos;
+		layout(location = 1) in vec2 aTexCoord;
+		
+		out vec2 TexCoord;
+		
+		uniform mat4 transform;
 
 		void main()
-		{
-			gl_Position = vec4(aPos.x, aPos.y, aPos.z, 1.0);
+			gl_Position = transform * vec4(aPos, 1.0f);
+			TexCoord = vec2(aTexCoord.x, aTexCoord.y);
 		}
 
 )";
@@ -90,8 +107,6 @@ void OpenGLObject::Init()
 
 	unsigned int EBO;
 	glGenBuffers(1, &EBO);
-
-
 
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
 	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
@@ -134,6 +149,8 @@ void OpenGLObject::Init()
 
 	glDeleteShader(vertexShader);
 	glDeleteShader(fragmentShader);
+
+
 
 
 #ifdef _DEBUG

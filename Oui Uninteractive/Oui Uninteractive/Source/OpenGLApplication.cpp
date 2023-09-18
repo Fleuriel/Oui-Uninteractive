@@ -33,6 +33,7 @@ GLfloat squareX = 0.0f, squareY = 0.0f;
 OpenGLObject Objects;
 
 bool en = true;
+bool toggleMode = true;
 
 // For Input
 extern float mouse_scroll_total_Y_offset;
@@ -184,6 +185,21 @@ void OpenGLApplication::OpenGLUpdate()
 		glUseProgram(Objects.ShaderProgram);
 		glBindVertexArray(Objects.VAO);
 		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+		
+		//WireFrame Mode:
+		if (InputStates[INPUT_P])
+		{
+			toggleMode =  !toggleMode;
+		}
+
+		if (toggleMode == true)
+		{
+			glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+		}
+		if (toggleMode == false)
+		{
+			glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+		}
 
 //		glDrawElements(GL_TRIANGLES, 9, GL_UNSIGNED_INT, 0);
 
