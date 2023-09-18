@@ -1,0 +1,38 @@
+{
+  "ObjectCount": 2,
+  "Objects": [
+    {
+      "Name": "Object1",
+      "Components": {
+        "Physics": {
+          "Mass": 10.0,
+          "VelocityX": 0.0,
+          "VelocityY": 0.0
+        },
+        "Transform": {
+          "PositionX": 100.0,
+          "PositionY": 50.0,
+          "Rotation": 45.0
+        }
+      }
+
+
+    },
+    {
+      "Name": "Object2",
+      "Components": {
+        "Physics": {
+          "Mass": 5.0,
+          "VelocityX": 1.0,
+          "VelocityY": 0.5
+        },
+        "Transform": {
+          "PositionX": 200.0,
+          "PositionY": 100.0,
+          "Rotation": 30.0
+        }
+      }
+
+    }
+  ]
+}
