@@ -61,7 +61,6 @@
     <ClInclude Include="Include\GameStateManager.h" />
     <ClInclude Include="Include\Global.h" />
     <ClInclude Include="Include\IComponent.h" />
-    <ClInclude Include="Include\ISerializer.h" />
     <ClInclude Include="Include\JsonSerializer.h" />
     <ClInclude Include="Include\Mapping.h" />
     <ClInclude Include="Include\ISystem.h" />

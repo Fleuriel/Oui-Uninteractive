@@ -44,6 +44,8 @@ public:
 	}
 	
 	*/
+
+	// Serialize function to be overloaded by each component
 	virtual void Serialize(const std::string& filePath, JsonSerializer& serializer) {};
 
 

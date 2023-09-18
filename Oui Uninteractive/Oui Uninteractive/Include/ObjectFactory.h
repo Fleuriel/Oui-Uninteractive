@@ -45,16 +45,14 @@ public:
 	// Create a new game object during run-time
 	GameObject* BuildObjectRunTime();
 
-	virtual void Update(float dt);
-
-	// Add a to-be-destroyed game object to the destroy list
-	void DestroyObject(GameObject* gameObject);
-
 	// Update the object factory
-	//virtual void UpdateFactory(dt) = 0;
+	virtual void Update(float dt);
 
 	// Assign an ID to a game object and add it to the map of game objects
 	void AssignObjectID(GameObject* gameObject);
+
+	// Add a to-be-destroyed game object to the destroy list
+	void DestroyObject(GameObject* gameObject);
 
 	// Destroy all game objects
 	void DestroyAllObjects();
