@@ -14,6 +14,7 @@
 
 ObjectFactory* objectFactory = NULL;
 
+// Object Factory initializer
 ObjectFactory::ObjectFactory() : gameObjectCurrentID{} {
 	if (objectFactory != NULL) {
 		return;
@@ -21,7 +22,7 @@ ObjectFactory::ObjectFactory() : gameObjectCurrentID{} {
 	std::cout << "Component Fac: " << componentFactoryMap.size() << "\n";
 	objectFactory = this;
 }
-// No serialization as of now
+// Create a game object from a JSON file
 GameObject* ObjectFactory::BuildObjectFromFile(const std::string& filePath) {
 	//GameObject* object{new GameObject()};
 	GameObject* object{SerializeObject(filePath)};
@@ -29,7 +30,7 @@ GameObject* ObjectFactory::BuildObjectFromFile(const std::string& filePath) {
 	return object;
 }
 
-// Serialize a game object
+// Serialize game object data from a JSON file
 GameObject* ObjectFactory::SerializeObject(const std::string& filePath) {
 	// Create rapidjson doc object and serializer
 	rapidjson::Document objDoc;
