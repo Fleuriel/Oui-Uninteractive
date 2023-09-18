@@ -56,10 +56,10 @@ float Coordinates::SquareDistance(Coordinates Coords1, Coordinates Coords2) {
     return Vector2DSquareDistance(Coords1.Coords, Coords2.Coords);
 }
 
-bool Coordinates::DistanceExceedsThreshold(Coordinates Coords1, Coordinates Coords2, float val) {
-    return (SquareDistance(Coords1, Coords2) > pow(val,2.0));
+bool Coordinates::DistanceExceedsThreshold(Coordinates Coords2, float val) {
+    return (SquareDistance(*this, Coords2) > pow(val,2.0));
 }
 
-bool Coordinates::DistanceIsWithinThreshold(Coordinates Coords1, Coordinates Coords2, float val) {
-    return !DistanceExceedsThreshold(Coords1, Coords2, val);
+bool Coordinates::DistanceIsWithinThreshold(Coordinates Coords2, float val) {
+    return !DistanceExceedsThreshold(Coords2, val);
 }
