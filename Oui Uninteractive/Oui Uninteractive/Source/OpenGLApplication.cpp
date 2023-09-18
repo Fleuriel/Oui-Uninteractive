@@ -169,10 +169,10 @@ void OpenGLApplication::OpenGLUpdate()
 
 		OpenGLSetBackgroundColor(0.5f, 0.5f, 0.5f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
-
-		//glUseProgram(Objects.ShaderProgram);
-		//glBindVertexArray(Objects.VAO);
-		//glDrawArrays(GL_TRIANGLES, 0, 3);
+		
+		glUseProgram(Objects.ShaderProgram);
+		glBindVertexArray(Objects.VAO);
+		glDrawArrays(GL_TRIANGLES, 0, 3);
 
 //		glDrawElements(GL_TRIANGLES, 9, GL_UNSIGNED_INT, 0);
 
@@ -296,7 +296,7 @@ void OpenGLApplication::OpenGLUpdate()
 		if (InputStates[INPUT_1])
 		{
 #ifdef _DEBUG
-			std::cout << OpenGLObject::Object_Storage.size() << '\n';
+//			std::cout << OpenGLObject::Object_Storage.size() << '\n';
 #endif
 			//std::cout << "1\n";
 		}
@@ -418,7 +418,7 @@ void OpenGLApplication::OpenGLCleanup()
 void OpenGLApplication::Draw() {
 
 #ifdef _DEBUG
-	std::cout << "Object Storage Size:" << OpenGLObject::Object_Storage.size() << '\n';
+//	std::cout << "Object Storage Size:" << OpenGLObject::Object_Storage.size() << '\n';
 
 
 #endif
@@ -429,7 +429,7 @@ void OpenGLApplication::Draw() {
 			continue;
 #ifdef _DEBUG
 		//std::cout << x.first << '\n';
-		std::cout << "YES\n";
+		//std::cout << "YES\n";
 #endif
 		obj.second.Draw();
 
