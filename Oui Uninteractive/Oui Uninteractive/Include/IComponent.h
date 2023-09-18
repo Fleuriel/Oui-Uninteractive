@@ -11,15 +11,19 @@
 
 #include "ComponentType.h"
 #include "JsonSerializer.h"
+
 class GameObject;
+
 class IComponent {
 private:
 
 	// Pointer to base owning composition
 	GameObject* base;
+
 public:
 	//HasSibling()
 	friend class GameObject;
+
 	// Specify the type of component
 	ComponentType componentType;
 	
