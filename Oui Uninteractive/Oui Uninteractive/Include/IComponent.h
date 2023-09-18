@@ -10,25 +10,43 @@
 #pragma once
 
 #include "ComponentType.h"
+#include "JsonSerializer.h"
+
+class GameObject;
 
 class IComponent {
 private:
 
 	// Pointer to base owning composition
+	GameObject* base;
 
 public:
 	//HasSibling()
-	//Serialize()
+	friend class GameObject;
 
 	// Specify the type of component
 	ComponentType componentType;
 	
 	// Initialize component
-	virtual void Initialize() = 0;
+	virtual void Initialize() {};
 
 	// Get order of component
-	//GetOwner() {return base};
+	GameObject* GetOwner() {
+		return base;
+	}
+
+	// Each component to serialize their own data
+	/* Usage(to change*):
+	
+	rapidjson::Document objDoc;
+	if (serializer.ReadJSONFile(filePath, objDoc)) {
+		body.someVar = objDoc["body"]["someVar"].GetString();
+	}
+	
+	*/
+	virtual void Serialize(const std::string& filePath, JsonSerializer& serializer) {};
 
 
 	virtual ~IComponent() {};
 };
+

@@ -1,3 +1,12 @@
+/**************************************************************************
+ * @file		  ObjectFactory.h
+ * @author
+ * @par DP email:
+ * @par Course:	  CSD 2401
+ * @par			  Software Engineering Project 3
+ * @date		  09-13-2023
+ * @brief
+ *************************************************************************/
 #pragma once
 
 #include <string>
@@ -28,15 +37,15 @@ public:
 
 	// Create a new game object from a file
 	// To change parameter to the filename when implementing serialization in the future
-	GameObject* BuildObjectFromFile(std::string componentName);
+	GameObject* BuildObjectFromFile(const std::string& filePath);
 
 	// Serialize a game object
-	// To be implemented when serialization is figured out
+	GameObject* SerializeObject(const std::string& filePath);
 
 	// Create a new game object during run-time
 	GameObject* BuildObjectRunTime();
 
-	
+	virtual void Update(float dt);
 
 	// Add a to-be-destroyed game object to the destroy list
 	void DestroyObject(GameObject* gameObject);
@@ -57,6 +66,6 @@ public:
 
 	// Add component factory to map
 	void AddComponentFactory(std::string componentName, ComponentFactoryBase* componentFactory);
-	//bool AddComponent(std::string name);
+	bool AddComponent(std::string name, GameObject* object);
 };
 extern ObjectFactory* objectFactory;

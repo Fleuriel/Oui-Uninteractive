@@ -2,6 +2,7 @@
 #include "IComponent.h"
 #include "Transform.h"
 #include "Vector2D.h"
+#include "GameObject.h"
 
 class PhysicsBody : public IComponent {
 public:
@@ -9,6 +10,7 @@ public:
 	//~PhysicsBody();
 
 	virtual void Initialize();
+	virtual void Serialize(std::string str, JsonSerializer serializer);
 	Vec2 position;
 	Vec2 velocity;
 	Vec2 accumulatedForce;

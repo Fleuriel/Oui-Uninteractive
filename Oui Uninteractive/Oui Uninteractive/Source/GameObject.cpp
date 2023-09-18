@@ -15,9 +15,15 @@
 
 }*/
 
-// Initialize
+/**************************************************************************
+* @brief Initialize game object
+*************************************************************************/
 void GameObject::Initialize() {
-
+	// Initialize each component in componentList
+	for (size_t i{}; i < componentList.size(); ++i) {
+		componentList[i]->base = this;
+		componentList[i]->Initialize();
+	}
 }
 
 /**************************************************************************
@@ -43,8 +49,15 @@ void GameObject::RemoveComponent(IComponent* c) {
 * @param c - component pointer
 * @return bool - true if component is in componentList
 *************************************************************************/
-bool GameObject::Has(IComponent* c) {
-	return true;
+int GameObject::Has(ComponentType type) {
+	std::vector<IComponent*>::iterator it = componentList.begin();
+	while (it != componentList.end()) {
+		if ((*it)->componentType == type) {
+			return it - componentList.begin();
+		}
+		it++;
+	}
+	return -1;
 }
 
 /**************************************************************************
@@ -53,4 +66,11 @@ bool GameObject::Has(IComponent* c) {
 *************************************************************************/
 size_t GameObject::GetGameObjectID() {
 	return gameObjectID;
+}
+IComponent* GameObject::GetComponent(ComponentType typeID) {
+	int index = Has(typeID);
+	if (index >= 0) {
+		return componentList.at(index);
+	}
+	return nullptr;
 }

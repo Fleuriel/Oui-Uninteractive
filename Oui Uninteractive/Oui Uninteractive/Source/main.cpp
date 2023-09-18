@@ -12,6 +12,7 @@
 #include <GameStateManager.h>
 #include "Physics.h"
 #include "SystemManager.h"
+#include "ObjectFactory.h"
 
 
 void TimeUpdate();
@@ -24,7 +25,7 @@ int main()
 
 	CreateWindow();
 	SystemManager* sysManager = new SystemManager();
-
+	sysManager->AddSystem(new ObjectFactory());
 	sysManager->AddSystem(new Physics());
 	sysManager->Initialize();
 	// Set callback for window close button (top right button).
@@ -110,6 +111,7 @@ int main()
 	// Cleanup the window.
 
 	WindowCleanup();
+	objectFactory->DestroyAllObjects();
 	sysManager->DestroySystem();
 	delete sysManager;
 

@@ -1,0 +1,10 @@
+{
+    "PhysicsBody":
+    {
+        "position" : "0, 0"
+    },
+    "Transform":
+    {
+        "componentName2" : "Deez"
+    }
+}
