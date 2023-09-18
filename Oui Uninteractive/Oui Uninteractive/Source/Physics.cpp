@@ -4,7 +4,7 @@
 #include <iostream>
 Physics* physicsSys = nullptr;
 Physics::Physics() {
-	if (physicsSys == nullptr) {
+	if (physicsSys != nullptr) {
 		//instantiate physics system
 		return;
 	}
@@ -15,13 +15,13 @@ Physics::Physics() {
 }
 void Physics::Initialize() {
 	//Register Component creator of Body here
-	//ComponentFactory<PhysicsBody>* testPtr = new ComponentFactory<PhysicsBody>(ComponentType::PhysicsBody);
-	//objectFactory->AddComponentFactory("PhysicsBody", testPtr);
-	std::cout << "I WILL ADD THE PHYSICS BODY FACTORY HERE";
+	ComponentFactory<PhysicsBody>* testPtr = new ComponentFactory<PhysicsBody>(ComponentType::PhysicsBody);
+	objectFactory->AddComponentFactory("PhysicsBody", testPtr);
+	ComponentFactory<Transform>* testPtr2 = new ComponentFactory<Transform>(ComponentType::Transform);
+	objectFactory->AddComponentFactory("Transform", testPtr2);
 }
 void Physics::Update(float dt) {
 
-	std::cout << "UPDATE PHYSICS\n";
 	for (PhysicsBody* body : bodyList) {
 		if (body->isStatic) {
 			continue;
@@ -29,6 +29,8 @@ void Physics::Update(float dt) {
 		body->position = body->position + body->velocity * dt;
 		body->velocity = body->velocity + body->acceleration * dt;
 		body->txPtr->position = body->position;
+
+		std::cout << "X: " << body->position.x << "Y: " << body->position.y << "\n";
 	}
 
 }
@@ -40,5 +42,21 @@ void Physics::addForce(Vec2 force) {
 void Physics::setPosition(Vec2 pos) {
 	for (PhysicsBody* body : bodyList) {
 		body->position = pos;
+	}
+}
+void Physics::setPosition(Vec2 pos, size_t ID) {
+	
+	if (ID < bodyList.size()) {
+		bodyList.at(ID)->position = pos;	
+	}
+}
+void Physics::setVelocity(Vec2 newVelocity) {
+	for (PhysicsBody* body : bodyList) {
+		body->velocity = newVelocity;
+	}
+}
+void Physics::setVelocity(Vec2 velocity, size_t ID) {
+	if (ID < bodyList.size()) {
+		bodyList.at(ID)->velocity = velocity;
 	}
 }

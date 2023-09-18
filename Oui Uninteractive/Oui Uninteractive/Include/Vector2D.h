@@ -29,8 +29,8 @@ typedef union Vector2D
 	float m[2];
 
 	// Constructors
-	Vector2D() : x(0.0f), y(0.0f) {}
-	Vector2D(float _x, float _y);
+	Vector2D() : x(0.0f), y(0.0f) {};
+	Vector2D(float _x, float _y) : x(_x), y(_y) {};
 
 	//Do not change the following
 	Vector2D& operator=(const Vector2D& rhs) = default;

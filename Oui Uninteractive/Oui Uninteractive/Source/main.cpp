@@ -111,6 +111,7 @@ int main()
 	// Cleanup the window.
 
 	WindowCleanup();
+	objectFactory->DestroyAllObjects();
 	sysManager->DestroySystem();
 	delete sysManager;
 

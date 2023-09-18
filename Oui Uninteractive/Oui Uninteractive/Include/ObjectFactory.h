@@ -66,6 +66,6 @@ public:
 
 	// Add component factory to map
 	void AddComponentFactory(std::string componentName, ComponentFactoryBase* componentFactory);
-	//bool AddComponent(std::string name);
+	bool AddComponent(std::string name, GameObject* object);
 };
 extern ObjectFactory* objectFactory;

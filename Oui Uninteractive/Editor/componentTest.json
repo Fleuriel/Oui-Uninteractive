@@ -1,9 +1,9 @@
 {
-    "ComponentName1":
+    "PhysicsBody":
     {
-        "componentName1" : "Lmao"
+        "position" : "0, 0"
     },
-    "ComponentName2":
+    "Transform":
     {
         "componentName2" : "Deez"
     }

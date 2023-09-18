@@ -1,6 +1,7 @@
 
 // includes
 #include <iostream>;
+#include <Vector2D.h>
 
 
 /**************************************************************************
@@ -33,7 +34,7 @@ public:
      * @param x The initial x-coordinate value.
      * @param y The initial y-coordinate value.
      *************************************************************************/
-    Coordinates(float x, float y) : xCoords(x), yCoords(y) {}
+    Coordinates(float x, float y) : Coords(Vector2D(x,y)) {}
 
     /**************************************************************************
      * @brief Get the specified coordinate value.
@@ -73,6 +74,6 @@ public:
     void AddCoords(bool coordIndex, float val);
 
 private:
-    float xCoords, yCoords;
+    Vector2D Coords;
 };
 

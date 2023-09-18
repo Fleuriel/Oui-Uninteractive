@@ -100,7 +100,12 @@ void ObjectFactory::AssignObjectID(GameObject* gameObject) {
 
 // Destroy all game objects
 void ObjectFactory::DestroyAllObjects() {
+	std::map<size_t, GameObject*>::iterator it = gameObjectIDMap.begin();
 
+	while (it != gameObjectIDMap.end()) {
+		delete it->second;
+		it++;
+	}
 }
 
 // Get a game object by ID
@@ -131,15 +136,16 @@ void ObjectFactory::Update(float dt) {
 	}
 	gameObjectDestroyList.clear();
 }
-/*bool ObjectFactory::AddComponent(std::string componentName) {
+bool ObjectFactory::AddComponent(std::string componentName, GameObject* object) {
 	std::map<std::string, ComponentFactoryBase*>::iterator it = componentFactoryMap.find(componentName);
 	if (it != componentFactoryMap.end()) {
 		ComponentFactoryBase* factory = it->second;
 		
-		//IComponent* component = factory->create();
+		IComponent* component = factory->CreateComponent();
+		object->AddComponent(component, factory->type);
 	}
 	else {
 		return false;
 	}
 	return true;
-}*/
+}
