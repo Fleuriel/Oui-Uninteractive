@@ -32,7 +32,7 @@ void PhysicsBody::Serialize(std::string filePath, JsonSerializer serializer) {
 		prevPosition = objDoc["PhysicsBody"]["prevPosition"].GetString();
 		acceleration = objDoc["PhysicsBody"]["acceleration"].GetString();*/
 		
-		position.x = objDoc[]
+		//position.x = objDoc[]
 
 	}
 
