@@ -74,13 +74,13 @@ public:
      *************************************************************************/
     void MoveCoords(bool coordIndex, float val);
 
-    float Distance(Coordinates Coords1, Coordinates Coords2);
+    float Distance(Coordinates Coords2);
 
     float SquareDistance(Coordinates Coords1, Coordinates Coords2);
 
-    bool DistanceExceedsThreshold(Coordinates Coords1, Coordinates Coords2, float val);
+    bool DistanceExceedsThreshold(Coordinates Coords2, float val);
 
-    bool DistanceIsWithinThreshold(Coordinates Coords1, Coordinates Coords2, float val);
+    bool DistanceIsWithinThreshold(Coordinates Coords2, float val);
 
 private:
     Vector2D Coords;
