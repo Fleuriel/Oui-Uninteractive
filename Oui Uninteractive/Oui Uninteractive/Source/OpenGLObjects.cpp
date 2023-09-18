@@ -53,73 +53,76 @@ void OpenGLObject::Init()
 	
 
 
+	const char* vertexShaderSource =
 
-//Objects.color = { 0.5,0.2,0.1f };
-//
-////	OpenGLShadersInitialization();
-//
-//// Testing from Here
-//
-//GLfloat vertices[] =
-//{
-//	-0.5f, -0.5f * float(sqrt(3)) / 3, 0.0f,  // Position for vertex 0
-//	1.0f, 0.0f, 0.0f,  
-//
-//	0.5f, -0.5f * float(sqrt(3)) / 3, 0.0f,  // Position for vertex 1
-//	0.0f, 1.0f, 0.0f, 
-//
-//	0.0f, 0.5f * float(sqrt(3)) * 2 / 3, 0.0f,  // Position for vertex 2
-//	0.0f, 0.0f, 1.0f  
-//};
-//
-//
-//glm::mat4 model = glm::mat4(1.0f);
-//glm::vec3 translation = glm::vec3(0.0f, 0.0f, 0.0f);
-//translation.x += 0.001f;
-//
-//
-//
-//
-//GLuint vertexShader = glCreateShader(GL_VERTEX_SHADER);
-//glShaderSource(vertexShader, 1, &vertexShaderSource, NULL);
-//glCompileShader(vertexShader);
-//
-//GLuint fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
-//glShaderSource(fragmentShader, 1, &fragmentShaderSource, NULL);
-//glCompileShader(fragmentShader);
-//
-//
-//ShaderProgram = glCreateProgram();
-//
-//glAttachShader(ShaderProgram, vertexShader);
-//glAttachShader(ShaderProgram, fragmentShader);
-//
-////glDeleteShader(vertexShader);
-////glDeleteShader(fragmentShader);
-//
-//
-//glGenVertexArrays(1, &VAO);
-//glGenBuffers(1, &VBO);
-//
-//glBindVertexArray(VAO);
-//
-//glBindBuffer(GL_ARRAY_BUFFER, VBO);
-//glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-//
-//glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)0);
-//glEnableVertexAttribArray(0);
-//
-//glVertexAttribPointer(1, 3, GL_FLOAT, GL_TRUE, 6 * sizeof(float), (void*)(3 * sizeof(float)));
-//glEnableVertexAttribArray(1);
-//
-//glBindBuffer(GL_ARRAY_BUFFER, 0);
-//glBindVertexArray(0);
-//
-//
-//std::cout << "Asd" << '\n';
+		R"(#version 450 core
+		layout(location = 0) in vec3 aPos;
 
-	// End Testing
-	
+		void main()
+		{
+			gl_Position = vec4(aPos.x, aPos.y, aPos.z, 1.0);
+		}
+
+)";
+
+	const char* fragmentShaderSource =
+		R"(#version 450 core
+			out vec4 FragColor;
+			
+			void main()
+			{
+			    FragColor = vec4(1.0f, 0.5f, 0.2f, 1.0f);
+			}
+ )";
+
+
+	float vertices[] = {
+		-0.5f, -0.5f, 0.0f,
+		 0.5f, -0.5f, 0.0f,
+		 0.0f,  0.5f, 0.0f
+	};
+
+
+
+	GLuint vertexShader = glCreateShader(GL_VERTEX_SHADER);
+	glShaderSource(vertexShader, 1, &vertexShaderSource, NULL);
+	glCompileShader(vertexShader);
+
+	GLuint fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
+	glShaderSource(fragmentShader, 1, &fragmentShaderSource, NULL);
+	glCompileShader(fragmentShader);
+
+
+	ShaderProgram = glCreateProgram();
+
+	glAttachShader(ShaderProgram, vertexShader);
+	glAttachShader(ShaderProgram, fragmentShader);
+	glLinkProgram(ShaderProgram);
+	//glDeleteShader(vertexShader);
+	//glDeleteShader(fragmentShader);
+
+
+	glGenVertexArrays(1, &VAO);
+	glGenBuffers(1, &VBO);
+
+	glBindVertexArray(VAO);
+
+	glBindBuffer(GL_ARRAY_BUFFER, VBO);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+	glEnableVertexAttribArray(0);
+
+	//glVertexAttribPointer(1, 3, GL_FLOAT, GL_TRUE, 6 * sizeof(float), (void*)(3 * sizeof(float)));
+	//glEnableVertexAttribArray(1);
+
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+	glBindVertexArray(0);
+
+
+	glDeleteShader(vertexShader);
+	glDeleteShader(fragmentShader);
+
 
 #ifdef _DEBUG
 	std::cout << "Mesh Directories for : '\t" << mesh_Directory[0] << '\n';

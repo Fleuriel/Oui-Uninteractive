@@ -20,6 +20,16 @@ void PhysicsBody::Initialize() {
 	physicsSys->bodyList.push_back(this);
 
 }
-void PhysicsBody::Serialize(std::string str, JsonSerializer serializer) {
+void PhysicsBody::Serialize(std::string filePath, JsonSerializer serializer) {
+	rapidjson::Document objDoc;
 
+	// Read from JSON file
+	if (serializer.ReadJSONFile(filePath, objDoc)) {
+		//body.someVar = objDoc["body"]["someVar"].GetString();
+		/*position = objDoc["PhysicsBody"]["position"].GetString();
+		velocity = objDoc["PhysicsBody"]["velocity"].GetString();
+		accumulatedForce = objDoc["PhysicsBody"]["accumulatedForce"].GetString();
+		prevPosition = objDoc["PhysicsBody"]["prevPosition"].GetString();
+		acceleration = objDoc["PhysicsBody"]["acceleration"].GetString();*/
+	}
 }

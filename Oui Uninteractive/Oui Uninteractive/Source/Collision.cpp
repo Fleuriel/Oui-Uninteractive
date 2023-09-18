@@ -2,5 +2,6 @@
 
 
 //Circle-Circle?
-//bool collisionCircleCircle(3 params: distbe);
+//bool collisionCircleCircle(Vector2DDistance(x,y), Radius of A, Radius of B)
+// 
 //
