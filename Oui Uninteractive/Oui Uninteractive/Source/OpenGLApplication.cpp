@@ -25,6 +25,9 @@
 #include <glm/gtc/type_ptr.hpp>
 GLFWwindow* window;
 
+
+double inx, iny, inz;
+
 UsingImGui myImGui; // Creating imGui object
 Editor myEditor; // Creating editor object
 
@@ -192,10 +195,10 @@ void OpenGLApplication::OpenGLUpdate()
 
 		// create transformations
 		glm::mat4 transform = glm::mat4(1.0f); // make sure to initialize matrix to identity matrix first
-		//transform = glm::translate(transform, glm::vec3(0.5f, -0.5f, 0.0f));
-		transform = glm::rotate(transform, (float)glfwGetTime(), glm::vec3(0.0f, 0.0f, 1.0f));
+		transform = glm::translate(transform, glm::vec3(inx, iny, inz));
+		//transform = glm::rotate(transform, (float)glfwGetTime(), glm::vec3(0.0f, 0.0f, -0.1f));
 
-
+		glm::ortho(0.0f, 900.0f, 0.0f, 600.0f, 0.1f, 100.0f);
 
 		unsigned int transformLoc = glGetUniformLocation(OpenGLObject::ShaderProgram, "transform");
 		glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(transform));
@@ -299,19 +302,24 @@ void OpenGLApplication::OpenGLUpdate()
 
 			if (keyStates[GLFW_KEY_A]) {
 				std::cout << "WALK LEFT\n";
-				CurrentGameState = STATE_LEVEL_TEST;
+				inx -= 0.001;
+//				CurrentGameState = STATE_LEVEL_TEST;
+
 			}
 
 			if (keyStates[GLFW_KEY_D]) {
 				std::cout << "WALK RIGHT\n";
-				CurrentGameState = STATE_GRAPHICS_TEST;
+				inx += 0.001;
+//				CurrentGameState = STATE_GRAPHICS_TEST;
 			}
 
 			if (keyStates[GLFW_KEY_S]) {
+				iny -= 0.001;
 				std::cout << "WALK DOWN\n";
 			}
 
 			if (keyStates[GLFW_KEY_W]) {
+				iny += 0.001;
 				physicsSys->setVelocity(Vec2(0.0f, 10.f), 0);
 				std::cout << "WALK UP\n";
 			}
