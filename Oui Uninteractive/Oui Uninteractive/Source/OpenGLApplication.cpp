@@ -76,7 +76,7 @@ void OpenGLApplication::OpenGLWindowInit()
 	// Tell GLFW that we are using the CORE Profile
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
-
+	// Create viewport of width and height.
 	glViewport(0, 0, width, height);
 
 	glfwSwapInterval(1);
@@ -192,6 +192,10 @@ void OpenGLApplication::OpenGLUpdate()
 		glBindVertexArray(Objects.VAO);
 		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 				
+
+		// All these should be OBJECTS. THAT UPDATE.
+		
+
 
 		// create transformations
 		glm::mat4 transform = glm::mat4(1.0f); // make sure to initialize matrix to identity matrix first

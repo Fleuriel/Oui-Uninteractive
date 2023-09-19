@@ -96,32 +96,43 @@ void OpenGLObject::Init()
 		1, 2, 3    // second triangle
 	};
 
+	// Create EBO for indices (Two Triangles for one rectangle)
 	unsigned int EBO;
 	glGenBuffers(1, &EBO);
 
-
+	// Create Vertex Shader to input and compile the vertexShader
 	GLuint vertexShader = glCreateShader(GL_VERTEX_SHADER);
 	glShaderSource(vertexShader, 1, &vertexShaderSource, NULL);
 	glCompileShader(vertexShader);
 
+
+	// Create Fragment Shader to input and compile the fragmentShader
 	GLuint fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
 	glShaderSource(fragmentShader, 1, &fragmentShaderSource, NULL);
 	glCompileShader(fragmentShader);
 
 
+	// Attach ShaderProgram to CreateProgram.
 	ShaderProgram = glCreateProgram();
 
+	//Attach Shader Program with both vertex and fragment shaders
 	glAttachShader(ShaderProgram, vertexShader);
 	glAttachShader(ShaderProgram, fragmentShader);
+	//Link the shaders
 	glLinkProgram(ShaderProgram);
 
 
+	// generate the vertex arrays to VAO. 
 	glGenVertexArrays(1, &VAO);
+	// generate the buffer of VBO.
 	glGenBuffers(1, &VBO);
 
+	// bind the vertex array to VAO.
 	glBindVertexArray(VAO);
 
+	//bind buffer to VAO.
 	glBindBuffer(GL_ARRAY_BUFFER, VBO);
+
 	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
