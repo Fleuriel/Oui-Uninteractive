@@ -74,6 +74,8 @@ void OpenGLApplication::OpenGLWindowInit()
 
 	glViewport(0, 0, width, height);
 
+	glfwSwapInterval(1);
+
 	// Receives Key input/output [Checks for Key Presses]
 	glfwSetKeyCallback(window, keyCallBack);
 
@@ -163,10 +165,11 @@ void OpenGLApplication::OpenGLInit()
 
 	//init a game object in run time
 	objectFactory->BuildObjectRunTime();
-	objectFactory->AddComponent("PhysicsBody", objectFactory->GetGameObjectByID(0));
-	objectFactory->AddComponent("Transform", objectFactory->GetGameObjectByID(0));
+	objectFactory->AddComponent(ComponentType::PhysicsBody, objectFactory->GetGameObjectByID(0));
+	objectFactory->AddComponent(ComponentType::Transform, objectFactory->GetGameObjectByID(0));
 	objectFactory->GetGameObjectByID(0)->Initialize();
 
+	objectFactory->CloneObject(0);
 	//init object from file
 	//objectFactory->BuildObjectFromFile("test.json");
 
@@ -185,7 +188,7 @@ void OpenGLApplication::OpenGLUpdate()
 		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 		
 		//WireFrame Mode:
-		if (keyStates[GLFW_KEY_P]==2)
+		if (keyStates[GLFW_KEY_P]==1)
 		{
 			toggleMode =  !toggleMode;
 		}
@@ -295,11 +298,11 @@ void OpenGLApplication::OpenGLUpdate()
 			}
 
 			if (keyStates[GLFW_KEY_W]) {
-				physicsSys->setVelocity(Vec2(0.0f, 10.f));
+				physicsSys->setVelocity(Vec2(0.0f, 10.f), 0);
 				std::cout << "WALK UP\n";
 			}
 			else {
-				physicsSys->setVelocity(Vec2(0.0f, 0.0f));
+				physicsSys->setVelocity(Vec2(0.0f, 0.0f), 0);
 			}
 
 			if (keyStates[GLFW_KEY_M]) {
@@ -390,8 +393,7 @@ void OpenGLApplication::OpenGLUpdate()
 			std::cout << "Total Scroll Y Offset:" << mouse_scroll_total_Y_offset << "\n";
 		}
 
-		mouseScrollState = 0;
-
+		updateStatesForNextFrame();
 		
 		//std::cout << GetFPS() << '\n';
 		

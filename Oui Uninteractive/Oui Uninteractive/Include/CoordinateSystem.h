@@ -74,13 +74,11 @@ public:
      *************************************************************************/
     void MoveCoords(bool coordIndex, float val);
 
-    float Distance(Coordinates Coords2);
+    float Distance(Coordinates Coords2) const;
 
-    float SquareDistance(Coordinates Coords1, Coordinates Coords2);
+    bool DistanceExceedsThreshold(Coordinates Coords2, float val) const;
 
-    bool DistanceExceedsThreshold(Coordinates Coords2, float val);
-
-    bool DistanceIsWithinThreshold(Coordinates Coords2, float val);
+    bool DistanceIsWithinThreshold(Coordinates Coords2, float val) const;
 
 private:
     Vector2D Coords;
