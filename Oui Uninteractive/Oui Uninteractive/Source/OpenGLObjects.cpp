@@ -21,6 +21,7 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
+
 std::vector<glm::vec2> OpenGLObject::square;
 std::vector<glm::vec2> OpenGLObject::triangle;
 std::vector<std::string> OpenGLObject::mesh_Directory;
@@ -59,11 +60,12 @@ void OpenGLObject::Init()
 		layout(location = 1) in vec3 aColor;
 		
 		out vec3 vertexColor;
-
+		
+		uniform mat4 transform;
 
 		void main()
 		{
-			gl_Position = vec4(aPos, 1.0);
+			gl_Position = transform * vec4(aPos, 1.0);
 			vertexColor = aColor;
 		}
 
@@ -136,6 +138,7 @@ void OpenGLObject::Init()
 
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
 	glBindVertexArray(0);
+
 
 
 	glDeleteShader(vertexShader);
