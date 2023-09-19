@@ -61,6 +61,8 @@ void OpenGLApplication::OpenGLWindowInit()
 		windowSize.first = windowDoc["windowX"].GetInt();
 		windowSize.second = windowDoc["windowY"].GetInt();
 	}
+
+	// Create window application based on the windowSize.
 	window = glfwCreateWindow(windowSize.first, windowSize.second, "hello", NULL, NULL);
 	if (!window)
 	{
@@ -183,8 +185,6 @@ void OpenGLApplication::OpenGLInit()
 
 void OpenGLApplication::OpenGLUpdate()
 {
-
-
 		OpenGLSetBackgroundColor(0.5f, 0.5f, 0.5f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
 		
@@ -202,7 +202,7 @@ void OpenGLApplication::OpenGLUpdate()
 		transform = glm::translate(transform, glm::vec3(inx, iny, inz));
 		//transform = glm::rotate(transform, (float)glfwGetTime(), glm::vec3(0.0f, 0.0f, -0.1f));
 
-		glm::ortho(0.0f, 900.0f, 0.0f, 600.0f, 0.1f, 100.0f);
+		glm::ortho(0.0f, 900.0f, 0.0f, 600.0f, -1.0f, 1.0f);
 
 		unsigned int transformLoc = glGetUniformLocation(OpenGLObject::ShaderProgram, "transform");
 		glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(transform));
@@ -488,6 +488,7 @@ void OpenGLApplication::OpenGLTestChangingStates()
 
 void OpenGLApplication::OpenGLWindowResizeCallback(GLFWwindow* window, int width, int height) {
 	// Update the window dimensions once changed
-	windowSize.first = width;
-	windowSize.second = height;
+	// set callback for the window size
+	glViewport(0, 0, width, height);
+
 }

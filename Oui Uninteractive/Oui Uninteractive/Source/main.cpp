@@ -32,6 +32,7 @@ int main()
 	glfwSetWindowCloseCallback(window, windowCloseCallback);
 
 
+	glfwSetFramebufferSizeCallback(window, OpenGLApplication::OpenGLWindowResizeCallback);
 	// Initialize the GameStateManager
 	// Someone needs to put 
 	GameStateManagerInit(STATE_GRAPHICS_TEST);
