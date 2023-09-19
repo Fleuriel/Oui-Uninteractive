@@ -163,10 +163,11 @@ void OpenGLApplication::OpenGLInit()
 
 	//init a game object in run time
 	objectFactory->BuildObjectRunTime();
-	objectFactory->AddComponent("PhysicsBody", objectFactory->GetGameObjectByID(0));
-	objectFactory->AddComponent("Transform", objectFactory->GetGameObjectByID(0));
+	objectFactory->AddComponent(ComponentType::PhysicsBody, objectFactory->GetGameObjectByID(0));
+	objectFactory->AddComponent(ComponentType::Transform, objectFactory->GetGameObjectByID(0));
 	objectFactory->GetGameObjectByID(0)->Initialize();
 
+	objectFactory->CloneObject(0);
 	//init object from file
 	//objectFactory->BuildObjectFromFile("test.json");
 
@@ -295,11 +296,11 @@ void OpenGLApplication::OpenGLUpdate()
 			}
 
 			if (keyStates[GLFW_KEY_W]) {
-				physicsSys->setVelocity(Vec2(0.0f, 10.f));
+				physicsSys->setVelocity(Vec2(0.0f, 10.f), 0);
 				std::cout << "WALK UP\n";
 			}
 			else {
-				physicsSys->setVelocity(Vec2(0.0f, 0.0f));
+				physicsSys->setVelocity(Vec2(0.0f, 0.0f), 0);
 			}
 
 			if (keyStates[GLFW_KEY_M]) {

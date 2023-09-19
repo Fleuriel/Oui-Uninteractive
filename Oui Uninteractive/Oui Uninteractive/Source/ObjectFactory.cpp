@@ -22,6 +22,17 @@ ObjectFactory::ObjectFactory() : gameObjectCurrentID{} {
 	std::cout << "Component Fac: " << componentFactoryMap.size() << "\n";
 	objectFactory = this;
 }
+ComponentType ObjectFactory::stringToEnum(std::string str) {
+	if (str == "PhysicsBody") {
+		return ComponentType::PhysicsBody;
+	}
+	else if (str == "Transform") {
+		return ComponentType::Transform;
+	}
+	else {
+		return ComponentType::None;
+	}
+}
 // Create a game object from a JSON file
 GameObject* ObjectFactory::BuildObjectFromFile(const std::string& filePath) {
 	//GameObject* object{new GameObject()};
@@ -45,14 +56,15 @@ GameObject* ObjectFactory::SerializeObject(const std::string& filePath) {
 		// Extract components from JSON file
 		for (auto& it : objDoc.GetObject()) {
 			// Get component name
-			componentName = it.name.GetString();
+			 componentName = it.name.GetString();
+			 ComponentType type = stringToEnum(componentName);
 
-			if (componentFactoryMap.find(componentName) == componentFactoryMap.end()) {
+			if (componentFactoryMap.find(type) == componentFactoryMap.end()) {
 				std::cerr << "Component name not found." << std::endl;
 			}
 			else {
 				// Create ComponentFactory to create the component itself
-				ComponentFactoryBase* componentFactory = componentFactoryMap[componentName];
+				ComponentFactoryBase* componentFactory = componentFactoryMap[type];
 
 				// Create the component
 				IComponent* component = componentFactory->CreateComponent();
@@ -82,7 +94,7 @@ GameObject* ObjectFactory::BuildObjectRunTime() {
 	return objectRunTime;
 }
 
-// Update each game obejct in object factory
+// Update each game object in object factory
 void ObjectFactory::Update(float dt) {
 	std::set<GameObject*>::iterator it = gameObjectDestroyList.begin();
 
@@ -94,7 +106,24 @@ void ObjectFactory::Update(float dt) {
 	}
 	gameObjectDestroyList.clear();
 }
+bool ObjectFactory::CloneObject(size_t gameObjectID) {
+	//std::map<size_t, GameObject*>::iterator it = gameObjectIDMap.begin();
+	
+	if (gameObjectIDMap.find(gameObjectID) != gameObjectIDMap.end()) {
+		GameObject* original = (gameObjectIDMap.find(gameObjectID)->second);
+		GameObject* clone = BuildObjectRunTime();
 
+		for (int i = 0; i < original->componentList.size(); i++) {
+			AddComponent(original->componentList[i]->componentType, clone);
+		}
+
+		clone->Initialize();
+		return true;
+	}
+	else {
+		return false;
+	}
+}
 // Assign an ID to a game object and add it to the map of game objects
 void ObjectFactory::AssignObjectID(GameObject* gameObject) {
 	// Assign ID to gameObject
@@ -132,14 +161,14 @@ GameObject* ObjectFactory::GetGameObjectByID(size_t gameObjectID)
 }
 
 // Add component factory to map
-void ObjectFactory::AddComponentFactory(std::string componentName, ComponentFactoryBase* componentFactory) {
+void ObjectFactory::AddComponentFactory(componentType componentName, ComponentFactoryBase* componentFactory) {
 	componentFactoryMap.insert(std::pair(componentName, componentFactory));
 }
 
 // Add component with a specified component name to game object
-bool ObjectFactory::AddComponent(std::string componentName, GameObject* object) {
+bool ObjectFactory::AddComponent(componentType componentName, GameObject* object) {
 	// Get component factory
-	std::map<std::string, ComponentFactoryBase*>::iterator it = componentFactoryMap.find(componentName);
+	std::map<componentType, ComponentFactoryBase*>::iterator it = componentFactoryMap.find(componentName);
 
 	// Check if component factory exists
 	if (it != componentFactoryMap.end()) {
