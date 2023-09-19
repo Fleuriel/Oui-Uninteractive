@@ -95,7 +95,8 @@ void OpenGLApplication::OpenGLWindowInit()
 	// Set input mode for the window with the cursor (Enables Cursor Input)
 	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
 
-	
+	// Set glfw window resize callback function
+	glfwSetWindowSizeCallback(window, OpenGLWindowResizeCallback);
 
 }
 
@@ -484,4 +485,8 @@ void OpenGLApplication::OpenGLTestChangingStates()
 	{
 		Draw();
 	}
+}
+
+void OpenGLApplication::OpenGLWindowResizeCallback(GLFWwindow* window, int width, int height) {
+	std::cout << width << " " << height << std::endl;
 }

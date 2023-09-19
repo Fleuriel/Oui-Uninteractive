@@ -35,7 +35,7 @@ public:
 //	static void OpenGLWindowInitialization(GLFWwindow*& window, GLint width, GLint height);
 	static void OpenGLObjectsInitialization();
 //	static void render_square(glm::vec2 scaling, glm::vec2 position);
-
+	static void OpenGLWindowResizeCallback(GLFWwindow* window, int width, int height);
 
 
 	static void Draw();
