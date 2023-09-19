@@ -10,7 +10,7 @@
 
 #include <iostream>
 #include <OpenGLApplication.h>
-#include <InputKeys.h>
+#include <Input.h>
 #include <RandomUtilities.h>
 #include <OpenGLObjects.h>
 #include <glm/gtc/matrix_transform.hpp>
@@ -324,51 +324,16 @@ void OpenGLApplication::OpenGLUpdate()
 		/*-----------------------------------
 		|             NUMBERS               |
 		-----------------------------------*/
-		if (keyStates[GLFW_KEY_0])
-			std::cout << "0\n";
-		if (keyStates[GLFW_KEY_1])
-		{
-#ifdef _DEBUG
-//			std::cout << OpenGLObject::Object_Storage.size() << '\n';
-#endif
-			//std::cout << "1\n";
-		}
-		if (keyStates[GLFW_KEY_2])
-			std::cout << "2\n";
-		if (keyStates[GLFW_KEY_3])
-			std::cout << "3\n";
-		if (keyStates[GLFW_KEY_4])
-			std::cout << "4\n";
-		if (keyStates[GLFW_KEY_5])
-			std::cout << "5\n";
-		if (keyStates[GLFW_KEY_6])
-			std::cout << "6\n";
-		if (keyStates[GLFW_KEY_7])
-			std::cout << "7\n";
-		if (keyStates[GLFW_KEY_8])
-			std::cout << "8\n";
-		if (keyStates[GLFW_KEY_9])
-			std::cout << "9\n";
+
 
 		/*-----------------------------------
 		|              OTHERS               |
 		-----------------------------------*/
-		if (keyStates[GLFW_KEY_SPACE])
-			std::cout << "SPACE\n";
-		if (keyStates[GLFW_KEY_LEFT_ALT] || keyStates[GLFW_KEY_RIGHT_ALT])
-			std::cout << "ALT\n";
-		if (keyStates[GLFW_KEY_LEFT_CONTROL] || keyStates[GLFW_KEY_RIGHT_CONTROL])
-			std::cout << "CTRL\n";
-		if (keyStates[GLFW_KEY_LEFT_SHIFT] || keyStates[GLFW_KEY_RIGHT_SHIFT])
-			std::cout << "SHIFT\n";
-		if (keyStates[GLFW_KEY_CAPS_LOCK])
-			std::cout << "CAPS\n";
-		if (keyStates[GLFW_KEY_TAB])
-			std::cout << "TAB\n";
-		if (keyStates[GLFW_KEY_ESCAPE])
-			std::cout << "ESC\n";
-		if (keyStates[GLFW_KEY_ENTER])
-			std::cout << "ENTER\n";
+		if (keyStates[GLFW_KEY_ESCAPE]) {
+			glfwSetWindowShouldClose(window, GLFW_TRUE);
+			//glfwWindowShouldClose(window);
+			CurrentGameState = STATE_QUIT;
+		}
 
 		/*-----------------------------------
 		|              Mouse                |
