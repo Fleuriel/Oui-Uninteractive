@@ -65,7 +65,8 @@ void keyCallBack(GLFWwindow* window, int key, int scancode, int action, int mod)
 {
 	UNREFERENCED_PARAMETER(scancode);
 	
-	keyStates[key] = (action == GLFW_PRESS) ? 1 : (action == GLFW_REPEAT) ? 2 : 0;
+	keyStates[key] = (action == GLFW_PRESS && keyStates[key] == 0) ? 1 : (action == GLFW_RELEASE) ? 0 : 2;
+	std::cout << "keyval : " << keyStates[key] << std::endl;
 
 /***********************************************************************/
 	if (action == GLFW_PRESS)
@@ -97,6 +98,19 @@ void keyCallBack(GLFWwindow* window, int key, int scancode, int action, int mod)
 	}
 
 }
+
+
+void updateStatesForNextFrame() {
+	for (size_t i = 0; i < GLFW_KEY_LAST + 1; ++i)
+		keyStates[i] = (keyStates[i] == 1) ? 2 : keyStates[i];
+	mouseScrollState = 0;
+}
+
+
+
+
+
+
 
 /**************************************************************************
  * @brief Callback function for handling mouse button input in a GLFW window.

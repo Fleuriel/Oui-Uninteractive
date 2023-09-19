@@ -16,6 +16,14 @@ float Coordinates::GetCoords(bool coordIndex) const {
     return (coordIndex == X_INDEX) ? Coords.x : Coords.y;
 }
 
+/**************************************************************************
+ * @brief GetCoords retrieves the 2D vector coordinates stored in the Coordinates object.
+ *
+ * This member function allows access to the 2D vector coordinates contained within the
+ * Coordinates object. It returns a Vector2D object representing the coordinates.
+ *
+ * @return Vector2D object containing the 2D coordinates.
+ *************************************************************************/
 Vector2D Coordinates::GetCoords() const {
     return Coords;
 }
@@ -48,18 +56,46 @@ void Coordinates::MoveCoords(bool coordIndex, float val) {
     ((coordIndex == X_INDEX) ? Coords.x : Coords.y) += val;
 }
 
-float Coordinates::Distance(Coordinates Coords2) {
+/**
+ * @brief Calculate the Euclidean distance between this coordinates and another.
+ *
+ * This member function calculates the Euclidean distance between the coordinates
+ * represented by this object and the coordinates passed as `Coords2`. It uses the
+ * Vector2DDistance function to compute the distance.
+ *
+ * @param Coords2 Another set of coordinates.
+ * @return The Euclidean distance between this coordinates and Coords2.
+ */
+float Coordinates::Distance(Coordinates Coords2) const {
     return Vector2DDistance(Coords, Coords2.Coords);
 }
 
-float Coordinates::SquareDistance(Coordinates Coords1, Coordinates Coords2) {
-    return Vector2DSquareDistance(Coords1.Coords, Coords2.Coords);
+/**
+ * @brief Check if the Euclidean distance between this and another coordinates exceeds a threshold.
+ *
+ * This member function checks whether the Euclidean distance between this coordinates
+ * and the coordinates passed as `Coords2` exceeds the specified threshold value `val`.
+ * It uses the Vector2DSquareDistance function for this comparison.
+ *
+ * @param Coords2 Another set of coordinates.
+ * @param val The threshold value to compare the distance against.
+ * @return True if the distance exceeds the threshold, false otherwise.
+ */
+bool Coordinates::DistanceExceedsThreshold(Coordinates Coords2, float val) const {
+    return (Vector2DSquareDistance(Coords, Coords2.Coords) > pow(val,2.0));
 }
 
-bool Coordinates::DistanceExceedsThreshold(Coordinates Coords2, float val) {
-    return (SquareDistance(*this, Coords2) > pow(val,2.0));
-}
-
-bool Coordinates::DistanceIsWithinThreshold(Coordinates Coords2, float val) {
+/**
+ * @brief Check if the Euclidean distance between this and another coordinates is within a threshold.
+ *
+ * This member function checks whether the Euclidean distance between this coordinates
+ * and the coordinates passed as `Coords2` is within the specified threshold value `val`.
+ * It uses the DistanceExceedsThreshold function to determine this.
+ *
+ * @param Coords2 Another set of coordinates.
+ * @param val The threshold value to compare the distance against.
+ * @return True if the distance is within the threshold, false otherwise.
+ */
+bool Coordinates::DistanceIsWithinThreshold(Coordinates Coords2, float val) const {
     return !DistanceExceedsThreshold(Coords2, val);
 }

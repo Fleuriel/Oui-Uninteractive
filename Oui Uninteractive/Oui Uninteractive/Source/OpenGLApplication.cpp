@@ -74,6 +74,8 @@ void OpenGLApplication::OpenGLWindowInit()
 
 	glViewport(0, 0, width, height);
 
+	glfwSwapInterval(1);
+
 	// Receives Key input/output [Checks for Key Presses]
 	glfwSetKeyCallback(window, keyCallBack);
 
@@ -185,7 +187,7 @@ void OpenGLApplication::OpenGLUpdate()
 		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 		
 		//WireFrame Mode:
-		if (keyStates[GLFW_KEY_P]==2)
+		if (keyStates[GLFW_KEY_P]==1)
 		{
 			toggleMode =  !toggleMode;
 		}
@@ -390,8 +392,7 @@ void OpenGLApplication::OpenGLUpdate()
 			std::cout << "Total Scroll Y Offset:" << mouse_scroll_total_Y_offset << "\n";
 		}
 
-		mouseScrollState = 0;
-
+		updateStatesForNextFrame();
 		
 		//std::cout << GetFPS() << '\n';
 		
