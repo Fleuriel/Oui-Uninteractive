@@ -56,30 +56,38 @@ void OpenGLObject::Init()
 	const char* vertexShaderSource =
 	R"(#version 450 core
 		layout(location = 0) in vec3 aPos;
+		layout(location = 1) in vec3 aColor;
+		
+		out vec3 vertexColor;
+
 
 		void main()
 		{
-			gl_Position = vec4(aPos.x, aPos.y, aPos.z, 1.0);
+			gl_Position = vec4(aPos, 1.0);
+			vertexColor = aColor;
 		}
+
 
 )";
 
 	const char* fragmentShaderSource =
 		R"(#version 450 core
 			out vec4 FragColor;
-			
+			in vec3 vertexColor;			
+
+
 			void main()
 			{
-			    FragColor = vec4(1.0f, 0.5f, 0.2f, 1.0f);
+			    FragColor = vec4(vertexColor, 1.0f);
 			}
  )";
 
 
 	float vertices[] = {
-		 0.5f,  0.5f, 0.0f,  // top right
-		 0.5f, -0.5f, 0.0f,  // bottom right
-		-0.5f, -0.5f, 0.0f,  // bottom left
-		-0.5f,  0.5f, 0.0f   // top left 
+		 0.5f,  0.5f, 0.0f,		0.4f, 0.3f, 0.9f, // top right
+		 0.5f, -0.5f, 0.0f,		0.7f, 0.2f, 0.9f, // bottom right
+		-0.5f, -0.5f, 0.0f,		0.2f, 0.6f, 0.15f, // bottom left
+		-0.5f,  0.5f, 0.0f,		1.0f, 0.4f, 0.15f // top left 
 	};
 	unsigned int indices[] = {  // note that we start from 0!
 		0, 1, 3,   // first triangle
@@ -104,8 +112,6 @@ void OpenGLObject::Init()
 	glAttachShader(ShaderProgram, vertexShader);
 	glAttachShader(ShaderProgram, fragmentShader);
 	glLinkProgram(ShaderProgram);
-	//glDeleteShader(vertexShader);
-	//glDeleteShader(fragmentShader);
 
 
 	glGenVertexArrays(1, &VAO);
@@ -121,11 +127,11 @@ void OpenGLObject::Init()
 
 
 
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)0);
 	glEnableVertexAttribArray(0);
 
-	//glVertexAttribPointer(1, 3, GL_FLOAT, GL_TRUE, 6 * sizeof(float), (void*)(3 * sizeof(float)));
-	//glEnableVertexAttribArray(1);
+	glVertexAttribPointer(1, 3, GL_FLOAT, GL_TRUE, 6 * sizeof(float), (void*)(3 * sizeof(float)));
+	glEnableVertexAttribArray(1);
 
 
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
