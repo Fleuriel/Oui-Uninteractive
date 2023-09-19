@@ -23,8 +23,11 @@
 
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
-GLFWwindow* window;
 
+// Pointer to the window
+GLFWwindow* window;
+// To store the window dimensions for duration of program
+std::pair<unsigned short, unsigned short> windowSize;
 
 double inx, iny, inz;
 
@@ -54,12 +57,11 @@ void OpenGLApplication::OpenGLWindowInit()
 	std::string filePath = "../window-data/window-data.JSON";
 	rapidjson::Document windowDoc;
 	// Initialize window dimensions from JSON
-	unsigned short width, height;
 	if (Editor::ReadJSONFile(filePath, windowDoc)) {
-		width = windowDoc["windowX"].GetInt();
-		height = windowDoc["windowY"].GetInt();
+		windowSize.first = windowDoc["windowX"].GetInt();
+		windowSize.second = windowDoc["windowY"].GetInt();
 	}
-	window = glfwCreateWindow(width, height, "hello", NULL, NULL);
+	window = glfwCreateWindow(windowSize.first, windowSize.second, "hello", NULL, NULL);
 	if (!window)
 	{
 		glfwTerminate();
@@ -77,7 +79,7 @@ void OpenGLApplication::OpenGLWindowInit()
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
 	// Create viewport of width and height.
-	glViewport(0, 0, width, height);
+	glViewport(0, 0, windowSize.first, windowSize.second);
 
 	glfwSwapInterval(1);
 
@@ -104,15 +106,12 @@ void OpenGLApplication::OpenGLWindowInit()
 
 void OpenGLApplication::OpenGLWindowCleanup()
 {
-	// Get window dimensions
-	int width, height;
-	glfwGetWindowSize(window, &width, &height);
 	// Save window size
 	std::string filePath = "../window-data/window-data.JSON";
 	rapidjson::Document windowDoc;
 	if (Editor::ReadJSONFile(filePath, windowDoc)) {
-		windowDoc["windowX"] = width;
-		windowDoc["windowY"] = height;
+		windowDoc["windowX"] = windowSize.first;
+		windowDoc["windowY"] = windowSize.second;
 		Editor::WriteJSONFile(filePath, windowDoc);
 	}
 
@@ -488,5 +487,7 @@ void OpenGLApplication::OpenGLTestChangingStates()
 }
 
 void OpenGLApplication::OpenGLWindowResizeCallback(GLFWwindow* window, int width, int height) {
-	std::cout << width << " " << height << std::endl;
+	// Update the window dimensions once changed
+	windowSize.first = width;
+	windowSize.second = height;
 }

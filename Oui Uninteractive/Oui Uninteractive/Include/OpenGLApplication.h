@@ -16,10 +16,12 @@
 #include <OpenGLShaders.h>
 #include <map>
 #include <OpenGLObjects.h>
+#include <utility>
 
 
 extern GLFWwindow* window;
 extern OpenGLObject Objects;
+extern std::pair<unsigned short, unsigned short> windowSize;
 
 class OpenGLApplication {
 
