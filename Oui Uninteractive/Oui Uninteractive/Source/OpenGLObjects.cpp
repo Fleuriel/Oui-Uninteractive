@@ -53,31 +53,13 @@ void OpenGLObject::Init()
 	Load_Files();
 //	Load_Meshes();
 	
-
-
-
-	glm::vec4 vec(1.0f, 0.0f, 0.0f, 1.0f);
-	glm::mat4 trans = glm::mat4(1.0f);
-	trans = glm::translate(trans, glm::vec3(1.0, 1.0f, 0.0f));
-	vec = trans * vec;
-
-	trans = glm::rotate(trans, glm::radians(90.0f), glm::vec3(0.0, 0.0, 1.0));
-	trans = glm::scale(trans, glm::vec3(0.5, 0.5, 0.5));
-
-
 	const char* vertexShaderSource =
-
-		R"(#version 450 core
+	R"(#version 450 core
 		layout(location = 0) in vec3 aPos;
-		layout(location = 1) in vec2 aTexCoord;
-		
-		out vec2 TexCoord;
-		
-		uniform mat4 transform;
 
 		void main()
-			gl_Position = transform * vec4(aPos, 1.0f);
-			TexCoord = vec2(aTexCoord.x, aTexCoord.y);
+		{
+			gl_Position = vec4(aPos.x, aPos.y, aPos.z, 1.0);
 		}
 
 )";
@@ -94,22 +76,19 @@ void OpenGLObject::Init()
 
 
 	float vertices[] = {
-	 0.5f,  0.5f, 0.0f,  // top right
-	 0.5f, -0.5f, 0.0f,  // bottom right
-	-0.5f, -0.5f, 0.0f,  // bottom left
-	-0.5f,  0.5f, 0.0f   // top left 
+		 0.5f,  0.5f, 0.0f,  // top right
+		 0.5f, -0.5f, 0.0f,  // bottom right
+		-0.5f, -0.5f, 0.0f,  // bottom left
+		-0.5f,  0.5f, 0.0f   // top left 
 	};
-
 	unsigned int indices[] = {  // note that we start from 0!
-	0, 1, 3,   // first triangle
-	1, 2, 3    // second triangle
+		0, 1, 3,   // first triangle
+		1, 2, 3    // second triangle
 	};
 
 	unsigned int EBO;
 	glGenBuffers(1, &EBO);
 
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 
 	GLuint vertexShader = glCreateShader(GL_VERTEX_SHADER);
 	glShaderSource(vertexShader, 1, &vertexShaderSource, NULL);
@@ -125,6 +104,9 @@ void OpenGLObject::Init()
 	glAttachShader(ShaderProgram, vertexShader);
 	glAttachShader(ShaderProgram, fragmentShader);
 	glLinkProgram(ShaderProgram);
+	//glDeleteShader(vertexShader);
+	//glDeleteShader(fragmentShader);
+
 
 	glGenVertexArrays(1, &VAO);
 	glGenBuffers(1, &VBO);
@@ -133,8 +115,11 @@ void OpenGLObject::Init()
 
 	glBindBuffer(GL_ARRAY_BUFFER, VBO);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
+
+
 
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
 	glEnableVertexAttribArray(0);
@@ -142,13 +127,103 @@ void OpenGLObject::Init()
 	//glVertexAttribPointer(1, 3, GL_FLOAT, GL_TRUE, 6 * sizeof(float), (void*)(3 * sizeof(float)));
 	//glEnableVertexAttribArray(1);
 
-	glBindBuffer(GL_ARRAY_BUFFER, 0);
-	glBindVertexArray(0);
 
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+	glBindVertexArray(0);
 
 
 	glDeleteShader(vertexShader);
 	glDeleteShader(fragmentShader);
+//
+//	const char* vertexShaderSource =
+//
+//		R"(#version 450 core
+//		layout(location = 0) in vec3 aPos;
+//		layout(location = 1) in vec2 aTexCoord;
+//		
+//		out vec4 vertexColor;
+//		out vec2 TexCoord;
+//		
+//		uniform mat4 transform;
+//
+//		void main()
+//			gl_Position = transform * vec4(aPos, 1.0f);
+//			vertexColor = vec4(233.0/255.0, 255/255, 219.0/255.0, 1.0f);
+//			TexCoord = vec2(aTexCoord.x, aTexCoord.y);
+//		}
+//
+//";
+//
+//	const char* fragmentShaderSource =
+//		R"(#version 450 core
+//			out vec4 FragColor;
+//			
+//			in vec4 vertexColor;
+//			void main()
+//			{
+//			    FragColor = vertexColor;
+//			}
+//)";
+
+
+
+	//float vertices[] = {
+	//	// positions         // colors
+	//	 0.5f, -0.5f, 0.0f,  1.0f, 0.0f, 0.0f,   // bottom right
+	//	-0.5f, -0.5f, 0.0f,  0.0f, 1.0f, 0.0f,   // bottom left
+	//	 0.0f,  0.5f, 0.0f,  0.0f, 0.0f, 1.0f    // top 
+	//};
+	//
+	//
+	//unsigned int indices[] = {  // note that we start from 0!
+	//0, 1, 3,   // first triangle
+	//1, 2, 3    // second triangle
+	//};
+	//
+	//unsigned int EBO;
+	//glGenBuffers(1, &EBO);
+	//
+	//glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+	//glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+	//
+	//GLuint vertexShader = glCreateShader(GL_VERTEX_SHADER);
+	//glShaderSource(vertexShader, 1, &vertexShaderSource, NULL);
+	//glCompileShader(vertexShader);
+	//
+	//GLuint fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
+	//glShaderSource(fragmentShader, 1, &fragmentShaderSource, NULL);
+	//glCompileShader(fragmentShader);
+	//
+	//
+	//ShaderProgram = glCreateProgram();
+	//
+	//glAttachShader(ShaderProgram, vertexShader);
+	//glAttachShader(ShaderProgram, fragmentShader);
+	//glLinkProgram(ShaderProgram);
+	//
+	//glGenVertexArrays(1, &VAO);
+	//glGenBuffers(1, &VBO);
+	//
+	//glBindVertexArray(VAO);
+	//
+	//glBindBuffer(GL_ARRAY_BUFFER, VBO);
+	//glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+	//glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+	//glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
+	//
+	//glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+	//glEnableVertexAttribArray(0);
+	//
+	////glVertexAttribPointer(1, 3, GL_FLOAT, GL_TRUE, 6 * sizeof(float), (void*)(3 * sizeof(float)));
+	////glEnableVertexAttribArray(1);
+	//
+	//glBindBuffer(GL_ARRAY_BUFFER, 0);
+	//glBindVertexArray(0);
+	//
+	//
+	//
+	//glDeleteShader(vertexShader);
+	//glDeleteShader(fragmentShader);
 
 
 
