@@ -165,10 +165,11 @@ void OpenGLApplication::OpenGLInit()
 
 	//init a game object in run time
 	objectFactory->BuildObjectRunTime();
-	objectFactory->AddComponent("PhysicsBody", objectFactory->GetGameObjectByID(0));
-	objectFactory->AddComponent("Transform", objectFactory->GetGameObjectByID(0));
+	objectFactory->AddComponent(ComponentType::PhysicsBody, objectFactory->GetGameObjectByID(0));
+	objectFactory->AddComponent(ComponentType::Transform, objectFactory->GetGameObjectByID(0));
 	objectFactory->GetGameObjectByID(0)->Initialize();
 
+	objectFactory->CloneObject(0);
 	//init object from file
 	//objectFactory->BuildObjectFromFile("test.json");
 
@@ -185,9 +186,21 @@ void OpenGLApplication::OpenGLUpdate()
 		glUseProgram(Objects.ShaderProgram);
 		glBindVertexArray(Objects.VAO);
 		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
-		
+				
+
+		//glm::vec4 vec(1.0f, 0.0f, 0.0f, 1.0f);
+		//glm::mat4 trans = glm::mat4(1.0f);
+		//trans = glm::translate(trans, glm::vec3(1.0, 1.0f, 0.0f));
+		//vec = trans * vec;
+		//
+		//trans = glm::rotate(trans, glm::radians(90.0f), glm::vec3(0.0, 0.0, 1.0));
+		//trans = glm::scale(trans, glm::vec3(0.5, 0.5, 0.5));
+
+
+
+
 		//WireFrame Mode:
-		if (keyStates[GLFW_KEY_P]==1)
+		if (keyStates[GLFW_KEY_P] == 1)
 		{
 			toggleMode =  !toggleMode;
 		}
@@ -297,11 +310,11 @@ void OpenGLApplication::OpenGLUpdate()
 			}
 
 			if (keyStates[GLFW_KEY_W]) {
-				physicsSys->setVelocity(Vec2(0.0f, 10.f));
+				physicsSys->setVelocity(Vec2(0.0f, 10.f), 0);
 				std::cout << "WALK UP\n";
 			}
 			else {
-				physicsSys->setVelocity(Vec2(0.0f, 0.0f));
+				physicsSys->setVelocity(Vec2(0.0f, 0.0f), 0);
 			}
 
 			if (keyStates[GLFW_KEY_M]) {

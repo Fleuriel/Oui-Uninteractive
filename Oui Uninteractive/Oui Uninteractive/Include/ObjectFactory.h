@@ -29,12 +29,12 @@ private:
 	std::set<GameObject*> gameObjectDestroyList;
 
 	// Map of component factories
-	std::map<std::string, ComponentFactoryBase*> componentFactoryMap;
+	std::map<componentType, ComponentFactoryBase*> componentFactoryMap;
 
 public:
 	ObjectFactory();
 	~ObjectFactory() {}
-
+	ComponentType stringToEnum(std::string str);
 	// Create a new game object from a file
 	// To change parameter to the filename when implementing serialization in the future
 	GameObject* BuildObjectFromFile(const std::string& filePath);
@@ -44,6 +44,8 @@ public:
 
 	// Create a new game object during run-time
 	GameObject* BuildObjectRunTime();
+
+	bool CloneObject(size_t gameObjectID);
 
 	// Update the object factory
 	virtual void Update(float dt);
@@ -63,7 +65,7 @@ public:
 	// messaging...
 
 	// Add component factory to map
-	void AddComponentFactory(std::string componentName, ComponentFactoryBase* componentFactory);
-	bool AddComponent(std::string name, GameObject* object);
+	void AddComponentFactory(componentType componentName, ComponentFactoryBase* componentFactory);
+	bool AddComponent(componentType name, GameObject* object);
 };
 extern ObjectFactory* objectFactory;

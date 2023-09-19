@@ -9,9 +9,11 @@
  *************************************************************************/
 #pragma once
 
-enum class ComponentType {
+typedef enum class ComponentType {
 	None = 0,
 	PhysicsBody,
 	Transform
 	
-};
+}componentType;
+
+
