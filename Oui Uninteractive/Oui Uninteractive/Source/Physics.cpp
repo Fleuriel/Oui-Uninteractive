@@ -30,7 +30,7 @@ void Physics::Update(float dt) {
 		body->velocity = body->velocity + body->acceleration * dt;
 		body->txPtr->position = body->position;
 
-		std::cout << "X: " << body->position.x << "Y: " << body->position.y << "\n";
+		//std::cout << "X: " << body->position.x << "Y: " << body->position.y << "\n";
 	}
 
 }

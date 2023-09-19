@@ -15,8 +15,14 @@
 #ifndef INPUTKEYS_H
 #define INPUTKEYS_H
 
-// REFER TO keyDefinition.h for the index values
-extern std::vector<bool> InputStates;
+// Define an array to keep track of key states
+extern std::array<int, GLFW_KEY_LAST + 1> keyStates;
+
+// Define an array to keep track of mouse button states
+extern std::array<bool, GLFW_MOUSE_BUTTON_LAST + 1> mouseButtonStates;
+
+// 1 for scrolling up, 0 for not scrolling, -1 for scrolling down
+extern int mouseScrollState;
 
 void keyCallBack(GLFWwindow* window, int key, int scancode, int action, int mod);
 

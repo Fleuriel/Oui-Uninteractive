@@ -48,8 +48,8 @@ void Coordinates::MoveCoords(bool coordIndex, float val) {
     ((coordIndex == X_INDEX) ? Coords.x : Coords.y) += val;
 }
 
-float Coordinates::Distance(Coordinates Coords1, Coordinates Coords2) {
-    return Vector2DDistance(Coords1.Coords, Coords2.Coords);
+float Coordinates::Distance(Coordinates Coords2) {
+    return Vector2DDistance(Coords, Coords2.Coords);
 }
 
 float Coordinates::SquareDistance(Coordinates Coords1, Coordinates Coords2) {
