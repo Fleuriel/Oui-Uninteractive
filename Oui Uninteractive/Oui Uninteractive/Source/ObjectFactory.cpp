@@ -14,14 +14,6 @@
 
 ObjectFactory* objectFactory = NULL;
 
-// Object Factory initializer
-ObjectFactory::ObjectFactory() : gameObjectCurrentID{} {
-	if (objectFactory != NULL) {
-		return;
-	}
-	std::cout << "Component Fac: " << componentFactoryMap.size() << "\n";
-	objectFactory = this;
-}
 ComponentType ObjectFactory::stringToEnum(std::string str) {
 	if (str == "PhysicsBody") {
 		return ComponentType::PhysicsBody;
@@ -33,9 +25,25 @@ ComponentType ObjectFactory::stringToEnum(std::string str) {
 		return ComponentType::None;
 	}
 }
-// Create a game object from a JSON file
+
+// Object Factory initializer
+ObjectFactory::ObjectFactory() : gameObjectCurrentID{} {
+	if (objectFactory != NULL) {
+		return;
+	}
+	std::cout << "Component Fac: " << componentFactoryMap.size() << "\n";
+	objectFactory = this;
+}
+
+// Object Factory destructor
+ObjectFactory::~ObjectFactory() {
+	for (auto& it : componentFactoryMap) {
+		delete it.second;
+	}
+}
+
+// Create a game object based on serialized data
 GameObject* ObjectFactory::BuildObjectFromFile(const std::string& filePath) {
-	//GameObject* object{new GameObject()};
 	GameObject* object{SerializeObject(filePath)};
 	object->Initialize();
 	return object;
@@ -48,13 +56,15 @@ GameObject* ObjectFactory::SerializeObject(const std::string& filePath) {
 	JsonSerializer serializer;
 	std::string componentName;
 
+	std::string objName = objDoc["Name"].GetString();
+
 	// Read data from file
 	if (serializer.ReadJSONFile(filePath, objDoc)) {
 		// Create GameObject
 		GameObject* gameObject{};
 
 		// Extract components from JSON file
-		for (auto& it : objDoc.GetObject()) {
+		for (auto& it : objDoc["Objects"].GetObject()) {
 			// Get component name
 			 componentName = it.name.GetString();
 			 ComponentType type = stringToEnum(componentName);
@@ -70,7 +80,7 @@ GameObject* ObjectFactory::SerializeObject(const std::string& filePath) {
 				IComponent* component = componentFactory->CreateComponent();
 
 				// Serialize to get component data
-				component->Serialize(filePath, serializer);
+				//component->Serialize(filePath, objName);
 
 				// Add the component to the game object
 				gameObject->AddComponent(component, componentFactory->type);
@@ -84,6 +94,70 @@ GameObject* ObjectFactory::SerializeObject(const std::string& filePath) {
 	else {
 		std::cerr << "Failed to serialize object." << std::endl;
 		return NULL;
+	}
+}
+
+
+/*  TESTING NEW SERIALIZE OBJECT FUNCTION
+	VOID FUNC INSTEAD OF RETURN INDIVIDUAL GAME OBJECT
+	NOT SURE WHICH METHOD IS PREFERRED YET*/
+
+// Serialize game object data from a JSON file (TESTING VOID)
+void ObjectFactory::SerializeObjectVoid(const std::string& filePath) {
+	// Create rapidjson doc object and serializer
+	rapidjson::Document objDoc;
+	JsonSerializer serializer;
+	std::string componentName;
+
+	//std::vector<GameObject*> serializedObjectVector{};
+
+	// Read data from file
+	if (serializer.ReadJSONFile(filePath, objDoc)) {
+		// For each object in Objects array (in JSON file)
+		for (auto& obj : objDoc["Objects"].GetArray()) {
+			// Create GameObject
+			GameObject* gameObject{new GameObject()};
+
+			std::string objName = obj["Name"].GetString();
+			//gameObject->gameObjectName = objName;
+			gameObject->gameObjectName = objName;
+
+			// Get each component in object
+			const rapidjson::Value& components{obj["Components"]};
+
+			for (rapidjson::Value::ConstMemberIterator itr{components.MemberBegin()}; itr != components.MemberEnd(); ++itr) {
+				componentName = itr->name.GetString();
+				ComponentType type = stringToEnum(componentName);
+
+				if (componentFactoryMap.find(type) == componentFactoryMap.end()) {
+					std::cerr << "Component name not found." << std::endl;
+				}
+
+				else {
+					// Set componentFactory to create the component itself
+					ComponentFactoryBase* componentFactory = componentFactoryMap[type];
+
+					// Create the component
+					IComponent* component = componentFactory->CreateComponent();
+
+					// Serialize to store component data
+					component->Serialize(filePath, itr);
+
+					// Add the component to the game object
+					gameObject->AddComponent(component, componentFactory->type);
+				}
+			}
+			
+			// Assign an ID to the game object
+			AssignObjectID(gameObject);
+		}		
+	}
+	else {
+		std::cerr << "Failed to serialize object." << std::endl;
+	}
+
+	for (auto i{ gameObjectIDMap.begin() }; i != gameObjectIDMap.end(); ++i) {
+		i->second->Initialize();
 	}
 }
 
@@ -106,6 +180,8 @@ void ObjectFactory::Update(float dt) {
 	}
 	gameObjectDestroyList.clear();
 }
+
+// Clone a game object
 bool ObjectFactory::CloneObject(size_t gameObjectID) {
 	//std::map<size_t, GameObject*>::iterator it = gameObjectIDMap.begin();
 	
@@ -124,6 +200,7 @@ bool ObjectFactory::CloneObject(size_t gameObjectID) {
 		return false;
 	}
 }
+
 // Assign an ID to a game object and add it to the map of game objects
 void ObjectFactory::AssignObjectID(GameObject* gameObject) {
 	// Assign ID to gameObject
@@ -158,6 +235,11 @@ GameObject* ObjectFactory::GetGameObjectByID(size_t gameObjectID)
 		return gameObjectIDMap[gameObjectID];
 
 	return nullptr;
+}
+
+// Get all game objects
+std::map<size_t, GameObject*> ObjectFactory::GetGameObjectIDMap() {
+	return gameObjectIDMap;
 }
 
 // Add component factory to map

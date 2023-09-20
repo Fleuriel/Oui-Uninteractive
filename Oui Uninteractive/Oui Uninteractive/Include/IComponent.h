@@ -36,17 +36,15 @@ public:
 	}
 
 	// Each component to serialize their own data
-	/* Usage(to change*):
+	/* Usage inside respective Component.cpp file:
 	
-	rapidjson::Document objDoc;
-	if (serializer.ReadJSONFile(filePath, objDoc)) {
-		body.someVar = objDoc["body"]["someVar"].GetString();
-	}
+	const rapidjson::Value& components{itr->value};
+	variableName = components["VariableName"].GetFloat();	// If variable is float, use GetFloat()
 	
 	*/
 
 	// Serialize function to be overloaded by each component
-	virtual void Serialize(const std::string& filePath, JsonSerializer& serializer) {};
+	virtual void Serialize(const std::string& filePath, rapidjson::Value::ConstMemberIterator& itr) {};
 
 
 	virtual ~IComponent() {};

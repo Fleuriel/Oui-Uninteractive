@@ -4,8 +4,7 @@
     {
       "Name": "Object1",
       "Components": {
-        "Physics": {
-          "Mass": 10.0,
+        "PhysicsBody": {
           "VelocityX": 0.0,
           "VelocityY": 0.0
         },
@@ -21,8 +20,7 @@
     {
       "Name": "Object2",
       "Components": {
-        "Physics": {
-          "Mass": 5.0,
+        "PhysicsBody": {
           "VelocityX": 1.0,
           "VelocityY": 0.5
         },
@@ -32,7 +30,6 @@
           "Rotation": 30.0
         }
       }
-
     }
   ]
 }

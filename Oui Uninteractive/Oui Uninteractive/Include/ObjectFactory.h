@@ -33,18 +33,22 @@ private:
 
 public:
 	ObjectFactory();
-	~ObjectFactory() {}
+	~ObjectFactory();
 	ComponentType stringToEnum(std::string str);
+
 	// Create a new game object from a file
-	// To change parameter to the filename when implementing serialization in the future
 	GameObject* BuildObjectFromFile(const std::string& filePath);
 
 	// Serialize a game object
 	GameObject* SerializeObject(const std::string& filePath);
 
+	// Serialize a game object (Test void func)
+	void SerializeObjectVoid(const std::string& filePath);
+
 	// Create a new game object during run-time
 	GameObject* BuildObjectRunTime();
 
+	// Clone a game object
 	bool CloneObject(size_t gameObjectID);
 
 	// Update the object factory
@@ -61,6 +65,10 @@ public:
 
 	// Get game object with a specified ID
 	GameObject* GetGameObjectByID(size_t gameObjectID);
+
+	// Get all game objects
+	// For testing
+	std::map<size_t, GameObject*> GetGameObjectIDMap();
 
 	// messaging...
 

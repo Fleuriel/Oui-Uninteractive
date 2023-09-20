@@ -180,6 +180,19 @@ void OpenGLApplication::OpenGLInit()
 	//init object from file
 	//objectFactory->BuildObjectFromFile("test.json");
 
+	/*---------------------------------------------------------------------------*/
+	// TESTING SERIALIZATION
+	std::cout << "\n\nTesting Serialization\n---------------------\n\n";
+	objectFactory->SerializeObjectVoid("../scenes/testscene.JSON");
+
+	// Print out object data (TO DELETE)
+	std::map<size_t, GameObject*> gameObjectMap(objectFactory->GetGameObjectIDMap());
+	for (auto i{ gameObjectMap.begin() }; i != gameObjectMap.end(); ++i) {
+		std::cout << "Game Object ID: " << i->first << '\n';
+		std::cout << "Game Object Name: " << i->second->GetGameObjectName() << '\n';
+		std::cout << "Game Object ID (again): " << i->second->GetGameObjectID() << "\n\n";
+	}
+	/*---------------------------------------------------------------------------*/
 }
 
 

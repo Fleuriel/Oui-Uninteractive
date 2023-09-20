@@ -22,6 +22,9 @@ private:
 	// ID to reperesent game object
 	size_t gameObjectID;
 
+	// String to represent game object name
+	std::string gameObjectName;
+
 	// Vector of components
 	std::vector<IComponent*> componentList;	// may use typedef to represent vector in the future
 
@@ -49,11 +52,19 @@ public:
 	// Remove component from componentList
 	void RemoveComponent(IComponent* c);
 
-	// Check if component is in componentList
-	int Has(ComponentType type);
+	// Return position of component with typeID in componentList
+	int Has(ComponentType typeID);
 
 	// Get game object ID
 	size_t GetGameObjectID();
+
+	// Get game object name
+	// For testing
+	std::string GetGameObjectName();
+
+	// Get componentlist
+	// For testing
+	std::vector<IComponent*> GetComponentList();
 
 	// Get component
 	IComponent* GetComponent(ComponentType typeID);
@@ -61,6 +72,7 @@ public:
 	// Get component type
 	template <typename T> T* GetComponentType(ComponentType typeID);
 };
+
 template <typename T> T* GameObject::GetComponentType(ComponentType typeID) {
 	return static_cast<T*>(GetComponent(typeID));
 }

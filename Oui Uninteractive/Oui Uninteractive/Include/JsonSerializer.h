@@ -19,6 +19,7 @@
 class JsonSerializer {
 public:
 	void Init();
+	void InitObjects(const std::string& filePath);
 	bool ReadJSONFile(const std::string& filePath, rapidjson::Document& docRef);
 	bool WriteJSONFile(const std::string& filePath, rapidjson::Document& docRef);
 };

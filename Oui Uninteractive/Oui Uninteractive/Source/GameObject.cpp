@@ -8,6 +8,7 @@
  * @brief
  *************************************************************************/
 
+#include <algorithm>
 #include "GameObject.h"
 
 // For future event/message system
@@ -47,17 +48,15 @@ void GameObject::RemoveComponent(IComponent* c) {
 /**************************************************************************
 * @brief Check if component is in componentList
 * @param c - component pointer
-* @return bool - true if component is in componentList
+* @return int - position of component in componentList
 *************************************************************************/
-int GameObject::Has(ComponentType type) {
-	std::vector<IComponent*>::iterator it = componentList.begin();
-	while (it != componentList.end()) {
-		if ((*it)->componentType == type) {
-			return it - componentList.begin();
+int GameObject::Has(ComponentType typeID) {
+	for (size_t i{}; i < componentList.size(); ++i) {
+		if (componentList[i]->componentType == typeID) {
+			return i;
 		}
-		it++;
 	}
-	return -1;
+	return false;
 }
 
 /**************************************************************************
@@ -73,4 +72,14 @@ IComponent* GameObject::GetComponent(ComponentType typeID) {
 		return componentList.at(index);
 	}
 	return nullptr;
+}
+
+// For testing
+std::string GameObject::GetGameObjectName() {
+	return gameObjectName;
+}
+
+// For testing
+std::vector<IComponent*> GameObject::GetComponentList() {
+	return componentList;
 }
