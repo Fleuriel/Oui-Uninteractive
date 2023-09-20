@@ -1,7 +1,7 @@
 #include "Collision.h"
 #include <math.h>
 #include "Vector2D.h"
-#include <CoordinateSystem.h>
+
 
 
 /**************************************************************************
@@ -17,7 +17,7 @@
 bool CollisionStaticCircleCircle(Coordinates Coords1, Coordinates Coords2, float r1=2, float r2=2)
 {
 	float RadiusTotal = r1 + r2;
-	return Coords1.DistanceIsWithinThreshold(Coords2, (RadiusTotal));
+	return (Coords1.DistanceIsWithinThreshold(Coords2, (RadiusTotal)));
 }
 
 /**************************************************************************
@@ -30,23 +30,23 @@ bool CollisionStaticCircleCircle(Coordinates Coords1, Coordinates Coords2, float
  * @param 
  * @param 
  *************************************************************************/
-bool CollisionStaticRectRect(Coordinates Coords1, Coordinates Coords2, float s1=3, float s2=3)
+bool CollisionStaticRectRect(float r1x=2,float r1y=2,float r2x=2,float r2y=2, float s1=3, float s2=3)
 {
 		float leftA, leftB {0};
-		leftA = Coords1.X_INDEX - (s1 / 2) ;
-		leftB = Coords2.X_INDEX - (s2 / 2) ;
+		leftA = r1x - (s1 / 2) ;
+		leftB = r2x - (s2 / 2) ;
 
 		float rightA, rightB {0};
-		rightA = Coords1.X_INDEX + (s1 / 2) ;
-		rightB = Coords2.X_INDEX + (s2 / 2) ;
+		rightA = r1x + (s1 / 2) ;
+		rightB = r2x + (s2 / 2) ;
 
 		float topA, topB {0};
-		topA = Coords1.Y_INDEX - (s1 / 2) ;
-		topB = Coords2.Y_INDEX - (s2 / 2) ;
+		topA = r1y - (s1 / 2) ;
+		topB = r2y - (s2 / 2) ;
 
 		float bottomA, bottomB {0};
-		bottomA = Coords1.Y_INDEX + (s1 / 2) ;
-		bottomB = Coords2.Y_INDEX + (s2 / 2) ;
+		bottomA = r1y + (s1 / 2) ;
+		bottomB = r2y + (s2 / 2) ;
 
 		if ((rightA > leftB  && 
 			 topA > bottomB) &&
