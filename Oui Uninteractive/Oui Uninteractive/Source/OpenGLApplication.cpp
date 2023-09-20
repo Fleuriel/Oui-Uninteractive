@@ -10,7 +10,7 @@
 
 #include <iostream>
 #include <OpenGLApplication.h>
-#include <InputKeys.h>
+#include <Input.h>
 #include <RandomUtilities.h>
 #include <OpenGLObjects.h>
 #include <glm/gtc/matrix_transform.hpp>
@@ -21,7 +21,15 @@
 #include "Physics.h"
 #include <Global.h>
 
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
+
+// Pointer to the window
 GLFWwindow* window;
+// To store the window dimensions for duration of program
+std::pair<unsigned short, unsigned short> windowSize;
+
+double inx, iny, inz;
 
 UsingImGui myImGui; // Creating imGui object
 Editor myEditor; // Creating editor object
@@ -49,12 +57,13 @@ void OpenGLApplication::OpenGLWindowInit()
 	std::string filePath = "../window-data/window-data.JSON";
 	rapidjson::Document windowDoc;
 	// Initialize window dimensions from JSON
-	unsigned short width, height;
 	if (Editor::ReadJSONFile(filePath, windowDoc)) {
-		width = windowDoc["windowX"].GetInt();
-		height = windowDoc["windowY"].GetInt();
+		windowSize.first = windowDoc["windowX"].GetInt();
+		windowSize.second = windowDoc["windowY"].GetInt();
 	}
-	window = glfwCreateWindow(width, height, "hello", NULL, NULL);
+
+	// Create window application based on the windowSize.
+	window = glfwCreateWindow(windowSize.first, windowSize.second, "hello", NULL, NULL);
 	if (!window)
 	{
 		glfwTerminate();
@@ -71,8 +80,8 @@ void OpenGLApplication::OpenGLWindowInit()
 	// Tell GLFW that we are using the CORE Profile
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
-
-	glViewport(0, 0, width, height);
+	// Create viewport of width and height.
+	glViewport(0, 0, windowSize.first, windowSize.second);
 
 	glfwSwapInterval(1);
 
@@ -90,7 +99,8 @@ void OpenGLApplication::OpenGLWindowInit()
 	// Set input mode for the window with the cursor (Enables Cursor Input)
 	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
 
-	
+	// Set glfw window resize callback function
+	glfwSetWindowSizeCallback(window, OpenGLWindowResizeCallback);
 
 }
 
@@ -98,15 +108,12 @@ void OpenGLApplication::OpenGLWindowInit()
 
 void OpenGLApplication::OpenGLWindowCleanup()
 {
-	// Get window dimensions
-	int width, height;
-	glfwGetWindowSize(window, &width, &height);
 	// Save window size
 	std::string filePath = "../window-data/window-data.JSON";
 	rapidjson::Document windowDoc;
 	if (Editor::ReadJSONFile(filePath, windowDoc)) {
-		windowDoc["windowX"] = width;
-		windowDoc["windowY"] = height;
+		windowDoc["windowX"] = windowSize.first;
+		windowDoc["windowY"] = windowSize.second;
 		Editor::WriteJSONFile(filePath, windowDoc);
 	}
 
@@ -191,17 +198,31 @@ void OpenGLApplication::OpenGLInit()
 
 void OpenGLApplication::OpenGLUpdate()
 {
-
-
 		OpenGLSetBackgroundColor(0.5f, 0.5f, 0.5f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
 		
 		glUseProgram(Objects.ShaderProgram);
 		glBindVertexArray(Objects.VAO);
 		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+				
+
+		// All these should be OBJECTS. THAT UPDATE.
 		
+
+
+		// create transformations
+		glm::mat4 transform = glm::mat4(1.0f); // make sure to initialize matrix to identity matrix first
+		transform = glm::translate(transform, glm::vec3(inx, iny, inz));
+		//transform = glm::rotate(transform, (float)glfwGetTime(), glm::vec3(0.0f, 0.0f, -0.1f));
+
+		glm::ortho(0.0f, 900.0f, 0.0f, 600.0f, -1.0f, 1.0f);
+
+		unsigned int transformLoc = glGetUniformLocation(OpenGLObject::ShaderProgram, "transform");
+		glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(transform));
+
+
 		//WireFrame Mode:
-		if (keyStates[GLFW_KEY_P]==1)
+		if (keyStates[GLFW_KEY_P] == 1)
 		{
 			toggleMode =  !toggleMode;
 		}
@@ -298,19 +319,24 @@ void OpenGLApplication::OpenGLUpdate()
 
 			if (keyStates[GLFW_KEY_A]) {
 				std::cout << "WALK LEFT\n";
-				CurrentGameState = STATE_LEVEL_TEST;
+				inx -= 0.001;
+//				CurrentGameState = STATE_LEVEL_TEST;
+
 			}
 
 			if (keyStates[GLFW_KEY_D]) {
 				std::cout << "WALK RIGHT\n";
-				CurrentGameState = STATE_GRAPHICS_TEST;
+				inx += 0.001;
+//				CurrentGameState = STATE_GRAPHICS_TEST;
 			}
 
 			if (keyStates[GLFW_KEY_S]) {
+				iny -= 0.001;
 				std::cout << "WALK DOWN\n";
 			}
 
 			if (keyStates[GLFW_KEY_W]) {
+				iny += 0.001;
 				physicsSys->setVelocity(Vec2(0.0f, 10.f), 0);
 				std::cout << "WALK UP\n";
 			}
@@ -338,51 +364,16 @@ void OpenGLApplication::OpenGLUpdate()
 		/*-----------------------------------
 		|             NUMBERS               |
 		-----------------------------------*/
-		if (keyStates[GLFW_KEY_0])
-			std::cout << "0\n";
-		if (keyStates[GLFW_KEY_1])
-		{
-#ifdef _DEBUG
-//			std::cout << OpenGLObject::Object_Storage.size() << '\n';
-#endif
-			//std::cout << "1\n";
-		}
-		if (keyStates[GLFW_KEY_2])
-			std::cout << "2\n";
-		if (keyStates[GLFW_KEY_3])
-			std::cout << "3\n";
-		if (keyStates[GLFW_KEY_4])
-			std::cout << "4\n";
-		if (keyStates[GLFW_KEY_5])
-			std::cout << "5\n";
-		if (keyStates[GLFW_KEY_6])
-			std::cout << "6\n";
-		if (keyStates[GLFW_KEY_7])
-			std::cout << "7\n";
-		if (keyStates[GLFW_KEY_8])
-			std::cout << "8\n";
-		if (keyStates[GLFW_KEY_9])
-			std::cout << "9\n";
+
 
 		/*-----------------------------------
 		|              OTHERS               |
 		-----------------------------------*/
-		if (keyStates[GLFW_KEY_SPACE])
-			std::cout << "SPACE\n";
-		if (keyStates[GLFW_KEY_LEFT_ALT] || keyStates[GLFW_KEY_RIGHT_ALT])
-			std::cout << "ALT\n";
-		if (keyStates[GLFW_KEY_LEFT_CONTROL] || keyStates[GLFW_KEY_RIGHT_CONTROL])
-			std::cout << "CTRL\n";
-		if (keyStates[GLFW_KEY_LEFT_SHIFT] || keyStates[GLFW_KEY_RIGHT_SHIFT])
-			std::cout << "SHIFT\n";
-		if (keyStates[GLFW_KEY_CAPS_LOCK])
-			std::cout << "CAPS\n";
-		if (keyStates[GLFW_KEY_TAB])
-			std::cout << "TAB\n";
-		if (keyStates[GLFW_KEY_ESCAPE])
-			std::cout << "ESC\n";
-		if (keyStates[GLFW_KEY_ENTER])
-			std::cout << "ENTER\n";
+		if (keyStates[GLFW_KEY_ESCAPE]) {
+			glfwSetWindowShouldClose(window, GLFW_TRUE);
+			//glfwWindowShouldClose(window);
+			CurrentGameState = STATE_QUIT;
+		}
 
 		/*-----------------------------------
 		|              Mouse                |
@@ -506,4 +497,11 @@ void OpenGLApplication::OpenGLTestChangingStates()
 	{
 		Draw();
 	}
+}
+
+void OpenGLApplication::OpenGLWindowResizeCallback(GLFWwindow* window, int width, int height) {
+	// Update the window dimensions once changed
+	// set callback for the window size
+	glViewport(0, 0, width, height);
+
 }

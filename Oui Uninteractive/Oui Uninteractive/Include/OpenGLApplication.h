@@ -16,10 +16,12 @@
 #include <OpenGLShaders.h>
 #include <map>
 #include <OpenGLObjects.h>
+#include <utility>
 
 
 extern GLFWwindow* window;
 extern OpenGLObject Objects;
+extern std::pair<unsigned short, unsigned short> windowSize;
 
 class OpenGLApplication {
 
@@ -35,7 +37,7 @@ public:
 //	static void OpenGLWindowInitialization(GLFWwindow*& window, GLint width, GLint height);
 	static void OpenGLObjectsInitialization();
 //	static void render_square(glm::vec2 scaling, glm::vec2 position);
-
+	static void OpenGLWindowResizeCallback(GLFWwindow* window, int width, int height);
 
 
 	static void Draw();

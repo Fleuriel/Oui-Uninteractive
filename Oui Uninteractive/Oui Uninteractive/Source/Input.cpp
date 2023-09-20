@@ -10,7 +10,7 @@
 
 #include <gl/glew.h>
 #include <GLFW/glfw3.h>
-#include <InputKeys.h>
+#include <Input.h>
 #include <iostream>
 #include <GameStateManager.h>
 #include <array>
@@ -66,49 +66,12 @@ void keyCallBack(GLFWwindow* window, int key, int scancode, int action, int mod)
 	UNREFERENCED_PARAMETER(scancode);
 	
 	keyStates[key] = (action == GLFW_PRESS && keyStates[key] == 0) ? 1 : (action == GLFW_RELEASE) ? 0 : 2;
-	std::cout << "keyval : " << keyStates[key] << std::endl;
+	//std::cout << "keyval : " << keyStates[key] << std::endl;
 
-/***********************************************************************/
-	if (action == GLFW_PRESS)
-	{
-		if (GLFW_KEY_ESCAPE == key)
-		{
-			glfwSetWindowShouldClose(window, GLFW_TRUE);
-			//glfwWindowShouldClose(window);
-			CurrentGameState = STATE_QUIT;
-		}
-		
-		
-
-#ifdef _DEBUG
-		std::cout << "Pressed Keys\n";
-#endif
-	}
-
-/***********************************************************************/
-
-/***********************************************************************/
-	
-	if (action == GLFW_RELEASE)
-	{
-
-#ifndef _DEBUG
-		std::cout << "Released Keys\n";
-#endif
-	}
-
+	#ifdef _DEBUG
+		std::cout << ((action == GLFW_PRESS) ? "Pressed Keys\n" : (action == GLFW_REPEAT) ? "Held Keys\n" : "Released Keys\n");
+	#endif
 }
-
-
-void updateStatesForNextFrame() {
-	for (size_t i = 0; i < GLFW_KEY_LAST + 1; ++i)
-		keyStates[i] = (keyStates[i] == 1) ? 2 : keyStates[i];
-	mouseScrollState = 0;
-}
-
-
-
-
 
 
 
@@ -177,6 +140,13 @@ void scrollCallBack(GLFWwindow* window, double xOffset, double yOffset ) {
 	mouseScrollState = (yOffset > 0) ? 1 : (yOffset == 0) ? 0 : -1;
 }
 
+
+
+void updateStatesForNextFrame() {
+	for (size_t i = 0; i < GLFW_KEY_LAST + 1; ++i)
+		keyStates[i] = (keyStates[i] == 1) ? 2 : keyStates[i];
+	mouseScrollState = 0;
+}
 
 
 void windowCloseCallback(GLFWwindow* window)
