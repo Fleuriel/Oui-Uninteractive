@@ -66,7 +66,7 @@ void Coordinates::MoveCoords(bool coordIndex, float val) {
  * @param Coords2 Another set of coordinates.
  * @return The Euclidean distance between this coordinates and Coords2.
  */
-float Coordinates::Distance(Coordinates Coords2) const {
+float Coordinates::Distance(const Coordinates Coords2) const {
     return Vector2DDistance(Coords, Coords2.Coords);
 }
 
@@ -81,7 +81,7 @@ float Coordinates::Distance(Coordinates Coords2) const {
  * @param val The threshold value to compare the distance against.
  * @return True if the distance exceeds the threshold, false otherwise.
  */
-bool Coordinates::DistanceExceedsThreshold(Coordinates Coords2, float val) const {
+bool Coordinates::DistanceExceedsThreshold(const Coordinates Coords2, float val) const {
     return (Vector2DSquareDistance(Coords, Coords2.Coords) > pow(val,2.0));
 }
 
@@ -96,6 +96,6 @@ bool Coordinates::DistanceExceedsThreshold(Coordinates Coords2, float val) const
  * @param val The threshold value to compare the distance against.
  * @return True if the distance is within the threshold, false otherwise.
  */
-bool Coordinates::DistanceIsWithinThreshold(Coordinates Coords2, float val) const {
+bool Coordinates::DistanceIsWithinThreshold(const Coordinates Coords2, float val) const {
     return !DistanceExceedsThreshold(Coords2, val);
 }

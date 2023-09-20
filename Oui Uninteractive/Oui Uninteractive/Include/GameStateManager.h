@@ -11,7 +11,7 @@
 #ifndef GAME_STATE_MGR_H
 #define GAME_STATE_MGR_H
 
-#include <InputKeys.h>
+#include <Input.h>
 #include <OpenGLApplication.h>
 #include <OpenGLObjects.h>
 #include <OpenGLShaders.h>

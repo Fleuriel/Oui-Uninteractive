@@ -26,11 +26,11 @@ extern int mouseScrollState;
 
 void keyCallBack(GLFWwindow* window, int key, int scancode, int action, int mod);
 
-void updateStatesForNextFrame();
-
 void mouseCallBack(GLFWwindow* window, int button, int action, int mod);
 
 void scrollCallBack(GLFWwindow* window, double xOffset, double yOffset);
+
+void updateStatesForNextFrame();
 
 void windowCloseCallback(GLFWwindow* window);
 
