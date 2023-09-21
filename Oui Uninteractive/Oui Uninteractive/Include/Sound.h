@@ -27,6 +27,7 @@ public:
 	// For storing more sounds in the future. Test using basic 1 sound first
 	//std::vector<FMOD::Sound*> bgmSounds;
 	//std::vector<FMOD::Sound*> sfxSounds;
+	// Note to self: explore using a std::map to store a "sound name" and a sound object tgt
 private:
 	FMOD::System* system;
 };
