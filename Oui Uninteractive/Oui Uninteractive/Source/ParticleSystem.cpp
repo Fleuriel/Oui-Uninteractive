@@ -1,12 +1,14 @@
-#include <ParticleSystem.h>
-
-void Particles::ActivateEffect(ParticleEffects effect) {
-	switch (effect)
-	{
-	case Particles::Death:
-
-		break;
-	default:
-		break;
-	}
-}
+//#include <ParticleSystem.h>
+//
+//void ParticlesSystem::ActivateEffect(ParticleEffects effect) {
+//
+//	Particles 
+//	switch (effect)
+//	{
+//	case ParticlesSystem::Death:
+//
+//		break;
+//	default:
+//		break;
+//	}
+//}
