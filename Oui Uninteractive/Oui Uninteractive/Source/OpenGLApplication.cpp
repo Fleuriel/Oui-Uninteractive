@@ -25,6 +25,9 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
+// Macro for getting a component
+#define GET_COMPONENT(GameObject, Component, ComponentType) (GameObject->GetComponentType<Component>(ComponentType))
+
 // Pointer to the window
 GLFWwindow* window;
 // To store the window dimensions for duration of program
@@ -185,6 +188,10 @@ void OpenGLApplication::OpenGLInit()
 	objectFactory->GetGameObjectByID(0)->Initialize();
 
 	objectFactory->CloneObject(0);
+	GET_COMPONENT(objectFactory->GetGameObjectByID(1), Transform, ComponentType::Transform)->position.x = 450;
+	GET_COMPONENT(objectFactory->GetGameObjectByID(1), Transform, ComponentType::Transform)->position.y = 100;
+
+
 
 	/*---------------------------------------------------------------------------*/
 	// TESTING SERIALIZATION
@@ -203,13 +210,13 @@ void OpenGLApplication::OpenGLInit()
 		for (std::vector<IComponent*>::iterator it{comList.begin()}; it != comList.end(); it++) {
 			std::cout << "Component Type: " << objectFactory->enumToString((*it)->componentType) << "\n";
 			if ((*it)->componentType == ComponentType::PhysicsBody) {
-				std::cout << "VelocityX: " << i->second->GetComponentType<PhysicsBody>((*it)->componentType)->velocity.x << "\n";
-				std::cout << "VelocityY: " << i->second->GetComponentType<PhysicsBody>((*it)->componentType)->velocity.y << "\n";
+				std::cout << "VelocityX: " << GET_COMPONENT(i->second, PhysicsBody, ComponentType::PhysicsBody)->velocity.x << "\n";
+				std::cout << "VelocityY: " << GET_COMPONENT(i->second, PhysicsBody, ComponentType::PhysicsBody)->velocity.y << "\n";
 			}
 			if ((*it)->componentType == ComponentType::Transform) {
-				std::cout << "PosX: " << i->second->GetComponentType<Transform>((*it)->componentType)->position.x << "\n";
-				std::cout << "PoxY: " << i->second->GetComponentType<Transform>((*it)->componentType)->position.y << "\n";
-				std::cout << "Rotation: " << i->second->GetComponentType<Transform>((*it)->componentType)->rotation << "\n";
+				std::cout << "PosX: " << GET_COMPONENT(i->second, Transform, ComponentType::Transform)->position.x << "\n";
+				std::cout << "PoxY: " << GET_COMPONENT(i->second, Transform, ComponentType::Transform)->position.y << "\n";
+				std::cout << "Rotation: " << GET_COMPONENT(i->second, Transform, ComponentType::Transform)->rotation << "\n";
 			}
 		}
 
@@ -271,10 +278,10 @@ void OpenGLApplication::OpenGLUpdate()
 			std::cout << newObject.position.x << newObject.position.y << '\n';
 
 			objects.emplace_back(newObject);*/
-			OpenGLObject* object = objectFactory->GetGameObjectByID(0)->GetComponentType<Transform>(ComponentType::Transform)->graphics;
-			if (object != nullptr) {
+			//OpenGLObject* object = GET_COMPONENT(objectFactory->GetGameObjectByID(0), Transform, ComponentType::Transform)->graphics;
+			/*if (object != nullptr) {
 				objects.emplace_back(*object);
-			}
+			}*/
 			
 		}
 		if (keyStates[GLFW_KEY_M] == 1)
@@ -324,7 +331,9 @@ void OpenGLApplication::OpenGLUpdate()
 		////glVertex2f(5.0f, 5.0f);
 		//
 		//glEnd();
-
+		for (std::pair<size_t, GameObject*> gObj : objectFactory->GetGameObjectIDMap()) {
+			gObj.second->shape->Draw();
+		}
 		for (auto const& x : objects)
 		{
 			x.Draw();
@@ -492,7 +501,9 @@ void OpenGLApplication::OpenGLUpdate()
 		myImGui.Draw();
 
 		// Swap the front and back buffers
-	
+		for (std::pair<size_t, GameObject*> gObj : objectFactory->GetGameObjectIDMap()) {
+			gObj.second->shape->Update(GetDT());
+		}
 		for (OpenGLObject& obj : objects)
 			obj.Update(GetDT());
 

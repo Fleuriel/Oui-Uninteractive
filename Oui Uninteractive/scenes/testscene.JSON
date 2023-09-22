@@ -9,7 +9,7 @@
           "VelocityY": 0.0
         },
         "Transform": {
-          "PositionX": 100.0,
+          "PositionX": -100.0,
           "PositionY": 50.0,
           "Rotation": 45.0
         }
@@ -23,8 +23,8 @@
           "VelocityY": 0.5
         },
         "Transform": {
-          "PositionX": 200.0,
-          "PositionY": 100.0,
+          "PositionX": 50.0,
+          "PositionY": 50.0,
           "Rotation": 30.0
         }
       }
