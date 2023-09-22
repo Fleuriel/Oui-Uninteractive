@@ -179,7 +179,7 @@ void OpenGLApplication::OpenGLInit()
 	//glm::mat4 projection = glm::ortho(-worldWidth / 2, worldWidth / 2, -worldHeight / 2, worldHeight / 2, -1.0f, 1.0f);
 
 	//init a game object in run time
-	objectFactory->BuildObjectRunTime();
+	objectFactory->BuildObjectRunTime("ObjectRunTime1");
 	objectFactory->AddComponent(ComponentType::PhysicsBody, objectFactory->GetGameObjectByID(0));
 	objectFactory->AddComponent(ComponentType::Transform, objectFactory->GetGameObjectByID(0));
 	objectFactory->GetGameObjectByID(0)->Initialize();

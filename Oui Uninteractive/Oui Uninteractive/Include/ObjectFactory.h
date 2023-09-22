@@ -41,7 +41,7 @@ public:
 	void BuildObjectFromFile(const std::string& filePath);
 
 	// Create a new game object during run-time
-	GameObject* BuildObjectRunTime();
+	GameObject* BuildObjectRunTime(const std::string name);
 
 	// Clone a game object
 	bool CloneObject(size_t gameObjectID);
