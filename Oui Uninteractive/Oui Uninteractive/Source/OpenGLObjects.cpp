@@ -298,12 +298,12 @@ void OpenGLObject::Update(GLdouble delta_time)
 		0.0f, 0.0f, 1.0f
 	);
 
-//	// Compute the rotation matrix
-//	glm::mat3 Rotation = glm::mat3(
-//		cosf(glm::radians(GLObject::angle_disp)), -sinf(glm::radians(GLObject::angle_disp)), 0.0f,
-//		sinf(glm::radians(GLObject::angle_disp)), cosf(glm::radians(GLObject::angle_disp)), 0.0f,
-//		0.0f, 0.0f, 1.0f
-//	);
+	// Compute the rotation matrix
+	glm::mat3 Rotation = glm::mat3(
+		cosf(glm::radians(OpenGLObject::orientation.x)), -sinf(glm::radians(OpenGLObject::orientation.y)), 0.0f,
+		sinf(glm::radians(OpenGLObject::orientation.x)), cosf(glm::radians(OpenGLObject::orientation.y)), 0.0f,
+		0.0f, 0.0f, 1.0f
+	);
 
 	// Compute the translation matrix
 	glm::mat3 Translation = glm::mat3(
