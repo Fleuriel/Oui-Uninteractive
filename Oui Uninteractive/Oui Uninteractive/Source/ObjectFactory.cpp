@@ -109,18 +109,13 @@ void ObjectFactory::SerializeObjectVoid(const std::string& filePath) {
 	JsonSerializer serializer;
 	std::string componentName;
 
-	//std::vector<GameObject*> serializedObjectVector{};
-
 	// Read data from file
 	if (serializer.ReadJSONFile(filePath, objDoc)) {
 		// For each object in Objects array (in JSON file)
 		for (auto& obj : objDoc["Objects"].GetArray()) {
 			// Create GameObject
 			GameObject* gameObject{new GameObject()};
-
-			std::string objName = obj["Name"].GetString();
-			//gameObject->gameObjectName = objName;
-			gameObject->gameObjectName = objName;
+			gameObject->gameObjectName = obj["Name"].GetString();;
 
 			// Get each component in object
 			const rapidjson::Value& components{obj["Components"]};
@@ -150,14 +145,15 @@ void ObjectFactory::SerializeObjectVoid(const std::string& filePath) {
 			
 			// Assign an ID to the game object
 			AssignObjectID(gameObject);
+
+			// Initialize each object in map
+			for (auto i{ gameObjectIDMap.begin() }; i != gameObjectIDMap.end(); ++i) {
+				i->second->Initialize();
+			}
 		}		
 	}
 	else {
 		std::cerr << "Failed to serialize object." << std::endl;
-	}
-
-	for (auto i{ gameObjectIDMap.begin() }; i != gameObjectIDMap.end(); ++i) {
-		i->second->Initialize();
 	}
 }
 
