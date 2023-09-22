@@ -25,6 +25,9 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
+// Macro for getting a component
+#define GET_COMPONENT(GameObject, Component, ComponentType) (GameObject->GetComponentType<Component>(ComponentType))
+
 // Pointer to the window
 GLFWwindow* window;
 // To store the window dimensions for duration of program
@@ -204,13 +207,13 @@ void OpenGLApplication::OpenGLInit()
 		for (std::vector<IComponent*>::iterator it{comList.begin()}; it != comList.end(); it++) {
 			std::cout << "Component Type: " << objectFactory->enumToString((*it)->componentType) << "\n";
 			if ((*it)->componentType == ComponentType::PhysicsBody) {
-				std::cout << "VelocityX: " << i->second->GetComponentType<PhysicsBody>((*it)->componentType)->velocity.x << "\n";
-				std::cout << "VelocityY: " << i->second->GetComponentType<PhysicsBody>((*it)->componentType)->velocity.y << "\n";
+				std::cout << "VelocityX: " << GET_COMPONENT(i->second, PhysicsBody, ComponentType::PhysicsBody)->velocity.x << "\n";
+				std::cout << "VelocityY: " << GET_COMPONENT(i->second, PhysicsBody, ComponentType::PhysicsBody)->velocity.y << "\n";
 			}
 			if ((*it)->componentType == ComponentType::Transform) {
-				std::cout << "PosX: " << i->second->GetComponentType<Transform>((*it)->componentType)->position.x << "\n";
-				std::cout << "PoxY: " << i->second->GetComponentType<Transform>((*it)->componentType)->position.y << "\n";
-				std::cout << "Rotation: " << i->second->GetComponentType<Transform>((*it)->componentType)->rotation << "\n";
+				std::cout << "PosX: " << GET_COMPONENT(i->second, Transform, ComponentType::Transform)->position.x << "\n";
+				std::cout << "PoxY: " << GET_COMPONENT(i->second, Transform, ComponentType::Transform)->position.y << "\n";
+				std::cout << "Rotation: " << GET_COMPONENT(i->second, Transform, ComponentType::Transform)->rotation << "\n";
 			}
 		}
 
@@ -265,12 +268,17 @@ void OpenGLApplication::OpenGLUpdate()
 		{
 			/*
 			OpenGLObject newObject;
-			newObject.InitObjects(0,0, 150,180);
+			
+
+			
+			newObject.InitObjects(0,0, 150,180,45,45);
 			std::cout << newObject.position.x << newObject.position.y << '\n';
 
 			objects.emplace_back(newObject);*/
-			//OpenGLObject* object = &objectFactory->GetGameObjectByID(0)->shape;
-
+			OpenGLObject* object = GET_COMPONENT(objectFactory->GetGameObjectByID(0), Transform, ComponentType::Transform)->graphics;
+			if (object != nullptr) {
+				objects.emplace_back(*object);
+			}
 			
 		}
 		if (keyStates[GLFW_KEY_M] == 1)
@@ -278,7 +286,7 @@ void OpenGLApplication::OpenGLUpdate()
 			OpenGLObject newObject;
 
 
-			newObject.InitObjects(0, 100, 180, 180);
+			newObject.InitObjects(0, 100, 180, 180,45,45);
 			objects.emplace_back(newObject);
 		}
 
@@ -294,7 +302,7 @@ void OpenGLApplication::OpenGLUpdate()
 			OpenGLObject newObject;
 
 
-			newObject.InitObjects(xpos, ypos, 180, 180);
+			newObject.InitObjects(xpos, ypos, 180, 180, 45,45);
 			objects.emplace_back(newObject);
 
 		}
