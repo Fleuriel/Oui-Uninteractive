@@ -28,7 +28,10 @@
 class OpenGLObject
 {
 public:
-	OpenGLObject() : scaleModel(0.5, 0.5) , orientation(0.0, 0.0f), position(0, 0), model_To_NDC_xform(glm::mat3(1.0f)), color(1.0, 1.0, 1.0f) {};
+	OpenGLObject() : scaleModel(0.5, 0.5) , orientation(0.0, 0.0f), position(0, 0), model_To_NDC_xform(glm::mat3(1.0f)), color(0.0f, 0.0f, 1.0f), particlechecker(false){};
+	OpenGLObject(glm::vec3 particlecolor) : scaleModel(0.5, 0.5), orientation(0.0, 0.0f), position(0, 0), model_To_NDC_xform(glm::mat3(1.0f)), color(particlecolor), particlechecker(false) {
+		std::cout << "R : " << color.r << "\nG : " << color.g << "\nB : " << color.b << "\n";
+	};
 
 	glm::vec2 scaleModel;
 	float angleDisplacment;
@@ -37,7 +40,7 @@ public:
 	glm::vec2 position;				// translation
 	glm::mat3 model_To_NDC_xform;	// Model to NDC 
 	glm::vec3 color;				// Set Object Color
-
+	bool particlechecker;
 	GLuint mdl_ref, shd_ref;
 
 	static GLuint VAO, VBO;			// Object VAO VBO
@@ -48,7 +51,7 @@ public:
 		GLuint primitive_cnt;
 		GLuint vaoid;
 		GLuint draw_cnt;
-
+		
 		GLuint model_cnt;			// added to check model count
 
 		
@@ -63,7 +66,7 @@ public:
 	//std::map<std::string, OpenGLShader>::iterator shd_ref;
 
 	// set up initial state
-	static void Init(); 
+	void Init(); 
 
 	void Update(GLdouble delta_time);
 	//static void OpenGLShadersInitialization();
@@ -90,7 +93,7 @@ public:
 
 	static void init_shdrpgms_cont(VectorPairStrStr const& vpss);
 
-	static OpenGLModel Box_Model();
+	static OpenGLModel Box_Model(glm::vec3);
 
 
 	static void Load_Files();

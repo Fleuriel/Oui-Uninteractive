@@ -56,6 +56,10 @@ void Coordinates::MoveCoords(bool coordIndex, float val) {
     ((coordIndex == X_INDEX) ? Coords.x : Coords.y) += val;
 }
 
+void Coordinates::MoveCoords(Vector2D vec) {
+    this->Coords += vec;
+}
+
 /**
  * @brief Calculate the Euclidean distance between this coordinates and another.
  *

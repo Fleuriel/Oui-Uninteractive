@@ -21,7 +21,7 @@
 #include "Physics.h"
 #include <Global.h>
 #include <Sound.h>
-
+#include <ParticleSystem.h>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
@@ -266,15 +266,18 @@ void OpenGLApplication::OpenGLUpdate()
 			/*if (object != nullptr) {
 				objects.emplace_back(*object);
 			}*/
+
+			
 			
 		}
 		if (keyStates[GLFW_KEY_M] == 1)
 		{
-			OpenGLObject newObject;
+			Particle newparticle;
 
 
-			newObject.InitObjects(0, 100, 180, 180,45,45);
-			objects.emplace_back(newObject);
+			newparticle.object.InitObjects(300, 300, 180, 180,45,45);
+			//std::cout << "R : " << newparticle.object.color.r << "\nG : " << newparticle.object.color.g << "\nB : " << newparticle.object.color.b << "\n";
+			objects.emplace_back(newparticle.object);
 		}
 
 
@@ -282,15 +285,15 @@ void OpenGLApplication::OpenGLUpdate()
 
 
 //		std::cout << "xpos : " << xpos << "\nypos : " << ypos << std::endl;
-		
+		int windowWidth, windowHeight{};
+		glfwGetWindowSize(window, &windowWidth, &windowHeight);
 
 		if (mouseButtonStates[GLFW_MOUSE_BUTTON_LEFT] == 1)
 		{
-			OpenGLObject newObject;
-
-
-			newObject.InitObjects(xpos, ypos, 180, 180, 45,45);
-			objects.emplace_back(newObject);
+			//OpenGLObject newObject;
+			//
+			//newObject.InitObjects(2*(static_cast<int>(xpos) - windowWidth / 2), -2*((static_cast<int>(ypos) - windowHeight / 2)), 180, 180, 45,45);
+			//objects.emplace_back(newObject);
 
 		}
 

@@ -65,7 +65,7 @@ void OpenGLObject::Init()
 
 	init_shdrpgms_cont(fileName);
 
-	models.emplace_back(OpenGLObject::Box_Model());
+	models.emplace_back(OpenGLObject::Box_Model(color));
 
 	const char* vertexShaderSource =
 	R"(#version 450 core
@@ -189,7 +189,7 @@ void OpenGLObject::Init()
 }
 
 
-OpenGLObject::OpenGLModel OpenGLObject::Box_Model()
+OpenGLObject::OpenGLModel OpenGLObject::Box_Model(glm::vec3 color)
 {
 	std::vector<glm::vec2> pos_vtx
 	{
@@ -202,12 +202,12 @@ OpenGLObject::OpenGLModel OpenGLObject::Box_Model()
 
 	for (size_t i{}; i < pos_vtx.size(); i++)
 	{
-		float red = 0.0f;
-		float blue = 0.5f;
-		float green = 0.25f;
-
-		glm::vec3 color_to_push = { red, green, blue };
-		clr_vtx.push_back(color_to_push);
+		//float red = 1.0f;
+		//float blue = 0.5f;
+		//float green = 0.25f;
+		//
+		//glm::vec3 color_to_push = { red, green, blue };
+		clr_vtx.push_back(color);
 	}
 
 	OpenGLModel mdl;

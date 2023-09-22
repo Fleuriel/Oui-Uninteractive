@@ -74,6 +74,8 @@ public:
      *************************************************************************/
     void MoveCoords(bool coordIndex, float val);
 
+    void MoveCoords(Vector2D);
+
     float Distance(Coordinates Coords2) const;
 
     bool DistanceExceedsThreshold(Coordinates Coords2, float val) const;
