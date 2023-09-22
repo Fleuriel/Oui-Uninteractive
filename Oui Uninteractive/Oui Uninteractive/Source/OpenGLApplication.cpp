@@ -179,7 +179,7 @@ void OpenGLApplication::OpenGLInit()
 	//glm::mat4 projection = glm::ortho(-worldWidth / 2, worldWidth / 2, -worldHeight / 2, worldHeight / 2, -1.0f, 1.0f);
 
 	//init a game object in run time
-	objectFactory->BuildObjectRunTime();
+	objectFactory->BuildObjectRunTime("ObjectRunTime1");
 	objectFactory->AddComponent(ComponentType::PhysicsBody, objectFactory->GetGameObjectByID(0));
 	objectFactory->AddComponent(ComponentType::Transform, objectFactory->GetGameObjectByID(0));
 	objectFactory->GetGameObjectByID(0)->Initialize();
@@ -223,7 +223,8 @@ void OpenGLApplication::OpenGLUpdate()
 {
 		OpenGLSetBackgroundColor(0.5f, 0.5f, 0.5f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
-		
+		double xpos, ypos{};
+		glfwGetCursorPos(window, &xpos, &ypos);
 		//glUseProgram(Objects.ShaderProgram);
 		//glBindVertexArray(Objects.VAO);
 		//glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
@@ -282,6 +283,23 @@ void OpenGLApplication::OpenGLUpdate()
 			objects.emplace_back(newObject);
 		}
 
+
+
+
+
+//		std::cout << "xpos : " << xpos << "\nypos : " << ypos << std::endl;
+		
+
+		if (mouseButtonStates[GLFW_MOUSE_BUTTON_LEFT] == 1)
+		{
+			OpenGLObject newObject;
+
+
+			newObject.InitObjects(xpos, ypos, 180, 180);
+			objects.emplace_back(newObject);
+
+		}
+
 //		glDrawElements(GL_TRIANGLES, 9, GL_UNSIGNED_INT, 0);
 
 
@@ -309,6 +327,7 @@ void OpenGLApplication::OpenGLUpdate()
 			x.Draw();
 		}
 
+		
 
 		/*-----------------------------------------------------------------------------
 		|                               INPUT UPDATES                                 |
