@@ -28,10 +28,11 @@
 class OpenGLObject
 {
 public:
-	OpenGLObject() : scaling(0.5, 0.5), orientation(0.0, 0.0f), position(0, 0), model_To_NDC_xform(glm::mat3(1.0f)), color(1.0, 1.0, 1.0f){};
+	OpenGLObject() : scaleX(0.5) ,scaleY(0.5), orientation(0.0, 0.0f), position(0, 0), model_To_NDC_xform(glm::mat3(1.0f)), color(1.0, 1.0, 1.0f) {};
 
 
-	glm::vec2 scaling;				// scaling
+	float scaleX;				// scaling
+	float scaleY;
 	glm::vec2 orientation;			// Rotation
 	glm::vec2 position;				// translation
 	glm::mat3 model_To_NDC_xform;	// Model to NDC 
@@ -69,7 +70,7 @@ public:
 
 	void Draw() const;
 
-	void InitObjects();
+	void InitObjects(int, int, float, float);
 	static void Cleanup();
 //	static void Setup_Quad_VAO();
 	static void init_scenes(std::string);

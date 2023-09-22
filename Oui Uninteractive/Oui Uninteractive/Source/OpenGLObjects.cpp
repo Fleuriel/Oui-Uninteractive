@@ -293,8 +293,8 @@ void OpenGLObject::Update(GLdouble delta_time)
 
 // Compute the scale matrix
 	glm::mat3 Scale = glm::mat3(
-		scaling.x, 0.0f, 0.0f,
-		0.0f, scaling.y, 0.0f,
+		scaleX, 0.0f, 0.0f,
+		0.0f, scaleY, 0.0f,
 		0.0f, 0.0f, 1.0f
 	);
 
@@ -887,23 +887,21 @@ void OpenGLObject::init_shdrpgms_cont(VectorPairStrStr const& vpss) {
 //}
 
 
-void OpenGLObject::InitObjects()
+void OpenGLObject::InitObjects(int userInput_x, int userInput_y, float userInput_sizeX, float userInput_sizeY)
 {
 
 	OpenGLObject::mdl_ref = 0;
 	OpenGLObject::shd_ref = 0;
 
 
-	OpenGLObject::position = glm::vec2{ rand_uniform_float(-1.f,1.f) * static_cast<float>(1920 / 2), // x axis
-								rand_uniform_float(-1.f,1.f) * static_cast<float>(1080 / 2) // y axis
-	};
+	OpenGLObject::position.x = userInput_x;
+	OpenGLObject::position.y = userInput_y;
 	using glm::radians;
 
-	GLfloat const min_scale = 150.f;
-	GLfloat const max_scale = 150.f;
 
-	OpenGLObject::scaling = glm::vec2{ rand_float(min_scale,max_scale), rand_uniform_float(min_scale,max_scale) };
 
+	scaleX = userInput_sizeX;
+	scaleY = userInput_sizeY;
 
 	glm::mat3 Translate = glm::mat3
 	{
@@ -921,8 +919,8 @@ void OpenGLObject::InitObjects()
 
 	glm::mat3 Scale = glm::mat3
 	{
-		scaling.x, 0, 0,
-		0, scaling.y, 0,
+		scaleX, 0, 0,
+		0, scaleY, 0,
 		0, 0, 1
 	};
 
