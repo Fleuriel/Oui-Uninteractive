@@ -12,16 +12,28 @@
 #include <fmod/fmod.hpp>
 #include <fmod/fmod_errors.h>
 #include <vector>
+#include <filesystem> 
+#include "ISystem.h"
 
-class SoundManager {
+class SoundManager : public ISystem {
 public:
-	void Init();
+	void Initialize();
+	virtual void Update(float dt);
 	void LoadSounds();
 	void PlaySounds();
-	void Shutdown();
 
-	FMOD_RESULT result;
-	FMOD::Sound* sound1, *sound2;
+	 ~SoundManager() ;
+
+	// File paths to the respective sounds
+	std::filesystem::path bgmPath{"../Sounds/bgm"};
+	std::filesystem::path sfxPath{"../Sounds/sfx"};
+
+	FMOD_RESULT result; // To store FMOD function results
+
+	// Container for sounds
+	std::vector<FMOD::Sound*> bgmSounds{};
+	std::vector<FMOD::Sound*> sfxSounds{};
+
 	FMOD::Channel* channel1;
 
 	// For storing more sounds in the future. Test using basic 1 sound first
@@ -31,4 +43,5 @@ public:
 private:
 	FMOD::System* system;
 };
+extern SoundManager* soundManager;
 

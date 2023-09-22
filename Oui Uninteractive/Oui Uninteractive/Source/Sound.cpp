@@ -11,13 +11,14 @@
 #include <Sound.h>
 #include <iostream>
 
+
  /* ============================================
 	 @brief 
 		This function initializes the sound system
 	 @return
 		 No return
 	============================================ */
-void SoundManager::Init() {	
+void SoundManager::Initialize() {
 	// Create main system object
 	result = FMOD::System_Create(&system);
 	if (result != FMOD_OK) {
@@ -28,25 +29,37 @@ void SoundManager::Init() {
 	if (result != FMOD_OK) {
 		std::cout << "FMOD error: " << FMOD_ErrorString(result);
 	}
+	LoadSounds();
+}
+
+void SoundManager::Update(float dt) {
+	PlaySounds();
 }
 
 /* ============================================
 	@brief
-	   This function loads the sounds from the file directory
+	   This function loads the sounds from the file directories
 	@return
 		No return
    ============================================ */
 void SoundManager::LoadSounds() {
-	sound1 = sound2 = nullptr;
-
-	result = system->createSound("../Sounds/bgm/lebanon.mp3", FMOD_DEFAULT, 0, &sound1);
-	if (result != FMOD_OK) {
-		std::cout << "FMOD error: " << FMOD_ErrorString(result);
+	// Search BGM directory and load sounds
+	for (const auto& i : std::filesystem::directory_iterator(bgmPath)) {
+		FMOD::Sound* newSound;
+		result = system->createSound(i.path().string().c_str(), FMOD_DEFAULT, 0, &newSound);
+		if (result != FMOD_OK) {
+			std::cout << "FMOD error: " << FMOD_ErrorString(result);
+		}
+		bgmSounds.push_back(newSound);
 	}
-
-	result = system->createSound("../Sounds/bgm/bestsong.mp3", FMOD_DEFAULT, 0, &sound2);	
-	if (result != FMOD_OK) {
-		std::cout << "FMOD error: " << FMOD_ErrorString(result);
+	// Search SFX directory and load sounds
+	for (const auto& i : std::filesystem::directory_iterator(sfxPath)) {
+		FMOD::Sound* newSound;
+		result = system->createSound(i.path().string().c_str(), FMOD_DEFAULT, 0, &newSound);
+		if (result != FMOD_OK) {
+			std::cout << "FMOD error: " << FMOD_ErrorString(result);
+		}
+		sfxSounds.push_back(newSound);
 	}
 }
 
@@ -58,7 +71,7 @@ void SoundManager::LoadSounds() {
    ============================================ */
 void SoundManager::PlaySounds() {
 	channel1 = nullptr;
-	result = system->playSound(sound2, 0, false, &channel1);
+	result = system->playSound(bgmSounds[0], 0, false, &channel1);
 	if (result != FMOD_OK) {
 		std::cout << "FMOD error: " << FMOD_ErrorString(result);
 	}
@@ -70,7 +83,15 @@ void SoundManager::PlaySounds() {
 	@return
 		No return
    ============================================ */
-void SoundManager::Shutdown() {
+//void SoundManager::Shutdown() {
+//	if (system) {
+//		system->release();
+//		system->close();
+//		system = nullptr;
+//	}
+//}
+
+SoundManager::~SoundManager() {
 	if (system) {
 		system->release();
 		system->close();

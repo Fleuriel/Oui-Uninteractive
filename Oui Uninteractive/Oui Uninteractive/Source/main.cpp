@@ -13,6 +13,7 @@
 #include "Physics.h"
 #include "SystemManager.h"
 #include "ObjectFactory.h"
+#include "Sound.h"
 
 
 void TimeUpdate();
@@ -27,6 +28,7 @@ int main()
 	SystemManager* sysManager = new SystemManager();
 	sysManager->AddSystem(new ObjectFactory());
 	sysManager->AddSystem(new Physics());
+	sysManager->AddSystem(new SoundManager());
 	sysManager->Initialize();
 	// Set callback for window close button (top right button).
 	glfwSetWindowCloseCallback(window, windowCloseCallback);

@@ -34,7 +34,6 @@ double inx, iny, inz;
 
 UsingImGui myImGui; // Creating imGui instance
 Editor myEditor; // Creating editor instance
-SoundManager soundManager; // Creating soundManager instance
 
 GLfloat squareX = 0.0f, squareY = 0.0f;
 
@@ -104,9 +103,6 @@ void OpenGLApplication::OpenGLWindowInit()
 	// Set glfw window resize callback function
 	glfwSetWindowSizeCallback(window, OpenGLWindowResizeCallback);
 
-	// Init sound system
-	soundManager.Init();
-	soundManager.LoadSounds();
 }
 
 
@@ -121,7 +117,6 @@ void OpenGLApplication::OpenGLWindowCleanup()
 		windowDoc["windowY"] = windowSize.second;
 		Editor::WriteJSONFile(filePath, windowDoc);
 	}
-	soundManager.Shutdown();
 	myImGui.Exit();
 	glfwTerminate();
 }
@@ -433,7 +428,7 @@ void OpenGLApplication::OpenGLUpdate()
 		/*-----------------------------------
 		|       Sound Stuff Testing         |
 		-----------------------------------*/
-		soundManager.PlaySounds();
+		
 
 		/*-----------------------------------
 		|       ImGui Stuff Testing         |
