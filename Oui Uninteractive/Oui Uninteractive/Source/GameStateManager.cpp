@@ -104,7 +104,7 @@ double GetDT()
 
 double GetFrames()
 {
-	return 1 / deltaTime.count();
+	return 1.0 / deltaTime.count();
 }
 #include <iostream>
 bool IsTimeElapsed(unsigned int time)

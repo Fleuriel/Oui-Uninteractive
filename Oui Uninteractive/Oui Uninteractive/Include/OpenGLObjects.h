@@ -31,15 +31,15 @@ public:
 	OpenGLObject() : scaling(0.5, 0.5), orientation(0.0, 0.0f), position(0, 0), model_To_NDC_xform(glm::mat3(1.0f)), color(1.0, 1.0, 1.0f){};
 
 
-	glm::vec2 scaling; // scaling
-	glm::vec2 orientation; 
-	glm::vec2 position; // translation
-	glm::mat3 model_To_NDC_xform;
-	glm::vec3 color;
+	glm::vec2 scaling;				// scaling
+	glm::vec2 orientation;			// Rotation
+	glm::vec2 position;				// translation
+	glm::mat3 model_To_NDC_xform;	// Model to NDC 
+	glm::vec3 color;				// Set Object Color
 
+	GLuint mdl_ref, shd_ref;
 
-
-	static GLuint VAO, VBO;
+	static GLuint VAO, VBO;			// Object VAO VBO
 
 	// encapsulates state required to render a geometrical model
 	struct OpenGLModel {
@@ -58,8 +58,8 @@ public:
 		OpenGLModel() : primitive_type(0), primitive_cnt(0), vaoid(0), draw_cnt(0), model_cnt(0) {}
 	};
 
-	 std::map<std::string, OpenGLModel>::iterator mdl_ref;
-	std::map<std::string, OpenGLShader>::iterator shd_ref;
+	//std::map<std::string, OpenGLModel>::iterator mdl_ref;
+	//std::map<std::string, OpenGLShader>::iterator shd_ref;
 
 	// set up initial state
 	static void Init(); 
@@ -77,16 +77,27 @@ public:
 
 
 
+	static std::vector<OpenGLModel> models;
+	static std::vector<OpenGLShader>shdrpgms;
 
 	//Shaders
 	static std::vector<OpenGLShader> shader;
 	using VectorPairStrStr = std::vector <std::pair<std::string, std::string>>;
 	static GLuint ShaderProgram;
-	static std::map<std::string, OpenGLShader> shdrpgms;
+	//static std::map<std::string, OpenGLShader> shdrpgms;
+
+
+	static void init_shdrpgms_cont(VectorPairStrStr const& vpss);
+
+	static OpenGLModel Box_Model();
 
 
 	static void Load_Files();
 	static void Load_Meshes(std::string);
+
+
+	// Texture
+	static int Setup_TextureObject(std::string filePath);
 
 
 	// Data for Square and Triangles

@@ -78,8 +78,11 @@ int main()
 			glfwSwapBuffers(window);
 
 
-			//std::cout << GetDeltaTime() << '\n';
-			
+			/*std::cout << GetDT() << '\n';
+			*/
+
+
+
 			// Running the Runtime in cout, will need to change eventually.
 			//std::cout << GetGameRunTime() << '\n';
 

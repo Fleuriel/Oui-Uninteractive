@@ -38,8 +38,12 @@ GLfloat squareX = 0.0f, squareY = 0.0f;
 
 OpenGLObject Objects;
 
+
+std::list<OpenGLObject> objects; // singleton
+
+
 bool en = true;
-bool toggleMode = true;
+bool toggleMode = false;
 
 // For Input
 extern float mouse_scroll_total_Y_offset;
@@ -61,6 +65,8 @@ void OpenGLApplication::OpenGLWindowInit()
 		windowSize.first = windowDoc["windowX"].GetInt();
 		windowSize.second = windowDoc["windowY"].GetInt();
 	}
+
+	std::cout << windowSize.first << windowSize.second;
 
 	// Create window application based on the windowSize.
 	window = glfwCreateWindow(windowSize.first, windowSize.second, "hello", NULL, NULL);
@@ -143,6 +149,8 @@ void OpenGLApplication::OpenGLInit()
 	const char* glsl_vers = "#version 130";
 
 	Objects.Init();
+//	Objects.InitObjects();
+
 
 	// Initializing ImGui
 	if (!imguiInitialized) {
@@ -201,22 +209,22 @@ void OpenGLApplication::OpenGLUpdate()
 		OpenGLSetBackgroundColor(0.5f, 0.5f, 0.5f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
 		
-		glUseProgram(Objects.ShaderProgram);
-		glBindVertexArray(Objects.VAO);
-		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+		//glUseProgram(Objects.ShaderProgram);
+		//glBindVertexArray(Objects.VAO);
+		//glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 				
 
 		// All these should be OBJECTS. THAT UPDATE.
-		
+		// Objects.Update(0.1);
 
 
-		// create transformations
+		//// create transformations
 		glm::mat4 transform = glm::mat4(1.0f); // make sure to initialize matrix to identity matrix first
-		transform = glm::translate(transform, glm::vec3(inx, iny, inz));
+		transform = glm::translate(transform, glm::vec3(Objects.position.x, Objects.position.y, 1.0f));
 		//transform = glm::rotate(transform, (float)glfwGetTime(), glm::vec3(0.0f, 0.0f, -0.1f));
-
-		glm::ortho(0.0f, 900.0f, 0.0f, 600.0f, -1.0f, 1.0f);
-
+		
+		glm::ortho(0.0f, 900.0f, 0.0f, 600.0f, 0.1f, 100.0f);
+		
 		unsigned int transformLoc = glGetUniformLocation(OpenGLObject::ShaderProgram, "transform");
 		glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(transform));
 
@@ -234,6 +242,18 @@ void OpenGLApplication::OpenGLUpdate()
 		if (toggleMode == false)
 		{
 			glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+		}
+
+		if (keyStates[GLFW_KEY_SPACE] == 1)
+		{
+			OpenGLObject newObject;
+			
+
+			
+			newObject.InitObjects();
+			std::cout << newObject.position.x << newObject.position.y << '\n';
+
+			objects.emplace_back(newObject);
 		}
 
 //		glDrawElements(GL_TRIANGLES, 9, GL_UNSIGNED_INT, 0);
@@ -258,7 +278,10 @@ void OpenGLApplication::OpenGLUpdate()
 		//
 		//glEnd();
 
-		
+		for (auto const& x : objects)
+		{
+			x.Draw();
+		}
 
 
 		/*-----------------------------------------------------------------------------
@@ -318,27 +341,27 @@ void OpenGLApplication::OpenGLUpdate()
 		else {
 
 			if (keyStates[GLFW_KEY_A]) {
-				std::cout << "WALK LEFT\n";
-				inx -= 0.001;
+				//std::cout << "WALK LEFT\n";
+				Objects.position.x -= 0.001;
 //				CurrentGameState = STATE_LEVEL_TEST;
 
 			}
 
 			if (keyStates[GLFW_KEY_D]) {
-				std::cout << "WALK RIGHT\n";
-				inx += 0.001;
+				//std::cout << "WALK RIGHT\n";
+				Objects.position.x += 0.001;
 //				CurrentGameState = STATE_GRAPHICS_TEST;
 			}
 
 			if (keyStates[GLFW_KEY_S]) {
-				iny -= 0.001;
-				std::cout << "WALK DOWN\n";
+				Objects.position.y -= 0.001;
+				//std::cout << "WALK DOWN\n";
 			}
 
 			if (keyStates[GLFW_KEY_W]) {
-				iny += 0.001;
+				Objects.position.y += 0.001;
 				physicsSys->setVelocity(Vec2(0.0f, 10.f), 0);
-				std::cout << "WALK UP\n";
+				//std::cout << "WALK UP\n";
 			}
 			else {
 				physicsSys->setVelocity(Vec2(0.0f, 0.0f), 0);
@@ -418,7 +441,8 @@ void OpenGLApplication::OpenGLUpdate()
 
 		// Swap the front and back buffers
 	
-
+		for (OpenGLObject& obj : objects)
+			obj.Update(GetDT());
 
 }
 

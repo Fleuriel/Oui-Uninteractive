@@ -45,7 +45,7 @@ public:
 	static void OpenGLSetBackgroundColor(float r, float g, float b, float a);
 
 
-
+	//static std::list<OpenGLObject> objects; // singleton
 
 
 };
