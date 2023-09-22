@@ -71,7 +71,7 @@ void SoundManager::LoadSounds() {
    ============================================ */
 void SoundManager::PlaySounds() {
 	channel1 = nullptr;
-	result = system->playSound(bgmSounds[0], 0, false, &channel1);
+	result = system->playSound(bgmSounds[1], 0, false, &channel1);
 	if (result != FMOD_OK) {
 		std::cout << "FMOD error: " << FMOD_ErrorString(result);
 	}
