@@ -416,7 +416,7 @@ void OpenGLApplication::OpenGLUpdate()
 //				CurrentGameState = STATE_GRAPHICS_TEST;
 			}
 			else{
-			//	physicsSys->setRotationSpeed(0);
+				physicsSys->setRotationSpeed(0);
 			}
 
 			if (keyStates[GLFW_KEY_S]) {
