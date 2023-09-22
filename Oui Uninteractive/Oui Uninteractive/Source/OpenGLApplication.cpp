@@ -188,7 +188,7 @@ void OpenGLApplication::OpenGLInit()
 	/*---------------------------------------------------------------------------*/
 	// TESTING SERIALIZATION
 	std::cout << "\n\nTesting Serialization\n---------------------\n\n";
-	objectFactory->SerializeObjectVoid("../scenes/testscene.JSON");
+	objectFactory->BuildObjectFromFile("../scenes/testscene.JSON");
 
 	// Print out object data (TO DELETE)
 	std::map<size_t, GameObject*> gameObjectMap(objectFactory->GetGameObjectIDMap());
@@ -196,6 +196,23 @@ void OpenGLApplication::OpenGLInit()
 		std::cout << "Game Object ID: " << i->first << '\n';
 		std::cout << "Game Object Name: " << i->second->GetGameObjectName() << '\n';
 		std::cout << "Game Object ID (again): " << i->second->GetGameObjectID() << "\n\n";
+
+		std::vector<IComponent*> comList{ i->second->GetComponentList() };
+
+		for (std::vector<IComponent*>::iterator it{comList.begin()}; it != comList.end(); it++) {
+			std::cout << "Component Type: " << objectFactory->enumToString((*it)->componentType) << "\n";
+			if ((*it)->componentType == ComponentType::PhysicsBody) {
+				std::cout << "VelocityX: " << i->second->GetComponentType<PhysicsBody>((*it)->componentType)->velocity.x << "\n";
+				std::cout << "VelocityY: " << i->second->GetComponentType<PhysicsBody>((*it)->componentType)->velocity.y << "\n";
+			}
+			if ((*it)->componentType == ComponentType::Transform) {
+				std::cout << "PosX: " << i->second->GetComponentType<Transform>((*it)->componentType)->position.x << "\n";
+				std::cout << "PoxY: " << i->second->GetComponentType<Transform>((*it)->componentType)->position.y << "\n";
+				std::cout << "Rotation: " << i->second->GetComponentType<Transform>((*it)->componentType)->rotation << "\n";
+			}
+		}
+
+		std::cout << "----------------------------------" << '\n';
 	}
 	/*---------------------------------------------------------------------------*/
 }

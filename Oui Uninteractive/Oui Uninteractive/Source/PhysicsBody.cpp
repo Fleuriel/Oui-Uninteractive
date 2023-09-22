@@ -1,5 +1,5 @@
-#include <iostream>
 #include "Physics.h"
+
 /**************************************************************************
 * @brief Default constructor for PhysicsBody component
 *************************************************************************/
@@ -8,7 +8,9 @@ PhysicsBody::PhysicsBody() {
 	velocity = Vec2(0, 0);
 	acceleration = Vec2(0, 0);
 	isStatic = false;
+	txPtr = nullptr;
 }
+
 /**************************************************************************
 * @brief Initialize this instance of the PhysicsBody component
 * @return void
@@ -22,8 +24,8 @@ void PhysicsBody::Initialize() {
 	}
 
 	physicsSys->bodyList.push_back(this);
-
 }
+
 /**************************************************************************
 * @brief Initialize this instance of the PhysicsBody component
 * @param const std::string& filePath - file path to read from

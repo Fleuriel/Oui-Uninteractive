@@ -26,6 +26,18 @@ ComponentType ObjectFactory::stringToEnum(std::string str) {
 	}
 }
 
+std::string ObjectFactory::enumToString(ComponentType ct) {
+	if (ct == ComponentType::PhysicsBody) {
+		return "PhysicsBody";
+	}
+	else if (ct == ComponentType::Transform) {
+		return "Transform";
+	}
+	else {
+		return "None";
+	}
+}
+
 // Object Factory initializer
 ObjectFactory::ObjectFactory() : gameObjectCurrentID{} {
 	if (objectFactory != NULL) {
@@ -43,67 +55,7 @@ ObjectFactory::~ObjectFactory() {
 }
 
 // Create a game object based on serialized data
-GameObject* ObjectFactory::BuildObjectFromFile(const std::string& filePath) {
-	GameObject* object{SerializeObject(filePath)};
-	object->Initialize();
-	return object;
-}
-
-// Serialize game object data from a JSON file
-GameObject* ObjectFactory::SerializeObject(const std::string& filePath) {
-	// Create rapidjson doc object and serializer
-	rapidjson::Document objDoc;
-	JsonSerializer serializer;
-	std::string componentName;
-
-	std::string objName = objDoc["Name"].GetString();
-
-	// Read data from file
-	if (serializer.ReadJSONFile(filePath, objDoc)) {
-		// Create GameObject
-		GameObject* gameObject{};
-
-		// Extract components from JSON file
-		for (auto& it : objDoc["Objects"].GetObject()) {
-			// Get component name
-			 componentName = it.name.GetString();
-			 ComponentType type = stringToEnum(componentName);
-
-			if (componentFactoryMap.find(type) == componentFactoryMap.end()) {
-				std::cerr << "Component name not found." << std::endl;
-			}
-			else {
-				// Create ComponentFactory to create the component itself
-				ComponentFactoryBase* componentFactory = componentFactoryMap[type];
-
-				// Create the component
-				IComponent* component = componentFactory->CreateComponent();
-
-				// Serialize to get component data
-				//component->Serialize(filePath, objName);
-
-				// Add the component to the game object
-				gameObject->AddComponent(component, componentFactory->type);
-			}
-		}
-		// Assign an ID to the game object
-		AssignObjectID(gameObject);
-
-		return gameObject;
-	}
-	else {
-		std::cerr << "Failed to serialize object." << std::endl;
-		return NULL;
-	}
-}
-
-
-/*  TESTING NEW SERIALIZE OBJECT FUNCTION
-	VOID FUNC INSTEAD OF RETURN INDIVIDUAL GAME OBJECT
-	NOT SURE WHICH METHOD IS PREFERRED YET*/
-
-// Serialize game object data from a JSON file (TESTING VOID)
-void ObjectFactory::SerializeObjectVoid(const std::string& filePath) {
+void ObjectFactory::BuildObjectFromFile(const std::string& filePath) {
 	// Create rapidjson doc object and serializer
 	rapidjson::Document objDoc;
 	JsonSerializer serializer;
