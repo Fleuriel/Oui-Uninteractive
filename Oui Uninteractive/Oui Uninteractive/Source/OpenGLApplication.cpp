@@ -186,6 +186,7 @@ void OpenGLApplication::OpenGLInit()
 
 	objectFactory->CloneObject(0);
 
+
 	/*---------------------------------------------------------------------------*/
 	// TESTING SERIALIZATION
 	std::cout << "\n\nTesting Serialization\n---------------------\n\n";
@@ -268,10 +269,8 @@ void OpenGLApplication::OpenGLUpdate()
 			std::cout << newObject.position.x << newObject.position.y << '\n';
 
 			objects.emplace_back(newObject);*/
-			OpenGLObject* object = objectFactory->GetGameObjectByID(0)->GetComponentType<Transform>(ComponentType::Transform)->graphics;
-			if (object != nullptr) {
-				objects.emplace_back(*object);
-			}
+			//OpenGLObject* object = &objectFactory->GetGameObjectByID(0)->shape;
+
 			
 		}
 		if (keyStates[GLFW_KEY_M] == 1)
@@ -321,7 +320,9 @@ void OpenGLApplication::OpenGLUpdate()
 		////glVertex2f(5.0f, 5.0f);
 		//
 		//glEnd();
-
+		for (std::pair<size_t, GameObject*> gObj : objectFactory->GetGameObjectIDMap()) {
+			gObj.second->shape->Draw();
+		}
 		for (auto const& x : objects)
 		{
 			x.Draw();
@@ -489,7 +490,9 @@ void OpenGLApplication::OpenGLUpdate()
 		myImGui.Draw();
 
 		// Swap the front and back buffers
-	
+		for (std::pair<size_t, GameObject*> gObj : objectFactory->GetGameObjectIDMap()) {
+			gObj.second->shape->Update(GetDT());
+		}
 		for (OpenGLObject& obj : objects)
 			obj.Update(GetDT());
 
