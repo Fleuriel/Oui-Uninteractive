@@ -35,15 +35,10 @@ public:
 	ObjectFactory();
 	~ObjectFactory();
 	ComponentType stringToEnum(std::string str);
+	std::string enumToString(ComponentType ct);
 
-	// Create a new game object from a file
-	GameObject* BuildObjectFromFile(const std::string& filePath);
-
-	// Serialize a game object
-	GameObject* SerializeObject(const std::string& filePath);
-
-	// Serialize a game object (Test void func)
-	void SerializeObjectVoid(const std::string& filePath);
+	// Create a game object based on serialized data
+	void BuildObjectFromFile(const std::string& filePath);
 
 	// Create a new game object during run-time
 	GameObject* BuildObjectRunTime();

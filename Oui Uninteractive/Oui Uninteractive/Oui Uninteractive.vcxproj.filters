@@ -1,231 +1,268 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="Source Files">
-      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
-      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
-    </Filter>
-    <Filter Include="Header Files">
-      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
-    </Filter>
     <Filter Include="Resource Files">
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="Header Files\Math">
+    <Filter Include="Math">
       <UniqueIdentifier>{b217dc97-1f88-42f7-ad56-dd51ea827b13}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Math">
-      <UniqueIdentifier>{486487e6-4b1c-4cbc-b055-8353666ac86d}</UniqueIdentifier>
+    <Filter Include="Collision">
+      <UniqueIdentifier>{f091c090-9a08-47ba-8c33-4debbbd00e45}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Component">
-      <UniqueIdentifier>{b406be9f-d76f-44da-bad1-f5225d8d1065}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Systems">
-      <UniqueIdentifier>{40d34a43-1f72-4578-887d-cb74c35fb6e9}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Components">
+    <Filter Include="Component">
       <UniqueIdentifier>{28f76e6e-0e87-4e9e-884f-0baaada32702}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Systems">
-      <UniqueIdentifier>{b32d1c14-c486-4e72-9dba-0bcbc75910fd}</UniqueIdentifier>
+    <Filter Include="Component\PhysicsBody">
+      <UniqueIdentifier>{e37beb34-838e-4e18-99b6-3ee3f43f8388}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\ImGui">
-      <UniqueIdentifier>{3f077572-cad8-4e9a-866a-4d22716a1e85}</UniqueIdentifier>
+    <Filter Include="Component\Transform">
+      <UniqueIdentifier>{80f82db0-5e12-4ac3-8aad-7566da48ea04}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\EventHandlers">
-      <UniqueIdentifier>{a2b3d80c-e830-4c00-8aa7-1f394dd84c59}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Graphics">
+    <Filter Include="Graphics">
       <UniqueIdentifier>{b850807c-cc0b-4cd6-9f77-e56f58fe6902}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ImGui">
+      <UniqueIdentifier>{3f077572-cad8-4e9a-866a-4d22716a1e85}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sound">
+      <UniqueIdentifier>{2783e5f0-d233-4fcf-89af-f55c962fbe70}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="EventHandlers">
+      <UniqueIdentifier>{a2b3d80c-e830-4c00-8aa7-1f394dd84c59}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Systems">
+      <UniqueIdentifier>{b32d1c14-c486-4e72-9dba-0bcbc75910fd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Systems\Physics">
+      <UniqueIdentifier>{ec90ba20-537f-4747-8218-1b76690bc53b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Systems\ObjectFactory">
+      <UniqueIdentifier>{8d445f7d-e253-4a1d-b687-efe5d859aec9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Systems\SystemManager">
+      <UniqueIdentifier>{1d2ad8d3-342a-4828-9700-c12cc2d7d416}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Serialization">
+      <UniqueIdentifier>{1296b66e-fb94-4b8e-871c-0f9533825920}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ParticleSystem">
+      <UniqueIdentifier>{f311f136-7d3e-4f45-a429-3358322bd0e2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Systems\Input">
+      <UniqueIdentifier>{17fba5e7-a209-417f-891b-9e315e959890}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine">
+      <UniqueIdentifier>{5959c380-a160-4886-9a38-721b83772859}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Editor">
+      <UniqueIdentifier>{a6d76de0-a11f-4176-b644-97fd47114783}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Composition">
+      <UniqueIdentifier>{fd1707a7-8e14-49a6-bf3d-91de14c943a2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Mapping">
+      <UniqueIdentifier>{0d55097f-8b1e-4cbf-9c87-57d709e9fd09}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\CoordinateSystem">
+      <UniqueIdentifier>{12e2adb6-3fde-4fb4-bad4-87e7ded9f991}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Utilities">
+      <UniqueIdentifier>{cb435c0f-533f-4bf7-b8f5-70df04bc39d2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Global">
+      <UniqueIdentifier>{c04e3225-868e-4e37-a0f1-c556ba59df33}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Systems\Event">
+      <UniqueIdentifier>{56245eeb-7dc5-4c29-9d7e-747fbd1a131c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Source\main.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\InputKeys.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\RandomUtilities.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Editor.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Matrix3x3.cpp">
       <Filter>Source Files\Math</Filter>
     </ClCompile>
     <ClCompile Include="Source\Vector2D.cpp">
       <Filter>Source Files\Math</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Mapping.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Matrix3x3.cpp">
-      <Filter>Source Files\Math</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Vector2D.cpp">
-      <Filter>Source Files\Math</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Transform.cpp">
-      <Filter>Source Files\Components</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Physics.cpp">
-      <Filter>Source Files\Systems</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\PhysicsBody.cpp">
-      <Filter>Source Files\Components</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\GameObject.cpp">
-      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Source\GameStateManager.cpp">
-      <Filter>Source Files\EventHandlers</Filter>
+      <Filter>EventHandlers</Filter>
     </ClCompile>
     <ClCompile Include="Source\OpenGLApplication.cpp">
-      <Filter>Source Files\Graphics</Filter>
+      <Filter>Graphics</Filter>
     </ClCompile>
     <ClCompile Include="Source\OpenGLObjects.cpp">
-      <Filter>Source Files\Graphics</Filter>
+      <Filter>Graphics</Filter>
     </ClCompile>
     <ClCompile Include="Source\OpenGLShaders.cpp">
-      <Filter>Source Files\Graphics</Filter>
+      <Filter>Graphics</Filter>
     </ClCompile>
     <ClCompile Include="..\lib\imgui-docking\backends\imgui_impl_glfw.cpp">
-      <Filter>Source Files\ImGui</Filter>
+      <Filter>ImGui</Filter>
     </ClCompile>
     <ClCompile Include="..\lib\imgui-docking\backends\imgui_impl_opengl3.cpp">
-      <Filter>Source Files\ImGui</Filter>
+      <Filter>ImGui</Filter>
     </ClCompile>
     <ClCompile Include="..\lib\imgui-docking\imgui.cpp">
-      <Filter>Source Files\ImGui</Filter>
+      <Filter>ImGui</Filter>
     </ClCompile>
     <ClCompile Include="..\lib\imgui-docking\imgui_draw.cpp">
-      <Filter>Source Files\ImGui</Filter>
+      <Filter>ImGui</Filter>
     </ClCompile>
     <ClCompile Include="..\lib\imgui-docking\imgui_tables.cpp">
-      <Filter>Source Files\ImGui</Filter>
+      <Filter>ImGui</Filter>
     </ClCompile>
     <ClCompile Include="..\lib\imgui-docking\imgui_widgets.cpp">
-      <Filter>Source Files\ImGui</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\ObjectFactory.cpp">
-      <Filter>Source Files\Systems</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\ParticleSystem.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>ImGui</Filter>
     </ClCompile>
     <ClCompile Include="Source\Collision.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Collision</Filter>
     </ClCompile>
-    <ClCompile Include="Source\SystemManager.cpp">
-      <Filter>Source Files\Systems</Filter>
+    <ClCompile Include="Source\PhysicsBody.cpp">
+      <Filter>Component\PhysicsBody</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Global.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\JsonSerializer.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="Source\Transform.cpp">
+      <Filter>Component\Transform</Filter>
     </ClCompile>
     <ClCompile Include="Source\Sound.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Sound</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Matrix3x3.cpp">
+      <Filter>Math</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Vector2D.cpp">
+      <Filter>Math</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Physics.cpp">
+      <Filter>Systems\Physics</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\ObjectFactory.cpp">
+      <Filter>Systems\ObjectFactory</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\SystemManager.cpp">
+      <Filter>Systems\SystemManager</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\JsonSerializer.cpp">
+      <Filter>Serialization</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\ParticleSystem.cpp">
+      <Filter>ParticleSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Input.cpp">
+      <Filter>Systems\Input</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Editor.cpp">
+      <Filter>Engine\Editor</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\GameObject.cpp">
+      <Filter>Composition</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\main.cpp">
+      <Filter>Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Mapping.cpp">
+      <Filter>Engine\Mapping</Filter>
     </ClCompile>
     <ClCompile Include="Source\CoordinateSystem.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Engine\CoordinateSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\RandomUtilities.cpp">
+      <Filter>Engine\Utilities</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Global.cpp">
+      <Filter>Engine\Global</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Include\InputKeys.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Include\OpenGLShaders.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Include\OpenGLApplication.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Include\OpenGLObjects.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Include\RandomUtilities.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Include\Editor.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Include\Matrix3x3.h">
-      <Filter>Header Files\Math</Filter>
+      <Filter>Math</Filter>
     </ClInclude>
     <ClInclude Include="Include\Vector2D.h">
-      <Filter>Header Files\Math</Filter>
-    </ClInclude>
-    <ClInclude Include="Include\Mapping.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Include\Transform.h">
-      <Filter>Header Files\Component</Filter>
-    </ClInclude>
-    <ClInclude Include="Include\IComponent.h">
-      <Filter>Header Files\Component</Filter>
-    </ClInclude>
-    <ClInclude Include="Include\ISystem.h">
-      <Filter>Header Files\Systems</Filter>
-    </ClInclude>
-    <ClInclude Include="Include\Physics.h">
-      <Filter>Header Files\Systems</Filter>
-    </ClInclude>
-    <ClInclude Include="Include\PhysicsHeaders.h">
-      <Filter>Header Files\Systems</Filter>
-    </ClInclude>
-    <ClInclude Include="Include\PhysicsBody.h">
-      <Filter>Header Files\Component</Filter>
-    </ClInclude>
-    <ClInclude Include="Include\ComponentType.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Include\Event.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Include\GameObject.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Include\GameStateManager.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Include\ObjectFactory.h">
-      <Filter>Header Files\Systems</Filter>
-    </ClInclude>
-    <ClInclude Include="Include\ComponentFactory.h">
-      <Filter>Header Files\Component</Filter>
-    </ClInclude>
-    <ClInclude Include="Include\EngineHeaders.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Include\ParticleSystem.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Include\Global.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Include\ReadMe.h">
-      <Filter>Header Files</Filter>
+      <Filter>Math</Filter>
     </ClInclude>
     <ClInclude Include="Include\Collision.h">
-      <Filter>Header Files</Filter>
+      <Filter>Collision</Filter>
     </ClInclude>
-    <ClInclude Include="Include\SystemManager.h">
-      <Filter>Header Files\Systems</Filter>
+    <ClInclude Include="Include\ComponentFactory.h">
+      <Filter>Component</Filter>
     </ClInclude>
-    <ClInclude Include="Include\JsonSerializer.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Include\PhysicsBody.h">
+      <Filter>Component\PhysicsBody</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\Transform.h">
+      <Filter>Component\Transform</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\IComponent.h">
+      <Filter>Component</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\ComponentType.h">
+      <Filter>Component</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\OpenGLApplication.h">
+      <Filter>Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\OpenGLObjects.h">
+      <Filter>Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\OpenGLShaders.h">
+      <Filter>Graphics</Filter>
     </ClInclude>
     <ClInclude Include="Include\Sound.h">
-      <Filter>Header Files</Filter>
+      <Filter>Sound</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\GameStateManager.h">
+      <Filter>EventHandlers</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\ISystem.h">
+      <Filter>Systems</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\Physics.h">
+      <Filter>Systems\Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\ObjectFactory.h">
+      <Filter>Systems\ObjectFactory</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\PhysicsHeaders.h">
+      <Filter>Systems\Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\SystemManager.h">
+      <Filter>Systems\SystemManager</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\JsonSerializer.h">
+      <Filter>Serialization</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\ParticleSystem.h">
+      <Filter>ParticleSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\Input.h">
+      <Filter>Systems\Input</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\Editor.h">
+      <Filter>Engine\Editor</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\GameObject.h">
+      <Filter>Composition</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\Mapping.h">
+      <Filter>Engine\Mapping</Filter>
     </ClInclude>
     <ClInclude Include="Include\CoordinateSystem.h">
-      <Filter>Header Files</Filter>
+      <Filter>Engine\CoordinateSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\EngineHeaders.h">
+      <Filter>Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\ReadMe.h">
+      <Filter>Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\RandomUtilities.h">
+      <Filter>Engine\Utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\Global.h">
+      <Filter>Engine\Global</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\Event.h">
+      <Filter>Systems\Event</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
