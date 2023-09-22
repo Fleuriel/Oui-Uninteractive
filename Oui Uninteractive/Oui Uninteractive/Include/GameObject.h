@@ -52,7 +52,7 @@ public:
 	// Get game object ID
 	size_t GetGameObjectID();
 
-	Get component with component type
+//	Get component with component type
 	IComponent* GetComponent(ComponentType typeID);
 
 	// Get component type

@@ -202,7 +202,7 @@ OpenGLObject::OpenGLModel OpenGLObject::Box_Model()
 
 	for (size_t i{}; i < pos_vtx.size(); i++)
 	{
-		float red = 1.0f;
+		float red = 0.0f;
 		float blue = 0.5f;
 		float green = 0.25f;
 
