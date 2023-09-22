@@ -28,11 +28,11 @@
 class OpenGLObject
 {
 public:
-	OpenGLObject() : scaleX(0.5) ,scaleY(0.5), orientation(0.0, 0.0f), position(0, 0), model_To_NDC_xform(glm::mat3(1.0f)), color(1.0, 1.0, 1.0f) {};
+	OpenGLObject() : scaleModel(0.5, 0.5) , orientation(0.0, 0.0f), position(0, 0), model_To_NDC_xform(glm::mat3(1.0f)), color(1.0, 1.0, 1.0f) {};
 
-
-	float scaleX;				// scaling
-	float scaleY;
+	glm::vec2 scaleModel;
+	float angleDisplacment;
+	float angleSpeed;
 	glm::vec2 orientation;			// Rotation
 	glm::vec2 position;				// translation
 	glm::mat3 model_To_NDC_xform;	// Model to NDC 

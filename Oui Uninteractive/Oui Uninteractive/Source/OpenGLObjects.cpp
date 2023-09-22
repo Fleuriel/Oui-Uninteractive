@@ -289,19 +289,19 @@ void OpenGLObject::Update(GLdouble delta_time)
 {
 	//std::cout << "Object Update\n";
 	// Compute the angular displacement in radians
-
+	angleDisplacment += (angleSpeed * delta_time);
 
 // Compute the scale matrix
 	glm::mat3 Scale = glm::mat3(
-		scaleX, 0.0f, 0.0f,
-		0.0f, scaleY, 0.0f,
+		scaleModel.x, 0.0f, 0.0f,
+		0.0f, scaleModel.y, 0.0f,
 		0.0f, 0.0f, 1.0f
 	);
 
 	// Compute the rotation matrix
 	glm::mat3 Rotation = glm::mat3(
-		cosf(glm::radians(OpenGLObject::orientation.x)), -sinf(glm::radians(OpenGLObject::orientation.y)), 0.0f,
-		sinf(glm::radians(OpenGLObject::orientation.x)), cosf(glm::radians(OpenGLObject::orientation.y)), 0.0f,
+		cosf(glm::radians(angleDisplacment)), -sinf(glm::radians(angleDisplacment)), 0.0f,
+		sinf(glm::radians(angleDisplacment)), cosf(glm::radians(angleDisplacment)), 0.0f,
 		0.0f, 0.0f, 1.0f
 	);
 
@@ -322,40 +322,8 @@ void OpenGLObject::Update(GLdouble delta_time)
 
 
 	// Compute the model-to-world-to-NDC transformation matrix
-	model_To_NDC_xform = ScaleToWorldToNDC * glm::transpose(Translation) /** glm::transpose(Rotation)*/ * glm::transpose(Scale);
-	//using glm::radians;
+	model_To_NDC_xform = ScaleToWorldToNDC * glm::transpose(Translation) * glm::transpose(Rotation)  * glm::transpose(Scale);
 
-	//if (mdl_ref->first != "triangle")
-	//	orientation.x += (orientation.y * static_cast<float>(delta_time));
-
-	//if (orientation.x >= 360 || orientation.x <= -360)
-	//	orientation.x = 0;
-
-
-	//// Compute the scale matrix
-	//glm::mat3 Scale = glm::mat3(
-	//	scaling.x, 0.0f, 0.0f,
-	//	0.0f, scaling.y, 0.0f,
-	//	0.0f, 0.0f, 1.0f
-	//);
-
-	//// Compute the rotation matrix
-	//glm::mat3 Rotation = glm::mat3(
-	//	cosf(radians(orientation.x)), sinf(radians(orientation.x)), 0.0f,
-	//	-sinf(radians(orientation.x)), cosf(radians(orientation.x)), 0.0f,
-	//	0.0f, 0.0f, 1.0f
-	//);
-
-	//// Compute the translation matrix
-	//glm::mat3 Translation = glm::mat3(
-	//	1.0f, 0.0f, 0.0f,
-	//	0.0f, 1.0f, 0.0f,
-	//	position.x, position.y, 1.0f
-	//);
-
-	//// Compute the model-to-world-to-NDC transformation matrix
-	////mdl_to_ndc_xform = camera2d.world_to_ndc_xform * (Translation * Rotation * Scale);
-	//model_To_NDC_xform = (Translation * Rotation * Scale);
 }
 
 
@@ -888,7 +856,8 @@ void OpenGLObject::init_shdrpgms_cont(VectorPairStrStr const& vpss) {
 
 
 void OpenGLObject::InitObjects(int userInput_x, int userInput_y, float userInput_sizeX,
-								float userInput_sizeY, float userInput_rotX, float userInput_rotY)
+							   float userInput_sizeY, float userInput_angleDisplacement, 
+							   float userInput_angleSpeed)
 {
 
 	OpenGLObject::mdl_ref = 0;
@@ -899,12 +868,11 @@ void OpenGLObject::InitObjects(int userInput_x, int userInput_y, float userInput
 	OpenGLObject::position.y = userInput_y;
 	using glm::radians;
 
-	
-	scaleX = userInput_sizeX;
-	scaleY = userInput_sizeY;
+	scaleModel.x = userInput_sizeX;
+	scaleModel.y = userInput_sizeY;
 
-	orientation.x = userInput_rotX;
-	orientation.y = userInput_rotY;
+	angleDisplacment = userInput_angleDisplacement;
+	angleSpeed = userInput_angleSpeed;
 
 	glm::mat3 Translate = glm::mat3
 	{
@@ -915,15 +883,15 @@ void OpenGLObject::InitObjects(int userInput_x, int userInput_y, float userInput
 
 	glm::mat3 Rotation = glm::mat3
 	{
-		cosf(radians(orientation.x)), sinf(radians(orientation.x)) , 0,
-		-sinf(radians(orientation.x)),  cosf(radians(orientation.x)) , 0,
+		cosf(radians(angleDisplacment)), sinf(radians(angleDisplacment)) , 0,
+		-sinf(radians(angleDisplacment)),  cosf(radians(angleDisplacment)) , 0,
 		0, 0, 1
 	};
 
 	glm::mat3 Scale = glm::mat3
 	{
-		scaleX, 0, 0,
-		0, scaleY, 0,
+		scaleModel.x, 0, 0,
+		0, scaleModel.y, 0,
 		0, 0, 1
 	};
 

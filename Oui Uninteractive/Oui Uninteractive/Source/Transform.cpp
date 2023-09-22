@@ -5,8 +5,8 @@ Transform::Transform() {
 	rotation = 0;
 	scale = 200;
 
-	graphics = new OpenGLObject();
-	graphics->InitObjects(position.x, position.y, scale, scale);
+//	graphics = new OpenGLObject();
+//	graphics->InitObjects(position.x, position.y, scale, scale);
 }
 Transform::~Transform() {
 	delete graphics;
