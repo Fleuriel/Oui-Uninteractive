@@ -1,12 +1,12 @@
 #include "Transform.h"
 
 Transform::Transform() {
-	position = Vec2(-200,-100);
+	position = Vec2(-250,-100);
 	rotation = 0;
-	scale = 200.f;
+	scale = 100.f;
 }
 void Transform::Initialize() {
-	GetOwner()->shape->InitObjects(position.x, position.y, scale, scale);
+	GetOwner()->shape->InitObjects(position.x, position.y, scale, scale, 0, 0);
 }
 
 void Transform::Serialize(const std::string& filePath, rapidjson::Value::ConstMemberIterator& itr) {

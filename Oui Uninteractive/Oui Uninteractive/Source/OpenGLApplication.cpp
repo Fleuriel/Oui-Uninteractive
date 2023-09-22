@@ -188,6 +188,9 @@ void OpenGLApplication::OpenGLInit()
 	objectFactory->GetGameObjectByID(0)->Initialize();
 
 	objectFactory->CloneObject(0);
+	GET_COMPONENT(objectFactory->GetGameObjectByID(1), Transform, ComponentType::Transform)->position.x = 450;
+	GET_COMPONENT(objectFactory->GetGameObjectByID(1), Transform, ComponentType::Transform)->position.y = 100;
+
 
 
 	/*---------------------------------------------------------------------------*/
@@ -275,10 +278,10 @@ void OpenGLApplication::OpenGLUpdate()
 			std::cout << newObject.position.x << newObject.position.y << '\n';
 
 			objects.emplace_back(newObject);*/
-			OpenGLObject* object = GET_COMPONENT(objectFactory->GetGameObjectByID(0), Transform, ComponentType::Transform)->graphics;
-			if (object != nullptr) {
+			//OpenGLObject* object = GET_COMPONENT(objectFactory->GetGameObjectByID(0), Transform, ComponentType::Transform)->graphics;
+			/*if (object != nullptr) {
 				objects.emplace_back(*object);
-			}
+			}*/
 			
 		}
 		if (keyStates[GLFW_KEY_M] == 1)
