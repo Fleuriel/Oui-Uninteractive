@@ -185,8 +185,6 @@ void OpenGLApplication::OpenGLInit()
 	objectFactory->GetGameObjectByID(0)->Initialize();
 
 	objectFactory->CloneObject(0);
-	//init object from file
-	//objectFactory->BuildObjectFromFile("test.json");
 
 	/*---------------------------------------------------------------------------*/
 	// TESTING SERIALIZATION

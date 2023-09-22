@@ -14,6 +14,6 @@ typedef enum class ComponentType {
 	PhysicsBody,
 	Transform
 	
-}componentType;
+} componentType;
 
 
