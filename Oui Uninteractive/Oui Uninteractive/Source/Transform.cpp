@@ -10,7 +10,7 @@ Transform::~Transform() {
 	delete shape;
 }
 void Transform::Initialize() {
-	shape->InitObjects(position.x, position.y, scale, scale, 0, 0);
+	shape->InitObjects(position.x, position.y, scale, scale, rotation, 0);
 }
 
 void Transform::Serialize(const std::string& filePath, rapidjson::Value::ConstMemberIterator& itr) {
