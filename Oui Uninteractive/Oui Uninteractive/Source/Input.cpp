@@ -63,8 +63,14 @@ std::map<std::string, std::function<void()>> shortcuts;
  *************************************************************************/
 void keyCallBack(GLFWwindow* window, int key, int scancode, int action, int mod)
 {
+	// Return if unknown key pressed (e.g. multimedia keys)
+	if (key == GLFW_KEY_UNKNOWN) {
+		return;
+	}
 	UNREFERENCED_PARAMETER(scancode);
 	
+	
+
 	keyStates[key] = (action == GLFW_PRESS && keyStates[key] == 0) ? 1 : (action == GLFW_RELEASE) ? 0 : 2;
 	//std::cout << "keyval : " << keyStates[key] << std::endl;
 
