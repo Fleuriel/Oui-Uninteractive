@@ -191,41 +191,22 @@ void OpenGLApplication::OpenGLInit()
 	GET_COMPONENT(objectFactory->GetGameObjectByID(1), Transform, ComponentType::Transform)->position.x = 450;
 	GET_COMPONENT(objectFactory->GetGameObjectByID(1), Transform, ComponentType::Transform)->position.y = 50;
 
-	
+	//initialize 2500 objects
+	/*for (size_t i{}; i < 2500; ++i) {
+		std::string goName{ "ObjectRunTime" + std::to_string(i + 1) };
+		objectFactory->BuildObjectRunTime(goName);
+		objectFactory->AddComponent(ComponentType::PhysicsBody, objectFactory->GetGameObjectByID(i));
+		objectFactory->AddComponent(ComponentType::Transform, objectFactory->GetGameObjectByID(i));
+		objectFactory->GetGameObjectByID(i)->Initialize();
 
-	/*---------------------------------------------------------------------------*/
-	// TESTING SERIALIZATION
-	
-	std::cout << "\n\nTesting Serialization\n---------------------\n\n";
+		GET_COMPONENT(objectFactory->GetGameObjectByID(i), Transform, ComponentType::Transform)->position.x = rand() % 800;
+		GET_COMPONENT(objectFactory->GetGameObjectByID(i), Transform, ComponentType::Transform)->position.y = rand() % 600;
+	}*/
+
+	// De-serializing objects from JSON file
+	std::cout << "\nDe-serializing objects from JSON file..." << std::endl;
 	objectFactory->BuildObjectFromFile("../scenes/testscene.JSON");
-
-	// Print out object data (TO DELETE)
-	/*
-	std::map<size_t, GameObject*> gameObjectMap(objectFactory->GetGameObjectIDMap());
-	for (auto i{ gameObjectMap.begin() }; i != gameObjectMap.end(); ++i) {
-		std::cout << "Game Object ID: " << i->first << '\n';
-		std::cout << "Game Object Name: " << i->second->GetGameObjectName() << '\n';
-		std::cout << "Game Object ID (again): " << i->second->GetGameObjectID() << "\n\n";
-
-		std::vector<IComponent*> comList{ i->second->GetComponentList() };
-
-		for (std::vector<IComponent*>::iterator it{comList.begin()}; it != comList.end(); it++) {
-			std::cout << "Component Type: " << objectFactory->enumToString((*it)->componentType) << "\n";
-			if ((*it)->componentType == ComponentType::PhysicsBody) {
-				std::cout << "VelocityX: " << GET_COMPONENT(i->second, PhysicsBody, ComponentType::PhysicsBody)->velocity.x << "\n";
-				std::cout << "VelocityY: " << GET_COMPONENT(i->second, PhysicsBody, ComponentType::PhysicsBody)->velocity.y << "\n";
-			}
-			if ((*it)->componentType == ComponentType::Transform) {
-				std::cout << "PosX: " << GET_COMPONENT(i->second, Transform, ComponentType::Transform)->position.x << "\n";
-				std::cout << "PoxY: " << GET_COMPONENT(i->second, Transform, ComponentType::Transform)->position.y << "\n";
-				std::cout << "Rotation: " << GET_COMPONENT(i->second, Transform, ComponentType::Transform)->rotation << "\n";
-			}
-		}
-
-		std::cout << "----------------------------------" << '\n';
-	}
-	/*---------------------------------------------------------------------------*/
-	
+	std::cout << "De-serializing objects from JSON file... completed." << std::endl;
 }
 
 

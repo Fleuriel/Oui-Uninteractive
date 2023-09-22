@@ -21,6 +21,7 @@ public:
 	virtual IComponent* CreateComponent() = 0;
 	
 };
+
 template <typename T>
 class ComponentFactory : public ComponentFactoryBase {
 public:

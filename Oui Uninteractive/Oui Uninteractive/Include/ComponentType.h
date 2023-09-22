@@ -15,5 +15,3 @@ typedef enum class ComponentType {
 	Transform
 	
 } componentType;
-
-

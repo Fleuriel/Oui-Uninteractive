@@ -82,10 +82,9 @@ void ObjectFactory::BuildObjectFromFile(const std::string& filePath) {
 	if (serializer.ReadJSONFile(filePath, objDoc)) {
 		// For each object in Objects array (in JSON file)
 		for (auto& obj : objDoc["Objects"].GetArray()) {
-			// Create GameObject
 			GameObject* gameObject{new GameObject(obj["Name"].GetString())};
 
-			// Get each component in object
+			// Get each component(s) in current object
 			const rapidjson::Value& components{obj["Components"]};
 
 			for (rapidjson::Value::ConstMemberIterator itr{components.MemberBegin()}; itr != components.MemberEnd(); ++itr) {
@@ -95,7 +94,6 @@ void ObjectFactory::BuildObjectFromFile(const std::string& filePath) {
 				if (componentFactoryMap.find(type) == componentFactoryMap.end()) {
 					std::cerr << "Component name not found." << std::endl;
 				}
-
 				else {
 					// Set componentFactory to create the component itself
 					ComponentFactoryBase* componentFactory = componentFactoryMap[type];
@@ -111,17 +109,11 @@ void ObjectFactory::BuildObjectFromFile(const std::string& filePath) {
 				}
 			}
 			
+			// Initialize the components in the current object
+			gameObject->Initialize();
+
 			// Assign an ID to the game object
 			AssignObjectID(gameObject);
-
-			// Initialize each object in map
-			size_t count = 0;
-			for (auto i{ gameObjectIDMap.begin() }; i != gameObjectIDMap.end(); ++i, ++count) {
-				if (count < gameObjectCurrentID - 1) {
-					continue;
-				}
-				i->second->Initialize();
-			}
 		}		
 	}
 	else {
@@ -215,7 +207,6 @@ void ObjectFactory::DestroyAllObjects() {
 	}
 }
 
-
 /**************************************************************************
 * @brief Get a game object by ID
 * @param gameObjectID - ID of game object
@@ -229,7 +220,10 @@ GameObject* ObjectFactory::GetGameObjectByID(size_t gameObjectID)
 	return nullptr;
 }
 
-// Get all game objects
+/**************************************************************************
+* @brief Get all game objects
+* @return std::map<size_t, GameObject*>
+*************************************************************************/
 std::map<size_t, GameObject*> ObjectFactory::GetGameObjectIDMap() {
 	return gameObjectIDMap;
 }

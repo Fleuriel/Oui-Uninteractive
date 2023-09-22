@@ -12,12 +12,7 @@
 #include <vector>
 #include "IComponent.h"
 
-// THIS WILL PROBABLY BE THE COMPOSITION CLASS
-
 class GameObject {
-
-// maybe include using statements
-
 private:
 	// ID to reperesent game object
 	size_t gameObjectID;
@@ -35,8 +30,6 @@ public:
 	
 	GameObject(const std::string name);
 	~GameObject();
-
-	// Game object factory stuff here
 	
 	// Initialize components in componentList
 	void Initialize();
@@ -53,21 +46,13 @@ public:
 	// Remove component from componentList
 	void RemoveComponent(IComponent* c);
 
-	// Return position of component with typeID in componentList
+	// Check if component is in componentList
 	int Has(ComponentType typeID);
 
 	// Get game object ID
 	size_t GetGameObjectID();
 
-	// Get game object name
-	// For testing
-	std::string GetGameObjectName();
-
-	// Get componentlist
-	// For testing
-	std::vector<IComponent*> GetComponentList();
-
-	// Get component
+	Get component with component type
 	IComponent* GetComponent(ComponentType typeID);
 
 	// Get component type

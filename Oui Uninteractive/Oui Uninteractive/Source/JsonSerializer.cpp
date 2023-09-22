@@ -12,16 +12,6 @@
 
 void JsonSerializer::Init() {}
 
-void JsonSerializer::InitObjects(const std::string& filePath) {
-	// Create rapidjson doc object
-	rapidjson::Document objDoc;
-
-	// Read the scene file
-	/*if (ReadJSONFile(filePath, objDoc)) {
-		std::cout << objDoc["ObjectCount"].GetInt();
-	}*/
-}
-
 /**************************************************************************
 * @brief Read JSON file
 * @param filePath - directory of JSON file
@@ -56,7 +46,6 @@ bool JsonSerializer::ReadJSONFile(const std::string& filePath, rapidjson::Docume
 
 	return true; // Read successful
 }
-
 
 /**************************************************************************
 * @brief Write to JSON file

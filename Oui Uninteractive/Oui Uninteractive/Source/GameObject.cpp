@@ -9,6 +9,7 @@
  *************************************************************************/
 
 #include <algorithm>
+#include <iostream>
 #include "GameObject.h"
 
 // For future event/message system
@@ -21,13 +22,12 @@
 *************************************************************************/
 GameObject::GameObject(const std::string name) : gameObjectID{} {
 	gameObjectName = name;
-
-
 }
 
-GameObject::~GameObject() {
-	
-}
+/**************************************************************************
+* @brief Destructor
+*************************************************************************/
+GameObject::~GameObject() {}
 
 /**************************************************************************
 * @brief Initialize components in componentList
@@ -37,7 +37,7 @@ void GameObject::Initialize() {
 		componentList[i]->base = this;
 		componentList[i]->Initialize();
 	}
-	
+	std::cout << "Initialized " << gameObjectName << std::endl;  // Debugging
 }
 
 /**************************************************************************
@@ -55,7 +55,12 @@ void GameObject::AddComponent(IComponent* c, ComponentType t) {
 * @param c - component pointer
 *************************************************************************/
 void GameObject::RemoveComponent(IComponent* c) {
-	// Remove component
+	for (size_t i{}; i < componentList.size(); ++i) {
+		if (componentList[i] == c) {
+			componentList.erase(componentList.begin() + i);
+			return;
+		}
+	}
 }
 
 /**************************************************************************
@@ -79,20 +84,15 @@ int GameObject::Has(ComponentType typeID) {
 size_t GameObject::GetGameObjectID() {
 	return gameObjectID;
 }
+
+/**************************************************************************
+* @brief Get component with component type
+* @return IComponent*
+*************************************************************************/
 IComponent* GameObject::GetComponent(ComponentType typeID) {
 	int index = Has(typeID);
 	if (index >= 0) {
 		return componentList.at(index);
 	}
 	return nullptr;
-}
-
-// For testing
-std::string GameObject::GetGameObjectName() {
-	return gameObjectName;
-}
-
-// For testing
-std::vector<IComponent*> GameObject::GetComponentList() {
-	return componentList;
 }

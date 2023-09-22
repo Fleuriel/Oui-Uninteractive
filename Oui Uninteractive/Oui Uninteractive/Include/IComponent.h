@@ -42,11 +42,9 @@ public:
 	variableName = components["VariableName"].GetFloat();	// If variable is float, use GetFloat()
 	
 	*/
-
 	// Serialize function to be overloaded by each component
 	virtual void Serialize(const std::string& filePath, rapidjson::Value::ConstMemberIterator& itr) {};
 
 
 	virtual ~IComponent() {};
 };
-

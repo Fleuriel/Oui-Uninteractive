@@ -62,7 +62,6 @@ public:
 	GameObject* GetGameObjectByID(size_t gameObjectID);
 
 	// Get all game objects
-	// For testing
 	std::map<size_t, GameObject*> GetGameObjectIDMap();
 
 	// messaging...

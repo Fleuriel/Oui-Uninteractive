@@ -152,7 +152,7 @@ void Editor::Init() {
 	objDoc["size"] = finalSize;
 	
 	if (WriteJSONFile(filePath, objDoc)) {
-		std::cout << "If you open the file again and see the size double then Yay everything works";
+		std::cout << "If you open the file again and see the size double then Yay everything works\n";
 	}
 }
 
