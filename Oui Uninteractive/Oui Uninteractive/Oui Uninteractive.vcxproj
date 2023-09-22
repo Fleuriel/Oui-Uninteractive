@@ -25,6 +25,7 @@
     <ClCompile Include="..\lib\imgui-docking\imgui_draw.cpp" />
     <ClCompile Include="..\lib\imgui-docking\imgui_tables.cpp" />
     <ClCompile Include="..\lib\imgui-docking\imgui_widgets.cpp" />
+    <ClCompile Include="Source\AssetManager.cpp" />
     <ClCompile Include="Source\Collision.cpp" />
     <ClCompile Include="Source\CoordinateSystem.cpp" />
     <ClCompile Include="Source\Editor.cpp" />
@@ -50,6 +51,7 @@
     <ClCompile Include="Source\Vector2D.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Include\AssetManager.h" />
     <ClInclude Include="Include\Collision.h" />
     <ClInclude Include="Include\ComponentFactory.h" />
     <ClInclude Include="Include\ComponentType.h" />

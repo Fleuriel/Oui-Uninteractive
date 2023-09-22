@@ -77,14 +77,11 @@
     <Filter Include="Systems\Event">
       <UniqueIdentifier>{56245eeb-7dc5-4c29-9d7e-747fbd1a131c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Systems\AssetManager">
+      <UniqueIdentifier>{1033705e-fc34-48f4-b347-5753e4516bcc}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Source\Matrix3x3.cpp">
-      <Filter>Source Files\Math</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Vector2D.cpp">
-      <Filter>Source Files\Math</Filter>
-    </ClCompile>
     <ClCompile Include="Source\GameStateManager.cpp">
       <Filter>EventHandlers</Filter>
     </ClCompile>
@@ -171,6 +168,11 @@
     </ClCompile>
     <ClCompile Include="Source\Global.cpp">
       <Filter>Engine\Global</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Matrix3x3.cpp" />
+    <ClCompile Include="Source\Vector2D.cpp" />
+    <ClCompile Include="Source\AssetManager.cpp">
+      <Filter>Systems\AssetManager</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -263,6 +265,9 @@
     </ClInclude>
     <ClInclude Include="Include\Event.h">
       <Filter>Systems\Event</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\AssetManager.h">
+      <Filter>Systems\AssetManager</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
