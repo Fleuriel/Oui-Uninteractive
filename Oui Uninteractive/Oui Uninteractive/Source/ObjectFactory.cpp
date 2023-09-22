@@ -14,6 +14,11 @@
 
 ObjectFactory* objectFactory = NULL;
 
+/**************************************************************************
+* @brief Convert a string to ComponentType enum
+* @param str - string to convert to ComponentType
+* @return ComponentType
+*************************************************************************/
 ComponentType ObjectFactory::stringToEnum(std::string str) {
 	if (str == "PhysicsBody") {
 		return ComponentType::PhysicsBody;
@@ -26,6 +31,11 @@ ComponentType ObjectFactory::stringToEnum(std::string str) {
 	}
 }
 
+/**************************************************************************
+* @brief Convert ComponentType enum to a string
+* @param ct - ComponentType to convert to string
+* @return std::string - name of ComponentType
+*************************************************************************/
 std::string ObjectFactory::enumToString(ComponentType ct) {
 	if (ct == ComponentType::PhysicsBody) {
 		return "PhysicsBody";
@@ -38,7 +48,9 @@ std::string ObjectFactory::enumToString(ComponentType ct) {
 	}
 }
 
-// Object Factory initializer
+/**************************************************************************
+* @brief Object Factory Initializer
+*************************************************************************/
 ObjectFactory::ObjectFactory() : gameObjectCurrentID{} {
 	if (objectFactory != NULL) {
 		return;
@@ -47,14 +59,19 @@ ObjectFactory::ObjectFactory() : gameObjectCurrentID{} {
 	objectFactory = this;
 }
 
-// Object Factory destructor
+/**************************************************************************
+* @brief Object Factory Destructor
+*************************************************************************/
 ObjectFactory::~ObjectFactory() {
 	for (auto& it : componentFactoryMap) {
 		delete it.second;
 	}
 }
 
-// Create a game object based on serialized data
+/**************************************************************************
+* @brief Create a game object based on serialized data
+* @param filePath - directory of JSON file
+*************************************************************************/
 void ObjectFactory::BuildObjectFromFile(const std::string& filePath) {
 	// Create rapidjson doc object and serializer
 	rapidjson::Document objDoc;
@@ -109,30 +126,40 @@ void ObjectFactory::BuildObjectFromFile(const std::string& filePath) {
 	}
 }
 
-// Create a game object during run-time
+/**************************************************************************
+* @brief Create a game object during run-time
+* @return GameObject*
+*************************************************************************/
 GameObject* ObjectFactory::BuildObjectRunTime() {
 	GameObject* objectRunTime{new GameObject()};
 	AssignObjectID(objectRunTime);
 	return objectRunTime;
 }
 
-// Update each game object in object factory
+/**************************************************************************
+* @brief Update each game object in object factory
+* @param dt - delta time
+*************************************************************************/
 void ObjectFactory::Update(float dt) {
 	std::set<GameObject*>::iterator it = gameObjectDestroyList.begin();
 
+	// Destroy game objects in destroy list
 	for (; it != gameObjectDestroyList.end(); it++) {
 		GameObject* gameObject = *it;
 
 		//Insert double free protection here
 		delete gameObject;
 	}
+
 	gameObjectDestroyList.clear();
 }
 
-// Clone a game object
+/**************************************************************************
+* @brief Clone a game object
+* @param gameObjectID - ID of game object to clone
+* @return bool
+*************************************************************************/
 bool ObjectFactory::CloneObject(size_t gameObjectID) {
-	//std::map<size_t, GameObject*>::iterator it = gameObjectIDMap.begin();
-	
 	if (gameObjectIDMap.find(gameObjectID) != gameObjectIDMap.end()) {
 		GameObject* original = (gameObjectIDMap.find(gameObjectID)->second);
 		GameObject* clone = BuildObjectRunTime();
@@ -149,7 +176,10 @@ bool ObjectFactory::CloneObject(size_t gameObjectID) {
 	}
 }
 
-// Assign an ID to a game object and add it to the map of game objects
+/**************************************************************************
+* @brief Assign an ID to a game object and add it to the map of game objects
+* @param gameObject - pointer to game object
+*************************************************************************/
 void ObjectFactory::AssignObjectID(GameObject* gameObject) {
 	// Assign ID to gameObject
 	gameObject->gameObjectID = gameObjectCurrentID;
@@ -157,16 +187,21 @@ void ObjectFactory::AssignObjectID(GameObject* gameObject) {
 	// Add gameObject to the map
 	gameObjectIDMap[gameObjectCurrentID] = gameObject;
 
-	// Increment ID
+	// Increment current ID
 	++gameObjectCurrentID;
 }
 
-// Add a to-be-destroyed game object to the destroy list
+/**************************************************************************
+* @brief Add a to-be-destroyed game object to the destroy list
+* @param gameObject - pointer to game object
+*************************************************************************/
 void ObjectFactory::DestroyObject(GameObject* gameObject) {
 	gameObjectDestroyList.insert(gameObject);
 }
 
-// Destroy all game objects
+/**************************************************************************
+* @brief Destroy all game objects
+*************************************************************************/
 void ObjectFactory::DestroyAllObjects() {
 	std::map<size_t, GameObject*>::iterator it = gameObjectIDMap.begin();
 
@@ -176,7 +211,12 @@ void ObjectFactory::DestroyAllObjects() {
 	}
 }
 
-// Get a game object by ID
+
+/**************************************************************************
+* @brief Get a game object by ID
+* @param gameObjectID - ID of game object
+* @return GameObject*
+*************************************************************************/
 GameObject* ObjectFactory::GetGameObjectByID(size_t gameObjectID)
 {
 	if (gameObjectIDMap.find(gameObjectID) != gameObjectIDMap.end())
@@ -190,13 +230,23 @@ std::map<size_t, GameObject*> ObjectFactory::GetGameObjectIDMap() {
 	return gameObjectIDMap;
 }
 
-// Add component factory to map
+/**************************************************************************
+* @brief Add component factory to map
+* @param componentName - name of component type
+* @param componentFactory - pointer to component factory base
+*************************************************************************/
 void ObjectFactory::AddComponentFactory(componentType componentName, ComponentFactoryBase* componentFactory) {
 	componentFactoryMap.insert(std::pair(componentName, componentFactory));
 }
 
-// Add component with a specified component name to game object
-bool ObjectFactory::AddComponent(componentType componentName, GameObject* object) {
+/**************************************************************************
+* @brief Add component with a specified component name to game object
+* @param componentName - name of component type
+* @param gameObject - pointer to game object
+* @return bool
+*************************************************************************/
+// 
+bool ObjectFactory::AddComponent(componentType componentName, GameObject* gameObject) {
 	// Get component factory
 	std::map<componentType, ComponentFactoryBase*>::iterator it = componentFactoryMap.find(componentName);
 
@@ -206,7 +256,7 @@ bool ObjectFactory::AddComponent(componentType componentName, GameObject* object
 		ComponentFactoryBase* factory = it->second;
 		IComponent* component = factory->CreateComponent();
 
-		object->AddComponent(component, factory->type);
+		gameObject->AddComponent(component, factory->type);
 	}
 	else {
 		return false;
