@@ -332,7 +332,8 @@ void OpenGLApplication::OpenGLUpdate()
 		//
 		//glEnd();
 		for (std::pair<size_t, GameObject*> gObj : objectFactory->GetGameObjectIDMap()) {
-			gObj.second->shape->Draw();
+			GET_COMPONENT(gObj.second, Transform, ComponentType::Transform)->shape->Draw();
+			
 		}
 		for (auto const& x : objects)
 		{
@@ -502,7 +503,7 @@ void OpenGLApplication::OpenGLUpdate()
 
 		// Swap the front and back buffers
 		for (std::pair<size_t, GameObject*> gObj : objectFactory->GetGameObjectIDMap()) {
-			gObj.second->shape->Update(GetDT());
+			GET_COMPONENT(gObj.second, Transform, ComponentType::Transform)->shape->Update(GetDT());
 		}
 		for (OpenGLObject& obj : objects)
 			obj.Update(GetDT());

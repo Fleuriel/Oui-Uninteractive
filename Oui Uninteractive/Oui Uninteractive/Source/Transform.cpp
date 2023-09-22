@@ -4,9 +4,13 @@ Transform::Transform() {
 	position = Vec2(-250,-100);
 	rotation = 0;
 	scale = 100.f;
+	shape = new OpenGLObject();
+}
+Transform::~Transform() {
+	delete shape;
 }
 void Transform::Initialize() {
-	GetOwner()->shape->InitObjects(position.x, position.y, scale, scale, 0, 0);
+	shape->InitObjects(position.x, position.y, scale, scale, 0, 0);
 }
 
 void Transform::Serialize(const std::string& filePath, rapidjson::Value::ConstMemberIterator& itr) {

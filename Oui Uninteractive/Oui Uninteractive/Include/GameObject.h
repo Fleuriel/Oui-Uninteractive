@@ -11,7 +11,6 @@
 
 #include <vector>
 #include "IComponent.h"
-#include "OpenGLObjects.h"
 
 // THIS WILL PROBABLY BE THE COMPOSITION CLASS
 
@@ -33,7 +32,7 @@ private:
 public:
 	// Set ObjectFactory as friend class to access gameObjectID
 	friend class ObjectFactory;
-	OpenGLObject* shape;
+	
 	GameObject(const std::string name);
 	~GameObject();
 
@@ -42,7 +41,7 @@ public:
 	// Initialize components in componentList
 	void Initialize();
 
-	//virtual void Update() = 0;
+	//void Update();
 	//virtual void Render() = 0;
 
 	// For future event/message system

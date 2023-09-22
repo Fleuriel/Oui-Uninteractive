@@ -21,12 +21,12 @@
 *************************************************************************/
 GameObject::GameObject(const std::string name) : gameObjectID{} {
 	gameObjectName = name;
-	shape = new OpenGLObject();
+
 
 }
 
 GameObject::~GameObject() {
-	delete shape;
+	
 }
 
 /**************************************************************************
