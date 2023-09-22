@@ -83,8 +83,7 @@ void ObjectFactory::BuildObjectFromFile(const std::string& filePath) {
 		// For each object in Objects array (in JSON file)
 		for (auto& obj : objDoc["Objects"].GetArray()) {
 			// Create GameObject
-			GameObject* gameObject{new GameObject()};
-			gameObject->gameObjectName = obj["Name"].GetString();;
+			GameObject* gameObject{new GameObject(obj["Name"].GetString())};
 
 			// Get each component in object
 			const rapidjson::Value& components{obj["Components"]};
@@ -128,10 +127,11 @@ void ObjectFactory::BuildObjectFromFile(const std::string& filePath) {
 
 /**************************************************************************
 * @brief Create a game object during run-time
+* @param name - name of GameObject
 * @return GameObject*
 *************************************************************************/
-GameObject* ObjectFactory::BuildObjectRunTime() {
-	GameObject* objectRunTime{new GameObject()};
+GameObject* ObjectFactory::BuildObjectRunTime(const std::string name) {
+	GameObject* objectRunTime{new GameObject(name)};
 	AssignObjectID(objectRunTime);
 	return objectRunTime;
 }
@@ -162,7 +162,7 @@ void ObjectFactory::Update(float dt) {
 bool ObjectFactory::CloneObject(size_t gameObjectID) {
 	if (gameObjectIDMap.find(gameObjectID) != gameObjectIDMap.end()) {
 		GameObject* original = (gameObjectIDMap.find(gameObjectID)->second);
-		GameObject* clone = BuildObjectRunTime();
+		GameObject* clone = BuildObjectRunTime(original->gameObjectName);
 
 		for (int i = 0; i < original->componentList.size(); i++) {
 			AddComponent(original->componentList[i]->componentType, clone);

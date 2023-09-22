@@ -17,10 +17,16 @@
 }*/
 
 /**************************************************************************
-* @brief Initialize game object
+* @brief Initializer
+*************************************************************************/
+GameObject::GameObject(const std::string name) : gameObjectID{} {
+	gameObjectName = name;
+}
+
+/**************************************************************************
+* @brief Initialize components in componentList
 *************************************************************************/
 void GameObject::Initialize() {
-	// Initialize each component in componentList
 	for (size_t i{}; i < componentList.size(); ++i) {
 		componentList[i]->base = this;
 		componentList[i]->Initialize();

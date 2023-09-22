@@ -32,7 +32,7 @@ public:
 	// Set ObjectFactory as friend class to access gameObjectID
 	friend class ObjectFactory;
 
-	GameObject() : gameObjectID{} {}
+	GameObject(const std::string name);
 	~GameObject() {}
 
 	// Game object factory stuff here
