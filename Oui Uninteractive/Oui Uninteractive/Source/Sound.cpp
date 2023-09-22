@@ -85,7 +85,14 @@ void SoundManager::PlaySounds() {
    ============================================ */
 SoundManager::~SoundManager() {
 	if (system) {
-		//result = 
+		// Free individual BGM sounds
+		for (const auto& i : bgmSounds) {
+			i->release();
+		}
+		// Free individual SFX sounds
+		for (const auto& i : sfxSounds) {
+			i->release();
+		}
 		system->close();
 		system->release();
 		system = nullptr;
