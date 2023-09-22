@@ -185,8 +185,6 @@ void OpenGLApplication::OpenGLInit()
 	objectFactory->GetGameObjectByID(0)->Initialize();
 
 	objectFactory->CloneObject(0);
-	//init object from file
-	//objectFactory->BuildObjectFromFile("test.json");
 
 	/*---------------------------------------------------------------------------*/
 	// TESTING SERIALIZATION
@@ -267,9 +265,17 @@ void OpenGLApplication::OpenGLUpdate()
 			
 
 			
-			newObject.InitObjects();
+			newObject.InitObjects(0,0, 150,180);
 			std::cout << newObject.position.x << newObject.position.y << '\n';
 
+			objects.emplace_back(newObject);
+		}
+		if (keyStates[GLFW_KEY_M] == 1)
+		{
+			OpenGLObject newObject;
+
+
+			newObject.InitObjects(0, 100, 180, 180);
 			objects.emplace_back(newObject);
 		}
 

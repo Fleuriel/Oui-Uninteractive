@@ -10,34 +10,7 @@
 #include <iostream>
 #include "JsonSerializer.h"
 
-void JsonSerializer::Init()
-{
-	// Define path
-	/*const char* filePath = "../Editor/objekt.json";
-
-	// Create rapidjson doc object
-	rapidjson::Document objDoc;
-	// Read data from file
-	if (ReadJSONFile(filePath, objDoc)) { // Printing out to console to see
-		tempObjList.name = objDoc["name"].GetString();
-		std::cout << objDoc["name"].GetString() << std::endl;
-		tempObjList.size = objDoc["size"].GetInt();
-		std::cout << objDoc["size"].GetInt() << std::endl;
-		tempObjList.colour = objDoc["colour"].GetString();
-		std::cout << objDoc["colour"].GetString() << std::endl;
-		tempObjList.smell = objDoc["smell"].GetFloat();
-		std::cout << objDoc["smell"].GetFloat() << std::endl;
-		tempObjList.alive = objDoc["alive"].GetBool();
-		std::cout << objDoc["alive"].GetBool() << std::endl;
-	}
-	// Simulate size change
-	int finalSize = tempObjList.size *= 2;
-	objDoc["size"] = finalSize;
-
-	if (WriteJSONFile(filePath, objDoc)) {
-		std::cout << "If you open the file again and see the size double then Yay everything works";
-	}*/
-}
+void JsonSerializer::Init() {}
 
 void JsonSerializer::InitObjects(const std::string& filePath) {
 	// Create rapidjson doc object
@@ -49,7 +22,12 @@ void JsonSerializer::InitObjects(const std::string& filePath) {
 	}*/
 }
 
-// Read JSON file. Returns true if successful.
+/**************************************************************************
+* @brief Read JSON file
+* @param filePath - directory of JSON file
+* @param docRef - reference to rapidjson document
+* @return bool - true if successful
+*************************************************************************/
 bool JsonSerializer::ReadJSONFile(const std::string& filePath, rapidjson::Document& docRef)
 {
 	// Open file
@@ -79,7 +57,13 @@ bool JsonSerializer::ReadJSONFile(const std::string& filePath, rapidjson::Docume
 	return true; // Read successful
 }
 
-// Write to JSON file. Returns true if successful.
+
+/**************************************************************************
+* @brief Write to JSON file
+* @param filePath - directory of JSON file
+* @param docRef - reference to rapidjson document
+* @return bool - true if successful
+*************************************************************************/
 bool JsonSerializer::WriteJSONFile(const std::string& filePath, rapidjson::Document& docRef)
 {
 	// Open file
