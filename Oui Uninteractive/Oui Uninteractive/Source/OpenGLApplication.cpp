@@ -189,16 +189,18 @@ void OpenGLApplication::OpenGLInit()
 
 	objectFactory->CloneObject(0);
 	GET_COMPONENT(objectFactory->GetGameObjectByID(1), Transform, ComponentType::Transform)->position.x = 450;
-	GET_COMPONENT(objectFactory->GetGameObjectByID(1), Transform, ComponentType::Transform)->position.y = 100;
+	GET_COMPONENT(objectFactory->GetGameObjectByID(1), Transform, ComponentType::Transform)->position.y = 50;
 
-
+	
 
 	/*---------------------------------------------------------------------------*/
 	// TESTING SERIALIZATION
+	
 	std::cout << "\n\nTesting Serialization\n---------------------\n\n";
 	objectFactory->BuildObjectFromFile("../scenes/testscene.JSON");
 
 	// Print out object data (TO DELETE)
+	/*
 	std::map<size_t, GameObject*> gameObjectMap(objectFactory->GetGameObjectIDMap());
 	for (auto i{ gameObjectMap.begin() }; i != gameObjectMap.end(); ++i) {
 		std::cout << "Game Object ID: " << i->first << '\n';
@@ -223,6 +225,7 @@ void OpenGLApplication::OpenGLInit()
 		std::cout << "----------------------------------" << '\n';
 	}
 	/*---------------------------------------------------------------------------*/
+	
 }
 
 
@@ -405,24 +408,25 @@ void OpenGLApplication::OpenGLUpdate()
 
 			}
 
-			if (keyStates[GLFW_KEY_D]) {
+			else if (keyStates[GLFW_KEY_D]) {
 				//std::cout << "WALK RIGHT\n";
 				Objects.position.x += 0.001;
 //				CurrentGameState = STATE_GRAPHICS_TEST;
 			}
 
-			if (keyStates[GLFW_KEY_S]) {
+			else if (keyStates[GLFW_KEY_S]) {
 				Objects.position.y -= 0.001;
+				physicsSys->setVelocity(Vec2(0.0f, -50.f));
 				//std::cout << "WALK DOWN\n";
 			}
 
-			if (keyStates[GLFW_KEY_W]) {
+			else	if (keyStates[GLFW_KEY_W]) {
 				Objects.position.y += 0.001;
-				physicsSys->setVelocity(Vec2(0.0f, 10.f), 0);
+				physicsSys->setVelocity(Vec2(0.0f, 50.f));
 				//std::cout << "WALK UP\n";
 			}
 			else {
-				physicsSys->setVelocity(Vec2(0.0f, 0.0f), 0);
+				physicsSys->setVelocity(Vec2(0.0f, 0.0f));
 			}
 
 			if (keyStates[GLFW_KEY_M]) {

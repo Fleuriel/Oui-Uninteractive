@@ -1,7 +1,7 @@
 #include "Transform.h"
 
 Transform::Transform() {
-	position = Vec2(-250,-100);
+	position = Vec2(-250,50);
 	rotation = 0;
 	scale = 100.f;
 	shape = new OpenGLObject();

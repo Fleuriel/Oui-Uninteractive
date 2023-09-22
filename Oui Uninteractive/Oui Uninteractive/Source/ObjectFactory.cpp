@@ -115,7 +115,11 @@ void ObjectFactory::BuildObjectFromFile(const std::string& filePath) {
 			AssignObjectID(gameObject);
 
 			// Initialize each object in map
-			for (auto i{ gameObjectIDMap.begin() }; i != gameObjectIDMap.end(); ++i) {
+			size_t count = 0;
+			for (auto i{ gameObjectIDMap.begin() }; i != gameObjectIDMap.end(); ++i, ++count) {
+				if (count < gameObjectCurrentID - 1) {
+					continue;
+				}
 				i->second->Initialize();
 			}
 		}		

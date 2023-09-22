@@ -11,7 +11,8 @@ public:
 
 	virtual void Initialize();
 	virtual void Serialize(const std::string& filePath, rapidjson::Value::ConstMemberIterator& itr);
-	Vec2 position;
+	//float rotationSpeed;
+	//Vec2 position;
 	Vec2 velocity;
 	Vec2 accumulatedForce;
 	Vec2 prevPosition;
