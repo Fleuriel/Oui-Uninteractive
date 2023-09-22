@@ -223,7 +223,8 @@ void OpenGLApplication::OpenGLUpdate()
 {
 		OpenGLSetBackgroundColor(0.5f, 0.5f, 0.5f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
-		
+		double xpos, ypos{};
+		glfwGetCursorPos(window, &xpos, &ypos);
 		//glUseProgram(Objects.ShaderProgram);
 		//glBindVertexArray(Objects.VAO);
 		//glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
@@ -279,11 +280,23 @@ void OpenGLApplication::OpenGLUpdate()
 			objects.emplace_back(newObject);
 		}
 
-		double xpos, ypos{};
-		glfwGetCursorPos(window, &xpos, &ypos);
 
-		std::cout << "xpos : " << xpos << "\nypos : " << ypos << std::endl;
+
+
+
+//		std::cout << "xpos : " << xpos << "\nypos : " << ypos << std::endl;
 		
+
+		if (mouseButtonStates[GLFW_MOUSE_BUTTON_LEFT] == 1)
+		{
+			OpenGLObject newObject;
+
+
+			newObject.InitObjects(xpos, ypos, 180, 180);
+			objects.emplace_back(newObject);
+
+		}
+
 //		glDrawElements(GL_TRIANGLES, 9, GL_UNSIGNED_INT, 0);
 
 
