@@ -261,14 +261,17 @@ void OpenGLApplication::OpenGLUpdate()
 
 		if (keyStates[GLFW_KEY_SPACE] == 1)
 		{
+			/*
 			OpenGLObject newObject;
-			
-
-			
 			newObject.InitObjects(0,0, 150,180);
 			std::cout << newObject.position.x << newObject.position.y << '\n';
 
-			objects.emplace_back(newObject);
+			objects.emplace_back(newObject);*/
+			OpenGLObject* object = objectFactory->GetGameObjectByID(0)->GetComponentType<Transform>(ComponentType::Transform)->graphics;
+			if (object != nullptr) {
+				objects.emplace_back(*object);
+			}
+			
 		}
 		if (keyStates[GLFW_KEY_M] == 1)
 		{

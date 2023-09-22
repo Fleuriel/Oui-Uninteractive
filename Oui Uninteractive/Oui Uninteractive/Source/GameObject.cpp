@@ -25,6 +25,7 @@ void GameObject::Initialize() {
 		componentList[i]->base = this;
 		componentList[i]->Initialize();
 	}
+	
 }
 
 /**************************************************************************

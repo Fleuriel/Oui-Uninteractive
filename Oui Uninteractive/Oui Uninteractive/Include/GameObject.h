@@ -28,6 +28,7 @@ private:
 	// Vector of components
 	std::vector<IComponent*> componentList;	// may use typedef to represent vector in the future
 
+
 public:
 	// Set ObjectFactory as friend class to access gameObjectID
 	friend class ObjectFactory;

@@ -3,7 +3,13 @@
 Transform::Transform() {
 	position = Vec2(0, 0);
 	rotation = 0;
-	scale = 0;
+	scale = 200;
+
+	graphics = new OpenGLObject();
+	graphics->InitObjects(position.x, position.y, scale, scale);
+}
+Transform::~Transform() {
+	delete graphics;
 }
 
 void Transform::Serialize(const std::string& filePath, rapidjson::Value::ConstMemberIterator& itr) {
