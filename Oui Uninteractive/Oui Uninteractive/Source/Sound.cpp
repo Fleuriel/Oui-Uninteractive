@@ -79,22 +79,15 @@ void SoundManager::PlaySounds() {
 
 /* ============================================
 	@brief
-	   This function handles shutdown of the sound system
+	   This destructor handles shutdown of the sound system
 	@return
 		No return
    ============================================ */
-//void SoundManager::Shutdown() {
-//	if (system) {
-//		system->release();
-//		system->close();
-//		system = nullptr;
-//	}
-//}
-
 SoundManager::~SoundManager() {
 	if (system) {
-		system->release();
+		//result = 
 		system->close();
+		system->release();
 		system = nullptr;
 	}
 }
