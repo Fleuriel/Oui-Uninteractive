@@ -9,7 +9,7 @@ PhysicsBody::PhysicsBody() {
 	acceleration = Vec2(0, 0);
 	isStatic = false;
 	txPtr = nullptr;
-	rotationSpeed = 10.f;
+	rotationSpeed = 0;
 }
 
 /**************************************************************************

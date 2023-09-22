@@ -403,6 +403,7 @@ void OpenGLApplication::OpenGLUpdate()
 
 			if (keyStates[GLFW_KEY_A]) {
 				//std::cout << "WALK LEFT\n";
+				physicsSys->setRotationSpeed(20, 0);
 				Objects.position.x -= 0.001;
 //				CurrentGameState = STATE_LEVEL_TEST;
 
@@ -410,11 +411,15 @@ void OpenGLApplication::OpenGLUpdate()
 
 			else if (keyStates[GLFW_KEY_D]) {
 				//std::cout << "WALK RIGHT\n";
+				physicsSys->setRotationSpeed(-20, 0);
 				Objects.position.x += 0.001;
 //				CurrentGameState = STATE_GRAPHICS_TEST;
 			}
+			else{
+			//	physicsSys->setRotationSpeed(0);
+			}
 
-			else if (keyStates[GLFW_KEY_S]) {
+			if (keyStates[GLFW_KEY_S]) {
 				Objects.position.y -= 0.001;
 				physicsSys->setVelocity(Vec2(0.0f, -50.f));
 				//std::cout << "WALK DOWN\n";

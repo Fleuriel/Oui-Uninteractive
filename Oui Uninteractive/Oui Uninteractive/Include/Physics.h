@@ -12,6 +12,8 @@ public:
 	void setPosition(Vec2 pos, size_t ID);
 	void setVelocity(Vec2 vel);
 	void setVelocity(Vec2 vel, size_t ID);
+	void setRotationSpeed(float rotSpeed);
+	void setRotationSpeed(float rotSpeed, size_t ID);
 
 	Physics();
 

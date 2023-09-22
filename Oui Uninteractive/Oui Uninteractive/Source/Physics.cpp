@@ -44,8 +44,8 @@ void Physics::Update(float dt) {
 		Vec2 test = Vec2(body->txPtr->shape->position.x, body->txPtr->shape->position.y);
 		body->velocity = body->velocity + body->acceleration * dt;
 
-		//body->txPtr->rotation = body->txPtr->rotation + body->rotationSpeed * dt;
-		//body->txPtr->shape->angleDisplacment = body->txPtr->rotation;
+		body->txPtr->rotation = body->txPtr->rotation + body->rotationSpeed * dt;
+		body->txPtr->shape->angleDisplacment = body->txPtr->rotation;
 		 //= body->position;
 		
 		body->txPtr->shape->position = glm::vec2(body->txPtr->position.x, body->txPtr->position.y);
@@ -105,5 +105,15 @@ void Physics::setVelocity(Vec2 newVelocity) {
 void Physics::setVelocity(Vec2 velocity, size_t ID) {
 	if (ID < bodyList.size()) {
 		bodyList.at(ID)->velocity = velocity;
+	}
+}
+void Physics::setRotationSpeed(float rotSpeed) {
+	for (PhysicsBody* body : bodyList) {
+		body->rotationSpeed = rotSpeed;
+	}
+}
+void Physics::setRotationSpeed(float rotSpeed, size_t ID) {
+	if (ID < bodyList.size()) {
+		bodyList.at(ID)->rotationSpeed = rotSpeed;
 	}
 }
