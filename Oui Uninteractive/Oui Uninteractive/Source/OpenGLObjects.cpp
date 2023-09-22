@@ -887,7 +887,8 @@ void OpenGLObject::init_shdrpgms_cont(VectorPairStrStr const& vpss) {
 //}
 
 
-void OpenGLObject::InitObjects(int userInput_x, int userInput_y, float userInput_sizeX, float userInput_sizeY)
+void OpenGLObject::InitObjects(int userInput_x, int userInput_y, float userInput_sizeX,
+								float userInput_sizeY, float userInput_rotX, float userInput_rotY)
 {
 
 	OpenGLObject::mdl_ref = 0;
@@ -898,10 +899,12 @@ void OpenGLObject::InitObjects(int userInput_x, int userInput_y, float userInput
 	OpenGLObject::position.y = userInput_y;
 	using glm::radians;
 
-
-
+	
 	scaleX = userInput_sizeX;
 	scaleY = userInput_sizeY;
+
+	orientation.x = userInput_rotX;
+	orientation.y = userInput_rotY;
 
 	glm::mat3 Translate = glm::mat3
 	{

@@ -70,7 +70,7 @@ public:
 
 	void Draw() const;
 
-	void InitObjects(int, int, float, float);
+	void InitObjects(int, int, float, float, float, float);
 	static void Cleanup();
 //	static void Setup_Quad_VAO();
 	static void init_scenes(std::string);

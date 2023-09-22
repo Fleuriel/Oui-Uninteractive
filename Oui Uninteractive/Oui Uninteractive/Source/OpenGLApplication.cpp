@@ -266,7 +266,7 @@ void OpenGLApplication::OpenGLUpdate()
 			
 
 			
-			newObject.InitObjects(0,0, 150,180);
+			newObject.InitObjects(0,0, 150,180,45,45);
 			std::cout << newObject.position.x << newObject.position.y << '\n';
 
 			objects.emplace_back(newObject);
@@ -276,7 +276,7 @@ void OpenGLApplication::OpenGLUpdate()
 			OpenGLObject newObject;
 
 
-			newObject.InitObjects(0, 100, 180, 180);
+			newObject.InitObjects(0, 100, 180, 180,45,45);
 			objects.emplace_back(newObject);
 		}
 
@@ -292,7 +292,7 @@ void OpenGLApplication::OpenGLUpdate()
 			OpenGLObject newObject;
 
 
-			newObject.InitObjects(xpos, ypos, 180, 180);
+			newObject.InitObjects(xpos, ypos, 180, 180, 45,45);
 			objects.emplace_back(newObject);
 
 		}
