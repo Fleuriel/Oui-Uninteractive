@@ -273,6 +273,11 @@ void OpenGLApplication::OpenGLUpdate()
 			objects.emplace_back(newObject);
 		}
 
+		double xpos, ypos{};
+		glfwGetCursorPos(window, &xpos, &ypos);
+
+		std::cout << "xpos : " << xpos << "\nypos : " << ypos << std::endl;
+		
 //		glDrawElements(GL_TRIANGLES, 9, GL_UNSIGNED_INT, 0);
 
 
