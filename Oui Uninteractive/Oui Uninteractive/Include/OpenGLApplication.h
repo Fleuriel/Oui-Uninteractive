@@ -18,10 +18,9 @@
 #include <OpenGLObjects.h>
 #include <utility>
 
-
 #define ROTATION_CLOCKWISE 1
 #define ROTATION_ANTI_CLOCKWISE 0
-
+#define GET_COMPONENT(GameObject, Component, ComponentType) (GameObject->GetComponentType<Component>(ComponentType))
 
 extern GLFWwindow* window;
 extern OpenGLObject Objects;

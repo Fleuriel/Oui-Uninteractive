@@ -41,10 +41,13 @@ public:
 	void BuildObjectFromFile(const std::string& filePath);
 
 	// Create a new game object during run-time
-	GameObject* BuildObjectRunTime(const std::string name);
+	GameObject* BuildObjectRunTime(const std::string& name);
 
 	// Clone a game object
 	bool CloneObject(size_t gameObjectID);
+
+	// Save existing game object data to JSON file
+	void SaveObjectsToFile(const std::string& filePath);
 
 	// Update the object factory
 	virtual void Update(float dt);
@@ -58,8 +61,11 @@ public:
 	// Destroy all game objects
 	void DestroyAllObjects();
 
-	// Get game object with a specified ID
+	// Get a game object by ID
 	GameObject* GetGameObjectByID(size_t gameObjectID);
+
+	// Get a game object by name
+	GameObject* GetGameObjectByName(const std::string& name);
 
 	// Get all game objects
 	std::map<size_t, GameObject*> GetGameObjectIDMap();

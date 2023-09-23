@@ -12,41 +12,37 @@
 #include <OpenGLApplication.h>
 #include <Input.h>
 #include <RandomUtilities.h>
-#include <OpenGLObjects.h>
 #include <glm/gtc/matrix_transform.hpp>
 #include <GameStateManager.h>
-#include <Editor.h>
+#include <Editor.h>	
 #include <Mapping.h>
-#include "ObjectFactory.h"
-#include "Physics.h"
+#include <ObjectFactory.h>
+#include <Physics.h>
+#include <JsonSerializer.h>
 #include <Global.h>
 #include <Sound.h>
 #include <ParticleSystem.h>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
-// Macro for getting a component
-#define GET_COMPONENT(GameObject, Component, ComponentType) (GameObject->GetComponentType<Component>(ComponentType))
-
-// Pointer to the window
+ // Pointer to the window
 GLFWwindow* window;
+
 // To store the window dimensions for duration of program
 std::pair<unsigned short, unsigned short> windowSize;
 
-double inx, iny, inz;
+// ImGui and Editor instance
+UsingImGui myImGui;
+Editor myEditor;
 
-UsingImGui myImGui; // Creating imGui instance
-Editor myEditor; // Creating editor instance
+// Serializer instance
+JsonSerializer serializer;
 
 GLfloat squareX = 0.0f, squareY = 0.0f;
 
 OpenGLObject Objects;
-
-
 std::list<OpenGLObject> objects; // singleton
 
-
-bool en = true;
 bool toggleMode = false;
 
 // For Input
@@ -54,7 +50,6 @@ extern float mouse_scroll_total_Y_offset;
 extern int lastkeyedcommand;
 
 std::string title = "Hello";
-
 
 static bool glewInitialized = false;
 static bool imguiInitialized = false;
@@ -207,6 +202,12 @@ void OpenGLApplication::OpenGLInit()
 	std::cout << "\nDe-serializing objects from JSON file..." << std::endl;
 	objectFactory->BuildObjectFromFile("../scenes/testscene.JSON");
 	std::cout << "De-serializing objects from JSON file... completed." << std::endl;
+
+	// Modifying value of Object2
+	std::cout << "\nUpdating Object2..." << std::endl;
+	GET_COMPONENT(objectFactory->GetGameObjectByName("Object2"), PhysicsBody, ComponentType::PhysicsBody)->velocity.y = 20.5f;
+	objectFactory->SaveObjectsToFile("../scenes/testscene.JSON");
+	std::cout << "Updating Object2... completed." << std::endl;
 }
 
 

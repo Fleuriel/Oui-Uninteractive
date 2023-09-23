@@ -126,7 +126,7 @@ void ObjectFactory::BuildObjectFromFile(const std::string& filePath) {
 * @param name - name of GameObject
 * @return GameObject*
 *************************************************************************/
-GameObject* ObjectFactory::BuildObjectRunTime(const std::string name) {
+GameObject* ObjectFactory::BuildObjectRunTime(const std::string& name) {
 	GameObject* objectRunTime{new GameObject(name)};
 	AssignObjectID(objectRunTime);
 	return objectRunTime;
@@ -173,6 +173,21 @@ bool ObjectFactory::CloneObject(size_t gameObjectID) {
 }
 
 /**************************************************************************
+* @brief Save existing game object data to JSON file
+* @param filePath - directory of JSON file
+* @return void
+*************************************************************************/
+void ObjectFactory::SaveObjectsToFile(const std::string& filePath) {
+	rapidjson::Document objDoc;
+	JsonSerializer serializer;
+	serializer.ReadJSONFile(filePath, objDoc);
+
+	if (serializer.WriteJSONFile(filePath, objDoc)) {
+		std::cout << "Successfully saved objects to file." << std::endl;
+	}
+}
+
+/**************************************************************************
 * @brief Assign an ID to a game object and add it to the map of game objects
 * @param gameObject - pointer to game object
 *************************************************************************/
@@ -212,10 +227,28 @@ void ObjectFactory::DestroyAllObjects() {
 * @param gameObjectID - ID of game object
 * @return GameObject*
 *************************************************************************/
-GameObject* ObjectFactory::GetGameObjectByID(size_t gameObjectID)
-{
+GameObject* ObjectFactory::GetGameObjectByID(size_t gameObjectID) {
 	if (gameObjectIDMap.find(gameObjectID) != gameObjectIDMap.end())
 		return gameObjectIDMap[gameObjectID];
+
+	return nullptr;
+}
+
+/**************************************************************************
+* @brief Get a game object by name
+* @param name - name of GameObject
+* @return GameObject*
+*************************************************************************/
+GameObject* ObjectFactory::GetGameObjectByName(const std::string& name) {
+	std::map<size_t, GameObject*>::iterator it{gameObjectIDMap.begin()};
+
+	while (it != gameObjectIDMap.end()) {
+		if (it->second->gameObjectName == name) {
+			return it->second;
+		}
+
+		++it;
+	}
 
 	return nullptr;
 }
@@ -243,7 +276,6 @@ void ObjectFactory::AddComponentFactory(componentType componentName, ComponentFa
 * @param gameObject - pointer to game object
 * @return bool
 *************************************************************************/
-// 
 bool ObjectFactory::AddComponent(componentType componentName, GameObject* gameObject) {
 	// Get component factory
 	std::map<componentType, ComponentFactoryBase*>::iterator it = componentFactoryMap.find(componentName);
