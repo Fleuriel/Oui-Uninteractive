@@ -122,3 +122,23 @@ void Physics::setDirection(Vec2 dir, size_t ID) {
 		Vector2DNormalize(bodyList.at(ID)->direction, dir);
 	}
 }
+void Physics::MoveBackwards(size_t ID) {
+	if (ID < bodyList.size()) {
+		bodyList.at(ID)->velocity = bodyList.at(ID)->speed * Vec2(-bodyList.at(ID)->direction.x, -bodyList.at(ID)->direction.y);
+	}
+}
+void Physics::MoveForward(size_t ID) {
+	if (ID < bodyList.size()) {
+		bodyList.at(ID)->velocity = bodyList.at(ID)->speed * Vec2(bodyList.at(ID)->direction.x, bodyList.at(ID)->direction.y);
+	}
+}
+void Physics::MoveLeft(size_t ID) {
+	if (ID < bodyList.size()) {
+		bodyList.at(ID)->velocity = bodyList.at(ID)->speed * Vec2(-bodyList.at(ID)->direction.x, bodyList.at(ID)->direction.y);
+	}
+}
+void Physics::MoveRight(size_t ID) {
+	if (ID < bodyList.size()) {
+		bodyList.at(ID)->velocity = bodyList.at(ID)->speed * Vec2(bodyList.at(ID)->direction.x, bodyList.at(ID)->direction.y);
+	}
+}

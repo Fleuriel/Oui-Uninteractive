@@ -42,7 +42,7 @@ void PhysicsBody::Serialize(const std::string& filePath, rapidjson::Value::Const
 }
 Vec2 PhysicsBody::AngleToVec(float angle) {
 	//angle should be in radians
-	Vec2 dir = Vec2(sinf(angle), cosf(angle));
+	Vec2 dir = Vec2(-sinf(angle), cosf(angle));
 	return dir;
 
 }

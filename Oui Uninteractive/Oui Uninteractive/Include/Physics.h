@@ -19,7 +19,10 @@ public:
 
 	virtual void Update(float dt);
 	void Initialize();
-
+	void MoveBackwards(size_t ID);
+	void MoveForward(size_t ID);
+	void MoveLeft(size_t ID);
+	void MoveRight(size_t ID);
 	//insert linked list of all physics body components
 	std::vector<PhysicsBody*> bodyList;
 
