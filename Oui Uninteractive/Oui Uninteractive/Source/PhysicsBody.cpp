@@ -10,6 +10,7 @@ PhysicsBody::PhysicsBody() {
 	isStatic = false;
 	txPtr = nullptr;
 	rotationSpeed = 0;
+	direction = Vec2(0, 0);
 }
 
 /**************************************************************************

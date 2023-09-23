@@ -319,14 +319,6 @@ void OpenGLApplication::OpenGLUpdate()
 		////glVertex2f(5.0f, 5.0f);
 		//
 		//glEnd();
-		for (std::pair<size_t, GameObject*> gObj : objectFactory->GetGameObjectIDMap()) {
-			GET_COMPONENT(gObj.second, Transform, ComponentType::Transform)->shape->Draw();
-			
-		}
-		for (auto const& x : objects)
-		{
-			x.Draw();
-		}
 
 		
 
@@ -496,11 +488,21 @@ void OpenGLApplication::OpenGLUpdate()
 		myImGui.Draw();
 
 		// Swap the front and back buffers
-		for (std::pair<size_t, GameObject*> gObj : objectFactory->GetGameObjectIDMap()) {
-			GET_COMPONENT(gObj.second, Transform, ComponentType::Transform)->shape->Update(10,10,100,10,true);
-		}
+		/*
+		*/
 		for (OpenGLObject& obj : objects)
 			obj.Update(10,10, 500, 10, true);
+			
+		for (std::pair<size_t, GameObject*> gObj : objectFactory->GetGameObjectIDMap()) {
+			GET_COMPONENT(gObj.second, Transform, ComponentType::Transform)->shape->Draw();
+
+		}
+		
+		for (auto const& x : objects)
+		{
+			x.Draw();
+		}
+
 
 }
 

@@ -40,17 +40,13 @@ void Physics::Update(float dt) {
 		if (body->isStatic) {
 			continue;
 		}
+		//calculate physics
 		body->txPtr->position = body->txPtr->position + body->velocity * dt;
-		Vec2 test = Vec2(body->txPtr->shape->position.x, body->txPtr->shape->position.y);
 		body->velocity = body->velocity + body->acceleration * dt;
-
 		body->txPtr->rotation = body->txPtr->rotation + body->rotationSpeed * dt;
-		body->txPtr->shape->angleDisplacment = body->txPtr->rotation;
-		 //= body->position;
-		
-		body->txPtr->shape->position = glm::vec2(body->txPtr->position.x, body->txPtr->position.y);
 
-		//std::cout << "X: " << body->position.x << "Y: " << body->position.y << "\n";
+		//apply to object
+		body->txPtr->shape->Update(body->txPtr->position.x, body->txPtr->position.y, body->txPtr->scale, body->txPtr->rotation, true);	
 	}
 
 }
