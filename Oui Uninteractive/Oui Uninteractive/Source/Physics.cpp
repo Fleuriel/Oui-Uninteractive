@@ -59,7 +59,7 @@ void Physics::Update(float dt) {
 * @param Vec 2 force - force to be added to object
 * @return void
 *************************************************************************/
-void Physics::addForce(Vec2 force) {
+void Physics::AddForce(Vec2 force) {
 	for (PhysicsBody* body : bodyList) {
 		body->accumulatedForce += force;
 	}
@@ -69,7 +69,7 @@ void Physics::addForce(Vec2 force) {
 * @param Vec 2 pos - the position to be set to
 * @return void
 *************************************************************************/
-void Physics::setPosition(Vec2 pos) {
+void Physics::SetPosition(Vec2 pos) {
 	for (PhysicsBody* body : bodyList) {
 		body->txPtr->position = pos;
 	}
@@ -80,7 +80,7 @@ void Physics::setPosition(Vec2 pos) {
 * @param size_t ID - ID of object to set position
 * @return void
 *************************************************************************/
-void Physics::setPosition(Vec2 pos, size_t ID) {
+void Physics::SetPosition(Vec2 pos, size_t ID) {
 	
 	if (ID < bodyList.size()) {
 		bodyList.at(ID)->txPtr->position = pos;	
@@ -91,7 +91,7 @@ void Physics::setPosition(Vec2 pos, size_t ID) {
 * @param Vec 2 newVelocity - the velocity to be set to
 * @return void
 *************************************************************************/
-void Physics::setVelocity(Vec2 newVelocity) {
+void Physics::SetVelocity(Vec2 newVelocity) {
 	for (PhysicsBody* body : bodyList) {
 		body->velocity = newVelocity;
 	}
@@ -102,22 +102,22 @@ void Physics::setVelocity(Vec2 newVelocity) {
 * @param size_t ID - ID of object to set position
 * @return void
 *************************************************************************/
-void Physics::setVelocity(Vec2 velocity, size_t ID) {
+void Physics::SetVelocity(Vec2 velocity, size_t ID) {
 	if (ID < bodyList.size()) {
 		bodyList.at(ID)->velocity = velocity;
 	}
 }
-void Physics::setRotationSpeed(float rotSpeed) {
+void Physics::SetRotationSpeed(float rotSpeed) {
 	for (PhysicsBody* body : bodyList) {
 		body->rotationSpeed = rotSpeed;
 	}
 }
-void Physics::setRotationSpeed(float rotSpeed, size_t ID) {
+void Physics::SetRotationSpeed(float rotSpeed, size_t ID) {
 	if (ID < bodyList.size()) {
 		bodyList.at(ID)->rotationSpeed = rotSpeed;
 	}
 }
-void Physics::setDirection(Vec2 dir, size_t ID) {
+void Physics::SetDirection(Vec2 dir, size_t ID) {
 	if (ID < bodyList.size()) {
 		Vector2DNormalize(bodyList.at(ID)->direction, dir);
 	}

@@ -7,14 +7,14 @@
 
 class Physics : public ISystem{
 public:
-	void addForce(Vec2 force);
-	void setPosition(Vec2 pos);
-	void setPosition(Vec2 pos, size_t ID);
-	void setVelocity(Vec2 vel);
-	void setVelocity(Vec2 vel, size_t ID);
-	void setRotationSpeed(float rotSpeed);
-	void setRotationSpeed(float rotSpeed, size_t ID);
-	void setDirection(Vec2 dir, size_t ID);
+	void AddForce(Vec2 force);
+	void SetPosition(Vec2 pos);
+	void SetPosition(Vec2 pos, size_t ID);
+	void SetVelocity(Vec2 vel);
+	void SetVelocity(Vec2 vel, size_t ID);
+	void SetRotationSpeed(float rotSpeed);
+	void SetRotationSpeed(float rotSpeed, size_t ID);
+	void SetDirection(Vec2 dir, size_t ID);
 	Physics();
 
 	virtual void Update(float dt);
