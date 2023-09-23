@@ -39,6 +39,7 @@ void PhysicsBody::Serialize(const std::string& filePath, rapidjson::Value::Const
 	velocity.x = components["VelocityX"].GetFloat();
 	velocity.y = components["VelocityY"].GetFloat();
 	rotationSpeed = components["RotationSpeed"].GetFloat();
+	speed = components["Speed"].GetFloat();
 }
 Vec2 PhysicsBody::AngleToVec(float angle) {
 	//angle should be in radians
