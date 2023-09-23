@@ -11,13 +11,16 @@ public:
 
 	virtual void Initialize();
 	virtual void Serialize(const std::string& filePath, rapidjson::Value::ConstMemberIterator& itr);
+	Vec2 AngleToVec(float angle);
 	float rotationSpeed;
+	float speed;
 
 	//Vec2 position;
 	Vec2 velocity;
 	Vec2 accumulatedForce;
 	Vec2 prevPosition;
 	Vec2 acceleration;
+	Vec2 direction;
 
 	Transform* txPtr; //Ptr to transform component for each physics body
 

@@ -1,6 +1,7 @@
 #include "Physics.h"
 #include "ComponentFactory.h"
 #include "ObjectFactory.h"
+#include "Vector2D.h"
 #include <iostream>
 //initialize global pointer
 Physics* physicsSys = nullptr;
@@ -41,7 +42,10 @@ void Physics::Update(float dt) {
 			continue;
 		}
 		//calculate physics
+		Vector2DNormalize(body->direction, body->direction + body->AngleToVec(body->txPtr->rotation * (M_PI / 180.f)));
+		
 		body->txPtr->position = body->txPtr->position + body->velocity * dt;
+
 		body->velocity = body->velocity + body->acceleration * dt;
 		body->txPtr->rotation = body->txPtr->rotation + body->rotationSpeed * dt;
 
@@ -111,5 +115,10 @@ void Physics::setRotationSpeed(float rotSpeed) {
 void Physics::setRotationSpeed(float rotSpeed, size_t ID) {
 	if (ID < bodyList.size()) {
 		bodyList.at(ID)->rotationSpeed = rotSpeed;
+	}
+}
+void Physics::setDirection(Vec2 dir, size_t ID) {
+	if (ID < bodyList.size()) {
+		Vector2DNormalize(bodyList.at(ID)->direction, dir);
 	}
 }

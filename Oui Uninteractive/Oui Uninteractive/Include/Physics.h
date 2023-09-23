@@ -14,7 +14,7 @@ public:
 	void setVelocity(Vec2 vel, size_t ID);
 	void setRotationSpeed(float rotSpeed);
 	void setRotationSpeed(float rotSpeed, size_t ID);
-
+	void setDirection(Vec2 dir, size_t ID);
 	Physics();
 
 	virtual void Update(float dt);

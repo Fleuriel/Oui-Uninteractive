@@ -10,6 +10,8 @@ PhysicsBody::PhysicsBody() {
 	isStatic = false;
 	txPtr = nullptr;
 	rotationSpeed = 0;
+	direction = Vec2(0, 0);
+	speed = 50;
 }
 
 /**************************************************************************
@@ -37,4 +39,10 @@ void PhysicsBody::Serialize(const std::string& filePath, rapidjson::Value::Const
 	velocity.x = components["VelocityX"].GetFloat();
 	velocity.y = components["VelocityY"].GetFloat();
 	rotationSpeed = components["RotationSpeed"].GetFloat();
+}
+Vec2 PhysicsBody::AngleToVec(float angle) {
+	//angle should be in radians
+	Vec2 dir = Vec2(sinf(angle), cosf(angle));
+	return dir;
+
 }

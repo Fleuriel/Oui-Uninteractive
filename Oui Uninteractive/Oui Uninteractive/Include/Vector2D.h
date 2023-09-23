@@ -13,7 +13,7 @@
 // Supress warning: nonstandard extension used : nameless struct/union
 #pragma warning( disable : 4201 )
 #endif
-
+# define M_PI           3.14159265358979323846
 /**************************************************************************/
 /*!
 
