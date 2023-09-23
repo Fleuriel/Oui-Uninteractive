@@ -3,6 +3,7 @@
 #include "Transform.h"
 #include "Vector2D.h"
 #include "GameObject.h"
+#include "Collision.h"
 
 class PhysicsBody : public IComponent {
 public:
@@ -25,4 +26,12 @@ public:
 	Transform* txPtr; //Ptr to transform component for each physics body
 
 	bool isStatic; // flag for engine to ignore objects that we won't move.
+};
+
+
+class PhysicsBody : public AABB {
+
+	//X and Y coordinates taken from Coords?
+	float min, max;
+	
 };
