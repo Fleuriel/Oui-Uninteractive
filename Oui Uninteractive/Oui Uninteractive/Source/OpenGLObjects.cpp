@@ -22,6 +22,7 @@
 #include <glm/gtc/type_ptr.hpp>
 
 #include <RandomUtilities.h>
+#include <GameStateManager.h>
 
 std::vector<glm::vec2> OpenGLObject::square;
 std::vector<glm::vec2> OpenGLObject::triangle;
@@ -45,7 +46,13 @@ int texture;
 
 GLuint OpenGLObject::textureID;								// id for texture object
 
-// set up initial state
+
+/**************************************************************************
+* @brief		Loads Meshes for models and/or other shader files to
+*				enable creation of GameObjects.
+* @param  none
+* @return void
+*************************************************************************/
 void OpenGLObject::Init()
 {
 #ifdef _DEBUG
@@ -53,7 +60,6 @@ void OpenGLObject::Init()
 
 #endif // _DEBUG
 
-	//init_scenes("../scenes/tutorial-4.scn");
 
 	Load_Files();
 //	Load_Meshes();
@@ -189,6 +195,12 @@ void OpenGLObject::Init()
 }
 
 
+/**************************************************************************************
+* @brief				Creates an OpenGLObject based on parameters set on this Box_Model
+*
+* @param color			Color <R,G,B>
+* @return OpenGLObject  
+***************************************************************************************/
 OpenGLObject::OpenGLModel OpenGLObject::Box_Model(glm::vec3 color)
 {
 	std::vector<glm::vec2> pos_vtx
@@ -284,12 +296,47 @@ OpenGLObject::OpenGLModel OpenGLObject::Box_Model(glm::vec3 color)
 }
 
 
-
-void OpenGLObject::Update(GLdouble delta_time)
+/**************************************************************************
+* @brief		Updates each OpenGLObject with Movement, Scale rotation.
+*				Option for rotation has been added.
+* 
+* @param float  Acceleration of x-Axis
+* @param float  Acceleration of y-Axis
+* @param float  Scale on both X and Y axes. (Might need to change)
+* @param float  Angle Rotation Speed
+* @param bool   Boolean for Rotation Enable or Disable
+* @return void
+*************************************************************************/
+void OpenGLObject::Update(float xAccel, float yAccel, float scale , float aSpeed , bool enRot )
 {
 	//std::cout << "Object Update\n";
 	// Compute the angular displacement in radians
-	angleDisplacment += (angleSpeed * delta_time);
+
+//	angleDisplacment = aDisp;
+	
+
+	// displacement speed.
+	angleSpeed = aSpeed;
+	
+	//Scale the model based on float variable.
+	scaleModel = glm::vec2(scale, scale);
+
+
+	// Increase the position based on the xSpeed of the user.
+	// i.e if the user acceleration is 0, then speed increase
+	// of xAccel is 0, and position would not change.
+	position += glm::vec2(xAccel * GetDT(), yAccel * GetDT());
+
+
+	if (enRot == true)
+	{
+		angleDisplacment += (angleSpeed * GetDT());
+	}
+	
+	if (angleDisplacment >= 360.0f || angleDisplacment <= -360.0f)
+		angleDisplacment = 0.0f;
+
+	
 
 // Compute the scale matrix
 	glm::mat3 Scale = glm::mat3(
@@ -327,32 +374,16 @@ void OpenGLObject::Update(GLdouble delta_time)
 }
 
 
+/**************************************************************************
+* @brief		Draws the OpenGLObject.
+*				
+* @param  none
+* @return void
+*************************************************************************/
 void OpenGLObject::Draw() const
 {
 
 
-
-
-	//shd_ref->second.Use();
-	//// Part 2: Bind object's VAO handle
-	//glBindVertexArray(mdl_ref->second.vaoid); // Bind object's VAO handle
-	//
-	//// Part 3: Copy object's 3x3 model-to-NDC matrix to vertex shader
-	//shd_ref->second.SetUniform("uColor", color);
-	//shd_ref->second.SetUniform("uModel_to_NDC", model_To_NDC_xform);
-	//
-	//
-	//// Part 4: Render using glDrawElements or glDrawArrays
-	//glDrawElements(
-	//	mdl_ref->second.primitive_type,
-	//	mdl_ref->second.draw_cnt,
-	//	GL_UNSIGNED_SHORT, NULL);
-	//
-	//
-	//// Part 5: Clean up
-	//glBindVertexArray(0); // Unbind the VAO
-	//
-	//shd_ref->second.UnUse();
 	shdrpgms[shd_ref].Use(); // Install the shader program
 
 
@@ -395,6 +426,8 @@ void OpenGLObject::Cleanup()
 	glDeleteBuffers(1, &VBO);
 	glDeleteProgram(ShaderProgram);
 }
+
+
 
 void OpenGLObject::OpenGLModel::init(std::string model_name)
 {
@@ -672,114 +705,7 @@ void OpenGLObject::Load_Meshes(std::string mesh_file) {
 	}
 
 	ifs.close();
-	
-//for (int i = 0; i < mesh_Directory.size(); i++)
-//{
-//	std::vector <GLushort> Indices_Vertex{};
-//	OpenGLObject::OpenGLModel Model;
-//	std::string Mesh_Name{};
-//	std::ifstream inputFileStream{ mesh_Directory[i], std::ios::in };			// Input file...
-//
-//	if (inputFileStream.fail())											// Check if file exist ...
-//	{
-//		std::cout << "Loading " << Mesh_Name << "failed. \n";
-//		return;
-//	}
-//
-//	inputFileStream.seekg(0, std::ios::beg);							// Initialize the file to the start ...
-//
-//	std::string line;													// Create container for line ...
-//
-//	while (!inputFileStream.eof())
-//	{
-//		getline(inputFileStream, line);									// Read the line it is on ...
-//
-//		std::istringstream line_sStream{ line };						// String Stream
-//
-//		char prefix;													// Create container for prefix [1]
-//
-//		line_sStream >> prefix;											// [1]
-//
-//		switch (prefix)
-//		{
-//		case 'n':														// [1] 
-//		{
-//			line_sStream >> Mesh_Name;									// Mesh name separated from prefix
-//			break;
-//		}
-//		case 'v':														// [2] v
-//		{
-//			glm::vec2 vert_Position{};									// [2] Vertex Position Contianer
-//
-//			line_sStream >> vert_Position.x;							// Assign values of Vertex Position into Container x
-//			line_sStream >> vert_Position.y;							// Assign values of Vertex Position into Container y
-//
-//			Model.Position_Vertex.push_back(vert_Position);				// Emplace back the vertex position into the position_vertex container
-//			break;
-//		}
-//		case 't':														// [2] t
-//		{
-//			Model.primitive_type = GL_TRIANGLES;							// [t] = GL_TRIANGLE_FAN ...							
-//
-//			while (line_sStream)										// while line_sStream is not 0 ...
-//			{
-//				GLushort index;											// Create container for index ...
-//
-//				line_sStream >> index;									// Assign index into line_sStream
-//
-//				if (!line_sStream.fail())								// if line_sStream fails, then do nothing
-//				{														// else
-//					Indices_Vertex.push_back(index);							// pushback the index
-//				}
-//			}
-//			break;
-//		}
-//		case 'f':														// [2] f
-//		{
-//			Model.primitive_type = GL_TRIANGLE_FAN;						// [f] = GL_TRIANGLE_FAN ...
-//
-//			while (line_sStream)										// while line_sStream is not 0 ...								
-//			{
-//				GLushort index;											// Create container for index ...
-//
-//				line_sStream >> index;									// Assign index into line_sStream
-//
-//
-//				if (!line_sStream.fail())							    // if line_sStream fails, then do nothing
-//				{													    // else
-//					Indices_Vertex.push_back(index);						    // pushback the index
-//				}
-//			}
-//			break;
-//		}
-//		default:
-//			break;
-//		}
-//	}
 
-	ifs.close();														// Close the file stream
-
-
-		//GLuint VBO_Handler{};
-		//glCreateBuffers(1, &VBO_Handler);
-		//glNamedBufferStorage(VBO_Handler, sizeof(glm::vec2) * mdl.Position_Vertex.size(), mdl.Position_Vertex.data(), GL_DYNAMIC_STORAGE_BIT);
-		//
-		//GLuint vaoid;
-		//glCreateVertexArrays(1, &vaoid);
-		//
-		////Vertex
-		//glEnableVertexArrayAttrib(vaoid, 0); //Assigning Vertex array object with index 0 (for position)
-		//glVertexArrayVertexBuffer(vaoid, 2, VBO_Handler, 0, sizeof(glm::vec2)); //bind the named buffer to vertex buffer binding point 2
-		//glVertexArrayAttribFormat(vaoid, 0, 2, GL_FLOAT, GL_FALSE, 0); //format vao attribute
-		//glVertexArrayAttribBinding(vaoid, 0, 2); //binding vao attribute to binding point 2
-		//
-		//GLuint EBO_Handler;
-		//glCreateBuffers(1, &EBO_Handler); //Creating ebo buffer
-		//glNamedBufferStorage(EBO_Handler, sizeof(GLushort) * idx_vtx.size(), reinterpret_cast<GLvoid*>(idx_vtx.data()), GL_DYNAMIC_STORAGE_BIT); //setting memory location for ebo buffer
-		//glVertexArrayElementBuffer(vaoid, EBO_Handler); //binding ebo to vaoid
-
-
-	ifs.close();
 
 	GLuint vbo_hdl;
 	glCreateBuffers(1, &vbo_hdl);
@@ -831,28 +757,6 @@ void OpenGLObject::init_shdrpgms_cont(VectorPairStrStr const& vpss) {
 	}
 }
 
-
-
-
-//void OpenGLObject::Insert_Shader_Program(std::string shdr_pgm_name, std::string vtx_shdr_name, std::string frg_shdr_name)
-//{
-//	std::vector<std::pair<GLenum, std::string>> shdr_files{
-//	std::make_pair(GL_VERTEX_SHADER, vtx_shdr_name),
-//	std::make_pair(GL_FRAGMENT_SHADER, frg_shdr_name)
-//	};
-//	OpenGLShader shdr_pgm;
-//	shdr_pgm.CompileLinkValidate(shdr_files);
-//	if (GL_FALSE == shdr_pgm.IsLinked()) {
-//		std::cout << "Unable to compile/link/validate shader programs\n";
-//		std::cout << shdr_pgm.GetLog() << "\n";
-//		std::exit(EXIT_FAILURE);
-//	}
-//	// add compiled, linked, and validated shader program to
-//	// std::map container GLApp::shdrpgms
-//	shdrpgms[shdr_pgm_name] = shdr_pgm;
-//
-//
-//}
 
 
 void OpenGLObject::InitObjects(int userInput_x, int userInput_y, float userInput_sizeX,

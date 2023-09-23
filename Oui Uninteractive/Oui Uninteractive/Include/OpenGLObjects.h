@@ -68,7 +68,7 @@ public:
 	// set up initial state
 	void Init(); 
 
-	void Update(GLdouble delta_time);
+	void Update(float xSpeed = 0.0f, float ySpeed = 0.0f, float scale = 100.0f, float aSpeed = 10.0f, bool enRot = false);
 	//static void OpenGLShadersInitialization();
 
 	void Draw() const;

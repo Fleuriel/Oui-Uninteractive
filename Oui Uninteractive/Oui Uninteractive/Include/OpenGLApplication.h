@@ -19,6 +19,10 @@
 #include <utility>
 
 
+#define ROTATION_CLOCKWISE 1
+#define ROTATION_ANTI_CLOCKWISE 0
+
+
 extern GLFWwindow* window;
 extern OpenGLObject Objects;
 extern std::pair<unsigned short, unsigned short> windowSize;
