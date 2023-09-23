@@ -36,4 +36,5 @@ void PhysicsBody::Serialize(const std::string& filePath, rapidjson::Value::Const
 	const rapidjson::Value& components{itr->value};
 	velocity.x = components["VelocityX"].GetFloat();
 	velocity.y = components["VelocityY"].GetFloat();
+	rotationSpeed = components["RotationSpeed"].GetFloat();
 }

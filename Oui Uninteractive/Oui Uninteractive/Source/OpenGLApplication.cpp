@@ -400,7 +400,7 @@ void OpenGLApplication::OpenGLUpdate()
 //				CurrentGameState = STATE_GRAPHICS_TEST;
 			}
 			else{
-				physicsSys->setRotationSpeed(0);
+				physicsSys->setRotationSpeed(0, 0);
 			}
 
 			if (keyStates[GLFW_KEY_S]) {
@@ -409,7 +409,7 @@ void OpenGLApplication::OpenGLUpdate()
 				//std::cout << "WALK DOWN\n";
 			}
 
-			else	if (keyStates[GLFW_KEY_W]) {
+			else if (keyStates[GLFW_KEY_W]) {
 				Objects.position.y += 0.001;
 				physicsSys->setVelocity(Vec2(0.0f, 50.f));
 				//std::cout << "WALK UP\n";
