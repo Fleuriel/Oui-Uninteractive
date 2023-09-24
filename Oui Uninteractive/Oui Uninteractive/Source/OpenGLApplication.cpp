@@ -43,6 +43,8 @@ GLfloat squareX = 0.0f, squareY = 0.0f;
 OpenGLObject Objects;
 std::list<OpenGLObject> objects; // singleton
 
+OpenGLObject::OpenGLModel mdl;
+
 bool toggleMode = false;
 
 // For Input
@@ -227,16 +229,16 @@ void OpenGLApplication::OpenGLUpdate()
 
 
 		//// create transformations
-		glm::mat4 transform = glm::mat4(1.0f); // make sure to initialize matrix to identity matrix first
-		transform = glm::translate(transform, glm::vec3(Objects.position.x, Objects.position.y, 1.0f));
-		//transform = glm::rotate(transform, (float)glfwGetTime(), glm::vec3(0.0f, 0.0f, -0.1f));
-		
-		glm::ortho(0.0f, 900.0f, 0.0f, 600.0f, 0.1f, 100.0f);
-		
-		unsigned int transformLoc = glGetUniformLocation(OpenGLObject::ShaderProgram, "transform");
-		glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(transform));
+		// glm::mat4 transform = glm::mat4(1.0f); // make sure to initialize matrix to identity matrix first
+		// transform = glm::translate(transform, glm::vec3(Objects.position.x, Objects.position.y, 1.0f));
+		// //transform = glm::rotate(transform, (float)glfwGetTime(), glm::vec3(0.0f, 0.0f, -0.1f));
+		// 
+		// glm::ortho(0.0f, 900.0f, 0.0f, 600.0f, 0.1f, 100.0f);
+		// 
+		// unsigned int transformLoc = glGetUniformLocation(OpenGLObject::ShaderProgram, "transform");
+		// glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(transform));
 
-
+		//mdl.draw();
 		//WireFrame Mode:
 		if (keyStates[GLFW_KEY_P] == 1)
 		{
@@ -256,13 +258,27 @@ void OpenGLApplication::OpenGLUpdate()
 		if (keyStates[GLFW_KEY_SPACE] == 1)
 		{
 			
-			OpenGLObject newObject;
+//			OpenGLObject::OpenGLModel a;
+			
 			
 
+
+			
+
+			OpenGLObject newObject;
+			 
+			
+			
 			
 			newObject.InitObjects(0,0, 150,180,45,45);
-			std::cout << newObject.position.x << newObject.position.y << '\n';
+			
 
+			std::cout << newObject.position.x << newObject.position.y << '\n';
+			
+			
+		
+			
+			
 			objects.emplace_back(newObject);
 			//OpenGLObject* object = GET_COMPONENT(objectFactory->GetGameObjectByID(0), Transform, ComponentType::Transform)->graphics;
 			/*if (object != nullptr) {
@@ -493,17 +509,22 @@ void OpenGLApplication::OpenGLUpdate()
 		/*
 		*/
 		for (OpenGLObject& obj : objects)
-			obj.Update(10,10, 500, 10, true);
-			
-		for (std::pair<size_t, GameObject*> gObj : objectFactory->GetGameObjectIDMap()) {
-			GET_COMPONENT(gObj.second, Transform, ComponentType::Transform)->shape->Draw();
-
-		}
+		{
+			obj.Update(10, 10, 500, 10, true);
 		
+		
+		}
+		//for (std::pair<size_t, GameObject*> gObj : objectFactory->GetGameObjectIDMap()) {
+		//	GET_COMPONENT(gObj.second, Transform, ComponentType::Transform)->shape->Draw();
+		//
+		//}
+		
+
 		for (auto const& x : objects)
 		{
 			x.Draw();
 		}
+
 
 
 }

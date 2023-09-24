@@ -29,18 +29,21 @@ extern std::pair<unsigned short, unsigned short> windowSize;
 class OpenGLApplication {
 
 public:
+	// Window Functions
+	static void OpenGLWindowInit();
+	static void OpenGLWindowCleanup();
+	static void OpenGLWindowResizeCallback(GLFWwindow* window, int width, int height);
+
 
 	// Functions to set data ...
-	static void OpenGLTestChangingStates();
-	static void OpenGLWindowInit();
 	static void OpenGLInit();
 	static void OpenGLUpdate();
 	static void OpenGLCleanup();
-	static void OpenGLWindowCleanup();
-//	static void OpenGLWindowInitialization(GLFWwindow*& window, GLint width, GLint height);
+	static void OpenGLTestChangingStates();
+
+	//	static void OpenGLWindowInitialization(GLFWwindow*& window, GLint width, GLint height);
 	static void OpenGLObjectsInitialization();
 //	static void render_square(glm::vec2 scaling, glm::vec2 position);
-	static void OpenGLWindowResizeCallback(GLFWwindow* window, int width, int height);
 
 
 	static void Draw();

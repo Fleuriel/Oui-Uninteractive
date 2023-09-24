@@ -37,13 +37,21 @@ public:
 	float angleDisplacment;
 	float angleSpeed;
 	glm::vec2 orientation;			// Rotation
+
 	glm::vec2 position;				// translation
+
 	glm::mat3 model_To_NDC_xform;	// Model to NDC 
 	glm::vec3 color;				// Set Object Color
 	bool particlechecker;
-	GLuint mdl_ref, shd_ref;
+	static GLuint mdl_ref, shd_ref;
+	//GLuint texture;
+
 
 	static GLuint VAO, VBO;			// Object VAO VBO
+
+
+
+
 
 	// encapsulates state required to render a geometrical model
 	struct OpenGLModel {
@@ -51,16 +59,40 @@ public:
 		GLuint primitive_cnt;
 		GLuint vaoid;
 		GLuint draw_cnt;
-		
-		GLuint model_cnt;			// added to check model count
 
+		GLuint idx_elem_cnt;
+		GLuint model_cnt;			// added to check model count
+		GLuint texture;
 		
 		std::vector <glm::vec2> Position_Vertex;
 
-		void init(std::string);
-
 		OpenGLModel() : primitive_type(0), primitive_cnt(0), vaoid(0), draw_cnt(0), model_cnt(0) {}
+
+
+		struct VAO_Object
+		{
+			glm::vec2 position;				// VAO position
+			glm::vec3 color;					// VAO color
+			glm::vec2 texture;				// VAO texture
+
+			// ctor for VAO_Obj ...
+			VAO_Object() : position(0.0, 0.0), color(0.0, 0.0, 0.0), texture(0, 0) {}
+
+			// Member Functions:
+
+			// Set Values for VAO (Position, Color)
+			void setTextureValue(float, float, float, float, float);
+
+			// Set Texture for VAO (texture)
+			void setTexture(float, float);
+
+		};
+		void draw() const;
+		void setup_TextureVAO();
 	};
+
+
+
 
 	//std::map<std::string, OpenGLModel>::iterator mdl_ref;
 	//std::map<std::string, OpenGLShader>::iterator shd_ref;
@@ -93,7 +125,24 @@ public:
 
 	static void init_shdrpgms_cont(VectorPairStrStr const& vpss);
 
-	static OpenGLModel Box_Model(glm::vec3);
+
+
+
+	// Models
+
+	static OpenGLModel Box_Model(glm::vec3, int textureInput);
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 	static void Load_Files();
@@ -102,6 +151,8 @@ public:
 
 	// Texture
 	static int Setup_TextureObject(std::string filePath);
+	//void setTextureValue(float, float, float, float, float);
+	//void setTexture(float, float);
 
 
 	// Data for Square and Triangles
@@ -112,19 +163,6 @@ public:
 	static GLuint textureID;
 
 
-	//struct VAO_Object
-	//{
-	//	glm::vec2 Position;
-	//	glm::vec3 Color;
-	//	glm::vec2 Texture;
-	//
-	//	VAO_Object() : Position(0.0, 0.0), Color(0.0, 0.0, 0.0), Texture(0, 0) {}
-	//
-	//	void SetValue(float, float);
-	//
-	//	void SetTexture(float, float);
-	//
-	//};
 
 
 
