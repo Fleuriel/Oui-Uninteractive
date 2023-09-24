@@ -29,6 +29,7 @@ void UsingImGui::CreateFrame() {
 	ImGui_ImplOpenGL3_NewFrame();
 	ImGui_ImplGlfw_NewFrame();
 	ImGui::NewFrame();
+	ImGui::DockSpaceOverViewport(ImGui::GetMainViewport(), ImGuiDockNodeFlags_PassthruCentralNode);
 }
 
 void UsingImGui::Update() {
@@ -37,25 +38,30 @@ void UsingImGui::Update() {
 }
 
 void UsingImGui::Draw() {
-	bool loltest;
-	static int clickCounter = 0;
-	ImGui::Begin("Fk this shit");                          // Create a window called "fk this shit"
-	ImGui::Text("Why do we live just to suffer :(");              // Display some text
-	ImGui::Checkbox("This is cool", &loltest);
-	if (ImGui::Button("Click me!")) {
-		++clickCounter;
-	}
-	ImGui::SameLine();
-	ImGui::Text("You clicked %d times", clickCounter);
-	if (clickCounter > 4) {
-		ImGui::Text("Please stop wasting time here");
-	}
-	ImGui::End();
+	// Create the master panel to control other panels
 
-	// 2nd test window
-	ImGui::Begin("This should be another window");
-	ImGui::Text("Hello there");
-	ImGui::End();
+	Editor::CreateMasterPanel();
+
+	if (panelList.soundPanel) {
+		Editor::CreateSoundPanel();
+	}
+	if (panelList.Panel1) {
+		bool loltest;
+		static int clickCounter = 0;
+		ImGui::Begin("Fk this shit");                          // Create a window called "fk this shit"
+		ImGui::Text("Why do we live just to suffer :(");              // Display some text
+		ImGui::Checkbox("This is cool", &loltest);
+		if (ImGui::Button("Click me!")) {
+			++clickCounter;
+		}
+		ImGui::SameLine();
+		ImGui::Text("You clicked %d times", clickCounter);
+		if (clickCounter > 4) {
+			ImGui::Text("Please stop wasting time here");
+		}
+		ImGui::End();
+	}
+	
 
 	ImGui::Render();
 	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
@@ -156,3 +162,40 @@ void Editor::Init() {
 	}
 }
 
+
+/* ============================================
+	CREATING INDIVIDUAL DOCKABLE IMGUI PANELS
+   ============================================ */
+
+void Editor::CreateMasterPanel() {
+	ImGui::Begin("Master Control Panel");
+	ImGui::Text("Show panels:");
+	ImGui::Checkbox("Sound Panel", &panelList.soundPanel); // Checkbox for sound panel
+	ImGui::End();
+}
+
+void Editor::CreateSoundPanel() {
+	ImGui::Begin("Sound Control Panel");
+	ImGui::CollapsingHeader("Sounds");
+	if (ImGui::TreeNode("Tracks")) {
+		ImGui::SeparatorText("BGM");
+		static float bgmVol = 1.0f;
+		ImGui::SliderFloat("Volume", &bgmVol, 0.0f, 1.0f, "%.2f");
+		soundManager->bgmChannel->setVolume(bgmVol);
+		if (ImGui::Button("Play/Pause")) {
+			soundManager->TogglePlayChannel(soundManager->bgmChannel);
+		}
+		ImGui::SeparatorText("SFX");
+		static int sfxChoice = 0;
+		ImGui::RadioButton("SFX 1", &sfxChoice, 0); ImGui::SameLine();
+		ImGui::RadioButton("SFX 2", &sfxChoice, 1); ImGui::SameLine();
+		ImGui::RadioButton("SFX 3", &sfxChoice, 2);
+		if (ImGui::Button("Play")) {
+			soundManager->sfxCallback = true;
+			soundManager->sfxChoice = sfxChoice;
+		}
+		ImGui::TreePop();
+	}
+	
+	ImGui::End();
+}
