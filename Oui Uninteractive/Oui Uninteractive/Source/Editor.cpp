@@ -45,6 +45,9 @@ void UsingImGui::Draw() {
 	if (panelList.soundPanel) {
 		Editor::CreateSoundPanel();
 	}
+	if (panelList.objectPanel) {
+		Editor::CreateObjectList();
+	}
 	if (panelList.Panel1) {
 		bool loltest;
 		static int clickCounter = 0;
