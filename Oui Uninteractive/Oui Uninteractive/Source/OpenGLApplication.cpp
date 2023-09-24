@@ -204,10 +204,10 @@ void OpenGLApplication::OpenGLInit()
 	std::cout << "De-serializing objects from JSON file... completed." << std::endl;
 
 	// Modifying value of Object2
-	std::cout << "\nUpdating Object2..." << std::endl;
+	/*std::cout << "\nUpdating Object2..." << std::endl;
 	GET_COMPONENT(objectFactory->GetGameObjectByName("Object2"), PhysicsBody, ComponentType::PhysicsBody)->velocity.y = 20.5f;
 	objectFactory->SaveObjectsToFile("../scenes/testscene.JSON");
-	std::cout << "Updating Object2... completed." << std::endl;
+	std::cout << "Updating Object2... completed." << std::endl;*/
 }
 
 

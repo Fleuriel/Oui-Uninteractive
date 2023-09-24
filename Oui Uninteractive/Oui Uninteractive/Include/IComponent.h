@@ -35,7 +35,6 @@ public:
 		return base;
 	}
 
-	// Each component to serialize their own data
 	/* Usage inside respective Component.cpp file:
 	
 	const rapidjson::Value& components{itr->value};
