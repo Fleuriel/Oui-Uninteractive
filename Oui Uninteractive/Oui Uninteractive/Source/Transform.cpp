@@ -18,4 +18,5 @@ void Transform::Serialize(const std::string& filePath, rapidjson::Value::ConstMe
 	position.x = components["PositionX"].GetFloat();
 	position.y = components["PositionY"].GetFloat();
 	rotation = components["Rotation"].GetFloat();
+	scale = components["Scale"].GetFloat();
 }

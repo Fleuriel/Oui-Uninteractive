@@ -3,6 +3,7 @@
 #include "ObjectFactory.h"
 #include "Vector2D.h"
 #include <iostream>
+#include <algorithm>
 #include "Collision.h"
 //initialize global pointer
 Physics* physicsSys = nullptr;
@@ -54,6 +55,9 @@ void Physics::Update(float dt) {
 
 		body->velocity = body->velocity + body->acceleration * dt;
 		body->txPtr->rotation = body->txPtr->rotation + body->rotationSpeed * dt;
+		if (body->txPtr->rotation >= 360.0f || body->txPtr->rotation <= -360.0f)
+			body->txPtr->rotation = 0.0f;
+	
 
 		//Test collision
 		for (PhysicsBody* body2 : bodyList) {
