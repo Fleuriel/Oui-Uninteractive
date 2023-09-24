@@ -3,18 +3,29 @@
 #include "Transform.h"
 #include "Vector2D.h"
 #include "GameObject.h"
-#include "Collision.h"
+
+class PhysicsBody;
+
+class AABB {
+public:
+	Vec2 min, max;
+	PhysicsBody* pointer;
+
+	AABB() {};
+
+};
 
 class PhysicsBody : public IComponent {
 public:
 	PhysicsBody();
-	//~PhysicsBody();
+	~PhysicsBody();
 
 	virtual void Initialize();
 	virtual void Serialize(const std::string& filePath, rapidjson::Value::ConstMemberIterator& itr);
 	Vec2 AngleToVec(float angle);
 	float rotationSpeed;
 	float speed;
+	AABB* boundingbox;
 
 	//Vec2 position;
 	Vec2 velocity;
@@ -29,9 +40,3 @@ public:
 };
 
 
-class AABB {
-
-	//X and Y coordinates taken from Coords?
-	float min, max;
-	
-};

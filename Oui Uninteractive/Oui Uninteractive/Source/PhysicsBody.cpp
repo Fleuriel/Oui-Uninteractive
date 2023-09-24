@@ -12,6 +12,16 @@ PhysicsBody::PhysicsBody() {
 	rotationSpeed = 0;
 	direction = Vec2(0, 0);
 	speed = 50;
+	boundingbox = new AABB();
+
+	boundingbox->min = Vec2(0,0);
+	boundingbox->max = Vec2(0,0);
+	boundingbox->pointer = this; //this -> Pointer to current object
+
+}
+
+PhysicsBody::~PhysicsBody() {
+	delete boundingbox;
 }
 
 /**************************************************************************

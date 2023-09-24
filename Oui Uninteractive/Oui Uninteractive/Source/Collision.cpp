@@ -7,6 +7,7 @@
 
 
 
+
 /**************************************************************************
  * @brief Check for collision between static circles
  *
@@ -33,35 +34,37 @@ bool CollisionStaticCircleCircle(Coordinates Coords1, Coordinates Coords2, float
  * @param 
  * @param 
  *************************************************************************/
-bool CollisionStaticDynamicRectRect(float r1x=2,float r1y=2,float r2x=2,float r2y=2, float s1=3, float s2=3)
+bool CollisionStaticDynamicRectRect(AABB Rect1, AABB Rect2)
 {
+	
+		////Smallest X-coordinate of both rectangle
+		//float leftA, leftB{ 0 }; 
+		//leftA = r1x - (s1 / 2);
+		//leftB = r2x - (s2 / 2);
 
+		////Biggest X-coordinate of both rectangle
+		//float rightA, rightB{ 0 }; 
+		//rightA = r1x + (s1 / 2);
+		//rightB = r2x + (s2 / 2);
 
-		//Smallest X-coordinate of both rectangle
-		float leftA, leftB{ 0 }; 
-		leftA = r1x - (s1 / 2);
-		leftB = r2x - (s2 / 2);
+		////Biggest Y-coordinate of both rectangle
+		//float topA, topB{ 0 }; 
+		//topA = r1y + (s1 / 2);
+		//topB = r2y + (s2 / 2);
 
-		//Biggest X-coordinate of both rectangle
-		float rightA, rightB{ 0 }; 
-		rightA = r1x + (s1 / 2);
-		rightB = r2x + (s2 / 2);
-
-		//Biggest Y-coordinate of both rectangle
-		float topA, topB{ 0 }; 
-		topA = r1y + (s1 / 2);
-		topB = r2y + (s2 / 2);
-
-		//Smallest Y-coordinate of both rectangle
-		float bottomA, bottomB{ 0 }; 
-		bottomA = r1y - (s1 / 2);
-		bottomB = r2y - (s2 / 2);
-
-		if ((rightA > leftB  && 
-			 topA > bottomB) &&
-			(rightB > leftA  &&
-			 topB > bottomA))
+		////Smallest Y-coordinate of both rectangle
+		//float bottomA, bottomB{ 0 }; 
+		//bottomA = r1y - (s1 / 2);
+		//bottomB = r2y - (s2 / 2);
+		
+		//rightA = maxXFirstRect
+		//leftB = 
+		if ((Rect1.max.x > Rect2.min.x  && 
+			 Rect1.max.y > Rect2.min.y) &&
+			(Rect2.max.x > Rect1.min.x  &&
+			 Rect2.max.y > Rect1.min.y))
 		{
+			std::cout << "ITS COLLIDING BOIS\n";
 		return true;
 		}
 		else 
