@@ -17,10 +17,13 @@
 
 class SoundManager : public ISystem {
 public:
+	SoundManager();
 	void Initialize();
 	virtual void Update(float dt);
 	void LoadSounds();
-	void PlaySounds();
+	void PlayBGMSounds();
+	void PlaySFXSounds();
+	void TogglePlayChannel(FMOD::Channel* selectedChannel);
 
 	 ~SoundManager() ;
 
@@ -34,8 +37,14 @@ public:
 	std::vector<FMOD::Sound*> bgmSounds{};
 	std::vector<FMOD::Sound*> sfxSounds{};
 
-	// Container for channels
-	FMOD::Channel* channel1;
+	// Channels
+	FMOD::Channel* bgmChannel{};
+	FMOD::Channel* channel1{};
+	FMOD::Channel* channel2{};
+	FMOD::Channel* channel3{};
+
+	bool sfxCallback;
+	int sfxChoice;
 
 private:
 	FMOD::System* system;
