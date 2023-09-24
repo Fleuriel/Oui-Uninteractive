@@ -3,6 +3,8 @@
 #include "ObjectFactory.h"
 #include "Vector2D.h"
 #include <iostream>
+#include <algorithm>
+#include "Collision.h"
 //initialize global pointer
 Physics* physicsSys = nullptr;
 
@@ -41,6 +43,11 @@ void Physics::Update(float dt) {
 		if (body->isStatic) {
 			continue;
 		}
+
+		//Check update
+		body->boundingbox->min = Vec2((-1 / 2.f) * body->txPtr->scale + body->txPtr->position.x, (-1 / 2.f) * body->txPtr->scale + body->txPtr->position.y);
+		body->boundingbox->max = Vec2((1 / 2.f) * body->txPtr->scale + body->txPtr->position.x, (1 / 2.f) * body->txPtr->scale + body->txPtr->position.y);
+
 		//calculate physics
 		Vector2DNormalize(body->direction, body->direction + body->AngleToVec(body->txPtr->rotation * (M_PI / 180.f)));
 		
@@ -48,6 +55,18 @@ void Physics::Update(float dt) {
 
 		body->velocity = body->velocity + body->acceleration * dt;
 		body->txPtr->rotation = body->txPtr->rotation + body->rotationSpeed * dt;
+		if (body->txPtr->rotation >= 360.0f || body->txPtr->rotation <= -360.0f)
+			body->txPtr->rotation = 0.0f;
+	
+
+		//Test collision
+		for (PhysicsBody* body2 : bodyList) {
+			if (body2->GetOwner()->GetGameObjectID() == body->GetOwner()->GetGameObjectID()) {
+				continue;
+			}
+			CollisionStaticDynamicRectRect(*(body->boundingbox), *(body2->boundingbox));
+		}
+
 
 		//apply to object
 		body->txPtr->shape->Update(body->txPtr->position.x, body->txPtr->position.y, body->txPtr->scale, body->txPtr->rotation, true);	

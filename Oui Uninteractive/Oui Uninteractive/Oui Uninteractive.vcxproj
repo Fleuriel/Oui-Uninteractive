@@ -25,6 +25,7 @@
     <ClCompile Include="..\lib\imgui-docking\imgui_draw.cpp" />
     <ClCompile Include="..\lib\imgui-docking\imgui_tables.cpp" />
     <ClCompile Include="..\lib\imgui-docking\imgui_widgets.cpp" />
+    <ClCompile Include="Source\AI.cpp" />
     <ClCompile Include="Source\AssetManager.cpp" />
     <ClCompile Include="Source\Collision.cpp" />
     <ClCompile Include="Source\CoordinateSystem.cpp" />
@@ -53,6 +54,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\lib\stb-master\stb_image.h" />
+    <ClInclude Include="Include\AI.h" />
     <ClInclude Include="Include\AssetManager.h" />
     <ClInclude Include="Include\Collision.h" />
     <ClInclude Include="Include\ComponentFactory.h" />

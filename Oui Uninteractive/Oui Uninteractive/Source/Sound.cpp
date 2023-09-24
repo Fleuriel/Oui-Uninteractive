@@ -11,6 +11,18 @@
 #include <Sound.h>
 #include <iostream>
 
+ // Initialize global pointer
+SoundManager* soundManager = nullptr;
+
+SoundManager::SoundManager() {
+	if (soundManager != nullptr) {
+		// Instantiate sound system
+		return;
+	}
+	else {
+		soundManager = this;
+	}
+}
 
  /* ============================================
 	 @brief 
@@ -33,7 +45,9 @@ void SoundManager::Initialize() {
 }
 
 void SoundManager::Update(float dt) {
-	PlaySounds();
+	//PlayBGMSounds();
+	//PlaySFXSounds();
+	system->update();
 }
 
 /* ============================================
@@ -69,13 +83,43 @@ void SoundManager::LoadSounds() {
 	@return
 		No return
    ============================================ */
-void SoundManager::PlaySounds() {
-	channel1 = nullptr;
-	result = system->playSound(bgmSounds[1], 0, false, &channel1);
+void SoundManager::PlayBGMSounds() {
+	// Play BGM once clicked
+	if (bgmChannel == nullptr) {
+		result = system->playSound(bgmSounds[1], nullptr, true, &bgmChannel);
+	}
 	if (result != FMOD_OK) {
 		std::cout << "FMOD error: " << FMOD_ErrorString(result);
 	}
 }
+
+void SoundManager::PlaySFXSounds() {
+	// Play SFX once clicked
+	/*if (sfxCallback) {
+		result = system->playSound(sfxSounds[sfxChoice], nullptr, false, &channel1);
+		sfxCallback = false;
+	}*/
+	channel1->stop();
+	result = system->playSound(sfxSounds[sfxChoice], nullptr, false, &channel1);
+	if (result != FMOD_OK) {
+		std::cout << "FMOD error: " << FMOD_ErrorString(result);
+	}
+}
+
+
+
+/* ============================================
+	@brief
+	   These functions handle pausing the channels
+	@return
+		No return
+   ============================================ */
+void SoundManager::TogglePlayChannel(FMOD::Channel* selectedChannel) {
+	bool pausedState;
+	selectedChannel->getPaused(&pausedState);
+	selectedChannel->setPaused(!pausedState);
+}
+
 
 /* ============================================
 	@brief

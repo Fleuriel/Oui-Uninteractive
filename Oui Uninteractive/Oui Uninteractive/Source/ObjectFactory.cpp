@@ -142,6 +142,9 @@ void ObjectFactory::Update(float dt) {
 	// Destroy game objects in destroy list
 	for (; it != gameObjectDestroyList.end(); it++) {
 		GameObject* gameObject = *it;
+		for (int i = 0; i < gameObject->componentList.size(); i++) {
+			delete gameObject->componentList.at(i);
+		}
 
 		//Insert double free protection here
 		delete gameObject;
@@ -217,6 +220,9 @@ void ObjectFactory::DestroyAllObjects() {
 	std::map<size_t, GameObject*>::iterator it = gameObjectIDMap.begin();
 
 	while (it != gameObjectIDMap.end()) {
+		for (int i = 0; i < it->second->componentList.size(); i++) {
+			delete it->second->componentList.at(i);
+		}
 		delete it->second;
 		it++;
 	}
