@@ -6,6 +6,7 @@
 
 
 
+
 /**************************************************************************
  * @brief Check for collision between static circles
  *
@@ -32,7 +33,7 @@ bool CollisionStaticCircleCircle(Coordinates Coords1, Coordinates Coords2, float
  * @param 
  * @param 
  *************************************************************************/
-bool CollisionStaticRectRect(float r1x=2,float r1y=2,float r2x=2,float r2y=2, float s1=3, float s2=3)
+bool CollisionStaticDynamicRectRect(float r1x=2,float r1y=2,float r2x=2,float r2y=2, float s1=3, float s2=3)
 {
 		//Smallest X-coordinate of both rectangle
 		float leftA, leftB{ 0 }; 
@@ -203,5 +204,6 @@ bool CollisionMovingRectRect(float r1x = 1, float r1y = 2, float r2x = 3, float 
 		return false; //No collision
 	}
 
-
+	return false;
 }
+
