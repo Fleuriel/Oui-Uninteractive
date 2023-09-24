@@ -29,7 +29,7 @@ public:
 };
 
 
-class PhysicsBody2 : public AABB {
+class AABB {
 
 	//X and Y coordinates taken from Coords?
 	float min, max;

@@ -35,6 +35,8 @@ bool CollisionStaticCircleCircle(Coordinates Coords1, Coordinates Coords2, float
  *************************************************************************/
 bool CollisionStaticDynamicRectRect(float r1x=2,float r1y=2,float r2x=2,float r2y=2, float s1=3, float s2=3)
 {
+
+
 		//Smallest X-coordinate of both rectangle
 		float leftA, leftB{ 0 }; 
 		leftA = r1x - (s1 / 2);
