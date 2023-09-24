@@ -19,7 +19,6 @@
 #include "rapidjson/filewritestream.h"
 #include <vector>
 #include <fstream>
-#include <Sound.h>
 
 class UsingImGui {
 public:
@@ -34,26 +33,13 @@ public:
 class Editor {
 public:
 	void Init();
-	static void CreateMasterPanel();
-	static void CreateSoundPanel();
 	static bool ReadJSONFile(std::string filePath, rapidjson::Document &docRef);
 	static bool WriteJSONFile(std::string filePath, rapidjson::Document& docRef);
-
-public:
-	bool soundPanel;
 private:
 
 };
 
-// Store panel selection
-struct Panels {
-	bool soundPanel;
-	bool Panel1;
-	bool Panel2;
-};
-static Panels panelList;
-
-// Temporary simulation of obj data 
+// Temporry simulation of obj data 
 struct tempObjData {
 	std::string name;
 	int size;
