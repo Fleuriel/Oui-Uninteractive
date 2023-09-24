@@ -171,6 +171,7 @@ void Editor::CreateMasterPanel() {
 	ImGui::Begin("Master Control Panel");
 	ImGui::Text("Show panels:");
 	ImGui::Checkbox("Sound Panel", &panelList.soundPanel); // Checkbox for sound panel
+	ImGui::Checkbox("Objects Panel", &panelList.objectPanel); // Checkbox for sound panel
 	ImGui::End();
 }
 
@@ -191,12 +192,16 @@ void Editor::CreateSoundPanel() {
 		ImGui::RadioButton("SFX 2", &sfxChoice, 1); ImGui::SameLine();
 		ImGui::RadioButton("SFX 3", &sfxChoice, 2);
 		if (ImGui::Button("Play")) {
-			//soundManager->sfxCallback = true;
 			soundManager->sfxChoice = sfxChoice;
 			soundManager->PlaySFXSounds();
 		}
 		ImGui::TreePop();
 	}
 	
+	ImGui::End();
+}
+
+void Editor::CreateObjectList() {
+	ImGui::Begin("Pretty objects here");
 	ImGui::End();
 }
