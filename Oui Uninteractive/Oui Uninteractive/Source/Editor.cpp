@@ -176,13 +176,13 @@ void Editor::CreateMasterPanel() {
 
 void Editor::CreateSoundPanel() {
 	ImGui::Begin("Sound Control Panel");
-	ImGui::CollapsingHeader("Sounds");
 	if (ImGui::TreeNode("Tracks")) {
 		ImGui::SeparatorText("BGM");
 		static float bgmVol = 1.0f;
 		ImGui::SliderFloat("Volume", &bgmVol, 0.0f, 1.0f, "%.2f");
 		soundManager->bgmChannel->setVolume(bgmVol);
 		if (ImGui::Button("Play/Pause")) {
+			soundManager->PlayBGMSounds();
 			soundManager->TogglePlayChannel(soundManager->bgmChannel);
 		}
 		ImGui::SeparatorText("SFX");
@@ -191,8 +191,9 @@ void Editor::CreateSoundPanel() {
 		ImGui::RadioButton("SFX 2", &sfxChoice, 1); ImGui::SameLine();
 		ImGui::RadioButton("SFX 3", &sfxChoice, 2);
 		if (ImGui::Button("Play")) {
-			soundManager->sfxCallback = true;
+			//soundManager->sfxCallback = true;
 			soundManager->sfxChoice = sfxChoice;
+			soundManager->PlaySFXSounds();
 		}
 		ImGui::TreePop();
 	}

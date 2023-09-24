@@ -45,8 +45,9 @@ void SoundManager::Initialize() {
 }
 
 void SoundManager::Update(float dt) {
-	PlayBGMSounds();
-	PlaySFXSounds();
+	//PlayBGMSounds();
+	//PlaySFXSounds();
+	system->update();
 }
 
 /* ============================================
@@ -94,10 +95,12 @@ void SoundManager::PlayBGMSounds() {
 
 void SoundManager::PlaySFXSounds() {
 	// Play SFX once clicked
-	if (sfxCallback) {
+	/*if (sfxCallback) {
 		result = system->playSound(sfxSounds[sfxChoice], nullptr, false, &channel1);
 		sfxCallback = false;
-	}
+	}*/
+	channel1->stop();
+	result = system->playSound(sfxSounds[sfxChoice], nullptr, false, &channel1);
 	if (result != FMOD_OK) {
 		std::cout << "FMOD error: " << FMOD_ErrorString(result);
 	}
