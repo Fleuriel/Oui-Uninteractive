@@ -23,6 +23,7 @@ public:
 	void MoveForward(size_t ID);
 	void MoveLeft(size_t ID);
 	void MoveRight(size_t ID);
+	Vec2 AngleToVec(float angle);
 	//insert linked list of all physics body components
 	std::vector<PhysicsBody*> bodyList;
 

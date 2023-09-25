@@ -49,7 +49,7 @@ void Physics::Update(float dt) {
 		body->boundingbox->max = Vec2((1 / 2.f) * body->txPtr->scale + body->txPtr->position.x, (1 / 2.f) * body->txPtr->scale + body->txPtr->position.y);
 
 		//calculate physics
-		Vector2DNormalize(body->direction, body->direction + body->AngleToVec(body->txPtr->rotation * (M_PI / 180.f)));
+		Vector2DNormalize(body->direction, body->direction + AngleToVec(body->txPtr->rotation * (M_PI / 180.f)));
 		
 		body->txPtr->position = body->txPtr->position + body->velocity * dt;
 
@@ -160,4 +160,9 @@ void Physics::MoveRight(size_t ID) {
 	if (ID < bodyList.size()) {
 		bodyList.at(ID)->velocity = bodyList.at(ID)->speed * Vec2(bodyList.at(ID)->direction.x, bodyList.at(ID)->direction.y);
 	}
+}
+Vec2 Physics::AngleToVec(float angle) {
+	//angle should be in radians
+	Vec2 dir = Vec2(-sinf(angle), cosf(angle));
+	return dir;
 }

@@ -22,7 +22,6 @@ public:
 
 	virtual void Initialize();
 	virtual void Serialize(const std::string& filePath, rapidjson::Value::ConstMemberIterator& itr);
-	Vec2 AngleToVec(float angle);
 	float rotationSpeed;
 	float speed;
 	AABB* boundingbox;
