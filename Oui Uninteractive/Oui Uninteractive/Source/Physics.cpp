@@ -126,41 +126,83 @@ void Physics::SetVelocity(Vec2 velocity, size_t ID) {
 		bodyList.at(ID)->velocity = velocity;
 	}
 }
+/**************************************************************************
+* @brief Set the rotation speed of one object's Physics Body
+* @param float rotSpeed - the rotation speed to be set to
+* @return void
+*************************************************************************/
 void Physics::SetRotationSpeed(float rotSpeed) {
 	for (PhysicsBody* body : bodyList) {
 		body->rotationSpeed = rotSpeed;
 	}
 }
+/**************************************************************************
+* @brief Set the rotation speed of one object's Physics Body
+* @param float rotSpeed - the rotation speed to be set to
+* @param size_t ID - ID of object to set rotation speed
+* @return void
+*************************************************************************/
 void Physics::SetRotationSpeed(float rotSpeed, size_t ID) {
 	if (ID < bodyList.size()) {
 		bodyList.at(ID)->rotationSpeed = rotSpeed;
 	}
 }
+/**************************************************************************
+* @brief Set the direction of one object's Physics Body
+* @param Vec2 dir - the direction to be set to
+* @param size_t ID - ID of object to set direction
+* @return void
+*************************************************************************/
 void Physics::SetDirection(Vec2 dir, size_t ID) {
 	if (ID < bodyList.size()) {
 		Vector2DNormalize(bodyList.at(ID)->direction, dir);
 	}
 }
+/**************************************************************************
+* @brief Helper function to move an object backwards
+* @param size_t ID - ID of object to move
+* @return void
+*************************************************************************/
 void Physics::MoveBackwards(size_t ID) {
 	if (ID < bodyList.size()) {
 		bodyList.at(ID)->velocity = bodyList.at(ID)->speed * Vec2(-bodyList.at(ID)->direction.x, -bodyList.at(ID)->direction.y);
 	}
 }
+/**************************************************************************
+* @brief Helper function to move an object forward
+* @param size_t ID - ID of object to move
+* @return void
+*************************************************************************/
 void Physics::MoveForward(size_t ID) {
 	if (ID < bodyList.size()) {
 		bodyList.at(ID)->velocity = bodyList.at(ID)->speed * Vec2(bodyList.at(ID)->direction.x, bodyList.at(ID)->direction.y);
 	}
 }
+/**************************************************************************
+* @brief Helper function to move an object left
+* @param size_t ID - ID of object to move
+* @return void
+*************************************************************************/
 void Physics::MoveLeft(size_t ID) {
 	if (ID < bodyList.size()) {
 		bodyList.at(ID)->velocity = bodyList.at(ID)->speed * Vec2(-bodyList.at(ID)->direction.x, bodyList.at(ID)->direction.y);
 	}
 }
+/**************************************************************************
+* @brief Helper function to move an object right
+* @param size_t ID - ID of object to move
+* @return void
+*************************************************************************/
 void Physics::MoveRight(size_t ID) {
 	if (ID < bodyList.size()) {
 		bodyList.at(ID)->velocity = bodyList.at(ID)->speed * Vec2(bodyList.at(ID)->direction.x, bodyList.at(ID)->direction.y);
 	}
 }
+/**************************************************************************
+* @brief Calculate direction vector from angle of rotation
+* @param float angle - angle to convert to vector (in radians)
+* @return void
+*************************************************************************/
 Vec2 Physics::AngleToVec(float angle) {
 	//angle should be in radians
 	Vec2 dir = Vec2(-sinf(angle), cosf(angle));

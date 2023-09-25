@@ -7,6 +7,10 @@
 
 class Physics : public ISystem{
 public:
+	/**************************************************************************
+	* @brief Default constructor for Physics System
+	*************************************************************************/
+	Physics();
 	void AddForce(Vec2 force);
 	void SetPosition(Vec2 pos);
 	void SetPosition(Vec2 pos, size_t ID);
@@ -15,7 +19,7 @@ public:
 	void SetRotationSpeed(float rotSpeed);
 	void SetRotationSpeed(float rotSpeed, size_t ID);
 	void SetDirection(Vec2 dir, size_t ID);
-	Physics();
+	
 
 	virtual void Update(float dt);
 	void Initialize();
