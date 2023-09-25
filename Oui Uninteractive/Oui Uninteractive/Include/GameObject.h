@@ -7,7 +7,8 @@
  * @date		  09-08-2023
  * @brief
  *************************************************************************/
-#pragma once
+#ifndef GAME_OBJECT_H
+#define GAME_OBJECT_H
 
 #include <vector>
 #include "IComponent.h"
@@ -63,3 +64,4 @@ template <typename T> T* GameObject::GetComponentType(ComponentType typeID) {
 	return static_cast<T*>(GetComponent(typeID));
 }
 
+#endif

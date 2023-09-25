@@ -27,10 +27,10 @@ Physics::Physics() {
 *************************************************************************/
 void Physics::Initialize() {
 	//Register Component creator of Body here
-	ComponentFactory<PhysicsBody>* testPtr = new ComponentFactory<PhysicsBody>(ComponentType::PhysicsBody);
-	objectFactory->AddComponentFactory(ComponentType::PhysicsBody, testPtr);
-	ComponentFactory<Transform>* testPtr2 = new ComponentFactory<Transform>(ComponentType::Transform);
-	objectFactory->AddComponentFactory(ComponentType::Transform, testPtr2);
+	ComponentFactory<PhysicsBody>* testPtr = new ComponentFactory<PhysicsBody>(ComponentType::PHYSICS_BODY);
+	objectFactory->AddComponentFactory(ComponentType::PHYSICS_BODY, testPtr);
+	ComponentFactory<Transform>* testPtr2 = new ComponentFactory<Transform>(ComponentType::TRANSFORM);
+	objectFactory->AddComponentFactory(ComponentType::TRANSFORM, testPtr2);
 }
 /**************************************************************************
 * @brief Update Function of the Physics System

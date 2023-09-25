@@ -1,4 +1,5 @@
-#pragma once
+#ifndef PHYSICS_H
+#define PHYSICS_H
 
 #include "ISystem.h"
 #include "PhysicsBody.h"
@@ -33,3 +34,5 @@ public:
 
 };
 extern Physics* physicsSys;
+
+#endif

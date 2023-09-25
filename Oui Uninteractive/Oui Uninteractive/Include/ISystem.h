@@ -1,13 +1,15 @@
 /**************************************************************************
- * @file		  ISystem.h
- * @author
- * @par DP email:
- * @par Course:	  CSD 2401
- * @par			  Software Engineering Project 3
- * @date		  09-08-2023
- * @brief
+ * @file ISystem.h
+ * @author Hwang Jing Rui, Austin
+ * @par DP email: jingruiaustin.hwang@digipen.edu
+ * @par Course: CSD 2401
+ * @par	Software Engineering Project 3
+ * @date 08-09-2023
+ * @brief This file contains the ISystem class, which is the interface for
+ *		  systems to be implemented in the game.
  *************************************************************************/
-#pragma once
+#ifndef ISYSTEM_H
+#define ISYSTEM_H
 
 class ISystem {
 private:
@@ -23,3 +25,5 @@ public:
 	//virtual void Terminiate();
 	virtual ~ISystem() {};
 };
+
+#endif

@@ -7,14 +7,15 @@
  * @date		  09-08-2023
  * @brief
  *************************************************************************/
-#pragma once
+#ifndef EVENT_H
+#define EVENT_H
 
 enum class EventType
 {
-	None = 0,
+	NONE = 0,
 	Quit,
 	Collide
-	/*None,
+	/*NONE,
 	WindowClose,
 	WindowResize,
 	WindowFocus,
@@ -37,3 +38,5 @@ public:
 	Event(EventType event) : eventID(event) {}
 	~Event() {}
 };
+
+#endif

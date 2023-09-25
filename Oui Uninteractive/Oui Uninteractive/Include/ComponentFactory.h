@@ -7,7 +7,9 @@
  * @date		  09-13-2023
  * @brief
  *************************************************************************/
-#pragma once
+#ifndef COMPONENT_FACTORY_H
+#define COMPONENT_FACTORY_H
+
 #include "ComponentType.h"
 class IComponent;
 
@@ -33,3 +35,5 @@ public:
 		return new T();
 	}
 };
+
+#endif

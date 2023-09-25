@@ -182,24 +182,24 @@ void OpenGLApplication::OpenGLInit()
 
 	//init a game object in run time
 	objectFactory->BuildObjectRunTime("ObjectRunTime1");
-	objectFactory->AddComponent(ComponentType::PhysicsBody, objectFactory->GetGameObjectByID(0));
-	objectFactory->AddComponent(ComponentType::Transform, objectFactory->GetGameObjectByID(0));
+	objectFactory->AddComponent(ComponentType::PHYSICS_BODY, objectFactory->GetGameObjectByID(0));
+	objectFactory->AddComponent(ComponentType::TRANSFORM, objectFactory->GetGameObjectByID(0));
 	objectFactory->GetGameObjectByID(0)->Initialize();
 
 	objectFactory->CloneObject(0);
-	GET_COMPONENT(objectFactory->GetGameObjectByID(1), Transform, ComponentType::Transform)->position.x = 450;
-	GET_COMPONENT(objectFactory->GetGameObjectByID(1), Transform, ComponentType::Transform)->position.y = 50;
+	GET_COMPONENT(objectFactory->GetGameObjectByID(1), Transform, ComponentType::TRANSFORM)->position.x = 450;
+	GET_COMPONENT(objectFactory->GetGameObjectByID(1), Transform, ComponentType::TRANSFORM)->position.y = 50;
 
 	//initialize 2500 objects
 	/*for (size_t i{}; i < 2500; ++i) {
 		std::string goName{ "ObjectRunTime" + std::to_string(i + 1) };
 		objectFactory->BuildObjectRunTime(goName);
-		objectFactory->AddComponent(ComponentType::PhysicsBody, objectFactory->GetGameObjectByID(i));
-		objectFactory->AddComponent(ComponentType::Transform, objectFactory->GetGameObjectByID(i));
+		objectFactory->AddComponent(ComponentType::PHYSICS_BODY, objectFactory->GetGameObjectByID(i));
+		objectFactory->AddComponent(ComponentType::TRANSFORM, objectFactory->GetGameObjectByID(i));
 		objectFactory->GetGameObjectByID(i)->Initialize();
 
-		GET_COMPONENT(objectFactory->GetGameObjectByID(i), Transform, ComponentType::Transform)->position.x = rand() % 800;
-		GET_COMPONENT(objectFactory->GetGameObjectByID(i), Transform, ComponentType::Transform)->position.y = rand() % 600;
+		GET_COMPONENT(objectFactory->GetGameObjectByID(i), Transform, ComponentType::TRANSFORM)->position.x = rand() % 800;
+		GET_COMPONENT(objectFactory->GetGameObjectByID(i), Transform, ComponentType::TRANSFORM)->position.y = rand() % 600;
 	}*/
 
 	// De-serializing objects from JSON file
@@ -209,7 +209,7 @@ void OpenGLApplication::OpenGLInit()
 
 	// Modifying value of Object2
 	/*std::cout << "\nUpdating Object2..." << std::endl;
-	GET_COMPONENT(objectFactory->GetGameObjectByName("Object2"), PhysicsBody, ComponentType::PhysicsBody)->velocity.y = 20.5f;
+	GET_COMPONENT(objectFactory->GetGameObjectByName("Object2"), PhysicsBody, ComponentType::PHYSICS_BODY)->velocity.y = 20.5f;
 	objectFactory->SaveObjectsToFile("../scenes/testscene.JSON");
 	std::cout << "Updating Object2... completed." << std::endl;*/
 }
@@ -276,7 +276,7 @@ void OpenGLApplication::OpenGLUpdate()
 			
 			
 			objects.emplace_back(newObject);
-			//OpenGLObject* object = GET_COMPONENT(objectFactory->GetGameObjectByID(0), Transform, ComponentType::Transform)->graphics;
+			//OpenGLObject* object = GET_COMPONENT(objectFactory->GetGameObjectByID(0), Transform, ComponentType::TRANSFORM)->graphics;
 			/*if (object != nullptr) {
 				objects.emplace_back(*object);
 			}
@@ -539,7 +539,7 @@ void OpenGLApplication::OpenGLUpdate()
 		
 		}
 		//for (std::pair<size_t, GameObject*> gObj : objectFactory->GetGameObjectIDMap()) {
-		//	GET_COMPONENT(gObj.second, Transform, ComponentType::Transform)->shape->Draw();
+		//	GET_COMPONENT(gObj.second, Transform, ComponentType::TRANSFORM)->shape->Draw();
 		//
 		//}
 		

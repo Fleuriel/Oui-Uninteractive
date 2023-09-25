@@ -1,4 +1,5 @@
-#pragma once
+#ifndef SYSTEM_MANAGER_H
+#define SYSTEM_MANAGER_H
 
 #include <vector>
 #include "ISystem.h"
@@ -17,3 +18,5 @@ private:
 };
 
 extern SystemManager* sysManager;
+
+#endif

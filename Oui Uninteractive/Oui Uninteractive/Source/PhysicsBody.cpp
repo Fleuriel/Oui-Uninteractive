@@ -31,8 +31,8 @@ PhysicsBody::~PhysicsBody() {
 void PhysicsBody::Initialize() {
 	//Transform
 	//assign pos to transform
-	if (GetOwner()->Has(ComponentType::Transform) != -1) {
-		txPtr = GetOwner()->GetComponentType<Transform>(ComponentType::Transform);
+	if (GetOwner()->Has(ComponentType::TRANSFORM) != -1) {
+		txPtr = GetOwner()->GetComponentType<Transform>(ComponentType::TRANSFORM);
 	}
 	
 	physicsSys->bodyList.push_back(this);

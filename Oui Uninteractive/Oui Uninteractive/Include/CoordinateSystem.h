@@ -1,6 +1,7 @@
-#pragma once
-#include <Vector2D.h>
+#ifndef COORDINATE_SYSTEM_H
+#define COORDINATE_SYSTEM_H
 
+#include <Vector2D.h>
 
 /**************************************************************************
  * @brief A class representing 2D coordinates.
@@ -85,3 +86,5 @@ public:
 private:
     Vector2D Coords;
 };
+
+#endif

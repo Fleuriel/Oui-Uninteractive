@@ -1,4 +1,6 @@
-#pragma once
+#ifndef PHYSICS_BODY_H
+#define PHYSICS_BODY_H
+
 #include "IComponent.h"
 #include "Transform.h"
 #include "Vector2D.h"
@@ -38,4 +40,4 @@ public:
 	bool isStatic; // flag for engine to ignore objects that we won't move.
 };
 
-
+#endif

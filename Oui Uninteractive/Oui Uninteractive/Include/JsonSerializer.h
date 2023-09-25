@@ -7,7 +7,8 @@
  * @date		  09-15-2023
  * @brief
  *************************************************************************/
-#pragma once
+#ifndef JSON_SERIALIZER_H
+#define JSON_SERIALIZER_H
 
 #include "rapidjson/document.h"
 #include "rapidjson/writer.h"
@@ -22,3 +23,5 @@ public:
 	bool ReadJSONFile(const std::string& filePath, rapidjson::Document& docRef);
 	bool WriteJSONFile(const std::string& filePath, rapidjson::Document& docRef);
 };
+
+#endif
