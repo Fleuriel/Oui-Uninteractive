@@ -11,6 +11,16 @@
 #include "Editor.h"
 #include <iostream>
 
+static void HelpMarker(std::string desc) {
+	ImGui::TextDisabled("(?)");
+	if (ImGui::BeginItemTooltip()) {
+		ImGui::PushTextWrapPos(ImGui::GetFontSize() * 35.0f);
+		ImGui::TextUnformatted(desc.c_str());
+		ImGui::PopTextWrapPos();
+		ImGui::EndTooltip();
+	}
+}
+
 void UsingImGui::Init(GLFWwindow* window, const char* glsl_vers) {
 	IMGUI_CHECKVERSION();
 	ImGui::CreateContext();
@@ -130,42 +140,98 @@ void Editor::CreateObjectList() {
 	{
 		ImGui::BeginChild("left pane", ImVec2(150, 0), true);
 		int objCount = objectFactory->GetGameObjectIDMap().size();
-		
+		std::string prevName;
 
-		for (int i = 0; i < objCount; i++)
-		{
+		for (int i = 0; i < objCount; i++) {
+			// Get the details of individual object
 			std::string objName = objectFactory->GetGameObjectIDMap().at(i)->GetName();
 			size_t objID = objectFactory->GetGameObjectIDMap().at(i)->GetGameObjectID();
-			//char label[128];
-			//sprintf(label, "MyObject %d", i);
-			if (ImGui::Selectable(objName.c_str(), selectedID == i))
-				selectedID = objID;
+			std::string newName = objName;
+			// Check if its a copied object
+			if (prevName == objName) {
+				newName += "(" + std::to_string(i) + ")"; // concat copy number
+			}
+			// Check and set which entry is selected 
+			if (ImGui::Selectable(newName.c_str(), selectedID == i)) {			
+				selectedID = i;
+			}		
+			prevName = objName;
 		}
 		ImGui::EndChild();
 	}
 	ImGui::SameLine();
 
+	//// Right
+	//{
+	//	ImGui::BeginGroup();
+	//	ImGui::BeginChild("item view", ImVec2(0, -ImGui::GetFrameHeightWithSpacing())); // Leave room for 1 line below us
+	//	ImGui::Text("Object ID: %d", objectFactory->GetGameObjectIDMap().at(selectedID)->GetGameObjectID());
+	//	ImGui::Separator();
+	//	if (ImGui::BeginTabBar("##Tabs", ImGuiTabBarFlags_None))
+	//	{
+
+	//		if (ImGui::BeginTabItem("Details"))
+	//		{
+	//			ImGui::Text("ID: 0123456789");
+	//			ImGui::EndTabItem();
+	//		}
+	//		ImGui::EndTabBar();
+	//	}
+	//	ImGui::EndChild();
+	//	if (ImGui::Button("Revert")) {}
+	//	ImGui::SameLine();
+	//	if (ImGui::Button("Save")) {}
+	//	ImGui::EndGroup();
+	//}
 	// Right
 	{
 		ImGui::BeginGroup();
 		ImGui::BeginChild("item view", ImVec2(0, -ImGui::GetFrameHeightWithSpacing())); // Leave room for 1 line below us
-		ImGui::Text("Object ID: %d", selectedID);
-		ImGui::Separator();
-		if (ImGui::BeginTabBar("##Tabs", ImGuiTabBarFlags_None))
-		{
-			if (ImGui::BeginTabItem("Description"))
-			{
-				ImGui::TextWrapped("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. ");
-				ImGui::EndTabItem();
-			}
-			if (ImGui::BeginTabItem("Details"))
-			{
-				ImGui::Text("ID: 0123456789");
-				ImGui::EndTabItem();
-			}
-			ImGui::EndTabBar();
+		if (ImGui::CollapsingHeader("Details")) {		
+			ImGui::Text("Object ID: %d", objectFactory->GetGameObjectIDMap().at(selectedID)->GetGameObjectID());
+			ImGui::Text("Size: ");
+			ImGui::Text("Rotation: ");
+			ImGui::Separator();
 		}
+		if (ImGui::CollapsingHeader("Modification")) {
+			static int addCount = 0;
+			static int cloneCount = 0;
+			// Adding objects
+			ImGui::InputInt("Add Count", &addCount);
+			ImGui::SameLine(); 
+			if (ImGui::Button("Add")) {
+				std::cout << addCount;
+			}
+			ImGui::SameLine(); 
+			HelpMarker("Use this to add as many objects as you want");
+			
+			// Cloning objects
+			ImGui::InputInt("Clone Count", &cloneCount);
+			ImGui::SameLine();
+			if (ImGui::Button("Clone")) {
+				std::cout << cloneCount;
+			}
+			ImGui::SameLine(); 
+			HelpMarker("Use this to clone as many objects as you want");
+			
+			// Deleting objects
+			if (ImGui::Button("Delete")) {
+				std::cout << "Fk u in particular";
+			}
+			ImGui::SameLine();
+			if (ImGui::Button("Delete All")) {
+				std::cout << "Bye bye objects";
+			}
+
+
+
+			ImGui::Separator();
+		}
+			
+		
+		
 		ImGui::EndChild();
+
 		if (ImGui::Button("Revert")) {}
 		ImGui::SameLine();
 		if (ImGui::Button("Save")) {}
