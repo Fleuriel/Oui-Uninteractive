@@ -38,8 +38,10 @@ void Physics::Initialize() {
 * @return void
 *************************************************************************/
 void Physics::Update(float dt) {
-
-	for (PhysicsBody* body : bodyList) {
+	std::map<size_t, PhysicsBody*>::iterator it = bodyList.begin();
+	std::map<size_t, PhysicsBody*>::iterator it2 = bodyList.begin();
+	for (; it != bodyList.end(); it++) {
+		PhysicsBody* body = it->second;
 		if (body->isStatic) {
 			continue;
 		}
@@ -63,7 +65,8 @@ void Physics::Update(float dt) {
 	
 
 		//Test collision
-		for (PhysicsBody* body2 : bodyList) {
+		for (; it2 != bodyList.end(); it2++) {
+			PhysicsBody* body2 = it2->second;
 			if (body2->GetOwner()->GetGameObjectID() == body->GetOwner()->GetGameObjectID()) {
 				continue;
 			}
@@ -82,7 +85,9 @@ void Physics::Update(float dt) {
 * @return void
 *************************************************************************/
 void Physics::AddForce(Vec2 force) {
-	for (PhysicsBody* body : bodyList) {
+	std::map<size_t, PhysicsBody*>::iterator it = bodyList.begin();
+	for (; it != bodyList.end(); it++) {
+		PhysicsBody* body = it->second;
 		body->accumulatedForce += force;
 	}
 }
@@ -92,7 +97,9 @@ void Physics::AddForce(Vec2 force) {
 * @return void
 *************************************************************************/
 void Physics::SetPosition(Vec2 pos) {
-	for (PhysicsBody* body : bodyList) {
+	std::map<size_t, PhysicsBody*>::iterator it = bodyList.begin();
+	for (; it != bodyList.end(); it++) {
+		PhysicsBody* body = it->second;
 		body->txPtr->position = pos;
 	}
 }
@@ -104,7 +111,7 @@ void Physics::SetPosition(Vec2 pos) {
 *************************************************************************/
 void Physics::SetPosition(Vec2 pos, size_t ID) {
 	
-	if (ID < bodyList.size()) {
+	if (objectFactory->GetGameObjectByID(ID) != nullptr) {
 		bodyList.at(ID)->txPtr->position = pos;	
 	}
 }
@@ -114,7 +121,9 @@ void Physics::SetPosition(Vec2 pos, size_t ID) {
 * @return void
 *************************************************************************/
 void Physics::SetVelocity(Vec2 newVelocity) {
-	for (PhysicsBody* body : bodyList) {
+	std::map<size_t, PhysicsBody*>::iterator it = bodyList.begin();
+	for (; it != bodyList.end(); it++) {
+		PhysicsBody* body = it->second;
 		body->velocity = newVelocity;
 	}
 }
@@ -125,7 +134,7 @@ void Physics::SetVelocity(Vec2 newVelocity) {
 * @return void
 *************************************************************************/
 void Physics::SetVelocity(Vec2 velocity, size_t ID) {
-	if (ID < bodyList.size()) {
+	if (objectFactory->GetGameObjectByID(ID) != nullptr) {
 		bodyList.at(ID)->velocity = velocity;
 	}
 }
@@ -135,7 +144,9 @@ void Physics::SetVelocity(Vec2 velocity, size_t ID) {
 * @return void
 *************************************************************************/
 void Physics::SetRotationSpeed(float rotSpeed) {
-	for (PhysicsBody* body : bodyList) {
+	std::map<size_t, PhysicsBody*>::iterator it = bodyList.begin();
+	for (; it != bodyList.end(); it++) {
+		PhysicsBody* body = it->second;
 		body->rotationSpeed = rotSpeed;
 	}
 }
@@ -146,17 +157,19 @@ void Physics::SetRotationSpeed(float rotSpeed) {
 * @return void
 *************************************************************************/
 void Physics::SetRotationSpeed(float rotSpeed, size_t ID) {
-	if (ID < bodyList.size()) {
+	if (objectFactory->GetGameObjectByID(ID) != nullptr) {
 		bodyList.at(ID)->rotationSpeed = rotSpeed;
 	}
 }
 void Physics::SetCurrentRotationSpeed(float rotSpeed) {
-	for (PhysicsBody* body : bodyList) {
+	std::map<size_t, PhysicsBody*>::iterator it = bodyList.begin();
+	for (; it != bodyList.end(); it++) {
+		PhysicsBody* body = it->second;
 		body->currentRotationSpeed = rotSpeed;
 	}
 }
 void Physics::SetCurrentRotationSpeed(float rotSpeed, size_t ID) {
-	if (ID < bodyList.size()) {
+	if (objectFactory->GetGameObjectByID(ID) != nullptr) {
 		bodyList.at(ID)->currentRotationSpeed = rotSpeed;
 	}
 }
@@ -167,7 +180,7 @@ void Physics::SetCurrentRotationSpeed(float rotSpeed, size_t ID) {
 * @return void
 *************************************************************************/
 void Physics::SetDirection(Vec2 dir, size_t ID) {
-	if (ID < bodyList.size()) {
+	if (objectFactory->GetGameObjectByID(ID) != nullptr) {
 		Vector2DNormalize(bodyList.at(ID)->direction, dir);
 	}
 }
@@ -177,7 +190,7 @@ void Physics::SetDirection(Vec2 dir, size_t ID) {
 * @return void
 *************************************************************************/
 void Physics::MoveBackwards(size_t ID) {
-	if (ID < bodyList.size()) {
+	if (objectFactory->GetGameObjectByID(ID) != nullptr) {
 		bodyList.at(ID)->velocity = bodyList.at(ID)->speed * Vec2(-bodyList.at(ID)->direction.x, -bodyList.at(ID)->direction.y);
 	}
 }
@@ -187,7 +200,7 @@ void Physics::MoveBackwards(size_t ID) {
 * @return void
 *************************************************************************/
 void Physics::MoveForward(size_t ID) {
-	if (ID < bodyList.size()) {
+	if (objectFactory->GetGameObjectByID(ID) != nullptr) {
 		bodyList.at(ID)->velocity = bodyList.at(ID)->speed * Vec2(bodyList.at(ID)->direction.x, bodyList.at(ID)->direction.y);
 	}
 }
@@ -197,7 +210,7 @@ void Physics::MoveForward(size_t ID) {
 * @return void
 *************************************************************************/
 void Physics::MoveLeft(size_t ID) {
-	if (ID < bodyList.size()) {
+	if (objectFactory->GetGameObjectByID(ID) != nullptr) {
 		bodyList.at(ID)->velocity = bodyList.at(ID)->speed * Vec2(-bodyList.at(ID)->direction.x, bodyList.at(ID)->direction.y);
 	}
 }
@@ -207,7 +220,7 @@ void Physics::MoveLeft(size_t ID) {
 * @return void
 *************************************************************************/
 void Physics::MoveRight(size_t ID) {
-	if (ID < bodyList.size()) {
+	if (objectFactory->GetGameObjectByID(ID) != nullptr) {
 		bodyList.at(ID)->velocity = bodyList.at(ID)->speed * Vec2(bodyList.at(ID)->direction.x, bodyList.at(ID)->direction.y);
 	}
 }

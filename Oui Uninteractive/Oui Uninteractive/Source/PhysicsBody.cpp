@@ -21,6 +21,7 @@ PhysicsBody::PhysicsBody() {
 }
 
 PhysicsBody::~PhysicsBody() {
+	physicsSys->bodyList.erase(GetOwner()->GetGameObjectID());
 	delete boundingbox;
 }
 
@@ -34,8 +35,8 @@ void PhysicsBody::Initialize() {
 	if (GetOwner()->Has(ComponentType::TRANSFORM) != -1) {
 		txPtr = GetOwner()->GetComponentType<Transform>(ComponentType::TRANSFORM);
 	}
-	
-	physicsSys->bodyList.push_back(this);
+	//physicsSys->bodyList.push_back(this);
+	physicsSys->bodyList.insert(std::pair<size_t, PhysicsBody*>(GetOwner()->GetGameObjectID(), this));
 }
 
 /**************************************************************************
@@ -56,7 +57,6 @@ PhysicsBody* PhysicsBody::Clone() const{
 	
 	newBody->speed = speed;
 	newBody->rotationSpeed = rotationSpeed;
-	newBody->boundingbox = new AABB();
 	newBody->boundingbox->min = boundingbox->min;
 	newBody->boundingbox->max = boundingbox->max;
 	newBody->boundingbox->pointer = newBody;

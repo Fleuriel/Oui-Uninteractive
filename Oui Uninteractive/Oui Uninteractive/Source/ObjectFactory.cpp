@@ -127,11 +127,12 @@ void ObjectFactory::BuildObjectFromFile(const std::string& filePath) {
 				}
 			}
 			
-			// Initialize the components in the current object
-			gameObject->Initialize();
-
 			// Assign an ID to the game object
 			AssignObjectID(gameObject);
+
+			// Initialize the components in the current object
+			gameObject->Initialize();
+			
 		}		
 	}
 	else {
@@ -249,12 +250,15 @@ void ObjectFactory::Update(float dt) {
 	// Destroy game objects in destroy list
 	for (; it != gameObjectDestroyList.end(); it++) {
 		GameObject* gameObject = *it;
-		for (int i = 0; i < gameObject->componentList.size(); i++) {
-			delete gameObject->componentList.at(i);
-		}
+		std::map<size_t, GameObject*>::iterator it2 = gameObjectIDMap.find(gameObject->gameObjectID);
+
+		//for (int i = 0; i < gameObject->componentList.size(); i++) {
+		//	delete gameObject->componentList.at(i);
+		//}
 
 		//Insert double free protection here
 		delete gameObject;
+		gameObjectIDMap.erase(it2);
 	}
 
 	gameObjectDestroyList.clear();
@@ -268,7 +272,7 @@ void ObjectFactory::Update(float dt) {
 void ObjectFactory::AssignObjectID(GameObject* gameObject) {
 	// Assign ID to gameObject
 	gameObject->gameObjectID = gameObjectCurrentID;
-
+		
 	// Add gameObject to the map
 	gameObjectIDMap[gameObjectCurrentID] = gameObject;
 
@@ -293,12 +297,14 @@ void ObjectFactory::DestroyAllObjects() {
 	std::map<size_t, GameObject*>::iterator it = gameObjectIDMap.begin();
 
 	while (it != gameObjectIDMap.end()) {
-		for (int i = 0; i < it->second->componentList.size(); i++) {
+		/*for (int i = 0; i < it->second->componentList.size(); i++) {
 			delete it->second->componentList.at(i);
-		}
+		}*/
 		delete it->second;
 		it++;
 	}
+	gameObjectIDMap.clear();
+	gameObjectCurrentID = 0;
 }
 
 /**************************************************************************
