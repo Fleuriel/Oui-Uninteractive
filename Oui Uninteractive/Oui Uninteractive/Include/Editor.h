@@ -29,6 +29,7 @@ public:
 	virtual void Update();
 	void Draw();
 	void Exit();
+	static void HelpMarker(std::string desc);
 };
 
 
