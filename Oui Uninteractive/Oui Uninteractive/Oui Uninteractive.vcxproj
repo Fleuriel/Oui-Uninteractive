@@ -146,7 +146,7 @@
     <RunCodeAnalysis>false</RunCodeAnalysis>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>C:\Users\User\Documents\GitHub\Oui-Uninteractive\Oui Uninteractive\lib\stb-master;$(IncludePath)</IncludePath>
+    <IncludePath>..\lib\stb-master;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
