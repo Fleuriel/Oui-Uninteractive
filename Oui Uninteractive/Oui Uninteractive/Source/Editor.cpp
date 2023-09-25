@@ -187,19 +187,23 @@ void Editor::CreateObjectList() {
 	{
 		ImGui::BeginGroup();
 		ImGui::BeginChild("item view", ImVec2(0, -ImGui::GetFrameHeightWithSpacing())); // Leave room for 1 line below us
+		// Detail Tab
 		if (ImGui::CollapsingHeader("Details")) {		
 			ImGui::Text("Object ID: %d", objectFactory->GetGameObjectIDMap().at(selectedID)->GetGameObjectID());
 			ImGui::Text("Size: ");
 			ImGui::Text("Rotation: ");
 			ImGui::Separator();
 		}
-		if (ImGui::CollapsingHeader("Modification")) {
+		// Master object controller
+		if (ImGui::CollapsingHeader("Master Object Manager")) {
 			static int addCount = 0;
 			static int cloneCount = 0;
+
 			// Adding objects
 			ImGui::InputInt("Add Count", &addCount);
 			ImGui::SameLine(); 
 			if (ImGui::Button("Add")) {
+				// For tristan muah
 				std::cout << addCount;
 			}
 			ImGui::SameLine(); 
@@ -209,6 +213,7 @@ void Editor::CreateObjectList() {
 			ImGui::InputInt("Clone Count", &cloneCount);
 			ImGui::SameLine();
 			if (ImGui::Button("Clone")) {
+				// For tristan muah
 				std::cout << cloneCount;
 			}
 			ImGui::SameLine(); 
@@ -216,18 +221,27 @@ void Editor::CreateObjectList() {
 			
 			// Deleting objects
 			if (ImGui::Button("Delete")) {
+				// For tristan muah
 				std::cout << "Fk u in particular";
 			}
 			ImGui::SameLine();
 			if (ImGui::Button("Delete All")) {
+				// For tristan muah
 				std::cout << "Bye bye objects";
 			}
-
-
-
 			ImGui::Separator();
 		}
-			
+		// Individual Object Controls
+		if (ImGui::CollapsingHeader("Object Modifier")) {
+			static float xPos, yPos, xScale, yScale, angle, rotSpeed;
+			ImGui::SliderFloat("X-Position", &xPos, 0.0f, 1.0f, "%.2f"); // Slider for X-Position
+			ImGui::SliderFloat("Y-Position", &yPos, 0.0f, 1.0f, "%.2f"); // Slider for Y-Position
+			ImGui::SliderFloat("X-Scale", &xScale, 0.0f, 1.0f, "%.2f"); // Slider for X-Scale
+			ImGui::SliderFloat("Y-Scale", &yScale, 0.0f, 1.0f, "%.2f"); // Slider for Y-Scale
+			ImGui::SliderFloat("Angle", &angle, 0.0f, 1.0f, "%.2f"); // Slider for true angle
+			ImGui::SliderFloat("Rotation Speed", &rotSpeed, 0.0f, 1.0f, "%.2f"); // Slider for rotation speed
+			ImGui::Separator();
+		}
 		
 		
 		ImGui::EndChild();
