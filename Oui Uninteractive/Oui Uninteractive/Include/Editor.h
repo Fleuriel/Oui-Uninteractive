@@ -37,8 +37,6 @@ public:
 	static void CreateMasterPanel();
 	static void CreateSoundPanel();
 	static void CreateObjectList();
-	static bool ReadJSONFile(std::string filePath, rapidjson::Document &docRef);
-	static bool WriteJSONFile(std::string filePath, rapidjson::Document& docRef);
 
 public:
 	bool soundPanel;
@@ -54,12 +52,3 @@ struct Panels {
 };
 static Panels panelList;
 
-// Temporary simulation of obj data 
-struct tempObjData {
-	std::string name;
-	int size;
-	std::string colour;
-	float smell;
-	bool alive;
-};	
-static tempObjData objList;

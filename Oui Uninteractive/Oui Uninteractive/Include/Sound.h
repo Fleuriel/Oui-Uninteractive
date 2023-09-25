@@ -28,8 +28,8 @@ public:
 	 ~SoundManager() ;
 
 	// File paths to the respective sounds
-	std::filesystem::path bgmPath{"../Sounds/bgm"};
-	std::filesystem::path sfxPath{"../Sounds/sfx"};
+	std::filesystem::path bgmPath{"../sounds/bgm"};
+	std::filesystem::path sfxPath{"../sounds/sfx"};
 
 	FMOD_RESULT result; // To store FMOD function results
 

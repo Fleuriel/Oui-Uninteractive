@@ -62,7 +62,7 @@ void OpenGLApplication::OpenGLWindowInit()
 	std::string filePath = "../window-data/window-data.JSON";
 	rapidjson::Document windowDoc;
 	// Initialize window dimensions from JSON
-	if (Editor::ReadJSONFile(filePath, windowDoc)) {
+	if (serializer.ReadJSONFile(filePath, windowDoc)) {
 		windowSize.first = windowDoc["windowX"].GetInt();
 		windowSize.second = windowDoc["windowY"].GetInt();
 	}
@@ -118,11 +118,13 @@ void OpenGLApplication::OpenGLWindowCleanup()
 	// Save window size
 	std::string filePath = "../window-data/window-data.JSON";
 	rapidjson::Document windowDoc;
-	if (Editor::ReadJSONFile(filePath, windowDoc)) {
+	if (serializer.ReadJSONFile(filePath, windowDoc)) {
 		windowDoc["windowX"] = windowSize.first;
 		windowDoc["windowY"] = windowSize.second;
-		Editor::WriteJSONFile(filePath, windowDoc);
-	}
+		serializer.WriteJSONFile(filePath, windowDoc);
+	};
+
+
 	myImGui.Exit();
 	glfwTerminate();
 }
@@ -637,5 +639,6 @@ void OpenGLApplication::OpenGLWindowResizeCallback(GLFWwindow* window, int width
 	// Update the window dimensions once changed
 	// set callback for the window size
 	glViewport(0, 0, width, height);
-
+	windowSize.first = width;
+	windowSize.second = height;
 }
