@@ -36,6 +36,7 @@ public:
 	void Init();
 	static void CreateMasterPanel();
 	static void CreateSoundPanel();
+	static void CreateObjectList();
 	static bool ReadJSONFile(std::string filePath, rapidjson::Document &docRef);
 	static bool WriteJSONFile(std::string filePath, rapidjson::Document& docRef);
 
@@ -48,8 +49,8 @@ private:
 // Store panel selection
 struct Panels {
 	bool soundPanel;
+	bool objectPanel;
 	bool Panel1;
-	bool Panel2;
 };
 static Panels panelList;
 
