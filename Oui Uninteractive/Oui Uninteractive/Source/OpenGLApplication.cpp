@@ -43,6 +43,8 @@ GLfloat squareX = 0.0f, squareY = 0.0f;
 OpenGLObject Objects;
 std::list<OpenGLObject> objects; // singleton
 
+ParticleSystem particleSystem;
+
 OpenGLObject::OpenGLModel mdl;
 
 bool toggleMode = false;
@@ -315,7 +317,7 @@ void OpenGLApplication::OpenGLUpdate()
 
 			newparticle.object.InitObjects(300, 300, 180, 180,45,45);
 			//std::cout << "R : " << newparticle.object.color.r << "\nG : " << newparticle.object.color.g << "\nB : " << newparticle.object.color.b << "\n";
-			objects.emplace_back(newparticle.object);
+			//objects.emplace_back(newparticle.object);
 		}
 
 
@@ -503,6 +505,8 @@ void OpenGLApplication::OpenGLUpdate()
 		}
 
 		updateStatesForNextFrame();
+
+		particleSystem.update();
 		
 		//std::cout << GetFPS() << '\n';
 		
