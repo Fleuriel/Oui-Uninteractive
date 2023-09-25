@@ -23,7 +23,8 @@
 
 #include <RandomUtilities.h>
 #include <GameStateManager.h>
-
+#define STB_IMAGE_IMPLEMENTATION
+#include <stb_image.h>
 std::vector<glm::vec2> OpenGLObject::square;
 std::vector<glm::vec2> OpenGLObject::triangle;
 std::vector<std::string> OpenGLObject::mesh_Directory;
@@ -39,12 +40,13 @@ std::vector<OpenGLObject::OpenGLModel> OpenGLObject::models;
 std::vector<OpenGLShader> OpenGLObject::shader{};
 GLuint OpenGLObject::ShaderProgram{};
 
+std::vector<GLuint> OpenGLObject::textures;
+
 std::map<std::string, OpenGLObject::OpenGLModel> OpenGLObject::Model_Storage;
 std::map<std::string, OpenGLObject> OpenGLObject::Object_Storage;
 
 GLuint OpenGLObject::VAO = 0;
 GLuint OpenGLObject::VBO = 0;
-
 
 int importTexture, secondTexture;
 
@@ -79,11 +81,17 @@ void OpenGLObject::Init()
 	init_shdrpgms_cont(fileName);
 	
 	
-	importTexture = OpenGLObject::Setup_TextureObject("../texture/duck-rgba-256.tex");
-	//secondTexture = OpenGLObject::Setup_TextureObject("../texture/pepethefrog.tex");
+	importTexture = OpenGLObject::Setup_TextureObject("../texture/pepega.jpg");
+	secondTexture = OpenGLObject::Setup_TextureObject("../texture/pepe.jpg");
 
-	models.emplace_back(OpenGLObject::Box_Model(color, importTexture));
-	models.emplace_back(OpenGLObject::Box_Model(color, secondTexture));
+
+
+	textures.emplace_back(importTexture);
+	textures.emplace_back(secondTexture);
+
+
+	models.emplace_back(OpenGLObject::Box_Model(0, color, importTexture));
+	models.emplace_back(OpenGLObject::Box_Model(1 ,color, secondTexture));
 
 	
 
@@ -247,8 +255,10 @@ void OpenGLObject::OpenGLModel::draw() const
 * @param color			Color <R,G,B>
 * @return OpenGLObject  
 ***************************************************************************************/
-OpenGLObject::OpenGLModel OpenGLObject::Box_Model(glm::vec3 color, int textureInput)
+OpenGLObject::OpenGLModel OpenGLObject::Box_Model(int ID, glm::vec3 color, int textureInput)
 {
+
+
 	struct Vertex {
 		glm::vec2 position;        // Vertex position
 		glm::vec3 color;           // Vertex color
@@ -258,13 +268,15 @@ OpenGLObject::OpenGLModel OpenGLObject::Box_Model(glm::vec3 color, int textureIn
 	// Define the vertices of a textured square
 	std::vector<Vertex> vertices
 	{
-		{ glm::vec2(0.5f, -0.5f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec2(1.0f, 0.0f) },
-		{ glm::vec2(0.5f, 0.5f),  glm::vec3(1.0f, 1.0f, 1.0f), glm::vec2(1.0f, 1.0f) },
-		{ glm::vec2(-0.5f, 0.5f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec2(0.0f, 1.0f) },
-		{ glm::vec2(-0.5f, -0.5f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec2(0.0f, 0.0f) }
+		 { glm::vec2(0.5f, -0.5f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec2(1.0f, 1.0f) }, // Bottom-right
+		 { glm::vec2(0.5f, 0.5f),  glm::vec3(1.0f, 1.0f, 1.0f), glm::vec2(1.0f, 0.0f) }, // Top-right
+		 { glm::vec2(-0.5f, 0.5f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec2(0.0f, 0.0f) }, // Top-left
+		 { glm::vec2(-0.5f, -0.5f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec2(0.0f, 1.0f) }  // Bottom-left
 	};
 
 	OpenGLModel mdl;
+
+	mdl.ModelID = ID;
 
 	// Create and bind a buffer for vertex data
 	GLuint vbo_hdl;
@@ -312,177 +324,6 @@ OpenGLObject::OpenGLModel OpenGLObject::Box_Model(glm::vec3 color, int textureIn
 	mdl.primitive_cnt = vertices.size();
 
 	return mdl;
-
-
-	//struct Vertex {
-	//	glm::vec2 position;        // Vertex position
-	//	glm::vec3 color;           // Vertex color
-	//	glm::vec2 textureCoord;    // Texture coordinates
-	//};
-	//
-	//// Define the vertices of a textured square
-	//std::vector<Vertex> vertices
-	//{
-	//	{ glm::vec2(0.5f, -0.5f), glm::vec3(1.0f, 0.0f, 0.0f), glm::vec2(1.0f, 0.0f) },
-	//	{ glm::vec2(0.5f, 0.5f),  glm::vec3(0.0f, 1.0f, 0.0f), glm::vec2(1.0f, 1.0f) },
-	//	{ glm::vec2(-0.5f, 0.5f), glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2(0.0f, 1.0f) },
-	//	{ glm::vec2(-0.5f, -0.5f), glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2(0.0f, 0.0f) }
-	//};
-	//
-	//OpenGLModel mdl;
-	//
-	//// Create and bind a buffer for vertex data
-	//GLuint vbo_hdl;
-	//glCreateBuffers(1, &vbo_hdl);
-	//
-	//// Allocate and fill data store for vertices
-	//glNamedBufferStorage(vbo_hdl, sizeof(Vertex) * vertices.size(), vertices.data(), GL_DYNAMIC_STORAGE_BIT);
-	//
-	//// Create and bind a vertex array object (VAO)
-	//GLuint vaoid;
-	//glCreateVertexArrays(1, &vaoid);
-	//
-	//// Vertex position attribute
-	//glEnableVertexArrayAttrib(vaoid, 0);
-	//glVertexArrayVertexBuffer(vaoid, 0, vbo_hdl, offsetof(Vertex, position), sizeof(Vertex));
-	//glVertexArrayAttribFormat(vaoid, 0, 2, GL_FLOAT, GL_FALSE, 0);
-	//glVertexArrayAttribBinding(vaoid, 0, 0);
-	//
-	//// Vertex color attribute
-	//glEnableVertexArrayAttrib(vaoid, 1);
-	//glVertexArrayVertexBuffer(vaoid, 1, vbo_hdl, offsetof(Vertex, color), sizeof(Vertex));
-	//glVertexArrayAttribFormat(vaoid, 1, 3, GL_FLOAT, GL_FALSE, 0);
-	//glVertexArrayAttribBinding(vaoid, 1, 1);
-	//
-	//// Texture coordinates attribute
-	//glEnableVertexArrayAttrib(vaoid, 2);
-	//glVertexArrayVertexBuffer(vaoid, 2, vbo_hdl, offsetof(Vertex, textureCoord), sizeof(Vertex));
-	//glVertexArrayAttribFormat(vaoid, 2, 2, GL_FLOAT, GL_FALSE, 0);
-	//glVertexArrayAttribBinding(vaoid, 2, 2);
-	//
-	//// Set up index buffer for rendering
-	//std::array<GLushort, 4> idx_vtx = { 0, 1, 2, 3 };
-	//GLuint ebo_hdl;
-	//glCreateBuffers(1, &ebo_hdl);
-	//glNamedBufferStorage(ebo_hdl, sizeof(GLushort) * idx_vtx.size(), idx_vtx.data(), GL_DYNAMIC_STORAGE_BIT);
-	//glVertexArrayElementBuffer(vaoid, ebo_hdl);
-	//
-	//// Store information in the model structure
-	//mdl.vaoid = vaoid;
-	//mdl.primitive_type = GL_TRIANGLE_STRIP;
-	//mdl.draw_cnt = idx_vtx.size();
-	//mdl.primitive_cnt = vertices.size();
-	//
-	//return mdl;
-
-
-
-
-
-	//struct Vertex {
-	//	glm::vec2 position; // Vertex position
-	//	glm::vec3 color;    // Vertex color
-	//	glm::vec2 textureCoord; // Texture coordinates
-	//};
-
-	//std::vector<Vertex> vertices
-	//{
-	//	{ glm::vec2(0.5f, -0.5f), glm::vec3(1.0f, 0.0f, 0.0f), glm::vec2(1.0f, 0.0f) },
-	//	{ glm::vec2(0.5f, 0.5f),  glm::vec3(0.0f, 1.0f, 0.0f), glm::vec2(1.0f, 1.0f) },
-	//	{ glm::vec2(-0.5f, 0.5f), glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2(0.0f, 1.0f) },
-	//	{ glm::vec2(-0.5f, -0.5f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec2(0.0f, 0.0f) }
-	//};
-
-	//std::vector<glm::vec2> pos_vtx
-	//{
-	//	glm::vec2(0.5f, -0.5f), glm::vec2(0.5f, 0.5f),
-	//	glm::vec2(-0.5f, 0.5f), glm::vec2(-0.5f, -0.5f)
-	//};
-
-
-	//std::vector<glm::vec3> clr_vtx;
-
-	//for (size_t i{}; i < pos_vtx.size(); i++)
-	//{
-	//	//float red = 1.0f;
-	//	//float blue = 0.5f;
-	//	//float green = 0.25f;
-	//	//
-	//	//glm::vec3 color_to_push = { red, green, blue };
-	//	clr_vtx.push_back(color);
-	//}
-
-	//OpenGLModel mdl;
-	//// Allocating buffer objects
-	//// transfer vertex position and colowr attributes to VBO
-	//GLuint vbo_hdl;
-	//glCreateBuffers(1, &vbo_hdl);
-
-	////Allocating and filling data store
-	//glNamedBufferStorage(vbo_hdl,
-	//	sizeof(glm::vec2) * pos_vtx.size() + sizeof(glm::vec3) * clr_vtx.size(),
-	//	nullptr, GL_DYNAMIC_STORAGE_BIT);
-	////transfer vertex position data
-	//glNamedBufferSubData(vbo_hdl, 0,
-	//	sizeof(glm::vec2) * pos_vtx.size(), pos_vtx.data());
-	////transfer vertex color data
-	//glNamedBufferSubData(vbo_hdl, sizeof(glm::vec2) * pos_vtx.size(),
-	//	sizeof(glm::vec3) * clr_vtx.size(), clr_vtx.data());
-
-	//GLuint vaoid;
-	//// encapsulate information about contents of VBO and VBO handlee
-	//// to another object called VAO
-	//glCreateVertexArrays(1, &vaoid); // vaoid is data member of GLApp::GLModel
-
-	//// for vertex position array, we use vertex attribute index 8
-	//// and vertex buffer binding point 3
-	//glEnableVertexArrayAttrib(vaoid, 0);
-	//glVertexArrayVertexBuffer(vaoid, 3, vbo_hdl, 0, sizeof(glm::vec2));
-	//glVertexArrayAttribFormat(vaoid, 0, 2, GL_FLOAT, GL_FALSE, 0);
-	//glVertexArrayAttribBinding(vaoid, 0, 3);
-
-	//// Color Attributes
-	//// for vertex color array, we use vertex attribute index 9
-	//// and vertex buffer binding point 4
-	//glEnableVertexArrayAttrib(vaoid, 1);
-	//glVertexArrayVertexBuffer(vaoid, 4, vbo_hdl,
-	//	sizeof(glm::vec2) * pos_vtx.size(), sizeof(glm::vec3));
-	//glVertexArrayAttribFormat(vaoid, 1, 3, GL_FLOAT, GL_FALSE, 0);
-	//glVertexArrayAttribBinding(vaoid, 1, 4);
-
-	//// represents indices of vertices that will define 2 triangles with
-	//// counterclockwise winding
-	//std::array<GLushort, 6> idx_vtx{
-	//	0, 1, 2,  // 1st triangle with counterclockwise winding is specified by
-	//	// vertices in VBOs with indices 0,1,2
-	//	2, 3, 0	  // 2nd trinagle with counter clockwise winding 
-	//};
-
-	//GLuint idx_elem_cnt;
-	////get the number of indices in the idx_vtx array
-	//idx_elem_cnt = idx_vtx.size();
-
-	////allocate an element buffer object and fill it with data from idx_vtx
-	//GLuint ebo_hdl;
-	//glCreateBuffers(1, &ebo_hdl);
-	//glNamedBufferStorage(ebo_hdl,
-	//	sizeof(GLushort) * idx_elem_cnt,
-	//	reinterpret_cast<GLvoid*>(idx_vtx.data()),
-	//	GL_DYNAMIC_STORAGE_BIT);
-
-	////attached the element buffer object to the vertex array object
-	////and unbind the vertex array object
-	//glVertexArrayElementBuffer(vaoid, ebo_hdl);
-	//glBindVertexArray(0);
-
-	//mdl.vaoid = vaoid;
-	//mdl.primitive_type = GL_TRIANGLES;
-	//mdl.draw_cnt = idx_vtx.size();
-	//mdl.primitive_cnt = pos_vtx.size();
-	//return mdl;
-
-
-
 }
 
 
@@ -570,12 +411,16 @@ void OpenGLObject::Update(float newX, float newY, float scale , float newAngle ,
 void OpenGLObject::Draw() const
 {
 	//texture object is to use texture image unit 6
-	glBindTextureUnit(6, importTexture);
 
+	for (GLuint texture : textures)
+	{
 
+		glBindTextureUnit(6, secondTexture);
 
-	glTextureParameteri(importTexture, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);//Repeat wrap
-	glTextureParameteri(importTexture, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);//Repeat wrap
+	}
+
+	//glTextureParameteri(secondTexture, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);//Repeat wrap
+	//glTextureParameteri(secondTexture, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);//Repeat wrap
 
 	shdrpgms[shd_ref].Use(); // Install the shader program
 
@@ -1112,49 +957,23 @@ void OpenGLObject::InitObjects(int userInput_x, int userInput_y, float userInput
 
 int OpenGLObject::Setup_TextureObject(std::string filePath)
 {
-	// variables ...
-	GLuint width{ 256 }, height{ 256 }, bytes_per_texel{ 4 };
-
-	// file stream to read ...
-	std::ifstream inputFileStream{ filePath, std::ios::binary };
-
-	// check if it fails and output failure ...
-	if (inputFileStream.fail())
-	{
-		std::cout << "Unable to open file: " << filePath << '\n';
-	}
-
-	// define the file size ...
-	GLuint file_size = width * height * bytes_per_texel;
-
-	// declare and define the dynamically allocated array as needed ...
-	char* ptr_texel = new char[file_size];
-
-	// Return file 'cursor' to original starting position.
-	inputFileStream.seekg(0, std::ios::beg);
-
-	// Read the file ...
-	inputFileStream.read(ptr_texel, file_size);
-
-	// close the file ...
-	inputFileStream.close();
-
-	// declare container for texture object ...
 	GLuint textureObj_Handler;
 
-	//encapsulate two-dimensional texture
+	int width, height, channels;
+	unsigned char* image = stbi_load(filePath.c_str(), &width, &height, &channels, STBI_rgb_alpha);
+
+	if (!image)
+	{
+		std::cout << "Failed to load texture: " << filePath << std::endl;
+		return 0; // Return 0 to indicate failure
+	}
+
 	glCreateTextures(GL_TEXTURE_2D, 1, &textureObj_Handler);
-
-	//allocate GPU storage for texture image data loaded from file
 	glTextureStorage2D(textureObj_Handler, 1, GL_RGBA8, width, height);
+	glTextureSubImage2D(textureObj_Handler, 0, 0, 0, width, height, GL_RGBA, GL_UNSIGNED_BYTE, image);
 
-	//copy image data from client memory to GPU texture buffer memory
-	glTextureSubImage2D(textureObj_Handler, 0, 0, 0, width, height, GL_RGBA, GL_UNSIGNED_BYTE, ptr_texel);
+	stbi_image_free(image); // Free the image data after it's uploaded to OpenGL
 
-	// deletes the dynamic array ...
-	delete[] ptr_texel;
-
-	// return the object ...
 	return textureObj_Handler;
 }
 

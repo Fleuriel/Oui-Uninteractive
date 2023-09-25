@@ -52,7 +52,7 @@ extern float mouse_scroll_total_Y_offset;
 extern int lastkeyedcommand;
 
 std::string title = "Hello";
-
+int angle;
 static bool glewInitialized = false;
 static bool imguiInitialized = false;
 
@@ -212,7 +212,7 @@ void OpenGLApplication::OpenGLInit()
 	std::cout << "Updating Object2... completed." << std::endl;*/
 }
 
-
+int positionX = 0;
 void OpenGLApplication::OpenGLUpdate()
 {
 		OpenGLSetBackgroundColor(0.5f, 0.5f, 0.5f, 1.0f);
@@ -223,7 +223,7 @@ void OpenGLApplication::OpenGLUpdate()
 		//glBindVertexArray(Objects.VAO);
 		//glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 				
-
+		angle++;
 		// All these should be OBJECTS. THAT UPDATE.
 		// Objects.Update(0.1);
 
@@ -265,18 +265,12 @@ void OpenGLApplication::OpenGLUpdate()
 
 			
 
-			OpenGLObject newObject;
-			 
-			
-			
-			
-			newObject.InitObjects(0,0, 150,180,45,45);
-			
-
+			OpenGLObject newObject(0);
+			//newObject.VAO = 222;
+			newObject.InitObjects(0,0, 150,180,0,45);
 			std::cout << newObject.position.x << newObject.position.y << '\n';
 			
 			
-		
 			
 			
 			objects.emplace_back(newObject);
@@ -288,6 +282,27 @@ void OpenGLApplication::OpenGLUpdate()
 			*/	
 			
 		}
+
+		if (keyStates[GLFW_KEY_A] ==2)
+		{
+			positionX--;
+			std::cout << positionX<< '\n';
+		}
+
+		if (keyStates[GLFW_KEY_RIGHT_SHIFT] == 1)
+		{
+			std::cout << "Shift\n";
+			OpenGLObject newObject(1);
+			
+			
+			newObject.InitObjects(positionX, 100, 150, 180, 45, 45);
+			objects.emplace_back(newObject);
+
+			std::cout << objects.size() << '\n';
+			
+		}
+
+
 		if (keyStates[GLFW_KEY_M] == 1)
 		{
 			Particle newparticle;
@@ -505,13 +520,20 @@ void OpenGLApplication::OpenGLUpdate()
 		myImGui.Update();
 		myImGui.Draw();
 
+		if (angle > 360)
+			angle = 0;
+
 		// Swap the front and back buffers
 		/*
 		*/
 		for (OpenGLObject& obj : objects)
 		{
-			obj.Update(10, 10, 500, 10, true);
-		
+			if (obj.TagID == 1)
+				obj.Update(positionX, 300, 100, angle, true);
+			
+			if (obj.TagID == 0)
+				obj.Update(10, 10, 100, 0);
+
 		
 		}
 		//for (std::pair<size_t, GameObject*> gObj : objectFactory->GetGameObjectIDMap()) {

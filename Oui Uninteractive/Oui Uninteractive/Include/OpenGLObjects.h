@@ -28,10 +28,31 @@
 class OpenGLObject
 {
 public:
-	OpenGLObject() : scaleModel(0.5, 0.5) , orientation(0.0, 0.0f), position(0, 0), model_To_NDC_xform(glm::mat3(1.0f)), color(0.0f, 0.0f, 1.0f), particlechecker(false){};
-	OpenGLObject(glm::vec3 particlecolor) : scaleModel(0.5, 0.5), orientation(0.0, 0.0f), position(0, 0), model_To_NDC_xform(glm::mat3(1.0f)), color(particlecolor), particlechecker(false) {
+	OpenGLObject(int id = 0) : 
+		scaleModel(0.5, 0.5) , orientation(0.0, 0.0f), position(0, 0), 
+		model_To_NDC_xform(glm::mat3(1.0f)), color(0.0f, 0.0f, 1.0f), particlechecker(false),
+		angleDisplacment(0.0f), angleSpeed(0.0f), TagID(id)
+	{
+		//if (TagID >= 0 && TagID < models.size())
+		//{
+		//	models[TagID].ModelID = TagID;
+		//}
+		//else
+		//{
+		//	models[TagID].ModelID = id;
+		//}
+	
+	};
+
+	OpenGLObject(glm::vec3 particlecolor) : 
+		scaleModel(0.5, 0.5), orientation(0.0, 0.0f), position(0, 0), 
+		model_To_NDC_xform(glm::mat3(1.0f)), color(particlecolor), particlechecker(false),
+		angleDisplacment(0.0f), angleSpeed(0.0f){
 		std::cout << "R : " << color.r << "\nG : " << color.g << "\nB : " << color.b << "\n";
 	};
+
+	int TagID;
+
 
 	glm::vec2 scaleModel;
 	float angleDisplacment;
@@ -64,6 +85,8 @@ public:
 		GLuint model_cnt;			// added to check model count
 		GLuint texture;
 		
+		int ModelID;
+
 		std::vector <glm::vec2> Position_Vertex;
 
 		OpenGLModel() : primitive_type(0), primitive_cnt(0), vaoid(0), draw_cnt(0), model_cnt(0) {}
@@ -123,31 +146,17 @@ public:
 	//static std::map<std::string, OpenGLShader> shdrpgms;
 
 
+	static std::vector<GLuint> textures;
+
+
 	static void init_shdrpgms_cont(VectorPairStrStr const& vpss);
-
-
-
 
 	// Models
 
-	static OpenGLModel Box_Model(glm::vec3, int textureInput);
-
-
-
-
-
-
-
-
-
-
-
-
-
+	static OpenGLModel Box_Model(int ID, glm::vec3, int textureInput);
 
 	static void Load_Files();
 	static void Load_Meshes(std::string);
-
 
 	// Texture
 	static int Setup_TextureObject(std::string filePath);
@@ -162,22 +171,13 @@ public:
 	
 	static GLuint textureID;
 
-
-
-
-
 	// Store Models inside:
 	static std::map<std::string, OpenGLModel> Model_Storage;
 	static std::map<std::string, OpenGLObject> Object_Storage;
 
 
 
-
-
 private:
-
-
-
 
 };
 
