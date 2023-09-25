@@ -181,15 +181,13 @@ void OpenGLApplication::OpenGLInit()
 	//glm::mat4 projection = glm::ortho(-worldWidth / 2, worldWidth / 2, -worldHeight / 2, worldHeight / 2, -1.0f, 1.0f);
 
 	//init a game object in run time
+	/*
 	objectFactory->BuildObjectRunTime("ObjectRunTime1");
 	objectFactory->AddComponent(ComponentType::PHYSICS_BODY, objectFactory->GetGameObjectByID(0));
 	objectFactory->AddComponent(ComponentType::TRANSFORM, objectFactory->GetGameObjectByID(0));
 	objectFactory->GetGameObjectByID(0)->Initialize();
-
-	objectFactory->CloneObject(0);
-	GET_COMPONENT(objectFactory->GetGameObjectByID(1), Transform, ComponentType::TRANSFORM)->position.x = 450;
-	GET_COMPONENT(objectFactory->GetGameObjectByID(1), Transform, ComponentType::TRANSFORM)->position.y = 50;
-
+	*/
+	
 	//initialize 2500 objects
 	/*for (size_t i{}; i < 2500; ++i) {
 		std::string goName{ "ObjectRunTime" + std::to_string(i + 1) };
@@ -206,6 +204,11 @@ void OpenGLApplication::OpenGLInit()
 	std::cout << "\nDe-serializing objects from JSON file..." << std::endl;
 	objectFactory->BuildObjectFromFile("../scenes/testscene.JSON");
 	std::cout << "De-serializing objects from JSON file... completed." << std::endl;
+
+	objectFactory->CloneObject(0);
+	GET_COMPONENT(objectFactory->GetGameObjectByID(1), Transform, ComponentType::TRANSFORM)->position.x = 450;
+	GET_COMPONENT(objectFactory->GetGameObjectByID(1), Transform, ComponentType::TRANSFORM)->position.y = 50;
+
 
 	// Modifying value of Object2
 	/*std::cout << "\nUpdating Object2..." << std::endl;
@@ -414,7 +417,7 @@ void OpenGLApplication::OpenGLUpdate()
 
 			if (keyStates[GLFW_KEY_A]) {
 				//std::cout << "WALK LEFT\n";
-				physicsSys->SetRotationSpeed(20, 0);
+				physicsSys->SetCurrentRotationSpeed(20, 0);
 				Objects.position.x -= 0.001;
 //				CurrentGameState = STATE_LEVEL_TEST;
 
@@ -422,12 +425,12 @@ void OpenGLApplication::OpenGLUpdate()
 
 			else if (keyStates[GLFW_KEY_D]) {
 				//std::cout << "WALK RIGHT\n";
-				physicsSys->SetRotationSpeed(-20, 0);
+				physicsSys->SetCurrentRotationSpeed(-20, 0);
 				Objects.position.x += 0.001;
 //				CurrentGameState = STATE_GRAPHICS_TEST;
 			}
 			else{
-				physicsSys->SetRotationSpeed(0, 0);
+				physicsSys->SetCurrentRotationSpeed(0, 0);
 			}
 
 			if (keyStates[GLFW_KEY_S]) {
@@ -538,10 +541,10 @@ void OpenGLApplication::OpenGLUpdate()
 
 		
 		}
-		//for (std::pair<size_t, GameObject*> gObj : objectFactory->GetGameObjectIDMap()) {
-		//	GET_COMPONENT(gObj.second, Transform, ComponentType::TRANSFORM)->shape->Draw();
-		//
-		//}
+		for (std::pair<size_t, GameObject*> gObj : objectFactory->GetGameObjectIDMap()) {
+			GET_COMPONENT(gObj.second, Transform, ComponentType::TRANSFORM)->shape->Draw();
+		
+		}
 		
 
 		for (auto const& x : objects)
