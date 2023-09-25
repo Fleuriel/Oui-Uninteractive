@@ -111,7 +111,7 @@ void ParticleSystem::update() {
 
 void ParticleSystem::draw() {
 #ifdef _DEBUG
-		std::cout << "Particle Storage Size:" << particles.size() << '\n';
+		//std::cout << "Particle Storage Size:" << particles.size() << '\n';
 #endif
 
 		for (Particle particle : particles)

@@ -135,27 +135,25 @@ void Editor::CreateSoundPanel() {
 
 void Editor::CreateObjectList() {
 	ImGui::Begin("Pretty objects here");
-	static size_t gameobjID = 0;
 	// Left Plane
 	static size_t selectedID = 0;
+	std::map<size_t, GameObject*> copyMap = objectFactory->GetGameObjectIDMap();
+	std::map<size_t, GameObject*>::iterator it = copyMap.begin();
 	{
 		ImGui::BeginChild("left pane", ImVec2(150, 0), true);
 		int objCount = objectFactory->GetGameObjectIDMap().size();
 		std::string prevName;
-		std::map<size_t, GameObject*> copyMap = objectFactory->GetGameObjectIDMap();
-		std::map<size_t, GameObject*>::iterator it = copyMap.begin();
+		
 
 		int count = 0;
-		for (; it != copyMap.end(); it++) {
-
+		for (int count = 0; it != copyMap.end(); it++, count++) {
 			std::string objName = it->second->GetName();
 			size_t objID = it->second->GetGameObjectID();
-			
-			if (ImGui::Selectable(objName.c_str(), selectedID == count)) {
-				gameobjID = objID;
-				selectedID = count;
+
+			if (ImGui::Selectable(objName.c_str(), selectedID == objID)) {
+				selectedID = objID; // Update selected object
+				std::cout << selectedID;
 			}
-			count++;
 		}
 
 		//for (int i = 0; i < objectFactory->; i++) {
@@ -187,7 +185,7 @@ void Editor::CreateObjectList() {
 		ImGui::BeginChild("item view", ImVec2(0, -ImGui::GetFrameHeightWithSpacing())); // Leave room for 1 line below us
 		// Detail Tab
 		if (ImGui::CollapsingHeader("Details")) {		
-			ImGui::Text("Object ID: %d", objectFactory->GetGameObjectByID(gameobjID)->GetGameObjectID());
+			ImGui::Text("Object ID: %d", objectFactory->GetGameObjectByID(selectedID)->GetGameObjectID());
 			ImGui::Text("Size: ");
 			ImGui::Text("Rotation: ");
 			ImGui::Separator();
@@ -200,13 +198,31 @@ void Editor::CreateObjectList() {
 			// Adding objects
 			ImGui::InputInt("Add Count", &addCount);
 			ImGui::SameLine(); 
-			if (ImGui::Button("Add")){
+		/*	if (ImGui::Button("Add")){
 				for (int i = 0; i < addCount; i++) {
 					std::string startName{ "Object" };
 					startName += std::to_string(objectFactory->GetGameObjectIDMap().size() + 1);
 					objectFactory->BuildObjectRunTime(startName);
 				}
+			}*/
+
+			if (ImGui::Button("Add")) {
+				size_t highestID = 0; // Initialize with the lowest possible ID
+
+				if (!objectFactory->GetGameObjectIDMap().empty()) {
+					// Find the highest assigned ID in the existing objects
+					for (const auto& pair : objectFactory->GetGameObjectIDMap()) {
+						highestID = std::max(highestID, pair.first) + 1;
+					}
+				}
+
+				for (int i = 0; i < addCount; i++) {
+					std::string newName = "Object" + std::to_string(highestID + 1);
+					objectFactory->BuildObjectRunTime(newName);
+					highestID++; // Increment the highest assigned ID
+				}
 			}
+
 			ImGui::SameLine(); 
 			HelpMarker("Use this to add as many objects as you want");
 			
@@ -215,7 +231,7 @@ void Editor::CreateObjectList() {
 			ImGui::SameLine();
 			if (ImGui::Button("Clone")) {
 				for (int i = 0; i < cloneCount; i++) {
-					objectFactory->CloneObject(gameobjID);
+					objectFactory->CloneObject(selectedID);
 				}					
 			}
 			ImGui::SameLine(); 
@@ -223,7 +239,13 @@ void Editor::CreateObjectList() {
 			
 			// Deleting objects
 			if (ImGui::Button("Delete")) {
-				objectFactory->DestroyObject(objectFactory->GetGameObjectByID(gameobjID));
+				objectFactory->DestroyObject(objectFactory->GetGameObjectByID(selectedID));
+				// Reset selected rect to first to prevent deleting the air and causing bullshit to happen
+				auto iter = copyMap.begin();
+				if (iter != copyMap.end()) {
+					selectedID = iter->second->GetGameObjectID();
+				}
+
 			}
 			ImGui::SameLine();
 			if (ImGui::Button("Delete All")) {
@@ -255,3 +277,4 @@ void Editor::CreateObjectList() {
 }
 	
 	
+
