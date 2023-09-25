@@ -51,4 +51,15 @@ void PhysicsBody::Serialize(const std::string& filePath, rapidjson::Value::Const
 	rotationSpeed = components["RotationSpeed"].GetFloat();
 	speed = components["Speed"].GetFloat();
 }
+PhysicsBody* PhysicsBody::Clone() const{
+	PhysicsBody* newBody = new PhysicsBody();
+	
+	newBody->speed = speed;
+	newBody->rotationSpeed = rotationSpeed;
+	newBody->boundingbox = new AABB();
+	newBody->boundingbox->min = boundingbox->min;
+	newBody->boundingbox->max = boundingbox->max;
+	newBody->boundingbox->pointer = newBody;
 
+	return newBody;
+}

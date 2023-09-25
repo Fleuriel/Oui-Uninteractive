@@ -15,5 +15,6 @@ public:
 	virtual void Initialize();
 	OpenGLObject* shape;
 	void Serialize(const std::string& filePath, rapidjson::Value::ConstMemberIterator& itr);
+	virtual Transform* Clone() const;
 
 };
