@@ -1,11 +1,12 @@
 /**************************************************************************
- * @file		  IComponent.h
- * @author
- * @par DP email:
- * @par Course:	  CSD 2401
- * @par			  Software Engineering Project 3
- * @date		  09-08-2023
- * @brief
+ * @file IComponent.h
+ * @author Hwang Jing Rui, Austin
+ * @par DP email: jingruiaustin.hwang@digipen.edu
+ * @par Course: CSD 2401
+ * @par Software Engineering Project 3
+ * @date 08-09-2023
+ * @brief This file contains the declaration of the IComponent class, which
+ *		  the interface for all components
  *************************************************************************/
 #ifndef ICOMPONENT_H
 #define ICOMPONENT_H
@@ -17,35 +18,46 @@ class GameObject;
 
 class IComponent {
 private:
-
 	// Pointer to base owning composition
 	GameObject* base;
 
 public:
-	//HasSibling()
+	// GameObject to be able to access base pointer
 	friend class GameObject;
 
 	// Specify the type of component
 	ComponentType componentType;
 	
-	// Initialize component
+	/**************************************************************************
+	* @brief Initialize component (to be overridden)
+	* @return void
+	*************************************************************************/
 	virtual void Initialize() {};
 
-	// Get order of component
+	/**************************************************************************
+	* @brief Return pointer to base GameObject
+	* @return GameObject*
+	*************************************************************************/
 	GameObject* GetOwner() {
 		return base;
 	}
 
-	/* Usage inside respective Component.cpp file:
-	
-	const rapidjson::Value& components{itr->value};
-	variableName = components["VariableName"].GetFloat();	// If variable is float, use GetFloat()
-	
-	*/
-	// Serialize function to be overloaded by each component
+	/**************************************************************************
+	* @brief Serialize function to be overloaded by each component.
+	* Usage inside respective Component.cpp file:
+	* 
+	* const rapidjson::Value& components{itr->value};
+	* variableName = components["VariableName"].GetFloat();	// Float variable
+	* 
+	* @param fiilePath - name of JSON file
+	* @param itr - iterator pointing to the current component
+	* @return void
+	*************************************************************************/
 	virtual void Serialize(const std::string& filePath, rapidjson::Value::ConstMemberIterator& itr) {};
 
-
+	/**************************************************************************
+	* @brief Destructor
+	*************************************************************************/
 	virtual ~IComponent() {};
 };
 

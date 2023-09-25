@@ -1,16 +1,17 @@
 /**************************************************************************
- * @file		  JsonSerializer.cpp
+ * @file JsonSerializer.cpp
  * @author
  * @par DP email:
- * @par Course:	  CSD 2401
- * @par			  Software Engineering Project 3
- * @date		  09-15-2023
- * @brief
+ * @par Course: CSD 2401
+ * @par Software Engineering Project 3
+ * @date 15-09-2023
+ * @brief This file contains the declaration of the JsonSerializer class
+ *		  The functions include:
+ *			- ReadJSONFile
+ *			- WriteJSONFile
  *************************************************************************/
 #include <iostream>
 #include "JsonSerializer.h"
-
-void JsonSerializer::Init() {}
 
 /**************************************************************************
 * @brief Read JSON file
