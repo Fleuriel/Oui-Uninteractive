@@ -150,6 +150,15 @@ GameObject* ObjectFactory::BuildObjectRunTime(const std::string& name) {
 }
 
 /**************************************************************************
+* @brief Load prefab JSON file
+* @param filePath - directory of JSON file
+* @return void
+	*************************************************************************/
+void LoadPrefab(const std::string& filePath) {
+
+}
+
+/**************************************************************************
 * @brief Clone a game object
 * @param gameObjectID - ID of game object to clone
 * @return bool

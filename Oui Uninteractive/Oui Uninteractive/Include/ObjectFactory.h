@@ -13,6 +13,7 @@
  *			- enumToString
  *			- BuildObjectFromFile
  *			- BuildObjectRunTime
+ *			- LoadPrefab
  *			- CloneObjects
  *			- Update
  *			- AssignObjectID
@@ -83,6 +84,13 @@ public:
 	* @return GameObject*
 	*************************************************************************/
 	GameObject* BuildObjectRunTime(const std::string& name);
+
+	/**************************************************************************
+	* @brief Load prefab JSON file
+	* @param filePath - directory of JSON file
+	* @return void
+	*************************************************************************/
+	void LoadPrefab(const std::string& filePath);
 
 	/**************************************************************************
 	* @brief Clone a game object

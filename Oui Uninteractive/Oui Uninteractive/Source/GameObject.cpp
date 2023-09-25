@@ -16,7 +16,6 @@
  *			- GetComponent
  *			- GetComponentType
  *************************************************************************/
-
 #include <algorithm>
 #include <iostream>
 #include "GameObject.h"
