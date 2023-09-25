@@ -315,9 +315,9 @@ void OpenGLApplication::OpenGLUpdate()
 			Particle newparticle;
 
 
-			newparticle.object.InitObjects(300, 300, 180, 180,45,45);
+			newparticle.init(1000, 1000, 180, 180, 45, 45);
 			//std::cout << "R : " << newparticle.object.color.r << "\nG : " << newparticle.object.color.g << "\nB : " << newparticle.object.color.b << "\n";
-			//objects.emplace_back(newparticle.object);
+			
 		}
 
 
@@ -557,6 +557,7 @@ void OpenGLApplication::OpenGLUpdate()
 			x.Draw();
 		}
 
+		particleSystem.draw();
 
 
 }
