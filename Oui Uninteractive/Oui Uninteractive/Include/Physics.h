@@ -18,6 +18,8 @@ public:
 	void SetVelocity(Vec2 vel, size_t ID);
 	void SetRotationSpeed(float rotSpeed);
 	void SetRotationSpeed(float rotSpeed, size_t ID);
+	void SetCurrentRotationSpeed(float rotSpeed);
+	void SetCurrentRotationSpeed(float rotSpeed, size_t ID);
 	void SetDirection(Vec2 dir, size_t ID);
 	
 

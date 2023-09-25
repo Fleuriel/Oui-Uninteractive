@@ -28,6 +28,7 @@ public:
 
 	//Vec2 position;
 	Vec2 velocity;
+	float currentRotationSpeed;
 	Vec2 accumulatedForce;
 	Vec2 prevPosition;
 	Vec2 acceleration;

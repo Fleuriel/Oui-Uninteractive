@@ -54,7 +54,10 @@ void Physics::Update(float dt) {
 		body->txPtr->position = body->txPtr->position + body->velocity * dt;
 
 		body->velocity = body->velocity + body->acceleration * dt;
-		body->txPtr->rotation = body->txPtr->rotation + body->rotationSpeed * dt;
+		if (body->GetOwner()->GetGameObjectID() != 0) {
+			body->currentRotationSpeed = body->rotationSpeed;
+		}
+		body->txPtr->rotation = body->txPtr->rotation + body->currentRotationSpeed * dt;
 		if (body->txPtr->rotation >= 360.0f || body->txPtr->rotation <= -360.0f)
 			body->txPtr->rotation = 0.0f;
 	
@@ -145,6 +148,16 @@ void Physics::SetRotationSpeed(float rotSpeed) {
 void Physics::SetRotationSpeed(float rotSpeed, size_t ID) {
 	if (ID < bodyList.size()) {
 		bodyList.at(ID)->rotationSpeed = rotSpeed;
+	}
+}
+void Physics::SetCurrentRotationSpeed(float rotSpeed) {
+	for (PhysicsBody* body : bodyList) {
+		body->currentRotationSpeed = rotSpeed;
+	}
+}
+void Physics::SetCurrentRotationSpeed(float rotSpeed, size_t ID) {
+	if (ID < bodyList.size()) {
+		bodyList.at(ID)->currentRotationSpeed = rotSpeed;
 	}
 }
 /**************************************************************************
