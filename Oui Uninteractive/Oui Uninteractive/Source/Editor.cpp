@@ -8,7 +8,7 @@
  * @brief This source file contains the code to setup and run the editor
  *************************************************************************/
 
-#include <Editor.h>
+#include "Editor.h"
 #include <iostream>
 
 void UsingImGui::Init(GLFWwindow* window, const char* glsl_vers) {
@@ -125,5 +125,53 @@ void Editor::CreateSoundPanel() {
 
 void Editor::CreateObjectList() {
 	ImGui::Begin("Pretty objects here");
+	// Left
+	static size_t selectedID = 0;
+	{
+		ImGui::BeginChild("left pane", ImVec2(150, 0), true);
+		int objCount = objectFactory->GetGameObjectIDMap().size();
+		
+
+		for (int i = 0; i < objCount; i++)
+		{
+			std::string objName = objectFactory->GetGameObjectIDMap().at(i)->GetName();
+			size_t objID = objectFactory->GetGameObjectIDMap().at(i)->GetGameObjectID();
+			//char label[128];
+			//sprintf(label, "MyObject %d", i);
+			if (ImGui::Selectable(objName.c_str(), selectedID == i))
+				selectedID = objID;
+		}
+		ImGui::EndChild();
+	}
+	ImGui::SameLine();
+
+	// Right
+	{
+		ImGui::BeginGroup();
+		ImGui::BeginChild("item view", ImVec2(0, -ImGui::GetFrameHeightWithSpacing())); // Leave room for 1 line below us
+		ImGui::Text("Object ID: %d", selectedID);
+		ImGui::Separator();
+		if (ImGui::BeginTabBar("##Tabs", ImGuiTabBarFlags_None))
+		{
+			if (ImGui::BeginTabItem("Description"))
+			{
+				ImGui::TextWrapped("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. ");
+				ImGui::EndTabItem();
+			}
+			if (ImGui::BeginTabItem("Details"))
+			{
+				ImGui::Text("ID: 0123456789");
+				ImGui::EndTabItem();
+			}
+			ImGui::EndTabBar();
+		}
+		ImGui::EndChild();
+		if (ImGui::Button("Revert")) {}
+		ImGui::SameLine();
+		if (ImGui::Button("Save")) {}
+		ImGui::EndGroup();
+	}
 	ImGui::End();
 }
+	
+	

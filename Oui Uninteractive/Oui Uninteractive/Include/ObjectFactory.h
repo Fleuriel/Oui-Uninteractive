@@ -1,11 +1,28 @@
 /**************************************************************************
- * @file		  ObjectFactory.h
- * @author
- * @par DP email:
- * @par Course:	  CSD 2401
- * @par			  Software Engineering Project 3
- * @date		  09-13-2023
- * @brief
+ * @file ObjectFactory.h
+ * @author Hwang Jing Rui, Austin
+ * @co-author Tristan Cheah Tze Hong
+ * @par DP email: jingruiaustin.hwang@digipen.edu
+ * @par DP email: t.cheah@digipen.edu
+ * @par Course:	CSD 2401
+ * @par	Software Engineering Project 3
+ * @date 13-09-2023
+ * @brief This file contains the definiton of the ObjectFactory class.
+ *		  The functions include:
+ *			- stringToEnum
+ *			- enumToString
+ *			- BuildObjectFromFile
+ *			- BuildObjectRunTime
+ *			- CloneObjects
+ *			- Update
+ *			- AssignObjectID
+ *			- DestroyObject
+ *			- DestroyAllObjects
+ *			- GetGameObjectByID
+ *			- GetGameObjectByName
+ *			- GetGameObjectIDMap
+ *			- AddComponentFactory
+ *			- AddComponent
  *************************************************************************/
 #ifndef OBJECT_FACTORY_H
 #define OBJECT_FACTORY_H
@@ -33,48 +50,116 @@ private:
 	std::map<componentType, ComponentFactoryBase*> componentFactoryMap;
 
 public:
+	/**************************************************************************
+	* @brief Constructor and Destructor
+	*************************************************************************/
 	ObjectFactory();
 	~ObjectFactory();
-	ComponentType stringToEnum(std::string str);
-	std::string enumToString(ComponentType ct);
 
-	// Create a game object based on serialized data
+	/**************************************************************************
+	* @brief Convert a string to ComponentType enum
+	* @param str - string to convert to ComponentType
+	* @return ComponentType
+	*************************************************************************/
+	ComponentType StringToEnum(std::string str);
+
+	/**************************************************************************
+	* @brief Convert ComponentType enum to a string
+	* @param ct - ComponentType to convert to string
+	* @return std::string - name of ComponentType
+	*************************************************************************/
+	std::string EnumToString(ComponentType ct);
+
+	/**************************************************************************
+	* @brief Create a game object based on serialized data
+	* @param filePath - directory of JSON file
+	* @return void
+	*************************************************************************/
 	void BuildObjectFromFile(const std::string& filePath);
 
-	// Create a new game object during run-time
+	/**************************************************************************
+	* @brief Create a game object during run-time
+	* @param name - name of GameObject
+	* @return GameObject*
+	*************************************************************************/
 	GameObject* BuildObjectRunTime(const std::string& name);
 
-	// Clone a game object
+	/**************************************************************************
+	* @brief Clone a game object
+	* @param gameObjectID - ID of game object to clone
+	* @return bool
+	*************************************************************************/
 	bool CloneObject(size_t gameObjectID);
 
-	// Save existing game object data to JSON file
-	void SaveObjectsToFile(const std::string& filePath);
+	/**************************************************************************
+	* @brief Save existing game object data to JSON file
+	* @param filePath - directory of JSON file
+	* @return void
+	*************************************************************************/
+	//void SaveObjectsToFile(const std::string& filePath);
 
-	// Update the object factory
-	virtual void Update(float dt);
+	/**************************************************************************
+	* @brief Update each game object in object factory
+	* @param dt - delta time
+	* @return void
+	*************************************************************************/
+	void Update(float dt);
 
-	// Assign an ID to a game object and add it to the map of game objects
+	/**************************************************************************
+	* @brief Assign an ID to a game object and add it to the map of game objects
+	* @param gameObject - pointer to game object
+	* @return void
+	*************************************************************************/
 	void AssignObjectID(GameObject* gameObject);
 
-	// Add a to-be-destroyed game object to the destroy list
+	/**************************************************************************
+	* @brief Add a to-be-destroyed game object to the destroy list
+	* @param gameObject - pointer to game object
+	* @return void
+	*************************************************************************/
 	void DestroyObject(GameObject* gameObject);
 
-	// Destroy all game objects
+	/**************************************************************************
+	* @brief Destroy all game objects
+	* @return void
+	*************************************************************************/
 	void DestroyAllObjects();
 
-	// Get a game object by ID
+	/**************************************************************************
+	* @brief Get a game object by ID
+	* @param gameObjectID - ID of game object
+	* @return GameObject*
+	*************************************************************************/
 	GameObject* GetGameObjectByID(size_t gameObjectID);
 
-	// Get a game object by name
+	/**************************************************************************
+	* @brief Get a game object by name
+	* @param name - name of GameObject
+	* @return GameObject*
+	*************************************************************************/
 	GameObject* GetGameObjectByName(const std::string& name);
 
-	// Get all game objects
+	/**************************************************************************
+	* @brief Get all game objects
+	* @return std::map<size_t, GameObject*>
+	*************************************************************************/
 	std::map<size_t, GameObject*> GetGameObjectIDMap();
 
 	// messaging...
 
-	// Add component factory to map
+	/**************************************************************************
+	* @brief Add component factory to map
+	* @param componentName - name of component type
+	* @param componentFactory - pointer to component factory base
+	*************************************************************************/
 	void AddComponentFactory(componentType componentName, ComponentFactoryBase* componentFactory);
+
+	/**************************************************************************
+	* @brief Add component with a specified component name to game object
+	* @param componentName - name of component type
+	* @param gameObject - pointer to game object
+	* @return bool
+	*************************************************************************/
 	bool AddComponent(componentType name, GameObject* object);
 };
 extern ObjectFactory* objectFactory;

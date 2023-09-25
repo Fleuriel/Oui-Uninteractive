@@ -1,11 +1,28 @@
 /**************************************************************************
- * @file		  ObjectFactory.cpp
- * @author
- * @par DP email:
- * @par Course:	  CSD 2401
- * @par			  Software Engineering Project 3
- * @date		  09-13-2023
- * @brief
+ * @file ObjectFactory.cpp
+ * @author Hwang Jing Rui, Austin
+ * @co-author Tristan Cheah Tze Hong
+ * @par DP email: jingruiaustin.hwang@digipen.edu
+ * @par DP email: t.cheah@digipen.edu
+ * @par Course:	CSD 2401
+ * @par	Software Engineering Project 3
+ * @date 13-09-2023
+ * @brief This file contains the definiton of the ObjectFactory class.
+ *		  The functions include:
+ *			- stringToEnum
+ *			- enumToString
+ *			- BuildObjectFromFile
+ *			- BuildObjectRunTime
+ *			- CloneObjects
+ *			- Update
+ *			- AssignObjectID
+ *			- DestroyObject
+ *			- DestroyAllObjects
+ *			- GetGameObjectByID
+ *			- GetGameObjectByName
+ *			- GetGameObjectIDMap
+ *			- AddComponentFactory
+ *			- AddComponent
  *************************************************************************/
 #include <iostream>
 #include "ObjectFactory.h"
@@ -19,7 +36,7 @@ ObjectFactory* objectFactory = NULL;
 * @param str - string to convert to ComponentType
 * @return ComponentType
 *************************************************************************/
-ComponentType ObjectFactory::stringToEnum(std::string str) {
+ComponentType ObjectFactory::StringToEnum(std::string str) {
 	if (str == "PhysicsBody") {
 		return ComponentType::PHYSICS_BODY;
 	}
@@ -36,7 +53,7 @@ ComponentType ObjectFactory::stringToEnum(std::string str) {
 * @param ct - ComponentType to convert to string
 * @return std::string - name of ComponentType
 *************************************************************************/
-std::string ObjectFactory::enumToString(ComponentType ct) {
+std::string ObjectFactory::EnumToString(ComponentType ct) {
 	if (ct == ComponentType::PHYSICS_BODY) {
 		return "PhysicsBody";
 	}
@@ -49,7 +66,7 @@ std::string ObjectFactory::enumToString(ComponentType ct) {
 }
 
 /**************************************************************************
-* @brief Object Factory Initializer
+* @brief Object Factory Constructor
 *************************************************************************/
 ObjectFactory::ObjectFactory() : gameObjectCurrentID{} {
 	if (objectFactory != NULL) {
@@ -89,7 +106,7 @@ void ObjectFactory::BuildObjectFromFile(const std::string& filePath) {
 
 			for (rapidjson::Value::ConstMemberIterator itr{components.MemberBegin()}; itr != components.MemberEnd(); ++itr) {
 				componentName = itr->name.GetString();
-				ComponentType type = stringToEnum(componentName);
+				ComponentType type = StringToEnum(componentName);
 
 				if (componentFactoryMap.find(type) == componentFactoryMap.end()) {
 					std::cerr << "Component name not found." << std::endl;
@@ -133,27 +150,6 @@ GameObject* ObjectFactory::BuildObjectRunTime(const std::string& name) {
 }
 
 /**************************************************************************
-* @brief Update each game object in object factory
-* @param dt - delta time
-*************************************************************************/
-void ObjectFactory::Update(float dt) {
-	std::set<GameObject*>::iterator it = gameObjectDestroyList.begin();
-
-	// Destroy game objects in destroy list
-	for (; it != gameObjectDestroyList.end(); it++) {
-		GameObject* gameObject = *it;
-		for (int i = 0; i < gameObject->componentList.size(); i++) {
-			delete gameObject->componentList.at(i);
-		}
-
-		//Insert double free protection here
-		delete gameObject;
-	}
-
-	gameObjectDestroyList.clear();
-}
-
-/**************************************************************************
 * @brief Clone a game object
 * @param gameObjectID - ID of game object to clone
 * @return bool
@@ -180,7 +176,7 @@ bool ObjectFactory::CloneObject(size_t gameObjectID) {
 * @param filePath - directory of JSON file
 * @return void
 *************************************************************************/
-void ObjectFactory::SaveObjectsToFile(const std::string& filePath) {
+/*void ObjectFactory::SaveObjectsToFile(const std::string& filePath) {
 	rapidjson::Document objDoc;
 	JsonSerializer serializer;
 	serializer.ReadJSONFile(filePath, objDoc);
@@ -188,11 +184,34 @@ void ObjectFactory::SaveObjectsToFile(const std::string& filePath) {
 	if (serializer.WriteJSONFile(filePath, objDoc)) {
 		std::cout << "Successfully saved objects to file." << std::endl;
 	}
+}*/
+
+/**************************************************************************
+* @brief Update each game object in object factory
+* @param dt - delta time
+* @return void
+*************************************************************************/
+void ObjectFactory::Update(float dt) {
+	std::set<GameObject*>::iterator it = gameObjectDestroyList.begin();
+
+	// Destroy game objects in destroy list
+	for (; it != gameObjectDestroyList.end(); it++) {
+		GameObject* gameObject = *it;
+		for (int i = 0; i < gameObject->componentList.size(); i++) {
+			delete gameObject->componentList.at(i);
+		}
+
+		//Insert double free protection here
+		delete gameObject;
+	}
+
+	gameObjectDestroyList.clear();
 }
 
 /**************************************************************************
 * @brief Assign an ID to a game object and add it to the map of game objects
 * @param gameObject - pointer to game object
+* @return void
 *************************************************************************/
 void ObjectFactory::AssignObjectID(GameObject* gameObject) {
 	// Assign ID to gameObject
@@ -208,6 +227,7 @@ void ObjectFactory::AssignObjectID(GameObject* gameObject) {
 /**************************************************************************
 * @brief Add a to-be-destroyed game object to the destroy list
 * @param gameObject - pointer to game object
+* @return void
 *************************************************************************/
 void ObjectFactory::DestroyObject(GameObject* gameObject) {
 	gameObjectDestroyList.insert(gameObject);
@@ -215,6 +235,7 @@ void ObjectFactory::DestroyObject(GameObject* gameObject) {
 
 /**************************************************************************
 * @brief Destroy all game objects
+* @return void
 *************************************************************************/
 void ObjectFactory::DestroyAllObjects() {
 	std::map<size_t, GameObject*>::iterator it = gameObjectIDMap.begin();

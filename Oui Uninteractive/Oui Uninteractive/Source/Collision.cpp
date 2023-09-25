@@ -109,7 +109,7 @@ bool CollisionMovingRectRect(float r1x = 1, float r1y = 2, float r2x = 3, float 
 
 	//Timer variables
 	float TimeFirst{ 0 };
-	float TimeLast = GetDT();
+	float TimeLast = static_cast<float>(GetDT());
 
 
 	////////////////////

@@ -1,11 +1,20 @@
 /**************************************************************************
- * @file		  GameObject.cpp
- * @author
- * @par DP email:
- * @par Course:	  CSD 2401
- * @par			  Software Engineering Project 3
- * @date		  09-08-2023
- * @brief
+ * @file GameObject.cpp
+ * @author Hwang Jing Rui, Austin
+ * @co-author Tristan Cheah Tze Hong
+ * @par DP email: jingruiaustin.hwang@digipen.edu
+ * @par DP email: t.cheah@digipen.edu
+ * @par Course:	CSD 2401
+ * @par	Software Engineering Project 3
+ * @date 08-09-2023
+ * @brief This fiile contains the definition of the GameObject class.
+ *		  The functions include:
+ *			- AddComponent
+ *			- RemoveComponent
+ *			- Has
+ *			- GetGameObjectID
+ *			- GetComponent
+ *			- GetComponentType
  *************************************************************************/
 
 #include <algorithm>
@@ -18,7 +27,7 @@
 }*/
 
 /**************************************************************************
-* @brief Initializer
+* @brief Constructor
 *************************************************************************/
 GameObject::GameObject(const std::string name) : gameObjectID{} {
 	gameObjectName = name;
@@ -75,6 +84,14 @@ int GameObject::Has(ComponentType typeID) {
 		}
 	}
 	return false;
+}
+
+/**************************************************************************
+* @brief Get game object name
+* @return std::string - game object name
+*************************************************************************/
+std::string GameObject::GetName() {
+	return gameObjectName;
 }
 
 /**************************************************************************

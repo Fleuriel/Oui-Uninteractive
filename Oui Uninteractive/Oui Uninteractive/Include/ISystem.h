@@ -5,8 +5,8 @@
  * @par Course: CSD 2401
  * @par	Software Engineering Project 3
  * @date 08-09-2023
- * @brief This file contains the ISystem class, which is the interface for
- *		  systems to be implemented in the game.
+ * @brief This file contains the declaration of the ISystem class, which 
+ *		  is the interface for systems to be implemented in the game.
  *************************************************************************/
 #ifndef ISYSTEM_H
 #define ISYSTEM_H
@@ -22,7 +22,6 @@ public:
 	virtual void Update(float dt) = 0;
 
 	// Terminate the system
-	//virtual void Terminiate();
 	virtual ~ISystem() {};
 };
 
