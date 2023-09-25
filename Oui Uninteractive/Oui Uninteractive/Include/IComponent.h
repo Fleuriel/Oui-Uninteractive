@@ -7,7 +7,8 @@
  * @date		  09-08-2023
  * @brief
  *************************************************************************/
-#pragma once
+#ifndef ICOMPONENT_H
+#define ICOMPONENT_H
 
 #include "ComponentType.h"
 #include "JsonSerializer.h"
@@ -47,3 +48,5 @@ public:
 
 	virtual ~IComponent() {};
 };
+
+#endif

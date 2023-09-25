@@ -7,11 +7,14 @@
  * @date		  09-10-2023
  * @brief
  *************************************************************************/
-#pragma once
+#ifndef COMPONENT_TYPE_H
+#define COMPONENT_TYPE_H
 
 typedef enum class ComponentType {
-	None = 0,
-	PhysicsBody,
-	Transform
+	NONE = 0,
+	PHYSICS_BODY,
+	TRANSFORM
 	
 } componentType;
+
+#endif // !COMPONENT_TYPE_H

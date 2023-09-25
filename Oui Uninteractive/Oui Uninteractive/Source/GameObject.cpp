@@ -69,7 +69,7 @@ void GameObject::RemoveComponent(IComponent* c) {
 * @return int - position of component in componentList
 *************************************************************************/
 int GameObject::Has(ComponentType typeID) {
-	for (size_t i{}; i < componentList.size(); ++i) {
+	for (int i{}; i < componentList.size(); ++i) {
 		if (componentList[i]->componentType == typeID) {
 			return i;
 		}

@@ -21,13 +21,13 @@ ObjectFactory* objectFactory = NULL;
 *************************************************************************/
 ComponentType ObjectFactory::stringToEnum(std::string str) {
 	if (str == "PhysicsBody") {
-		return ComponentType::PhysicsBody;
+		return ComponentType::PHYSICS_BODY;
 	}
 	else if (str == "Transform") {
-		return ComponentType::Transform;
+		return ComponentType::TRANSFORM;
 	}
 	else {
-		return ComponentType::None;
+		return ComponentType::NONE;
 	}
 }
 
@@ -37,10 +37,10 @@ ComponentType ObjectFactory::stringToEnum(std::string str) {
 * @return std::string - name of ComponentType
 *************************************************************************/
 std::string ObjectFactory::enumToString(ComponentType ct) {
-	if (ct == ComponentType::PhysicsBody) {
+	if (ct == ComponentType::PHYSICS_BODY) {
 		return "PhysicsBody";
 	}
-	else if (ct == ComponentType::Transform) {
+	else if (ct == ComponentType::TRANSFORM) {
 		return "Transform";
 	}
 	else {

@@ -7,7 +7,8 @@
  * @date		  09-13-2023
  * @brief
  *************************************************************************/
-#pragma once
+#ifndef OBJECT_FACTORY_H
+#define OBJECT_FACTORY_H
 
 #include <string>
 #include <map>
@@ -77,3 +78,5 @@ public:
 	bool AddComponent(componentType name, GameObject* object);
 };
 extern ObjectFactory* objectFactory;
+
+#endif
