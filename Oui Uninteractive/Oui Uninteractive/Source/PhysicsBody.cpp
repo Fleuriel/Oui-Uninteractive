@@ -31,15 +31,15 @@ PhysicsBody::~PhysicsBody() {
 void PhysicsBody::Initialize() {
 	//Transform
 	//assign pos to transform
-	if (GetOwner()->Has(ComponentType::Transform) != -1) {
-		txPtr = GetOwner()->GetComponentType<Transform>(ComponentType::Transform);
+	if (GetOwner()->Has(ComponentType::TRANSFORM) != -1) {
+		txPtr = GetOwner()->GetComponentType<Transform>(ComponentType::TRANSFORM);
 	}
 	
 	physicsSys->bodyList.push_back(this);
 }
 
 /**************************************************************************
-* @brief Initialize this instance of the PhysicsBody component
+* @brief Initialize this instance of the PhysicsBody component via file
 * @param const std::string& filePath - file path to read from
 * @param rapidjson::Value::ConstMemberIterator& itr - iterator through json object
 * @return void
@@ -51,9 +51,4 @@ void PhysicsBody::Serialize(const std::string& filePath, rapidjson::Value::Const
 	rotationSpeed = components["RotationSpeed"].GetFloat();
 	speed = components["Speed"].GetFloat();
 }
-Vec2 PhysicsBody::AngleToVec(float angle) {
-	//angle should be in radians
-	Vec2 dir = Vec2(-sinf(angle), cosf(angle));
-	return dir;
 
-}

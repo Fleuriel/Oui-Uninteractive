@@ -7,7 +7,8 @@
  * @date 09-05-2023
  * @brief This source file contains the code to setup and run the editor
  *************************************************************************/
-#pragma once
+#ifndef SOUND_H
+#define SOUND_H
 
 #include <fmod/fmod.hpp>
 #include <fmod/fmod_errors.h>
@@ -51,3 +52,4 @@ private:
 };
 extern SoundManager* soundManager;
 
+#endif

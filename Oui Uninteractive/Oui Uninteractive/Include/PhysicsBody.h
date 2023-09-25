@@ -1,4 +1,6 @@
-#pragma once
+#ifndef PHYSICS_BODY_H
+#define PHYSICS_BODY_H
+
 #include "IComponent.h"
 #include "Transform.h"
 #include "Vector2D.h"
@@ -22,13 +24,13 @@ public:
 
 	virtual void Initialize();
 	virtual void Serialize(const std::string& filePath, rapidjson::Value::ConstMemberIterator& itr);
-	Vec2 AngleToVec(float angle);
 	float rotationSpeed;
 	float speed;
 	AABB* boundingbox;
 
 	//Vec2 position;
 	Vec2 velocity;
+	float currentRotationSpeed;
 	Vec2 accumulatedForce;
 	Vec2 prevPosition;
 	Vec2 acceleration;
@@ -39,4 +41,4 @@ public:
 	bool isStatic; // flag for engine to ignore objects that we won't move.
 };
 
-
+#endif
