@@ -29,6 +29,10 @@ GameObject::GameObject(const std::string name) : gameObjectID{} {
 *************************************************************************/
 GameObject::~GameObject() {}
 
+std::string GameObject::GetName() {
+	return gameObjectName;
+}
+
 /**************************************************************************
 * @brief Initialize components in componentList
 *************************************************************************/

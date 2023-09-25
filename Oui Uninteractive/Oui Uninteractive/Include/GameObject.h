@@ -30,7 +30,7 @@ public:
 	
 	GameObject(const std::string name);
 	~GameObject();
-	
+	std::string GetName();
 	// Initialize components in componentList
 	void Initialize();
 
