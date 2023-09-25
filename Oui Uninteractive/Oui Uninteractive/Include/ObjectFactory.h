@@ -50,6 +50,9 @@ private:
 	// Map of component factories
 	std::map<componentType, ComponentFactoryBase*> componentFactoryMap;
 
+	// Set to store prefabs
+	std::set<GameObject*> prefabSet;
+
 public:
 	/**************************************************************************
 	* @brief Constructor and Destructor

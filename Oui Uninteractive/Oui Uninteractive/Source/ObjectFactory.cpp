@@ -83,6 +83,7 @@ ObjectFactory::~ObjectFactory() {
 	for (auto& it : componentFactoryMap) {
 		delete it.second;
 	}
+	DestroyAllObjects();
 }
 
 /**************************************************************************
@@ -153,9 +154,46 @@ GameObject* ObjectFactory::BuildObjectRunTime(const std::string& name) {
 * @brief Load prefab JSON file
 * @param filePath - directory of JSON file
 * @return void
-	*************************************************************************/
-void LoadPrefab(const std::string& filePath) {
+*************************************************************************/
+void ObjectFactory::LoadPrefab(const std::string& filePath) {
+	// Create rapidjson doc object and serializer
+	rapidjson::Document objDoc;
+	JsonSerializer serializer;
+	std::string componentName;
 
+	// Read data from file
+	if (serializer.ReadJSONFile(filePath, objDoc)) {
+		// For each object in Objects array (in JSON file)
+		for (auto& obj : objDoc["Objects"].GetArray()) {
+			GameObject* gameObject{ new GameObject(obj["Name"].GetString()) };
+
+			// Get each component(s) in current object
+			const rapidjson::Value& components{ obj["Components"] };
+
+			for (rapidjson::Value::ConstMemberIterator itr{ components.MemberBegin() }; itr != components.MemberEnd(); ++itr) {
+				componentName = itr->name.GetString();
+				ComponentType type = StringToEnum(componentName);
+
+				if (componentFactoryMap.find(type) == componentFactoryMap.end()) {
+					std::cerr << "Component name not found." << std::endl;
+				}
+				else {
+					// Set componentFactory to create the component itself
+					ComponentFactoryBase* componentFactory = componentFactoryMap[type];
+
+					// Create the component
+					IComponent* component = componentFactory->CreateComponent();
+
+					// Add the component to the game object
+					gameObject->AddComponent(component, componentFactory->type);
+				}
+			}
+			prefabSet.insert(gameObject);
+		}
+	}
+	else {
+		std::cerr << "Failed to load prefabs." << std::endl;
+	}
 }
 
 /**************************************************************************
