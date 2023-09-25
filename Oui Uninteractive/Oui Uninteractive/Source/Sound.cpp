@@ -95,10 +95,6 @@ void SoundManager::PlayBGMSounds() {
 
 void SoundManager::PlaySFXSounds() {
 	// Play SFX once clicked
-	/*if (sfxCallback) {
-		result = system->playSound(sfxSounds[sfxChoice], nullptr, false, &channel1);
-		sfxCallback = false;
-	}*/
 	channel1->stop();
 	result = system->playSound(sfxSounds[sfxChoice], nullptr, false, &channel1);
 	if (result != FMOD_OK) {
