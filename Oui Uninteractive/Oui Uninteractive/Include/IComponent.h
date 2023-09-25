@@ -54,7 +54,7 @@ public:
 	* @return void
 	*************************************************************************/
 	virtual void Serialize(const std::string& filePath, rapidjson::Value::ConstMemberIterator& itr) {};
-
+	virtual IComponent* Clone() const = 0;
 	/**************************************************************************
 	* @brief Destructor
 	*************************************************************************/

@@ -169,7 +169,8 @@ bool ObjectFactory::CloneObject(size_t gameObjectID) {
 		GameObject* clone = BuildObjectRunTime(original->gameObjectName);
 
 		for (int i = 0; i < original->componentList.size(); i++) {
-			AddComponent(original->componentList[i]->componentType, clone);
+			clone->AddComponent(original->componentList.at(i)->Clone(), original->componentList[i]->componentType);
+		//	AddComponent(original->componentList[i]->componentType, clone);
 		}
 
 		clone->Initialize();

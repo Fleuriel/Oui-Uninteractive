@@ -24,6 +24,7 @@ public:
 
 	virtual void Initialize();
 	virtual void Serialize(const std::string& filePath, rapidjson::Value::ConstMemberIterator& itr);
+	virtual PhysicsBody* Clone() const;
 	float rotationSpeed;
 	float speed;
 	AABB* boundingbox;

@@ -20,3 +20,10 @@ void Transform::Serialize(const std::string& filePath, rapidjson::Value::ConstMe
 	rotation = components["Rotation"].GetFloat();
 	scale = components["Scale"].GetFloat();
 }
+Transform* Transform::Clone() const {
+	Transform* newTransform = new Transform();
+	newTransform->position = position;
+	newTransform->scale = scale;
+	newTransform->rotation = rotation;
+	return newTransform;
+}

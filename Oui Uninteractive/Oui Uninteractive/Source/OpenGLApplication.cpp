@@ -206,8 +206,8 @@ void OpenGLApplication::OpenGLInit()
 	std::cout << "De-serializing objects from JSON file... completed." << std::endl;
 
 	objectFactory->CloneObject(0);
-	GET_COMPONENT(objectFactory->GetGameObjectByID(1), Transform, ComponentType::TRANSFORM)->position.x = 450;
-	GET_COMPONENT(objectFactory->GetGameObjectByID(1), Transform, ComponentType::TRANSFORM)->position.y = 50;
+	GET_COMPONENT(objectFactory->GetGameObjectByID(3), Transform, ComponentType::TRANSFORM)->position.x = 450;
+	GET_COMPONENT(objectFactory->GetGameObjectByID(3), Transform, ComponentType::TRANSFORM)->position.y = 50;
 
 
 	// Modifying value of Object2
