@@ -135,7 +135,7 @@ void Editor::CreateSoundPanel() {
 
 void Editor::CreateObjectList() {
 	ImGui::Begin("Pretty objects here");
-	// Left
+	// Left Plane
 	static size_t selectedID = 0;
 	{
 		ImGui::BeginChild("left pane", ImVec2(150, 0), true);
@@ -161,29 +161,8 @@ void Editor::CreateObjectList() {
 	}
 	ImGui::SameLine();
 
-	//// Right
-	//{
-	//	ImGui::BeginGroup();
-	//	ImGui::BeginChild("item view", ImVec2(0, -ImGui::GetFrameHeightWithSpacing())); // Leave room for 1 line below us
-	//	ImGui::Text("Object ID: %d", objectFactory->GetGameObjectIDMap().at(selectedID)->GetGameObjectID());
-	//	ImGui::Separator();
-	//	if (ImGui::BeginTabBar("##Tabs", ImGuiTabBarFlags_None))
-	//	{
 
-	//		if (ImGui::BeginTabItem("Details"))
-	//		{
-	//			ImGui::Text("ID: 0123456789");
-	//			ImGui::EndTabItem();
-	//		}
-	//		ImGui::EndTabBar();
-	//	}
-	//	ImGui::EndChild();
-	//	if (ImGui::Button("Revert")) {}
-	//	ImGui::SameLine();
-	//	if (ImGui::Button("Save")) {}
-	//	ImGui::EndGroup();
-	//}
-	// Right
+	// Right Plane
 	{
 		ImGui::BeginGroup();
 		ImGui::BeginChild("item view", ImVec2(0, -ImGui::GetFrameHeightWithSpacing())); // Leave room for 1 line below us
@@ -202,9 +181,12 @@ void Editor::CreateObjectList() {
 			// Adding objects
 			ImGui::InputInt("Add Count", &addCount);
 			ImGui::SameLine(); 
-			if (ImGui::Button("Add")) {
-				// For tristan muah
-				std::cout << addCount;
+			if (ImGui::Button("Add")){
+				for (int i = 0; i < addCount; i++) {
+					std::string startName{ "Object" };
+					startName += std::to_string(objectFactory->GetGameObjectIDMap().size() + 1);
+					objectFactory->BuildObjectRunTime(startName);
+				}
 			}
 			ImGui::SameLine(); 
 			HelpMarker("Use this to add as many objects as you want");
@@ -213,8 +195,9 @@ void Editor::CreateObjectList() {
 			ImGui::InputInt("Clone Count", &cloneCount);
 			ImGui::SameLine();
 			if (ImGui::Button("Clone")) {
-				// For tristan muah
-				std::cout << cloneCount;
+				for (int i = 0; i < cloneCount; i++) {
+					objectFactory->CloneObject(selectedID);
+				}					
 			}
 			ImGui::SameLine(); 
 			HelpMarker("Use this to clone as many objects as you want");

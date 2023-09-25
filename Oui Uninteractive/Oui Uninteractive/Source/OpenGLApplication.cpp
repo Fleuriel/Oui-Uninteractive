@@ -542,8 +542,9 @@ void OpenGLApplication::OpenGLUpdate()
 		
 		}
 		for (std::pair<size_t, GameObject*> gObj : objectFactory->GetGameObjectIDMap()) {
-			GET_COMPONENT(gObj.second, Transform, ComponentType::TRANSFORM)->shape->Draw();
-		
+			if (gObj.second->Has(ComponentType::TRANSFORM)) {
+				GET_COMPONENT(gObj.second, Transform, ComponentType::TRANSFORM)->shape->Draw();
+			}	
 		}
 		
 

@@ -166,7 +166,11 @@ void LoadPrefab(const std::string& filePath) {
 bool ObjectFactory::CloneObject(size_t gameObjectID) {
 	if (gameObjectIDMap.find(gameObjectID) != gameObjectIDMap.end()) {
 		GameObject* original = (gameObjectIDMap.find(gameObjectID)->second);
-		GameObject* clone = BuildObjectRunTime(original->gameObjectName);
+
+		std::string objectStr;
+		objectStr += "Object" + std::to_string(gameObjectCurrentID + 1);
+
+		GameObject* clone = BuildObjectRunTime(objectStr);
 
 		for (int i = 0; i < original->componentList.size(); i++) {
 			clone->AddComponent(original->componentList.at(i)->Clone(), original->componentList[i]->componentType);
