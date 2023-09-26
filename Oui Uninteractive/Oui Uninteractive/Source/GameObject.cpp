@@ -82,7 +82,7 @@ int GameObject::Has(ComponentType typeID) {
 			return i;
 		}
 	}
-	return false;
+	return -1;
 }
 
 /**************************************************************************
