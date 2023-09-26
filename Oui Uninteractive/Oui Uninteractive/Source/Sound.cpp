@@ -1,11 +1,11 @@
 /**************************************************************************
  * @file Sound.cpp
- * @author
- * @par DP email:
+ * @author Mark Low
+ * @par DP email: l.wangchunmark@digipen.edu
  * @par Course: CSD 2401
  * @par Software Engineering Project 3
  * @date 09-05-2023
- * @brief This source file contains the code to setup and run the editor
+ * @brief This source file contains the definition of the SoundManager class used to setup FMOD and handle playing of sounds
  *************************************************************************/
 
 #include <Sound.h>

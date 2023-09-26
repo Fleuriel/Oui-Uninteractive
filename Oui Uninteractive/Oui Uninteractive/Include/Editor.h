@@ -1,11 +1,11 @@
 /**************************************************************************
  * @file Editor.h
- * @author
- * @par DP email:
+ * @author Mark Low
+ * @par DP email: l.wangchunmark@digipen.edu
  * @par Course: CSD 2401
  * @par Software Engineering Project 3
- * @date 09-05-2023
- * @brief This header file contains the code to setup and run the editor
+ * @date 13-09-2023
+ * @brief This source file contains the code to setup and run the editor
  *************************************************************************/
 #ifndef EDITOR_H
 #define EDITOR_H
