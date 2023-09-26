@@ -11,6 +11,7 @@
 #include "Editor.h"
 #include <iostream>
 
+
 static void HelpMarker(std::string desc) {
 	ImGui::TextDisabled("(?)");
 	if (ImGui::BeginItemTooltip()) {
@@ -285,8 +286,8 @@ void Editor::CreateObjectList() {
 		// Individual Object Controls
 		if (ImGui::CollapsingHeader("Object Modifier")) {
 			static float xPos, yPos, xScale, yScale, angle, rotSpeed;
-			ImGui::SliderFloat("X-Position", &xPos, 0.0f, 1.0f, "%.2f"); // Slider for X-Position
-
+			if (ImGui::SliderFloat("X-Position", &xPos, 0.0f, 100.0f, "%.2f")) // Slider for X-Position
+				physicsSys->SetCurrentRotationSpeed(-20, 0);
 			ImGui::SliderFloat("Y-Position", &yPos, 0.0f, 1.0f, "%.2f"); // Slider for Y-Position
 			ImGui::SliderFloat("X-Scale", &xScale, 0.0f, 1.0f, "%.2f"); // Slider for X-Scale
 			ImGui::SliderFloat("Y-Scale", &yScale, 0.0f, 1.0f, "%.2f"); // Slider for Y-Scale

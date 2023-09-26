@@ -496,10 +496,10 @@ void OpenGLApplication::OpenGLUpdate()
 		|              Mouse                |
 		-----------------------------------*/
 
-		if (mouseButtonStates[GLFW_MOUSE_BUTTON_LEFT])
+	/*	if (mouseButtonStates[GLFW_MOUSE_BUTTON_LEFT])
 			std::cout << "LCLICK\n";
 		if (mouseButtonStates[GLFW_MOUSE_BUTTON_RIGHT])
-			std::cout << "RCLICK\n";
+			std::cout << "RCLICK\n";*/
 
 		/*-----------------------------------
 		|              Scroll               |
