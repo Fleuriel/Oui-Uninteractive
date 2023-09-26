@@ -135,28 +135,49 @@ void Editor::CreateSoundPanel() {
 
 void Editor::CreateObjectList() {
 	ImGui::Begin("Pretty objects here");
+	static size_t gameobjID = 0;
+	
+	std::map<size_t, GameObject*> copyMap = objectFactory->GetGameObjectIDMap();
+	std::map<size_t, GameObject*>::iterator it = copyMap.begin();
 	// Left Plane
 	static size_t selectedID = 0;
 	{
 		ImGui::BeginChild("left pane", ImVec2(150, 0), true);
 		int objCount = objectFactory->GetGameObjectIDMap().size();
-		std::string prevName;
+		std::string prevName;	
+		
+		
+		int count = 0;
+		for (; it != copyMap.end(); it++) {
 
-		for (int i = 0; i < objCount; i++) {
-			// Get the details of individual object
-			std::string objName = objectFactory->GetGameObjectIDMap().at(i)->GetName();
-			size_t objID = objectFactory->GetGameObjectIDMap().at(i)->GetGameObjectID();
-			std::string newName = objName;
-			// Check if its a copied object
-			if (prevName == objName) {
-				newName += "(" + std::to_string(i) + ")"; // concat copy number
+			std::string objName = it->second->GetName();
+			size_t objID = it->second->GetGameObjectID();
+			
+			if (ImGui::Selectable(objName.c_str(), selectedID == count)) {
+				gameobjID = objID;
+				selectedID = count;
 			}
-			// Check and set which entry is selected 
-			if (ImGui::Selectable(newName.c_str(), selectedID == i)) {			
-				selectedID = i;
-			}		
-			prevName = objName;
+			count++;
 		}
+
+		//for (int i = 0; i < objectFactory->; i++) {
+		//	if (objectFactory->GetGameObjectByID(i) == nullptr)
+		//		continue;
+		//	// Get the details of individual object
+		//	std::string objName = objectFactory->GetGameObjectByID(i)->GetName();
+		//	size_t objID = objectFactory->GetGameObjectByID(i)->GetGameObjectID();
+		//	std::string newName = objName;
+		//	// Check if its a copied object
+		//	if (prevName == objName) {
+		//		newName += "(" + std::to_string(i) + ")"; // concat copy number
+		//	}
+		//	// Check and set which entry is selected 
+		//	if (ImGui::Selectable(newName.c_str(), selectedID == i)) {			
+		//		selectedID = i;
+		//	}		
+		//	prevName = objName;
+		//}
+		
 		ImGui::EndChild();
 	}
 	ImGui::SameLine();
@@ -167,8 +188,11 @@ void Editor::CreateObjectList() {
 		ImGui::BeginGroup();
 		ImGui::BeginChild("item view", ImVec2(0, -ImGui::GetFrameHeightWithSpacing())); // Leave room for 1 line below us
 		// Detail Tab
-		if (ImGui::CollapsingHeader("Details")) {		
-			ImGui::Text("Object ID: %d", objectFactory->GetGameObjectIDMap().at(selectedID)->GetGameObjectID());
+		if (ImGui::CollapsingHeader("Details")) {	
+			if (objectFactory->GetGameObjectByID(gameobjID) != nullptr) {
+				ImGui::Text("Object ID: %d", objectFactory->GetGameObjectByID(gameobjID)->GetGameObjectID());
+			}
+			
 			ImGui::Text("Size: ");
 			ImGui::Text("Rotation: ");
 			ImGui::Separator();
@@ -181,13 +205,31 @@ void Editor::CreateObjectList() {
 			// Adding objects
 			ImGui::InputInt("Add Count", &addCount);
 			ImGui::SameLine(); 
-			if (ImGui::Button("Add")){
+			/*if (ImGui::Button("Add")){
 				for (int i = 0; i < addCount; i++) {
 					std::string startName{ "Object" };
 					startName += std::to_string(objectFactory->GetGameObjectIDMap().size() + 1);
 					objectFactory->BuildObjectRunTime(startName);
 				}
+			}*/
+
+			if (ImGui::Button("Add")) {
+				size_t highestID = 0; // Initialize with the lowest possible ID
+
+				if (!objectFactory->GetGameObjectIDMap().empty()) {
+					// Find the highest assigned ID in the existing objects
+					for (const auto& pair : objectFactory->GetGameObjectIDMap()) {
+						highestID = std::max(highestID, pair.first) + 1;
+					}
+				}
+
+				for (int i = 0; i < addCount; i++) {
+					std::string newName = "Object" + std::to_string(highestID + 1);
+					objectFactory->BuildObjectRunTime(newName);
+					highestID++; // Increment the highest assigned ID
+				}
 			}
+
 			ImGui::SameLine(); 
 			HelpMarker("Use this to add as many objects as you want");
 			
@@ -196,7 +238,7 @@ void Editor::CreateObjectList() {
 			ImGui::SameLine();
 			if (ImGui::Button("Clone")) {
 				for (int i = 0; i < cloneCount; i++) {
-					objectFactory->CloneObject(selectedID);
+					objectFactory->CloneObject(gameobjID);
 				}					
 			}
 			ImGui::SameLine(); 
@@ -204,13 +246,34 @@ void Editor::CreateObjectList() {
 			
 			// Deleting objects
 			if (ImGui::Button("Delete")) {
-				// For tristan muah
-				std::cout << "Fk u in particular";
+				if (objectFactory->GetGameObjectByID(gameobjID) != nullptr) {
+					objectFactory->DestroyObject(objectFactory->GetGameObjectByID(gameobjID));
+				}
+				size_t counter = 0;
+				bool getNext = false;
+				for (std::map<size_t, GameObject*>::iterator it = copyMap.begin(); it != copyMap.end(); it++) {
+					//set to next record if not the end
+					if (getNext) {
+						gameobjID = it->first;
+						getNext = false;
+						break;
+					}
+					//trigger to get ready to read next record
+					if (counter == selectedID) {
+						getNext = true;
+					}
+					
+					counter++;
+				}
+				//edge case if deleted object is the last one
+				if (getNext) {
+					selectedID = 0;
+					gameobjID = copyMap.begin()->first;
+				}
 			}
 			ImGui::SameLine();
 			if (ImGui::Button("Delete All")) {
-				// For tristan muah
-				std::cout << "Bye bye objects";
+				objectFactory->DestroyAllObjects();
 			}
 			ImGui::Separator();
 		}

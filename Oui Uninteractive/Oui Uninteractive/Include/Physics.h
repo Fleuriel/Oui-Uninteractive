@@ -32,7 +32,8 @@ public:
 	void MoveRight(size_t ID);
 	Vec2 AngleToVec(float angle);
 	//insert linked list of all physics body components
-	std::vector<PhysicsBody*> bodyList;
+	//std::vector<PhysicsBody*> bodyList;
+	std::map<size_t, PhysicsBody*> bodyList;
 
 };
 extern Physics* physicsSys;
