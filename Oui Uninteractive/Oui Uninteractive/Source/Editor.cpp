@@ -209,7 +209,7 @@ void Editor::CreateObjectList() {
 				for (int i = 0; i < addCount; i++) {
 					std::string startName{ "Object" };
 					startName += std::to_string(objectFactory->GetGameObjectIDMap().size() + 1);
-					objectFactory->BuildObjectRunTime(startName);
+					objectFactory->BuildObjectRunTime(startName, "");
 				}
 			}*/
 
@@ -230,7 +230,7 @@ void Editor::CreateObjectList() {
 
 				for (int i = 0; i < addCount; i++) {
 					std::string newName = "Object" + std::to_string(highestNumber + 1);
-					objectFactory->BuildObjectRunTime(newName);
+					objectFactory->BuildObjectRunTime(newName, "");
 					highestNumber++; // Increment the highest assigned ID
 				}
 			}

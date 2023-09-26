@@ -83,7 +83,10 @@ ObjectFactory::~ObjectFactory() {
 	for (auto& it : componentFactoryMap) {
 		delete it.second;
 	}
-	DestroyAllObjects();
+	componentFactoryMap.clear();
+	gameObjectIDMap.clear();
+	gameObjectDestroyList.clear();
+	prefabMap.clear();
 }
 
 /**************************************************************************
@@ -95,17 +98,17 @@ void ObjectFactory::BuildObjectFromFile(const std::string& filePath) {
 	rapidjson::Document objDoc;
 	JsonSerializer serializer;
 	std::string componentName;
-
+	
 	// Read data from file
 	if (serializer.ReadJSONFile(filePath, objDoc)) {
 		// For each object in Objects array (in JSON file)
 		for (auto& obj : objDoc["Objects"].GetArray()) {
-			GameObject* gameObject{new GameObject(obj["Name"].GetString())};
+			GameObject* gameObject{ new GameObject(obj["Name"].GetString(), obj["Type"].GetString()) };
 
 			// Get each component(s) in current object
-			const rapidjson::Value& components{obj["Components"]};
+			const rapidjson::Value& components{ obj["Components"] };
 
-			for (rapidjson::Value::ConstMemberIterator itr{components.MemberBegin()}; itr != components.MemberEnd(); ++itr) {
+			for (rapidjson::Value::ConstMemberIterator itr{ components.MemberBegin() }; itr != components.MemberEnd(); ++itr) {
 				componentName = itr->name.GetString();
 				ComponentType type = StringToEnum(componentName);
 
@@ -126,13 +129,12 @@ void ObjectFactory::BuildObjectFromFile(const std::string& filePath) {
 					gameObject->AddComponent(component, componentFactory->type);
 				}
 			}
-			
+
 			// Assign an ID to the game object
 			AssignObjectID(gameObject);
 
 			// Initialize the components in the current object
 			gameObject->Initialize();
-			
 		}		
 	}
 	else {
@@ -142,13 +144,57 @@ void ObjectFactory::BuildObjectFromFile(const std::string& filePath) {
 
 /**************************************************************************
 * @brief Create a game object during run-time
-* @param name - name of GameObject
+* @param name - name of GameObject prefab
 * @return GameObject*
 *************************************************************************/
-GameObject* ObjectFactory::BuildObjectRunTime(const std::string& name) {
-	GameObject* objectRunTime{new GameObject(name)};
+GameObject* ObjectFactory::BuildObjectRunTime(const std::string& name, const std::string& type) {
+	GameObject* objectRunTime{new GameObject(name, type)};
 	AssignObjectID(objectRunTime);
 	return objectRunTime;
+}
+
+/**************************************************************************
+* @brief Create a game object based on a prefab in the prefab map
+* @param name - name of GameObject
+* @param type - type of GameObject (name of prefab)
+* @return GameObject*
+*************************************************************************/
+GameObject* ObjectFactory::BuildObjectFromPrefab(const std::string& name, const std::string& type) {
+	// Check if prefab type exists
+	if (prefabMap.find(type) == prefabMap.end()) {
+		return nullptr;
+	}
+	else {
+		GameObject* gameObject{ new GameObject(name, type) };
+		std::string componentName;
+
+		for (size_t i{}; i < prefabMap[type].size(); ++i) {
+			componentName = prefabMap[type][i];
+			ComponentType type = StringToEnum(componentName);
+
+			if (componentFactoryMap.find(type) == componentFactoryMap.end()) {
+				std::cerr << "Component name not found." << std::endl;
+			}
+			else {
+				// Set componentFactory to create the component itself
+				ComponentFactoryBase* componentFactory = componentFactoryMap[type];
+
+				// Create the component
+				IComponent* component = componentFactory->CreateComponent();
+
+				// Add the component to the game object
+				gameObject->AddComponent(component, componentFactory->type);
+			}
+		}
+
+		// Initialize the components in the current object
+		gameObject->Initialize();
+
+		// Assign an ID to the game object
+		AssignObjectID(gameObject);
+
+		return gameObject;
+	}
 }
 
 /**************************************************************************
@@ -166,30 +212,16 @@ void ObjectFactory::LoadPrefab(const std::string& filePath) {
 	if (serializer.ReadJSONFile(filePath, objDoc)) {
 		// For each object in Objects array (in JSON file)
 		for (auto& obj : objDoc["Objects"].GetArray()) {
-			GameObject* gameObject{ new GameObject(obj["Name"].GetString()) };
+			std::string prefabName{ obj["Name"].GetString() };
+			std::vector<std::string> prefabComponents{};
 
-			// Get each component(s) in current object
-			const rapidjson::Value& components{ obj["Components"] };
-
-			for (rapidjson::Value::ConstMemberIterator itr{ components.MemberBegin() }; itr != components.MemberEnd(); ++itr) {
-				componentName = itr->name.GetString();
-				ComponentType type = StringToEnum(componentName);
-
-				if (componentFactoryMap.find(type) == componentFactoryMap.end()) {
-					std::cerr << "Component name not found." << std::endl;
-				}
-				else {
-					// Set componentFactory to create the component itself
-					ComponentFactoryBase* componentFactory = componentFactoryMap[type];
-
-					// Create the component
-					IComponent* component = componentFactory->CreateComponent();
-
-					// Add the component to the game object
-					gameObject->AddComponent(component, componentFactory->type);
-				}
+			// Get each component(s) in current prefab object
+			for (auto& cmp : obj["Components"].GetArray()) {
+				prefabComponents.push_back(cmp.GetString());
 			}
-			prefabSet.insert(gameObject);
+
+			// Add the prefab to the prefab map
+			prefabMap[prefabName] = prefabComponents;
 		}
 	}
 	else {
@@ -209,7 +241,7 @@ bool ObjectFactory::CloneObject(size_t gameObjectID) {
 		std::string objectStr;
 		objectStr += "Object" + std::to_string(gameObjectCurrentID + 1);
 
-		GameObject* clone = BuildObjectRunTime(objectStr);
+		GameObject* clone = BuildObjectRunTime(objectStr, original->gameObjectType);
 
 		for (int i = 0; i < original->componentList.size(); i++) {
 			clone->AddComponent(original->componentList.at(i)->Clone(), original->componentList[i]->componentType);
@@ -229,7 +261,7 @@ bool ObjectFactory::CloneObject(size_t gameObjectID) {
 * @param filePath - directory of JSON file
 * @return void
 *************************************************************************/
-/*void ObjectFactory::SaveObjectsToFile(const std::string& filePath) {
+void ObjectFactory::SaveObjectsToFile(const std::string& filePath) {
 	rapidjson::Document objDoc;
 	JsonSerializer serializer;
 	serializer.ReadJSONFile(filePath, objDoc);
@@ -237,7 +269,7 @@ bool ObjectFactory::CloneObject(size_t gameObjectID) {
 	if (serializer.WriteJSONFile(filePath, objDoc)) {
 		std::cout << "Successfully saved objects to file." << std::endl;
 	}
-}*/
+}
 
 /**************************************************************************
 * @brief Update each game object in object factory
@@ -245,20 +277,19 @@ bool ObjectFactory::CloneObject(size_t gameObjectID) {
 * @return void
 *************************************************************************/
 void ObjectFactory::Update(float dt) {
-	std::set<GameObject*>::iterator it = gameObjectDestroyList.begin();
+	std::set<GameObject*>::iterator setIt = gameObjectDestroyList.begin();
 
 	// Destroy game objects in destroy list
-	for (; it != gameObjectDestroyList.end(); it++) {
-		GameObject* gameObject = *it;
-		std::map<size_t, GameObject*>::iterator it2 = gameObjectIDMap.find(gameObject->gameObjectID);
+	for (; setIt != gameObjectDestroyList.end(); ++setIt) {
+		GameObject* gameObject = *setIt;
+		std::map<size_t, GameObject*>::iterator mapIt = gameObjectIDMap.find(gameObject->gameObjectID);
 
-		for (int i = 0; i < gameObject->componentList.size(); i++) {
+		/*for (int i = 0; i < gameObject->componentList.size(); i++) {
 			delete gameObject->componentList.at(i);
-		}
+		}*/
 
-		//Insert double free protection here
 		delete gameObject;
-		gameObjectIDMap.erase(it2);
+		gameObjectIDMap.erase(mapIt);
 	}
 
 	gameObjectDestroyList.clear();
@@ -297,11 +328,11 @@ void ObjectFactory::DestroyAllObjects() {
 	std::map<size_t, GameObject*>::iterator it = gameObjectIDMap.begin();
 
 	while (it != gameObjectIDMap.end()) {
-		for (int i = 0; i < it->second->componentList.size(); i++) {
+		/*for (int i = 0; i < it->second->componentList.size(); i++) {
 			delete it->second->componentList.at(i);
-		}
+		}*/
 		delete it->second;
-		it++;
+		++it;
 	}
 	gameObjectIDMap.clear();
 	gameObjectCurrentID = 0;

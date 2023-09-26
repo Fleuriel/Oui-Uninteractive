@@ -26,16 +26,20 @@
 }*/
 
 /**************************************************************************
-* @brief Constructor
+* @brief Default Constructor
 *************************************************************************/
-GameObject::GameObject(const std::string name) : gameObjectID{} {
+GameObject::GameObject(const std::string& name, const std::string& type) : gameObjectID{} {
 	gameObjectName = name;
+	gameObjectType = type;
 }
 
 /**************************************************************************
 * @brief Destructor
 *************************************************************************/
-GameObject::~GameObject() {}
+GameObject::~GameObject() {
+	for (int i{}; i < componentList.size(); ++i)
+		delete componentList[i];
+}
 
 /**************************************************************************
 * @brief Initialize components in componentList
@@ -86,6 +90,14 @@ int GameObject::Has(ComponentType typeID) {
 }
 
 /**************************************************************************
+* @brief Get game object ID
+* @return size_t - game object ID
+*************************************************************************/
+size_t GameObject::GetGameObjectID() {
+	return gameObjectID;
+}
+
+/**************************************************************************
 * @brief Get game object name
 * @return std::string - game object name
 *************************************************************************/
@@ -94,11 +106,11 @@ std::string GameObject::GetName() {
 }
 
 /**************************************************************************
-* @brief Get game object ID
-* @return size_t - game object ID
+* @brief Get game object type
+* @return std::string - game object type
 *************************************************************************/
-size_t GameObject::GetGameObjectID() {
-	return gameObjectID;
+std::string GameObject::GetType() {
+	return gameObjectType;
 }
 
 /**************************************************************************

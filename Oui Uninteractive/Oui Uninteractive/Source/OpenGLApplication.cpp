@@ -202,15 +202,25 @@ void OpenGLApplication::OpenGLInit()
 		GET_COMPONENT(objectFactory->GetGameObjectByID(i), Transform, ComponentType::TRANSFORM)->position.y = rand() % 600;
 	}*/
 
+	// Prefabs
+	std::cout << "\nLoading prefabs from JSON file..." << std::endl;
+	objectFactory->LoadPrefab("../prefab/prefab.JSON");
+	std::cout << "Loading prefabs from JSON file... completed." << std::endl;
+
+	std::cout << "\nBuilding an object from player prefab..." << std::endl;
+	objectFactory->BuildObjectFromPrefab("PlayerObjFromPrefab", "Player");
+	std::cout << "Building an object from player prefab... completed." << std::endl;
+
 	// De-serializing objects from JSON file
 	std::cout << "\nDe-serializing objects from JSON file..." << std::endl;
 	objectFactory->BuildObjectFromFile("../scenes/testscene.JSON");
 	std::cout << "De-serializing objects from JSON file... completed." << std::endl;
 
+	std::cout << "\nCloning object with ID 0..." << std::endl;
 	objectFactory->CloneObject(0);
-	GET_COMPONENT(objectFactory->GetGameObjectByID(3), Transform, ComponentType::TRANSFORM)->position.x = 450;
-	GET_COMPONENT(objectFactory->GetGameObjectByID(3), Transform, ComponentType::TRANSFORM)->position.y = 50;
-
+	GET_COMPONENT(objectFactory->GetGameObjectByID(4), Transform, ComponentType::TRANSFORM)->position.x = 450;
+	GET_COMPONENT(objectFactory->GetGameObjectByID(4), Transform, ComponentType::TRANSFORM)->position.y = 50;
+	std::cout << "\nCloning object with ID 0... completed." << std::endl;
 
 	// Modifying value of Object2
 	/*std::cout << "\nUpdating Object2..." << std::endl;

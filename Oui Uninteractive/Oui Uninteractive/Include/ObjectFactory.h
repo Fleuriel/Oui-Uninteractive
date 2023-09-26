@@ -9,12 +9,13 @@
  * @date 13-09-2023
  * @brief This file contains the definiton of the ObjectFactory class.
  *		  The functions include:
- *			- stringToEnum
- *			- enumToString
+ *			- StringToEnum
+ *			- EnumToString
  *			- BuildObjectFromFile
  *			- BuildObjectRunTime
+ *			- BuildObjectFromPrefab
  *			- LoadPrefab
- *			- CloneObjects
+ *			- CloneObject
  *			- Update
  *			- AssignObjectID
  *			- DestroyObject
@@ -50,8 +51,8 @@ private:
 	// Map of component factories
 	std::map<componentType, ComponentFactoryBase*> componentFactoryMap;
 
-	// Set to store prefabs
-	std::set<GameObject*> prefabSet;
+	// Map to store prefabs
+	std::map<std::string, std::vector<std::string>> prefabMap;
 
 public:
 	/**************************************************************************
@@ -84,9 +85,18 @@ public:
 	/**************************************************************************
 	* @brief Create a game object during run-time
 	* @param name - name of GameObject
+	* @param type - type of GameObject
 	* @return GameObject*
 	*************************************************************************/
-	GameObject* BuildObjectRunTime(const std::string& name);
+	GameObject* BuildObjectRunTime(const std::string& name, const std::string& type);
+
+	/**************************************************************************
+	* @brief Create a game object based on a prefab in the prefab map
+	* @param name - name of GameObject
+	* @param type - type of GameObject
+	* @return GameObject*
+	*************************************************************************/
+	GameObject* BuildObjectFromPrefab(const std::string& name, const std::string& type);
 
 	/**************************************************************************
 	* @brief Load prefab JSON file
@@ -107,7 +117,7 @@ public:
 	* @param filePath - directory of JSON file
 	* @return void
 	*************************************************************************/
-	//void SaveObjectsToFile(const std::string& filePath);
+	void SaveObjectsToFile(const std::string& filePath);
 
 	/**************************************************************************
 	* @brief Update each game object in object factory

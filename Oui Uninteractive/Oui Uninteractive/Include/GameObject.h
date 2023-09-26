@@ -30,6 +30,9 @@ private:
 	// String to represent game object name
 	std::string gameObjectName;
 
+	// String to represent game object type
+	std::string gameObjectType;
+
 	// Vector of components
 	std::vector<IComponent*> componentList;	// may use typedef to represent vector in the future
 	
@@ -41,7 +44,7 @@ public:
 	/**************************************************************************
 	* @brief Constructor and Destructor
 	*************************************************************************/
-	GameObject(const std::string name);
+	GameObject(const std::string& name, const std::string& type);
 	~GameObject();
 	
 	/**************************************************************************
@@ -79,16 +82,22 @@ public:
 	int Has(ComponentType typeID);
 
 	/**************************************************************************
+	* @brief Get game object ID
+	* @return size_t - game object ID
+	*************************************************************************/
+	size_t GetGameObjectID();
+
+	/**************************************************************************
 	* @brief Get game object name
 	* @return std::string - game object name
 	*************************************************************************/
 	std::string GetName();
 
 	/**************************************************************************
-	* @brief Get game object ID
-	* @return size_t - game object ID
+	* @brief Get game object type
+	* @return std::string - game object type
 	*************************************************************************/
-	size_t GetGameObjectID();
+	std::string GetType();
 
 	/**************************************************************************
 	* @brief Get component with component type

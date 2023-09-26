@@ -14,7 +14,7 @@
 #define JSON_SERIALIZER_H
 
 #include "rapidjson/document.h"
-#include "rapidjson/writer.h"
+#include "rapidjson/prettywriter.h"
 #include "rapidjson/filereadstream.h"
 #include "rapidjson/filewritestream.h"
 #include <vector>
