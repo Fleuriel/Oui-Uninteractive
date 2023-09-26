@@ -11,9 +11,40 @@
  *************************************************************************/
 
 #include "Collision.h"
-#include <math.h>
+#include <cmath>
 #include "Vector2D.h"
 #include "GameStateManager.h"
+
+
+ //Temporary function, the coordinate fetching for mouse is wrong (need NDC)
+bool CollisionMouseRect(AABB Rect1) {
+
+	double xpos, ypos{};
+	glfwGetCursorPos(window, &xpos, &ypos);
+
+	if ((Rect1.max.x > xpos &&
+		Rect1.max.y > ypos) &&
+		(xpos > Rect1.min.x &&
+		 ypos > Rect1.min.y))
+	{
+		std::cout << "ITS COLLIDING BOIS\n";
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+}
+
+
+//Temporary function, the coordinate fetching for mouse is wrong (need NDC)
+bool CollisionMouseCircle(Coordinates Coords1, float r1 = 2) {
+
+	double xpos, ypos{};
+	glfwGetCursorPos(window, &xpos, &ypos);
+	
+	return (Coords1.DistanceIsWithinThreshold(Coordinates(xpos, ypos), (r1)));
+}
 
 
 /**************************************************************************
