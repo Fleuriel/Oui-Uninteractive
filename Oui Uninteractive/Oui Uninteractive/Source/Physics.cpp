@@ -111,8 +111,7 @@ void Physics::SetPosition(Vec2 pos) {
 *************************************************************************/
 void Physics::SetPosition(Vec2 pos, size_t ID) {
 	
-	if (objectFactory->GetGameObjectByID(ID) != nullptr &&
-		objectFactory->GetGameObjectByID(ID)->Has(ComponentType::PHYSICS_BODY) != -1) {
+	if (bodyList.find(ID) != bodyList.end()) {
 		bodyList.at(ID)->txPtr->position = pos;	
 	}
 }
@@ -135,8 +134,7 @@ void Physics::SetVelocity(Vec2 newVelocity) {
 * @return void
 *************************************************************************/
 void Physics::SetVelocity(Vec2 velocity, size_t ID) {
-	if (objectFactory->GetGameObjectByID(ID) != nullptr &&
-		objectFactory->GetGameObjectByID(ID)->Has(ComponentType::PHYSICS_BODY) != -1) {
+	if (bodyList.find(ID) != bodyList.end()) {
 		bodyList.at(ID)->velocity = velocity;
 	}
 }
@@ -159,8 +157,7 @@ void Physics::SetRotationSpeed(float rotSpeed) {
 * @return void
 *************************************************************************/
 void Physics::SetRotationSpeed(float rotSpeed, size_t ID) {
-	if (objectFactory->GetGameObjectByID(ID) != nullptr &&
-		objectFactory->GetGameObjectByID(ID)->Has(ComponentType::PHYSICS_BODY) != -1) {
+	if (bodyList.find(ID) != bodyList.end()) {
 		bodyList.at(ID)->rotationSpeed = rotSpeed;
 	}
 }
@@ -172,8 +169,7 @@ void Physics::SetCurrentRotationSpeed(float rotSpeed) {
 	}
 }
 void Physics::SetCurrentRotationSpeed(float rotSpeed, size_t ID) {
-	if (objectFactory->GetGameObjectByID(ID) != nullptr &&
-		objectFactory->GetGameObjectByID(ID)->Has(ComponentType::PHYSICS_BODY) != -1) {
+	if (bodyList.find(ID) != bodyList.end()) {
 		bodyList.at(ID)->currentRotationSpeed = rotSpeed;
 	}
 }
@@ -184,8 +180,7 @@ void Physics::SetCurrentRotationSpeed(float rotSpeed, size_t ID) {
 * @return void
 *************************************************************************/
 void Physics::SetDirection(Vec2 dir, size_t ID) {
-	if (objectFactory->GetGameObjectByID(ID) != nullptr &&
-		objectFactory->GetGameObjectByID(ID)->Has(ComponentType::PHYSICS_BODY) != -1) {
+	if (bodyList.find(ID) != bodyList.end()) {
 		Vector2DNormalize(bodyList.at(ID)->direction, dir);
 	}
 }
@@ -195,8 +190,7 @@ void Physics::SetDirection(Vec2 dir, size_t ID) {
 * @return void
 *************************************************************************/
 void Physics::MoveBackwards(size_t ID) {
-	if (objectFactory->GetGameObjectByID(ID) != nullptr &&
-		objectFactory->GetGameObjectByID(ID)->Has(ComponentType::PHYSICS_BODY) != -1) {
+	if (bodyList.find(ID) != bodyList.end()) {
 		bodyList.at(ID)->velocity = bodyList.at(ID)->speed * Vec2(-bodyList.at(ID)->direction.x, -bodyList.at(ID)->direction.y);
 	}
 }
@@ -206,8 +200,7 @@ void Physics::MoveBackwards(size_t ID) {
 * @return void
 *************************************************************************/
 void Physics::MoveForward(size_t ID) {
-	if (objectFactory->GetGameObjectByID(ID) != nullptr &&
-		objectFactory->GetGameObjectByID(ID)->Has(ComponentType::PHYSICS_BODY) != -1) {
+	if (bodyList.find(ID) != bodyList.end()) {
 		bodyList.at(ID)->velocity = bodyList.at(ID)->speed * Vec2(bodyList.at(ID)->direction.x, bodyList.at(ID)->direction.y);
 	}
 }
@@ -217,8 +210,7 @@ void Physics::MoveForward(size_t ID) {
 * @return void
 *************************************************************************/
 void Physics::MoveLeft(size_t ID) {
-	if (objectFactory->GetGameObjectByID(ID) != nullptr &&
-		objectFactory->GetGameObjectByID(ID)->Has(ComponentType::PHYSICS_BODY) != -1) {
+	if (bodyList.find(ID) != bodyList.end()) {
 		bodyList.at(ID)->velocity = bodyList.at(ID)->speed * Vec2(-bodyList.at(ID)->direction.x, bodyList.at(ID)->direction.y);
 	}
 }
@@ -228,8 +220,7 @@ void Physics::MoveLeft(size_t ID) {
 * @return void
 *************************************************************************/
 void Physics::MoveRight(size_t ID) {
-	if (objectFactory->GetGameObjectByID(ID) != nullptr &&
-		objectFactory->GetGameObjectByID(ID)->Has(ComponentType::PHYSICS_BODY) != 1) {
+	if (bodyList.find(ID) != bodyList.end()) {
 		bodyList.at(ID)->velocity = bodyList.at(ID)->speed * Vec2(bodyList.at(ID)->direction.x, bodyList.at(ID)->direction.y);
 	}
 }
