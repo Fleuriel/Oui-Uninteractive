@@ -231,19 +231,26 @@ void Editor::CreateObjectList() {
 				if (objectFactory->GetGameObjectByID(gameobjID) != nullptr) {
 					objectFactory->DestroyObject(objectFactory->GetGameObjectByID(gameobjID));
 				}
-				int counter = 0;
+				size_t counter = 0;
 				bool getNext = false;
 				for (std::map<size_t, GameObject*>::iterator it = copyMap.begin(); it != copyMap.end(); it++) {
-					
+					//set to next record if not the end
 					if (getNext) {
 						gameobjID = it->first;
+						getNext = false;
 						break;
 					}
+					//trigger to get ready to read next record
 					if (counter == selectedID) {
 						getNext = true;
 					}
 					
 					counter++;
+				}
+				//edge case if deleted object is the last one
+				if (getNext) {
+					selectedID = 0;
+					gameobjID = copyMap.begin()->first;
 				}
 			}
 			ImGui::SameLine();
