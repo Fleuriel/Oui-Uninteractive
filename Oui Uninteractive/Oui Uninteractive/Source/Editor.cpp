@@ -205,13 +205,31 @@ void Editor::CreateObjectList() {
 			// Adding objects
 			ImGui::InputInt("Add Count", &addCount);
 			ImGui::SameLine(); 
-			if (ImGui::Button("Add")){
+			/*if (ImGui::Button("Add")){
 				for (int i = 0; i < addCount; i++) {
 					std::string startName{ "Object" };
 					startName += std::to_string(objectFactory->GetGameObjectIDMap().size() + 1);
 					objectFactory->BuildObjectRunTime(startName);
 				}
+			}*/
+
+			if (ImGui::Button("Add")) {
+				size_t highestID = 0; // Initialize with the lowest possible ID
+
+				if (!objectFactory->GetGameObjectIDMap().empty()) {
+					// Find the highest assigned ID in the existing objects
+					for (const auto& pair : objectFactory->GetGameObjectIDMap()) {
+						highestID = std::max(highestID, pair.first) + 1;
+					}
+				}
+
+				for (int i = 0; i < addCount; i++) {
+					std::string newName = "Object" + std::to_string(highestID + 1);
+					objectFactory->BuildObjectRunTime(newName);
+					highestID++; // Increment the highest assigned ID
+				}
 			}
+
 			ImGui::SameLine(); 
 			HelpMarker("Use this to add as many objects as you want");
 			
