@@ -136,15 +136,17 @@ void Editor::CreateSoundPanel() {
 void Editor::CreateObjectList() {
 	ImGui::Begin("Pretty objects here");
 	static size_t gameobjID = 0;
+	
+	std::map<size_t, GameObject*> copyMap = objectFactory->GetGameObjectIDMap();
+	std::map<size_t, GameObject*>::iterator it = copyMap.begin();
 	// Left Plane
 	static size_t selectedID = 0;
 	{
 		ImGui::BeginChild("left pane", ImVec2(150, 0), true);
 		int objCount = objectFactory->GetGameObjectIDMap().size();
-		std::string prevName;
-		std::map<size_t, GameObject*> copyMap = objectFactory->GetGameObjectIDMap();
-		std::map<size_t, GameObject*>::iterator it = copyMap.begin();
-
+		std::string prevName;	
+		
+		
 		int count = 0;
 		for (; it != copyMap.end(); it++) {
 
@@ -223,7 +225,22 @@ void Editor::CreateObjectList() {
 			
 			// Deleting objects
 			if (ImGui::Button("Delete")) {
-				objectFactory->DestroyObject(objectFactory->GetGameObjectByID(gameobjID));
+
+				objectFactory->DestroyObject(objectFactory->GetGameObjectByID(gameobjID));		
+				int counter = 0;
+				bool getNext = false;
+				for (std::map<size_t, GameObject*>::iterator it = copyMap.begin(); it != copyMap.end(); it++) {
+					
+					if (getNext) {
+						gameobjID = it->first;
+						break;
+					}
+					if (counter == selectedID) {
+						getNext = true;
+					}
+					
+					counter++;
+				}
 			}
 			ImGui::SameLine();
 			if (ImGui::Button("Delete All")) {
