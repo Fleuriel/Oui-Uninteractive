@@ -30,7 +30,7 @@ class OpenGLObject
 public:
 	OpenGLObject(int id = 0) : 
 		scaleModel(0.5, 0.5) , orientation(0.0, 0.0f), position(0, 0), 
-		model_To_NDC_xform(glm::mat3(1.0f)), color(0.0f, 0.0f, 1.0f), particlechecker(false),
+		model_To_NDC_xform(glm::mat3(1.0f)), color(0.0f, 0.0f, 1.0f), interactable(true),
 		angleDisplacment(0.0f), angleSpeed(0.0f), TagID(id)
 	{
 		//if (TagID >= 0 && TagID < models.size())
@@ -45,8 +45,8 @@ public:
 	};
 
 	OpenGLObject(glm::vec3 particlecolor) : 
-		scaleModel(0.5, 0.5), orientation(0.0, 0.0f), position(0, 0), 
-		model_To_NDC_xform(glm::mat3(1.0f)), color(particlecolor), particlechecker(false),
+		scaleModel(1, 1), orientation(0.0, 0.0f), position(0, 0), 
+		model_To_NDC_xform(glm::mat3(1.0f)), color(particlecolor), interactable(true),
 		angleDisplacment(0.0f), angleSpeed(0.0f){
 		std::cout << "R : " << color.r << "\nG : " << color.g << "\nB : " << color.b << "\n";
 	};
@@ -63,7 +63,7 @@ public:
 
 	glm::mat3 model_To_NDC_xform;	// Model to NDC 
 	glm::vec3 color;				// Set Object Color
-	bool particlechecker;
+	bool interactable;
 	static GLuint mdl_ref, shd_ref;
 	//GLuint texture;
 

@@ -44,6 +44,7 @@ OpenGLObject Objects;
 std::list<OpenGLObject> objects; // singleton
 
 ParticleSystem particleSystem;
+Particle background;
 
 OpenGLObject::OpenGLModel mdl;
 
@@ -227,6 +228,9 @@ void OpenGLApplication::OpenGLInit()
 	GET_COMPONENT(objectFactory->GetGameObjectByName("Object2"), PhysicsBody, ComponentType::PHYSICS_BODY)->velocity.y = 20.5f;
 	objectFactory->SaveObjectsToFile("../scenes/testscene.JSON");
 	std::cout << "Updating Object2... completed." << std::endl;*/
+
+	
+	background.init(0, 0, windowSize.first, windowSize.second, 0, 0);
 }
 
 int positionX = 0;

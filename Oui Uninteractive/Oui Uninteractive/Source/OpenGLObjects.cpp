@@ -48,7 +48,7 @@ std::map<std::string, OpenGLObject> OpenGLObject::Object_Storage;
 GLuint OpenGLObject::VAO = 0;
 GLuint OpenGLObject::VBO = 0;
 
-int importTexture, secondTexture;
+int bgTexture, importTexture, secondTexture;
 
 GLuint OpenGLObject::textureID;								// id for texture object
 
@@ -83,15 +83,17 @@ void OpenGLObject::Init()
 	
 	importTexture = OpenGLObject::Setup_TextureObject("../texture/pepega.jpg");
 	secondTexture = OpenGLObject::Setup_TextureObject("../texture/pepe.jpg");
-
+	bgTexture = OpenGLObject::Setup_TextureObject("../texture/background.jpg");
 
 
 	textures.emplace_back(importTexture);
 	textures.emplace_back(secondTexture);
+	textures.emplace_back(bgTexture);
 
 
 	models.emplace_back(OpenGLObject::Box_Model(0, color, importTexture));
 	models.emplace_back(OpenGLObject::Box_Model(1 ,color, secondTexture));
+	models.emplace_back(OpenGLObject::Box_Model(2, color, bgTexture));
 
 	
 
@@ -415,7 +417,7 @@ void OpenGLObject::Draw() const
 	for (GLuint texture : textures)
 	{
 
-		glBindTextureUnit(6, secondTexture);
+		glBindTextureUnit(6, (interactable)? importTexture:bgTexture);
 
 	}
 

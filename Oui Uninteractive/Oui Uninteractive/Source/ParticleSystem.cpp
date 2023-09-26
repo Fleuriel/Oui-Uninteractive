@@ -11,7 +11,7 @@ Particle::Particle(){
     velocity = Vector2D(1, 1);
 	alpha = 1;
     lifespan = 1;
-    object.particlechecker = true;
+    object.interactable = false;
     particleSystem.particles.emplace_back(*this);
 }
 
@@ -80,20 +80,7 @@ void Particle::update() {
 }
 
 void Particle::draw() {
-	object.shdrpgms[object.shd_ref].Use(); // Install the shader program
-
-	// Part 2: Bind object's VAO handle
-	glBindVertexArray(object.models[object.mdl_ref].vaoid); // Bind object's VAO handle
-
-	glDrawElements(
-		GL_TRIANGLES, // Use GL_TRIANGLES for filled rendering
-		object.models[object.mdl_ref].draw_cnt,
-		GL_UNSIGNED_SHORT,
-		nullptr
-	);
-
-	glBindVertexArray(0); // Unbind the VAO
-	object.shdrpgms[object.shd_ref].UnUse(); // Uninstall the shader program
+	object.Draw();
 }
 
 
