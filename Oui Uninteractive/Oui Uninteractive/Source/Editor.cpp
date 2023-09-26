@@ -214,19 +214,24 @@ void Editor::CreateObjectList() {
 			}*/
 
 			if (ImGui::Button("Add")) {
-				size_t highestID = 0; // Initialize with the lowest possible ID
+				size_t highestNumber = 0; // Initialize with the lowest possible ID
 
 				if (!objectFactory->GetGameObjectIDMap().empty()) {
 					// Find the highest assigned ID in the existing objects
 					for (const auto& pair : objectFactory->GetGameObjectIDMap()) {
-						highestID = std::max(highestID, pair.first) + 1;
+						const std::string& objName = pair.second->GetName();
+						size_t pos = objName.find("Object");
+						if (pos != std::string::npos) {
+							size_t number = std::stoi(objName.substr(pos + 6)); // Extract and parse the number part
+							highestNumber = std::max(highestNumber, number);
+						}
 					}
 				}
 
 				for (int i = 0; i < addCount; i++) {
-					std::string newName = "Object" + std::to_string(highestID + 1);
+					std::string newName = "Object" + std::to_string(highestNumber + 1);
 					objectFactory->BuildObjectRunTime(newName);
-					highestID++; // Increment the highest assigned ID
+					highestNumber++; // Increment the highest assigned ID
 				}
 			}
 
