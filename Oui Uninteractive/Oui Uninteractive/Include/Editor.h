@@ -21,7 +21,6 @@
 #include <fstream>
 #include "Sound.h"
 #include "ObjectFactory.h"
-#include "OpenGLApplication.h"
 
 class UsingImGui {
 public:
