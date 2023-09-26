@@ -297,9 +297,9 @@ void ObjectFactory::DestroyAllObjects() {
 	std::map<size_t, GameObject*>::iterator it = gameObjectIDMap.begin();
 
 	while (it != gameObjectIDMap.end()) {
-		/*for (int i = 0; i < it->second->componentList.size(); i++) {
+		for (int i = 0; i < it->second->componentList.size(); i++) {
 			delete it->second->componentList.at(i);
-		}*/
+		}
 		delete it->second;
 		it++;
 	}
