@@ -188,8 +188,11 @@ void Editor::CreateObjectList() {
 		ImGui::BeginGroup();
 		ImGui::BeginChild("item view", ImVec2(0, -ImGui::GetFrameHeightWithSpacing())); // Leave room for 1 line below us
 		// Detail Tab
-		if (ImGui::CollapsingHeader("Details")) {		
-			ImGui::Text("Object ID: %d", objectFactory->GetGameObjectByID(gameobjID)->GetGameObjectID());
+		if (ImGui::CollapsingHeader("Details")) {	
+			if (objectFactory->GetGameObjectByID(gameobjID) != nullptr) {
+				ImGui::Text("Object ID: %d", objectFactory->GetGameObjectByID(gameobjID)->GetGameObjectID());
+			}
+			
 			ImGui::Text("Size: ");
 			ImGui::Text("Rotation: ");
 			ImGui::Separator();
@@ -225,8 +228,9 @@ void Editor::CreateObjectList() {
 			
 			// Deleting objects
 			if (ImGui::Button("Delete")) {
-
-				objectFactory->DestroyObject(objectFactory->GetGameObjectByID(gameobjID));		
+				if (objectFactory->GetGameObjectByID(gameobjID) != nullptr) {
+					objectFactory->DestroyObject(objectFactory->GetGameObjectByID(gameobjID));
+				}
 				int counter = 0;
 				bool getNext = false;
 				for (std::map<size_t, GameObject*>::iterator it = copyMap.begin(); it != copyMap.end(); it++) {

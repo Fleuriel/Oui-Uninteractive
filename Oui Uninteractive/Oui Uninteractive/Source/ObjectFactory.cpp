@@ -252,9 +252,9 @@ void ObjectFactory::Update(float dt) {
 		GameObject* gameObject = *it;
 		std::map<size_t, GameObject*>::iterator it2 = gameObjectIDMap.find(gameObject->gameObjectID);
 
-		//for (int i = 0; i < gameObject->componentList.size(); i++) {
-		//	delete gameObject->componentList.at(i);
-		//}
+		for (int i = 0; i < gameObject->componentList.size(); i++) {
+			delete gameObject->componentList.at(i);
+		}
 
 		//Insert double free protection here
 		delete gameObject;
