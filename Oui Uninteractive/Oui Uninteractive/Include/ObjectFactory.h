@@ -35,6 +35,8 @@
 #include "ISystem.h"
 #include "GameObject.h"
 
+#define GET_COMPONENT(GameObject, Component, ComponentType) (GameObject->GetComponentType<Component>(ComponentType))
+
 class ComponentFactoryBase;
 
 class ObjectFactory : public ISystem {

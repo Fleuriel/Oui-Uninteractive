@@ -195,12 +195,12 @@ void OpenGLApplication::OpenGLInit()
 
 	// Prefabs
 	std::cout << "\nLoading prefabs from JSON file..." << std::endl;
-	objectFactory->LoadPrefab("../prefab/prefab.JSON");
+	objectFactory->LoadPrefab("../prefab/Prefab.JSON");
 	std::cout << "Loading prefabs from JSON file... completed." << std::endl;
 
 	// De-serializing objects from JSON file
 	std::cout << "\nDe-serializing objects from JSON file..." << std::endl;
-	objectFactory->BuildObjectFromFile("../scenes/testscene.JSON");
+	objectFactory->BuildObjectFromFile("../scenes/TestsceneReading.JSON");
 	std::cout << "De-serializing objects from JSON file... completed." << std::endl;
 
 	std::cout << "\nBuilding an object from player prefab..." << std::endl;
@@ -211,13 +211,13 @@ void OpenGLApplication::OpenGLInit()
 	objectFactory->CloneObject(0);
 	GET_COMPONENT(objectFactory->GetGameObjectByID(4), Transform, ComponentType::TRANSFORM)->position.x = 450;
 	GET_COMPONENT(objectFactory->GetGameObjectByID(4), Transform, ComponentType::TRANSFORM)->position.y = 50;
-	std::cout << "\nCloning object with ID 0... completed." << std::endl;
+	std::cout << "Cloning object with ID 0... completed." << std::endl;
 
 	// Modifying value of Object2
-	/*std::cout << "\nUpdating Object2..." << std::endl;
-	GET_COMPONENT(objectFactory->GetGameObjectByName("Object2"), PhysicsBody, ComponentType::PHYSICS_BODY)->velocity.y = 20.5f;
-	objectFactory->SaveObjectsToFile("../scenes/testscene.JSON");
-	std::cout << "Updating Object2... completed." << std::endl;*/
+	std::cout << "\nUpdating JSONEnemy2..." << std::endl;
+	GET_COMPONENT(objectFactory->GetGameObjectByName("JSONEnemy2"), PhysicsBody, ComponentType::PHYSICS_BODY)->velocity.y = 20.5f;
+	objectFactory->SaveObjectsToFile("../scenes/TestsceneWriting.JSON");
+	std::cout << "Updating Object2... completed." << std::endl;
 
 	
 	//background.init(0, 0, windowSize.first, windowSize.second, 0, 0);

@@ -1,0 +1,95 @@
+{
+    "ObjectCount": 5,
+    "Objects": [
+        {
+            "Name": "JSONPlayer",
+            "Type": "Player",
+            "Components": {
+                "PhysicsBody": {
+                    "VelocityX": 0.0,
+                    "VelocityY": 0.0,
+                    "RotationSpeed": 200.0,
+                    "Speed": 500.0
+                },
+                "Transform": {
+                    "PositionX": 57.36539840698242,
+                    "PositionY": 373.97869873046875,
+                    "Rotation": 276.86090087890625,
+                    "Scale": 200.0
+                }
+            }
+        },
+        {
+            "Name": "JSONEnemy1",
+            "Type": "Enemy",
+            "Components": {
+                "PhysicsBody": {
+                    "VelocityX": 0.0,
+                    "VelocityY": 0.0,
+                    "RotationSpeed": 20.0,
+                    "Speed": 700.0
+                },
+                "Transform": {
+                    "PositionX": 50.099853515625,
+                    "PositionY": -199.9500732421875,
+                    "Rotation": 196.38499450683594,
+                    "Scale": 130.0
+                }
+            }
+        },
+        {
+            "Name": "JSONEnemy2",
+            "Type": "Enemy",
+            "Components": {
+                "PhysicsBody": {
+                    "VelocityX": 0.0,
+                    "VelocityY": 0.0,
+                    "RotationSpeed": 20.0,
+                    "Speed": 500.0
+                },
+                "Transform": {
+                    "PositionX": 200.099853515625,
+                    "PositionY": 102.04698944091797,
+                    "Rotation": 196.38499450683594,
+                    "Scale": 220.0
+                }
+            }
+        },
+        {
+            "Name": "PlayerObjFromPrefab",
+            "Type": "Player",
+            "Components": {
+                "PhysicsBody": {
+                    "VelocityX": 0.0,
+                    "VelocityY": 0.0,
+                    "RotationSpeed": 0.0,
+                    "Speed": 50.0
+                },
+                "Transform": {
+                    "PositionX": -250.0,
+                    "PositionY": 50.0,
+                    "Rotation": 0.0,
+                    "Scale": 100.0
+                }
+            }
+        },
+        {
+            "Name": "Object5",
+            "Type": "Player",
+            "Components": {
+                "PhysicsBody": {
+                    "VelocityX": 0.0,
+                    "VelocityY": 0.0,
+                    "RotationSpeed": 200.0,
+                    "Speed": 500.0
+                },
+                "Transform": {
+                    "PositionX": 450.0,
+                    "PositionY": 50.0,
+                    "Rotation": 264.06976318359375,
+                    "Scale": 200.0
+                }
+            }
+        }
+    ]
+}
