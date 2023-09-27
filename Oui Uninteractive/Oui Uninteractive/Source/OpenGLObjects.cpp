@@ -932,10 +932,13 @@ void OpenGLObject::InitObjects(int userInput_x, int userInput_y, float userInput
 		0, 0, 1
 	};
 
+	float scaleX = 2.0f / windowSize.first;
+	float scaleY = 2.0f / windowSize.second;
+
 	glm::mat3 ScaleToWorldToNDC = glm::mat3
 	{
-		1 / (10000 / 2), 0, 0,
-		0, 1 / (10000 / 2), 0,
+		scaleX, 0, 0,
+		0, scaleY, 0,
 		0, 0, 1
 	};
 	// Instead of doing transpose, you can do what OpenGL matrix does:

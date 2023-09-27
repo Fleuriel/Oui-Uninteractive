@@ -44,7 +44,7 @@ OpenGLObject Objects;
 std::list<OpenGLObject> objects; // singleton
 
 ParticleSystem particleSystem;
-Particle background;
+//Particle background;
 
 OpenGLObject::OpenGLModel mdl;
 
@@ -111,6 +111,7 @@ void OpenGLApplication::OpenGLWindowInit()
 
 	// Set glfw window resize callback function
 	glfwSetWindowSizeCallback(window, OpenGLWindowResizeCallback);
+
 
 }
 
@@ -230,7 +231,7 @@ void OpenGLApplication::OpenGLInit()
 	std::cout << "Updating Object2... completed." << std::endl;*/
 
 	
-	background.init(0, 0, windowSize.first, windowSize.second, 0, 0);
+	//background.init(0, 0, windowSize.first, windowSize.second, 0, 0);
 }
 
 int positionX = 0;
@@ -329,7 +330,7 @@ void OpenGLApplication::OpenGLUpdate()
 			Particle newparticle;
 
 
-			newparticle.init(1000, 1000, 180, 180, 45, 45);
+			newparticle.init(0, 0, 15000, 15000, 0, 0);
 			//std::cout << "R : " << newparticle.object.color.r << "\nG : " << newparticle.object.color.g << "\nB : " << newparticle.object.color.b << "\n";
 			
 		}
