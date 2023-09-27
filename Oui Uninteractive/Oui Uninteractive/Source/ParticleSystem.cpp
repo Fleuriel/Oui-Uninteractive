@@ -8,6 +8,7 @@ extern ParticleSystem particleSystem;
 
 Particle::Particle(){
     object = OpenGLObject({ 1,1,1 });
+    object.TagID = 2;
     velocity = Vector2D(1, 1);
 	alpha = 1;
     lifespan = 1;
