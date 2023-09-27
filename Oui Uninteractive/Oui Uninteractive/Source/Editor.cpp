@@ -323,9 +323,16 @@ void Editor::CreateObjectList() {
 
 void Editor::CreateDebugPanel() {
 	ImGui::Begin("Debug Panel");
+
 	if (ImGui::CollapsingHeader("Perfomance")) {
 		ImGui::Text("Program FPS: %.2f", GetFrames()); // Display program FPS in "Performance" tab
 
+		ImGui::Separator();
+	}
+
+	if (ImGui::CollapsingHeader("Tools")) {
+		ImGui::Text("Program FPS: %.2f", GetFrames()); // Display program FPS in "Performance" tab
+		if (ImGui::Checkbox("Display bounding box", &panelList.soundPanel)) // Checkbox for sound panel
 		ImGui::Separator();
 	}
 	ImGui::End();
