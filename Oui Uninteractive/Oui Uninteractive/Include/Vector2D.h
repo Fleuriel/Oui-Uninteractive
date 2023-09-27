@@ -1,11 +1,11 @@
 /**************************************************************************
 * @file Vector2D.h
-* @author
-* @par DP email:
+* @author CHEAH Tristan Tze Hong
+* @par DP email: t.cheah@digipen.edu
 * @par Course: CSD 2401
 * @par Software Engineering Project 3
-* @date 09-05-2023
-* @brief
+* @date 05-09-2023
+* @brief This file contains the declaration of functions for Vector2D
 *************************************************************************/
 #pragma once
 

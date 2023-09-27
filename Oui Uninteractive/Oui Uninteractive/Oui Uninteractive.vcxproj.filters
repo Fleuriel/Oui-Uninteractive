@@ -14,6 +14,9 @@
     <Filter Include="Component">
       <UniqueIdentifier>{28f76e6e-0e87-4e9e-884f-0baaada32702}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Component\AI">
+      <UniqueIdentifier>{f32f1043-3703-414b-9fac-168706e2249d}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Component\PhysicsBody">
       <UniqueIdentifier>{e37beb34-838e-4e18-99b6-3ee3f43f8388}</UniqueIdentifier>
     </Filter>
@@ -115,6 +118,9 @@
     <ClCompile Include="Source\Collision.cpp">
       <Filter>Collision</Filter>
     </ClCompile>
+    <ClCompile Include="Source\AI.cpp">
+      <Filter>Component\AI</Filter>
+    </ClCompile>
     <ClCompile Include="Source\PhysicsBody.cpp">
       <Filter>Component\PhysicsBody</Filter>
     </ClCompile>
@@ -169,8 +175,6 @@
     <ClCompile Include="Source\Global.cpp">
       <Filter>Engine\Global</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Matrix3x3.cpp" />
-    <ClCompile Include="Source\Vector2D.cpp" />
     <ClCompile Include="Source\AssetManager.cpp">
       <Filter>Systems\AssetManager</Filter>
     </ClCompile>
@@ -190,6 +194,9 @@
     </ClInclude>
     <ClInclude Include="Include\ComponentFactory.h">
       <Filter>Component</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\AI.h">
+      <Filter>Component\AI</Filter>
     </ClInclude>
     <ClInclude Include="Include\PhysicsBody.h">
       <Filter>Component\PhysicsBody</Filter>

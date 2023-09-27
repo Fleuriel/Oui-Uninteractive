@@ -1,7 +1,7 @@
 #ifndef AI_H
 #define AI_H
 
-#include <IComponent.h>
+#include "IComponent.h"
 
 class EnemyAI : public IComponent {
 

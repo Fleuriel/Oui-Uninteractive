@@ -9,10 +9,13 @@
  * @date 08-09-2023
  * @brief This file contains the definition of the GameObject class.
  *		  The functions include:
+ *			- Initialize
  *			- AddComponent
  *			- RemoveComponent
  *			- Has
  *			- GetGameObjectID
+ *			- GetName
+ *			- GetType
  *			- GetComponent
  *			- GetComponentType
  *************************************************************************/

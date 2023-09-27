@@ -182,8 +182,6 @@ public:
 	* @return bool
 	*************************************************************************/
 	bool AddComponent(componentType name, GameObject* object);
-
-	//size_t GetNextKey(size_t key);
 };
 extern ObjectFactory* objectFactory;
 
