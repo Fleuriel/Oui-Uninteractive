@@ -24,7 +24,7 @@
 #define SQUARE   "Square"
 #define CIRCLE   "Circle"
 
-extern int importTexture, secondTexture;
+extern int importTexture, secondTexture, bgTexture;
 
 class OpenGLObject
 {
@@ -118,7 +118,7 @@ public:
 	// set up initial state
 	void Init(); 
 
-	void Update(float xSpeed = 0.0f, float ySpeed = 0.0f, float scale = 100.0f, float aSpeed = 10.0f, bool enRot = false);
+	void Update(float xSpeed = 0.0f, float ySpeed = 0.0f, float scaleX = 100.0f, float scaleY = 100.0f, float aSpeed = 10.0f, bool enRot = false);
 	//static void OpenGLShadersInitialization();
 
 	void Draw() const;
@@ -154,8 +154,6 @@ public:
 
 	static OpenGLModel Box_Model(int ID, glm::vec3, int);
 
-	static void Load_Files();
-	static void Load_Meshes(std::string);
 
 	// Texture
 	static int Setup_TextureObject(std::string filePath);

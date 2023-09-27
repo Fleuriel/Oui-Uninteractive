@@ -14,40 +14,6 @@
 #include <sstream>
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-void OpenGLShader::Init() {
-    const char* VertexShader =
-        "#version 330 core\n"
-        "layout (location = 0) in vec2 aPos;\n"
-        "void main()\n"
-        "{\n"
-        "	gl_Position = vec4(aPos.x, aPos.y, 0.0, 1.0);\n"
-        "}\n";
-
-    const char* FragmentShader =
-        "#version 330 core\n"
-        "out vec4 FragColor;\n"
-        "void main()\n"
-        "{\n"
-        "   FragColor = vec4(1.0, 0.5, 0.2, 1.0);\n"
-        "}\0";
-
-
-
-}
-
-
 GLboolean OpenGLShader::Link() {
     if (GL_TRUE == is_linked) {
         return GL_TRUE;
@@ -223,7 +189,6 @@ void OpenGLShader::Use() {
         glUseProgram(pgm_handle);
     }
 }
-
 void OpenGLShader::UnUse() {
     glUseProgram(0);
 }
@@ -258,7 +223,6 @@ void OpenGLShader::SetUniform(GLchar const* name, GLfloat val) {
         std::cout << "Uniform variable " << name << " doesn't exist" << std::endl;
     }
 }
-
 void OpenGLShader::SetUniform(GLchar const* name, GLfloat x, GLfloat y) {
     GLint loc = glGetUniformLocation(pgm_handle, name);
     if (loc >= 0) {
@@ -279,7 +243,7 @@ void OpenGLShader::SetUniform(GLchar const* name, GLfloat x, GLfloat y, GLfloat 
     }
 }
 
-void
+void 
 OpenGLShader::SetUniform(GLchar const* name, GLfloat x, GLfloat y, GLfloat z, GLfloat w) {
     GLint loc = glGetUniformLocation(pgm_handle, name);
     if (loc >= 0) {
@@ -339,8 +303,6 @@ void OpenGLShader::SetUniform(GLchar const* name, glm::mat4 const& val) {
         std::cout << "Uniform variable " << name << " doesn't exist" << std::endl;
     }
 }
-
-
 
 void OpenGLShader::PrintActiveAttribs() const {
 #if 1
