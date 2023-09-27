@@ -418,23 +418,23 @@ void OpenGLObject::Draw() const
 	//texture object is to use texture image unit 6
 
 
-	int* tex{};
+	int tex{};
 	switch (TagID)
 	{
 	case 0:
-		tex = &bgTexture;
+		tex = bgTexture;
 		break;
 	case 1:
-		tex = &firstTexture;
+		tex = firstTexture;
 		break;
 	case 2:
-		tex = &secondTexture;
+		tex = secondTexture;
 		break;
 	default:
 		break;
 	}
 
-	glBindTextureUnit(6, *tex);
+	glBindTextureUnit(6, tex);
 
 	//glTextureParameteri(secondTexture, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);//Repeat wrap
 	//glTextureParameteri(secondTexture, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);//Repeat wrap
@@ -474,6 +474,7 @@ void OpenGLObject::Draw() const
 	glBindVertexArray(0); // Unbind the VAO
 	shdrpgms[shd_ref].UnUse(); // Uninstall the shader program
 }
+
 void OpenGLObject::Cleanup()
 {
 

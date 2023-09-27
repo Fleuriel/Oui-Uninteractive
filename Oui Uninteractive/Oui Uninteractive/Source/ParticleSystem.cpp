@@ -43,20 +43,21 @@ void Particle::draw() {
 
 void ParticleSystem::update() {
     // i starts at 1 to skip updating the background
-    for (size_t i = 1; i<particles.size();++i)
+    for (size_t i = 0; i<particles.size();++i)
     {
-        std::cout << "update\n";
+        std::cout << i << "update " << particles[i].object.position.x << " " << particles[i].object.position.y << "\n";
         particles[i].update();
     }
 }
 
 void ParticleSystem::draw() {
-#ifdef _DEBUG
+
 		//std::cout << "Particle Storage Size:" << particles.size() << '\n';
-#endif
+
 
         for (size_t i = 0; i < particles.size(); ++i)
         {
+            std::cout << i << "Draw\n";
             particles[i].draw();
            // std::cout << particle.object.scaleModel.x << '\t' << particle.object.scaleModel.y << '\n';
         }
