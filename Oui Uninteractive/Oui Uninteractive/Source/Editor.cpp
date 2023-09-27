@@ -255,6 +255,7 @@ void Editor::CreateObjectList() {
 			ImGui::SameLine();
 			if (ImGui::Button("Delete All")) {
 				objectFactory->DestroyAllObjects();
+				selectedID = 0;
 			}
 			ImGui::SameLine();
 			// Used for testing M1 Rubric: Have 2.5k Objects with FPS >60
@@ -275,37 +276,54 @@ void Editor::CreateObjectList() {
 		}
 		// Individual Object Controls
 		if (ImGui::CollapsingHeader("Object Modifier")) {
-			static float xPos, yPos, scale, speed, angle, rotSpeed;
-
-			xPos = GET_COMPONENT(objectFactory->GetGameObjectByID(gameobjID), Transform, ComponentType::TRANSFORM)->position.x;
-			if (ImGui::SliderFloat("X-Position", &xPos, 0.0f, 1000.0f, "%.2f")) { // Slider for X-Position
-				GET_COMPONENT(objectFactory->GetGameObjectByID(gameobjID), Transform, ComponentType::TRANSFORM)->position.x = xPos;
+			if (objectFactory->GetGameObjectIDMap().empty()) {
+				ImGui::Text("No Objects, Add some objects above");
 			}
+			else {
+				static float xPos, yPos, scale, speed, angle, rotSpeed;
+				
+				if (objectFactory->GetGameObjectByID(gameobjID)->Has(ComponentType::TRANSFORM) != -1) {
+					xPos = GET_COMPONENT(objectFactory->GetGameObjectByID(gameobjID), Transform, ComponentType::TRANSFORM)->position.x;
+					if (ImGui::SliderFloat("X-Position", &xPos, 0.0f, 1000.0f, "%.2f")) { // Slider for X-Position
+						GET_COMPONENT(objectFactory->GetGameObjectByID(gameobjID), Transform, ComponentType::TRANSFORM)->position.x = xPos;
+					}
 
-			yPos = GET_COMPONENT(objectFactory->GetGameObjectByID(gameobjID), Transform, ComponentType::TRANSFORM)->position.y;
-			if (ImGui::SliderFloat("Y-Position", &yPos, 0.0f, 100.0f, "%.2f")) { // Slider for Y-Position
-				GET_COMPONENT(objectFactory->GetGameObjectByID(gameobjID), Transform, ComponentType::TRANSFORM)->position.y = yPos;
-			}
+					yPos = GET_COMPONENT(objectFactory->GetGameObjectByID(gameobjID), Transform, ComponentType::TRANSFORM)->position.y;
+					if (ImGui::SliderFloat("Y-Position", &yPos, 0.0f, 100.0f, "%.2f")) { // Slider for Y-Position
+						GET_COMPONENT(objectFactory->GetGameObjectByID(gameobjID), Transform, ComponentType::TRANSFORM)->position.y = yPos;
+					}
 
-			scale = GET_COMPONENT(objectFactory->GetGameObjectByID(gameobjID), Transform, ComponentType::TRANSFORM)->scale;
-			if (ImGui::SliderFloat("Scale", &scale, 0.0f, 100.0f, "%.2f")) { // Slider for Scale
-				GET_COMPONENT(objectFactory->GetGameObjectByID(gameobjID), Transform, ComponentType::TRANSFORM)->scale = scale;
-			}
+					scale = GET_COMPONENT(objectFactory->GetGameObjectByID(gameobjID), Transform, ComponentType::TRANSFORM)->scale;
+					if (ImGui::SliderFloat("Scale", &scale, 0.0f, 100.0f, "%.2f")) { // Slider for Scale
+						GET_COMPONENT(objectFactory->GetGameObjectByID(gameobjID), Transform, ComponentType::TRANSFORM)->scale = scale;
+					}
 
-			speed = GET_COMPONENT(objectFactory->GetGameObjectByID(gameobjID), PhysicsBody, ComponentType::PHYSICS_BODY)->speed;
-			if (ImGui::SliderFloat("Speed", &speed, 0.0f, 100.0f, "%.2f")) { // Slider for Speed
-				GET_COMPONENT(objectFactory->GetGameObjectByID(gameobjID), PhysicsBody, ComponentType::PHYSICS_BODY)->speed = speed;
-			}
+					angle = GET_COMPONENT(objectFactory->GetGameObjectByID(gameobjID), Transform, ComponentType::TRANSFORM)->rotation;
+					if (ImGui::SliderFloat("Angle", &angle, 0.0f, 360.0f, "%.2f")) { // Slider for true angle
+						GET_COMPONENT(objectFactory->GetGameObjectByID(gameobjID), Transform, ComponentType::TRANSFORM)->rotation = angle;
+					}
+				}
+				else {
+					ImGui::Text("Selected Object has no TRANSFORM component");
+				}
+				if (objectFactory->GetGameObjectByID(gameobjID)->Has(ComponentType::PHYSICS_BODY) != -1) {
+					speed = GET_COMPONENT(objectFactory->GetGameObjectByID(gameobjID), PhysicsBody, ComponentType::PHYSICS_BODY)->speed;
+					if (ImGui::SliderFloat("Speed", &speed, 0.0f, 100.0f, "%.2f")) { // Slider for Speed
+						GET_COMPONENT(objectFactory->GetGameObjectByID(gameobjID), PhysicsBody, ComponentType::PHYSICS_BODY)->speed = speed;
+					}
 
-			angle = GET_COMPONENT(objectFactory->GetGameObjectByID(gameobjID), Transform, ComponentType::TRANSFORM)->rotation;
-			if (ImGui::SliderFloat("Angle", &angle, 0.0f, 360.0f, "%.2f")) { // Slider for true angle
-				GET_COMPONENT(objectFactory->GetGameObjectByID(gameobjID), Transform, ComponentType::TRANSFORM)->rotation = angle;
-			}
 
-			rotSpeed = GET_COMPONENT(objectFactory->GetGameObjectByID(gameobjID), PhysicsBody, ComponentType::PHYSICS_BODY)->rotationSpeed;
-			if (ImGui::SliderFloat("Rotation Speed", &rotSpeed, 0.0f, 500.0f, "%.2f")) {// Slider for rotation speed
-				GET_COMPONENT(objectFactory->GetGameObjectByID(gameobjID), PhysicsBody, ComponentType::PHYSICS_BODY)->rotationSpeed = rotSpeed;
+					rotSpeed = GET_COMPONENT(objectFactory->GetGameObjectByID(gameobjID), PhysicsBody, ComponentType::PHYSICS_BODY)->rotationSpeed;
+					if (ImGui::SliderFloat("Rotation Speed", &rotSpeed, 0.0f, 500.0f, "%.2f")) {// Slider for rotation speed
+						GET_COMPONENT(objectFactory->GetGameObjectByID(gameobjID), PhysicsBody, ComponentType::PHYSICS_BODY)->rotationSpeed = rotSpeed;
+					}
+				}
+				else {
+					ImGui::Text("Selected Object has no PHYSICSBODY component");
+				}
+				
 			}
+			
 			ImGui::Separator();
 		}
 		
