@@ -16,7 +16,6 @@
 * @brief Default constructor for PhysicsBody component
 *************************************************************************/
 PhysicsBody::PhysicsBody() {
-	//position = Vec2(0, 0);
 	velocity = Vec2(0, 0);
 	acceleration = Vec2(0, 0);
 	isStatic = false;
@@ -26,7 +25,6 @@ PhysicsBody::PhysicsBody() {
 	direction = Vec2(0, 0);
 	speed = 50;
 	boundingbox = new AABB();
-
 	boundingbox->min = Vec2(0,0);
 	boundingbox->max = Vec2(0,0);
 }

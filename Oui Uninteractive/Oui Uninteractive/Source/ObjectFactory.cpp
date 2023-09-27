@@ -368,7 +368,6 @@ GameObject* ObjectFactory::GetGameObjectByName(const std::string& name) {
 
 	return nullptr;
 }
-
 /**************************************************************************
 * @brief Get all game objects
 * @return std::map<size_t, GameObject*>
@@ -376,7 +375,6 @@ GameObject* ObjectFactory::GetGameObjectByName(const std::string& name) {
 std::map<size_t, GameObject*> ObjectFactory::GetGameObjectIDMap() {
 	return gameObjectIDMap;
 }
-
 /**************************************************************************
 * @brief Add component factory to map
 * @param componentName - name of component type
@@ -385,7 +383,6 @@ std::map<size_t, GameObject*> ObjectFactory::GetGameObjectIDMap() {
 void ObjectFactory::AddComponentFactory(componentType componentName, ComponentFactoryBase* componentFactory) {
 	componentFactoryMap.insert(std::pair(componentName, componentFactory));
 }
-
 /**************************************************************************
 * @brief Add component with a specified component name to game object
 * @param componentName - name of component type
@@ -410,21 +407,3 @@ bool ObjectFactory::AddComponent(componentType componentName, GameObject* gameOb
 
 	return true;
 }
-/*
-size_t ObjectFactory::GetNextKey(size_t ID) {
-	std::map<size_t, GameObject*>::iterator it2 = gameObjectIDMap.find(ID);
-	std::map<size_t, GameObject*>::iterator it = it2++;
-	if (it != gameObjectIDMap.end()) {
-		if (it2 == gameObjectIDMap.end()) {
-			return it->first;
-		}
-		else {
-
-		}
-
-	}
-	else {
-		return -1;
-	}
-}
-*/
