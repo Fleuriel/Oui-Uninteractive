@@ -53,6 +53,7 @@ std::list<OpenGLObject> objects;					// singleton
 Particle background;
 ParticleSystem particleSystem;
 
+
 OpenGLObject::OpenGLModel mdl;
 int positionX = 0, angle;
 
@@ -221,8 +222,7 @@ void OpenGLApplication::OpenGLInit()
 	objectFactory->SaveObjectsToFile("../scenes/TestsceneWriting.JSON");
 	std::cout << "Updating Object2... completed." << std::endl;
 
-	
-	//background.init(0, 0, windowSize.first, windowSize.second, 0, 0);
+	background.init(0, 0, windowSize.first, windowSize.second, 0, 0);
 }
 
 void OpenGLApplication::OpenGLUpdate()
@@ -295,11 +295,13 @@ void OpenGLApplication::OpenGLUpdate()
 			std::cout << objects.size();
 		}
 
-		if (keyStates[GLFW_KEY_M] == 1)
+		if (keyStates[GLFW_KEY_H] == 1)
 		{
 			Particle newparticle;
 
 			newparticle.init(0, 0, 15000, 15000, 0, 0);
+			particleSystem.particles.emplace_back(newparticle);
+			//std::cout << "R : " << newparticle.object.color.r << "\nG : " << newparticle.object.color.g << "\nB : " << newparticle.object.color.b << "\n";
 			
 		}
 
@@ -456,7 +458,7 @@ void OpenGLApplication::OpenGLUpdate()
 
 		updateStatesForNextFrame();
 
-		//particleSystem.update();
+		
 		
 		//std::cout << GetFPS() << '\n';
 		
@@ -511,10 +513,9 @@ void OpenGLApplication::OpenGLUpdate()
 		}
 
 
+		particleSystem.update();
+		particleSystem.draw();
 
-
-
-		//particleSystem.draw();
 
 }
 
