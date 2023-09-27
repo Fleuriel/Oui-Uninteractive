@@ -60,7 +60,7 @@ public:
 	static GLuint mdl_ref, shd_ref; // Model and Shader Reference
 	//GLuint texture;					// integer for texture (stb returns integer).
 
-	Vector2D boundingAABB;
+	//Vector2D boundingAABB;
 
 	static GLuint VAO, VBO;			// Object VAO VBO
 
