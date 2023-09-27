@@ -18,53 +18,7 @@ Particle::Particle(){
 void Particle::init(int userInput_x, int userInput_y, float userInput_sizeX,
 					float userInput_sizeY, float userInput_angleDisplacement,
 					float userInput_angleSpeed) {
-	object.mdl_ref = 0;
-	object.shd_ref = 0;
-
-
-	object.position.x = userInput_x;
-	object.position.y = userInput_y;
-	using glm::radians;
-
-	object.scaleModel.x = userInput_sizeX;
-	object.scaleModel.y = userInput_sizeY;
-
-	object.angleDisplacment = userInput_angleDisplacement;
-	object.angleSpeed = userInput_angleSpeed;
-
-	glm::mat3 Translate = glm::mat3
-	{
-		1, 0, 0,
-		0, 1, 0,
-		 object.position.x, object.position.y, 1
-	};
-
-	glm::mat3 Rotation = glm::mat3
-	{
-		cosf(radians(object.angleDisplacment)), sinf(radians(object.angleDisplacment)) , 0,
-		-sinf(radians(object.angleDisplacment)),  cosf(radians(object.angleDisplacment)) , 0,
-		0, 0, 1
-	};
-
-	glm::mat3 Scale = glm::mat3
-	{
-		object.scaleModel.x, 0, 0,
-		0, object.scaleModel.y, 0,
-		0, 0, 1
-	};
-
-	glm::mat3 ScaleToWorldToNDC = glm::mat3
-	{
-		1 / (10000 / 2), 0, 0,
-		0, 1 / (10000 / 2), 0,
-		0, 0, 1
-	};
-	// Instead of doing transpose, you can do what OpenGL matrix does:
-	// Row-Major Order:				Column Major Order;
-	//	   x0 y0 z0						 x0 x1 x2
-	//	   x1 y1 z1						 y0 y1 y2
-	//	   x2 y2 z2						 z0 z1 z2
-	object.model_To_NDC_xform = ScaleToWorldToNDC * Translate * Rotation * Scale;
+    object.InitObjects(userInput_x, userInput_y, userInput_sizeX, userInput_sizeY, userInput_angleDisplacement, userInput_angleSpeed);
 }
 
 void Particle::update() {
@@ -73,7 +27,9 @@ void Particle::update() {
     //std::cout << "XB : " << object.position.x << std::endl;
     //std::cout << "YB : " << object.position.y << std::endl;
     //object.position += glm::vec2{ 5, 5 };
-    object.position.y -= 0.001;
+
+    
+    object.Update(0, 0, 100000, 0, false);
     
     std::cout << "XA : " << object.position.x << std::endl;
     std::cout << "YA : " << object.position.y << std::endl;
