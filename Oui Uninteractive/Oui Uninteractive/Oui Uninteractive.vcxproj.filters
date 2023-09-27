@@ -181,6 +181,12 @@
     <ClCompile Include="Source\StbImage.cpp">
       <Filter>Graphics</Filter>
     </ClCompile>
+    <ClCompile Include="..\lib\imgui-docking\implot.cpp">
+      <Filter>ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\lib\imgui-docking\implot_items.cpp">
+      <Filter>ImGui</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Include\Matrix3x3.h">

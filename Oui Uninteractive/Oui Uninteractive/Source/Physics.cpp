@@ -9,13 +9,15 @@
  *		  which handles all Physics calculations done on the Physics
  *		  Body component.
  *************************************************************************/
+#include <iostream>
+#include <algorithm>
+#include <chrono>
 #include "Physics.h"
 #include "ComponentFactory.h"
 #include "ObjectFactory.h"
 #include "Vector2D.h"
-#include <iostream>
-#include <algorithm>
 #include "Collision.h"
+#include "Editor.h"
 //initialize global pointer
 Physics* physicsSys = nullptr;
 
@@ -48,6 +50,7 @@ void Physics::Initialize() {
 * @return void
 *************************************************************************/
 void Physics::Update(float dt) {
+	std::chrono::high_resolution_clock::time_point timeStart = std::chrono::high_resolution_clock::now();
 	std::map<size_t, PhysicsBody*>::iterator it = bodyList.begin();
 	std::map<size_t, PhysicsBody*>::iterator it2 = bodyList.begin();
 	for (; it != bodyList.end(); it++) {
@@ -84,6 +87,9 @@ void Physics::Update(float dt) {
 		//apply calculations to object
 		body->txPtr->shape->Update(body->txPtr->position.x, body->txPtr->position.y, body->txPtr->scale, body->txPtr->scale, body->txPtr->rotation, true);
 	}
+	std::chrono::high_resolution_clock::time_point timeEnd = std::chrono::high_resolution_clock::now();
+	std::chrono::duration<float, std::milli> duration = timeEnd - timeStart;
+	Editor::timeRecorder.physicsTime = duration.count();
 }
 /**************************************************************************
 * @brief Set the position of all object's Physics Body

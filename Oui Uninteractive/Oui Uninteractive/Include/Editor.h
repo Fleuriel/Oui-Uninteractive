@@ -10,16 +10,19 @@
 #ifndef EDITOR_H
 #define EDITOR_H
 
+#include <vector>
+#include <fstream>
+#include <chrono>
 #include "GameStateManager.h"
 #include "imgui.h"
 #include "imgui_impl_glfw.h"
 #include "imgui_impl_opengl3.h"
+#include "implot.h"
+#include "implot_internal.h"
 #include "rapidjson/document.h"
 #include "rapidjson/writer.h"
 #include "rapidjson/filereadstream.h"
 #include "rapidjson/filewritestream.h"
-#include <vector>
-#include <fstream>
 #include "Sound.h"
 #include "ObjectFactory.h"
 #include "Transform.h"
@@ -62,6 +65,15 @@ public:
 	static const ImU32 purpleColour = IM_COL32(147, 0, 255, 255); // Purple color
 	size_t maxFPSdata;
 	static std::vector<float> fpsData;
+
+struct SystemTime {
+	//std::chrono::duration<float, std::milli> physicsTime;
+	//std::chrono::duration<float, std::milli> graphicsTime;
+	float physicsTime;
+	float graphicsTime;
+	float editorTime;
+};
+static SystemTime timeRecorder;
 
 private:
 

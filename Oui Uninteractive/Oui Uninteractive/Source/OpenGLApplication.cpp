@@ -477,6 +477,7 @@ void OpenGLApplication::OpenGLUpdate()
 		/*-----------------------------------
 		|       ImGui Stuff Testing         |
 		-----------------------------------*/
+		myEditor.Update();
 		myImGui.CreateFrame();
 		myImGui.Update();
 		myImGui.Draw();

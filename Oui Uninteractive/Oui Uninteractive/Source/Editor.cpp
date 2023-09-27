@@ -11,6 +11,7 @@
 #include "Editor.h"
 #include <iostream>
 
+Editor::SystemTime Editor::timeRecorder;
 std::vector<float> Editor::fpsData;
 
 static void HelpMarker(std::string desc) {
@@ -26,6 +27,7 @@ static void HelpMarker(std::string desc) {
 void UsingImGui::Init(GLFWwindow* window, const char* glsl_vers) {
 	IMGUI_CHECKVERSION();
 	ImGui::CreateContext();
+	ImPlot::CreateContext();
 	ImGuiIO& io = ImGui::GetIO();
 
 	// Config Flags
@@ -72,6 +74,7 @@ void UsingImGui::Draw() {
 void UsingImGui::Exit() {
 	ImGui_ImplOpenGL3_Shutdown();
 	ImGui_ImplGlfw_Shutdown();
+	ImPlot::DestroyContext();
 	ImGui::DestroyContext();
 }
 
@@ -359,26 +362,41 @@ void Editor::CreateDebugPanel() {
 		// FPS DATA	
 		if (io.Framerate < 60) {
 			ImGui::PushStyleColor(ImGuiCol_Text, redColour);
-			ImGui::Text("Program FPS: %.2f", io.Framerate); // Display program FPS in "Performance" tab
-			ImGui::PopStyleColor();
 		}
 		else if (io.Framerate >= 60 && io.Framerate < 100) {
 			ImGui::PushStyleColor(ImGuiCol_Text, yellowColour);
-			ImGui::Text("Program FPS: %.2f", io.Framerate); // Display program FPS in "Performance" tab
-			ImGui::PopStyleColor();
 		}
 		else {
-			ImGui::PushStyleColor(ImGuiCol_Text, greenColour);
-			ImGui::Text("Program FPS: %.2f", io.Framerate); // Display program FPS in "Performance" tab
-			ImGui::PopStyleColor();
+			ImGui::PushStyleColor(ImGuiCol_Text, greenColour);		
 		}
-		//ImGui::Text("Program FPS: %.2f", io.Framerate); // Display program FPS in "Performance" tab
+		ImGui::Text("Program FPS: %.2f", io.Framerate); // Display program FPS in "Performance" tab
+		ImGui::PopStyleColor();
+		
 		ImGui::PushStyleColor(ImGuiCol_PlotLines, pinkColour);
 		ImGui::PlotLines("Current FPS", fpsData.data(), static_cast<int>(fpsData.size()), 0, "FPS", 0.0f, 300.0f, ImVec2(0, 80));
 		ImGui::PopStyleColor();
-		// FRAMETIME DATA
+		// FRAME TIME DATA
 		ImGui::Text("Frame time: %.2f", 1000.0f / GetFrames()); // Display program FPS in "Performance" tab
 		ImGui::Separator();
+
+		// SYSTEM TIME DATA
+		ImGui::Text("System Time Percentage");
+		float physicsPercentage = timeRecorder.physicsTime / GetDT();
+		float grpahicsPercentage = timeRecorder.graphicsTime / GetDT();
+		std::cout << physicsPercentage << ", " << grpahicsPercentage << std::endl;
+		static const char* chartLabels[] = { "Physics", "Graphics" };
+		float data[] = {
+			physicsPercentage, grpahicsPercentage
+		};
+		static ImPlotPieChartFlags flags = 0;
+
+		ImPlot::BeginPlot("##PieSystemTime", ImVec2(250, 250), ImPlotFlags_Equal | ImPlotFlags_NoMouseText);
+			ImPlot::SetupAxes(nullptr, nullptr, ImPlotAxisFlags_NoDecorations, ImPlotAxisFlags_NoDecorations);
+			ImPlot::SetupAxesLimits(0, 1, 0, 1);
+			ImPlot::PlotPieChart(chartLabels, data, 2, 0.5, 0.5, 0.4, "%.2f", 90, flags);
+			ImPlot::EndPlot();
+		
+
 	}
 
 	if (ImGui::CollapsingHeader("Tools")) {	
