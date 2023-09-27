@@ -10,6 +10,10 @@
  *		  all data pertaining to the positioning of GameObject such as
  *		  rotation and position.
  *************************************************************************/
+
+#ifndef TRANSFORM_H
+#define TRANSFORM_H
+
 #include "Vector2D.h"
 #include "IComponent.h"
 #include "GameObject.h"
@@ -48,3 +52,5 @@ public:
 	float rotation;
 	OpenGLObject* shape;
 };
+
+#endif TRANSFORM_H

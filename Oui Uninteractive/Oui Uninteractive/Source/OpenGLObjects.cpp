@@ -48,7 +48,7 @@ std::map<std::string, OpenGLObject> OpenGLObject::Object_Storage;
 GLuint OpenGLObject::VAO = 0;
 GLuint OpenGLObject::VBO = 0;
 
-int bgTexture, importTexture, secondTexture;
+int bgTexture, firstTexture, secondTexture;
 
 GLuint OpenGLObject::textureID;								// id for texture object
 
@@ -87,17 +87,17 @@ void OpenGLObject::Init()
 	
 
 	//Suffering = OpenGLObject::Setup_TextureObject("../texture/pantheon.jpg");
-	importTexture = OpenGLObject::Setup_TextureObject("../texture/pepega.jpg");
+	firstTexture = OpenGLObject::Setup_TextureObject("../texture/pepega.jpg");
 	secondTexture = OpenGLObject::Setup_TextureObject("../texture/pepe.jpg");
 	bgTexture = OpenGLObject::Setup_TextureObject("../texture/background.jpg");
 
 
-	textures.emplace_back(importTexture);
+	textures.emplace_back(firstTexture);
 	textures.emplace_back(secondTexture);
 	textures.emplace_back(bgTexture);
 
 
-	models.emplace_back(OpenGLObject::Box_Model(0, color, importTexture));
+	models.emplace_back(OpenGLObject::Box_Model(0, color, firstTexture));
 	models.emplace_back(OpenGLObject::Box_Model(1 ,color, secondTexture));
 	models.emplace_back(OpenGLObject::Box_Model(2, color, bgTexture));
 
@@ -265,8 +265,6 @@ void OpenGLObject::Init()
 ***************************************************************************************/
 OpenGLObject::OpenGLModel OpenGLObject::Box_Model(int ID, glm::vec3 color, int textureInput)
 {
-
-
 	struct Vertex {
 		glm::vec2 position;        // Vertex position
 		glm::vec3 color;           // Vertex color
@@ -284,7 +282,6 @@ OpenGLObject::OpenGLModel OpenGLObject::Box_Model(int ID, glm::vec3 color, int t
 
 	OpenGLModel mdl;
 
-	mdl.ModelID = ID;
 
 	// Create and bind a buffer for vertex data
 	GLuint vbo_hdl;
@@ -316,7 +313,7 @@ OpenGLObject::OpenGLModel OpenGLObject::Box_Model(int ID, glm::vec3 color, int t
 	glVertexArrayAttribBinding(vaoid, 2, 2);
 
 	// Bind the texture before rendering
-	glBindTexture(GL_TEXTURE_2D, importTexture);
+	//glBindTexture(GL_TEXTURE_2D, textureInput);
 
 	// Set up index buffer for rendering
 	std::array<GLushort, 4> idx_vtx = { 0, 1, 2, 3 };
@@ -330,6 +327,9 @@ OpenGLObject::OpenGLModel OpenGLObject::Box_Model(int ID, glm::vec3 color, int t
 	mdl.primitive_type = GL_TRIANGLE_FAN; // Use GL_TRIANGLE_FAN for a square
 	mdl.draw_cnt = idx_vtx.size();
 	mdl.primitive_cnt = vertices.size();
+	mdl.ModelID = ID;
+	mdl.texture = textureInput;
+
 
 	return mdl;
 }
@@ -420,24 +420,23 @@ void OpenGLObject::Draw() const
 {
 	//texture object is to use texture image unit 6
 
-	
 
 	int* tex{};
 	switch (TagID)
 	{
 	case 0:
-		tex = &importTexture;
+		tex = &bgTexture;
 		break;
 	case 1:
-		tex = &secondTexture;
+		tex = &firstTexture;
 		break;
 	case 2:
-		tex = &bgTexture;
+		tex = &secondTexture;
 		break;
 	default:
 		break;
 	}
-		
+
 	glBindTextureUnit(6, *tex);
 
 	//glTextureParameteri(secondTexture, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);//Repeat wrap
@@ -478,7 +477,6 @@ void OpenGLObject::Draw() const
 	glBindVertexArray(0); // Unbind the VAO
 	shdrpgms[shd_ref].UnUse(); // Uninstall the shader program
 }
-
 void OpenGLObject::Cleanup()
 {
 

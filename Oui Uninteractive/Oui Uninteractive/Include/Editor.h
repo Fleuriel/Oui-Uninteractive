@@ -21,6 +21,11 @@
 #include <fstream>
 #include "Sound.h"
 #include "ObjectFactory.h"
+#include "Transform.h"
+#include "PhysicsBody.h"
+
+#define GET_COMPONENT(GameObject, Component, ComponentType) (GameObject->GetComponentType<Component>(ComponentType))
+
 
 class UsingImGui {
 public:

@@ -3,12 +3,13 @@
 #include <OpenGLObjects.h>
 
 
-
 extern ParticleSystem particleSystem;
+
+
 
 Particle::Particle(){
     object = OpenGLObject({ 1,1,1 });
-    object.TagID = 2;
+    object.TagID = 0;
     velocity = Vector2D(1, 1);
 	alpha = 1;
     lifespan = 1;
@@ -26,10 +27,10 @@ void Particle::update() {
 
     
 //    object.Update(0, 0, 100000, 0, false);
-
-    particleSystem.particles[0].object.Update(0, 0, 100, 0, false);
     
-    std::cout << object.scaleModel.x << object.scaleModel.y << '\n';
+    object.Update(object.position.x + velocity.x, object.position.y + velocity.y, 1000, 0, false);
+    
+    //std::cout << object.scaleModel.x << object.scaleModel.y << '\n';
 
  //   std::cout << "XA : " << object.position.x << std::endl;
  //   std::cout << "YA : " << object.position.y << std::endl;
@@ -41,10 +42,11 @@ void Particle::draw() {
 
 
 void ParticleSystem::update() {
-    for (Particle particle : particles)
+    // i starts at 1 to skip updating the background
+    for (size_t i = 1; i<particles.size();++i)
     {
         std::cout << "update\n";
-        particle.update();
+        particles[i].update();
     }
 }
 
@@ -53,9 +55,9 @@ void ParticleSystem::draw() {
 		//std::cout << "Particle Storage Size:" << particles.size() << '\n';
 #endif
 
-		for (Particle particle : particles){
-        
-            particle.draw();
+        for (size_t i = 0; i < particles.size(); ++i)
+        {
+            particles[i].draw();
            // std::cout << particle.object.scaleModel.x << '\t' << particle.object.scaleModel.y << '\n';
         }
 

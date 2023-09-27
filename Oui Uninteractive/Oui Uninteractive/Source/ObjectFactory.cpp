@@ -28,6 +28,8 @@
 #include "ObjectFactory.h"
 #include "JsonSerializer.h"
 #include "ComponentFactory.h"
+#include "PhysicsBody.h"
+#include "Transform.h"
 
 ObjectFactory* objectFactory = NULL;
 
@@ -245,7 +247,6 @@ bool ObjectFactory::CloneObject(size_t gameObjectID) {
 
 		for (int i = 0; i < original->componentList.size(); i++) {
 			clone->AddComponent(original->componentList.at(i)->Clone(), original->componentList[i]->componentType);
-		//	AddComponent(original->componentList[i]->componentType, clone);
 		}
 
 		clone->Initialize();
@@ -263,8 +264,65 @@ bool ObjectFactory::CloneObject(size_t gameObjectID) {
 *************************************************************************/
 void ObjectFactory::SaveObjectsToFile(const std::string& filePath) {
 	rapidjson::Document objDoc;
+	rapidjson::Document::AllocatorType& allocator = objDoc.GetAllocator();
 	JsonSerializer serializer;
 	serializer.ReadJSONFile(filePath, objDoc);
+
+	// Setting object for output JSON
+	objDoc.SetObject();
+
+	// Adding object count
+	objDoc.AddMember("ObjectCount", gameObjectIDMap.size(), allocator);
+	
+	// Add objects to Objects array
+	rapidjson::Value writeObjects(rapidjson::kArrayType);
+	for (const auto& it : gameObjectIDMap) {
+		const GameObject* gameObject = it.second;
+		rapidjson::Value jsonObj(rapidjson::kObjectType);	// Create JSON object
+		rapidjson::Value stringVar;
+
+		// Add name and type members to JSON object
+		stringVar.SetString(gameObject->gameObjectName.c_str(), allocator);
+		jsonObj.AddMember("Name", stringVar, allocator);
+		stringVar.SetString(gameObject->gameObjectType.c_str(), allocator);
+		jsonObj.AddMember("Type", stringVar, allocator);
+
+		// Components object
+		rapidjson::Value components(rapidjson::kObjectType);
+
+		for (const auto& cmp : gameObject->componentList) {
+			// Create individual component
+			rapidjson::Value individualComponent(rapidjson::kObjectType);
+			rapidjson::Value componentName;
+			componentName.SetString(EnumToString(cmp->componentType).c_str(), allocator);
+
+			// Add component data
+			if (componentName == "PhysicsBody") {
+				individualComponent.AddMember("VelocityX", GET_COMPONENT(it.second, PhysicsBody, ComponentType::PHYSICS_BODY)->velocity.x, allocator);
+				individualComponent.AddMember("VelocityY", GET_COMPONENT(it.second, PhysicsBody, ComponentType::PHYSICS_BODY)->velocity.y, allocator);
+				individualComponent.AddMember("RotationSpeed", GET_COMPONENT(it.second, PhysicsBody, ComponentType::PHYSICS_BODY)->rotationSpeed, allocator);
+				individualComponent.AddMember("Speed", GET_COMPONENT(it.second, PhysicsBody, ComponentType::PHYSICS_BODY)->speed, allocator);
+			}
+			else if (componentName == "Transform") {
+				individualComponent.AddMember("PositionX", GET_COMPONENT(it.second, Transform, ComponentType::TRANSFORM)->position.x, allocator);
+				individualComponent.AddMember("PositionY", GET_COMPONENT(it.second, Transform, ComponentType::TRANSFORM)->position.y, allocator);
+				individualComponent.AddMember("Rotation", GET_COMPONENT(it.second, Transform, ComponentType::TRANSFORM)->rotation, allocator);
+				individualComponent.AddMember("Scale", GET_COMPONENT(it.second, Transform, ComponentType::TRANSFORM)->scale, allocator);
+			}
+			
+			// Add individual component to components object
+			components.AddMember(componentName, individualComponent, allocator);
+		}
+
+		// Add components members to JSON object
+		jsonObj.AddMember("Components", components, allocator);
+
+		// Add JSON object to Objects array
+		writeObjects.PushBack(jsonObj, allocator);
+	}
+
+	// Add object array to output JSON
+	objDoc.AddMember("Objects", writeObjects, allocator);
 
 	if (serializer.WriteJSONFile(filePath, objDoc)) {
 		std::cout << "Successfully saved objects to file." << std::endl;
@@ -283,10 +341,6 @@ void ObjectFactory::Update(float dt) {
 	for (; setIt != gameObjectDestroyList.end(); ++setIt) {
 		GameObject* gameObject = *setIt;
 		std::map<size_t, GameObject*>::iterator mapIt = gameObjectIDMap.find(gameObject->gameObjectID);
-
-		/*for (int i = 0; i < gameObject->componentList.size(); i++) {
-			delete gameObject->componentList.at(i);
-		}*/
 
 		delete gameObject;
 		gameObjectIDMap.erase(mapIt);
