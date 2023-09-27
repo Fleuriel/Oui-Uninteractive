@@ -20,8 +20,8 @@ public:
 	virtual void Initialize();
 	/**************************************************************************
 	* @brief Initialize this instance of the Transform component via file
-	* @param const std::string& filePath - file path to read from
-	* @param rapidjson::Value::ConstMemberIterator& itr - iterator through json object
+	* @param filePath - file path to read from
+	* @param itr - iterator through json object
 	* @return void
 	*************************************************************************/
 	void Serialize(const std::string& filePath, rapidjson::Value::ConstMemberIterator& itr);

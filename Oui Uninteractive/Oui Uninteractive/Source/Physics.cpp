@@ -34,7 +34,7 @@ void Physics::Initialize() {
 }
 /**************************************************************************
 * @brief Update Function of the Physics System
-* @param float dt - delta time
+* @param dt - delta time
 * @return void
 *************************************************************************/
 void Physics::Update(float dt) {
@@ -77,7 +77,7 @@ void Physics::Update(float dt) {
 }
 /**************************************************************************
 * @brief Set the position of all object's Physics Body
-* @param Vec 2 pos - the position to be set to
+* @param pos - the position to be set to
 * @return void
 *************************************************************************/
 void Physics::SetPosition(Vec2 pos) {
@@ -89,8 +89,8 @@ void Physics::SetPosition(Vec2 pos) {
 }
 /**************************************************************************
 * @brief Set the position of one object's Physics Body
-* @param Vec2 pos - the position to be set to
-* @param size_t ID - ID of object to set position
+* @param pos - the position to be set to
+* @param ID - ID of object to set position
 * @return void
 *************************************************************************/
 void Physics::SetPosition(Vec2 pos, size_t ID) {
@@ -101,7 +101,7 @@ void Physics::SetPosition(Vec2 pos, size_t ID) {
 }
 /**************************************************************************
 * @brief Set the velocity of all object's Physics Body
-* @param Vec 2 newVelocity - the velocity to be set to
+* @param newVelocity - the velocity to be set to
 * @return void
 *************************************************************************/
 void Physics::SetVelocity(Vec2 newVelocity) {
@@ -113,8 +113,8 @@ void Physics::SetVelocity(Vec2 newVelocity) {
 }
 /**************************************************************************
 * @brief Set the velocity of one object's Physics Body
-* @param Vec 2 newVelocity - the velocity to be set to
-* @param size_t ID - ID of object to set position
+* @param newVelocity - the velocity to be set to
+* @param ID - ID of object to set position
 * @return void
 *************************************************************************/
 void Physics::SetVelocity(Vec2 velocity, size_t ID) {
@@ -124,7 +124,7 @@ void Physics::SetVelocity(Vec2 velocity, size_t ID) {
 }
 /**************************************************************************
 * @brief Set the rotation speed of one object's Physics Body
-* @param float rotSpeed - the rotation speed to be set to
+* @param rotSpeed - the rotation speed to be set to
 * @return void
 *************************************************************************/
 void Physics::SetRotationSpeed(float rotSpeed) {
@@ -136,8 +136,8 @@ void Physics::SetRotationSpeed(float rotSpeed) {
 }
 /**************************************************************************
 * @brief Set the rotation speed of one object's Physics Body
-* @param float rotSpeed - the rotation speed to be set to
-* @param size_t ID - ID of object to set rotation speed
+* @param rotSpeed - the rotation speed to be set to
+* @param ID - ID of object to set rotation speed
 * @return void
 *************************************************************************/
 void Physics::SetRotationSpeed(float rotSpeed, size_t ID) {
@@ -147,7 +147,7 @@ void Physics::SetRotationSpeed(float rotSpeed, size_t ID) {
 }
 /**************************************************************************
 * @brief Set the current rotation speed of all Physics Body
-* @param float rotSpeed - the rotation speed to be set to
+* @param rotSpeed - the rotation speed to be set to
 * @return void
 *************************************************************************/
 void Physics::SetCurrentRotationSpeed(float rotSpeed) {
@@ -159,7 +159,7 @@ void Physics::SetCurrentRotationSpeed(float rotSpeed) {
 }
 /**************************************************************************
 * @brief Set the current rotation speed of one object's Physics Body
-* @param float rotSpeed - the rotation speed to be set to
+* @param rotSpeed - the rotation speed to be set to
 * @return void
 *************************************************************************/
 void Physics::SetCurrentRotationSpeed(float rotSpeed, size_t ID) {
@@ -170,7 +170,7 @@ void Physics::SetCurrentRotationSpeed(float rotSpeed, size_t ID) {
 /**************************************************************************
 * @brief Set the direction of one object's Physics Body
 * @param Vec2 dir - the direction to be set to
-* @param size_t ID - ID of object to set direction
+* @param ID - ID of object to set direction
 * @return void
 *************************************************************************/
 void Physics::SetDirection(Vec2 dir, size_t ID) {
@@ -180,7 +180,7 @@ void Physics::SetDirection(Vec2 dir, size_t ID) {
 }
 /**************************************************************************
 * @brief Helper function to move an object backwards
-* @param size_t ID - ID of object to move
+* @param ID - ID of object to move
 * @return void
 *************************************************************************/
 void Physics::MoveBackwards(size_t ID) {
@@ -190,7 +190,7 @@ void Physics::MoveBackwards(size_t ID) {
 }
 /**************************************************************************
 * @brief Helper function to move an object forward
-* @param size_t ID - ID of object to move
+* @param ID - ID of object to move
 * @return void
 *************************************************************************/
 void Physics::MoveForward(size_t ID) {
@@ -200,7 +200,7 @@ void Physics::MoveForward(size_t ID) {
 }
 /**************************************************************************
 * @brief Helper function to move an object left
-* @param size_t ID - ID of object to move
+* @param ID - ID of object to move
 * @return void
 *************************************************************************/
 void Physics::MoveLeft(size_t ID) {
@@ -210,7 +210,7 @@ void Physics::MoveLeft(size_t ID) {
 }
 /**************************************************************************
 * @brief Helper function to move an object right
-* @param size_t ID - ID of object to move
+* @param ID - ID of object to move
 * @return void
 *************************************************************************/
 void Physics::MoveRight(size_t ID) {
@@ -220,7 +220,7 @@ void Physics::MoveRight(size_t ID) {
 }
 /**************************************************************************
 * @brief Calculate direction vector from angle of rotation
-* @param float angle - angle to convert to vector (in radians)
+* @param angle - angle to convert to vector (in radians)
 * @return double 
 *************************************************************************/
 Vec2 Physics::AngleToVec(float angle) {
