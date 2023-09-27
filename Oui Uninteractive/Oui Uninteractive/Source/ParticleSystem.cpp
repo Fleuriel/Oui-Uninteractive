@@ -22,17 +22,16 @@ void Particle::init(int userInput_x, int userInput_y, float userInput_sizeX,
 }
 
 void Particle::update() {
-    //std::cout << "VX : " << velocity.x << std::endl;
-    //std::cout << "VY : " << velocity.y << std::endl;
-    //std::cout << "XB : " << object.position.x << std::endl;
-    //std::cout << "YB : " << object.position.y << std::endl;
-    //object.position += glm::vec2{ 5, 5 };
 
     
-    object.Update(0, 0, 100000, 0, false);
+//    object.Update(0, 0, 100000, 0, false);
+
+    particleSystem.particles[0].object.Update(0, 0, 1000, 0, false);
     
-    std::cout << "XA : " << object.position.x << std::endl;
-    std::cout << "YA : " << object.position.y << std::endl;
+    std::cout << object.scaleModel.x << object.scaleModel.y << '\n';
+
+ //   std::cout << "XA : " << object.position.x << std::endl;
+ //   std::cout << "YA : " << object.position.y << std::endl;
 }
 
 void Particle::draw() {
@@ -40,16 +39,12 @@ void Particle::draw() {
 }
 
 
-
-
-
-
-
-
-
 void ParticleSystem::update() {
     for (Particle particle : particles)
+    {
+        std::cout << "update\n";
         particle.update();
+    }
 }
 
 void ParticleSystem::draw() {
@@ -57,6 +52,10 @@ void ParticleSystem::draw() {
 		//std::cout << "Particle Storage Size:" << particles.size() << '\n';
 #endif
 
-		for (Particle particle : particles)
-			particle.draw();
+		for (Particle particle : particles){
+        
+            particle.draw();
+           // std::cout << particle.object.scaleModel.x << '\t' << particle.object.scaleModel.y << '\n';
+        }
+
 }

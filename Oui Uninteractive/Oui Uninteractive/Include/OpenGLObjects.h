@@ -145,14 +145,14 @@ public:
 	//static std::map<std::string, OpenGLShader> shdrpgms;
 
 
-	//static std::vector<GLuint> textures;
+	static std::vector<GLuint> textures;
 
 
 	static void init_shdrpgms_cont(VectorPairStrStr const& vpss);
 
 	// Models
 
-	static OpenGLModel Box_Model(int ID, glm::vec3);
+	static OpenGLModel Box_Model(int ID, glm::vec3, int);
 
 	static void Load_Files();
 	static void Load_Meshes(std::string);

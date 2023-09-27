@@ -47,6 +47,7 @@ OpenGLObject Objects;
 std::list<OpenGLObject> objects; // singleton
 
 ParticleSystem particleSystem;
+std::vector<ParticleSystem> particleVec;
 //Particle background;
 
 OpenGLObject::OpenGLModel mdl;
@@ -256,7 +257,7 @@ void OpenGLApplication::OpenGLUpdate()
 
 		if (keyStates[GLFW_KEY_SPACE] == 1)
 		{
-			OpenGLObject newObject(1);
+			OpenGLObject newObject(0);
 
 			newObject.models[0].ModelID = 0;
 
@@ -270,14 +271,6 @@ void OpenGLApplication::OpenGLUpdate()
 			std::cout << "Model ID: " << newObject.models[0].ModelID << "\n\n";
 	
 			objects.emplace_back(newObject);
-		
-
-			OpenGLObject newObjected(2);
-
-			newObjected.models[0].ModelID = 2;
-
-			newObjected.InitObjects(150, 150, 150, 180, 0, 45);
-			objects.emplace_back(newObjected);
 
 		}
 		if (keyStates[GLFW_KEY_RIGHT_SHIFT] == 1)
@@ -322,7 +315,6 @@ void OpenGLApplication::OpenGLUpdate()
 
 
 
-
 //		std::cout << "xpos : " << xpos << "\nypos : " << ypos << std::endl;
 		int windowWidth, windowHeight{};
 		glfwGetWindowSize(window, &windowWidth, &windowHeight);
@@ -357,8 +349,6 @@ void OpenGLApplication::OpenGLUpdate()
 		////glVertex2f(5.0f, 5.0f);
 		//
 		//glEnd();
-
-		
 
 		/*-----------------------------------------------------------------------------
 		|                               INPUT UPDATES                                 |
@@ -553,20 +543,17 @@ void OpenGLApplication::OpenGLUpdate()
 			}
 
 		}
-		for (std::pair<size_t, GameObject*> gObj : objectFactory->GetGameObjectIDMap()) {
-			if (gObj.second->Has(ComponentType::TRANSFORM) != -1) {
-				GET_COMPONENT(gObj.second, Transform, ComponentType::TRANSFORM)->shape->Draw();
-			}	
-		}
-		
+		//for (std::pair<size_t, GameObject*> gObj : objectFactory->GetGameObjectIDMap()) {
+		//	if (gObj.second->Has(ComponentType::TRANSFORM) != -1) {
+		//		GET_COMPONENT(gObj.second, Transform, ComponentType::TRANSFORM)->shape->Draw();
+		//	}	
+		//}
 
-		for (auto const& x : objects)
-		{
-			x.Draw();
-		}
+
+
+
 
 		particleSystem.draw();
-
 
 }
 
@@ -595,23 +582,25 @@ void OpenGLApplication::Draw() {
 
 
 #endif
-	// update object transforms
-	for (auto const& obj : OpenGLObject::Object_Storage)
-	{
-		if (obj.first == "Camera")
-			continue;
-#ifdef _DEBUG
-		//std::cout << x.first << '\n';
-		//std::cout << "YES\n";
-#endif
-		obj.second.Draw();
-
-	}
+//	// update object transforms
+//	for (auto const& obj : OpenGLObject::Object_Storage)
+//	{
+//		if (obj.first == "Camera")
+//			continue;
+//#ifdef _DEBUG
+//		//std::cout << x.first << '\n';
+//		//std::cout << "YES\n";
+//#endif
+//		obj.second.Draw();
+//
+//	}
 
 	for (auto const& obj : objects)
 	{	
 		obj.Draw();
+
 	}
+
 	
 	// to prevent spamming
 	if (IsTimeElapsed(1))

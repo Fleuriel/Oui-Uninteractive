@@ -40,7 +40,7 @@ std::vector<OpenGLObject::OpenGLModel> OpenGLObject::models;
 //std::map<std::string, OpenGLShader> OpenGLObject::shdrpgms;
 GLuint OpenGLObject::ShaderProgram{};
 
-//std::vector<GLuint> OpenGLObject::textures;
+std::vector<GLuint> OpenGLObject::textures;
 
 std::map<std::string, OpenGLObject::OpenGLModel> OpenGLObject::Model_Storage;
 std::map<std::string, OpenGLObject> OpenGLObject::Object_Storage;
@@ -263,8 +263,10 @@ void OpenGLObject::Init()
 * @param color			Color <R,G,B>
 * @return OpenGLObject  
 ***************************************************************************************/
-OpenGLObject::OpenGLModel OpenGLObject::Box_Model(int ID, glm::vec3 color)
+OpenGLObject::OpenGLModel OpenGLObject::Box_Model(int ID, glm::vec3 color, int textureInput)
 {
+
+
 	struct Vertex {
 		glm::vec2 position;        // Vertex position
 		glm::vec3 color;           // Vertex color
@@ -282,6 +284,7 @@ OpenGLObject::OpenGLModel OpenGLObject::Box_Model(int ID, glm::vec3 color)
 
 	OpenGLModel mdl;
 
+	mdl.ModelID = ID;
 
 	// Create and bind a buffer for vertex data
 	GLuint vbo_hdl;
@@ -313,7 +316,7 @@ OpenGLObject::OpenGLModel OpenGLObject::Box_Model(int ID, glm::vec3 color)
 	glVertexArrayAttribBinding(vaoid, 2, 2);
 
 	// Bind the texture before rendering
-	//glBindTexture(GL_TEXTURE_2D, textureInput);
+	glBindTexture(GL_TEXTURE_2D, importTexture);
 
 	// Set up index buffer for rendering
 	std::array<GLushort, 4> idx_vtx = { 0, 1, 2, 3 };
@@ -327,9 +330,6 @@ OpenGLObject::OpenGLModel OpenGLObject::Box_Model(int ID, glm::vec3 color)
 	mdl.primitive_type = GL_TRIANGLE_FAN; // Use GL_TRIANGLE_FAN for a square
 	mdl.draw_cnt = idx_vtx.size();
 	mdl.primitive_cnt = vertices.size();
-	mdl.ModelID = ID;
-//	mdl.texture = textureInput;
-
 
 	return mdl;
 }
@@ -423,7 +423,7 @@ void OpenGLObject::Draw() const
 	for (GLuint texture : textures)
 	{
 
-		glBindTextureUnit(6, (interactable)? importTexture:bgTexture);
+		glBindTextureUnit(6, (interactable) ? (TagID) ? importTexture :secondTexture : bgTexture);
 
 	}
 
@@ -432,35 +432,37 @@ void OpenGLObject::Draw() const
 
 	shdrpgms[shd_ref].Use(); // Install the shader program
 
-	for (const OpenGLModel& model : models) {
-		GLint uTex2dLocation = glGetUniformLocation(shdrpgms[shd_ref].GetHandle(), "uTex2d");
-		if (uTex2dLocation >= 0) {
-			glUniform1i(uTex2dLocation, model.ModelID); // Use the ModelID as the texture unit
-		}
-		else {
-			std::cerr << "Uniform 'uTex2d' not found in shader program." << std::endl;
-			// Handle the case where the uniform is not found.
-		}
 
-		glBindVertexArray(model.vaoid); // Bind object's VAO handle
 
-		GLint uniform_var_loc1 = glGetUniformLocation(shdrpgms[shd_ref].GetHandle(), "uModel_to_NDC");
-		if (uniform_var_loc1 >= 0) {
-			glUniformMatrix3fv(uniform_var_loc1, 1, GL_FALSE, glm::value_ptr(OpenGLObject::model_To_NDC_xform));
-		}
-		else {
-			std::cout << "Uniform variable doesn't exist!!!" << std::endl;
-			std::exit(EXIT_FAILURE);
-		}
 
-		// Bind the texture to the specified unit (ModelID) for this model
-		glBindTextureUnit(model.ModelID, model.texture);
+	shdrpgms[shd_ref].SetUniform("uTex2d", 6);
+	// Part 2: Bind object's VAO handle
+	glBindVertexArray(models[mdl_ref].vaoid); // Bind object's VAO handle
 
-		glDrawElements(model.primitive_type, model.draw_cnt, GL_UNSIGNED_SHORT, NULL);
-
-		glBindVertexArray(0); // Unbind the VAO
+	// Part 3: Copy object's 3x3 model-to-NDC matrix to vertex shader
+	GLint uniform_var_loc1 = glGetUniformLocation(shdrpgms[shd_ref].GetHandle(), "uModel_to_NDC");
+	if (uniform_var_loc1 >= 0) {
+		glUniformMatrix3fv(uniform_var_loc1, 1, GL_FALSE, glm::value_ptr(OpenGLObject::model_To_NDC_xform));
+	}
+	else {
+		std::cout << "Uniform variable doesn't exist!!!" << std::endl;
+		std::exit(EXIT_FAILURE);
 	}
 
+	// Part 4: Render using glDrawElements or glDrawArrays
+
+
+
+	glDrawElements(
+		models[mdl_ref].primitive_type,
+		models[mdl_ref].draw_cnt,
+		GL_UNSIGNED_SHORT, NULL);
+
+
+
+
+	// Part 5: Clean up
+	glBindVertexArray(0); // Unbind the VAO
 	shdrpgms[shd_ref].UnUse(); // Uninstall the shader program
 }
 
