@@ -1,18 +1,21 @@
 /**************************************************************************
  * @file GameObject.cpp
  * @author Hwang Jing Rui, Austin
- * @co-author Tristan Cheah Tze Hong
+ * @co-author CHEAH Tristan Tze Hong
  * @par DP email: jingruiaustin.hwang@digipen.edu
  * @par DP email: t.cheah@digipen.edu
  * @par Course:	CSD 2401
  * @par	Software Engineering Project 3
  * @date 08-09-2023
- * @brief This fiile contains the definition of the GameObject class.
+ * @brief This file contains the definition of the GameObject class.
  *		  The functions include:
+ *			- Initialize
  *			- AddComponent
  *			- RemoveComponent
  *			- Has
  *			- GetGameObjectID
+ *			- GetName
+ *			- GetType
  *			- GetComponent
  *			- GetComponentType
  *************************************************************************/
@@ -26,16 +29,20 @@
 }*/
 
 /**************************************************************************
-* @brief Constructor
+* @brief Default Constructor
 *************************************************************************/
-GameObject::GameObject(const std::string name) : gameObjectID{} {
+GameObject::GameObject(const std::string& name, const std::string& type) : gameObjectID{} {
 	gameObjectName = name;
+	gameObjectType = type;
 }
 
 /**************************************************************************
 * @brief Destructor
 *************************************************************************/
-GameObject::~GameObject() {}
+GameObject::~GameObject() {
+	for (int i{}; i < componentList.size(); ++i)
+		delete componentList[i];
+}
 
 /**************************************************************************
 * @brief Initialize components in componentList
@@ -82,7 +89,15 @@ int GameObject::Has(ComponentType typeID) {
 			return i;
 		}
 	}
-	return false;
+	return -1;
+}
+
+/**************************************************************************
+* @brief Get game object ID
+* @return size_t - game object ID
+*************************************************************************/
+size_t GameObject::GetGameObjectID() {
+	return gameObjectID;
 }
 
 /**************************************************************************
@@ -94,11 +109,11 @@ std::string GameObject::GetName() {
 }
 
 /**************************************************************************
-* @brief Get game object ID
-* @return size_t - game object ID
+* @brief Get game object type
+* @return std::string - game object type
 *************************************************************************/
-size_t GameObject::GetGameObjectID() {
-	return gameObjectID;
+std::string GameObject::GetType() {
+	return gameObjectType;
 }
 
 /**************************************************************************

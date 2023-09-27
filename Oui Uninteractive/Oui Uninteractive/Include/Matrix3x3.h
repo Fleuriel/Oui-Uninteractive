@@ -1,11 +1,11 @@
 /**************************************************************************
-* @file InputKeys.cpp
-* @author
-* @par DP email:
+* @file Matrix3x3.h
+* @author Hwang Jing Rui, Austin
+* @par DP email: jingruiaustin.hwang@digipen.edu
 * @par Course: CSD 2401
 * @par Software Engineering Project 3
-* @date 09-05-2023
-* @brief
+* @date 05-09-2023
+* @brief This file contains the declaration of functions for Matrix3x3
 *************************************************************************/
 #pragma once
 
@@ -31,7 +31,7 @@ typedef union Matrix3x3
 	};
 
 	float m[9];
-	float m2[3][3];//You need this for the second part of the assignment
+	float m2[3][3];
 
 	Matrix3x3() : m00(0.0f), m01(0.0f), m02(0.0f), m10(0.0f), m11(0.0f), m12(0.0f), m20(0.0f), m21(0.0f), m22(0.0f) {}
 	Matrix3x3(const float *pArr);

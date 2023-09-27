@@ -48,7 +48,8 @@ std::map<std::string, OpenGLObject> OpenGLObject::Object_Storage;
 GLuint OpenGLObject::VAO = 0;
 GLuint OpenGLObject::VBO = 0;
 
-int importTexture, secondTexture;
+int bgTexture, importTexture, secondTexture;
+
 GLuint OpenGLObject::textureID;								// id for texture object
 
 GLuint Suffering; 
@@ -88,17 +89,19 @@ void OpenGLObject::Init()
 	//Suffering = OpenGLObject::Setup_TextureObject("../texture/pantheon.jpg");
 	importTexture = OpenGLObject::Setup_TextureObject("../texture/pepega.jpg");
 	secondTexture = OpenGLObject::Setup_TextureObject("../texture/pepe.jpg");
-
-	//std::cout << Suffering << '\n';
-	std::cout << importTexture << '\n';
-	std::cout << secondTexture << '\n';
+	bgTexture = OpenGLObject::Setup_TextureObject("../texture/background.jpg");
 
 
-	models.emplace_back(OpenGLObject::Box_Model(1, color));
+	textures.emplace_back(importTexture);
+	textures.emplace_back(secondTexture);
+	textures.emplace_back(bgTexture);
 
 
-	//textures.emplace_back(importTexture);
-	//textures.emplace_back(secondTexture);
+	models.emplace_back(OpenGLObject::Box_Model(0, color, importTexture));
+	models.emplace_back(OpenGLObject::Box_Model(1 ,color, secondTexture));
+	models.emplace_back(OpenGLObject::Box_Model(2, color, bgTexture));
+
+	
 
 
 
@@ -413,7 +416,20 @@ void OpenGLObject::Update(float newX, float newY, float scale , float newAngle ,
 * @param  none
 * @return void
 *************************************************************************/
-void OpenGLObject::Draw() const {
+void OpenGLObject::Draw() const
+{
+	//texture object is to use texture image unit 6
+
+	for (GLuint texture : textures)
+	{
+
+		glBindTextureUnit(6, (interactable)? importTexture:bgTexture);
+
+	}
+
+	//glTextureParameteri(secondTexture, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);//Repeat wrap
+	//glTextureParameteri(secondTexture, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);//Repeat wrap
+
 	shdrpgms[shd_ref].Use(); // Install the shader program
 
 	for (const OpenGLModel& model : models) {
@@ -806,10 +822,13 @@ void OpenGLObject::InitObjects(int userInput_x, int userInput_y, float userInput
 		0, 0, 1
 	};
 
+	float scaleX = 2.0f / windowSize.first;
+	float scaleY = 2.0f / windowSize.second;
+
 	glm::mat3 ScaleToWorldToNDC = glm::mat3
 	{
-		1 / (1920 / 2), 0, 0,
-		0, 1 / (1080 / 2), 0,
+		scaleX, 0, 0,
+		0, scaleY, 0,
 		0, 0, 1
 	};
 	// Instead of doing transpose, you can do what OpenGL matrix does:

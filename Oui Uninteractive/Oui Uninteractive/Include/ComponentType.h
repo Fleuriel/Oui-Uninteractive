@@ -14,7 +14,6 @@ typedef enum class ComponentType {
 	NONE = 0,
 	PHYSICS_BODY,
 	TRANSFORM
-	
 } componentType;
 
 #endif

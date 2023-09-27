@@ -1,6 +1,18 @@
 #ifndef COLLISION_H
 #define COLLISION_H
 
+/**************************************************************************
+ * @file		  Collision.h
+ * @author
+ * @par DP email:
+ * @par Course:	  CSD 2401
+ * @par			  Software Engineering Project 3
+ * @date		  09-25-2023
+ * @brief		  This is a header file for collision.cpp that declares
+ *				  the function names and is to be included by other files
+ *				  that wishes to access collision functions.
+ *************************************************************************/
+#pragma once
 #include <CoordinateSystem.h>
 #include "PhysicsBody.h"
 

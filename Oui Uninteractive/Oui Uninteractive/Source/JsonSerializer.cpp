@@ -1,7 +1,7 @@
 /**************************************************************************
  * @file JsonSerializer.cpp
- * @author
- * @par DP email:
+ * @author Mark Low
+ * @par DP email: l.wangchunmark@digipen.edu
  * @par Course: CSD 2401
  * @par Software Engineering Project 3
  * @date 15-09-2023
@@ -67,7 +67,7 @@ bool JsonSerializer::WriteJSONFile(const std::string& filePath, rapidjson::Docum
 
 	// Setup stream and writer
 	rapidjson::StringBuffer stringBuffer;
-	rapidjson::Writer<rapidjson::StringBuffer> writer(stringBuffer);
+	rapidjson::PrettyWriter<rapidjson::StringBuffer> writer(stringBuffer);
 
 	// Serialize JSON document to a string
 	docRef.Accept(writer);

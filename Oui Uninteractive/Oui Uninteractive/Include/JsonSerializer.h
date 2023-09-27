@@ -1,7 +1,7 @@
 /**************************************************************************
  * @file JsonSerializer.h
- * @author 
- * @par DP email: 
+ * @author Mark Low
+ * @par DP email: l.wangchunmark@digipen.edu
  * @par Course: CSD 2401
  * @par Software Engineering Project 3
  * @date 15-09-2023
@@ -14,7 +14,7 @@
 #define JSON_SERIALIZER_H
 
 #include "rapidjson/document.h"
-#include "rapidjson/writer.h"
+#include "rapidjson/prettywriter.h"
 #include "rapidjson/filereadstream.h"
 #include "rapidjson/filewritestream.h"
 #include <vector>

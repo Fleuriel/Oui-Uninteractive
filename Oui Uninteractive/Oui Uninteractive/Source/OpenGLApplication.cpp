@@ -46,6 +46,9 @@ GLfloat squareX = 0.0f, squareY = 0.0f;
 OpenGLObject Objects;
 std::list<OpenGLObject> objects; // singleton
 
+ParticleSystem particleSystem;
+//Particle background;
+
 OpenGLObject::OpenGLModel mdl;
 
 bool toggleMode = false;
@@ -110,6 +113,7 @@ void OpenGLApplication::OpenGLWindowInit()
 
 	// Set glfw window resize callback function
 	glfwSetWindowSizeCallback(window, OpenGLWindowResizeCallback);
+
 
 }
 
@@ -188,21 +192,34 @@ void OpenGLApplication::OpenGLInit()
 		GET_COMPONENT(objectFactory->GetGameObjectByID(i), Transform, ComponentType::TRANSFORM)->position.y = rand() % 600;
 	}*/
 
+	// Prefabs
+	std::cout << "\nLoading prefabs from JSON file..." << std::endl;
+	objectFactory->LoadPrefab("../prefab/prefab.JSON");
+	std::cout << "Loading prefabs from JSON file... completed." << std::endl;
+
+	std::cout << "\nBuilding an object from player prefab..." << std::endl;
+	objectFactory->BuildObjectFromPrefab("PlayerObjFromPrefab", "Player");
+	std::cout << "Building an object from player prefab... completed." << std::endl;
+
 	// De-serializing objects from JSON file
 	std::cout << "\nDe-serializing objects from JSON file..." << std::endl;
 	objectFactory->BuildObjectFromFile("../scenes/testscene.JSON");
 	std::cout << "De-serializing objects from JSON file... completed." << std::endl;
 
+	std::cout << "\nCloning object with ID 0..." << std::endl;
 	objectFactory->CloneObject(0);
-	GET_COMPONENT(objectFactory->GetGameObjectByID(1), Transform, ComponentType::TRANSFORM)->position.x = 450;
-	GET_COMPONENT(objectFactory->GetGameObjectByID(1), Transform, ComponentType::TRANSFORM)->position.y = 50;
-
+	GET_COMPONENT(objectFactory->GetGameObjectByID(4), Transform, ComponentType::TRANSFORM)->position.x = 450;
+	GET_COMPONENT(objectFactory->GetGameObjectByID(4), Transform, ComponentType::TRANSFORM)->position.y = 50;
+	std::cout << "\nCloning object with ID 0... completed." << std::endl;
 
 	// Modifying value of Object2
 	/*std::cout << "\nUpdating Object2..." << std::endl;
 	GET_COMPONENT(objectFactory->GetGameObjectByName("Object2"), PhysicsBody, ComponentType::PHYSICS_BODY)->velocity.y = 20.5f;
 	objectFactory->SaveObjectsToFile("../scenes/testscene.JSON");
 	std::cout << "Updating Object2... completed." << std::endl;*/
+
+	
+	//background.init(0, 0, windowSize.first, windowSize.second, 0, 0);
 }
 
 int positionX = 0;
@@ -297,9 +314,9 @@ void OpenGLApplication::OpenGLUpdate()
 			Particle newparticle;
 
 
-			newparticle.object.InitObjects(300, 300, 180, 180,45,45);
+			newparticle.init(0, 0, 15000, 15000, 0, 0);
 			//std::cout << "R : " << newparticle.object.color.r << "\nG : " << newparticle.object.color.g << "\nB : " << newparticle.object.color.b << "\n";
-			objects.emplace_back(newparticle.object);
+			
 		}
 
 
@@ -468,10 +485,10 @@ void OpenGLApplication::OpenGLUpdate()
 		|              Mouse                |
 		-----------------------------------*/
 
-		if (mouseButtonStates[GLFW_MOUSE_BUTTON_LEFT])
+	/*	if (mouseButtonStates[GLFW_MOUSE_BUTTON_LEFT])
 			std::cout << "LCLICK\n";
 		if (mouseButtonStates[GLFW_MOUSE_BUTTON_RIGHT])
-			std::cout << "RCLICK\n";
+			std::cout << "RCLICK\n";*/
 
 		/*-----------------------------------
 		|              Scroll               |
@@ -487,6 +504,8 @@ void OpenGLApplication::OpenGLUpdate()
 		}
 
 		updateStatesForNextFrame();
+
+		particleSystem.update();
 		
 		//std::cout << GetFPS() << '\n';
 		
@@ -534,19 +553,19 @@ void OpenGLApplication::OpenGLUpdate()
 			}
 
 		}
-
-
-		//for (std::pair<size_t, GameObject*> gObj : objectFactory->GetGameObjectIDMap()) {
-		//	GET_COMPONENT(gObj.second, Transform, ComponentType::TRANSFORM)->shape->Draw();
-		//
-		//}
-		//
+		for (std::pair<size_t, GameObject*> gObj : objectFactory->GetGameObjectIDMap()) {
+			if (gObj.second->Has(ComponentType::TRANSFORM) != -1) {
+				GET_COMPONENT(gObj.second, Transform, ComponentType::TRANSFORM)->shape->Draw();
+			}	
+		}
+		
 
 		for (auto const& x : objects)
 		{
 			x.Draw();
 		}
 
+		particleSystem.draw();
 
 
 }

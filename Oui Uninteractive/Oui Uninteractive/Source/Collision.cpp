@@ -1,11 +1,50 @@
+/**************************************************************************
+ * @file		  Collision.cpp
+ * @author		  
+ * @par DP email:
+ * @par Course:	  CSD 2401
+ * @par			  Software Engineering Project 3
+ * @date		  09-25-2023
+ * @brief		  This is a source file containing the functions of 
+ *				  various collisions such as static circles,
+ *				  dynamic static rectangles, and dynamic rectangles
+ *************************************************************************/
+
 #include "Collision.h"
-#include <math.h>
+#include <cmath>
 #include "Vector2D.h"
 #include "GameStateManager.h"
 
 
+ //Temporary function, the coordinate fetching for mouse is wrong (need NDC)
+bool CollisionMouseRect(AABB Rect1) {
+
+	double xpos, ypos{};
+	glfwGetCursorPos(window, &xpos, &ypos);
+
+	if ((Rect1.max.x > xpos &&
+		Rect1.max.y > ypos) &&
+		(xpos > Rect1.min.x &&
+		 ypos > Rect1.min.y))
+	{
+		std::cout << "ITS COLLIDING BOIS\n";
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+}
 
 
+//Temporary function, the coordinate fetching for mouse is wrong (need NDC)
+bool CollisionMouseCircle(Coordinates Coords1, float r1 = 2) {
+
+	double xpos, ypos{};
+	glfwGetCursorPos(window, &xpos, &ypos);
+	
+	return (Coords1.DistanceIsWithinThreshold(Coordinates(xpos, ypos), (r1)));
+}
 
 
 /**************************************************************************
@@ -25,40 +64,16 @@ bool CollisionStaticCircleCircle(Coordinates Coords1, Coordinates Coords2, float
 }
 
 /**************************************************************************
- * @brief Check for collision between static rectangles
+ * @brief Check for collision between static-dynamic rectangles
  *
  * This function returns true or false depending on whether collision is
  * detected or not
  *
- * @param Vector2DDistance The distance between two the two coordinates
- * @param 
- * @param 
+ * @param Rect1 Coordinates of the first rectangle
+ * @param Rect2 Coordinates of the second rectangle
  *************************************************************************/
 bool CollisionStaticDynamicRectRect(AABB Rect1, AABB Rect2)
 {
-	
-		////Smallest X-coordinate of both rectangle
-		//float leftA, leftB{ 0 }; 
-		//leftA = r1x - (s1 / 2);
-		//leftB = r2x - (s2 / 2);
-
-		////Biggest X-coordinate of both rectangle
-		//float rightA, rightB{ 0 }; 
-		//rightA = r1x + (s1 / 2);
-		//rightB = r2x + (s2 / 2);
-
-		////Biggest Y-coordinate of both rectangle
-		//float topA, topB{ 0 }; 
-		//topA = r1y + (s1 / 2);
-		//topB = r2y + (s2 / 2);
-
-		////Smallest Y-coordinate of both rectangle
-		//float bottomA, bottomB{ 0 }; 
-		//bottomA = r1y - (s1 / 2);
-		//bottomB = r2y - (s2 / 2);
-		
-		//rightA = maxXFirstRect
-		//leftB = 
 		if ((Rect1.max.x > Rect2.min.x  && 
 			 Rect1.max.y > Rect2.min.y) &&
 			(Rect2.max.x > Rect1.min.x  &&
@@ -71,14 +86,18 @@ bool CollisionStaticDynamicRectRect(AABB Rect1, AABB Rect2)
 		{
 		return false;
 		}
-
-		//if(leftA > rightB) then no collision
-		//if(leftB > rightA) then no collision
-		//if(topA < bottomB) then no collision
-		//if(topB < bottomA) then no collision
-
 }
 
+
+/**************************************************************************
+ * @brief Check for collision between moving rectangles
+ *
+ * This function returns true or false depending on whether collision is
+ * detected or not
+ *
+ * @param Rect1 
+ * @param Rect2
+ *************************************************************************/
 bool CollisionMovingRectRect(float r1x = 1, float r1y = 2, float r2x = 3, float r2y = 4, 
 							 float r1velocityX = 5, float r1velocityY = 6, float r2velocityX = 7, float r2velocityY = 8,
 							 float s1 = 9, float s2 = 10)
@@ -212,3 +231,12 @@ bool CollisionMovingRectRect(float r1x = 1, float r1y = 2, float r2x = 3, float 
 	return false;
 }
 
+
+/**************************************************************************
+ * @brief Next collision function
+ *
+ * This 
+ *
+ * @param 
+ * @param 
+ *************************************************************************/

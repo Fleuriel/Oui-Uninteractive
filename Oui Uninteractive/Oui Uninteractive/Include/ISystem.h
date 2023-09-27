@@ -12,8 +12,6 @@
 #define ISYSTEM_H
 
 class ISystem {
-private:
-
 public:
 	// Initialize the system
 	virtual void Initialize() {};
