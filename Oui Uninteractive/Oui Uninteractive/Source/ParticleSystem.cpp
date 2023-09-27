@@ -26,7 +26,7 @@ void Particle::update() {
     
 //    object.Update(0, 0, 100000, 0, false);
 
-    particleSystem.particles[0].object.Update(0, 0, 1000, 0, false);
+    particleSystem.particles[0].object.Update(0, 0, 10000, 0, false);
     
     std::cout << object.scaleModel.x << object.scaleModel.y << '\n';
 

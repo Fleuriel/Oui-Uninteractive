@@ -276,7 +276,7 @@ void OpenGLApplication::OpenGLUpdate()
 		if (keyStates[GLFW_KEY_RIGHT_SHIFT] == 1)
 		{
 			std::cout << "Shift\n";
-			OpenGLObject newObject1(1);
+			OpenGLObject newObject1(0);
 			std::cout << "Tag ID: " << newObject1.TagID << '\n';
 			newObject1.models[0].ModelID =0; // Change the ModelID to 2
 
@@ -305,7 +305,6 @@ void OpenGLApplication::OpenGLUpdate()
 		if (keyStates[GLFW_KEY_M] == 1)
 		{
 			Particle newparticle;
-
 
 			newparticle.init(0, 0, 15000, 15000, 0, 0);
 			//std::cout << "R : " << newparticle.object.color.r << "\nG : " << newparticle.object.color.g << "\nB : " << newparticle.object.color.b << "\n";
