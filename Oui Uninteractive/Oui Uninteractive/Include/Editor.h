@@ -24,6 +24,7 @@
 #include "ObjectFactory.h"
 #include "Transform.h"
 #include "PhysicsBody.h"
+#include "Input.h"
 
 #define GET_COMPONENT(GameObject, Component, ComponentType) (GameObject->GetComponentType<Component>(ComponentType))
 

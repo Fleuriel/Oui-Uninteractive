@@ -76,8 +76,7 @@ void UsingImGui::Exit() {
 
 
 void Editor::Init() {
-	// Define path
-	const char* filePath = "../editor/objekt.json";
+
 
 }
 
@@ -352,6 +351,13 @@ void Editor::CreateDebugPanel() {
 	if (ImGui::CollapsingHeader("Tools")) {
 		ImGui::Text("Program FPS: %.2f", GetFrames()); // Display program FPS in "Performance" tab
 		ImGui::Checkbox("Display bounding box", &panelList.soundPanel); // Checkbox for sound panel
+		ImGui::Separator();
+	}
+
+	if (ImGui::CollapsingHeader("Inputs")) {
+		double mouseXPos, mouseYPos;
+		glfwGetCursorPos(window, &mouseXPos, &mouseYPos);
+		ImGui::Text("Mouse position: (%d, %d)", static_cast<int>(mouseXPos), static_cast<int>(mouseYPos));
 		ImGui::Separator();
 	}
 	ImGui::End();

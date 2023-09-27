@@ -7,13 +7,14 @@
  * @date 09-05-2023
  * @brief 
  *************************************************************************/
+#ifndef INPUTKEYS_H
+#define INPUTKEYS_H
 
 #include <vector>
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 
-#ifndef INPUTKEYS_H
-#define INPUTKEYS_H
+
 
 // Define an array to keep track of key states
 extern std::array<int, GLFW_KEY_LAST + 1> keyStates;
