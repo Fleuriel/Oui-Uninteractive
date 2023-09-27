@@ -435,9 +435,6 @@ void OpenGLObject::Draw() const
 
 	glBindTextureUnit(6, tex);
 
-	//glTextureParameteri(secondTexture, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);//Repeat wrap
-	//glTextureParameteri(secondTexture, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);//Repeat wrap
-
 	shdrpgms[shd_ref].Use(); // Install the shader program
 
 
@@ -671,6 +668,13 @@ void OpenGLObject::InitObjects(float userInput_x, float userInput_y, float userI
 }
 
 
+void OpenGLObject::DrawCollisionBox()
+{
+
+
+
+}
+
 
 /*=======================================================================================================================*/
 /*=======================================================================================================================*/
@@ -721,6 +725,8 @@ void OpenGLObject::OpenGLModel::VAO_Object::setTexture(float s, float t)
 	texture.t = t;
 
 }
+
+
 
 /*=======================================================================================================================*/
 /*=======================================================================================================================*/

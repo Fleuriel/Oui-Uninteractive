@@ -484,9 +484,8 @@ void OpenGLApplication::OpenGLUpdate()
 		if (angle > 360)
 			angle = 0;
 
-		// Swap the front and back buffers
-		/*
-		*/
+		
+
 		for (OpenGLObject& obj : objects)
 		{
 			if (obj.TagID == 1)

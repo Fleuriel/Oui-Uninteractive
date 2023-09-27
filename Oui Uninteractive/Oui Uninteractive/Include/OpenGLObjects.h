@@ -60,6 +60,7 @@ public:
 	static GLuint mdl_ref, shd_ref; // Model and Shader Reference
 	//GLuint texture;					// integer for texture (stb returns integer).
 
+	Vector2D boundingAABB;
 
 	static GLuint VAO, VBO;			// Object VAO VBO
 
@@ -119,6 +120,7 @@ public:
 	void Update(float xSpeed = 0.0f, float ySpeed = 0.0f, float scaleX = 100.0f, float scaleY = 100.0f, float aSpeed = 10.0f, bool enRot = false);
 	//static void OpenGLShadersInitialization();
 
+	void DrawCollisionBox();
 	void Draw() const;
 
 	void InitObjects(float userInput_x, float userInput_y, float userInput_sizeX,
