@@ -28,7 +28,7 @@ void Particle::update() {
     
 //    object.Update(0, 0, 100000, 0, false);
     
-    object.Update(object.position.x + velocity.x, object.position.y + velocity.y, 1000, 0, false);
+    object.Update(object.position.x + velocity.x, object.position.y + velocity.y, 1000, 1000, 0, false);
     
     //std::cout << object.scaleModel.x << object.scaleModel.y << '\n';
 
