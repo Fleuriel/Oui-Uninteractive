@@ -13,7 +13,9 @@ public:
 	Vec2 min, max;
 	PhysicsBody* pointer;
 
-	AABB() {};
+	AABB() {
+		pointer = nullptr;
+	};
 
 };
 

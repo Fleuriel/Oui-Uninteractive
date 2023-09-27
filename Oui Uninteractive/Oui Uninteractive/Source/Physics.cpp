@@ -51,7 +51,7 @@ void Physics::Update(float dt) {
 		body->boundingbox->max = Vec2((1 / 2.f) * body->txPtr->scale + body->txPtr->position.x, (1 / 2.f) * body->txPtr->scale + body->txPtr->position.y);
 
 		//calculate physics
-		Vector2DNormalize(body->direction, body->direction + AngleToVec(body->txPtr->rotation * (M_PI / 180.f)));
+		Vector2DNormalize(body->direction, body->direction + AngleToVec(body->txPtr->rotation * (static_cast<float>(M_PI) / 180.0f)));
 		
 		body->txPtr->position = body->txPtr->position + body->velocity * dt;
 
@@ -161,6 +161,11 @@ void Physics::SetRotationSpeed(float rotSpeed, size_t ID) {
 		bodyList.at(ID)->rotationSpeed = rotSpeed;
 	}
 }
+/**************************************************************************
+* @brief Set the current rotation speed of all Physics Body
+* @param float rotSpeed - the rotation speed to be set to
+* @return void
+*************************************************************************/
 void Physics::SetCurrentRotationSpeed(float rotSpeed) {
 	std::map<size_t, PhysicsBody*>::iterator it = bodyList.begin();
 	for (; it != bodyList.end(); it++) {
@@ -168,6 +173,11 @@ void Physics::SetCurrentRotationSpeed(float rotSpeed) {
 		body->currentRotationSpeed = rotSpeed;
 	}
 }
+/**************************************************************************
+* @brief Set the current rotation speed of one object's Physics Body
+* @param float rotSpeed - the rotation speed to be set to
+* @return void
+*************************************************************************/
 void Physics::SetCurrentRotationSpeed(float rotSpeed, size_t ID) {
 	if (bodyList.find(ID) != bodyList.end()) {
 		bodyList.at(ID)->currentRotationSpeed = rotSpeed;
@@ -227,7 +237,7 @@ void Physics::MoveRight(size_t ID) {
 /**************************************************************************
 * @brief Calculate direction vector from angle of rotation
 * @param float angle - angle to convert to vector (in radians)
-* @return void
+* @return double 
 *************************************************************************/
 Vec2 Physics::AngleToVec(float angle) {
 	//angle should be in radians

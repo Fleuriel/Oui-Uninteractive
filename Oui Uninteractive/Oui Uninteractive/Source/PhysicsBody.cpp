@@ -10,6 +10,7 @@ PhysicsBody::PhysicsBody() {
 	isStatic = false;
 	txPtr = nullptr;
 	rotationSpeed = 0;
+	currentRotationSpeed = 0;
 	direction = Vec2(0, 0);
 	speed = 50;
 	boundingbox = new AABB();
@@ -52,6 +53,10 @@ void PhysicsBody::Serialize(const std::string& filePath, rapidjson::Value::Const
 	rotationSpeed = components["RotationSpeed"].GetFloat();
 	speed = components["Speed"].GetFloat();
 }
+/**************************************************************************
+* @brief Function to Clone a PhysicsBody Component
+* @return PhysicsBody* - the cloned PhysicsBody
+*************************************************************************/
 PhysicsBody* PhysicsBody::Clone() const{
 	PhysicsBody* newBody = new PhysicsBody();
 	

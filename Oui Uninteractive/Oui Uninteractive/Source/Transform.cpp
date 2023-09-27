@@ -1,18 +1,34 @@
 #include "Transform.h"
 
+/**************************************************************************
+* @brief Default constructor for Transform component
+*************************************************************************/
 Transform::Transform() {
 	position = Vec2(-250,50);
 	rotation = 0;
 	scale = 100.f;
 	shape = new OpenGLObject();
 }
+/**************************************************************************
+* @brief Destructor for Transform component
+*************************************************************************/
 Transform::~Transform() {
 	delete shape;
 }
+/**************************************************************************
+* @brief Initialize function for the Transform Component
+* @return void
+*************************************************************************/
 void Transform::Initialize() {
+	//Produce the OpenGLObject based off the Transform component variables
 	shape->InitObjects(position.x, position.y, scale, scale, rotation, 0);
 }
-
+/**************************************************************************
+* @brief Initialize this instance of the Transform component via file
+* @param const std::string& filePath - file path to read from
+* @param rapidjson::Value::ConstMemberIterator& itr - iterator through json object
+* @return void
+*************************************************************************/
 void Transform::Serialize(const std::string& filePath, rapidjson::Value::ConstMemberIterator& itr) {
 	const rapidjson::Value& components{ itr->value };
 	position.x = components["PositionX"].GetFloat();
@@ -20,6 +36,10 @@ void Transform::Serialize(const std::string& filePath, rapidjson::Value::ConstMe
 	rotation = components["Rotation"].GetFloat();
 	scale = components["Scale"].GetFloat();
 }
+/**************************************************************************
+* @brief Function to Clone a Transform Component
+* @return Transform* - the cloned Transform
+*************************************************************************/
 Transform* Transform::Clone() const {
 	Transform* newTransform = new Transform();
 	newTransform->position = position;
