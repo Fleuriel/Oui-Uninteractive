@@ -420,12 +420,25 @@ void OpenGLObject::Draw() const
 {
 	//texture object is to use texture image unit 6
 
-	for (GLuint texture : textures)
+	
+
+	int* tex{};
+	switch (TagID)
 	{
-
-		glBindTextureUnit(6, (interactable) ? (TagID) ? importTexture :secondTexture : bgTexture);
-
+	case 0:
+		tex = &importTexture;
+		break;
+	case 1:
+		tex = &secondTexture;
+		break;
+	case 2:
+		tex = &bgTexture;
+		break;
+	default:
+		break;
 	}
+		
+	glBindTextureUnit(6, *tex);
 
 	//glTextureParameteri(secondTexture, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);//Repeat wrap
 	//glTextureParameteri(secondTexture, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);//Repeat wrap

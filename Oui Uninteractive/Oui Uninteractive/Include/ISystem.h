@@ -1,6 +1,6 @@
 /**************************************************************************
  * @file ISystem.h
- * @author Hwang Jing Rui, Austin
+ * @author HWANG Jing Rui, Austin
  * @par DP email: jingruiaustin.hwang@digipen.edu
  * @par Course: CSD 2401
  * @par	Software Engineering Project 3
