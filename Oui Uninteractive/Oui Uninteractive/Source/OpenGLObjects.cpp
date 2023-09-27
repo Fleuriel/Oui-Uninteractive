@@ -69,7 +69,6 @@ void OpenGLObject::Init()
 #endif // _DEBUG
 
 
-	Load_Files();
 //	Load_Meshes();
 	
 
@@ -213,9 +212,7 @@ void OpenGLObject::Init()
 
 
 #ifdef _DEBUG
-	std::cout << "Mesh Directories for : '\t" << mesh_Directory[0] << '\n';
-	std::cout << "Mesh Directories for : '\t" << mesh_Directory[1] << '\n';
-	std::cout << "Mesh Directories for : '\t" << mesh_Directory[2] << '\n';
+
 	std::cout << '\n';
 #endif
 
@@ -346,7 +343,7 @@ OpenGLObject::OpenGLModel OpenGLObject::Box_Model(int ID, glm::vec3 color, int t
 * @param bool   Boolean for Rotation Enable or Disable
 * @return void
 *************************************************************************/
-void OpenGLObject::Update(float newX, float newY, float scale , float newAngle , bool enRot )
+void OpenGLObject::Update(float newX, float newY, float scaleX, float scaleY, float newAngle , bool enRot )
 {
 	//std::cout << "Object Update\n";
 	// Compute the angular displacement in radians
@@ -355,7 +352,7 @@ void OpenGLObject::Update(float newX, float newY, float scale , float newAngle ,
 	
 	
 	//Scale the model based on float variable.
-	scaleModel = glm::vec2(scale, scale);
+	scaleModel = glm::vec2(scaleX, scaleY);
 
 
 	// Increase the position based on the xSpeed of the user.
@@ -598,186 +595,7 @@ void OpenGLObject::OpenGLModel::setup_TextureVAO()
 
 
 
-void OpenGLObject::Load_Files()
-{
-	std::string directoryPath = "../meshes";
 
-	for(auto const& entry : std::filesystem::directory_iterator(directoryPath))
-	{
-		if (entry.is_regular_file())
-		{
-			std::string meshFileName = entry.path().filename().string();
-			if (meshFileName.ends_with(".msh"))
-			{
-				std::ifstream inputFileStream(entry.path(), std::ios::in);
-				if (inputFileStream.is_open())
-				{
-#ifdef _DEBUG
-					std::cout << "Reading " << meshFileName << "\n";
-#endif
-
-					inputFileStream.close();
-
-					
-					mesh_Directory.push_back(entry.path().string());
-				}
-				else
-				{
-					std::cerr << "Error Opening File: " << meshFileName << '\n';
-				}
-			}
-		}
-	}
-}
-
-void OpenGLObject::Load_Meshes(std::string mesh_file) {
-
-
-	//Position vertexes
-	std::vector<glm::vec2> pos_vtx{};
-
-	//Index
-	std::vector<GLushort> idx_vtx;
-
-	//GLModel
-	OpenGLObject::OpenGLModel mdl;
-
-	//Model name
-	std::string mesh_name{};
-
-	//Reading file
-	std::ifstream ifs{ mesh_file, std::ios::in };
-
-	if (ifs.fail())
-	{
-		std::cout << "Loading " << mesh_file << "failed. \n";
-		return;
-	}
-
-	//get to the top of the file
-	ifs.seekg(0, std::ios::beg);
-
-	std::string line;
-	//getting the first line
-
-	while (!ifs.eof())
-	{
-		getline(ifs, line);
-
-		std::istringstream line_sstm{ line };
-
-		char prefix;
-
-		line_sstm >> prefix;
-
-		switch (prefix)
-		{
-			//getting model/mesh name
-		case 'n':
-		{
-			//std::cout << "is a N \n";
-			line_sstm >> mesh_name;
-		}
-		break;
-
-		//getting vertex position
-		case 'v':
-		{
-			//std::cout << "is a V \n";
-			glm::vec2 vpos;
-
-			line_sstm >> vpos.x;
-			line_sstm >> vpos.y;
-
-			pos_vtx.emplace_back(vpos);
-		}
-		break;
-
-		case 't':
-		{
-			mdl.primitive_type = GL_TRIANGLES;
-
-			while (line_sstm)
-			{
-				GLushort index;
-
-				line_sstm >> index;
-
-				//checking if line_sstm failed to put value into index
-				if (!line_sstm.fail())
-				{
-					//std::cout << index << ", ";
-					idx_vtx.push_back(index);
-				}
-			}
-		}
-		break;
-
-		case 'f':
-		{
-			mdl.primitive_type = GL_TRIANGLE_FAN;
-
-			while (line_sstm)
-			{
-				GLushort index;
-
-				line_sstm >> index;
-
-				//checking if line_sstm failed to put value into index
-				if (!line_sstm.fail())
-				{
-					//std::cout << index << ", ";
-					idx_vtx.push_back(index);
-				}
-			}
-		}
-		break;
-
-		//for case 't' and 'f' [GL_TRIANGLE] || [GL_TRIANGLE_FAN]
-		//also getting indexing
-		default:
-			break;
-		}
-	}
-
-	ifs.close();
-
-
-	GLuint vbo_hdl;
-	glCreateBuffers(1, &vbo_hdl);
-	glNamedBufferStorage(vbo_hdl, sizeof(glm::vec2)* pos_vtx.size(), pos_vtx.data(), GL_DYNAMIC_STORAGE_BIT);
-
-	GLuint vaoid;
-	glCreateVertexArrays(1, &vaoid); //Creating Vertex array object
-
-	//Vertex
-	glEnableVertexArrayAttrib(vaoid, 0); //Assigning Vertex array object with index 0 (for position)
-	glVertexArrayVertexBuffer(vaoid, 2, vbo_hdl, 0, sizeof(glm::vec2)); //bind the named buffer to vertex buffer binding point 2
-	glVertexArrayAttribFormat(vaoid, 0, 2, GL_FLOAT, GL_FALSE, 0); //format vao attribute
-	glVertexArrayAttribBinding(vaoid, 0, 2); //binding vao attribute to binding point 2
-
-	GLuint ebo_hdl;
-	glCreateBuffers(1, &ebo_hdl); //Creating ebo buffer
-	glNamedBufferStorage(ebo_hdl, sizeof(GLushort)* idx_vtx.size(), reinterpret_cast<GLvoid*>(idx_vtx.data()), GL_DYNAMIC_STORAGE_BIT); //setting memory location for ebo buffer
-	glVertexArrayElementBuffer(vaoid, ebo_hdl); //binding ebo to vaoid
-
-	glBindVertexArray(0);
-
-	mdl.vaoid = vaoid;
-	mdl.draw_cnt = idx_vtx.size();
-	mdl.primitive_cnt = 2;
-
-//		glBindVertexArray(0);
-
-	mdl.vaoid = vaoid;
-	mdl.draw_cnt = idx_vtx.size();
-	//mdl.primitive_cnt = Model.Position_Vertex.size();
-
-	Model_Storage[mesh_name] = mdl;
-
-
-	
-}
 
 
 
