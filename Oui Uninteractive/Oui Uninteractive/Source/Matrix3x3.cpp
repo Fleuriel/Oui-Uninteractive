@@ -1,6 +1,6 @@
 /**************************************************************************
 * @file Matrix3x3.cpp
-* @author Hwang Jing Rui, Austin
+* @author HWANG Jing Rui, Austin
 * @par DP email: jingruiaustin.hwang@digipen.edu
 * @par Course: CSD 2401
 * @par Software Engineering Project 3
@@ -12,19 +12,20 @@
 
 constexpr float PI = 3.14159265358f;
 
-/**************************************************************************/
-/*!
-	Constructors
-*/
-/**************************************************************************/
-Mtx33::Matrix3x3(const float* pArr)
+/**************************************************************************
+* @brief Copy Constructor (array)
+*************************************************************************/
+Matrix3x3::Matrix3x3(const float* pArr)
 {
 	for (int i = 0; i < 9; ++i) {
 		m[i] = pArr[i];
 	}
 }
 
-Mtx33::Matrix3x3(float _00, float _01, float _02,
+/**************************************************************************
+* @brief Copy Constructor (individual values)
+*************************************************************************/
+Matrix3x3::Matrix3x3(float _00, float _01, float _02,
 					float _10, float _11, float _12,
 					float _20, float _21, float _22)
 {
@@ -39,12 +40,10 @@ Mtx33::Matrix3x3(float _00, float _01, float _02,
 	m22 = _22;
 }
 
-/**************************************************************************/
-/*!
-	Copy assignment
-*/
-/**************************************************************************/
-Mtx33& Mtx33::operator=(const Mtx33& rhs)
+/**************************************************************************
+* @brief Copy Assignment
+*************************************************************************/
+Mtx33& Matrix3x3::operator=(const Matrix3x3& rhs)
 {
 	// Iterate through rhs.m
 	for (int i = 0; i < 9; ++i) {
@@ -54,13 +53,13 @@ Mtx33& Mtx33::operator=(const Mtx33& rhs)
 	return *this;
 }
 
-/**************************************************************************/
-/*!
-	Cross product 2 matrices and save the resultant matrix in the 
-	current matrix
-*/
-/**************************************************************************/
-Mtx33& Mtx33::operator*=(const Mtx33& rhs)
+/**************************************************************************
+* @brief Cross product 2 matrices and save the resultant matrix in the
+		current matrix
+* @param rhs - the second matrix
+* @return Matrix3x3&
+*************************************************************************/
+Matrix3x3& Matrix3x3::operator*=(const Matrix3x3& rhs)
 {
 	// Cross product *this and rhs
 	Mtx33 temp;
@@ -80,11 +79,12 @@ Mtx33& Mtx33::operator*=(const Mtx33& rhs)
 	return *this;
 }
 
-/**************************************************************************/
-/*!
-	This function returns the result of the cross product of 2 matrices
-*/
-/**************************************************************************/
+/**************************************************************************
+* @brief Cross product of 2 matrices
+* @param lhs - first matrix
+* @param rhs - second matrix
+* @return Matrix3x3 - resultant matrix
+*************************************************************************/
 Mtx33 operator*(const Mtx33& lhs, const Mtx33& rhs)
 {
 	// Cross product *this and rhs
@@ -102,13 +102,13 @@ Mtx33 operator*(const Mtx33& lhs, const Mtx33& rhs)
 	return temp;
 }
 
-/**************************************************************************/
-/*!
-	This operator multiplies the matrix pMtx with the vector rhs
-	and returns the result as a vector
-	*/
-	/**************************************************************************/
-Vector2D operator * (const Mtx33& pMtx, const Vec2& rhs)
+/**************************************************************************
+* @brief Multiply the matrix pMtx with the vector rhs
+* @param pMtx - matrix
+* @param rhs - vector
+* @return Vector2D - resultant vector
+*************************************************************************/
+Vector2D operator* (const Mtx33& pMtx, const Vec2& rhs)
 {
 	// Assign vector rhs to a temporary matrix
 	Mtx33 temp_m;
@@ -125,11 +125,11 @@ Vector2D operator * (const Mtx33& pMtx, const Vec2& rhs)
 	return temp_v;
 }
 
-/**************************************************************************/
-/*!
-	This function sets the matrix pResult to the identity matrix
-	*/
-	/**************************************************************************/
+/**************************************************************************
+* @brief Set the matrix pResult to the identity matrix
+* @param pResult - matrix
+* @return void
+*************************************************************************/
 void Mtx33Identity(Mtx33& pResult)
 {
 	/*
@@ -146,12 +146,13 @@ void Mtx33Identity(Mtx33& pResult)
 	pResult = temp;
 }
 
-/**************************************************************************/
-/*!
-	This function creates a translation matrix from x & y
-	and saves it in pResult
-	*/
-	/**************************************************************************/
+/**************************************************************************
+* @brief Create a translation matrix from x & y	and save it in pResult
+* @param pResult - matrix
+* @param x - x value
+* @param y - y value
+* @return void
+*************************************************************************/
 void Mtx33Translate(Mtx33& pResult, float x, float y)
 {
 	/*
@@ -184,12 +185,13 @@ void Mtx33Scale(Mtx33& pResult, float x, float y)
 	pResult.m11 = y;
 }
 
-/**************************************************************************/
-/*!
-	This matrix creates a rotation matrix from "angle" whose value
-	is in radian. Save the resultant matrix in pResult.
-	*/
-	/**************************************************************************/
+/**************************************************************************
+* @brief Create a rotation matrix from "angle" whose value is in radian.
+*		 Save the resultant matrix in pResult.
+* @param pResult - matrix
+* @param angle - angle of rotation
+* @return void
+*************************************************************************/
 void Mtx33RotRad(Mtx33& pResult, float angle)
 {
 	/*
@@ -205,12 +207,13 @@ void Mtx33RotRad(Mtx33& pResult, float angle)
 	pResult.m11 =  cosf(angle);
 }
 
-/**************************************************************************/
-/*!
-	This matrix creates a rotation matrix from "angle" whose value
-	is in degree. Save the resultant matrix in pResult.
-	*/
-	/**************************************************************************/
+/**************************************************************************
+* @brief Create a rotation matrix from "angle" whose value is in degree.
+*		 Save the resultant matrix in pResult.
+* @param pResult - matrix
+* @param angle - angle of rotation (degree)
+* @return void
+*************************************************************************/
 void Mtx33RotDeg(Mtx33& pResult, float angle)
 {
 	/*
@@ -226,12 +229,12 @@ void Mtx33RotDeg(Mtx33& pResult, float angle)
 	pResult.m11 =  cosf(PI / 180.0f * angle);
 }
 
-/**************************************************************************/
-/*!
-	This functions calculated the transpose matrix of pMtx
-	and saves it in pResult
-	*/
-	/**************************************************************************/
+/**************************************************************************
+* @brief Calculate the transpose matrix of pMtx and save it in pResult.
+* @param pResult - resultant matrix
+* @param pMtx - matrix to transpose
+* @return void
+*************************************************************************/
 void Mtx33Transpose(Mtx33& pResult, const Mtx33& pMtx)
 {
 	for (int i = 0; i < 3; ++i) {
@@ -241,13 +244,14 @@ void Mtx33Transpose(Mtx33& pResult, const Mtx33& pMtx)
 	}
 }
 
-/**************************************************************************/
-/*!
-	This function calculates the inverse matrix of pMtx and saves the
-	result in pResult. If the matrix inversion fails, pResult
-	would be set to NULL.
-*/
-/**************************************************************************/
+/**************************************************************************
+* @brief Calculate the inverse matrix of pMtx and save the result in pResult.
+*		 If the matrix inversion fails, pResult would be set to NULL.
+* @param pResult - resultant matrix
+* @param determinant
+* @param pMtx - matrix to inverse
+* @return void
+*************************************************************************/
 void Mtx33Inverse(Mtx33* pResult, float* determinant, const Mtx33& pMtx)
 {
 	// Calculate the determinant
