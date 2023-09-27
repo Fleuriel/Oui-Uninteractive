@@ -309,6 +309,7 @@ void OpenGLApplication::OpenGLUpdate()
 			Particle newparticle;
 
 			newparticle.init(0, 0, 15000, 15000, 0, 0);
+			particleSystem.particles.emplace_back(newparticle);
 			//std::cout << "R : " << newparticle.object.color.r << "\nG : " << newparticle.object.color.g << "\nB : " << newparticle.object.color.b << "\n";
 			
 		}

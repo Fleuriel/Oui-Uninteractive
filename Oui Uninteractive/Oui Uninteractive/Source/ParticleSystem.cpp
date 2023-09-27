@@ -14,7 +14,6 @@ Particle::Particle(){
 	alpha = 1;
     lifespan = 1;
     object.interactable = false;
-    particleSystem.particles.emplace_back(*this);
 }
 
 void Particle::init(int userInput_x, int userInput_y, float userInput_sizeX,
@@ -43,7 +42,7 @@ void Particle::draw() {
 
 void ParticleSystem::update() {
     // i starts at 1 to skip updating the background
-    for (size_t i = 0; i<particles.size();++i)
+    for (size_t i = 1; i<particles.size();++i)
     {
         std::cout << i << "update " << particles[i].object.position.x << " " << particles[i].object.position.y << "\n";
         particles[i].update();
@@ -55,7 +54,7 @@ void ParticleSystem::draw() {
 		//std::cout << "Particle Storage Size:" << particles.size() << '\n';
 
 
-        for (size_t i = 0; i < particles.size(); ++i)
+        for (size_t i = 1; i < particles.size(); ++i)
         {
             std::cout << i << "Draw\n";
             particles[i].draw();
