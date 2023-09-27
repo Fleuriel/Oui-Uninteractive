@@ -17,15 +17,14 @@ PhysicsBody::PhysicsBody() {
 
 	boundingbox->min = Vec2(0,0);
 	boundingbox->max = Vec2(0,0);
-	boundingbox->pointer = this; //this -> Pointer to current object
-
 }
-
+/**************************************************************************
+* @brief Destructor for PhysicsBody component
+*************************************************************************/
 PhysicsBody::~PhysicsBody() {
 	physicsSys->bodyList.erase(GetOwner()->GetGameObjectID());
 	delete boundingbox;
 }
-
 /**************************************************************************
 * @brief Initialize this instance of the PhysicsBody component
 * @return void
@@ -64,7 +63,6 @@ PhysicsBody* PhysicsBody::Clone() const{
 	newBody->rotationSpeed = rotationSpeed;
 	newBody->boundingbox->min = boundingbox->min;
 	newBody->boundingbox->max = boundingbox->max;
-	newBody->boundingbox->pointer = newBody;
 
 	return newBody;
 }

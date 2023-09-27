@@ -45,26 +45,25 @@ void Physics::Update(float dt) {
 		if (body->isStatic) {
 			continue;
 		}
-
 		//Check update
 		body->boundingbox->min = Vec2((-1 / 2.f) * body->txPtr->scale + body->txPtr->position.x, (-1 / 2.f) * body->txPtr->scale + body->txPtr->position.y);
 		body->boundingbox->max = Vec2((1 / 2.f) * body->txPtr->scale + body->txPtr->position.x, (1 / 2.f) * body->txPtr->scale + body->txPtr->position.y);
-
 		//calculate physics
+		//Direction
 		Vector2DNormalize(body->direction, body->direction + AngleToVec(body->txPtr->rotation * (static_cast<float>(M_PI) / 180.0f)));
-		
+		//Position
 		body->txPtr->position = body->txPtr->position + body->velocity * dt;
-
+		//Velocity
 		body->velocity = body->velocity + body->acceleration * dt;
+		//Just spins all other objects
 		if (body->GetOwner()->GetGameObjectID() != 0) {
 			body->currentRotationSpeed = body->rotationSpeed;
 		}
+		//Rotation
 		body->txPtr->rotation = body->txPtr->rotation + body->currentRotationSpeed * dt;
 		if (body->txPtr->rotation >= 360.0f || body->txPtr->rotation <= -360.0f)
 			body->txPtr->rotation = 0.0f;
-	
-
-		//Test collision
+		//Collision Detection
 		for (; it2 != bodyList.end(); it2++) {
 			PhysicsBody* body2 = it2->second;
 			if (body2->GetOwner()->GetGameObjectID() == body->GetOwner()->GetGameObjectID()) {
@@ -72,23 +71,8 @@ void Physics::Update(float dt) {
 			}
 			CollisionStaticDynamicRectRect(*(body->boundingbox), *(body2->boundingbox));
 		}
-
-
-		//apply to object
+		//apply calculations to object
 		body->txPtr->shape->Update(body->txPtr->position.x, body->txPtr->position.y, body->txPtr->scale, body->txPtr->rotation, true);	
-	}
-
-}
-/**************************************************************************
-* @brief Add force to all object's Physics Body
-* @param Vec 2 force - force to be added to object
-* @return void
-*************************************************************************/
-void Physics::AddForce(Vec2 force) {
-	std::map<size_t, PhysicsBody*>::iterator it = bodyList.begin();
-	for (; it != bodyList.end(); it++) {
-		PhysicsBody* body = it->second;
-		body->accumulatedForce += force;
 	}
 }
 /**************************************************************************
