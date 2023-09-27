@@ -53,7 +53,7 @@ public:
 
 	//static std::list<OpenGLObject> objects; // singleton
 
-
+	~OpenGLApplication();
 };
 
 #endif // OPENGL_APPLICATION_H

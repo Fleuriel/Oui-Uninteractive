@@ -28,6 +28,10 @@
 #define STB_IMAGE_IMPLEMENTATION
 #include <stb_image.h>
 
+
+
+std::string title = "Hello";
+
  // Pointer to the window
 GLFWwindow* window;
 
@@ -44,20 +48,19 @@ JsonSerializer serializer;
 GLfloat squareX = 0.0f, squareY = 0.0f;
 
 OpenGLObject Objects;
-std::list<OpenGLObject> objects; // singleton
+std::list<OpenGLObject> objects;					// singleton
 
 Particle background;
 ParticleSystem particleSystem;
 
 OpenGLObject::OpenGLModel mdl;
+int positionX = 0, angle;
 
 bool toggleMode = false;
 // For Input
 extern float mouse_scroll_total_Y_offset;
 extern int lastkeyedcommand;
 
-std::string title = "Hello";
-int angle;
 static bool glewInitialized = false;
 static bool imguiInitialized = false;
 
@@ -219,28 +222,21 @@ void OpenGLApplication::OpenGLInit()
 	std::cout << "Updating Object2... completed." << std::endl;
 
 	
-	background.init(0, 0, windowSize.first, windowSize.second, 0, 0);
+	//background.init(0, 0, windowSize.first, windowSize.second, 0, 0);
 }
 
-int positionX = 0;
 void OpenGLApplication::OpenGLUpdate()
 {
 		OpenGLSetBackgroundColor(0.5f, 0.5f, 0.5f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
 
-		background.draw();
+		//background.draw();
 
 		double xpos, ypos{};
 		glfwGetCursorPos(window, &xpos, &ypos);
-		//glUseProgram(Objects.ShaderProgram);
-		//glBindVertexArray(Objects.VAO);
-		//glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
-
 
 		angle++;
 
-
-		//mdl.draw();
 		//WireFrame Mode:
 		if (keyStates[GLFW_KEY_P] == 1)
 		{
@@ -282,7 +278,6 @@ void OpenGLApplication::OpenGLUpdate()
 			std::cout << "Tag ID: " << newObject1.TagID << '\n';
 			newObject1.models[0].ModelID =0; // Change the ModelID to 2
 
-			//			newObject1.models[1].ModelID = newObject1.TagID;
 
 			newObject1.InitObjects(positionX, 100, 150, 180, 45, 45);
 
@@ -295,10 +290,6 @@ void OpenGLApplication::OpenGLUpdate()
 			positionX--;
 			std::cout << positionX<< '\n';
 		}
-
-
-
-
 		if (keyStates[GLFW_KEY_H] == 1)
 		{
 			std::cout << objects.size();
@@ -309,54 +300,23 @@ void OpenGLApplication::OpenGLUpdate()
 			Particle newparticle;
 
 			newparticle.init(0, 0, 15000, 15000, 0, 0);
-			//std::cout << "R : " << newparticle.object.color.r << "\nG : " << newparticle.object.color.g << "\nB : " << newparticle.object.color.b << "\n";
 			
 		}
 
 
 
 
-//		std::cout << "xpos : " << xpos << "\nypos : " << ypos << std::endl;
 		int windowWidth, windowHeight{};
 		glfwGetWindowSize(window, &windowWidth, &windowHeight);
 
 		if (mouseButtonStates[GLFW_MOUSE_BUTTON_LEFT] == 1)
 		{
-			//OpenGLObject newObject;
-			//
-			//newObject.InitObjects(2*(static_cast<int>(xpos) - windowWidth / 2), -2*((static_cast<int>(ypos) - windowHeight / 2)), 180, 180, 45,45);
-			//objects.emplace_back(newObject);
-
 		}
 
-//		glDrawElements(GL_TRIANGLES, 9, GL_UNSIGNED_INT, 0);
-
-
-		//glBegin(GL_QUADS);
-		//
-		//// This is using NDC coordinates ... Take Note
-		//glVertex2f(squareX - 0.1f, squareY + 0.1f);
-		//glVertex2f(squareX - 0.1f, squareY - 0.1f);
-		//glVertex2f(squareX + 0.1f, squareY - 0.1f);
-		//glVertex2f(squareX + 0.1f, squareY + 0.1f);
-		//
-		//glDrawArrays(GL_TRIANGLES, 0, 3);
-		//
-		//
-		//
-		////glVertex2f(-5.0f, 5.0f);
-		////glVertex2f(-5.0f, -5.0f);
-		////glVertex2f(5.0f, -5.0f);
-		////glVertex2f(5.0f, 5.0f);
-		//
-		//glEnd();
 
 		/*-----------------------------------------------------------------------------
 		|                               INPUT UPDATES                                 |
 		-----------------------------------------------------------------------------*/
-		// This is where you change what each key does when pressed.
-
-
 		/*-----------------------------------
 		|            ALPHABETS              |
 		-----------------------------------*/
@@ -410,7 +370,7 @@ void OpenGLApplication::OpenGLUpdate()
 			if (keyStates[GLFW_KEY_A]) {
 				//std::cout << "WALK LEFT\n";
 				physicsSys->SetCurrentRotationSpeed(GET_COMPONENT(objectFactory->GetGameObjectByID(0), PhysicsBody, ComponentType::PHYSICS_BODY)->rotationSpeed, 0);
-				Objects.position.x -= 0.001;
+				//Objects.position.x -= 0.001;
 //				CurrentGameState = STATE_LEVEL_TEST;
 
 			}
@@ -418,7 +378,7 @@ void OpenGLApplication::OpenGLUpdate()
 			else if (keyStates[GLFW_KEY_D]) {
 				//std::cout << "WALK RIGHT\n";
 				physicsSys->SetCurrentRotationSpeed(-(GET_COMPONENT(objectFactory->GetGameObjectByID(0), PhysicsBody, ComponentType::PHYSICS_BODY)->rotationSpeed), 0);
-				Objects.position.x += 0.001;
+				//Objects.position.x += 0.001;
 //				CurrentGameState = STATE_GRAPHICS_TEST;
 			}
 			else{
@@ -426,14 +386,14 @@ void OpenGLApplication::OpenGLUpdate()
 			}
 
 			if (keyStates[GLFW_KEY_S]) {
-				Objects.position.y -= 0.001;
+				//Objects.position.y -= 0.001;
 				physicsSys->MoveBackwards(0);
 				//physicsSys->setVelocity(Vec2(50.f, 0.0));
 				//std::cout << "WALK DOWN\n";
 			}
 
 			else if (keyStates[GLFW_KEY_W]) {
-				Objects.position.y += 0.001;
+				//Objects.position.y += 0.001;
 				physicsSys->MoveForward(0);
 				//std::cout << "WALK UP\n";
 			}
@@ -496,7 +456,7 @@ void OpenGLApplication::OpenGLUpdate()
 
 		updateStatesForNextFrame();
 
-		particleSystem.update();
+		//particleSystem.update();
 		
 		//std::cout << GetFPS() << '\n';
 		
@@ -528,7 +488,7 @@ void OpenGLApplication::OpenGLUpdate()
 		for (OpenGLObject& obj : objects)
 		{
 			if (obj.TagID == 1)
-				obj.Update(positionX, 300, 100, angle, true);
+				obj.Update(positionX, 300, 100,100 ,angle, true);
 			
 
 			if (obj.TagID == 0)
@@ -536,11 +496,11 @@ void OpenGLApplication::OpenGLUpdate()
 
 			if (obj.TagID == 3)
 			{
-				obj.Update(100, 100, 50);
+				obj.Update(100, 100, 50, 50);
 			}
 			if (obj.TagID == 2)
 			{
-				obj.Update(300, 400, 50);
+				obj.Update(300, 400, 50, 50);
 			}
 
 		}
@@ -554,7 +514,7 @@ void OpenGLApplication::OpenGLUpdate()
 
 
 
-		particleSystem.draw();
+		//particleSystem.draw();
 
 }
 

@@ -28,7 +28,7 @@ void Particle::update() {
     
 //    object.Update(0, 0, 100000, 0, false);
     
-    object.Update(object.position.x + velocity.x, object.position.y + velocity.y, 1000, 0, false);
+    object.Update(object.position.x + velocity.x, object.position.y + velocity.y, 1000, 1000, 0, false);
     
     //std::cout << object.scaleModel.x << object.scaleModel.y << '\n';
 
@@ -52,13 +52,13 @@ void ParticleSystem::update() {
 
 void ParticleSystem::draw() {
 #ifdef _DEBUG
-		//std::cout << "Particle Storage Size:" << particles.size() << '\n';
+	//std::cout << "Particle Storage Size:" << particles.size() << '\n';
 #endif
 
-        for (size_t i = 0; i < particles.size(); ++i)
-        {
-            particles[i].draw();
-           // std::cout << particle.object.scaleModel.x << '\t' << particle.object.scaleModel.y << '\n';
-        }
+	for (size_t i = 0; i < particles.size(); ++i)
+	{
+		particles[i].draw();
+		// std::cout << particle.object.scaleModel.x << '\t' << particle.object.scaleModel.y << '\n';
+	}
 
 }

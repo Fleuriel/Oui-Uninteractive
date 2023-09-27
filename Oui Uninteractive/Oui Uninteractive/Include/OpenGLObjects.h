@@ -34,33 +34,31 @@ public:
 		model_To_NDC_xform(glm::mat3(1.0f)), color(0.0f, 0.0f, 1.0f), interactable(true),
 		angleDisplacment(0.0f), angleSpeed(0.0f), TagID(id)
 	{
-//		models.emplace_back();
-//		models[0].ModelID = TagID;
 
 	};
 
 	OpenGLObject(glm::vec3 particlecolor) : 
 		scaleModel(1, 1), orientation(0.0, 0.0f), position(0, 0), 
 		model_To_NDC_xform(glm::mat3(1.0f)), color(particlecolor), interactable(true),
-		angleDisplacment(0.0f), angleSpeed(0.0f){
+		angleDisplacment(0.0f), angleSpeed(0.0f), TagID(0){
 		std::cout << "R : " << color.r << "\nG : " << color.g << "\nB : " << color.b << "\n";
 	};
 	
-	int TagID;
+	~OpenGLObject() {};
 
+	int TagID;						// Id for the Model to Texture
 
-	glm::vec2 scaleModel;
-	float angleDisplacment;
-	float angleSpeed;
+	glm::vec2 scaleModel;			// Scale for the Model
+	float angleDisplacment;			// Angle of the Model (Start)
+	float angleSpeed;				// Speed of the Model Displacement
 	glm::vec2 orientation;			// Rotation
-
 	glm::vec2 position;				// translation
 
 	glm::mat3 model_To_NDC_xform;	// Model to NDC 
 	glm::vec3 color;				// Set Object Color
-	bool interactable;
-	static GLuint mdl_ref, shd_ref;
-	GLuint texture;
+	bool interactable;				// if the object is interactable?
+	static GLuint mdl_ref, shd_ref; // Model and Shader Reference
+	//GLuint texture;					// integer for texture (stb returns integer).
 
 
 	static GLuint VAO, VBO;			// Object VAO VBO
@@ -72,11 +70,11 @@ public:
 	// encapsulates state required to render a geometrical model
 	struct OpenGLModel {
 		GLenum primitive_type;
-		GLuint primitive_cnt;
+		size_t primitive_cnt;
 		GLuint vaoid;
 		GLuint draw_cnt;
 
-		GLuint idx_elem_cnt;
+		size_t idx_elem_cnt;
 		GLuint model_cnt;			// added to check model count
 		GLuint texture;
 		
@@ -123,7 +121,7 @@ public:
 
 	void Draw() const;
 
-	void InitObjects(int userInput_x, int userInput_y, float userInput_sizeX,
+	void InitObjects(float userInput_x, float userInput_y, float userInput_sizeX,
 					float userInput_sizeY, float userInput_angleDisplacement,
 					float userInput_angleSpeed);
 	static void Cleanup();
@@ -131,12 +129,7 @@ public:
 	static void init_scenes(std::string);
 	static void Insert_Shader_Program(std::string shdr_pgm_name, std::string vtx_shdr_name, std::string frg_shdr_name);
 
-
-
 	static std::vector<OpenGLModel> models;
-
-
-
 
 	//Shaders
 	static std::vector<OpenGLShader>shdrpgms;

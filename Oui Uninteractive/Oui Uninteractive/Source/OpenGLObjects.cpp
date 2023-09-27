@@ -50,7 +50,6 @@ GLuint OpenGLObject::VBO = 0;
 
 int bgTexture, firstTexture, secondTexture;
 
-GLuint OpenGLObject::textureID;								// id for texture object
 
 GLuint Suffering; 
 
@@ -82,7 +81,7 @@ void OpenGLObject::Init()
 	init_shdrpgms_cont(fileName);
 	
 	
-	modl.setup_TextureVAO();
+	//modl.setup_TextureVAO();
 	
 
 	//Suffering = OpenGLObject::Setup_TextureObject("../texture/pantheon.jpg");
@@ -418,7 +417,7 @@ void OpenGLObject::Draw() const
 	//texture object is to use texture image unit 6
 
 
-	int* tex{};
+	int* tex{ &bgTexture};
 	switch (TagID)
 	{
 	case 0:
@@ -477,7 +476,6 @@ void OpenGLObject::Draw() const
 void OpenGLObject::Cleanup()
 {
 
-	glDeleteTextures(1, &textureID);
 
 
 	glDeleteVertexArrays(1, &VAO);
@@ -613,7 +611,7 @@ void OpenGLObject::init_shdrpgms_cont(VectorPairStrStr const& vpss) {
 
 
 
-void OpenGLObject::InitObjects(int userInput_x, int userInput_y, float userInput_sizeX,
+void OpenGLObject::InitObjects(float userInput_x, float userInput_y, float userInput_sizeX,
 							   float userInput_sizeY, float userInput_angleDisplacement, 
 							   float userInput_angleSpeed)
 {
