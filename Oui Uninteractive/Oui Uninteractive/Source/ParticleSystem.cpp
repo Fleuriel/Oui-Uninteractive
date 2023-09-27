@@ -3,12 +3,13 @@
 #include <OpenGLObjects.h>
 
 
-
 extern ParticleSystem particleSystem;
+
+
 
 Particle::Particle(){
     object = OpenGLObject({ 1,1,1 });
-    object.TagID = 2;
+    object.TagID = 0;
     velocity = Vector2D(1, 1);
 	alpha = 1;
     lifespan = 1;
@@ -41,7 +42,8 @@ void Particle::draw() {
 
 
 void ParticleSystem::update() {
-    for (size_t i = 0; i<particles.size();++i)
+    // i starts at 1 to skip updating the background
+    for (size_t i = 1; i<particles.size();++i)
     {
         std::cout << "update\n";
         particles[i].update();

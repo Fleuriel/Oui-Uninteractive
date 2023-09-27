@@ -46,9 +46,8 @@ GLfloat squareX = 0.0f, squareY = 0.0f;
 OpenGLObject Objects;
 std::list<OpenGLObject> objects; // singleton
 
+Particle background;
 ParticleSystem particleSystem;
-std::vector<ParticleSystem> particleVec;
-//Particle background;
 
 OpenGLObject::OpenGLModel mdl;
 
@@ -220,7 +219,7 @@ void OpenGLApplication::OpenGLInit()
 	std::cout << "Updating Object2... completed." << std::endl;
 
 	
-	//background.init(0, 0, windowSize.first, windowSize.second, 0, 0);
+	background.init(0, 0, windowSize.first, windowSize.second, 0, 0);
 }
 
 int positionX = 0;
@@ -228,6 +227,9 @@ void OpenGLApplication::OpenGLUpdate()
 {
 		OpenGLSetBackgroundColor(0.5f, 0.5f, 0.5f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
+
+		background.draw();
+
 		double xpos, ypos{};
 		glfwGetCursorPos(window, &xpos, &ypos);
 		//glUseProgram(Objects.ShaderProgram);
@@ -257,7 +259,7 @@ void OpenGLApplication::OpenGLUpdate()
 
 		if (keyStates[GLFW_KEY_SPACE] == 1)
 		{
-			OpenGLObject newObject(0);
+			OpenGLObject newObject(2);
 
 			newObject.models[0].ModelID = 0;
 

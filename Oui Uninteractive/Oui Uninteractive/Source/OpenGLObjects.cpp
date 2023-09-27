@@ -48,7 +48,7 @@ std::map<std::string, OpenGLObject> OpenGLObject::Object_Storage;
 GLuint OpenGLObject::VAO = 0;
 GLuint OpenGLObject::VBO = 0;
 
-int bgTexture, importTexture, secondTexture;
+int bgTexture, firstTexture, secondTexture;
 
 GLuint OpenGLObject::textureID;								// id for texture object
 
@@ -87,17 +87,17 @@ void OpenGLObject::Init()
 	
 
 	//Suffering = OpenGLObject::Setup_TextureObject("../texture/pantheon.jpg");
-	importTexture = OpenGLObject::Setup_TextureObject("../texture/pepega.jpg");
+	firstTexture = OpenGLObject::Setup_TextureObject("../texture/pepega.jpg");
 	secondTexture = OpenGLObject::Setup_TextureObject("../texture/pepe.jpg");
 	bgTexture = OpenGLObject::Setup_TextureObject("../texture/background.jpg");
 
 
-	textures.emplace_back(importTexture);
+	textures.emplace_back(firstTexture);
 	textures.emplace_back(secondTexture);
 	textures.emplace_back(bgTexture);
 
 
-	models.emplace_back(OpenGLObject::Box_Model(0, color, importTexture));
+	models.emplace_back(OpenGLObject::Box_Model(0, color, firstTexture));
 	models.emplace_back(OpenGLObject::Box_Model(1 ,color, secondTexture));
 	models.emplace_back(OpenGLObject::Box_Model(2, color, bgTexture));
 
@@ -420,50 +420,63 @@ void OpenGLObject::Draw() const
 {
 	//texture object is to use texture image unit 6
 
-	for (GLuint texture : textures)
+
+	int* tex{};
+	switch (TagID)
 	{
-
-		glBindTextureUnit(6, (interactable)? importTexture:bgTexture);
-
+	case 0:
+		tex = &bgTexture;
+		break;
+	case 1:
+		tex = &firstTexture;
+		break;
+	case 2:
+		tex = &secondTexture;
+		break;
+	default:
+		break;
 	}
+
+	glBindTextureUnit(6, *tex);
 
 	//glTextureParameteri(secondTexture, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);//Repeat wrap
 	//glTextureParameteri(secondTexture, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);//Repeat wrap
 
 	shdrpgms[shd_ref].Use(); // Install the shader program
 
-	for (const OpenGLModel& model : models) {
-		GLint uTex2dLocation = glGetUniformLocation(shdrpgms[shd_ref].GetHandle(), "uTex2d");
-		if (uTex2dLocation >= 0) {
-			glUniform1i(uTex2dLocation, model.ModelID); // Use the ModelID as the texture unit
-		}
-		else {
-			std::cerr << "Uniform 'uTex2d' not found in shader program." << std::endl;
-			// Handle the case where the uniform is not found.
-		}
 
-		glBindVertexArray(model.vaoid); // Bind object's VAO handle
 
-		GLint uniform_var_loc1 = glGetUniformLocation(shdrpgms[shd_ref].GetHandle(), "uModel_to_NDC");
-		if (uniform_var_loc1 >= 0) {
-			glUniformMatrix3fv(uniform_var_loc1, 1, GL_FALSE, glm::value_ptr(OpenGLObject::model_To_NDC_xform));
-		}
-		else {
-			std::cout << "Uniform variable doesn't exist!!!" << std::endl;
-			std::exit(EXIT_FAILURE);
-		}
 
-		// Bind the texture to the specified unit (ModelID) for this model
-		glBindTextureUnit(model.ModelID, model.texture);
+	shdrpgms[shd_ref].SetUniform("uTex2d", 6);
+	// Part 2: Bind object's VAO handle
+	glBindVertexArray(models[mdl_ref].vaoid); // Bind object's VAO handle
 
-		glDrawElements(model.primitive_type, model.draw_cnt, GL_UNSIGNED_SHORT, NULL);
-
-		glBindVertexArray(0); // Unbind the VAO
+	// Part 3: Copy object's 3x3 model-to-NDC matrix to vertex shader
+	GLint uniform_var_loc1 = glGetUniformLocation(shdrpgms[shd_ref].GetHandle(), "uModel_to_NDC");
+	if (uniform_var_loc1 >= 0) {
+		glUniformMatrix3fv(uniform_var_loc1, 1, GL_FALSE, glm::value_ptr(OpenGLObject::model_To_NDC_xform));
+	}
+	else {
+		std::cout << "Uniform variable doesn't exist!!!" << std::endl;
+		std::exit(EXIT_FAILURE);
 	}
 
+	// Part 4: Render using glDrawElements or glDrawArrays
+
+
+
+	glDrawElements(
+		models[mdl_ref].primitive_type,
+		models[mdl_ref].draw_cnt,
+		GL_UNSIGNED_SHORT, NULL);
+
+
+
+
+	// Part 5: Clean up
+	glBindVertexArray(0); // Unbind the VAO
 	shdrpgms[shd_ref].UnUse(); // Uninstall the shader program
 }
-
 void OpenGLObject::Cleanup()
 {
 
