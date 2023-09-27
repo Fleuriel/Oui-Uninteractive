@@ -276,22 +276,33 @@ void Editor::CreateObjectList() {
 		// Individual Object Controls
 		if (ImGui::CollapsingHeader("Object Modifier")) {
 			static float xPos, yPos, scale, speed, angle, rotSpeed;
+
 			xPos = GET_COMPONENT(objectFactory->GetGameObjectByID(gameobjID), Transform, ComponentType::TRANSFORM)->position.x;
 			if (ImGui::SliderFloat("X-Position", &xPos, 0.0f, 1000.0f, "%.2f")) { // Slider for X-Position
 				GET_COMPONENT(objectFactory->GetGameObjectByID(gameobjID), Transform, ComponentType::TRANSFORM)->position.x = xPos;
 			}
+
+			yPos = GET_COMPONENT(objectFactory->GetGameObjectByID(gameobjID), Transform, ComponentType::TRANSFORM)->position.y;
 			if (ImGui::SliderFloat("Y-Position", &yPos, 0.0f, 100.0f, "%.2f")) { // Slider for Y-Position
 				GET_COMPONENT(objectFactory->GetGameObjectByID(gameobjID), Transform, ComponentType::TRANSFORM)->position.y = yPos;
 			}
+
+			scale = GET_COMPONENT(objectFactory->GetGameObjectByID(gameobjID), Transform, ComponentType::TRANSFORM)->scale;
 			if (ImGui::SliderFloat("Scale", &scale, 0.0f, 100.0f, "%.2f")) { // Slider for Scale
 				GET_COMPONENT(objectFactory->GetGameObjectByID(gameobjID), Transform, ComponentType::TRANSFORM)->scale = scale;
 			}
+
+			speed = GET_COMPONENT(objectFactory->GetGameObjectByID(gameobjID), PhysicsBody, ComponentType::PHYSICS_BODY)->speed;
 			if (ImGui::SliderFloat("Speed", &speed, 0.0f, 100.0f, "%.2f")) { // Slider for Speed
 				GET_COMPONENT(objectFactory->GetGameObjectByID(gameobjID), PhysicsBody, ComponentType::PHYSICS_BODY)->speed = speed;
 			}
-			if (ImGui::SliderFloat("Angle", &angle, 0.0f, 100.0f, "%.2f")) { // Slider for true angle
+
+			angle = GET_COMPONENT(objectFactory->GetGameObjectByID(gameobjID), Transform, ComponentType::TRANSFORM)->rotation;
+			if (ImGui::SliderFloat("Angle", &angle, 0.0f, 360.0f, "%.2f")) { // Slider for true angle
 				GET_COMPONENT(objectFactory->GetGameObjectByID(gameobjID), Transform, ComponentType::TRANSFORM)->rotation = angle;
 			}
+
+			rotSpeed = GET_COMPONENT(objectFactory->GetGameObjectByID(gameobjID), PhysicsBody, ComponentType::PHYSICS_BODY)->rotationSpeed;
 			if (ImGui::SliderFloat("Rotation Speed", &rotSpeed, 0.0f, 500.0f, "%.2f")) {// Slider for rotation speed
 				GET_COMPONENT(objectFactory->GetGameObjectByID(gameobjID), PhysicsBody, ComponentType::PHYSICS_BODY)->rotationSpeed = rotSpeed;
 			}
