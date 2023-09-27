@@ -59,24 +59,10 @@ void UsingImGui::Draw() {
 	if (panelList.objectPanel) {
 		Editor::CreateObjectList();
 	}
-	if (panelList.Panel1) {
-		bool loltest;
-		static int clickCounter = 0;
-		ImGui::Begin("Fk this shit");                          // Create a window called "fk this shit"
-		ImGui::Text("Why do we live just to suffer :(");              // Display some text
-		ImGui::Checkbox("This is cool", &loltest);
-		if (ImGui::Button("Click me!")) {
-			++clickCounter;
-		}
-		ImGui::SameLine();
-		ImGui::Text("You clicked %d times", clickCounter);
-		if (clickCounter > 4) {
-			ImGui::Text("Please stop wasting time here");
-		}
-		ImGui::End();
+	if (panelList.debugPanel) {
+		Editor::CreateDebugPanel();
 	}
 	
-
 	ImGui::Render();
 	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
@@ -105,6 +91,7 @@ void Editor::CreateMasterPanel() {
 	ImGui::Text("Show panels:");
 	ImGui::Checkbox("Sound Panel", &panelList.soundPanel); // Checkbox for sound panel
 	ImGui::Checkbox("Objects Panel", &panelList.objectPanel); // Checkbox for sound panel
+	ImGui::Checkbox("Debug Panel", &panelList.debugPanel); // Checkbox for debug panel
 	ImGui::End();
 }
 
@@ -175,7 +162,6 @@ void Editor::CreateObjectList() {
 			if (objectFactory->GetGameObjectByID(gameobjID) != nullptr) {
 				ImGui::Text("Object ID: %d", objectFactory->GetGameObjectByID(gameobjID)->GetGameObjectID());
 			}
-			
 			ImGui::Text("Size: ");
 			ImGui::Text("Rotation: ");
 			ImGui::Separator();
@@ -331,6 +317,16 @@ void Editor::CreateObjectList() {
 		ImGui::EndChild();
 
 		ImGui::EndGroup();
+	}
+	ImGui::End();
+}
+
+void Editor::CreateDebugPanel() {
+	ImGui::Begin("Debug Panel");
+	if (ImGui::CollapsingHeader("Perfomance")) {
+		ImGui::Text("Program FPS: %.2f", GetFrames()); // Display program FPS in "Performance" tab
+
+		ImGui::Separator();
 	}
 	ImGui::End();
 }

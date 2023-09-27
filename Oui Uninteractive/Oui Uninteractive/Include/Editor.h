@@ -10,6 +10,7 @@
 #ifndef EDITOR_H
 #define EDITOR_H
 
+#include "GameStateManager.h"
 #include "imgui.h"
 #include "imgui_impl_glfw.h"
 #include "imgui_impl_opengl3.h"
@@ -44,6 +45,7 @@ public:
 	static void CreateMasterPanel();
 	static void CreateSoundPanel();
 	static void CreateObjectList();
+	static void CreateDebugPanel();
 
 public:
 	bool soundPanel;
@@ -55,7 +57,7 @@ private:
 struct Panels {
 	bool soundPanel;
 	bool objectPanel;
-	bool Panel1;
+	bool debugPanel;
 };
 static Panels panelList;
 
