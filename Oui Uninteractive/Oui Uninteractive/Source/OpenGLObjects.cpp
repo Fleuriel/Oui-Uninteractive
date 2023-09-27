@@ -23,8 +23,9 @@
 
 #include <RandomUtilities.h>
 #include <GameStateManager.h>
-#define STB_IMAGE_IMPLEMENTATION
 #include <stb_image.h>
+
+
 std::vector<glm::vec2> OpenGLObject::square;
 std::vector<glm::vec2> OpenGLObject::triangle;
 std::vector<std::string> OpenGLObject::mesh_Directory;
@@ -37,10 +38,9 @@ OpenGLObject::OpenGLModel modl;
 std::vector<OpenGLShader> OpenGLObject::shdrpgms;
 std::vector<OpenGLObject::OpenGLModel> OpenGLObject::models;
 //std::map<std::string, OpenGLShader> OpenGLObject::shdrpgms;
-std::vector<OpenGLShader> OpenGLObject::shader{};
 GLuint OpenGLObject::ShaderProgram{};
 
-std::vector<GLuint> OpenGLObject::textures;
+//std::vector<GLuint> OpenGLObject::textures;
 
 std::map<std::string, OpenGLObject::OpenGLModel> OpenGLObject::Model_Storage;
 std::map<std::string, OpenGLObject> OpenGLObject::Object_Storage;
@@ -49,8 +49,9 @@ GLuint OpenGLObject::VAO = 0;
 GLuint OpenGLObject::VBO = 0;
 
 int importTexture, secondTexture;
-
 GLuint OpenGLObject::textureID;								// id for texture object
+
+GLuint Suffering; 
 
 
 /**************************************************************************
@@ -81,19 +82,23 @@ void OpenGLObject::Init()
 	init_shdrpgms_cont(fileName);
 	
 	
+	modl.setup_TextureVAO();
+	
+
+	//Suffering = OpenGLObject::Setup_TextureObject("../texture/pantheon.jpg");
 	importTexture = OpenGLObject::Setup_TextureObject("../texture/pepega.jpg");
 	secondTexture = OpenGLObject::Setup_TextureObject("../texture/pepe.jpg");
 
+	//std::cout << Suffering << '\n';
+	std::cout << importTexture << '\n';
+	std::cout << secondTexture << '\n';
 
 
-	textures.emplace_back(importTexture);
-	textures.emplace_back(secondTexture);
+	models.emplace_back(OpenGLObject::Box_Model(1, color));
 
 
-	models.emplace_back(OpenGLObject::Box_Model(0, color, importTexture));
-	models.emplace_back(OpenGLObject::Box_Model(1 ,color, secondTexture));
-
-	
+	//textures.emplace_back(importTexture);
+	//textures.emplace_back(secondTexture);
 
 
 
@@ -217,36 +222,36 @@ void OpenGLObject::Init()
 
 }
 
-void OpenGLObject::OpenGLModel::draw() const
-{
-	//texture object is to use texture image unit 6
-	glBindTextureUnit(6, importTexture);
-
-
-
-	glTextureParameteri(importTexture, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);//Repeat wrap
-	glTextureParameteri(importTexture, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);//Repeat wrap
-
-	shdrpgms[shd_ref].Use(); // Install the shader program
-	// Part 2: Bind object's VAO handle
-
-	shdrpgms[shd_ref].SetUniform("uTex2d", 6);
-
-	glBindVertexArray(models[mdl_ref].vaoid); // Bind object's VAO handle
-
-
-	glDrawElements(
-		models[mdl_ref].primitive_type,
-		models[mdl_ref].draw_cnt,
-		GL_UNSIGNED_SHORT, NULL);
-
-
-
-
-	// Part 5: Clean up
-	glBindVertexArray(0); // Unbind the VAO
-	shdrpgms[shd_ref].UnUse(); // Uninstall the shader program
-}
+//void OpenGLObject::OpenGLModel::draw() const
+//{
+//	//texture object is to use texture image unit 6
+//	glBindTextureUnit(6, importTexture);
+//
+//
+//
+//	glTextureParameteri(importTexture, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);//Repeat wrap
+//	glTextureParameteri(importTexture, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);//Repeat wrap
+//
+//	shdrpgms[shd_ref].Use(); // Install the shader program
+//	// Part 2: Bind object's VAO handle
+//
+//	shdrpgms[shd_ref].SetUniform("uTex2d", 6);
+//
+//	glBindVertexArray(models[mdl_ref].vaoid); // Bind object's VAO handle
+//
+//
+//	glDrawElements(
+//		models[mdl_ref].primitive_type,
+//		models[mdl_ref].draw_cnt,
+//		GL_UNSIGNED_SHORT, NULL);
+//
+//
+//
+//
+//	// Part 5: Clean up
+//	glBindVertexArray(0); // Unbind the VAO
+//	shdrpgms[shd_ref].UnUse(); // Uninstall the shader program
+//}
 
 
 /**************************************************************************************
@@ -255,10 +260,8 @@ void OpenGLObject::OpenGLModel::draw() const
 * @param color			Color <R,G,B>
 * @return OpenGLObject  
 ***************************************************************************************/
-OpenGLObject::OpenGLModel OpenGLObject::Box_Model(int ID, glm::vec3 color, int textureInput)
+OpenGLObject::OpenGLModel OpenGLObject::Box_Model(int ID, glm::vec3 color)
 {
-
-
 	struct Vertex {
 		glm::vec2 position;        // Vertex position
 		glm::vec3 color;           // Vertex color
@@ -276,7 +279,6 @@ OpenGLObject::OpenGLModel OpenGLObject::Box_Model(int ID, glm::vec3 color, int t
 
 	OpenGLModel mdl;
 
-	mdl.ModelID = ID;
 
 	// Create and bind a buffer for vertex data
 	GLuint vbo_hdl;
@@ -308,7 +310,7 @@ OpenGLObject::OpenGLModel OpenGLObject::Box_Model(int ID, glm::vec3 color, int t
 	glVertexArrayAttribBinding(vaoid, 2, 2);
 
 	// Bind the texture before rendering
-	glBindTexture(GL_TEXTURE_2D, importTexture);
+	//glBindTexture(GL_TEXTURE_2D, textureInput);
 
 	// Set up index buffer for rendering
 	std::array<GLushort, 4> idx_vtx = { 0, 1, 2, 3 };
@@ -322,6 +324,9 @@ OpenGLObject::OpenGLModel OpenGLObject::Box_Model(int ID, glm::vec3 color, int t
 	mdl.primitive_type = GL_TRIANGLE_FAN; // Use GL_TRIANGLE_FAN for a square
 	mdl.draw_cnt = idx_vtx.size();
 	mdl.primitive_cnt = vertices.size();
+	mdl.ModelID = ID;
+//	mdl.texture = textureInput;
+
 
 	return mdl;
 }
@@ -408,53 +413,38 @@ void OpenGLObject::Update(float newX, float newY, float scale , float newAngle ,
 * @param  none
 * @return void
 *************************************************************************/
-void OpenGLObject::Draw() const
-{
-	//texture object is to use texture image unit 6
-
-	for (GLuint texture : textures)
-	{
-
-		glBindTextureUnit(6, secondTexture);
-
-	}
-
-	//glTextureParameteri(secondTexture, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);//Repeat wrap
-	//glTextureParameteri(secondTexture, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);//Repeat wrap
-
+void OpenGLObject::Draw() const {
 	shdrpgms[shd_ref].Use(); // Install the shader program
 
+	for (const OpenGLModel& model : models) {
+		GLint uTex2dLocation = glGetUniformLocation(shdrpgms[shd_ref].GetHandle(), "uTex2d");
+		if (uTex2dLocation >= 0) {
+			glUniform1i(uTex2dLocation, model.ModelID); // Use the ModelID as the texture unit
+		}
+		else {
+			std::cerr << "Uniform 'uTex2d' not found in shader program." << std::endl;
+			// Handle the case where the uniform is not found.
+		}
 
+		glBindVertexArray(model.vaoid); // Bind object's VAO handle
 
+		GLint uniform_var_loc1 = glGetUniformLocation(shdrpgms[shd_ref].GetHandle(), "uModel_to_NDC");
+		if (uniform_var_loc1 >= 0) {
+			glUniformMatrix3fv(uniform_var_loc1, 1, GL_FALSE, glm::value_ptr(OpenGLObject::model_To_NDC_xform));
+		}
+		else {
+			std::cout << "Uniform variable doesn't exist!!!" << std::endl;
+			std::exit(EXIT_FAILURE);
+		}
 
-	shdrpgms[shd_ref].SetUniform("uTex2d", 6);
-	// Part 2: Bind object's VAO handle
-	glBindVertexArray(models[mdl_ref].vaoid); // Bind object's VAO handle
+		// Bind the texture to the specified unit (ModelID) for this model
+		glBindTextureUnit(model.ModelID, model.texture);
 
-	// Part 3: Copy object's 3x3 model-to-NDC matrix to vertex shader
-	GLint uniform_var_loc1 = glGetUniformLocation(shdrpgms[shd_ref].GetHandle(), "uModel_to_NDC");
-	if (uniform_var_loc1 >= 0) {
-		glUniformMatrix3fv(uniform_var_loc1, 1, GL_FALSE, glm::value_ptr(OpenGLObject::model_To_NDC_xform));
+		glDrawElements(model.primitive_type, model.draw_cnt, GL_UNSIGNED_SHORT, NULL);
+
+		glBindVertexArray(0); // Unbind the VAO
 	}
-	else {
-		std::cout << "Uniform variable doesn't exist!!!" << std::endl;
-		std::exit(EXIT_FAILURE);
-	}
 
-	// Part 4: Render using glDrawElements or glDrawArrays
-
-
-
-	glDrawElements(
-		models[mdl_ref].primitive_type,
-		models[mdl_ref].draw_cnt,
-		GL_UNSIGNED_SHORT, NULL);
-
-
-
-
-	// Part 5: Clean up
-	glBindVertexArray(0); // Unbind the VAO
 	shdrpgms[shd_ref].UnUse(); // Uninstall the shader program
 }
 
@@ -489,15 +479,18 @@ void OpenGLObject::OpenGLModel::setup_TextureVAO()
 	setup_var.setTexture(0.f, 0.f);
 	vao_value.emplace_back(setup_var);
 
+	//top right
+	setup_var.setTextureValue(1.0f, -1.0f, 1.f, 1.f, 0.f);
+	setup_var.setTexture(1.f, 0.f);
+	vao_value.emplace_back(setup_var);
+
+
 	//bottom right
 	setup_var.setTextureValue(1.0f, 1.0f, 0.f, 0.f, 1.f);
 	setup_var.setTexture(1.f, 1.f);
 	vao_value.emplace_back(setup_var);
 
-	//top right
-	setup_var.setTextureValue(1.0f, -1.0f, 0.f, 1.f, 0.f);
-	setup_var.setTexture(1.f, 0.f);
-	vao_value.emplace_back(setup_var);
+
 
 
 
@@ -573,124 +566,7 @@ void OpenGLObject::OpenGLModel::setup_TextureVAO()
 }
 
 
-//void OpenGLObject::init_scenes(std::string scene_filename)
-//{
-//	/*
-//	Scene File contains:
-//	=============================================================================
-//	|1|[No_of_Obj]		number of Objects
-//	=============================================================================
-//	|2|[Mdl_Name]		model name												|
-//	|3|[GameObject]		name of gameObject										|
-//	|4|[Shd_pgm]			names of shader program: vert and frag files		|
-//	|5|[Colors]			r,g,b	(rgb colors) 									|
-//	|6|[Scale]			x,y		(Scale x and y)									|
-//	|7|[Rotation]		x,y		(Initial rotation/orientation)					|
-//	|8|[Position]		x,y		(Position of the object in the world)			|
-//	=============================================================================
-//
-//	* Repeats 2 to 8 for the remaining of the file for number of times declared
-//	* by |1|. i.e. |1| = 10, |2| - |8| repeats 10 times below
-//
-//	=============================================================================
-//
-//	* The code before the while loop takes |1| out of the picture so that it can
-//	* keep reiterate the |2| to |7| for each objects ...
-//
-//	=============================================================================
-//*/
-//// Open file...
-//	std::ifstream ifs{ scene_filename, std::ios::in };
-//
-//	// Check if file exist or not
-//	if (!ifs)
-//	{
-//		std::cout << "ERROR: unable to open scene file: " << scene_filename << "\n";
-//		exit(EXIT_FAILURE);
-//	}
-//
-//
-//	ifs.seekg(0, std::ios::beg);										// Seek to the top of the file ...
-//
-//	std::string line;
-//	getline(ifs, line);													// |1|
-//	std::istringstream line_sStream{ line };							// Parse |1| from |2| to |8|
-//	GLuint obj_Count{};													// Create container for |1|
-//	line_sStream >> obj_Count;											// Assign values into obj_cnt
-//
-//
-//	// |1| is taken out ... and begins |2| to |8|
-//	while (obj_Count--)	// loop until no more object remaining
-//	{
-//		getline(ifs, line);												// |2|
-//		std::istringstream line_ModelName{ line };						// Parse |2| from |3| to |8|
-//		std::string model_name;											// Create container for |2| 
-//		line_ModelName >> model_name;									// Add |2| into the model_name
-//		if (Model_Storage.find(model_name) == Model_Storage.end())
-//		{
-//			Model_Storage[model_name].init(model_name);
-//		}
-//
-//
-//		getline(ifs, line);												// |3|
-//		std::istringstream line_ObjectName{ line };						// Parse |3| from |4| to |8|
-//		std::string object_name;										// Create container for |3| 
-//		line_ObjectName >> object_name;									// Add |3| into the object_name
-//
-//		getline(ifs, line);												// |4|
-//		std::istringstream line_ShaderName{ line };						// Parse |4| from |5| to |8|
-//		std::string shader_name;										// Create container for |4| 
-//		line_ShaderName >> shader_name;									// Add |4| into the object_name
-//
-//		if (OpenGLObject::shdrpgms.find(shader_name) == OpenGLObject::shdrpgms.end())				// If shader is not in the shdr_pgms list ...
-//		{
-//			std::string vert, frag;										// After separating |4| into model_name,
-//			// the program will search for a model_name
-//			line_ShaderName >> vert;									// from the ../shaders/ directory, and find
-//			line_ShaderName >> frag;									// the shader file to insert into  
-//			Insert_Shader_Program(shader_name, vert, frag);					// insert_shdrpgm ...
-//		}
-//
-//		getline(ifs, line);												// |5|
-//		std::istringstream line_Color{ line };							// Parse |5| from |6| to |8|
-//		glm::vec3 Color{};												// Create Container for |5|
-//		line_Color >> Color.r;											// Assign Container variables r
-//		line_Color >> Color.g;											// Assign Container variables g
-//		line_Color >> Color.b;											// Assign Container variables b
-//
-//		getline(ifs, line);												// |6|
-//		std::istringstream line_Scale{ line };							// Parse |6| from |7| and |8|
-//		glm::vec2 Scale{};												// Create Container for |6|
-//		line_Scale >> Scale.x;											// Assign Container for scaling vector x
-//		line_Scale >> Scale.y;											// Assign Container for scaling vector y
-//
-//		getline(ifs, line);												// |7|
-//		std::istringstream line_Orientation{ line };					// Parse |7| from |8|
-//		glm::vec2 Orientation{};										// Create Container for |7|
-//		line_Orientation >> Orientation.x;								// Input the Orientation.x (Angle Displacement)
-//		line_Orientation >> Orientation.y;								// Input the Orientation.y (Rotation Speed) into the container
-//
-//		getline(ifs, line);												// |8|
-//		std::istringstream line_Position{ line };						// Parse |8| from the entire fragment of the code
-//		glm::vec2 Position{};											// Create Container for |8|
-//		line_Position >> Position.x;									// Assign Container for Initial Position of the model x
-//		line_Position >> Position.y;									// Assign Container for Initial Position of the model y
-//
-//		// Assign the objects with its parameters ...
-//		OpenGLObject obj;													// GLObject Object ...
-//		obj.mdl_ref = Model_Storage.find(model_name);							// Assigning object with model_reference
-//		obj.shd_ref = shdrpgms.find(shader_name);						// Assigning object with shader_reference
-//		obj.color = Color;												// Assigning object with Color Parameters
-//		obj.scaling = Scale;											// Assigning object with Scale Parameters
-//		obj.orientation = Orientation;									// Assigning object with Orientation Parameters
-//		obj.position = Position;										// Assigning object with Position Parameters
-//
-//		Object_Storage[object_name] = obj;										// for each |2|, assign each object(finished) into
-//		Object_Storage[object_name].InitObjects();									// objects container, AND initialize them ...
-//
-//
-//	}
-//}
+
 
 
 void OpenGLObject::Load_Files()
@@ -895,12 +771,12 @@ void OpenGLObject::InitObjects(int userInput_x, int userInput_y, float userInput
 							   float userInput_angleSpeed)
 {
 
-	OpenGLObject::mdl_ref = 0;
-	OpenGLObject::shd_ref = 0;
+	mdl_ref = 0;
+	shd_ref = 0;
 
+	position.x = userInput_x;
+	position.y = userInput_y;
 
-	OpenGLObject::position.x = userInput_x;
-	OpenGLObject::position.y = userInput_y;
 	using glm::radians;
 
 	scaleModel.x = userInput_sizeX;
@@ -932,8 +808,8 @@ void OpenGLObject::InitObjects(int userInput_x, int userInput_y, float userInput
 
 	glm::mat3 ScaleToWorldToNDC = glm::mat3
 	{
-		1 / (10000 / 2), 0, 0,
-		0, 1 / (10000 / 2), 0,
+		1 / (1920 / 2), 0, 0,
+		0, 1 / (1080 / 2), 0,
 		0, 0, 1
 	};
 	// Instead of doing transpose, you can do what OpenGL matrix does:

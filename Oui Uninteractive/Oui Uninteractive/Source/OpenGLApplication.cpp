@@ -25,6 +25,9 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
+#define STB_IMAGE_IMPLEMENTATION
+#include <stb_image.h>
+
  // Pointer to the window
 GLFWwindow* window;
 
@@ -46,7 +49,6 @@ std::list<OpenGLObject> objects; // singleton
 OpenGLObject::OpenGLModel mdl;
 
 bool toggleMode = false;
-
 // For Input
 extern float mouse_scroll_total_Y_offset;
 extern int lastkeyedcommand;
@@ -162,23 +164,9 @@ void OpenGLApplication::OpenGLInit()
 	// Initializing Editor
 	myEditor.Init();
 
-	// Create Vertex Buffers for the primitives (Shapes).
-	//unsigned int vertexBuffer;
-	//glGenBuffers(1, &vertexBuffer);
-	//
-	//glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer);
-	//glBufferData(GL_ARRAY_BUFFER, 6 * sizeof(float), Objects.Triangle.data(), GL_STATIC_DRAW);
-	//glEnableVertexAttribArray(0);
-	//glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), 0);
 
 
 
-
-
-	// Set up the projection matrix for world coordinates
-	//float worldWidth = 20.0f;
-	//float worldHeight = 20.0f * (height / (float)width);
-	//glm::mat4 projection = glm::ortho(-worldWidth / 2, worldWidth / 2, -worldHeight / 2, worldHeight / 2, -1.0f, 1.0f);
 
 	//init a game object in run time
 	/*
@@ -227,21 +215,10 @@ void OpenGLApplication::OpenGLUpdate()
 		//glUseProgram(Objects.ShaderProgram);
 		//glBindVertexArray(Objects.VAO);
 		//glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
-				
+
+
 		angle++;
-		// All these should be OBJECTS. THAT UPDATE.
-		// Objects.Update(0.1);
 
-
-		//// create transformations
-		// glm::mat4 transform = glm::mat4(1.0f); // make sure to initialize matrix to identity matrix first
-		// transform = glm::translate(transform, glm::vec3(Objects.position.x, Objects.position.y, 1.0f));
-		// //transform = glm::rotate(transform, (float)glfwGetTime(), glm::vec3(0.0f, 0.0f, -0.1f));
-		// 
-		// glm::ortho(0.0f, 900.0f, 0.0f, 600.0f, 0.1f, 100.0f);
-		// 
-		// unsigned int transformLoc = glGetUniformLocation(OpenGLObject::ShaderProgram, "transform");
-		// glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(transform));
 
 		//mdl.draw();
 		//WireFrame Mode:
@@ -262,51 +239,58 @@ void OpenGLApplication::OpenGLUpdate()
 
 		if (keyStates[GLFW_KEY_SPACE] == 1)
 		{
-			
-//			OpenGLObject::OpenGLModel a;
-			
-			
+			OpenGLObject newObject(1);
+
+			newObject.models[0].ModelID = 0;
 
 
-			
-
-			OpenGLObject newObject(0);
-			//newObject.VAO = 222;
+			//OpenGLObject newObject(0);
+//			newObject.models[0].ModelID = 0;
+			//newObject.models[0].texture = secondTexture;
+			std::cout << "Tag ID: " << newObject.TagID << '\n';
 			newObject.InitObjects(0,0, 150,180,0,45);
-			std::cout << newObject.position.x << newObject.position.y << '\n';
-			
-			
-			
-			
+
+			std::cout << "Model ID: " << newObject.models[0].ModelID << "\n\n";
+	
 			objects.emplace_back(newObject);
-			//OpenGLObject* object = GET_COMPONENT(objectFactory->GetGameObjectByID(0), Transform, ComponentType::TRANSFORM)->graphics;
-			/*if (object != nullptr) {
-				objects.emplace_back(*object);
-			}
+		
 
-			*/	
-			
+			OpenGLObject newObjected(2);
+
+			newObjected.models[0].ModelID = 2;
+
+			newObjected.InitObjects(150, 150, 150, 180, 0, 45);
+			objects.emplace_back(newObjected);
+
 		}
+		if (keyStates[GLFW_KEY_RIGHT_SHIFT] == 1)
+		{
+			std::cout << "Shift\n";
+			OpenGLObject newObject1(1);
+			std::cout << "Tag ID: " << newObject1.TagID << '\n';
+			newObject1.models[0].ModelID =0; // Change the ModelID to 2
 
+			//			newObject1.models[1].ModelID = newObject1.TagID;
+
+			newObject1.InitObjects(positionX, 100, 150, 180, 45, 45);
+
+
+			std::cout << "Model ID: " << newObject1.models[0].ModelID << '\n';
+			objects.emplace_back(newObject1);
+		}
 		if (keyStates[GLFW_KEY_A] ==2)
 		{
 			positionX--;
 			std::cout << positionX<< '\n';
 		}
 
-		if (keyStates[GLFW_KEY_RIGHT_SHIFT] == 1)
+
+
+
+		if (keyStates[GLFW_KEY_H] == 1)
 		{
-			std::cout << "Shift\n";
-			OpenGLObject newObject(1);
-			
-			
-			newObject.InitObjects(positionX, 100, 150, 180, 45, 45);
-			objects.emplace_back(newObject);
-
-			std::cout << objects.size() << '\n';
-			
+			std::cout << objects.size();
 		}
-
 
 		if (keyStates[GLFW_KEY_M] == 1)
 		{
@@ -536,16 +520,27 @@ void OpenGLApplication::OpenGLUpdate()
 			if (obj.TagID == 1)
 				obj.Update(positionX, 300, 100, angle, true);
 			
+
 			if (obj.TagID == 0)
 				obj.Update(10, 10, 100, 0);
 
-		
+			if (obj.TagID == 3)
+			{
+				obj.Update(100, 100, 50);
+			}
+			if (obj.TagID == 2)
+			{
+				obj.Update(300, 400, 50);
+			}
+
 		}
-		for (std::pair<size_t, GameObject*> gObj : objectFactory->GetGameObjectIDMap()) {
-			GET_COMPONENT(gObj.second, Transform, ComponentType::TRANSFORM)->shape->Draw();
-		
-		}
-		
+
+
+		//for (std::pair<size_t, GameObject*> gObj : objectFactory->GetGameObjectIDMap()) {
+		//	GET_COMPONENT(gObj.second, Transform, ComponentType::TRANSFORM)->shape->Draw();
+		//
+		//}
+		//
 
 		for (auto const& x : objects)
 		{
@@ -592,6 +587,11 @@ void OpenGLApplication::Draw() {
 #endif
 		obj.second.Draw();
 
+	}
+
+	for (auto const& obj : objects)
+	{	
+		obj.Draw();
 	}
 	
 	// to prevent spamming

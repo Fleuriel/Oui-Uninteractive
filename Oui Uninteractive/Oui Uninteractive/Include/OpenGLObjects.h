@@ -24,6 +24,7 @@
 #define SQUARE   "Square"
 #define CIRCLE   "Circle"
 
+extern int importTexture, secondTexture;
 
 class OpenGLObject
 {
@@ -33,15 +34,9 @@ public:
 		model_To_NDC_xform(glm::mat3(1.0f)), color(0.0f, 0.0f, 1.0f), particlechecker(false),
 		angleDisplacment(0.0f), angleSpeed(0.0f), TagID(id)
 	{
-		//if (TagID >= 0 && TagID < models.size())
-		//{
-		//	models[TagID].ModelID = TagID;
-		//}
-		//else
-		//{
-		//	models[TagID].ModelID = id;
-		//}
-	
+//		models.emplace_back();
+//		models[0].ModelID = TagID;
+
 	};
 
 	OpenGLObject(glm::vec3 particlecolor) : 
@@ -50,7 +45,7 @@ public:
 		angleDisplacment(0.0f), angleSpeed(0.0f){
 		std::cout << "R : " << color.r << "\nG : " << color.g << "\nB : " << color.b << "\n";
 	};
-
+	
 	int TagID;
 
 
@@ -65,13 +60,13 @@ public:
 	glm::vec3 color;				// Set Object Color
 	bool particlechecker;
 	static GLuint mdl_ref, shd_ref;
-	//GLuint texture;
+	GLuint texture;
 
 
 	static GLuint VAO, VBO;			// Object VAO VBO
 
 
-
+//	void AddModel(int modelID, int TextureID,);
 
 
 	// encapsulates state required to render a geometrical model
@@ -89,7 +84,7 @@ public:
 
 		std::vector <glm::vec2> Position_Vertex;
 
-		OpenGLModel() : primitive_type(0), primitive_cnt(0), vaoid(0), draw_cnt(0), model_cnt(0) {}
+		OpenGLModel() : primitive_type(0), primitive_cnt(0), vaoid(0), draw_cnt(0), model_cnt(0), ModelID(0) {}
 
 
 		struct VAO_Object
@@ -128,7 +123,9 @@ public:
 
 	void Draw() const;
 
-	void InitObjects(int, int, float, float, float, float);
+	void InitObjects(int userInput_x, int userInput_y, float userInput_sizeX,
+					float userInput_sizeY, float userInput_angleDisplacement,
+					float userInput_angleSpeed);
 	static void Cleanup();
 //	static void Setup_Quad_VAO();
 	static void init_scenes(std::string);
@@ -137,23 +134,25 @@ public:
 
 
 	static std::vector<OpenGLModel> models;
-	static std::vector<OpenGLShader>shdrpgms;
+
+
+
 
 	//Shaders
-	static std::vector<OpenGLShader> shader;
+	static std::vector<OpenGLShader>shdrpgms;
 	using VectorPairStrStr = std::vector <std::pair<std::string, std::string>>;
 	static GLuint ShaderProgram;
 	//static std::map<std::string, OpenGLShader> shdrpgms;
 
 
-	static std::vector<GLuint> textures;
+	//static std::vector<GLuint> textures;
 
 
 	static void init_shdrpgms_cont(VectorPairStrStr const& vpss);
 
 	// Models
 
-	static OpenGLModel Box_Model(int ID, glm::vec3, int textureInput);
+	static OpenGLModel Box_Model(int ID, glm::vec3);
 
 	static void Load_Files();
 	static void Load_Meshes(std::string);
