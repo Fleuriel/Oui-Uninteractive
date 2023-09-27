@@ -383,20 +383,17 @@ void Editor::CreateDebugPanel() {
 		ImGui::Text("System Time Percentage");
 		float physicsPercentage = timeRecorder.physicsTime / GetDT();
 		float grpahicsPercentage = timeRecorder.graphicsTime / GetDT();
-		std::cout << physicsPercentage << ", " << grpahicsPercentage << std::endl;
 		static const char* chartLabels[] = { "Physics", "Graphics" };
 		float data[] = {
 			physicsPercentage, grpahicsPercentage
 		};
 		static ImPlotPieChartFlags flags = 0;
-
+		// Draw pie chart
 		ImPlot::BeginPlot("##PieSystemTime", ImVec2(250, 250), ImPlotFlags_Equal | ImPlotFlags_NoMouseText);
-			ImPlot::SetupAxes(nullptr, nullptr, ImPlotAxisFlags_NoDecorations, ImPlotAxisFlags_NoDecorations);
-			ImPlot::SetupAxesLimits(0, 1, 0, 1);
-			ImPlot::PlotPieChart(chartLabels, data, 2, 0.5, 0.5, 0.4, "%.2f", 90, flags);
-			ImPlot::EndPlot();
-		
-
+		ImPlot::SetupAxes(nullptr, nullptr, ImPlotAxisFlags_NoDecorations, ImPlotAxisFlags_NoDecorations);
+		ImPlot::SetupAxesLimits(0, 1, 0, 1);
+		ImPlot::PlotPieChart(chartLabels, data, 2, 0.5, 0.5, 0.4, "%.2f", 90, flags);
+		ImPlot::EndPlot();
 	}
 
 	if (ImGui::CollapsingHeader("Tools")) {	
