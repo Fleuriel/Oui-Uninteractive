@@ -11,6 +11,7 @@
 #include "Editor.h"
 #include <iostream>
 
+std::vector<float> Editor::fpsData;
 
 static void HelpMarker(std::string desc) {
 	ImGui::TextDisabled("(?)");
@@ -76,8 +77,19 @@ void UsingImGui::Exit() {
 
 
 void Editor::Init() {
+	// Set max data points
+	maxFPSdata = 2000.0f;
 
+}
 
+void Editor::Update() {
+	ImGuiIO& io = ImGui::GetIO();
+	// Add FPS data point to vector
+	fpsData.push_back(io.Framerate);
+	// Flush out data points when max limit reached
+	if (fpsData.size() > maxFPSdata) {
+		fpsData.erase(fpsData.begin());
+	}
 }
 
 
@@ -341,24 +353,63 @@ void Editor::CreateObjectList() {
 
 void Editor::CreateDebugPanel() {
 	ImGui::Begin("Debug Panel");
+	ImGuiIO& io = ImGui::GetIO();
 
 	if (ImGui::CollapsingHeader("Perfomance")) {
-		ImGui::Text("Program FPS: %.2f", GetFrames()); // Display program FPS in "Performance" tab
-
+		// FPS DATA	
+		if (io.Framerate < 60) {
+			ImGui::PushStyleColor(ImGuiCol_Text, redColour);
+			ImGui::Text("Program FPS: %.2f", io.Framerate); // Display program FPS in "Performance" tab
+			ImGui::PopStyleColor();
+		}
+		else if (io.Framerate >= 60 && io.Framerate < 100) {
+			ImGui::PushStyleColor(ImGuiCol_Text, yellowColour);
+			ImGui::Text("Program FPS: %.2f", io.Framerate); // Display program FPS in "Performance" tab
+			ImGui::PopStyleColor();
+		}
+		else {
+			ImGui::PushStyleColor(ImGuiCol_Text, greenColour);
+			ImGui::Text("Program FPS: %.2f", io.Framerate); // Display program FPS in "Performance" tab
+			ImGui::PopStyleColor();
+		}
+		//ImGui::Text("Program FPS: %.2f", io.Framerate); // Display program FPS in "Performance" tab
+		ImGui::PushStyleColor(ImGuiCol_PlotLines, pinkColour);
+		ImGui::PlotLines("Current FPS", fpsData.data(), static_cast<int>(fpsData.size()), 0, "FPS", 0.0f, 300.0f, ImVec2(0, 80));
+		ImGui::PopStyleColor();
+		// FRAMETIME DATA
+		ImGui::Text("Frame time: %.2f", 1000.0f / GetFrames()); // Display program FPS in "Performance" tab
 		ImGui::Separator();
 	}
 
-	if (ImGui::CollapsingHeader("Tools")) {
-		ImGui::Text("Program FPS: %.2f", GetFrames()); // Display program FPS in "Performance" tab
+	if (ImGui::CollapsingHeader("Tools")) {	
 		ImGui::Checkbox("Display bounding box", &panelList.soundPanel); // Checkbox for sound panel
 		ImGui::Separator();
 	}
 
 	if (ImGui::CollapsingHeader("Inputs")) {
-		double mouseXPos, mouseYPos;
-		glfwGetCursorPos(window, &mouseXPos, &mouseYPos);
-		ImGui::Text("Mouse position: (%d, %d)", static_cast<int>(mouseXPos), static_cast<int>(mouseYPos));
+		// Mouse input checks
+		if (io.MousePos.x < 0 || io.MousePos.x > windowSize.first || io.MousePos.y < 0 || io.MousePos.y > windowSize.second) {
+			ImGui::Text("Mouse position: Out of window");
+		}
+		else {
+			ImGui::Text("Mouse position: (%g, %g)", io.MousePos.x, io.MousePos.y);
+		}
+		ImGui::Text("Click duration:");
+		for (int i = 0; i < IM_ARRAYSIZE(io.MouseDown); i++) if (ImGui::IsMouseDown(i)) { 
+			ImGui::SameLine(); ImGui::Text("M%d (%.2f secs)", i + 1, io.MouseDownDuration[i]); 
+		}
+
 		ImGui::Separator();
+		// Keyboard input checks
+		struct funcs { static bool IsLegacyNativeDupe(ImGuiKey key) { return key < 512 && ImGui::GetIO().KeyMap[key] != -1; } }; // Hide Native<>ImGuiKey duplicates when both exists in the array
+		ImGuiKey start_key = (ImGuiKey)0;
+		ImGui::Text("Keys down:");
+		for (ImGuiKey key = start_key; key < ImGuiKey_NamedKey_END; key = (ImGuiKey)(key + 1)) { // Check Keydowns
+			if (funcs::IsLegacyNativeDupe(key) || !ImGui::IsKeyDown(key)) continue;
+			ImGui::SameLine();
+			ImGui::Text("\"%s\"", ImGui::GetKeyName(key));
+		}
+		ImGui::Text("Keys modifiers: %s%s%s%s", io.KeyCtrl ? "CTRL " : "", io.KeyShift ? "SHIFT " : "", io.KeyAlt ? "ALT " : "", io.KeySuper ? "SUPER " : "");		
 	}
 	ImGui::End();
 }

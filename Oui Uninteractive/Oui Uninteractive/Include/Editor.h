@@ -43,6 +43,7 @@ public:
 class Editor {
 public:
 	void Init();
+	void Update();
 	static void CreateMasterPanel();
 	static void CreateSoundPanel();
 	static void CreateObjectList();
@@ -50,6 +51,18 @@ public:
 
 public:
 	bool soundPanel;
+
+public:
+	static const ImU32 whiteColour = IM_COL32(0, 0, 0, 255); // White color
+	static const ImU32 redColour = IM_COL32(255, 0, 0, 255); // Red color
+	static const ImU32 greenColour = IM_COL32(0, 255, 0, 255); // Green color
+	static const ImU32 blueColour = IM_COL32(0, 0, 255, 255); // Blue color
+	static const ImU32 pinkColour = IM_COL32(255, 0, 127, 255); // Pink color
+	static const ImU32 yellowColour = IM_COL32(255, 255, 0, 255); // Yellow color
+	static const ImU32 purpleColour = IM_COL32(147, 0, 255, 255); // Purple color
+	size_t maxFPSdata;
+	static std::vector<float> fpsData;
+
 private:
 
 };
