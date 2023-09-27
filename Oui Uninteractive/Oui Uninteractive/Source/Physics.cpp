@@ -82,7 +82,7 @@ void Physics::Update(float dt) {
 			CollisionStaticDynamicRectRect(*(body->boundingbox), *(body2->boundingbox));
 		}
 		//apply calculations to object
-		body->txPtr->shape->Update(body->txPtr->position.x, body->txPtr->position.y, body->txPtr->scale, body->txPtr->rotation, true);	
+		body->txPtr->shape->Update(body->txPtr->position.x, body->txPtr->position.y, body->txPtr->scale, body->txPtr->scale, body->txPtr->rotation, true);
 	}
 }
 /**************************************************************************
