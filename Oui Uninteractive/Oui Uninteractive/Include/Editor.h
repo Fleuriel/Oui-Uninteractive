@@ -67,11 +67,10 @@ public:
 	static std::vector<float> fpsData;
 
 struct SystemTime {
-	//std::chrono::duration<float, std::milli> physicsTime;
-	//std::chrono::duration<float, std::milli> graphicsTime;
 	float physicsTime;
 	float graphicsTime;
 	float editorTime;
+	float soundTime;
 };
 static SystemTime timeRecorder;
 

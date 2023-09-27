@@ -8,8 +8,9 @@
  * @brief This source file contains the definition of the SoundManager class used to setup FMOD and handle playing of sounds
  *************************************************************************/
 
-#include <Sound.h>
 #include <iostream>
+#include "Sound.h"
+#include "Editor.h"
 
  // Initialize global pointer
 SoundManager* soundManager = nullptr;
@@ -37,7 +38,7 @@ void SoundManager::Initialize() {
 		std::cout << "FMOD error: " << FMOD_ErrorString(result);
 	}
 	// Initailize FMOD
-	result = system->init(2, FMOD_INIT_NORMAL, 0);
+	result = system->init(10, FMOD_INIT_NORMAL, 0); // 10 max channels set
 	if (result != FMOD_OK) {
 		std::cout << "FMOD error: " << FMOD_ErrorString(result);
 	}
@@ -45,9 +46,13 @@ void SoundManager::Initialize() {
 }
 
 void SoundManager::Update(float dt) {
-	//PlayBGMSounds();
-	//PlaySFXSounds();
+	std::chrono::high_resolution_clock::time_point timeStart = std::chrono::high_resolution_clock::now();
+	
 	system->update();
+
+	std::chrono::high_resolution_clock::time_point timeEnd = std::chrono::high_resolution_clock::now();
+	std::chrono::duration<float, std::milli> duration = timeEnd - timeStart;
+	Editor::timeRecorder.soundTime = duration.count();
 }
 
 /* ============================================
@@ -85,18 +90,28 @@ void SoundManager::LoadSounds() {
    ============================================ */
 void SoundManager::PlayBGMSounds() {
 	// Play BGM once clicked
-	if (bgmChannel == nullptr) {
-		result = system->playSound(bgmSounds[1], nullptr, true, &bgmChannel);
+	if (bgmChannels[0] == nullptr) {
+		result = system->playSound(bgmSounds[0], nullptr, true, &bgmChannels[0]);
+		if (result != FMOD_OK) {
+			std::cout << "FMOD error: " << FMOD_ErrorString(result);
+			return;
+		}
 	}
-	if (result != FMOD_OK) {
-		std::cout << "FMOD error: " << FMOD_ErrorString(result);
+	
+	if (bgmChannels[1] == nullptr) {
+		result = system->playSound(bgmSounds[1], nullptr, true, &bgmChannels[1]);
+		if (result != FMOD_OK) {
+			std::cout << "FMOD error: " << FMOD_ErrorString(result);
+			return;
+		}
 	}
+	
 }
 
 void SoundManager::PlaySFXSounds() {
 	// Play SFX once clicked
-	channel1->stop();
-	result = system->playSound(sfxSounds[sfxChoice], nullptr, false, &channel1);
+	sfxChannels[0]->stop();
+	result = system->playSound(sfxSounds[sfxChoice], nullptr, false, &sfxChannels[0]);
 	if (result != FMOD_OK) {
 		std::cout << "FMOD error: " << FMOD_ErrorString(result);
 	}

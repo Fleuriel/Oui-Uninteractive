@@ -39,12 +39,9 @@ public:
 	std::vector<FMOD::Sound*> sfxSounds{};
 
 	// Channels
-	FMOD::Channel* bgmChannel{};
-	FMOD::Channel* channel1{};
-	FMOD::Channel* channel2{};
-	FMOD::Channel* channel3{};
+	std::vector<FMOD::Channel*> bgmChannels{3};
+	std::vector<FMOD::Channel*> sfxChannels{3};
 
-	bool sfxCallback;
 	int sfxChoice;
 
 private:

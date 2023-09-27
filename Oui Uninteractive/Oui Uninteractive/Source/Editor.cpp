@@ -113,13 +113,52 @@ void Editor::CreateSoundPanel() {
 	ImGui::Begin("Sound Control Panel");
 	if (ImGui::TreeNode("Tracks")) {
 		ImGui::SeparatorText("BGM");
-		static float bgmVol = 1.0f;
-		ImGui::SliderFloat("Volume", &bgmVol, 0.0f, 1.0f, "%.2f");
-		soundManager->bgmChannel->setVolume(bgmVol);
+		static int bgmChoice = 0;
+		static float volValue = 1.0f, bgmVol1 = 1.0f, bgmVol2 = 1.0f;
+		bool pauseStatus1 = true, pauseStatus2 = true;
+
+		// Check pause status for bgmch1	
+		soundManager->bgmChannels[0]->getPaused(&pauseStatus1);
+		if (pauseStatus1) {
+			ImGui::PushStyleColor(ImGuiCol_Text, redColour); // Red if not playing	
+		}
+		else {
+			ImGui::PushStyleColor(ImGuiCol_Text, greenColour); // Green if playing
+		}
+		if (ImGui::RadioButton("BGM 1", &bgmChoice, 0)) { // On radio button 1 click
+			volValue = bgmVol1;
+		} ImGui::SameLine();
+		ImGui::PopStyleColor();
+
+		// Check pause status for bgmch2
+		soundManager->bgmChannels[1]->getPaused(&pauseStatus2);
+		if (pauseStatus2) { // replace with your function to check if playing
+			ImGui::PushStyleColor(ImGuiCol_Text, redColour); // Red if not playing
+		}
+		else {
+			ImGui::PushStyleColor(ImGuiCol_Text, greenColour); // Green if playing
+		}
+		if (ImGui::RadioButton("BGM 2", &bgmChoice, 1)) { // On radio button 2 click
+			volValue = bgmVol2;
+		}
+		ImGui::PopStyleColor();
+
+		// On Volume slider click
+		if (ImGui::SliderFloat("Volume", &volValue, 0.0f, 1.0f, "%.2f")) {
+			if (bgmChoice == 0) {
+				bgmVol1 = volValue;
+			}
+			else if (bgmChoice == 1) {
+				bgmVol2 = volValue;
+			}
+			soundManager->bgmChannels[bgmChoice]->setVolume(volValue);
+		}
+		// On play button click
 		if (ImGui::Button("Play/Pause")) {
 			soundManager->PlayBGMSounds();
-			soundManager->TogglePlayChannel(soundManager->bgmChannel);
-		}
+			soundManager->TogglePlayChannel(soundManager->bgmChannels[bgmChoice]);
+		} 
+		
 		ImGui::SeparatorText("SFX");
 		static int sfxChoice = 0;
 		ImGui::RadioButton("SFX 1", &sfxChoice, 0); ImGui::SameLine();
@@ -383,16 +422,17 @@ void Editor::CreateDebugPanel() {
 		ImGui::Text("System Time Percentage");
 		float physicsPercentage = timeRecorder.physicsTime / GetDT();
 		float grpahicsPercentage = timeRecorder.graphicsTime / GetDT();
-		static const char* chartLabels[] = { "Physics", "Graphics" };
+		float soundPercentage = timeRecorder.soundTime / GetDT();
+		static const char* chartLabels[] = { "Physics", "Graphics" , "Sound"};
 		float data[] = {
-			physicsPercentage, grpahicsPercentage
+			physicsPercentage, grpahicsPercentage, soundPercentage
 		};
 		static ImPlotPieChartFlags flags = 0;
 		// Draw pie chart
 		ImPlot::BeginPlot("##PieSystemTime", ImVec2(250, 250), ImPlotFlags_Equal | ImPlotFlags_NoMouseText);
 		ImPlot::SetupAxes(nullptr, nullptr, ImPlotAxisFlags_NoDecorations, ImPlotAxisFlags_NoDecorations);
 		ImPlot::SetupAxesLimits(0, 1, 0, 1);
-		ImPlot::PlotPieChart(chartLabels, data, 2, 0.5, 0.5, 0.4, "%.2f", 90, flags);
+		ImPlot::PlotPieChart(chartLabels, data, sizeof(data) / sizeof(float), 0.5, 0.5, 0.4, "%.2f", 90, flags);
 		ImPlot::EndPlot();
 	}
 
