@@ -33,16 +33,42 @@ typedef union Vector2D
 	Vector2D(float _x, float _y) : x(_x), y(_y) {};
 
 	//Do not change the following
+	// Copy Assignment Operator 
 	Vector2D& operator=(const Vector2D& rhs) = default;
+	//Copy Constructor
 	Vector2D(const Vector2D & rhs) = default;
 
 	// Assignment operators
+	/**************************************************************************
+	* @brief Operator overload for +=
+	* @param rhs - the vector to add
+	* @return Vector2D&
+	*************************************************************************/
 	Vector2D& operator += (const Vector2D &rhs);
+	/**************************************************************************
+	* @brief Operator overload for -=
+	* @param rhs - the vector to subtract
+	* @return Vector2D&
+	**************************************************************************/
 	Vector2D& operator -= (const Vector2D &rhs);
+	/**************************************************************************
+	* @brief Operator overload for *=
+	* @param rhs - the scalar multiple
+	* @return Vector2D &
+	**************************************************************************/
 	Vector2D& operator *= (float rhs);
+	/**************************************************************************
+	* @brief Operator overload for /=
+	* @param rhs - the divisor
+	* @return Vector2D &
+	**************************************************************************/
 	Vector2D& operator /= (float rhs);
 
 	// Unary operators
+	/**************************************************************************
+	* @brief Operator overload unary minus, this function negates the vector
+	* @return Vector2D
+	**************************************************************************/
 	Vector2D operator -() const;
 
 } Vector2D, Vec2, Point2D, Pt2;
@@ -54,61 +80,93 @@ typedef union Vector2D
 #endif
 
 // Binary operators
+/**************************************************************************
+* @brief Operator overload for +, adds two vector together
+* @param lhs - operand one
+* @param rhs - operand two
+* @return Vector2D
+**************************************************************************/
 Vector2D operator + (const Vector2D &lhs, const Vector2D &rhs);
+/**************************************************************************
+* @brief Operator overload for -, subtracts two vector
+* @param lhs - operand one
+* @param rhs - operand two
+* @return Vector2D
+**************************************************************************/
 Vector2D operator - (const Vector2D &lhs, const Vector2D &rhs);
+/**************************************************************************
+* @brief Operator overload for *, multiplies a vector and a float
+* @param lhs - operand one
+* @param rhs - operand two
+* @return Vector2D
+**************************************************************************/
 Vector2D operator * (const Vector2D &lhs, float rhs);
+
+/**************************************************************************
+* @brief Operator overload for *, multiplies a vector and a float
+* @param lhs - operand one
+* @param rhs - operand two
+* @return Vector2D
+**************************************************************************/
 Vector2D operator * (float lhs, const Vector2D &rhs);
+/**************************************************************************
+* @brief Operator overload for /, divides a vector and a float
+* @param lhs - operand one
+* @param rhs - operand two
+* @return Vector2D
+**************************************************************************/
 Vector2D operator / (const Vector2D &lhs, float rhs);
 
-/**************************************************************************/
-/*!
-	In this function, pResult will be the unit vector of pVec0
-	*/
-/**************************************************************************/
+/**************************************************************************
+* @brief Normalizes a vector, returns result to pResult
+* @param pResult - the vector to write to
+* @param pVec0 - the vector to normalize
+* @return void
+**************************************************************************/
 void	Vector2DNormalize(Vector2D &pResult, const Vector2D &pVec0);
 	
-/**************************************************************************/
-/*!
-	This function returns the length of the vector pVec0 
-	*/
-/**************************************************************************/
+/**************************************************************************
+* @brief Returns length of a vector
+* @param pVec0 - the vector to calculate from
+* @return float
+**************************************************************************/
 float	Vector2DLength(const Vector2D &pVec0);
 	
-/**************************************************************************/
-/*!
-	This function returns the square of pVec0's length. Avoid the square root 
-	*/
-/**************************************************************************/
+/**************************************************************************
+* @brief Returns the square of the length of a vector
+* @param pVec0 - the vector to calculate from
+* @return float
+**************************************************************************/
 float	Vector2DSquareLength(const Vector2D &pVec0);
 	
-/**************************************************************************/
-/*!
-	In this function, pVec0 and pVec1 are considered as 2D points.
-	The distance between these 2 2D points is returned
-	*/
-/**************************************************************************/
+/**************************************************************************
+* @brief Returns the distance between two points
+* @param pVec0 - the point to calculate from
+* @param pVec1 - the 2nd point to calculate from
+* @return float
+**************************************************************************/
 float	Vector2DDistance(const Vector2D &pVec0, const Vector2D &pVec1);
 	
-/**************************************************************************/
-/*!
-	In this function, pVec0 and pVec1 are considered as 2D points.
-	The squared distance between these 2 2D points is returned. 
-	Avoid the square root
-	*/
-/**************************************************************************/
+/**************************************************************************
+* @brief Returns the squared distance between two points
+* @param pVec0 - the point to calculate from
+* @param pVec1 - the 2nd point to calculate from
+* @return float
+**************************************************************************/
 float	Vector2DSquareDistance(const Vector2D &pVec0, const Vector2D &pVec1);
 	
-/**************************************************************************/
-/*!
-	This function returns the dot product between pVec0 and pVec1
-	*/
-/**************************************************************************/
+/**************************************************************************
+* @brief Returns the dot product of two vectors
+* @param pVec0 - the vector to calculate from
+* @param pVec1 - the 2nd vector to calculate from
+* @return float
+**************************************************************************/
 float	Vector2DDotProduct(const Vector2D &pVec0, const Vector2D &pVec1);
 	
-/**************************************************************************/
-/*!
-	This function returns the cross product magnitude 
-	between pVec0 and pVec1
-	*/
-/**************************************************************************/
+/**************************************************************************
+* @brief Returns the cross product of two vectors
+* @param pVec0 - the vector to calculate from
+* @param pVec1 - the 2nd vector to calculate from
+* @return float
+**************************************************************************/
 float	Vector2DCrossProductMag(const Vector2D &pVec0, const Vector2D &pVec1);
