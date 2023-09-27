@@ -2,7 +2,7 @@
 #define SYSTEM_MANAGER_H
 /**************************************************************************
  * @file SystemManager.h
- * @author Tristan Cheah Tze Hong
+ * @author CHEAH Tristan Tze Hong
  * @par DP email: t.cheah@digipen.edu
  * @par Course: CSD 2401
  * @par Software Engineering Project 3

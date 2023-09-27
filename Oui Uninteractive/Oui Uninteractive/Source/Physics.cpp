@@ -1,6 +1,6 @@
 /**************************************************************************
  * @file Physics.cpp
- * @author Tristan Cheah Tze Hong
+ * @author CHEAH Tristan Tze Hong
  * @par DP email: t.cheah@digipen.edu
  * @par Course: CSD 2401
  * @par Software Engineering Project 3
@@ -30,7 +30,6 @@ Physics::Physics() {
 	else {
 		physicsSys = this;
 	}
-	
 }
 /**************************************************************************
 * @brief Initializes the Physics System
