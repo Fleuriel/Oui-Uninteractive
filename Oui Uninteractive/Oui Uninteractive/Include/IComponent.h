@@ -14,6 +14,7 @@
 #include "ComponentType.h"
 #include "JsonSerializer.h"
 
+//Forward Declaration
 class GameObject;
 
 class IComponent {
@@ -54,6 +55,11 @@ public:
 	* @return void
 	*************************************************************************/
 	virtual void Serialize(const std::string& filePath, rapidjson::Value::ConstMemberIterator& itr) {};
+	/**************************************************************************
+	* @brief Clone function to be overloaded by each individual component
+	* Usage inside respective Component.cpp file:
+	* @return IComponent*
+	*************************************************************************/
 	virtual IComponent* Clone() const = 0;
 	/**************************************************************************
 	* @brief Destructor

@@ -1,5 +1,16 @@
+/**************************************************************************
+ * @file Transform.cpp
+ * @author Tristan Cheah Tze Hong
+ * @par DP email: t.cheah@digipen.edu
+ * @par Course: CSD 2401
+ * @par Software Engineering Project 3
+ * @date 27-09-2023
+ * @brief This file contains the definition of the Transform Class,
+ *		  which is a IComponent to be contained in GameObject. It holds
+ *		  all data pertaining to the positioning of GameObject such as 
+ *		  rotation and position.
+ *************************************************************************/
 #include "Transform.h"
-
 /**************************************************************************
 * @brief Default constructor for Transform component
 *************************************************************************/

@@ -1,6 +1,16 @@
 #ifndef SYSTEM_MANAGER_H
 #define SYSTEM_MANAGER_H
+/**************************************************************************
+ * @file SystemManager.h
+ * @author Tristan Cheah Tze Hong
+ * @par DP email: t.cheah@digipen.edu
+ * @par Course: CSD 2401
+ * @par Software Engineering Project 3
+ * @date 27-09-2023
+ * @brief This file contains the declaration of the System Manager class,
+ *		  which handles the Initialize, Update and Cleanup of all ISystems.
 
+ *************************************************************************/
 #include <vector>
 #include "ISystem.h"
 
@@ -36,12 +46,10 @@ public:
 	* @return void
 	*************************************************************************/
 	void DestroySystem();
-
 private:
 	//Vector of Systems
 	std::vector<ISystem*> Systems;
 };
-
 //Global Pointer
 extern SystemManager* sysManager;
 

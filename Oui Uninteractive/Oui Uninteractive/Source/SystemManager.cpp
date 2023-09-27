@@ -1,5 +1,15 @@
-#include "SystemManager.h"
+/**************************************************************************
+ * @file SystemManager.cpp
+ * @author Tristan Cheah Tze Hong
+ * @par DP email: t.cheah@digipen.edu
+ * @par Course: CSD 2401
+ * @par Software Engineering Project 3
+ * @date 27-09-2023
+ * @brief This file contains the definition of the System Manager class,
+ *		  which handles the Initialize, Update and Cleanup of all ISystems.
 
+ *************************************************************************/
+#include "SystemManager.h"
 //Global pointer 
 SystemManager* sysManager;
 /**************************************************************************
@@ -12,7 +22,6 @@ SystemManager::SystemManager() {
 * @brief Destructor for SystemManager
 *************************************************************************/
 SystemManager::~SystemManager() {
-
 }
 /**************************************************************************
 * @brief Initializes the Systems in the System vector
@@ -40,7 +49,6 @@ void SystemManager::UpdateSystems(float dt) {
 *************************************************************************/
 void SystemManager::AddSystem(ISystem* system) {
 	Systems.push_back(system);
-
 }
 /**************************************************************************
 * @brief Runs the destructor for all systems
