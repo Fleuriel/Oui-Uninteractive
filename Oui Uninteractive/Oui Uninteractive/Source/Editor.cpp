@@ -160,24 +160,6 @@ void Editor::CreateObjectList() {
 			}
 			count++;
 		}
-
-		//for (int i = 0; i < objectFactory->; i++) {
-		//	if (objectFactory->GetGameObjectByID(i) == nullptr)
-		//		continue;
-		//	// Get the details of individual object
-		//	std::string objName = objectFactory->GetGameObjectByID(i)->GetName();
-		//	size_t objID = objectFactory->GetGameObjectByID(i)->GetGameObjectID();
-		//	std::string newName = objName;
-		//	// Check if its a copied object
-		//	if (prevName == objName) {
-		//		newName += "(" + std::to_string(i) + ")"; // concat copy number
-		//	}
-		//	// Check and set which entry is selected 
-		//	if (ImGui::Selectable(newName.c_str(), selectedID == i)) {			
-		//		selectedID = i;
-		//	}		
-		//	prevName = objName;
-		//}
 		
 		ImGui::EndChild();
 	}
@@ -206,13 +188,6 @@ void Editor::CreateObjectList() {
 			// Adding objects
 			ImGui::InputInt("Add Count", &addCount);
 			ImGui::SameLine(); 
-			/*if (ImGui::Button("Add")){
-				for (int i = 0; i < addCount; i++) {
-					std::string startName{ "Object" };
-					startName += std::to_string(objectFactory->GetGameObjectIDMap().size() + 1);
-					objectFactory->BuildObjectRunTime(startName, "");
-				}
-			}*/
 
 			if (ImGui::Button("Add")) {
 				size_t highestNumber = 0; // Initialize with the lowest possible ID
@@ -281,26 +256,51 @@ void Editor::CreateObjectList() {
 			if (ImGui::Button("Delete All")) {
 				objectFactory->DestroyAllObjects();
 			}
+			ImGui::SameLine();
+			// Used for testing M1 Rubric: Have 2.5k Objects with FPS >60
+			if (ImGui::Button("Spawn 2500 Objects")) {
+				for (size_t i{}; i < 2500; ++i) {
+					std::string goName{ "ObjectRunTime" + std::to_string(i + 1) };
+					objectFactory->BuildObjectRunTime(goName, "Enemy");
+					objectFactory->AddComponent(ComponentType::PHYSICS_BODY, objectFactory->GetGameObjectByID(i));
+					objectFactory->AddComponent(ComponentType::TRANSFORM, objectFactory->GetGameObjectByID(i));
+					objectFactory->GetGameObjectByID(i)->Initialize();
+
+					GET_COMPONENT(objectFactory->GetGameObjectByID(i), Transform, ComponentType::TRANSFORM)->position.x = rand() % 800;
+					GET_COMPONENT(objectFactory->GetGameObjectByID(i), Transform, ComponentType::TRANSFORM)->position.y = rand() % 600;
+				}
+			}
+		
 			ImGui::Separator();
 		}
 		// Individual Object Controls
 		if (ImGui::CollapsingHeader("Object Modifier")) {
-			static float xPos, yPos, xScale, yScale, angle, rotSpeed;
-			if (ImGui::SliderFloat("X-Position", &xPos, 0.0f, 100.0f, "%.2f")) // Slider for X-Position
-			ImGui::SliderFloat("Y-Position", &yPos, 0.0f, 1.0f, "%.2f"); // Slider for Y-Position
-			ImGui::SliderFloat("X-Scale", &xScale, 0.0f, 1.0f, "%.2f"); // Slider for X-Scale
-			ImGui::SliderFloat("Y-Scale", &yScale, 0.0f, 1.0f, "%.2f"); // Slider for Y-Scale
-			ImGui::SliderFloat("Angle", &angle, 0.0f, 1.0f, "%.2f"); // Slider for true angle
-			ImGui::SliderFloat("Rotation Speed", &rotSpeed, 0.0f, 1.0f, "%.2f"); // Slider for rotation speed
+			static float xPos, yPos, scale, speed, angle, rotSpeed;
+			xPos = GET_COMPONENT(objectFactory->GetGameObjectByID(gameobjID), Transform, ComponentType::TRANSFORM)->position.x;
+			if (ImGui::SliderFloat("X-Position", &xPos, 0.0f, 1000.0f, "%.2f")) { // Slider for X-Position
+				GET_COMPONENT(objectFactory->GetGameObjectByID(gameobjID), Transform, ComponentType::TRANSFORM)->position.x = xPos;
+			}
+			if (ImGui::SliderFloat("Y-Position", &yPos, 0.0f, 100.0f, "%.2f")) { // Slider for Y-Position
+				GET_COMPONENT(objectFactory->GetGameObjectByID(gameobjID), Transform, ComponentType::TRANSFORM)->position.y = yPos;
+			}
+			if (ImGui::SliderFloat("Scale", &scale, 0.0f, 100.0f, "%.2f")) { // Slider for Scale
+				GET_COMPONENT(objectFactory->GetGameObjectByID(gameobjID), Transform, ComponentType::TRANSFORM)->scale = scale;
+			}
+			if (ImGui::SliderFloat("Speed", &speed, 0.0f, 100.0f, "%.2f")) { // Slider for Speed
+				GET_COMPONENT(objectFactory->GetGameObjectByID(gameobjID), PhysicsBody, ComponentType::PHYSICS_BODY)->speed = speed;
+			}
+			if (ImGui::SliderFloat("Angle", &angle, 0.0f, 100.0f, "%.2f")) { // Slider for true angle
+				GET_COMPONENT(objectFactory->GetGameObjectByID(gameobjID), Transform, ComponentType::TRANSFORM)->rotation = angle;
+			}
+			if (ImGui::SliderFloat("Rotation Speed", &rotSpeed, 0.0f, 500.0f, "%.2f")) {// Slider for rotation speed
+				GET_COMPONENT(objectFactory->GetGameObjectByID(gameobjID), PhysicsBody, ComponentType::PHYSICS_BODY)->rotationSpeed = rotSpeed;
+			}
 			ImGui::Separator();
 		}
 		
 		
 		ImGui::EndChild();
 
-		if (ImGui::Button("Revert")) {}
-		ImGui::SameLine();
-		if (ImGui::Button("Save")) {}
 		ImGui::EndGroup();
 	}
 	ImGui::End();

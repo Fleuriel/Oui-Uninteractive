@@ -182,30 +182,30 @@ void OpenGLApplication::OpenGLInit()
 	*/
 	
 	//initialize 2500 objects
-	/*for (size_t i{}; i < 2500; ++i) {
-		std::string goName{ "ObjectRunTime" + std::to_string(i + 1) };
-		objectFactory->BuildObjectRunTime(goName);
-		objectFactory->AddComponent(ComponentType::PHYSICS_BODY, objectFactory->GetGameObjectByID(i));
-		objectFactory->AddComponent(ComponentType::TRANSFORM, objectFactory->GetGameObjectByID(i));
-		objectFactory->GetGameObjectByID(i)->Initialize();
+	//for (size_t i{}; i < 2500; ++i) {
+	//	std::string goName{ "ObjectRunTime" + std::to_string(i + 1) };
+	//	objectFactory->BuildObjectRunTime(goName, "Enemy");
+	//	objectFactory->AddComponent(ComponentType::PHYSICS_BODY, objectFactory->GetGameObjectByID(i));
+	//	objectFactory->AddComponent(ComponentType::TRANSFORM, objectFactory->GetGameObjectByID(i));
+	//	objectFactory->GetGameObjectByID(i)->Initialize();
 
-		GET_COMPONENT(objectFactory->GetGameObjectByID(i), Transform, ComponentType::TRANSFORM)->position.x = rand() % 800;
-		GET_COMPONENT(objectFactory->GetGameObjectByID(i), Transform, ComponentType::TRANSFORM)->position.y = rand() % 600;
-	}*/
+	//	GET_COMPONENT(objectFactory->GetGameObjectByID(i), Transform, ComponentType::TRANSFORM)->position.x = rand() % 800;
+	//	GET_COMPONENT(objectFactory->GetGameObjectByID(i), Transform, ComponentType::TRANSFORM)->position.y = rand() % 600;
+	//}
 
 	// Prefabs
 	std::cout << "\nLoading prefabs from JSON file..." << std::endl;
 	objectFactory->LoadPrefab("../prefab/prefab.JSON");
 	std::cout << "Loading prefabs from JSON file... completed." << std::endl;
 
-	std::cout << "\nBuilding an object from player prefab..." << std::endl;
-	objectFactory->BuildObjectFromPrefab("PlayerObjFromPrefab", "Player");
-	std::cout << "Building an object from player prefab... completed." << std::endl;
-
 	// De-serializing objects from JSON file
 	std::cout << "\nDe-serializing objects from JSON file..." << std::endl;
 	objectFactory->BuildObjectFromFile("../scenes/testscene.JSON");
 	std::cout << "De-serializing objects from JSON file... completed." << std::endl;
+
+	std::cout << "\nBuilding an object from player prefab..." << std::endl;
+	objectFactory->BuildObjectFromPrefab("PlayerObjFromPrefab", "Player");
+	std::cout << "Building an object from player prefab... completed." << std::endl;
 
 	std::cout << "\nCloning object with ID 0..." << std::endl;
 	objectFactory->CloneObject(0);
@@ -276,7 +276,7 @@ void OpenGLApplication::OpenGLUpdate()
 		if (keyStates[GLFW_KEY_RIGHT_SHIFT] == 1)
 		{
 			std::cout << "Shift\n";
-			OpenGLObject newObject1(0);
+			OpenGLObject newObject1(1);
 			std::cout << "Tag ID: " << newObject1.TagID << '\n';
 			newObject1.models[0].ModelID =0; // Change the ModelID to 2
 
@@ -407,7 +407,7 @@ void OpenGLApplication::OpenGLUpdate()
 
 			if (keyStates[GLFW_KEY_A]) {
 				//std::cout << "WALK LEFT\n";
-				physicsSys->SetCurrentRotationSpeed(20, 0);
+				physicsSys->SetCurrentRotationSpeed(GET_COMPONENT(objectFactory->GetGameObjectByID(0), PhysicsBody, ComponentType::PHYSICS_BODY)->rotationSpeed, 0);
 				Objects.position.x -= 0.001;
 //				CurrentGameState = STATE_LEVEL_TEST;
 
@@ -415,7 +415,7 @@ void OpenGLApplication::OpenGLUpdate()
 
 			else if (keyStates[GLFW_KEY_D]) {
 				//std::cout << "WALK RIGHT\n";
-				physicsSys->SetCurrentRotationSpeed(-20, 0);
+				physicsSys->SetCurrentRotationSpeed(-(GET_COMPONENT(objectFactory->GetGameObjectByID(0), PhysicsBody, ComponentType::PHYSICS_BODY)->rotationSpeed), 0);
 				Objects.position.x += 0.001;
 //				CurrentGameState = STATE_GRAPHICS_TEST;
 			}
@@ -542,11 +542,11 @@ void OpenGLApplication::OpenGLUpdate()
 			}
 
 		}
-		//for (std::pair<size_t, GameObject*> gObj : objectFactory->GetGameObjectIDMap()) {
-		//	if (gObj.second->Has(ComponentType::TRANSFORM) != -1) {
-		//		GET_COMPONENT(gObj.second, Transform, ComponentType::TRANSFORM)->shape->Draw();
-		//	}	
-		//}
+		for (std::pair<size_t, GameObject*> gObj : objectFactory->GetGameObjectIDMap()) {
+			if (gObj.second->Has(ComponentType::TRANSFORM) != -1) {
+				GET_COMPONENT(gObj.second, Transform, ComponentType::TRANSFORM)->shape->Draw();
+			}	
+		}
 
 
 
