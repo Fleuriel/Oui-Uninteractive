@@ -56,6 +56,7 @@ public:
 	bool soundPanel;
 
 public:
+	// ImGui colour definitions
 	static const ImU32 whiteColour = IM_COL32(0, 0, 0, 255); // White color
 	static const ImU32 redColour = IM_COL32(255, 0, 0, 255); // Red color
 	static const ImU32 greenColour = IM_COL32(0, 255, 0, 255); // Green color
@@ -63,6 +64,8 @@ public:
 	static const ImU32 pinkColour = IM_COL32(255, 0, 127, 255); // Pink color
 	static const ImU32 yellowColour = IM_COL32(255, 255, 0, 255); // Yellow color
 	static const ImU32 purpleColour = IM_COL32(147, 0, 255, 255); // Purple color
+	
+	// Buffer and limit for recording FPS performance
 	size_t maxFPSdata;
 	static std::vector<float> fpsData;
 

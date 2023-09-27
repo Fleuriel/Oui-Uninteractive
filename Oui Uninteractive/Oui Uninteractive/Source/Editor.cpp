@@ -216,28 +216,34 @@ void Editor::CreateObjectList() {
 				ImGui::Text("Object ID: %d", objectFactory->GetGameObjectByID(gameobjID)->GetGameObjectID());
 			}
 			static float xPos = 0, yPos = 0, scale = 0, speed = 0, angle = 0, rotSpeed = 0;
-			if (objectFactory->GetGameObjectByID(gameobjID)->Has(ComponentType::TRANSFORM) != -1) {
-				xPos = GET_COMPONENT(objectFactory->GetGameObjectByID(gameobjID), Transform, ComponentType::TRANSFORM)->position.x;
-				yPos = GET_COMPONENT(objectFactory->GetGameObjectByID(gameobjID), Transform, ComponentType::TRANSFORM)->position.y;
-				scale = GET_COMPONENT(objectFactory->GetGameObjectByID(gameobjID), Transform, ComponentType::TRANSFORM)->scale;
-				angle = GET_COMPONENT(objectFactory->GetGameObjectByID(gameobjID), Transform, ComponentType::TRANSFORM)->rotation;
+			if (objectFactory->GetGameObjectIDMap().empty()) {
+				ImGui::Text("No objects");
 			}
 			else {
-				xPos = yPos = scale = angle = 0;
+				if (objectFactory->GetGameObjectByID(gameobjID)->Has(ComponentType::TRANSFORM) != -1) {
+					xPos = GET_COMPONENT(objectFactory->GetGameObjectByID(gameobjID), Transform, ComponentType::TRANSFORM)->position.x;
+					yPos = GET_COMPONENT(objectFactory->GetGameObjectByID(gameobjID), Transform, ComponentType::TRANSFORM)->position.y;
+					scale = GET_COMPONENT(objectFactory->GetGameObjectByID(gameobjID), Transform, ComponentType::TRANSFORM)->scale;
+					angle = GET_COMPONENT(objectFactory->GetGameObjectByID(gameobjID), Transform, ComponentType::TRANSFORM)->rotation;
+				}
+				else {
+					xPos = yPos = scale = angle = 0;
+				}
+				if (objectFactory->GetGameObjectByID(gameobjID)->Has(ComponentType::PHYSICS_BODY) != -1) {
+					speed = GET_COMPONENT(objectFactory->GetGameObjectByID(gameobjID), PhysicsBody, ComponentType::PHYSICS_BODY)->speed;
+					rotSpeed = GET_COMPONENT(objectFactory->GetGameObjectByID(gameobjID), PhysicsBody, ComponentType::PHYSICS_BODY)->rotationSpeed;
+				}
+				else {
+					speed = rotSpeed = 0;
+				}
+				ImGui::Text("X-Position: %.2f | Y-Position: %.2f", xPos, yPos);
+				ImGui::Text("Scale: %.2f", scale);
+				ImGui::Text("Angle: %.2f", angle);
+				ImGui::Text("speed: %.2f", speed);
+				ImGui::Text("Rotation Speed: %.2f", rotSpeed);
+				ImGui::Separator();
 			}
-			if (objectFactory->GetGameObjectByID(gameobjID)->Has(ComponentType::PHYSICS_BODY) != -1) {
-				speed = GET_COMPONENT(objectFactory->GetGameObjectByID(gameobjID), PhysicsBody, ComponentType::PHYSICS_BODY)->speed;
-				rotSpeed = GET_COMPONENT(objectFactory->GetGameObjectByID(gameobjID), PhysicsBody, ComponentType::PHYSICS_BODY)->rotationSpeed;
-			}
-			else {
-				speed = rotSpeed = 0;
-			}
-			ImGui::Text("X-Position: %.2f | Y-Position: %.2f", xPos, yPos);
-			ImGui::Text("Scale: %.2f", scale);
-			ImGui::Text("Angle: %.2f", angle);
-			ImGui::Text("speed: %.2f", speed);
-			ImGui::Text("Rotation Speed: %.2f", rotSpeed);
-			ImGui::Separator();
+			
 		}
 		// Master object controller
 		if (ImGui::CollapsingHeader("Master Object Manager")) {
