@@ -115,7 +115,7 @@ void ObjectFactory::BuildObjectFromFile(const std::string& filePath) {
 				componentName = itr->name.GetString();
 				ComponentType type = StringToEnum(componentName);
 
-				if (componentFactoryMap.find(type) == componentFactoryMap.end()) {
+				if (!componentFactoryMap.contains(type)) {
 					std::cerr << "Component name not found." << std::endl;
 				}
 				else {
@@ -295,8 +295,7 @@ void ObjectFactory::SaveObjectsToFile(const std::string& filePath) {
 		for (const auto& cmp : gameObject->componentList) {
 			// Create individual component
 			rapidjson::Value individualComponent(rapidjson::kObjectType);
-			rapidjson::Value componentName;
-			componentName.SetString(EnumToString(cmp->componentType).c_str(), allocator);
+			std::string componentName{ EnumToString(cmp->componentType) };
 
 			// Add component data
 			if (componentName == "PhysicsBody") {
@@ -313,7 +312,9 @@ void ObjectFactory::SaveObjectsToFile(const std::string& filePath) {
 			}
 			
 			// Add individual component to components object
-			components.AddMember(componentName, individualComponent, allocator);
+			rapidjson::Value componentNameJson;
+			componentNameJson.SetString(componentName.c_str(), allocator);
+			components.AddMember(componentNameJson, individualComponent, allocator);
 		}
 
 		// Add components members to JSON object
