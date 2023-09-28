@@ -23,6 +23,7 @@
 // External Texture Color
 extern int importTexture, secondTexture, bgTexture;
 
+
 class OpenGLObject
 {
 public:

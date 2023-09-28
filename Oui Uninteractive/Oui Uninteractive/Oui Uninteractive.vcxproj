@@ -29,6 +29,7 @@
     <ClCompile Include="..\lib\imgui-docking\implot_items.cpp" />
     <ClCompile Include="Source\AI.cpp" />
     <ClCompile Include="Source\AssetManager.cpp" />
+    <ClCompile Include="Source\Background.cpp" />
     <ClCompile Include="Source\Collision.cpp" />
     <ClCompile Include="Source\CoordinateSystem.cpp" />
     <ClCompile Include="Source\Editor.cpp" />
@@ -58,6 +59,7 @@
     <ClInclude Include="..\lib\stb-master\stb_image.h" />
     <ClInclude Include="Include\AI.h" />
     <ClInclude Include="Include\AssetManager.h" />
+    <ClInclude Include="Include\Background.h" />
     <ClInclude Include="Include\Collision.h" />
     <ClInclude Include="Include\ComponentFactory.h" />
     <ClInclude Include="Include\ComponentType.h" />

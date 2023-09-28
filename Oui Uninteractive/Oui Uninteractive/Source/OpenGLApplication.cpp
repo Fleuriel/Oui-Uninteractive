@@ -25,6 +25,7 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 #include <iterator>
+#include <Background.h>
 
 #define STB_IMAGE_IMPLEMENTATION
 #include <stb_image.h>
@@ -50,7 +51,7 @@ JsonSerializer serializer;
 OpenGLObject Objects;								// First Instance of Object to Update.
 std::list<OpenGLObject> objects;					// singleton
 
-Particle background;
+Background background;
 ParticleSystem particleSystem;
 
 
@@ -247,7 +248,7 @@ void OpenGLApplication::OpenGLInit(){
 	std::cout << "Updating JSONEnemy2 during initialization... completed." << std::endl;
 #endif
 
-	background.init(0, 0, windowSize.first, windowSize.second, 0, 0);
+	background.Init();
 }
 
 
