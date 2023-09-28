@@ -24,15 +24,15 @@
             "Type": "Enemy",
             "Components": {
                 "PhysicsBody": {
-                    "VelocityX": 0.0,
-                    "VelocityY": 0.0,
+                    "VelocityX": 1.0,
+                    "VelocityY": 0.5,
                     "RotationSpeed": 20.0,
                     "Speed": 700.0
                 },
                 "Transform": {
-                    "PositionX": 58.15687561035156,
-                    "PositionY": -195.92156982421875,
-                    "Rotation": 193.13787841796875,
+                    "PositionX": 125.45742797851563,
+                    "PositionY": -162.2712860107422,
+                    "Rotation": 98.84817504882813,
                     "Scale": 130.0
                 }
             }
@@ -42,15 +42,15 @@
             "Type": "Enemy",
             "Components": {
                 "PhysicsBody": {
-                    "VelocityX": 0.0,
-                    "VelocityY": 0.0,
+                    "VelocityX": 1.0,
+                    "VelocityY": 20.5,
                     "RotationSpeed": 20.0,
                     "Speed": 500.0
                 },
                 "Transform": {
-                    "PositionX": 208.15699768066406,
-                    "PositionY": 267.2162780761719,
-                    "Rotation": 193.13787841796875,
+                    "PositionX": -89.52347564697266,
+                    "PositionY": 728.0279541015625,
+                    "Rotation": 98.84817504882813,
                     "Scale": 220.0
                 }
             }
@@ -86,7 +86,7 @@
                 "Transform": {
                     "PositionX": 450.0,
                     "PositionY": 50.0,
-                    "Rotation": 234.95465087890625,
+                    "Rotation": 11.095640182495117,
                     "Scale": 200.0
                 }
             }

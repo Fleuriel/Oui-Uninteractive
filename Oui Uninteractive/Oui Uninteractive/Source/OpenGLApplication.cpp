@@ -508,13 +508,10 @@ void OpenGLApplication::OpenGLUpdate()
 		|       ImGui Stuff Testing         |
 		-----------------------------------*/
 		myEditor.Update();
-		myImGui.CreateFrame();
-		myImGui.Update();
 
 		particleSystem.update();
 		if (angle > 360)
 			angle = 0;
-#endif
 		// Set the Background Color.
 		OpenGLSetBackgroundColor(0.5f, 0.5f, 0.5f, 1.0f);
 		// Clear the Color Buffer Bit to enable 'reloading'
@@ -546,11 +543,11 @@ void OpenGLApplication::OpenGLUpdate()
 			}	
 
 		}
-		
 
+		myImGui.Draw();
 		Draw();
 		particleSystem.draw();
-		myImGui.Draw();
+		
 }
 
 
