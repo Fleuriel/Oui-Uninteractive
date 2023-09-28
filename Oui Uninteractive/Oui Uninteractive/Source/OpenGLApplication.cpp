@@ -531,7 +531,7 @@ void OpenGLApplication::OpenGLUpdate(){
 		// Clear the Color Buffer Bit to enable 'reloading'
 		glClear(GL_COLOR_BUFFER_BIT);
 		// Draws the Background
-		background.draw();
+		background.Draw();
 
 		for (OpenGLObject& obj : objects)
 		{
