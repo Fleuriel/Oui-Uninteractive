@@ -147,7 +147,7 @@ void OpenGLApplication::OpenGLWindowCleanup()
 	// Save window size
 	std::string filePath = "../window-data/window-data.JSON";
 	rapidjson::Document windowDoc;
-	if (serializer.ReadJSONFile(filePath, windowDoc)) {
+	if (serializer.ReadJSONFile(filePath, windowDoc) && windowSize.first != 0 && windowSize.second != 0) {
 		windowDoc["windowX"] = windowSize.first;
 		windowDoc["windowY"] = windowSize.second;
 		serializer.WriteJSONFile(filePath, windowDoc);
@@ -507,9 +507,11 @@ void OpenGLApplication::OpenGLUpdate()
 		/*-----------------------------------
 		|       ImGui Stuff Testing         |
 		-----------------------------------*/
+		myEditor.Update();
+		myImGui.CreateFrame();
+		myImGui.Update();
 
-
-#ifdef _DEBUG
+		particleSystem.update();
 		if (angle > 360)
 			angle = 0;
 #endif
@@ -520,10 +522,8 @@ void OpenGLApplication::OpenGLUpdate()
 		// Draws the Background
 		background.draw();
 
-		// Iterate through ALL objects in Vector objects.
-		for (OpenGLObject& obj : objects) {
-			// for individual tagID, update the position
-			// Testing for translating of Objects.
+		for (OpenGLObject& obj : objects)
+		{
 			if (obj.TagID == 1)
 				obj.Update(positionX, 300, 100,100 ,angle, true);
 			
@@ -533,11 +533,10 @@ void OpenGLApplication::OpenGLUpdate()
 				obj.Update(300, 400, 50, 50);
 			}
 
-			// Tag ID 3
-			if (obj.TagID == 3)
-			{
-				obj.Update(100, 100, 50, 50);
-			}
+
+			//obj.DrawCollisionBox(Vector2D(00, 00), Vector2D(1, 1));
+
+
 		}
 
 		// Updates the Game Object
@@ -548,12 +547,9 @@ void OpenGLApplication::OpenGLUpdate()
 
 		}
 		
-		// Use Draw() on OpenGLApplication.cpp to draw the window parameters (FPS) and texture
+
 		Draw();
-
 		particleSystem.draw();
-
-
 		myImGui.Draw();
 }
 

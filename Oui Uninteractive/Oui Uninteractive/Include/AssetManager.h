@@ -14,7 +14,7 @@
 
 class AssetManager {
 public:
-	static LoadAudio()
+	//static LoadAudio()
 };
 
 #endif

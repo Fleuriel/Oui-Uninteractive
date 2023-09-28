@@ -359,17 +359,17 @@ void Editor::CreateObjectList() {
 				static float xPos2 = 0, yPos2 = 0, scale2 = 0, speed2 = 0, angle2 = 0, rotSpeed2 = 0;
 				if (objectFactory->GetGameObjectByID(gameobjID)->Has(ComponentType::TRANSFORM) != -1) {
 					xPos2 = GET_COMPONENT(objectFactory->GetGameObjectByID(gameobjID), Transform, ComponentType::TRANSFORM)->position.x;
-					if (ImGui::SliderFloat("X-Position", &xPos2, 0.0f, 1000.0f, "%.2f")) { // Slider for X-Position
+					if (ImGui::SliderFloat("X-Position", &xPos2, -(windowSize.first / 2), (windowSize.first / 2), "%.2f")) { // Slider for X-Position
 						GET_COMPONENT(objectFactory->GetGameObjectByID(gameobjID), Transform, ComponentType::TRANSFORM)->position.x = xPos2;
 					}
 
 					yPos2 = GET_COMPONENT(objectFactory->GetGameObjectByID(gameobjID), Transform, ComponentType::TRANSFORM)->position.y;
-					if (ImGui::SliderFloat("Y-Position", &yPos2, 0.0f, 100.0f, "%.2f")) { // Slider for Y-Position
+					if (ImGui::SliderFloat("Y-Position", &yPos2, -(windowSize.second / 2), (windowSize.first / 2), "%.2f")) { // Slider for Y-Position
 						GET_COMPONENT(objectFactory->GetGameObjectByID(gameobjID), Transform, ComponentType::TRANSFORM)->position.y = yPos2;
 					}
 
 					scale2 = GET_COMPONENT(objectFactory->GetGameObjectByID(gameobjID), Transform, ComponentType::TRANSFORM)->scale;
-					if (ImGui::SliderFloat("Scale", &scale2, 0.0f, 100.0f, "%.2f")) { // Slider for Scale
+					if (ImGui::SliderFloat("Scale %", &scale2, 0.0f, 500.0f, "%.2f")) { // Slider for Scale
 						GET_COMPONENT(objectFactory->GetGameObjectByID(gameobjID), Transform, ComponentType::TRANSFORM)->scale = scale2;
 					}
 
@@ -432,7 +432,8 @@ void Editor::CreateDebugPanel() {
 		ImGui::PlotLines("Current FPS", fpsData.data(), static_cast<int>(fpsData.size()), 0, "FPS", 0.0f, 300.0f, ImVec2(0, 80));
 		ImGui::PopStyleColor();
 		// FRAME TIME DATA
-		ImGui::Text("Frame time: %.2f", 1000.0f / GetFrames()); // Display program FPS in "Performance" tab
+		ImGui::Text("Frame time: %.2f ms", 1000.0f / GetFrames());// Display program FPS in "Performance" tab
+		ImGui::Text("Program run time: %.2f", GetGameRunTime());
 		ImGui::Separator();
 
 		// SYSTEM TIME DATA
@@ -440,9 +441,10 @@ void Editor::CreateDebugPanel() {
 		float physicsPercentage = timeRecorder.physicsTime / GetDT();
 		float grpahicsPercentage = timeRecorder.graphicsTime / GetDT();
 		float soundPercentage = timeRecorder.soundTime / GetDT();
-		static const char* chartLabels[] = { "Physics", "Graphics" , "Sound"};
+		float particlesPercentage = timeRecorder.particlesTime / GetDT();
+		static const char* chartLabels[] = { "Physics", "Graphics" , "Sound", "Particles"};
 		float data[] = {
-			physicsPercentage, grpahicsPercentage, soundPercentage
+			physicsPercentage, grpahicsPercentage, soundPercentage, particlesPercentage
 		};
 		static ImPlotPieChartFlags flags = 0;
 		// Draw pie chart
