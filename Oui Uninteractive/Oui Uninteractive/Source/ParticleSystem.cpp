@@ -5,7 +5,7 @@
  * @par Course: CSD 2401
  * @par Software Engineering Project 3
  * @date 09-05-2023
-* @brief Implementation of Particle and ParticleSystem classes.
+ * @brief Implementation of Particle and ParticleSystem classes.
  *
  * This file contains the implementation of the Particle and ParticleSystem
  * classes for a software engineering project. These classes are part of a

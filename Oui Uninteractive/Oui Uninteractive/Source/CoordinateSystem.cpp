@@ -1,3 +1,22 @@
+/**************************************************************************
+ * @file CoordinateSystem.cpp
+ * @author CHAN Aaron Jun Xiang
+ * @par DP email: aaronjunxiang.chan@digipen.edu
+ * @par Course: CSD 2401
+ * @par Software Engineering Project 3
+ * @date 09-05-2023
+ * @brief Implementation of Coordinate System functions.
+ *
+ * This file contains the implementation of various functions related to a
+ * coordinate system using the `Coordinates` class. These functions enable
+ * the manipulation and calculation of 2D coordinates, including retrieval,
+ * modification, distance calculations, and threshold checks. The `Coordinates`
+ * class provides a convenient way to work with 2D points and perform common
+ * operations on them.
+ *
+ * @see Coordinates
+ *************************************************************************/
+
 #include <CoordinateSystem.h>
 #include <cmath>
 
@@ -56,11 +75,20 @@ void Coordinates::MoveCoords(bool coordIndex, float val) {
     ((coordIndex == X_INDEX) ? Coords.x : Coords.y) += val;
 }
 
+/**************************************************************************
+ * @brief Move the coordinates by a specified vector.
+ *
+ * This function modifies the current coordinates by adding the components of the
+ * specified vector to the current coordinates. It effectively moves the coordinates
+ * to a new position based on the vector.
+ *
+ * @param vec The vector specifying the movement in each dimension.
+ **************************************************************************/
 void Coordinates::MoveCoords(Vector2D vec) {
     this->Coords += vec;
 }
 
-/**
+/**************************************************************************
  * @brief Calculate the Euclidean distance between this coordinates and another.
  *
  * This member function calculates the Euclidean distance between the coordinates
@@ -69,12 +97,12 @@ void Coordinates::MoveCoords(Vector2D vec) {
  *
  * @param Coords2 Another set of coordinates.
  * @return The Euclidean distance between this coordinates and Coords2.
- */
+ **************************************************************************/
 float Coordinates::Distance(const Coordinates Coords2) const {
     return Vector2DDistance(Coords, Coords2.Coords);
 }
 
-/**
+/**************************************************************************
  * @brief Check if the Euclidean distance between this and another coordinates exceeds a threshold.
  *
  * This member function checks whether the Euclidean distance between this coordinates
@@ -84,12 +112,12 @@ float Coordinates::Distance(const Coordinates Coords2) const {
  * @param Coords2 Another set of coordinates.
  * @param val The threshold value to compare the distance against.
  * @return True if the distance exceeds the threshold, false otherwise.
- */
+ **************************************************************************/
 bool Coordinates::DistanceExceedsThreshold(const Coordinates Coords2, float val) const {
     return (Vector2DSquareDistance(Coords, Coords2.Coords) > pow(val,2.0));
 }
 
-/**
+/**************************************************************************
  * @brief Check if the Euclidean distance between this and another coordinates is within a threshold.
  *
  * This member function checks whether the Euclidean distance between this coordinates
@@ -99,7 +127,7 @@ bool Coordinates::DistanceExceedsThreshold(const Coordinates Coords2, float val)
  * @param Coords2 Another set of coordinates.
  * @param val The threshold value to compare the distance against.
  * @return True if the distance is within the threshold, false otherwise.
- */
+ **************************************************************************/
 bool Coordinates::DistanceIsWithinThreshold(const Coordinates Coords2, float val) const {
     return !DistanceExceedsThreshold(Coords2, val);
 }
