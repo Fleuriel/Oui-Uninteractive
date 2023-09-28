@@ -268,7 +268,6 @@ void Editor::CreateObjectList() {
 							highestNumber = std::max(highestNumber, number);
 						}
 					}
-					gameobjID = copyMap.begin()->first;
 				}
 
 				for (int i = 0; i < addCount; i++) {
