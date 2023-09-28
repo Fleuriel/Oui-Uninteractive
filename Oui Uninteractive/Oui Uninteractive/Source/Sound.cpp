@@ -61,6 +61,7 @@ void SoundManager::Update(float dt) {
 	std::chrono::high_resolution_clock::time_point timeEnd = std::chrono::high_resolution_clock::now();
 	std::chrono::duration<float, std::milli> duration = timeEnd - timeStart;
 	Editor::timeRecorder.soundTime = duration.count();
+	(void)dt;
 }
 
 
