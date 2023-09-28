@@ -16,8 +16,6 @@
 #include <iostream>
 #include <array>
 #include <sstream>
-#include <fstream>
-#include <filesystem>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
@@ -26,39 +24,35 @@
 #include <stb_image.h>
 
 
-std::vector<glm::vec2> OpenGLObject::square;
-std::vector<glm::vec2> OpenGLObject::triangle;
-std::vector<std::string> OpenGLObject::mesh_Directory;
-
 unsigned int OpenGLObject::mdl_ref = 0; // Define and initialize mdl_ref
 unsigned int OpenGLObject::shd_ref = 0; // Define and initialize shd_ref
 
-OpenGLObject::OpenGLModel modl;
 
+// Vector for shdrpgms
 std::vector<OpenGLShader> OpenGLObject::shdrpgms;
+
+// Vector for models
 std::vector<OpenGLObject::OpenGLModel> OpenGLObject::models;
-//std::map<std::string, OpenGLShader> OpenGLObject::shdrpgms;
+#ifdef _DEBUG
 GLuint OpenGLObject::ShaderProgram{};
+#endif
 
-std::vector<GLuint> OpenGLObject::textures;
-
-std::map<std::string, OpenGLObject::OpenGLModel> OpenGLObject::Model_Storage;
-std::map<std::string, OpenGLObject> OpenGLObject::Object_Storage;
-
+// VAO and VBO initializiation
 GLuint OpenGLObject::VAO = 0;
 GLuint OpenGLObject::VBO = 0;
 
+// Global Variable to set it, and then use it eventually.
 int bgTexture, firstTexture, secondTexture;
-
-
-GLuint Suffering; 
 
 
 
 
 /**************************************************************************
-* @brief		Loads Meshes for models and/or other shader files to
-*				enable creation of GameObjects.
+* @brief		Initialize OpenGLObject that does Model Creation for future
+*				Drawing Capabilities and Shader Emplacement.
+* 
+* @WARNING _DEBUG debug draws a model of square.
+* 
 * @param  none
 * @return void
 *************************************************************************/
@@ -66,45 +60,29 @@ void OpenGLObject::Init()
 {
 #ifdef _DEBUG
 	std::cout << "OpenGLObject::Init()\n\n";
-
 #endif // _DEBUG
 
-
-//	Load_Meshes();
-	
-
-	//modl.setup_TextureVAO();
-
+	// Create file name
 	VectorPairStrStr fileName{
 		std::make_pair<std::string, std::string>
 		("../shaders/Oui_Uninteractive.vert", "../shaders/Oui_Uninteractive.frag")
 	};
 
+	// Initialize the Shader Program
 	init_shdrpgms_cont(fileName);
-	
-	
-	//modl.setup_TextureVAO();
-	
 
 	//Suffering = OpenGLObject::Setup_TextureObject("../texture/pantheon.jpg");
 	firstTexture = OpenGLObject::Setup_TextureObject("../texture/pepethefrog.png");
 	secondTexture = OpenGLObject::Setup_TextureObject("../texture/pepe.jpg");
 	bgTexture = OpenGLObject::Setup_TextureObject("../texture/background.jpg");
 
-
-	textures.emplace_back(firstTexture);
-	textures.emplace_back(secondTexture);
-	textures.emplace_back(bgTexture);
-
-
-	models.emplace_back(OpenGLObject::Box_Model(0, color, firstTexture));
-	models.emplace_back(OpenGLObject::Box_Model(1 ,color, secondTexture));
-	models.emplace_back(OpenGLObject::Box_Model(2, color, bgTexture));
+	// Emplace model to the model vector
+	models.emplace_back(OpenGLObject::Box_Model(color));
 
 	
-
-
-
+#ifdef _DEBUG // This is to Make sure that the graphics Pipeline WORKS as intended
+			  // AND HAS TO BE UNCOMMENTED TO CHANGE STATES.!
+			  // Draws a Box with color.
 //	const char* vertexShaderSource =
 //	R"(#version 450 core
 //		layout(location = 0) in vec3 aPos;
@@ -208,51 +186,8 @@ void OpenGLObject::Init()
 	//
 	//glDeleteShader(vertexShader);
 	//glDeleteShader(fragmentShader);
-
-
-
-
-#ifdef _DEBUG
-
-	std::cout << '\n';
 #endif
-
-	//Setup_Quad_VAO();
-
-
-
 }
-
-//void OpenGLObject::OpenGLModel::draw() const
-//{
-//	//texture object is to use texture image unit 6
-//	glBindTextureUnit(6, importTexture);
-//
-//
-//
-//	glTextureParameteri(importTexture, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);//Repeat wrap
-//	glTextureParameteri(importTexture, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);//Repeat wrap
-//
-//	shdrpgms[shd_ref].Use(); // Install the shader program
-//	// Part 2: Bind object's VAO handle
-//
-//	shdrpgms[shd_ref].SetUniform("uTex2d", 6);
-//
-//	glBindVertexArray(models[mdl_ref].vaoid); // Bind object's VAO handle
-//
-//
-//	glDrawElements(
-//		models[mdl_ref].primitive_type,
-//		models[mdl_ref].draw_cnt,
-//		GL_UNSIGNED_SHORT, NULL);
-//
-//
-//
-//
-//	// Part 5: Clean up
-//	glBindVertexArray(0); // Unbind the VAO
-//	shdrpgms[shd_ref].UnUse(); // Uninstall the shader program
-//}
 
 
 /**************************************************************************************
@@ -261,7 +196,7 @@ void OpenGLObject::Init()
 * @param color			Color <R,G,B>
 * @return OpenGLObject  
 ***************************************************************************************/
-OpenGLObject::OpenGLModel OpenGLObject::Box_Model(int ID, glm::vec3 color, int textureInput)
+OpenGLObject::OpenGLModel OpenGLObject::Box_Model(glm::vec3 color)
 {
 	struct Vertex {
 		glm::vec2 position;        // Vertex position
@@ -278,6 +213,7 @@ OpenGLObject::OpenGLModel OpenGLObject::Box_Model(int ID, glm::vec3 color, int t
 		 { glm::vec2(-0.5f, -0.5f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec2(0.0f, 1.0f) }  // Bottom-left
 	};
 
+	// Create Model.
 	OpenGLModel mdl;
 
 
@@ -310,9 +246,6 @@ OpenGLObject::OpenGLModel OpenGLObject::Box_Model(int ID, glm::vec3 color, int t
 	glVertexArrayAttribFormat(vaoid, 2, 2, GL_FLOAT, GL_FALSE, 0);
 	glVertexArrayAttribBinding(vaoid, 2, 2);
 
-	// Bind the texture before rendering
-	//glBindTexture(GL_TEXTURE_2D, textureInput);
-
 	// Set up index buffer for rendering
 	std::array<GLushort, 4> idx_vtx = { 0, 1, 2, 3 };
 	GLuint ebo_hdl;
@@ -325,10 +258,9 @@ OpenGLObject::OpenGLModel OpenGLObject::Box_Model(int ID, glm::vec3 color, int t
 	mdl.primitive_type = GL_TRIANGLE_FAN; // Use GL_TRIANGLE_FAN for a square
 	mdl.draw_cnt = idx_vtx.size();
 	mdl.primitive_cnt = vertices.size();
-	mdl.ModelID = ID;
-	mdl.texture = textureInput;
 
 
+	// return model
 	return mdl;
 }
 
@@ -349,7 +281,6 @@ void OpenGLObject::Update(float newX, float newY, float scaleX, float scaleY, fl
 	//std::cout << "Object Update\n";
 	// Compute the angular displacement in radians
 
-//	angleDisplacment = aDisp;
 	
 	
 	//Scale the model based on float variable.
@@ -361,18 +292,19 @@ void OpenGLObject::Update(float newX, float newY, float scaleX, float scaleY, fl
 	// of xAccel is 0, and position would not change.
 	position = glm::vec2(newX, newY);
 
-
+	// Boolean from the user to set if rotation is yes or no.
 	if (enRot == true)
 	{
 		angleDisplacment = newAngle;
 	}
-	
+	// in case user does not set, angleDisplacement will be in the range of
+	// 0 ~ 360 || -360 ~ 0
 	if (angleDisplacment >= 360.0f || angleDisplacment <= -360.0f)
 		angleDisplacment = 0.0f;
 
 	
 
-// Compute the scale matrix
+	// Compute the scale matrix
 	glm::mat3 Scale = glm::mat3(
 		scaleModel.x, 0.0f, 0.0f,
 		0.0f, scaleModel.y, 0.0f,
@@ -417,8 +349,6 @@ void OpenGLObject::Update(float newX, float newY, float scaleX, float scaleY, fl
 void OpenGLObject::Draw() const
 {
 	//texture object is to use texture image unit 6
-
-
 	int tex{};
 	switch (TagID)
 	{
@@ -435,13 +365,14 @@ void OpenGLObject::Draw() const
 		break;
 	}
 
+	// Bind Texture to 6.
 	glBindTextureUnit(6, tex);
 
-	shdrpgms[shd_ref].Use(); // Install the shader program
+	// Install the shader program
+	shdrpgms[shd_ref].Use(); 
 
-
-
-
+	// In Shader Program [uTex2d] is the texture uniform position.
+	// set uniform uTex2d to #6.
 	shdrpgms[shd_ref].SetUniform("uTex2d", 6);
 	// Part 2: Bind object's VAO handle
 	glBindVertexArray(models[mdl_ref].vaoid); // Bind object's VAO handle
@@ -456,153 +387,49 @@ void OpenGLObject::Draw() const
 		std::exit(EXIT_FAILURE);
 	}
 
-	// Part 4: Render using glDrawElements or glDrawArrays
-
-
-
+	// Draw the Elements that are contained in the primitive
 	glDrawElements(
 		models[mdl_ref].primitive_type,
 		models[mdl_ref].draw_cnt,
 		GL_UNSIGNED_SHORT, NULL);
-
-
-
 
 	// Part 5: Clean up
 	glBindVertexArray(0); // Unbind the VAO
 	shdrpgms[shd_ref].UnUse(); // Uninstall the shader program
 }
 
+/**************************************************************************
+* @brief		 Cleanup the Object Creation.
+* @param  none
+* @return void
+*************************************************************************/
 void OpenGLObject::Cleanup()
 {
-
-
-
+	// Cleanup the VAO, VBO and Shader Program
 	glDeleteVertexArrays(1, &VAO);
 	glDeleteBuffers(1, &VBO);
+#ifdef _DEBUG
 	glDeleteProgram(ShaderProgram);
+#endif
 }
 
-
-
-
-void OpenGLObject::OpenGLModel::setup_TextureVAO()
-{
-	std::vector<VAO_Object> vao_value;
-	vao_value.reserve(4);
-
-	VAO_Object setup_var;
-
-	//top left
-	setup_var.setTextureValue(-1.0f, 1.0f, 1.f, 0.f, 1.f);
-	setup_var.setTexture(0.f, 1.f);
-	vao_value.emplace_back(setup_var);
-
-	//bottom left
-	setup_var.setTextureValue(-1.0f, -1.0f, 1.f, 0.f, 0.f);
-	setup_var.setTexture(0.f, 0.f);
-	vao_value.emplace_back(setup_var);
-
-	//top right
-	setup_var.setTextureValue(1.0f, -1.0f, 1.f, 1.f, 0.f);
-	setup_var.setTexture(1.f, 0.f);
-	vao_value.emplace_back(setup_var);
-
-
-	//bottom right
-	setup_var.setTextureValue(1.0f, 1.0f, 0.f, 0.f, 1.f);
-	setup_var.setTexture(1.f, 1.f);
-	vao_value.emplace_back(setup_var);
-
-
-
-
-
-	// transfer vertex position and color attributes to VBO
-	GLuint vbo_hdl;
-	glCreateBuffers(1, &vbo_hdl);
-
-	glNamedBufferStorage(vbo_hdl, sizeof(OpenGLModel::VAO_Object) * vao_value.size(), vao_value.data(), GL_DYNAMIC_STORAGE_BIT);
-
-	GLint max_vtx_attribs;
-	glGetIntegerv(GL_MAX_VERTEX_ATTRIBS, &max_vtx_attribs);
-	std::cout << "Maximum vertex attributes: " << max_vtx_attribs << '\n';
-
-	GLint max_vtx_binding_buffer;
-	glGetIntegerv(GL_MAX_VERTEX_ATTRIB_BINDINGS, &max_vtx_binding_buffer);
-	std::cout << "Maximum vertex buffer bindings: " << max_vtx_binding_buffer << '\n';
-
-	//encapsulate information about contents of VBO and VBO handle
-	// to another object called VAO
-	glCreateVertexArrays(1, &vaoid);
-
-
-	//enable use of vertex position
-	glEnableVertexArrayAttrib(vaoid, 0);
-
-	//vertex buffer binding point 3
-	glVertexArrayVertexBuffer(vaoid, 3, vbo_hdl, 0, sizeof(OpenGLModel::VAO_Object)/*number of spaces each iteration*/);
-
-	//position
-	// vao position, we use vertex attribute index 0
-	//and vertex buffer binding point 3
-	//offsetof (offset based on on data type, and member variable, offset will be automatically calculated)
-	glVertexArrayAttribFormat(vaoid, 0, 2/*size of data*/, GL_FLOAT, GL_FALSE, offsetof(OpenGLModel::VAO_Object/*structure type*/, OpenGLModel::VAO_Object::position/*value name*/));
-	glVertexArrayAttribBinding(vaoid, 0, 3);
-
-
-	//enable use of color value
-	glEnableVertexArrayAttrib(vaoid, 1);
-
-	// vao color, we use vertex attribute index 1
-	// and vertex buffer binding point 3
-	glVertexArrayAttribFormat(vaoid, 1, 3/*size of data*/, GL_FLOAT, GL_FALSE, offsetof(OpenGLModel::VAO_Object/*structure type*/, OpenGLModel::VAO_Object::color/*value name*/));
-	glVertexArrayAttribBinding(vaoid, 1, 3);
-
-	//enable use of texture vertex
-	glEnableVertexArrayAttrib(vaoid, 2);
-
-	// vao color, we use vertex attribute index 1
-	// and vertex buffer binding point 3
-	glVertexArrayAttribFormat(vaoid, 2, 2/*size of data*/, GL_FLOAT, GL_FALSE, offsetof(OpenGLModel::VAO_Object/*structure type*/, OpenGLModel::VAO_Object::texture/*value name*/));
-	glVertexArrayAttribBinding(vaoid, 2, 3);
-
-	// Set the primitive Type of the primitive to Triangle Strip
-	primitive_type = GL_TRIANGLE_STRIP;
-
-	// Define two triangles primitives which make up a square
-	std::array<GLushort, 4> idx_vtx
-	{
-		0, 1, 2, 3
-	};
-
-	// Set the index element count to the vertex size
-	idx_elem_cnt = idx_vtx.size();
-
-	// Ebo handlers
-	GLuint ebo_hdl;
-	glCreateBuffers(1, &ebo_hdl);
-	glNamedBufferStorage(ebo_hdl, sizeof(GLushort) * idx_elem_cnt, reinterpret_cast<GLvoid*>(idx_vtx.data()), GL_DYNAMIC_STORAGE_BIT);
-	glVertexArrayElementBuffer(vaoid, ebo_hdl);
-	glBindVertexArray(0);
-
-
-}
-
-
-
-
-
-
-
-
-
+/**************************************************************************
+* @brief		Initialize the Shaders for Graphics Pipeline for Object to
+*				Render and/or Translate their objects.
+*
+* @param  VPSS  std::vector <std::pair<std::string, std::string>>
+* @return void
+*************************************************************************/
 void OpenGLObject::init_shdrpgms_cont(VectorPairStrStr const& vpss) {
 	for (auto const& x : vpss) {
+		// Create Vector for pair of Enum and String
 		std::vector<std::pair<GLenum, std::string>> shdr_files;
+		// Emplace back into the shdr_files vector
 		shdr_files.emplace_back(std::make_pair(GL_VERTEX_SHADER, x.first));
 		shdr_files.emplace_back(std::make_pair(GL_FRAGMENT_SHADER, x.second));
+		// Create Shader
 		OpenGLShader shdr_pgm;
+		// Validate the shader program (shdr_Files).
 		shdr_pgm.CompileLinkValidate(shdr_files);
 		// insert shader program into container
 		shdrpgms.emplace_back(shdr_pgm);
@@ -610,26 +437,43 @@ void OpenGLObject::init_shdrpgms_cont(VectorPairStrStr const& vpss) {
 }
 
 
-
+/**************************************************************************
+* @brief		Initialize the Shaders for Graphics Pipeline for Object to
+*				Render and/or Translate their objects.
+*
+* @param  float User Input X coordinate
+* @param  float User Input Y Coordinate
+* @param  float User Input Size X (Scale X Axis)
+* @param  float User Input Size Y (Scale Y Axis)
+* @param  float User Input Angle Displacement (Anti Clockwise)
+* @param  float User Input Angle Speed (Speed of rotation)
+* 
+* @return void
+*************************************************************************/
 void OpenGLObject::InitObjects(float userInput_x, float userInput_y, float userInput_sizeX,
 							   float userInput_sizeY, float userInput_angleDisplacement, 
 							   float userInput_angleSpeed)
 {
 
+	// Initialize the object of model and shader reference to 0
 	mdl_ref = 0;
 	shd_ref = 0;
 
+	// set position x and y to the user input
 	position.x = userInput_x;
 	position.y = userInput_y;
 
 	using glm::radians;
 
+	// set scale to user input
 	scaleModel.x = userInput_sizeX;
 	scaleModel.y = userInput_sizeY;
 
+	// set Angle parameters to user input
 	angleDisplacment = userInput_angleDisplacement;
 	angleSpeed = userInput_angleSpeed;
 
+	// matrix for translate
 	glm::mat3 Translate = glm::mat3
 	{
 		1, 0, 0,
@@ -637,6 +481,7 @@ void OpenGLObject::InitObjects(float userInput_x, float userInput_y, float userI
 		 position.x,  position.y, 1
 	};
 
+	// matrix for rotation
 	glm::mat3 Rotation = glm::mat3
 	{
 		cosf(radians(angleDisplacment)), sinf(radians(angleDisplacment)) , 0,
@@ -644,6 +489,7 @@ void OpenGLObject::InitObjects(float userInput_x, float userInput_y, float userI
 		0, 0, 1
 	};
 
+	// matrix for scale
 	glm::mat3 Scale = glm::mat3
 	{
 		scaleModel.x, 0, 0,
@@ -651,9 +497,11 @@ void OpenGLObject::InitObjects(float userInput_x, float userInput_y, float userI
 		0, 0, 1
 	};
 
+	// set the scale for the World to NDC coords.
 	float scaleX = 2.0f / windowSize.first;
 	float scaleY = 2.0f / windowSize.second;
 
+	// Scale To World NDC-coordinates matrix
 	glm::mat3 ScaleToWorldToNDC = glm::mat3
 	{
 		scaleX, 0, 0,
@@ -666,24 +514,20 @@ void OpenGLObject::InitObjects(float userInput_x, float userInput_y, float userI
 	//	   x1 y1 z1						 y0 y1 y2
 	//	   x2 y2 z2						 z0 z1 z2
 	model_To_NDC_xform = ScaleToWorldToNDC* Translate * Rotation * Scale;
-
-
 }
 
 
-
+/**************************************************************************
+* @brief		Draws a Debug Collision Box (AABB)
+*
+* @param  Vector2D	Minimum Coordinates of AABB
+* @param  Vector2D  Maximum Coordinates of AABB
+*
+* @return void
+*************************************************************************/
 void OpenGLObject::DrawCollisionBox(Vector2D min, Vector2D max)
 {
-
-	float height = max.y - min.y;
-	float width = max.x - min.x;
-
-
-	//float sX = min.x - (width) / 2;
-	//float bX = max.x - (width) / 2;
-	//float sY = min.y - (height) / 2;
-	//float bY = max.y - (height) / 2;
-
+	// get the points of the AABB
 	float sX = min.x;
 	float bX = max.x;
 	float sY = min.y;
@@ -691,23 +535,18 @@ void OpenGLObject::DrawCollisionBox(Vector2D min, Vector2D max)
 
 	using glm::radians;
 
+	// midpoint of both X and Y min and max
 	float mpointX = (max.x + min.x) / 2;
 	float mpointY = (max.y + min.y) / 2;
 	
+	// set angle displacement to 0, as we do not need to rotate
 	angleDisplacment = 0;
 
-
-	glm::mat3 Translate = glm::mat3
-	{
-		1, 0, 0,
-		0, 1, 0,
-		mpointX,  mpointY, 1
-	};
-
-
+	// Set Scales
 	float scaleX = 2.0f / windowSize.first;
 	float scaleY = 2.0f / windowSize.second;
 
+	// Set Scale to World NDC
 	glm::mat3 ScaleToWorldToNDC = glm::mat3(
 		1.0f / (windowSize.first / 2), 0.0f, 0.0f,
 		0.0f, 1.0f / (windowSize.second / 2), 0.0f,
@@ -722,10 +561,6 @@ void OpenGLObject::DrawCollisionBox(Vector2D min, Vector2D max)
 
 	// Define the vertices of the collision box in local coordinates (before transformation)
 	glm::vec2 localVertices[4] = {
-		//glm::vec2(sX, sY),
-		//glm::vec2(bX, sY),
-		//glm::vec2(bX, bY),
-		//glm::vec2(sX, bY)
 
 		glm::vec2(sX, sY),
 		glm::vec2(bX, sY),
@@ -737,14 +572,17 @@ void OpenGLObject::DrawCollisionBox(Vector2D min, Vector2D max)
 	// Apply the transformation matrix to the local vertices
 	glm::vec2 transformedVertices[4];
 	for (int i = 0; i < 4; ++i) {
+		// set the vertices
 		transformedVertices[i] = glm::vec2(model_To_NDC_xform * glm::vec3(localVertices[i], 1.0f));
 	}
 
 	// Draw the transformed collision box
 	glBegin(GL_LINE_LOOP);
 	for (int i = 0; i < 4; ++i) {
+		// set the vertex and draw the lines, based on GL_LINE_LOOP
 		glVertex2f(transformedVertices[i].x, transformedVertices[i].y);
 	}
+	// End the loop
 	glEnd();
 
 }
@@ -757,32 +595,58 @@ void OpenGLObject::DrawCollisionBox(Vector2D min, Vector2D max)
 /*=======================================================================================================================*/
 /*=======================================================================================================================*/
 
-
+/**************************************************************************
+* @brief		Setup Texture Object into the parameters (int)
+*
+* @param  std::string filePath of the Texture.
+* @return int	Texture Handler
+*************************************************************************/
 int OpenGLObject::Setup_TextureObject(std::string filePath)
 {
+	// Create a int variable for texture Object
 	GLuint textureObj_Handler;
 
+	// width, height and channels for the image
 	int width, height, channels;
+	// Load the image into *image
 	unsigned char* image = stbi_load(filePath.c_str(), &width, &height, &channels, STBI_rgb_alpha);
 
+	// If no image is generated, failed.
 	if (!image)
 	{
 		std::cout << "Failed to load texture: " << filePath << std::endl;
 		return 0; // Return 0 to indicate failure
 	}
 
+	// Create Texture into Texture2D, reference to TextureObjHandler
 	glCreateTextures(GL_TEXTURE_2D, 1, &textureObj_Handler);
+	// Store the data into Storage2D
 	glTextureStorage2D(textureObj_Handler, 1, GL_RGBA8, width, height);
+	// Store the sub data into the sub Image
 	glTextureSubImage2D(textureObj_Handler, 0, 0, 0, width, height, GL_RGBA, GL_UNSIGNED_BYTE, image);
 
-	stbi_image_free(image); // Free the image data after it's uploaded to OpenGL
+	// Free the image data after it's uploaded to OpenGL
+	stbi_image_free(image); 
 
+	// Return int value of a texture.
 	return textureObj_Handler;
 }
 
 
+/**************************************************************************
+* @brief		set Texture Positon, Color
+*
+* @param  float x axis of texture
+* @param  float y axis of texture
+* @param  float r Red Color Value
+* @param  float g Green Color Value
+* @param  float b Blue Color Value
+* 
+* @return void
+*************************************************************************/
 void OpenGLObject::OpenGLModel::VAO_Object::setTextureValue(float x, float y, float r, float g, float b)
 {
+	// Set Position X and Y
 	position.x = x;
 	position.y = y;
 
@@ -793,14 +657,21 @@ void OpenGLObject::OpenGLModel::VAO_Object::setTextureValue(float x, float y, fl
 
 }
 
+/**************************************************************************
+* @brief		set Texture Positon, Color
+*
+* @param  float s axis of texture
+* @param  float t axis of texture
+*
+* @return void
+*************************************************************************/
 void OpenGLObject::OpenGLModel::VAO_Object::setTexture(float s, float t)
 {
+	// Set Texture S and T coordinates.
 	texture.s = s;
 	texture.t = t;
 
 }
-
-
 
 /*=======================================================================================================================*/
 /*=======================================================================================================================*/

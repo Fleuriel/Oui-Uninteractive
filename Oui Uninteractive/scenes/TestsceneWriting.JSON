@@ -30,15 +30,9 @@
                     "Speed": 700.0
                 },
                 "Transform": {
-<<<<<<< Updated upstream
-                    "PositionX": 50.1994514465332,
-                    "PositionY": -199.9002685546875,
-                    "Rotation": 117.30594635009766,
-=======
-                    "PositionX": 50.39219665527344,
-                    "PositionY": -199.8039093017578,
-                    "Rotation": 235.9538116455078,
->>>>>>> Stashed changes
+                    "PositionX": 50.06089782714844,
+                    "PositionY": -199.96954345703125,
+                    "Rotation": 283.75775146484375,
                     "Scale": 130.0
                 }
             }
@@ -54,15 +48,9 @@
                     "Speed": 500.0
                 },
                 "Transform": {
-<<<<<<< Updated upstream
-                    "PositionX": 200.19944763183594,
-                    "PositionY": 104.08871459960938,
-                    "Rotation": 117.30594635009766,
-=======
-                    "PositionX": 200.39219665527344,
-                    "PositionY": 108.03999328613281,
-                    "Rotation": 235.9538116455078,
->>>>>>> Stashed changes
+                    "PositionX": 200.06089782714844,
+                    "PositionY": 101.24842834472656,
+                    "Rotation": 283.75775146484375,
                     "Scale": 220.0
                 }
             }
@@ -98,11 +86,7 @@
                 "Transform": {
                     "PositionX": 450.0,
                     "PositionY": 50.0,
-<<<<<<< Updated upstream
-                    "Rotation": 196.28265380859375,
-=======
-                    "Rotation": 181.93775939941406,
->>>>>>> Stashed changes
+                    "Rotation": 4.1752800941467285,
                     "Scale": 200.0
                 }
             }
