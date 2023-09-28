@@ -432,7 +432,8 @@ void Editor::CreateDebugPanel() {
 		ImGui::PlotLines("Current FPS", fpsData.data(), static_cast<int>(fpsData.size()), 0, "FPS", 0.0f, 300.0f, ImVec2(0, 80));
 		ImGui::PopStyleColor();
 		// FRAME TIME DATA
-		ImGui::Text("Frame time: %.2f ms", 1000.0f / GetFrames()); // Display program FPS in "Performance" tab
+		ImGui::Text("Frame time: %.2f ms", 1000.0f / GetFrames());// Display program FPS in "Performance" tab
+		ImGui::Text("Program run time: %.2f", GetGameRunTime());
 		ImGui::Separator();
 
 		// SYSTEM TIME DATA
