@@ -212,30 +212,31 @@ void Editor::CreateObjectList() {
 		ImGui::BeginChild("item view", ImVec2(0, -ImGui::GetFrameHeightWithSpacing())); // Leave room for 1 line below us
 		// Detail Tab
 		if (ImGui::CollapsingHeader("Details")) {
-			if (objectFactory->GetGameObjectByID(gameobjID) != nullptr) {
-				ImGui::Text("Object ID: %d", objectFactory->GetGameObjectByID(gameobjID)->GetGameObjectID());
-			}
 			static float xPos = 0, yPos = 0, scale = 0, speed = 0, angle = 0, rotSpeed = 0;
 			if (objectFactory->GetGameObjectIDMap().empty()) {
 				ImGui::Text("No objects");
 			}
 			else {
-				if (objectFactory->GetGameObjectByID(gameobjID)->Has(ComponentType::TRANSFORM) != -1) {
-					xPos = GET_COMPONENT(objectFactory->GetGameObjectByID(gameobjID), Transform, ComponentType::TRANSFORM)->position.x;
-					yPos = GET_COMPONENT(objectFactory->GetGameObjectByID(gameobjID), Transform, ComponentType::TRANSFORM)->position.y;
-					scale = GET_COMPONENT(objectFactory->GetGameObjectByID(gameobjID), Transform, ComponentType::TRANSFORM)->scale;
-					angle = GET_COMPONENT(objectFactory->GetGameObjectByID(gameobjID), Transform, ComponentType::TRANSFORM)->rotation;
+				if (objectFactory->GetGameObjectByID(gameobjID) != nullptr) {
+					ImGui::Text("Object ID: %d", objectFactory->GetGameObjectByID(gameobjID)->GetGameObjectID());
+					if (objectFactory->GetGameObjectByID(gameobjID)->Has(ComponentType::TRANSFORM) != -1) {
+						xPos = GET_COMPONENT(objectFactory->GetGameObjectByID(gameobjID), Transform, ComponentType::TRANSFORM)->position.x;
+						yPos = GET_COMPONENT(objectFactory->GetGameObjectByID(gameobjID), Transform, ComponentType::TRANSFORM)->position.y;
+						scale = GET_COMPONENT(objectFactory->GetGameObjectByID(gameobjID), Transform, ComponentType::TRANSFORM)->scale;
+						angle = GET_COMPONENT(objectFactory->GetGameObjectByID(gameobjID), Transform, ComponentType::TRANSFORM)->rotation;
+					}
+					else {
+						xPos = yPos = scale = angle = 0;
+					}
+					if (objectFactory->GetGameObjectByID(gameobjID)->Has(ComponentType::PHYSICS_BODY) != -1) {
+						speed = GET_COMPONENT(objectFactory->GetGameObjectByID(gameobjID), PhysicsBody, ComponentType::PHYSICS_BODY)->speed;
+						rotSpeed = GET_COMPONENT(objectFactory->GetGameObjectByID(gameobjID), PhysicsBody, ComponentType::PHYSICS_BODY)->rotationSpeed;
+					}
+					else {
+						speed = rotSpeed = 0;
+					}
 				}
-				else {
-					xPos = yPos = scale = angle = 0;
-				}
-				if (objectFactory->GetGameObjectByID(gameobjID)->Has(ComponentType::PHYSICS_BODY) != -1) {
-					speed = GET_COMPONENT(objectFactory->GetGameObjectByID(gameobjID), PhysicsBody, ComponentType::PHYSICS_BODY)->speed;
-					rotSpeed = GET_COMPONENT(objectFactory->GetGameObjectByID(gameobjID), PhysicsBody, ComponentType::PHYSICS_BODY)->rotationSpeed;
-				}
-				else {
-					speed = rotSpeed = 0;
-				}
+				
 				ImGui::Text("X-Position: %.2f | Y-Position: %.2f", xPos, yPos);
 				ImGui::Text("Scale: %.2f", scale);
 				ImGui::Text("Angle: %.2f", angle);
@@ -267,6 +268,7 @@ void Editor::CreateObjectList() {
 							highestNumber = std::max(highestNumber, number);
 						}
 					}
+					gameobjID = copyMap.begin()->first;
 				}
 
 				for (int i = 0; i < addCount; i++) {
@@ -322,6 +324,7 @@ void Editor::CreateObjectList() {
 				objectFactory->DestroyAllObjects();
 				selectedID = 0;
 			}
+
 			ImGui::SameLine();
 			// Used for testing M1 Rubric: Have 2.5k Objects with FPS >60
 			if (ImGui::Button("Spawn 2500 Objects")) {
