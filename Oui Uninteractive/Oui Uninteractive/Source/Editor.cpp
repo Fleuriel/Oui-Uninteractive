@@ -327,7 +327,14 @@ void Editor::CreateObjectList() {
 
 			ImGui::SameLine();
 			// Used for testing M1 Rubric: Have 2.5k Objects with FPS >60
-			size_t startIndex = copyMap.rbegin()->first;
+			size_t startIndex = 0;
+			if (!copyMap.empty()) {
+				startIndex = copyMap.rbegin()->first;
+			}
+			else {
+				startIndex = 0;
+			}
+			
 			if (ImGui::Button("Spawn 2500 Objects")) {
 				for (size_t i{}; i < 2500; ++i) {
 					std::string goName{ "ObjectRunTime" + std::to_string(startIndex + i + 1) };

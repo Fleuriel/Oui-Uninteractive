@@ -517,11 +517,13 @@ void OpenGLApplication::OpenGLUpdate()
 
 			if (testPhase)
 			{
-				static Vector2D min, max;
-				max = GET_COMPONENT(gObj.second, PhysicsBody, ComponentType::PHYSICS_BODY)->boundingbox->max;
-				min = GET_COMPONENT(gObj.second, PhysicsBody, ComponentType::PHYSICS_BODY)->boundingbox->min;
+				if (gObj.second->Has(ComponentType::PHYSICS_BODY) && gObj.second->Has(ComponentType::TRANSFORM) && gObj.second != nullptr) {
+					static Vector2D min, max;
+					max = GET_COMPONENT(gObj.second, PhysicsBody, ComponentType::PHYSICS_BODY)->boundingbox->max;
+					min = GET_COMPONENT(gObj.second, PhysicsBody, ComponentType::PHYSICS_BODY)->boundingbox->min;
 
-				GET_COMPONENT(gObj.second, Transform, ComponentType::TRANSFORM)->shape->DrawCollisionBox(min,max);
+					GET_COMPONENT(gObj.second, Transform, ComponentType::TRANSFORM)->shape->DrawCollisionBox(min, max);
+				}
 			}
 		}
 		
