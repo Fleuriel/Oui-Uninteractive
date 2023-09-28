@@ -482,12 +482,10 @@ void OpenGLApplication::OpenGLUpdate()
 		myEditor.Update();
 		myImGui.CreateFrame();
 		myImGui.Update();
-		myImGui.Draw();
 
+		particleSystem.update();
 		if (angle > 360)
 			angle = 0;
-
-		
 
 		for (OpenGLObject& obj : objects)
 		{
@@ -519,10 +517,11 @@ void OpenGLApplication::OpenGLUpdate()
 
 		}
 		
-
+		
+		myImGui.Draw();
 		Draw();
 
-		particleSystem.update();
+		
 		particleSystem.draw();
 
 
