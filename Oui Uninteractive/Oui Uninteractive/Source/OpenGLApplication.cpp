@@ -387,9 +387,8 @@ void OpenGLApplication::OpenGLUpdate(){
 			}
 		}
 		else
-
 		// IF BIG LETTERS
-		if (((keyStates[GLFW_KEY_RIGHT_SHIFT] || keyStates[GLFW_KEY_LEFT_SHIFT]) && !keyStates[GLFW_KEY_CAPS_LOCK]) + (!(keyStates[GLFW_KEY_RIGHT_SHIFT] || keyStates[GLFW_KEY_LEFT_SHIFT]) && keyStates[GLFW_KEY_CAPS_LOCK])) {
+		if (((keyStates[GLFW_KEY_RIGHT_SHIFT] || keyStates[GLFW_KEY_LEFT_SHIFT]) && !keyStates[GLFW_KEY_CAPS_LOCK]) + !(keyStates[GLFW_KEY_RIGHT_SHIFT] || keyStates[GLFW_KEY_LEFT_SHIFT]) && keyStates[GLFW_KEY_CAPS_LOCK]) {
 
 			if (keyStates[GLFW_KEY_A]) {
 
@@ -655,8 +654,8 @@ void OpenGLApplication::OpenGLTestChangingStates(){
 * @param none
 * @return void
 *************************************************************************/
-void OpenGLApplication::OpenGLWindowResizeCallback(GLFWwindow* window, int width, int height) {
-	(void)window;
+void OpenGLApplication::OpenGLWindowResizeCallback( GLFWwindow* window2, int width, int height) {
+	(void)window2;
 
 	// Update the window dimensions once changed
 	// set callback for the window size
