@@ -1,6 +1,7 @@
 /**************************************************************************
 * @file Vector2D.cpp
 * @author CHEAH Tristan Tze Hong
+* @co-author CHAN Aaron Jun Xiang
 * @par DP email: t.cheah@digipen.edu
 * @par Course: CSD 2401
 * @par Software Engineering Project 3
