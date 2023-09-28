@@ -76,8 +76,7 @@ static bool imguiInitialized = false;
 * @param  none
 * @return void
 *************************************************************************/
-void OpenGLApplication::OpenGLWindowInit()
-{
+void OpenGLApplication::OpenGLWindowInit(){
 	// Read window size from JSON
 	std::string filePath = "../window-data/window-data.JSON";
 	rapidjson::Document windowDoc;
@@ -142,8 +141,7 @@ void OpenGLApplication::OpenGLWindowInit()
 * @param  none
 * @return void
 *************************************************************************/
-void OpenGLApplication::OpenGLWindowCleanup()
-{
+void OpenGLApplication::OpenGLWindowCleanup(){
 	// Save window size
 	std::string filePath = "../window-data/window-data.JSON";
 	rapidjson::Document windowDoc;
@@ -167,8 +165,7 @@ void OpenGLApplication::OpenGLWindowCleanup()
 * @param  none
 * @return void
 *************************************************************************/
-void OpenGLApplication::OpenGLInit()
-{
+void OpenGLApplication::OpenGLInit(){
 
 	if (!glewInitialized) {
 		GLenum err = glewInit();
@@ -263,8 +260,7 @@ void OpenGLApplication::OpenGLInit()
 * @param  none
 * @return void
 *************************************************************************/
-void OpenGLApplication::OpenGLUpdate()
-{
+void OpenGLApplication::OpenGLUpdate(){
 
 		// End the Game.
 		if (keyStates[GLFW_KEY_ESCAPE]) {
@@ -352,7 +348,6 @@ void OpenGLApplication::OpenGLUpdate()
 			CurrentGameState = STATE_LEVEL_TEST;
 #endif
 
-#ifdef _DEBUG
 		/*-----------------------------------------------------------------------------
 		|                               INPUT UPDATES                                 |
 		-----------------------------------------------------------------------------*/
@@ -362,19 +357,27 @@ void OpenGLApplication::OpenGLUpdate()
 
 		if (keyStates[GLFW_KEY_RIGHT_CONTROL] || keyStates[GLFW_KEY_LEFT_CONTROL]) {
 			if (keyStates[GLFW_KEY_A]) {
+#ifdef _DEBUG
 				std::cout << "CROUCH LEFT";
+#endif
 			}
 
 			if (keyStates[GLFW_KEY_D]) {
+#ifdef _DEBUG
 				std::cout << "CROUCH RIGHT";
+#endif
 			}
-
+			
 			if (keyStates[GLFW_KEY_S]) {
+#ifdef _DEBUG
 				std::cout << "CROUCH DOWN";
+#endif
 			}
 
 			if (keyStates[GLFW_KEY_W]) {
+#ifdef _DEBUG
 				std::cout << "CROUCH UP";
+#endif
 				
 			}
 		}
@@ -384,25 +387,31 @@ void OpenGLApplication::OpenGLUpdate()
 		if (((keyStates[GLFW_KEY_RIGHT_SHIFT] || keyStates[GLFW_KEY_LEFT_SHIFT]) && !keyStates[GLFW_KEY_CAPS_LOCK]) + (!(keyStates[GLFW_KEY_RIGHT_SHIFT] || keyStates[GLFW_KEY_LEFT_SHIFT]) && keyStates[GLFW_KEY_CAPS_LOCK])) {
 
 			if (keyStates[GLFW_KEY_A]) {
+
+#ifdef _DEBUG
 				std::cout << "RUN LEFT\n";
+#endif
 			}
 
 			if (keyStates[GLFW_KEY_D]) {
+#ifdef _DEBUG
 				std::cout << "RUN RIGHT\n";
+#endif
 			}
 
 			if (keyStates[GLFW_KEY_S]) {
+#ifdef _DEBUG
 				std::cout << "RUN DOWN\n";
+#endif
 			}
 
 			if (keyStates[GLFW_KEY_W]) {
+#ifdef _DEBUG
 				std::cout << "RUN UP\n";
+#endif
 				
 			}
-
-
 		}
-
 		// IF SMALL LETTERS
 		else {
 
@@ -478,14 +487,18 @@ void OpenGLApplication::OpenGLUpdate()
 		-----------------------------------*/
 
 		if (mouseScrollState == 1) {
+#ifdef _DEBUG
 			std::cout << "SCROLL UP\n";
 			std::cout << "Total Scroll Y Offset:" << mouse_scroll_total_Y_offset << "\n";
+#endif
 		}
 		if (mouseScrollState==-1) {
+#ifdef _DEBUG
 			std::cout << "SCROLL DOWN\n";
 			std::cout << "Total Scroll Y Offset:" << mouse_scroll_total_Y_offset << "\n";
-		}
 #endif
+		}
+
 		updateStatesForNextFrame();
 
 		
@@ -589,7 +602,6 @@ void OpenGLApplication::Draw() {
 	// Update the Title and Others EVERY SECOND.
 	if (IsTimeElapsed(1.0f))
 	{	
-		std::cout << "abc\n";
 		// setting up the text to be displayed as the window title
 		std::stringstream sStr;
 		sStr << title.c_str() << " | "
