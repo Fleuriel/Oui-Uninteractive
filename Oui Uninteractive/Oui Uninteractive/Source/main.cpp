@@ -2,7 +2,7 @@
  * @file main.cpp
  * @author 	TAN Angus Yit Hoe
  * @co-author CHEAH Tristan Tze Hong, HWANG Jing Rui, Austin, LOW Wang Chun, Mark, CHAN Aaron Jun Xiang, QUEK Cheng Kwang Emery
- * @par DP email: tan.a@digipen.edu
+ * @par DP email: tan.a@digipen.edu, t.cheah@digipen.edu, jingruiaustin.hwang@digipen.edu, l.wangchunmark@digipen.edu, aaronjunxiang.chan@digipen.edu, c.quek@digipen.edu
  * @par Course: CSD 2401
  * @par Software Engineering Project 3
  * @date 29-09-2023
