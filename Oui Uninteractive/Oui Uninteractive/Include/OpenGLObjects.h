@@ -1,11 +1,16 @@
 /**************************************************************************
  * @file OpenGLObjects.h
- * @author 
- * @par DP email: 
+ * @author 	TAN Angus Yit Hoe
+ * @co-author CHEAH Tristan Tze Hong, HWANG Jing Rui, Austin, LOW Wang Chun, Mark, CHAN Aaron Jun Xiang, QUEK Cheng Kwang Emery
+ * @par DP email: tan.a@digipen.edu
  * @par Course: CSD 2401
  * @par Software Engineering Project 3
- * @date 09-05-2023
+ * @date 29-09-2023
  * @brief 
+ * This file contains the headers for OpenGLObject.cpp which
+ * compute the logic behind the box model and encapsulates the
+ * shader programs into a vector to store it, and allows for usage of them
+ * for Translation, Scale, Rotation, and setting up textures.
  *************************************************************************/
 
 #ifndef OPENGL_OBJECTS_H

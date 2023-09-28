@@ -2,11 +2,12 @@
  * @file main.cpp
  * @author 	TAN Angus Yit Hoe
  * @co-author CHEAH Tristan Tze Hong, HWANG Jing Rui, Austin, LOW Wang Chun, Mark, CHAN Aaron Jun Xiang, QUEK Cheng Kwang Emery
- * @par DP email: 
+ * @par DP email: tan.a@digipen.edu
  * @par Course: CSD 2401
  * @par Software Engineering Project 3
- * @date 09-05-2023
+ * @date 29-09-2023
  * @brief 
+ * Main Function to run the program
  *************************************************************************/
 
 #include <iostream>

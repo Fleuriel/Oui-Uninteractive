@@ -1,11 +1,15 @@
 /**************************************************************************
  * @file OpenGLShaders.h
- * @author
- * @par DP email:
+ * @author 	TAN Angus Yit Hoe
+ * @co-author CHEAH Tristan Tze Hong, HWANG Jing Rui, Austin, LOW Wang Chun, Mark, CHAN Aaron Jun Xiang, QUEK Cheng Kwang Emery
+ * @par DP email: tan.a@digipen.edu
  * @par Course: CSD 2401
  * @par Software Engineering Project 3
- * @date 09-05-2023
+ * @date 29-09-2023
  * @brief
+ * This file contains the headers for OpenGLShaders.cpp to 
+ * compute the logic behind shader programs and allow for users
+ * to use the functions to link, use, use uniform for shaders
  *************************************************************************/
 
 #ifndef OPENGL_SHADERS_H

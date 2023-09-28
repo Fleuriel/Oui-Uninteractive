@@ -1,11 +1,15 @@
 /**************************************************************************
  * @file InitializeEngine.h
- * @author 
- * @par DP email: 
+ * @author 	TAN Angus Yit Hoe
+ * @co-author CHEAH Tristan Tze Hong, HWANG Jing Rui, Austin, LOW Wang Chun, Mark, CHAN Aaron Jun Xiang, QUEK Cheng Kwang Emery
+ * @par DP email: tan.a@digipen.edu
  * @par Course: CSD 2401
  * @par Software Engineering Project 3
- * @date 09-05-2023
- * @brief 
+ * @date 29-09-2023
+ * @brief
+ * This file allows the usage of the program to change the game state
+ * from one to another.
+ * Currently, it allows for calling time functions as well.
  *************************************************************************/
 
 #ifndef GAME_STATE_MGR_H
