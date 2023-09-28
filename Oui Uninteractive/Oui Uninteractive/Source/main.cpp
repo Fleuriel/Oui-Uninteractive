@@ -35,7 +35,7 @@ int main()
 	sysManager->AddSystem(new SoundManager());
 	sysManager->Initialize();
 	// Set callback for window close button (top right button).
-	glfwSetWindowCloseCallback(window, windowCloseCallback);
+	glfwSetWindowCloseCallback(window, WindowCloseCallback);
 
 	// Frame Buffer Callback for Window.
 	glfwSetFramebufferSizeCallback(window, OpenGLApplication::OpenGLWindowResizeCallback);

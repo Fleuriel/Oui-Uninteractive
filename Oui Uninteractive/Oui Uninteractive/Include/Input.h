@@ -7,11 +7,11 @@
  * @date 09-05-2023
  * @brief This file does Input Handling and Callback Functions.
  *		  The functions include:
- *			- keyCallBack
- * 			- mouseCallBack
- * 			- scrollCallBack
- * 			- updateStatesForNextFrame
- * 			- windowCloseCallback
+ *			- KeyCallBack
+ * 			- MouseCallBack
+ * 			- ScrollCallBack
+ * 			- UpdateStatesForNextFrame
+ * 			- WindowCloseCallback
  *************************************************************************/
 #ifndef INPUTKEYS_H
 #define INPUTKEYS_H
@@ -57,7 +57,7 @@ extern int mouseScrollState;
  * @see keyStates - The array used to store the state of various keyboard keys.
  * @see glfwSetKeyCallback() - Function to register this callback with GLFW.
  *************************************************************************/
-void keyCallBack(GLFWwindow* window, int key, int scancode, int action, int mod);
+void KeyCallBack(GLFWwindow* window, int key, int scancode, int action, int mod);
 
 /**************************************************************************
  * @brief Callback function for handling mouse button input in a GLFW window.
@@ -78,7 +78,7 @@ void keyCallBack(GLFWwindow* window, int key, int scancode, int action, int mod)
  * @see mouseButtonStates - The array used to store the state of various input events.
  * @see glfwSetMouseButtonCallback() - Function to register this callback with GLFW.
  *************************************************************************/
-void mouseCallBack(GLFWwindow* window, int button, int action, int mod);
+void MouseCallBack(GLFWwindow* window, int button, int action, int mod);
 
 /**************************************************************************
  * @brief Callback function for handling mouse scroll wheel input in a GLFW window.
@@ -103,7 +103,7 @@ void mouseCallBack(GLFWwindow* window, int button, int action, int mod);
  * @see mouseScrollState - The array used to store the state of various input events.
  * @see glfwSetScrollCallback() - Function to register this callback with GLFW.
  *************************************************************************/
-void scrollCallBack(GLFWwindow* window, double xOffset, double yOffset);
+void ScrollCallBack(GLFWwindow* window, double xOffset, double yOffset);
 
 /**************************************************************************
  * @brief Updates the states of keyboard keys and mouse scroll for the next frame.
@@ -115,7 +115,7 @@ void scrollCallBack(GLFWwindow* window, double xOffset, double yOffset);
  *       the state of each keyboard key, and `mouseScrollState` has been initialized
  *       to store the state of the mouse scroll wheel.
  *************************************************************************/
-void updateStatesForNextFrame();
+void UpdateStatesForNextFrame();
 
 /**************************************************************************
  * @brief Callback function for handling the window close event in a GLFW window.
@@ -134,6 +134,6 @@ void updateStatesForNextFrame();
  *       The value assigned here typically represents the intention to quit or close
  *       the application.
  *************************************************************************/
-void windowCloseCallback(GLFWwindow* window);
+void WindowCloseCallback(GLFWwindow* window);
 
 #endif // INPUTKEYS_H

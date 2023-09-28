@@ -1,7 +1,7 @@
 /**************************************************************************
  * @file Backgrounds.cpp
- * @author 
- * @par DP email: 
+ * @author CHAN Aaron Jun Xiang
+ * @par DP email: aaronjunxiang.chan@digipen.edu
  * @par Course: CSD 2401
  * @par Software Engineering Project 3
  * @date 09-05-2023

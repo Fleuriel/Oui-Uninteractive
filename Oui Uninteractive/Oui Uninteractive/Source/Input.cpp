@@ -7,11 +7,11 @@
  * @date 09-05-2023
  * @brief This file does Input Handling and Callback Functions.
  *		  The functions include:
- *			- keyCallBack
- * 			- mouseCallBack
- * 			- scrollCallBack
- * 			- updateStatesForNextFrame
- * 			- windowCloseCallback
+ *			- KeyCallBack
+ * 			- MouseCallBack
+ * 			- ScrollCallBack
+ * 			- UpdateStatesForNextFrame
+ * 			- WindowCloseCallback
  *************************************************************************/
 
 #include <gl/glew.h>
@@ -68,7 +68,7 @@ std::map<std::string, std::function<void()>> shortcuts;
  * @see keyStates - The array used to store the state of various keyboard keys.
  * @see glfwSetKeyCallback() - Function to register this callback with GLFW.
  *************************************************************************/
-void keyCallBack(GLFWwindow* window, int key, int scancode, int action, int mod)
+void KeyCallBack(GLFWwindow* window, int key, int scancode, int action, int mod)
 {
 	// Return if unknown key pressed (e.g. multimedia keys)
 	if (key == GLFW_KEY_UNKNOWN)
@@ -107,7 +107,7 @@ void keyCallBack(GLFWwindow* window, int key, int scancode, int action, int mod)
  * @see mouseButtonStates - The array used to store the state of various input events.
  * @see glfwSetMouseButtonCallback() - Function to register this callback with GLFW.
  *************************************************************************/
-void mouseCallBack(GLFWwindow* window, int button, int action, int mod) {
+void MouseCallBack(GLFWwindow* window, int button, int action, int mod) {
 
 	//UNREFERENCED_PARAMETER(window);
 	//UNREFERENCED_PARAMETER(mod);
@@ -141,7 +141,7 @@ float mouse_scroll_total_Y_offset;	// KEEPS TRACK OF TOTAL VERTICAL SCROLLING
  * @see mouseScrollState - The array used to store the state of various input events.
  * @see glfwSetScrollCallback() - Function to register this callback with GLFW.
  *************************************************************************/
-void scrollCallBack(GLFWwindow* window, double xOffset, double yOffset ) {
+void ScrollCallBack(GLFWwindow* window, double xOffset, double yOffset ) {
 
 	//UNREFERENCED_PARAMETER(window);
 	//UNREFERENCED_PARAMETER(xOffset);
@@ -164,7 +164,7 @@ void scrollCallBack(GLFWwindow* window, double xOffset, double yOffset ) {
  *       the state of each keyboard key, and `mouseScrollState` has been initialized
  *       to store the state of the mouse scroll wheel.
  *************************************************************************/
-void updateStatesForNextFrame() {
+void UpdateStatesForNextFrame() {
 
 	// Loop through all keyboard keys (represented by indices)
 	for (size_t i = 0; i < GLFW_KEY_LAST + 1; ++i)
@@ -195,7 +195,7 @@ void updateStatesForNextFrame() {
  *       The value assigned here typically represents the intention to quit or close
  *       the application.
  *************************************************************************/
-void windowCloseCallback(GLFWwindow* window)
+void WindowCloseCallback(GLFWwindow* window)
 {
 	(void)window;
 	NextGameState = STATE_QUIT;
