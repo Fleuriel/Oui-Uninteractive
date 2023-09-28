@@ -20,8 +20,7 @@
 
 void TimeUpdate();
 
-int main()
-{
+int main(){
 	#if defined(DEBUG) | defined(_DEBUG)
 		_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
 	#endif
@@ -49,17 +48,14 @@ int main()
 	previousTime = std::chrono::high_resolution_clock::now();
 
 	// The Main Window.
-	while (!glfwWindowShouldClose(windowNew))
-	{
+	while (!glfwWindowShouldClose(windowNew)){
 		// Changing in CurrentGameState would make it TRUE for this,
 		// so it will update the manager, to change the state.
-		if (CurrentGameState != NextGameState)
-		{
+		if (CurrentGameState != NextGameState){
 			GameStateManagerUpdate();
 		}
 		// else initialize all states to be the same.
-		else
-		{
+		else		{
 			NextGameState = CurrentGameState = PreviousGameState;
 		}
 
@@ -68,8 +64,7 @@ int main()
 		// ONLY if changing of states
 		GameInit();
 
-		while (CurrentGameState == NextGameState)
-		{
+		while (CurrentGameState == NextGameState){
 			// Acquire Time Updates, setup for deltaTime
 			// For FPS, DeltaTime and Runtime
 			TimeUpdate();
@@ -130,8 +125,7 @@ int main()
 * @brief  Update the time, reduce clutter
 * @return void
 *************************************************************************/
-void TimeUpdate()
-{
+void TimeUpdate(){
 	currentTime = std::chrono::high_resolution_clock::now();
 	deltaTime = std::chrono::duration_cast<std::chrono::duration<double>>(currentTime - previousTime);
 	previousTime = currentTime;
