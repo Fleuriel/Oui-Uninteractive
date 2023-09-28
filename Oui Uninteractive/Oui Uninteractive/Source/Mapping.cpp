@@ -5,7 +5,7 @@
 
 
 	bool Mapping::MapBuilder(Mapping map) {
-		int mapsize{ map.rows* map.columns };
+		//int mapsize{ map.rows* map.columns };
 		std::string filepath{ "../maps/" };
 		std::string extension{ ".txt" };
 		std::ofstream ofs{ filepath + map.filename + extension };

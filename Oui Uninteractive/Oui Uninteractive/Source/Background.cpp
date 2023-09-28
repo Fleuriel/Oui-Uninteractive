@@ -16,55 +16,62 @@
 #include <stb_image.h>
 
 
-std::vector<OpenGLShader> Background::shdrpgms;
+std::vector<OpenGLShader> Background::shdrpgms; //singleton
 
 unsigned int Background::mdl_ref = 0; // Define and initialize mdl_ref
 unsigned int Background::shd_ref = 0; // Define and initialize shd_ref
 
-extern std::pair<int,int> windowSize;
+extern std::pair<int,int> windowSize;	// to retrieve window size
 
-GLuint Background::VAO = 0;
-GLuint Background::VBO = 0;
+GLuint Background::VAO = 0;	//initialize to 0
+GLuint Background::VBO = 0; //initialize to 0
 
-int backgroundTexture;
+int backgroundTexture;	//Texture for background
 
 
 /**************************************************************************
-* @brief		Loads Meshes for models and/or other shader files to
-*				enable creation of GameObjects.
-* @param  none
-* @return void
-*************************************************************************/
+ * @brief Initialize the Background class.
+ *
+ * This function initializes various properties and transformations related to the background,
+ * including shaders, textures, and transformation matrices.
+ *
+ * @note This function assumes that certain global variables and functions like `init_shdrpgms_cont()`
+ *       and `Background::Setup_TextureObject()` are available and properly defined.
+ *       It also assumes that the class has member variables such as `bgTexture`, `mdl_ref`, `shd_ref`,
+ *       `position`, `scaleModel`, and `model_To_NDC_xform` to store background-related information.
+ *************************************************************************/
 void Background::Init()
 {
 #ifdef _DEBUG
+	// Print debug information indicating the start of initialization
 	std::cout << "Background::Init()\n\n";
-
 #endif // _DEBUG
 
-
+	// Define file names for vertex and fragment shaders
 	VectorPairStrStr fileName{
 		std::make_pair<std::string, std::string>
 		("../shaders/Oui_Uninteractive.vert", "../shaders/Oui_Uninteractive.frag")
 	};
 
-
-
+	// Initialize shader programs using the provided file names
 	init_shdrpgms_cont(fileName);
 	
-	bgTexture = Background::Setup_TextureObject("../texture/background.jpg");
+	// Load a background texture from a file
+	backgroundTexture = Background::Setup_TextureObject("../texture/background.jpg");
 
+	// Initialize model and shader references to zero
 	mdl_ref = 0;
 	shd_ref = 0;
 
+	// Set the initial position of the background to (0, 0)
 	position.x = 0;
 	position.y = 0;
 
-	using glm::radians;
-
+	// Set the scale of the background to match the window size
 	scaleModel.x = static_cast<float>(windowSize.first);
 	scaleModel.y = static_cast<float>(windowSize.second);
 
+	// Create transformation matrices for translation, rotation, and scaling
 	glm::mat3 Translate = glm::mat3
 	{
 		1, 0, 0,
@@ -72,13 +79,11 @@ void Background::Init()
 		 position.x,  position.y, 1
 	};
 
-	// Compute the rotation matrix
 	glm::mat3 Rotation = glm::mat3(
 		1.0f, 0.0f, 0.0f,
 		0.0f, 1.0f, 0.0f,
 		0.0f, 0.0f, 1.0f
 	);
-
 
 	glm::mat3 Scale = glm::mat3
 	{
@@ -87,6 +92,7 @@ void Background::Init()
 		0, 0, 1
 	};
 
+	// Compute a transformation matrix for scaling from model space to normalized device coordinates (NDC)
 	float scaleX = 2.0f / windowSize.first;
 	float scaleY = 2.0f / windowSize.second;
 
@@ -97,9 +103,11 @@ void Background::Init()
 		0, 0, 1
 	};
 
+	// Compute a transformation matrix for scaling from model space to normalized device coordinates (NDC)
 	model_To_NDC_xform = ScaleToWorldToNDC * Translate * Rotation * Scale;
 
 #ifdef _DEBUG
+	// Print debug information indicating the end of initialization
 	std::cout << '\n';
 #endif
 
@@ -168,21 +176,23 @@ void Background::Update(float newX, float newY, float scaleX, float scaleY)
 
 
 /**************************************************************************
-* @brief		Draws the Background.
-*				
-* @param  none
-* @return void
+* @brief Render the background using OpenGL.
+* 
+ * This function is responsible for rendering the background using OpenGL.
+ * It involves setting up texture units, binding shader programs, sending uniform data to shaders,
+ * and performing the rendering operation.
+ *
+ * @note This function assumes that certain global variables and functions like `OpenGLObject::models`,
+ *       `shdrpgms`, and OpenGL bindings are available and properly defined.
 *************************************************************************/
 void Background::Draw() const
 {
-	//texture object is to use texture image unit 6
-
-
+	// Bind the background texture to texture image unit 6
 	int tex{};
 	switch (texID)
 	{
 	case 0:
-		tex = bgTexture;
+		tex = backgroundTexture;
 		break;
 	default:
 		break;
@@ -190,16 +200,14 @@ void Background::Draw() const
 
 	glBindTextureUnit(6, tex);
 
-	shdrpgms[shd_ref].Use(); // Install the shader program
+	shdrpgms[shd_ref].Use(); // Use the shader program for rendering
 
-
-
-
+	// Set the uniform for the texture unit (uTex2d) in the shader
 	shdrpgms[shd_ref].SetUniform("uTex2d", 6);
-	// Part 2: Bind object's VAO handle
-	glBindVertexArray(OpenGLObject::models[mdl_ref].vaoid); // Bind object's VAO handle
+	// Bind the object's Vertex Array Object (VAO)
+	glBindVertexArray(OpenGLObject::models[mdl_ref].vaoid);
 
-	// Part 3: Copy object's 3x3 model-to-NDC matrix to vertex shader
+	// Copy the object's 3x3 model-to-NDC matrix to the vertex shader
 	GLint uniform_var_loc1 = glGetUniformLocation(shdrpgms[shd_ref].GetHandle(), "uModel_to_NDC");
 	if (uniform_var_loc1 >= 0) {
 		glUniformMatrix3fv(uniform_var_loc1, 1, GL_FALSE, glm::value_ptr(Background::model_To_NDC_xform));
@@ -209,10 +217,7 @@ void Background::Draw() const
 		std::exit(EXIT_FAILURE);
 	}
 
-	// Part 4: Render using glDrawElements or glDrawArrays
-
-
-
+	// Render the object using glDrawElements or glDrawArrays
 	glDrawElements(
 		OpenGLObject::models[mdl_ref].primitive_type,
 		OpenGLObject::models[mdl_ref].draw_cnt,
@@ -221,50 +226,100 @@ void Background::Draw() const
 
 
 
-	// Part 5: Clean up
-	glBindVertexArray(0); // Unbind the VAO
-	shdrpgms[shd_ref].UnUse(); // Uninstall the shader program
+	// Clean up: Unbind the VAO and uninstall the shader program
+	glBindVertexArray(0);
+	shdrpgms[shd_ref].UnUse();
 }
 
+/**************************************************************************
+ * @brief Clean up OpenGL resources related to the background.
+ *
+ * This function is responsible for deleting OpenGL resources, specifically
+ * a vertex array object (VAO) and a vertex buffer object (VBO) associated with the background.
+ *
+ * @note This function assumes that OpenGL bindings are available and properly defined.
+*************************************************************************/
 void Background::Cleanup()
 {
+	// Delete the vertex array object (VAO)
 	glDeleteVertexArrays(1, &VAO);
+	// Delete the vertex buffer object (VBO)
 	glDeleteBuffers(1, &VBO);
 }
 
 
-
+/**************************************************************************
+ * @brief Initialize OpenGL shader programs based on pairs of shader file paths.
+ *
+ * This function initializes OpenGL shader programs by compiling, linking, and validating
+ * vertex and fragment shaders specified in pairs of file paths provided in the `vpss` vector.
+ *
+ * @param vpss A vector of pairs, where each pair contains file paths to a vertex shader (first)
+ *             and a fragment shader (second).
+ * @note This function assumes that OpenGLShader class and necessary OpenGL bindings are available
+ *       and properly defined.
+*************************************************************************/
 void Background::init_shdrpgms_cont(VectorPairStrStr const& vpss) {
 	for (auto const& x : vpss) {
+
+		// Create a vector to hold pairs of shader type (GL_VERTEX_SHADER or GL_FRAGMENT_SHADER) and file path
 		std::vector<std::pair<GLenum, std::string>> shdr_files;
+
+		// Add the vertex shader file path to the vector with shader type GL_VERTEX_SHADER
 		shdr_files.emplace_back(std::make_pair(GL_VERTEX_SHADER, x.first));
+
+		// Add the fragment shader file path to the vector with shader type GL_FRAGMENT_SHADER
 		shdr_files.emplace_back(std::make_pair(GL_FRAGMENT_SHADER, x.second));
+
+		// Create an OpenGLShader object
 		OpenGLShader shdr_pgm;
+
+		// Compile, link, and validate the shader program using the shader files
 		shdr_pgm.CompileLinkValidate(shdr_files);
-		// insert shader program into container
+
+		// Insert the compiled shader program into the container (shdrpgms)
 		shdrpgms.emplace_back(shdr_pgm);
 	}
 }
 
+/**************************************************************************
+ * @brief Set up an OpenGL texture object from an image file.
+ *
+ * This function loads an image from the specified file, creates an OpenGL texture object,
+ * and configures it with the image data.
+ *
+ * @param filePath The file path to the image file.
+ * @return The OpenGL texture object handler, or 0 if the texture setup failed.
+ *************************************************************************/
 int Background::Setup_TextureObject(std::string filePath)
 {
-	GLuint textureObj_Handler;
+	GLuint textureObj_Handler; // OpenGL texture object handler
 
 	int width, height, channels;
+
+	// Load the image from the file using stb_image
 	unsigned char* image = stbi_load(filePath.c_str(), &width, &height, &channels, STBI_rgb_alpha);
 
 	if (!image)
 	{
+		// If the image loading fails, print an error message and return 0 (failure)
 		std::cout << "Failed to load texture: " << filePath << std::endl;
 		return 0; // Return 0 to indicate failure
 	}
 
+	// Create an OpenGL texture object
 	glCreateTextures(GL_TEXTURE_2D, 1, &textureObj_Handler);
+
+	// Allocate storage for the texture with RGBA8 format
 	glTextureStorage2D(textureObj_Handler, 1, GL_RGBA8, width, height);
+
+	// Upload the image data to the texture object
 	glTextureSubImage2D(textureObj_Handler, 0, 0, 0, width, height, GL_RGBA, GL_UNSIGNED_BYTE, image);
 
-	stbi_image_free(image); // Free the image data after it's uploaded to OpenGL
+	// Free the image data after it's uploaded to OpenGL
+	stbi_image_free(image);
 
+	// Return the OpenGL texture object handler
 	return textureObj_Handler;
 }
 
