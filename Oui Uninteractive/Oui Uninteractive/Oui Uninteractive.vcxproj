@@ -50,7 +50,6 @@
     <ClCompile Include="Source\PhysicsBody.cpp" />
     <ClCompile Include="Source\RandomUtilities.cpp" />
     <ClCompile Include="Source\Sound.cpp" />
-    <ClCompile Include="Source\StbImage.cpp" />
     <ClCompile Include="Source\SystemManager.cpp" />
     <ClCompile Include="Source\Transform.cpp" />
     <ClCompile Include="Source\Vector2D.cpp" />
