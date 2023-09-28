@@ -66,8 +66,7 @@ void (*GameCleanup)()							= 0;
 * @param  unsigned int 
 * @return void
 *************************************************************************/
-void GameStateManagerInit(unsigned int setGameState)
-{
+void GameStateManagerInit(unsigned int setGameState) {
 	// Set GameState to setGameState
 	CurrentGameState = setGameState;
 	
@@ -85,22 +84,19 @@ void GameStateManagerInit(unsigned int setGameState)
 * @param  none
 * @return void
 *************************************************************************/
-void GameStateManagerUpdate()
-{
+void GameStateManagerUpdate() {
 	// if quit, exit
 	if (CurrentGameState == STATE_QUIT)
 		return;
 
 	//  window is closed, exit
-	if (glfwWindowShouldClose(windowNew))
-	{
+	if (glfwWindowShouldClose(windowNew)){
 		CurrentGameState = STATE_QUIT;
 		return;
 	}
 
 	// switch the case
-	switch (CurrentGameState)
-	{
+	switch (CurrentGameState) {
 	case STATE_GRAPHICS_TEST:
 		GameInit = OpenGLApplication::OpenGLInit;
 		GameUpdate = OpenGLApplication::OpenGLUpdate;
@@ -130,8 +126,7 @@ void GameStateManagerUpdate()
 * @param  none
 * @return double
 *************************************************************************/
-double GetDT()
-{
+double GetDT() {
 	return deltaTime.count();
 }
 
@@ -141,8 +136,7 @@ double GetDT()
 * @param  none
 * @return double
 *************************************************************************/
-double GetFrames()
-{
+double GetFrames() {
 	return 1.0 / deltaTime.count();
 }
 /**************************************************************************
@@ -151,8 +145,7 @@ double GetFrames()
 * @param  unsigned int
 * @return bool True if > time set, false if not yet more than time
 *************************************************************************/
-bool IsTimeElapsed(unsigned int time)
-{
+bool IsTimeElapsed(unsigned int time) {
 	// only run once.
 	// Get Time Elapsed.
 	seconds += GetDT();
@@ -160,8 +153,7 @@ bool IsTimeElapsed(unsigned int time)
 	std::cout << seconds << GetDT() << '\n';
 #endif
 	// refresh seconds to 0
-	if (seconds >= time)
-	{
+	if (seconds >= time) {
 		seconds = 0;
 		return true;
 
@@ -175,8 +167,7 @@ bool IsTimeElapsed(unsigned int time)
 * @param  none
 * @return double
 *************************************************************************/
-double GetGameRunTime()
-{
+double GetGameRunTime() {
 
 	// Increase gameRunTime by the DT
 	gameRunTime += GetDT();
