@@ -187,6 +187,9 @@
     <ClCompile Include="..\lib\imgui-docking\implot_items.cpp">
       <Filter>ImGui</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Background.cpp">
+      <Filter>Graphics</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Include\Matrix3x3.h">
@@ -283,6 +286,9 @@
       <Filter>Systems\AssetManager</Filter>
     </ClInclude>
     <ClInclude Include="..\lib\stb-master\stb_image.h">
+      <Filter>Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\Background.h">
       <Filter>Graphics</Filter>
     </ClInclude>
   </ItemGroup>

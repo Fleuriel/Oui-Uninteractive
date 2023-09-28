@@ -27,6 +27,7 @@
 
 extern int importTexture, secondTexture, bgTexture;
 
+
 class OpenGLObject
 {
 public:

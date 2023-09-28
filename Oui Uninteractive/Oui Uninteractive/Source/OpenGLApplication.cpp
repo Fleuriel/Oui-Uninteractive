@@ -25,6 +25,7 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 #include <iterator>
+#include <Background.h>
 
 #define STB_IMAGE_IMPLEMENTATION
 #include <stb_image.h>
@@ -51,7 +52,7 @@ GLfloat squareX = 0.0f, squareY = 0.0f;
 OpenGLObject Objects;
 std::list<OpenGLObject> objects;					// singleton
 
-Particle background;
+Background background;
 ParticleSystem particleSystem;
 
 
@@ -230,7 +231,7 @@ void OpenGLApplication::OpenGLInit()
 	objectFactory->SaveObjectsToFile("../scenes/TestsceneWriting.JSON");
 	std::cout << "Updating JSONEnemy2 during initialization... completed." << std::endl;
 
-	background.init(0, 0, windowSize.first, windowSize.second, 0, 0);
+	background.Init();
 }
 
 void OpenGLApplication::OpenGLUpdate()
@@ -238,7 +239,7 @@ void OpenGLApplication::OpenGLUpdate()
 		OpenGLSetBackgroundColor(0.5f, 0.5f, 0.5f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
 
-		background.draw();
+		background.Draw();
 
 		double xpos, ypos{};
 		glfwGetCursorPos(window, &xpos, &ypos);
