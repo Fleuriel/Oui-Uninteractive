@@ -6,13 +6,13 @@
  * @par Course: CSD 2401
  * @par Software Engineering Project 3
  * @date 29-09-2023
- * @brief 
- *  
+ * @brief
+ *
  * This file allows the creation and initialization of a OpenGL Application
- * Window which then allows user to draw functions and/or change states 
- * depending on the game state manager. 
- * 
- * 
+ * Window which then allows user to draw functions and/or change states
+ * depending on the game state manager.
+ *
+ *
  *************************************************************************/
 
 #include <iostream>
@@ -41,7 +41,7 @@
 
 std::string title = "Oui Uninteractive Game Engine Editor";
 
- // Pointer to the window
+// Pointer to the window
 GLFWwindow* windowNew;
 
 // To store the window dimensions for duration of program
@@ -81,12 +81,12 @@ static bool imguiInitialized = false;
 /**************************************************************************
 * @brief		Set the parameters for the window, and then Initialize the
 *				Window.
-*				Then, Set parameters for OpenGL Context. 
+*				Then, Set parameters for OpenGL Context.
 *				> Drawing the Window.
 * @param  none
 * @return void
 *************************************************************************/
-void OpenGLApplication::OpenGLWindowInit(){
+void OpenGLApplication::OpenGLWindowInit() {
 	// Read window size from JSON
 	std::string filePath = "../window-data/window-data.JSON";
 	rapidjson::Document windowDoc;
@@ -101,8 +101,7 @@ void OpenGLApplication::OpenGLWindowInit(){
 #endif
 	// Create window application based on the windowSize.
 	windowNew = glfwCreateWindow(windowSize.first, windowSize.second, "hello", NULL, NULL);
-	if (!windowNew)
-	{
+	if (!windowNew) {
 		glfwTerminate();
 
 		std::cout << "Window parameters are wrong.\n";
@@ -151,7 +150,7 @@ void OpenGLApplication::OpenGLWindowInit(){
 * @param  none
 * @return void
 *************************************************************************/
-void OpenGLApplication::OpenGLWindowCleanup(){
+void OpenGLApplication::OpenGLWindowCleanup() {
 	// Save window size
 	std::string filePath = "../window-data/window-data.JSON";
 	rapidjson::Document windowDoc;
@@ -175,7 +174,7 @@ void OpenGLApplication::OpenGLWindowCleanup(){
 * @param  none
 * @return void
 *************************************************************************/
-void OpenGLApplication::OpenGLInit(){
+void OpenGLApplication::OpenGLInit() {
 
 	if (!glewInitialized) {
 		GLenum err = glewInit();
@@ -266,299 +265,292 @@ void OpenGLApplication::OpenGLInit(){
 *				> Update Game Object
 *				> Update Background
 *				> Update Color
-*				> Draw 
+*				> Draw
 * @param  none
 * @return void
 *************************************************************************/
-void OpenGLApplication::OpenGLUpdate(){
+void OpenGLApplication::OpenGLUpdate() {
 
-		// End the Game.
-		if (keyStates[GLFW_KEY_ESCAPE]) {
-			// set the window to CLOSE.
-			glfwSetWindowShouldClose(windowNew, GLFW_TRUE);
-			// Set game state to quit to exit the while loop
-			CurrentGameState = STATE_QUIT;
+	// End the Game.
+	if (keyStates[GLFW_KEY_ESCAPE]) {
+		// set the window to CLOSE.
+		glfwSetWindowShouldClose(windowNew, GLFW_TRUE);
+		// Set game state to quit to exit the while loop
+		CurrentGameState = STATE_QUIT;
+	}
+	myImGui.CreateFrame();
+	myEditor.Update();
+	myImGui.Update();
+	particleSystem.Update();
+	// Create x and y pos variables to collect data from the mouse position.
+	double xpos, ypos{};
+	glfwGetCursorPos(windowNew, &xpos, &ypos);
+
+#ifdef _DEBUG
+	// For Debugging Purposes on angles.
+	angle += 0.05f;
+#endif
+
+	//set WireFrame Mode to TRUE/FALSE:
+	if (keyStates[GLFW_KEY_P] == 1) {
+		togglePolygonMode = !togglePolygonMode;
+	}
+	// If True, set to line else FILL it with color.
+	if (togglePolygonMode == true) {
+		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+	}
+	if (togglePolygonMode == false) {
+		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+	}
+
+
+	// Create Object using SPACE. with tag ID of 2.
+	if (keyStates[GLFW_KEY_SPACE] == 1) {
+		// Create Object Tag ID , 2
+		OpenGLObject newObject(2);
+
+#ifdef _DEBUG
+		std::cout << "Tag ID: " << newObject.TagID << '\n';
+#endif
+		// Init Objects
+		newObject.InitObjects();
+
+		// Emplace back into the container.
+		objects.emplace_back(newObject);
+
+	}
+	// Create Object using R-SHIFT, with tag ID of 1.
+	if (keyStates[GLFW_KEY_RIGHT_SHIFT] == 1) {
+		OpenGLObject newObject1(1);
+#ifdef _DEBUG
+		std::cout << "Tag ID: " << newObject1.TagID << '\n';
+#endif
+
+		newObject1.InitObjects();
+
+		// Emplace back into the container.
+		objects.emplace_back(newObject1);
+	}
+
+	// Moves Object left. can add positionY to change as well.
+	if (keyStates[GLFW_KEY_A] == 2) {
+		positionX--;
+	}
+
+
+	// Create new Particle of Size 15000,15000 to test if it spawns.
+	if (keyStates[GLFW_KEY_H] == 1) {
+		Particle newparticle;
+
+		newparticle.Init(0, 0, 15000, 15000, 0, 0);
+		particleSystem.particles.emplace_back(newparticle);
+		//std::cout << "R : " << newparticle.object.color.r << "\nG : " << newparticle.object.color.g << "\nB : " << newparticle.object.color.b << "\n";
+
+	}
+
+	// This allows changing of game states.
+#ifdef _DEBUG
+	if (keyStates[GLFW_KEY_1] == 1)
+		CurrentGameState = STATE_LEVEL_TEST;
+#endif
+
+	/*-----------------------------------------------------------------------------
+	|                               INPUT UPDATES                                 |
+	-----------------------------------------------------------------------------*/
+	/*-----------------------------------
+	|            ALPHABETS              |
+	-----------------------------------*/
+	bool controlactivate = ((keyStates[GLFW_KEY_RIGHT_CONTROL] > 0) || (keyStates[GLFW_KEY_LEFT_CONTROL] > 0));
+	bool shiftactivate = ((keyStates[GLFW_KEY_RIGHT_SHIFT] > 0) || (keyStates[GLFW_KEY_LEFT_SHIFT] > 0));
+
+	if (controlactivate) {
+		if (keyStates[GLFW_KEY_A]) {
+#ifdef _DEBUG
+			std::cout << "CROUCH LEFT";
+#endif
 		}
-		myImGui.CreateFrame();
-		myEditor.Update();
-		myImGui.Update();
-		particleSystem.Update();
-		// Create x and y pos variables to collect data from the mouse position.
-		double xpos, ypos{};
-		glfwGetCursorPos(windowNew, &xpos, &ypos);
 
+		if (keyStates[GLFW_KEY_D]) {
 #ifdef _DEBUG
-		// For Debugging Purposes on angles.
-		angle+= 0.05f;
+			std::cout << "CROUCH RIGHT";
 #endif
-
-		//set WireFrame Mode to TRUE/FALSE:
-		if (keyStates[GLFW_KEY_P] == 1)
-		{
-			togglePolygonMode =  !togglePolygonMode;
-		}
-		// If True, set to line else FILL it with color.
-		if (togglePolygonMode == true)
-		{
-			glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-		}
-		if (togglePolygonMode == false)
-		{
-			glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 		}
 
-
-		// Create Object using SPACE. with tag ID of 2.
-		if (keyStates[GLFW_KEY_SPACE] == 1){
-			// Create Object Tag ID , 2
-			OpenGLObject newObject(2);
-
+		if (keyStates[GLFW_KEY_S]) {
 #ifdef _DEBUG
-			std::cout << "Tag ID: " << newObject.TagID << '\n';
+			std::cout << "CROUCH DOWN";
 #endif
-			// Init Objects
-			newObject.InitObjects();
-
-			// Emplace back into the container.
-			objects.emplace_back(newObject);
-
-		}
-		// Create Object using R-SHIFT, with tag ID of 1.
-		if (keyStates[GLFW_KEY_RIGHT_SHIFT] == 1){
-			OpenGLObject newObject1(1);
-#ifdef _DEBUG
-			std::cout << "Tag ID: " << newObject1.TagID << '\n';
-#endif
-
-			newObject1.InitObjects();
-
-			// Emplace back into the container.
-			objects.emplace_back(newObject1);
-		}
-		
-		// Moves Object left. can add positionY to change as well.
-		if (keyStates[GLFW_KEY_A] ==2)
-		{
-			positionX--;
 		}
 
+		if (keyStates[GLFW_KEY_W]) {
+#ifdef _DEBUG
+			std::cout << "CROUCH UP";
+#endif
 
-		// Create new Particle of Size 15000,15000 to test if it spawns.
-		if (keyStates[GLFW_KEY_H] == 1)
-		{
-			Particle newparticle;
-
-			newparticle.Init(0, 0, 15000, 15000, 0, 0);
-			particleSystem.particles.emplace_back(newparticle);
-			//std::cout << "R : " << newparticle.object.color.r << "\nG : " << newparticle.object.color.g << "\nB : " << newparticle.object.color.b << "\n";
-			
 		}
-		
-		// This allows changing of game states.
+	}
+
+	// IF BIG LETTERS
+
+	else if (shiftactivate) {
+
+		if (keyStates[GLFW_KEY_A]) {
+
 #ifdef _DEBUG
-		if(keyStates[GLFW_KEY_1] == 1)
-			CurrentGameState = STATE_LEVEL_TEST;
+			std::cout << "RUN LEFT\n";
 #endif
-
-		/*-----------------------------------------------------------------------------
-		|                               INPUT UPDATES                                 |
-		-----------------------------------------------------------------------------*/
-		/*-----------------------------------
-		|            ALPHABETS              |
-		-----------------------------------*/
-		bool controlactivate = ((keyStates[GLFW_KEY_RIGHT_CONTROL] > 0) || (keyStates[GLFW_KEY_LEFT_CONTROL] > 0));
-		bool shiftactivate = ((keyStates[GLFW_KEY_RIGHT_SHIFT] > 0) || (keyStates[GLFW_KEY_LEFT_SHIFT] > 0));
-
-		if (controlactivate) {
-			if (keyStates[GLFW_KEY_A]) {
-#ifdef _DEBUG
-				std::cout << "CROUCH LEFT";
-#endif
-			}
-
-			if (keyStates[GLFW_KEY_D]) {
-#ifdef _DEBUG
-				std::cout << "CROUCH RIGHT";
-#endif
-			}
-
-			if (keyStates[GLFW_KEY_S]) {
-#ifdef _DEBUG
-				std::cout << "CROUCH DOWN";
-#endif
-			}
-
-			if (keyStates[GLFW_KEY_W]) {
-#ifdef _DEBUG
-				std::cout << "CROUCH UP";
-#endif
-
-			}
 		}
-		
-			// IF BIG LETTERS
-		
-		else if (shiftactivate) {
 
-			if (keyStates[GLFW_KEY_A]) {
-
+		if (keyStates[GLFW_KEY_D]) {
 #ifdef _DEBUG
-				std::cout << "RUN LEFT\n";
+			std::cout << "RUN RIGHT\n";
 #endif
-			}
-
-			if (keyStates[GLFW_KEY_D]) {
-#ifdef _DEBUG
-				std::cout << "RUN RIGHT\n";
-#endif
-			}
-
-			if (keyStates[GLFW_KEY_S]) {
-#ifdef _DEBUG
-				std::cout << "RUN DOWN\n";
-#endif
-			}
-
-			if (keyStates[GLFW_KEY_W]) {
-#ifdef _DEBUG
-				std::cout << "RUN UP\n";
-#endif
-				
-			}
 		}
-		// IF SMALL LETTERS
+
+		if (keyStates[GLFW_KEY_S]) {
+#ifdef _DEBUG
+			std::cout << "RUN DOWN\n";
+#endif
+		}
+
+		if (keyStates[GLFW_KEY_W]) {
+#ifdef _DEBUG
+			std::cout << "RUN UP\n";
+#endif
+
+		}
+	}
+	// IF SMALL LETTERS
+	else {
+
+		if (keyStates[GLFW_KEY_A]) {
+			physicsSys->SetCurrentRotationSpeed(GET_COMPONENT(objectFactory->GetGameObjectByID(0), PhysicsBody, ComponentType::PHYSICS_BODY)->rotationSpeed, 0);
+		}
+
+		else if (keyStates[GLFW_KEY_D]) {
+			physicsSys->SetCurrentRotationSpeed(-(GET_COMPONENT(objectFactory->GetGameObjectByID(0), PhysicsBody, ComponentType::PHYSICS_BODY)->rotationSpeed), 0);
+
+		}
 		else {
+			physicsSys->SetCurrentRotationSpeed(0, 0);
+		}
 
-			if (keyStates[GLFW_KEY_A]) {
-				physicsSys->SetCurrentRotationSpeed(GET_COMPONENT(objectFactory->GetGameObjectByID(0), PhysicsBody, ComponentType::PHYSICS_BODY)->rotationSpeed, 0);
-			}
+		if (keyStates[GLFW_KEY_S]) {
+			physicsSys->MoveBackwards(0);
+		}
 
-			else if (keyStates[GLFW_KEY_D]) {
-				physicsSys->SetCurrentRotationSpeed(-(GET_COMPONENT(objectFactory->GetGameObjectByID(0), PhysicsBody, ComponentType::PHYSICS_BODY)->rotationSpeed), 0);
+		else if (keyStates[GLFW_KEY_W]) {
+			physicsSys->MoveForward(0);
+		}
+		else {
+			physicsSys->SetVelocity(Vec2(0.0f, 0.0f));
+		}
 
-			}
-			else{
-				physicsSys->SetCurrentRotationSpeed(0, 0);
-			}
-
-			if (keyStates[GLFW_KEY_S]) {
-				physicsSys->MoveBackwards(0);
-			}
-
-			else if (keyStates[GLFW_KEY_W]) {
-				physicsSys->MoveForward(0);
-			}
-			else {
-				physicsSys->SetVelocity(Vec2(0.0f, 0.0f));
-			}
-
-			if (keyStates[GLFW_KEY_M]) {
-
-			}
-
-			if (keyStates[GLFW_KEY_R]) {
-
-			}
+		if (keyStates[GLFW_KEY_M]) {
 
 		}
 
+		if (keyStates[GLFW_KEY_R]) {
 
-		/*-----------------------------------
-		|             NUMBERS               |
-		-----------------------------------*/
+		}
 
-
-		/*-----------------------------------
-		|              OTHERS               |
-		-----------------------------------*/
+	}
 
 
+	/*-----------------------------------
+	|             NUMBERS               |
+	-----------------------------------*/
+
+
+	/*-----------------------------------
+	|              OTHERS               |
+	-----------------------------------*/
 
 
 
-		/*-----------------------------------
-		|              Mouse                |
-		-----------------------------------*/
+
+
+	/*-----------------------------------
+	|              Mouse                |
+	-----------------------------------*/
 
 	/*	if (mouseButtonStates[GLFW_MOUSE_BUTTON_LEFT])
 			std::cout << "LCLICK\n";
 		if (mouseButtonStates[GLFW_MOUSE_BUTTON_RIGHT])
 			std::cout << "RCLICK\n";*/
 
-		/*-----------------------------------
-		|              Scroll               |
-		-----------------------------------*/
+			/*-----------------------------------
+			|              Scroll               |
+			-----------------------------------*/
 
-		if (mouseScrollState == 1) {
+	if (mouseScrollState == 1) {
 #ifdef _DEBUG
-			std::cout << "SCROLL UP\n";
-			std::cout << "Total Scroll Y Offset:" << mouse_scroll_total_Y_offset << "\n";
+		std::cout << "SCROLL UP\n";
+		std::cout << "Total Scroll Y Offset:" << mouse_scroll_total_Y_offset << "\n";
 #endif
-		}
-		if (mouseScrollState==-1) {
+	}
+	if (mouseScrollState == -1) {
 #ifdef _DEBUG
-			std::cout << "SCROLL DOWN\n";
-			std::cout << "Total Scroll Y Offset:" << mouse_scroll_total_Y_offset << "\n";
+		std::cout << "SCROLL DOWN\n";
+		std::cout << "Total Scroll Y Offset:" << mouse_scroll_total_Y_offset << "\n";
 #endif
+	}
+
+	UpdateStatesForNextFrame();
+
+
+
+	//std::cout << GetFPS() << '\n';
+
+	// Draws every second...
+
+
+
+
+
+	/*---------------------------------------------------------------------------*/
+	/*-----------------------------------
+	|       Sound Stuff Testing         |
+	-----------------------------------*/
+
+
+	/*-----------------------------------
+	|       ImGui Stuff Testing         |
+	-----------------------------------*/
+	myEditor.Update();
+
+	particleSystem.Update();
+	if (angle > 360)
+		angle = 0;
+	// Set the Background Color.
+	OpenGLSetBackgroundColor(0.5f, 0.5f, 0.5f, 1.0f);
+	// Clear the Color Buffer Bit to enable 'reloading'
+	glClear(GL_COLOR_BUFFER_BIT);
+	// Draws the Background
+	background.Draw();
+
+	for (OpenGLObject& obj : objects) {
+		if (obj.TagID == 1)
+			obj.Update(positionX, 300, 100, 100, angle, true);
+
+		// Tag ID 2
+		if (obj.TagID == 2) {
+			obj.Update(300, 400, 50, 50);
+		}
+	}
+
+	// Updates the Game Object
+	for (std::pair<size_t, GameObject*> gObj : objectFactory->GetGameObjectIDMap()) {
+		if (gObj.second->Has(ComponentType::TRANSFORM) != -1) {
+			GET_COMPONENT(gObj.second, Transform, ComponentType::TRANSFORM)->shape->Draw();
 		}
 
-		UpdateStatesForNextFrame();
+	}
 
-		
-		
-		//std::cout << GetFPS() << '\n';
-		
-		// Draws every second...
-		
+	myImGui.Draw();
+	Draw();
+	particleSystem.Draw();
 
-	
-		
-
-		/*---------------------------------------------------------------------------*/
-		/*-----------------------------------
-		|       Sound Stuff Testing         |
-		-----------------------------------*/
-		
-
-		/*-----------------------------------
-		|       ImGui Stuff Testing         |
-		-----------------------------------*/
-		myEditor.Update();
-
-		particleSystem.Update();
-		if (angle > 360)
-			angle = 0;
-		// Set the Background Color.
-		OpenGLSetBackgroundColor(0.5f, 0.5f, 0.5f, 1.0f);
-		// Clear the Color Buffer Bit to enable 'reloading'
-		glClear(GL_COLOR_BUFFER_BIT);
-		// Draws the Background
-		background.Draw();
-
-		for (OpenGLObject& obj : objects)
-		{
-			if (obj.TagID == 1)
-				obj.Update(positionX, 300, 100,100 ,angle, true);
-			
-			// Tag ID 2
-			if (obj.TagID == 2)
-			{
-				obj.Update(300, 400, 50, 50);
-			}
-		}
-
-		// Updates the Game Object
-		for (std::pair<size_t, GameObject*> gObj : objectFactory->GetGameObjectIDMap()) {
-			if (gObj.second->Has(ComponentType::TRANSFORM) != -1) {
-				GET_COMPONENT(gObj.second, Transform, ComponentType::TRANSFORM)->shape->Draw();
-			}	
-
-		}
-
-		myImGui.Draw();
-		Draw();
-		particleSystem.Draw();
-		
 }
 
 
@@ -567,9 +559,9 @@ void OpenGLApplication::OpenGLUpdate(){
 * @param none
 * @return void
 *************************************************************************/
-void OpenGLApplication::OpenGLCleanup(){
+void OpenGLApplication::OpenGLCleanup() {
 	Objects.Cleanup();
-	OpenGLSetBackgroundColor(0.0f, 0.0f, 0.0f,0.0f);
+	OpenGLSetBackgroundColor(0.0f, 0.0f, 0.0f, 0.0f);
 
 }
 
@@ -578,27 +570,25 @@ void OpenGLApplication::OpenGLCleanup(){
 
 /**************************************************************************
 * @brief		Draws any thing that the window is required.
-* 
+*
 * @param none
 * @return void
 *************************************************************************/
 void OpenGLApplication::Draw() {
 
 #ifdef _DEBUG
-//	std::cout << "Object Storage Size:" << OpenGLObject::Object_Storage.size() << '\n';
+	//	std::cout << "Object Storage Size:" << OpenGLObject::Object_Storage.size() << '\n';
 
 
 #endif
 	// Iterate through all the objects and draw the textures assosiated with Tag ID
-	for (auto const& obj : objects)
-	{	
+	for (auto const& obj : objects) {
 		// Draw the Object with Texture.
 		obj.Draw();
 	}
 
 	// Update the Title and Others EVERY SECOND.
-	if (IsTimeElapsed(1))
-	{	
+	if (IsTimeElapsed(1)) {
 		// setting up the text to be displayed as the window title
 		std::stringstream sStr;
 		sStr << title.c_str() << " | "
@@ -625,12 +615,12 @@ void OpenGLApplication::OpenGLSetBackgroundColor(float r, float g, float b, floa
 
 /**************************************************************************
 * @brief			Test Changing of States in the Game Engine..
-* @warning			OpenGLObjects Init lines must be drawn for it to work.
-* 
+* @warning			OpenGLObjects init lines must be drawn for it to work.
+*
 * @param none
 * @return void
 *************************************************************************/
-void OpenGLApplication::OpenGLTestChangingStates(){
+void OpenGLApplication::OpenGLTestChangingStates() {
 	// Set Background Color
 	OpenGLSetBackgroundColor(0.1f, 0.1f, 0.1f, 1.0f);
 	// Clear Color buffer Bit
@@ -664,7 +654,7 @@ void OpenGLApplication::OpenGLTestChangingStates(){
 * @param none
 * @return void
 *************************************************************************/
-void OpenGLApplication::OpenGLWindowResizeCallback( GLFWwindow* window2, int width, int height) {
+void OpenGLApplication::OpenGLWindowResizeCallback(GLFWwindow* window2, int width, int height) {
 	(void)window2;
 
 	// Update the window dimensions once changed

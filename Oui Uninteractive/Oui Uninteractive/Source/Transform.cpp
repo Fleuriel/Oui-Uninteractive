@@ -18,7 +18,7 @@ Transform::Transform() {
 	position = Vec2(-250,50);
 	rotation = 0;
 	scale = 100.f;
-	shape = new OpenGLObject();
+	shape = new OpenGLObject(1);
 }
 /**************************************************************************
 * @brief Destructor for Transform component

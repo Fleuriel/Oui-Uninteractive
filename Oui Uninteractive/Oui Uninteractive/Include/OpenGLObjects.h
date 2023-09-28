@@ -29,8 +29,7 @@
 extern int importTexture, secondTexture, thirdTexture;
 
 
-class OpenGLObject
-{
+class OpenGLObject{
 public:
 	/**************************************************************************
 	* @brief Constructor and Destructor
