@@ -8,12 +8,19 @@
  * @brief This source file contains the code to setup and run the editor
  *************************************************************************/
 
-#include "Editor.h"
 #include <iostream>
+#include "Editor.h"
 
+// Defining static containers
 Editor::SystemTime Editor::timeRecorder;
 std::vector<float> Editor::fpsData;
 
+
+/**************************************************************************
+* @brief Helper function to build a custom tooltip with description
+* @param desc - String to put into the tooltip
+* @return void
+*************************************************************************/
 static void HelpMarker(std::string desc) {
 	ImGui::TextDisabled("(?)");
 	if (ImGui::BeginItemTooltip()) {
@@ -24,6 +31,13 @@ static void HelpMarker(std::string desc) {
 	}
 }
 
+
+/**************************************************************************
+* @brief Initialization function for ImGui
+* @param window - Pointer to the GFLW window
+* @param glsl_vers - C-string containing the GLSL version used 
+* @return void
+*************************************************************************/
 void UsingImGui::Init(GLFWwindow* window, const char* glsl_vers) {
 	IMGUI_CHECKVERSION();
 	ImGui::CreateContext();
@@ -38,6 +52,11 @@ void UsingImGui::Init(GLFWwindow* window, const char* glsl_vers) {
 	std::cout << "ImGui Successfully initialized" << std::endl;
 }
 
+
+/**************************************************************************
+* @brief Creates the ImGui frame
+* @return void
+*************************************************************************/
 void UsingImGui::CreateFrame() {
 	// Start new frame
 	ImGui_ImplOpenGL3_NewFrame();
@@ -46,11 +65,22 @@ void UsingImGui::CreateFrame() {
 	ImGui::DockSpaceOverViewport(ImGui::GetMainViewport(), ImGuiDockNodeFlags_PassthruCentralNode);
 }
 
+
+/**************************************************************************
+* @brief Update function for ImGui
+* @return void
+*************************************************************************/
 void UsingImGui::Update() {
 	
 
 }
 
+
+
+/**************************************************************************
+* @brief Draw function for ImGui windows
+* @return void
+*************************************************************************/
 void UsingImGui::Draw() {
 	// Create the master panel to control other panels
 
@@ -71,6 +101,11 @@ void UsingImGui::Draw() {
 
 }
 
+
+/**************************************************************************
+* @brief Exit function for ImGui
+* @return void
+*************************************************************************/
 void UsingImGui::Exit() {
 	ImGui_ImplOpenGL3_Shutdown();
 	ImGui_ImplGlfw_Shutdown();
@@ -79,12 +114,21 @@ void UsingImGui::Exit() {
 }
 
 
+/**************************************************************************
+* @brief This function initializes the editor
+* @return void
+*************************************************************************/
 void Editor::Init() {
 	// Set max data points
 	maxFPSdata = 2000.0f;
 
 }
 
+
+/**************************************************************************
+* @brief This function updates the editor
+* @return void
+*************************************************************************/
 void Editor::Update() {
 	ImGuiIO& io = ImGui::GetIO();
 	// Add FPS data point to vector
@@ -100,6 +144,11 @@ void Editor::Update() {
 	CREATING INDIVIDUAL DOCKABLE IMGUI PANELS
    ============================================ */
 
+
+/**************************************************************************
+* @brief This function creates the Master Panel used to control the other sub panels
+* @return void
+*************************************************************************/
 void Editor::CreateMasterPanel() {
 	ImGui::Begin("Master Control Panel");
 	ImGui::Text("Show panels:");
@@ -109,6 +158,11 @@ void Editor::CreateMasterPanel() {
 	ImGui::End();
 }
 
+
+/**************************************************************************
+* @brief This function creates the sound panel used to control sound functionality
+* @return void
+*************************************************************************/
 void Editor::CreateSoundPanel() {
 	ImGui::Begin("Sound Control Panel");
 	if (ImGui::TreeNode("Tracks")) {
@@ -174,6 +228,11 @@ void Editor::CreateSoundPanel() {
 	ImGui::End();
 }
 
+
+/**************************************************************************
+* @brief This function creates the object list used to modify objects
+* @return void
+*************************************************************************/
 void Editor::CreateObjectList() {
 	ImGui::Begin("Pretty objects here");
 	static size_t gameobjID = 0;
@@ -410,6 +469,11 @@ void Editor::CreateObjectList() {
 	ImGui::End();
 }
 
+
+/**************************************************************************
+* @brief This function creates debug panel used to troubleshoot issues
+* @return void
+*************************************************************************/
 void Editor::CreateDebugPanel() {
 	ImGui::Begin("Debug Panel");
 	ImGuiIO& io = ImGui::GetIO();

@@ -15,6 +15,9 @@
  // Initialize global pointer
 SoundManager* soundManager = nullptr;
 
+/**************************************************************************
+* @brief Default constructor for SoundManager class
+*************************************************************************/
 SoundManager::SoundManager() {
 	if (soundManager != nullptr) {
 		// Instantiate sound system
@@ -25,12 +28,11 @@ SoundManager::SoundManager() {
 	}
 }
 
- /* ============================================
-	 @brief 
-		This function initializes the sound system
-	 @return
-		 No return
-	============================================ */
+
+/**************************************************************************
+* @brief Default constructor for PhysicsBody component
+* @return No return
+*************************************************************************/
 void SoundManager::Initialize() {
 	// Create main system object
 	result = FMOD::System_Create(&system);
@@ -45,6 +47,12 @@ void SoundManager::Initialize() {
 	LoadSounds();
 }
 
+
+/**************************************************************************
+* @brief Update function for the SoundManager class
+* @param dt - delta time 
+* @return No return
+*************************************************************************/
 void SoundManager::Update(float dt) {
 	std::chrono::high_resolution_clock::time_point timeStart = std::chrono::high_resolution_clock::now();
 	
@@ -55,12 +63,11 @@ void SoundManager::Update(float dt) {
 	Editor::timeRecorder.soundTime = duration.count();
 }
 
-/* ============================================
-	@brief
-	   This function loads the sounds from the file directories
-	@return
-		No return
-   ============================================ */
+
+/**************************************************************************
+* @brief This function loads the sounds from the file directories
+* @return No return
+*************************************************************************/
 void SoundManager::LoadSounds() {
 	// Search BGM directory and load sounds
 	for (const auto& i : std::filesystem::directory_iterator(bgmPath)) {
@@ -82,12 +89,11 @@ void SoundManager::LoadSounds() {
 	}
 }
 
-/* ============================================
-	@brief
-	   This function plays the sounds
-	@return
-		No return
-   ============================================ */
+
+/**************************************************************************
+* @brief This function plays the BGM sounds
+* @return No return
+*************************************************************************/
 void SoundManager::PlayBGMSounds() {
 	// Play BGM once clicked
 	bool playStatus1, playStatus2;
@@ -111,6 +117,11 @@ void SoundManager::PlayBGMSounds() {
 	
 }
 
+
+/**************************************************************************
+* @brief This function plays the SFX sounds
+* @return No return
+*************************************************************************/
 void SoundManager::PlaySFXSounds() {
 	// Play SFX once clicked
 	sfxChannels[0]->stop();
@@ -122,12 +133,11 @@ void SoundManager::PlaySFXSounds() {
 
 
 
-/* ============================================
-	@brief
-	   These functions handle pausing the channels
-	@return
-		No return
-   ============================================ */
+/**************************************************************************
+* @brief These functions handle pausing the channels
+* @param selectedChannel - Pointer to a FMOD channel to play sound to
+* @return No return
+*************************************************************************/
 void SoundManager::TogglePlayChannel(FMOD::Channel* selectedChannel) {
 	bool pausedState;
 	selectedChannel->getPaused(&pausedState);
@@ -135,12 +145,10 @@ void SoundManager::TogglePlayChannel(FMOD::Channel* selectedChannel) {
 }
 
 
-/* ============================================
-	@brief
-	   This destructor handles shutdown of the sound system
-	@return
-		No return
-   ============================================ */
+/**************************************************************************
+* @brief This destructor handles shutdown of the sound system
+* @return No return
+*************************************************************************/
 SoundManager::~SoundManager() {
 	if (system) {
 		// Free individual BGM sounds
