@@ -16,7 +16,14 @@
 #include "GameStateManager.h"
 
 
- //Temporary function, the coordinate fetching for mouse is wrong (need NDC)
+/**************************************************************************
+ * @brief Check for collision for mouse and rectangle
+ *
+ * This function returns true or false depending on whether collision is
+ * detected or not
+ *
+ * @param AABB Rect1 The Coordinates (x,y) of the rectangle
+ *************************************************************************/
 bool CollisionMouseRect(AABB Rect1) {
 
 	double xpos, ypos{};
@@ -37,7 +44,16 @@ bool CollisionMouseRect(AABB Rect1) {
 }
 
 
-//Temporary function, the coordinate fetching for mouse is wrong (need NDC)
+/**************************************************************************
+ * @brief Check for collision for mouse and circle
+ *
+ * This function returns true or false depending on whether collision is
+ * detected or not
+ *
+ * @param Vector2DDistance The distance between two the two coordinates
+ * @param Coords1 The coordinates of the shape
+ * @param r1 The size of the shape
+ *************************************************************************/
 bool CollisionMouseCircle(Coordinates Coords1, float r1 = 2) {
 
 	double xpos, ypos{};
@@ -53,7 +69,8 @@ bool CollisionMouseCircle(Coordinates Coords1, float r1 = 2) {
  * This function returns true or false depending on whether collision is
  * detected or not
  *
- * @param Vector2DDistance The distance between two the two coordinates
+ * @param Coords1 Coordinates(x,y) of first circle
+ * @param Coords2 Coordinates(x,y) of second circle
  * @param r1 Radius of the first circle
  * @param r2 Radius of the second circle
  *************************************************************************/
@@ -95,8 +112,11 @@ bool CollisionStaticDynamicRectRect(AABB Rect1, AABB Rect2)
  * This function returns true or false depending on whether collision is
  * detected or not
  *
- * @param Rect1 
- * @param Rect2
+ * @param r1x, r2x X-coordinates of first and second rectangle respectively
+ * @param r1y, r2y Y-coordinates of first and second rectangle respectively
+ * @param r1velocityX, r1velocityY, r2velocityX, r2velocityY 
+		  velocities of each coordinate points
+ * @param s1, s2  Width of first and second rectangle respectively
  *************************************************************************/
 bool CollisionMovingRectRect(float r1x = 1, float r1y = 2, float r2x = 3, float r2y = 4, 
 							 float r1velocityX = 5, float r1velocityY = 6, float r2velocityX = 7, float r2velocityY = 8,
@@ -230,13 +250,3 @@ bool CollisionMovingRectRect(float r1x = 1, float r1y = 2, float r2x = 3, float 
 
 	return false;
 }
-
-
-/**************************************************************************
- * @brief Next collision function
- *
- * This 
- *
- * @param 
- * @param 
- *************************************************************************/

@@ -16,8 +16,64 @@
 #include <CoordinateSystem.h>
 #include "PhysicsBody.h"
 
+ /**************************************************************************
+  * @brief Check for collision for mouse and rectangle
+  *
+  * This function returns true or false depending on whether collision is
+  * detected or not
+  *
+  * @param AABB Rect1 The Coordinates (x,y) of the rectangle
+  *************************************************************************/
+bool CollisionMouseRect(AABB Rect1);
+
+/**************************************************************************
+ * @brief Check for collision for mouse and circle
+ *
+ * This function returns true or false depending on whether collision is
+ * detected or not
+ *
+ * @param Vector2DDistance The distance between two the two coordinates
+ * @param Coords1 The coordinates of the shape
+ * @param r1 The size of the shape
+ *************************************************************************/
+bool CollisionMouseCircle(Coordinates Coords1, float r1);
+
+/**************************************************************************
+ * @brief Check for collision between static circles
+ *
+ * This function returns true or false depending on whether collision is
+ * detected or not
+ *
+ * @param Coords1 Coordinates(x,y) of first circle
+ * @param Coords2 Coordinates(x,y) of second circle
+ * @param r1 Radius of the first circle
+ * @param r2 Radius of the second circle
+ *************************************************************************/
 bool CollisionStaticCircleCircle(Coordinates Coords1, Coordinates Coords2, float r1, float r2);
+
+/**************************************************************************
+ * @brief Check for collision between static-dynamic rectangles
+ *
+ * This function returns true or false depending on whether collision is
+ * detected or not
+ *
+ * @param Rect1 Coordinates of the first rectangle
+ * @param Rect2 Coordinates of the second rectangle
+ *************************************************************************/
 bool CollisionStaticDynamicRectRect(AABB Rect1, AABB Rect2);
+
+/**************************************************************************
+ * @brief Check for collision between moving rectangles
+ *
+ * This function returns true or false depending on whether collision is
+ * detected or not
+ *
+ * @param r1x, r2x X-coordinates of first and second rectangle respectively
+ * @param r1y, r2y Y-coordinates of first and second rectangle respectively
+ * @param r1velocityX, r1velocityY, r2velocityX, r2velocityY
+		  velocities of each coordinate points
+ * @param s1, s2  Width of first and second rectangle respectively
+ *************************************************************************/
 bool CollisionMovingRectRect(float r1x, float r1y, float r2x, float r2y,
 	float r1velocityX, float r1velocityY, float r2velocityX, float r2velocityY,
 	float s1, float s2);
