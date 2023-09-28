@@ -54,7 +54,7 @@ public:
      * @param userInput_angleDisplacement The initial angle displacement of the Particle.
      * @param userInput_angleSpeed The angular speed of the Particle.
      *************************************************************************/
-    void init(int userInput_x, int userInput_y, float userInput_sizeX,
+    void Init(int userInput_x, int userInput_y, float userInput_sizeX,
               float userInput_sizeY, float userInput_angleDisplacement,
               float userInput_angleSpeed);
 
@@ -65,7 +65,7 @@ public:
      * to modify its properties. It updates the position of the Particle's OpenGLObject based on
      * its velocity and performs other necessary updates.
      *************************************************************************/
-    void update();
+    void Update();
 
     /*************************************************************************
      * @brief Draw the Particle on the screen.
@@ -74,7 +74,7 @@ public:
      * drawing task to the `Draw` method of the Particle's OpenGLObject, which handles rendering
      * the visual representation of the Particle.
      *************************************************************************/
-    void draw();
+    void Draw();
 
     /*************************************************************************
      * @brief Destructor for the Particle class.
@@ -98,7 +98,7 @@ public:
      * particles it contains. It iterates through the particles and calls the `update` function
      * on each of them to modify their properties.
      *************************************************************************/
-    void update();
+    void Update();
 
     /*************************************************************************
      * @brief Draw the Particle System.
@@ -107,7 +107,7 @@ public:
      * including all the individual particles it contains. It iterates through the particles and calls
      * the `draw` function on each of them to display their graphical representation on the screen.
      *************************************************************************/
-    void draw();
+    void Draw();
 
     std::vector<Particle> particles; //container storing all particles
 
