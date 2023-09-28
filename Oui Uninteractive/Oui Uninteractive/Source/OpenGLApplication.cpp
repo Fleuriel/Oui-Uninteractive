@@ -55,7 +55,8 @@ ParticleSystem particleSystem;
 
 
 OpenGLObject::OpenGLModel mdl;
-int positionX = 0, angle;
+int positionX = 0;
+float angle;
 
 bool toggleMode = false;
 // For Input
@@ -230,12 +231,12 @@ void OpenGLApplication::OpenGLUpdate()
 		OpenGLSetBackgroundColor(0.5f, 0.5f, 0.5f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
 
-		//background.draw();
+		background.draw();
 
 		double xpos, ypos{};
 		glfwGetCursorPos(window, &xpos, &ypos);
 
-		angle++;
+		angle+= 0.2;
 
 		//WireFrame Mode:
 		if (keyStates[GLFW_KEY_P] == 1)
@@ -260,11 +261,8 @@ void OpenGLApplication::OpenGLUpdate()
 			newObject.models[0].ModelID = 0;
 
 
-			//OpenGLObject newObject(0);
-//			newObject.models[0].ModelID = 0;
-			//newObject.models[0].texture = secondTexture;
 			std::cout << "Tag ID: " << newObject.TagID << '\n';
-			newObject.InitObjects(0,0, 150,180,0,45);
+			newObject.InitObjects(0,0, 0,0,0,45);
 
 			std::cout << "Model ID: " << newObject.models[0].ModelID << "\n\n";
 	
@@ -278,8 +276,7 @@ void OpenGLApplication::OpenGLUpdate()
 			std::cout << "Tag ID: " << newObject1.TagID << '\n';
 			newObject1.models[0].ModelID =0; // Change the ModelID to 2
 
-
-			newObject1.InitObjects(positionX, 100, 150, 180, 45, 45);
+			newObject1.InitObjects(positionX, 100, 0, 0, 45, 45);
 
 
 			std::cout << "Model ID: " << newObject1.models[0].ModelID << '\n';
@@ -504,6 +501,10 @@ void OpenGLApplication::OpenGLUpdate()
 			{
 				obj.Update(300, 400, 50, 50);
 			}
+
+
+			obj.DrawCollisionBox(00, 00, 1, 1);
+
 
 		}
 		for (std::pair<size_t, GameObject*> gObj : objectFactory->GetGameObjectIDMap()) {

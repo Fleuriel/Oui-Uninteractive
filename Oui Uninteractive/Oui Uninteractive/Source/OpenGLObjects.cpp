@@ -85,7 +85,7 @@ void OpenGLObject::Init()
 	
 
 	//Suffering = OpenGLObject::Setup_TextureObject("../texture/pantheon.jpg");
-	firstTexture = OpenGLObject::Setup_TextureObject("../texture/pepega.jpg");
+	firstTexture = OpenGLObject::Setup_TextureObject("../texture/pepethefrog.png");
 	secondTexture = OpenGLObject::Setup_TextureObject("../texture/pepe.jpg");
 	bgTexture = OpenGLObject::Setup_TextureObject("../texture/background.jpg");
 
@@ -668,10 +668,48 @@ void OpenGLObject::InitObjects(float userInput_x, float userInput_y, float userI
 }
 
 
-void OpenGLObject::DrawCollisionBox()
+void OpenGLObject::DrawCollisionBox(float minX, float minY, float maxX, float maxY)
 {
 
+	float height = maxY - minY;
+	float width = maxX - minX;
 
+
+	float sX = minX - (width) / 2;
+	float bX = maxX - (width) / 2;
+	float sY = minY - (height) / 2;
+	float bY = maxY - (height) / 2;
+
+
+
+	// Define the vertices of the collision box in local coordinates (before transformation)
+	glm::vec2 localVertices[4] = {
+		//glm::vec2(sX, sY),
+		//glm::vec2(bX, sY),
+		//glm::vec2(bX, bY),
+		//glm::vec2(sX, bY)
+
+		glm::vec2(sX, sY),
+		glm::vec2(bX, sY),
+		glm::vec2(bX, bY),
+		glm::vec2(sX, bY)
+
+
+
+	};	//
+
+	// Apply the transformation matrix to the local vertices
+	glm::vec2 transformedVertices[4];
+	for (int i = 0; i < 4; ++i) {
+		transformedVertices[i] = glm::vec2(model_To_NDC_xform * glm::vec3(localVertices[i], 1.0f));
+	}
+
+	// Draw the transformed collision box
+	glBegin(GL_LINE_LOOP);
+	for (int i = 0; i < 4; ++i) {
+		glVertex2f(transformedVertices[i].x, transformedVertices[i].y);
+	}
+	glEnd();
 
 }
 
