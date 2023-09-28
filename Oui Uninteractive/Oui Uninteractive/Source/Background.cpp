@@ -216,7 +216,7 @@ void Background::Draw() const
 	glDrawElements(
 		OpenGLObject::models[mdl_ref].primitive_type,
 		OpenGLObject::models[mdl_ref].draw_cnt,
-		GL_UNSIGNED_SHORT, NULL);
+		GL_UNSIGNED_SHORT, nullptr);
 
 
 

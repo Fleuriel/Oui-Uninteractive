@@ -256,7 +256,7 @@ OpenGLObject::OpenGLModel OpenGLObject::Box_Model(glm::vec3 color)
 	// Store information in the model structure
 	mdl.vaoid = vaoid;
 	mdl.primitive_type = GL_TRIANGLE_FAN; // Use GL_TRIANGLE_FAN for a square
-	mdl.draw_cnt = idx_vtx.size();
+	mdl.draw_cnt = static_cast<GLsizei>(idx_vtx.size());
 	mdl.primitive_cnt = vertices.size();
 
 
