@@ -61,8 +61,7 @@ int bgTexture, firstTexture, secondTexture;
 * @param  none
 * @return void
 *************************************************************************/
-void OpenGLObject::Init()
-{
+void OpenGLObject::Init(){
 #ifdef _DEBUG
 	std::cout << "OpenGLObject::Init()\n\n";
 #endif // _DEBUG
@@ -201,8 +200,7 @@ void OpenGLObject::Init()
 * @param color			Color <R,G,B>
 * @return OpenGLObject  
 ***************************************************************************************/
-OpenGLObject::OpenGLModel OpenGLObject::Box_Model(glm::vec3 color)
-{
+OpenGLObject::OpenGLModel OpenGLObject::Box_Model(glm::vec3 color){
 	struct Vertex {
 		glm::vec2 position;        // Vertex position
 		glm::vec3 color;           // Vertex color
@@ -210,8 +208,7 @@ OpenGLObject::OpenGLModel OpenGLObject::Box_Model(glm::vec3 color)
 	};
 
 	// Define the vertices of a textured square
-	std::vector<Vertex> vertices
-	{
+	std::vector<Vertex> vertices{
 		 { glm::vec2(0.5f,  -0.5f), color, glm::vec2(1.0f, 1.0f) }, // Bottom-right
 		 { glm::vec2(0.5f,   0.5f), color, glm::vec2(1.0f, 0.0f) }, // Top-right
 		 { glm::vec2(-0.5f,  0.5f), color, glm::vec2(0.0f, 0.0f) }, // Top-left
@@ -281,8 +278,7 @@ OpenGLObject::OpenGLModel OpenGLObject::Box_Model(glm::vec3 color)
 * @param bool   Boolean for Rotation Enable or Disable
 * @return void
 *************************************************************************/
-void OpenGLObject::Update(float newX, float newY, float scaleX, float scaleY, float newAngle , bool enRot )
-{
+void OpenGLObject::Update(float newX, float newY, float scaleX, float scaleY, float newAngle , bool enRot ){
 	//std::cout << "Object Update\n";
 	// Compute the angular displacement in radians
 
@@ -298,8 +294,7 @@ void OpenGLObject::Update(float newX, float newY, float scaleX, float scaleY, fl
 	position = glm::vec2(newX, newY);
 
 	// Boolean from the user to set if rotation is yes or no.
-	if (enRot == true)
-	{
+	if (enRot == true)	{
 		angleDisplacment = newAngle;
 	}
 	// in case user does not set, angleDisplacement will be in the range of
@@ -351,12 +346,10 @@ void OpenGLObject::Update(float newX, float newY, float scaleX, float scaleY, fl
 * @param  none
 * @return void
 *************************************************************************/
-void OpenGLObject::Draw() const
-{
+void OpenGLObject::Draw() const{
 	//texture object is to use texture image unit 6
 	int tex{};
-	switch (TagID)
-	{
+	switch (TagID)	{
 	case 0:
 		tex = bgTexture;
 		break;
@@ -408,8 +401,7 @@ void OpenGLObject::Draw() const
 * @param  none
 * @return void
 *************************************************************************/
-void OpenGLObject::Cleanup()
-{
+void OpenGLObject::Cleanup(){
 	// Cleanup the VAO, VBO and Shader Program
 	glDeleteVertexArrays(1, &VAO);
 	glDeleteBuffers(1, &VBO);
@@ -457,8 +449,7 @@ void OpenGLObject::init_shdrpgms_cont(VectorPairStrStr const& vpss) {
 *************************************************************************/
 void OpenGLObject::InitObjects(float userInput_x, float userInput_y, float userInput_sizeX,
 							   float userInput_sizeY, float userInput_angleDisplacement, 
-							   float userInput_angleSpeed)
-{
+							   float userInput_angleSpeed){
 
 	// Initialize the object of model and shader reference to 0
 	mdl_ref = 0;
@@ -479,24 +470,21 @@ void OpenGLObject::InitObjects(float userInput_x, float userInput_y, float userI
 	angleSpeed = userInput_angleSpeed;
 
 	// matrix for translate
-	glm::mat3 Translate = glm::mat3
-	{
+	glm::mat3 Translate = glm::mat3	{
 		1, 0, 0,
 		0, 1, 0,
 		 position.x,  position.y, 1
 	};
 
 	// matrix for rotation
-	glm::mat3 Rotation = glm::mat3
-	{
+	glm::mat3 Rotation = glm::mat3	{
 		cosf(radians(angleDisplacment)), sinf(radians(angleDisplacment)) , 0,
 		-sinf(radians(angleDisplacment)),  cosf(radians(angleDisplacment)) , 0,
 		0, 0, 1
 	};
 
 	// matrix for scale
-	glm::mat3 Scale = glm::mat3
-	{
+	glm::mat3 Scale = glm::mat3	{
 		scaleModel.x, 0, 0,
 		0, scaleModel.y, 0,
 		0, 0, 1
@@ -507,8 +495,7 @@ void OpenGLObject::InitObjects(float userInput_x, float userInput_y, float userI
 	float scaleY = 2.0f / windowSize.second;
 
 	// Scale To World NDC-coordinates matrix
-	glm::mat3 ScaleToWorldToNDC = glm::mat3
-	{
+	glm::mat3 ScaleToWorldToNDC = glm::mat3	{
 		scaleX, 0, 0,
 		0, scaleY, 0,
 		0, 0, 1
@@ -530,8 +517,7 @@ void OpenGLObject::InitObjects(float userInput_x, float userInput_y, float userI
 *
 * @return void
 *************************************************************************/
-void OpenGLObject::DrawCollisionBox(Vector2D min, Vector2D max)
-{
+void OpenGLObject::DrawCollisionBox(Vector2D min, Vector2D max){
 	// get the points of the AABB
 	float sX = min.x;
 	float bX = max.x;
@@ -598,8 +584,7 @@ void OpenGLObject::DrawCollisionBox(Vector2D min, Vector2D max)
 * @param  std::string filePath of the Texture.
 * @return int	Texture Handler
 *************************************************************************/
-int OpenGLObject::Setup_TextureObject(std::string filePath)
-{
+int OpenGLObject::Setup_TextureObject(std::string filePath){
 	// Create a int variable for texture Object
 	GLuint textureObj_Handler;
 
@@ -641,8 +626,7 @@ int OpenGLObject::Setup_TextureObject(std::string filePath)
 * 
 * @return void
 *************************************************************************/
-void OpenGLObject::OpenGLModel::VAO_Object::setTextureValue(float x, float y, float r, float g, float b)
-{
+void OpenGLObject::OpenGLModel::VAO_Object::setTextureValue(float x, float y, float r, float g, float b){
 	// Set Position X and Y
 	position.x = x;
 	position.y = y;
@@ -662,8 +646,7 @@ void OpenGLObject::OpenGLModel::VAO_Object::setTextureValue(float x, float y, fl
 *
 * @return void
 *************************************************************************/
-void OpenGLObject::OpenGLModel::VAO_Object::setTexture(float s, float t)
-{
+void OpenGLObject::OpenGLModel::VAO_Object::setTexture(float s, float t){
 	// Set Texture S and T coordinates.
 	texture.s = s;
 	texture.t = t;
