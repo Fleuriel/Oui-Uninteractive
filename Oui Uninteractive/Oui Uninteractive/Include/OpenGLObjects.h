@@ -121,7 +121,7 @@ public:
 	void Update(float xSpeed = 0.0f, float ySpeed = 0.0f, float scaleX = 100.0f, float scaleY = 100.0f, float aSpeed = 10.0f, bool enRot = false);
 	//static void OpenGLShadersInitialization();
 
-	void DrawCollisionBox(float minX, float maxX, float minY, float maxY);
+	void DrawCollisionBox(Vector2D min, Vector2D max);
 	void Draw() const;
 
 	void InitObjects(float userInput_x, float userInput_y, float userInput_sizeX,
@@ -131,6 +131,8 @@ public:
 //	static void Setup_Quad_VAO();
 	static void init_scenes(std::string);
 	static void Insert_Shader_Program(std::string shdr_pgm_name, std::string vtx_shdr_name, std::string frg_shdr_name);
+
+	Vector2D ApplyTransformationToAABB(Vector2D aabb, glm::mat3 transformation);
 
 	static std::vector<OpenGLModel> models;
 

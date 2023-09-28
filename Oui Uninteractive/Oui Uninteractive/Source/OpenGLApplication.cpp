@@ -24,6 +24,7 @@
 #include <ParticleSystem.h>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
+#include <iterator>
 
 #define STB_IMAGE_IMPLEMENTATION
 #include <stb_image.h>
@@ -59,12 +60,15 @@ int positionX = 0;
 float angle;
 
 bool toggleMode = false;
+bool testPhase = false;
 // For Input
 extern float mouse_scroll_total_Y_offset;
 extern int lastkeyedcommand;
 
 static bool glewInitialized = false;
 static bool imguiInitialized = false;
+
+
 
 void OpenGLApplication::OpenGLWindowInit()
 {
@@ -236,15 +240,13 @@ void OpenGLApplication::OpenGLUpdate()
 		double xpos, ypos{};
 		glfwGetCursorPos(window, &xpos, &ypos);
 
-		angle+= 0.2;
+		angle+= 0.05f;
 
 		//WireFrame Mode:
 		if (keyStates[GLFW_KEY_P] == 1)
 		{
 			toggleMode =  !toggleMode;
-			
 		}
-
 		if (toggleMode == true)
 		{
 			glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
@@ -287,9 +289,9 @@ void OpenGLApplication::OpenGLUpdate()
 			positionX--;
 			std::cout << positionX<< '\n';
 		}
-		if (keyStates[GLFW_KEY_H] == 1)
+		if (keyStates[GLFW_KEY_Z] == 1)
 		{
-			std::cout << objects.size();
+			testPhase = !testPhase;
 		}
 
 		if (keyStates[GLFW_KEY_H] == 1)
@@ -503,7 +505,7 @@ void OpenGLApplication::OpenGLUpdate()
 			}
 
 
-			obj.DrawCollisionBox(00, 00, 1, 1);
+			obj.DrawCollisionBox(Vector2D(00, 00), Vector2D(1, 1));
 
 
 		}
@@ -511,8 +513,20 @@ void OpenGLApplication::OpenGLUpdate()
 			if (gObj.second->Has(ComponentType::TRANSFORM) != -1) {
 				GET_COMPONENT(gObj.second, Transform, ComponentType::TRANSFORM)->shape->Draw();
 			}	
-		}
 
+
+			if (testPhase)
+			{
+				static Vector2D min, max;
+				max = GET_COMPONENT(gObj.second, PhysicsBody, ComponentType::PHYSICS_BODY)->boundingbox->max;
+				min = GET_COMPONENT(gObj.second, PhysicsBody, ComponentType::PHYSICS_BODY)->boundingbox->min;
+
+				GET_COMPONENT(gObj.second, Transform, ComponentType::TRANSFORM)->shape->DrawCollisionBox(min,max);
+			}
+		}
+		
+
+			
 
 		particleSystem.update();
 		particleSystem.draw();

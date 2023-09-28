@@ -27,7 +27,7 @@ bool CollisionMouseRect(AABB Rect1) {
 		(xpos > Rect1.min.x &&
 		 ypos > Rect1.min.y))
 	{
-		//std::cout << "ITS COLLIDING BOIS\n";
+		std::cout << "ITS COLLIDING BOIS\n";
 		return true;
 	}
 	else
@@ -79,7 +79,7 @@ bool CollisionStaticDynamicRectRect(AABB Rect1, AABB Rect2)
 			(Rect2.max.x > Rect1.min.x  &&
 			 Rect2.max.y > Rect1.min.y))
 		{
-			//std::cout << "ITS COLLIDING BOIS\n";
+			std::cout << "ITS COLLIDING BOIS\n";
 		return true;
 		}
 		else 
