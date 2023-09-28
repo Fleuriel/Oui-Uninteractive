@@ -21,7 +21,7 @@
 
 extern GLFWwindow* window;
 extern OpenGLObject Objects;
-extern std::pair<unsigned short, unsigned short> windowSize;
+extern std::pair<int, int> windowSize;
 
 class OpenGLApplication {
 

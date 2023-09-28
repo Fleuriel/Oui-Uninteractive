@@ -68,7 +68,7 @@ public:
 		GLenum primitive_type;		// Primitive Type
 		size_t primitive_cnt;		// Primitive Count
 		GLuint vaoid;				// Vaoid of the Model
-		GLuint draw_cnt;			// Draw Count of the model
+		size_t draw_cnt;			// Draw Count of the model
 		size_t idx_elem_cnt;		// Index Element Count of the Model
 		
 

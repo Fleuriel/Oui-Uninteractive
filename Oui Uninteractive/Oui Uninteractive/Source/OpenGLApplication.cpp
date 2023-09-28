@@ -38,7 +38,7 @@ std::string title = "Oui Uninteractive Game Engine Editor";
 GLFWwindow* window;
 
 // To store the window dimensions for duration of program
-std::pair<unsigned short, unsigned short> windowSize;
+std::pair<int, int> windowSize;
 
 // ImGui and Editor instance
 UsingImGui myImGui;
@@ -56,7 +56,7 @@ ParticleSystem particleSystem;
 
 
 OpenGLObject::OpenGLModel mdl;
-int positionX = 0;
+float positionX = 0;
 float angle;
 
 bool togglePolygonMode = false;
@@ -555,8 +555,7 @@ void OpenGLApplication::OpenGLUpdate(){
 * @param none
 * @return void
 *************************************************************************/
-void OpenGLApplication::OpenGLCleanup()
-{
+void OpenGLApplication::OpenGLCleanup(){
 	Objects.Cleanup();
 	OpenGLSetBackgroundColor(0.0f, 0.0f, 0.0f,0.0f);
 
@@ -586,7 +585,7 @@ void OpenGLApplication::Draw() {
 	}
 
 	// Update the Title and Others EVERY SECOND.
-	if (IsTimeElapsed(1.0f))
+	if (IsTimeElapsed(1))
 	{	
 		// setting up the text to be displayed as the window title
 		std::stringstream sStr;
@@ -619,8 +618,7 @@ void OpenGLApplication::OpenGLSetBackgroundColor(float r, float g, float b, floa
 * @param none
 * @return void
 *************************************************************************/
-void OpenGLApplication::OpenGLTestChangingStates()
-{
+void OpenGLApplication::OpenGLTestChangingStates(){
 	// Set Background Color
 	OpenGLSetBackgroundColor(0.1f, 0.1f, 0.1f, 1.0f);
 	// Clear Color buffer Bit
@@ -655,6 +653,8 @@ void OpenGLApplication::OpenGLTestChangingStates()
 * @return void
 *************************************************************************/
 void OpenGLApplication::OpenGLWindowResizeCallback(GLFWwindow* window, int width, int height) {
+	(void)window;
+
 	// Update the window dimensions once changed
 	// set callback for the window size
 	glViewport(0, 0, width, height);
