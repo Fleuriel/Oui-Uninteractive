@@ -90,7 +90,9 @@ void SoundManager::LoadSounds() {
    ============================================ */
 void SoundManager::PlayBGMSounds() {
 	// Play BGM once clicked
-	if (bgmChannels[0] == nullptr) {
+	bool playStatus1, playStatus2;
+	bgmChannels[0]->isPlaying(&playStatus1);
+	if (bgmChannels[0] == nullptr || !playStatus1) {
 		result = system->playSound(bgmSounds[0], nullptr, true, &bgmChannels[0]);
 		if (result != FMOD_OK) {
 			std::cout << "FMOD error: " << FMOD_ErrorString(result);
@@ -98,7 +100,8 @@ void SoundManager::PlayBGMSounds() {
 		}
 	}
 	
-	if (bgmChannels[1] == nullptr) {
+	bgmChannels[1]->isPlaying(&playStatus2);
+	if (bgmChannels[1] == nullptr || !playStatus2) {
 		result = system->playSound(bgmSounds[1], nullptr, true, &bgmChannels[1]);
 		if (result != FMOD_OK) {
 			std::cout << "FMOD error: " << FMOD_ErrorString(result);
