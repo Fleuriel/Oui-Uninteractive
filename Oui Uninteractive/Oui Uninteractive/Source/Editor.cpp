@@ -38,7 +38,7 @@ static void HelpMarker(std::string desc) {
 * @param glsl_vers - C-string containing the GLSL version used 
 * @return void
 *************************************************************************/
-void UsingImGui::Init(GLFWwindow* window, const char* glsl_vers) {
+void UsingImGui::Init(GLFWwindow* glfwWindow, const char* glsl_vers) {
 	IMGUI_CHECKVERSION();
 	ImGui::CreateContext();
 	ImPlot::CreateContext();
@@ -47,7 +47,7 @@ void UsingImGui::Init(GLFWwindow* window, const char* glsl_vers) {
 	// Config Flags
 	io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
 	// Setup bindins
-	ImGui_ImplGlfw_InitForOpenGL(window, true);
+	ImGui_ImplGlfw_InitForOpenGL(glfwWindow, true);
 	ImGui_ImplOpenGL3_Init(glsl_vers);
 	std::cout << "ImGui Successfully initialized" << std::endl;
 }
@@ -120,7 +120,7 @@ void UsingImGui::Exit() {
 *************************************************************************/
 void Editor::Init() {
 	// Set max data points
-	maxFPSdata = 2000.0f;
+	maxFPSdata = 2000;
 
 }
 
@@ -243,7 +243,6 @@ void Editor::CreateObjectList() {
 	static size_t selectedID = 0;
 	{
 		ImGui::BeginChild("left pane", ImVec2(150, 0), true);
-		int objCount = objectFactory->GetGameObjectIDMap().size();
 		std::string prevName;	
 		
 		
@@ -358,10 +357,10 @@ void Editor::CreateObjectList() {
 				}
 				size_t counter = 0;
 				bool getNext = false;
-				for (std::map<size_t, GameObject*>::iterator it = copyMap.begin(); it != copyMap.end(); it++) {
+				for (std::map<size_t, GameObject*>::iterator it2 = copyMap.begin(); it2 != copyMap.end(); it2++) {
 					//set to next record if not the end
 					if (getNext) {
-						gameobjID = it->first;
+						gameobjID = it2->first;
 						getNext = false;
 						break;
 					}
@@ -402,8 +401,8 @@ void Editor::CreateObjectList() {
 					objectFactory->AddComponent(ComponentType::TRANSFORM, objectFactory->GetGameObjectByID(startIndex + i));
 					objectFactory->GetGameObjectByID(startIndex + i)->Initialize();
 
-					GET_COMPONENT(objectFactory->GetGameObjectByID(startIndex + i), Transform, ComponentType::TRANSFORM)->position.x = rand() % 800;
-					GET_COMPONENT(objectFactory->GetGameObjectByID(startIndex + i), Transform, ComponentType::TRANSFORM)->position.y = rand() % 600;
+					GET_COMPONENT(objectFactory->GetGameObjectByID(startIndex + i), Transform, ComponentType::TRANSFORM)->position.x = static_cast<float>(rand() % 800);
+					GET_COMPONENT(objectFactory->GetGameObjectByID(startIndex + i), Transform, ComponentType::TRANSFORM)->position.y = static_cast<float>(rand() % 600);
 				}
 			}
 		
@@ -418,12 +417,12 @@ void Editor::CreateObjectList() {
 				static float xPos2 = 0, yPos2 = 0, scale2 = 0, speed2 = 0, angle2 = 0, rotSpeed2 = 0;
 				if (objectFactory->GetGameObjectByID(gameobjID)->Has(ComponentType::TRANSFORM) != -1) {
 					xPos2 = GET_COMPONENT(objectFactory->GetGameObjectByID(gameobjID), Transform, ComponentType::TRANSFORM)->position.x;
-					if (ImGui::SliderFloat("X-Position", &xPos2, -(windowSize.first / 2), (windowSize.first / 2), "%.2f")) { // Slider for X-Position
+					if (ImGui::SliderFloat("X-Position", &xPos2, static_cast<float>(-(windowSize.first / 2)), static_cast<float>(windowSize.first / 2), "%.2f")) { // Slider for X-Position
 						GET_COMPONENT(objectFactory->GetGameObjectByID(gameobjID), Transform, ComponentType::TRANSFORM)->position.x = xPos2;
 					}
 
 					yPos2 = GET_COMPONENT(objectFactory->GetGameObjectByID(gameobjID), Transform, ComponentType::TRANSFORM)->position.y;
-					if (ImGui::SliderFloat("Y-Position", &yPos2, -(windowSize.second / 2), (windowSize.first / 2), "%.2f")) { // Slider for Y-Position
+					if (ImGui::SliderFloat("Y-Position", &yPos2, static_cast<float>(-(windowSize.second / 2)), static_cast<float>(windowSize.first / 2), "%.2f")) { // Slider for Y-Position
 						GET_COMPONENT(objectFactory->GetGameObjectByID(gameobjID), Transform, ComponentType::TRANSFORM)->position.y = yPos2;
 					}
 
@@ -502,10 +501,10 @@ void Editor::CreateDebugPanel() {
 
 		// SYSTEM TIME DATA
 		ImGui::Text("System Time Percentage");
-		float physicsPercentage = timeRecorder.physicsTime / GetDT();
-		float grpahicsPercentage = timeRecorder.graphicsTime / GetDT();
-		float soundPercentage = timeRecorder.soundTime / GetDT();
-		float particlesPercentage = timeRecorder.particlesTime / GetDT();
+		float physicsPercentage = static_cast<float>(timeRecorder.physicsTime / GetDT());
+		float grpahicsPercentage = static_cast<float>(timeRecorder.graphicsTime / GetDT());
+		float soundPercentage = static_cast<float>(timeRecorder.soundTime / GetDT());
+		float particlesPercentage = static_cast<float>(timeRecorder.particlesTime / GetDT());
 		static const char* chartLabels[] = { "Physics", "Graphics" , "Sound", "Particles"};
 		float data[] = {
 			physicsPercentage, grpahicsPercentage, soundPercentage, particlesPercentage
@@ -526,8 +525,8 @@ void Editor::CreateDebugPanel() {
 		std::map<size_t, GameObject*> copyMap = objectFactory->GetGameObjectIDMap();
 		std::map<size_t, GameObject*>::iterator it = copyMap.begin();
 		if (drawBB) {
-			for (std::map<size_t, GameObject*>::iterator it = copyMap.begin(); it != copyMap.end(); it++) {
-				gameobjID = it->first;
+			for (std::map<size_t, GameObject*>::iterator it2 = copyMap.begin(); it2 != copyMap.end(); it2++) {
+				gameobjID = it2->first;
 				if ((objectFactory->GetGameObjectByID(gameobjID)->Has(ComponentType::PHYSICS_BODY) != -1) && (objectFactory->GetGameObjectByID(gameobjID)->Has(ComponentType::TRANSFORM) != -1) && (objectFactory->GetGameObjectByID(gameobjID) != nullptr)) {
 					static Vector2D min, max;
 					max = GET_COMPONENT(objectFactory->GetGameObjectByID(gameobjID), PhysicsBody, ComponentType::PHYSICS_BODY)->boundingbox->max;
@@ -556,7 +555,14 @@ void Editor::CreateDebugPanel() {
 
 		ImGui::Separator();
 		// Keyboard input checks
-		struct funcs { static bool IsLegacyNativeDupe(ImGuiKey key) { return key < 512 && ImGui::GetIO().KeyMap[key] != -1; } }; // Hide Native<>ImGuiKey duplicates when both exists in the array
+		struct funcs {
+			static bool IsLegacyNativeDupe(ImGuiKey key) {
+				if (key < 0 || key >= ImGuiKey_COUNT) {					
+					return false; // Handle  key is out of bounds
+				}
+				return key < 512 && ImGui::GetIO().KeyMap[key] != -1;
+			}
+		};
 		ImGuiKey start_key = (ImGuiKey)0;
 		ImGui::Text("Keys down:");
 		for (ImGuiKey key = start_key; key < ImGuiKey_NamedKey_END; key = (ImGuiKey)(key + 1)) { // Check Keydowns
