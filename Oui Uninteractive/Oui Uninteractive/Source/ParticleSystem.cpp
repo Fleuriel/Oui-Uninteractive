@@ -122,8 +122,7 @@ void ParticleSystem::Update() {
     // Record the starting time for performance measurement.
     std::chrono::high_resolution_clock::time_point timeStart = std::chrono::high_resolution_clock::now();
     // Iterate through the particles
-    for (size_t i = 0; i<particles.size();++i)
-    {
+    for (size_t i = 0; i<particles.size();++i){
         // Print debug information about the current particle's position.
         std::cout << i << "update " << particles[i].object.position.x << " " << particles[i].object.position.y << "\n";
         // Update the current particle's state.
@@ -148,8 +147,7 @@ void ParticleSystem::Draw() {
 		// std::cout << "Particle Storage Size:" << particles.size() << '\n';
 
         // Iterate through the particles
-        for (size_t i = 0; i < particles.size(); ++i)
-        {   
+        for (size_t i = 0; i < particles.size(); ++i){   
             // Print debug information to indicate that the current particle is being drawn.
             // std::cout << i << "Draw\n";
             // Call the `draw` function on the current particle to render it.
