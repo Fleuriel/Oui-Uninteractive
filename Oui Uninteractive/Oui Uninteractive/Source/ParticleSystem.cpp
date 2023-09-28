@@ -5,7 +5,7 @@
  * @par Course: CSD 2401
  * @par Software Engineering Project 3
  * @date 09-05-2023
-* @brief Implementation of Particle and ParticleSystem classes.
+ * @brief Implementation of Particle and ParticleSystem classes.
  *
  * This file contains the implementation of the Particle and ParticleSystem
  * classes for a software engineering project. These classes are part of a
@@ -69,7 +69,7 @@ Particle::Particle(){
  * @param userInput_angleDisplacement The initial angle displacement of the Particle.
  * @param userInput_angleSpeed The angular speed of the Particle.
  *************************************************************************/
-void Particle::init(int userInput_x, int userInput_y, float userInput_sizeX,
+void Particle::Init(int userInput_x, int userInput_y, float userInput_sizeX,
 					float userInput_sizeY, float userInput_angleDisplacement,
 					float userInput_angleSpeed) {
     // Initialize the Particle's OpenGLObject with the provided parameters.
@@ -83,7 +83,7 @@ void Particle::init(int userInput_x, int userInput_y, float userInput_sizeX,
  * to modify its properties. It updates the position of the Particle's OpenGLObject based on
  * its velocity and performs other necessary updates.
  *************************************************************************/
-void Particle::update() {
+void Particle::Update() {
 
     
     // Update the position of the Particle's OpenGLObject based on its velocity.
@@ -106,7 +106,7 @@ void Particle::update() {
  * drawing task to the `Draw` method of the Particle's OpenGLObject, which handles rendering
  * the visual representation of the Particle.
  *************************************************************************/
-void Particle::draw() {
+void Particle::Draw() {
     // Delegate the drawing task to the OpenGLObject associated with this Particle.
 	object.Draw();
 }
@@ -118,16 +118,15 @@ void Particle::draw() {
  * particles it contains. It iterates through the particles and calls the `update` function
  * on each of them to modify their properties.
  *************************************************************************/
-void ParticleSystem::update() {
+void ParticleSystem::Update() {
     // Record the starting time for performance measurement.
     std::chrono::high_resolution_clock::time_point timeStart = std::chrono::high_resolution_clock::now();
     // Iterate through the particles
-    for (size_t i = 0; i<particles.size();++i)
-    {
+    for (size_t i = 0; i<particles.size();++i){
         // Print debug information about the current particle's position.
         std::cout << i << "update " << particles[i].object.position.x << " " << particles[i].object.position.y << "\n";
         // Update the current particle's state.
-        particles[i].update();
+        particles[i].Update();
     }
     // Record the ending time and calculate the duration of the update operation.
     std::chrono::high_resolution_clock::time_point timeEnd = std::chrono::high_resolution_clock::now();
@@ -143,17 +142,16 @@ void ParticleSystem::update() {
  * including all the individual particles it contains. It iterates through the particles and calls
  * the `draw` function on each of them to display their graphical representation on the screen.
  *************************************************************************/
-void ParticleSystem::draw() {
+void ParticleSystem::Draw() {
 
 		// std::cout << "Particle Storage Size:" << particles.size() << '\n';
 
         // Iterate through the particles
-        for (size_t i = 0; i < particles.size(); ++i)
-        {   
+        for (size_t i = 0; i < particles.size(); ++i){   
             // Print debug information to indicate that the current particle is being drawn.
             // std::cout << i << "Draw\n";
             // Call the `draw` function on the current particle to render it.
-            particles[i].draw();
+            particles[i].Draw();
             // std::cout << particle.object.scaleModel.x << '\t' << particle.object.scaleModel.y << '\n';
         }
 

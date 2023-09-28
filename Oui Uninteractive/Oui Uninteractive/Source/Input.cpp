@@ -212,8 +212,7 @@ void UpdateStatesForNextFrame() {
  *       The value assigned here typically represents the intention to quit or close
  *       the application.
  *************************************************************************/
-void WindowCloseCallback(GLFWwindow* window6)
-{
+void WindowCloseCallback(GLFWwindow* window6){
 	(void)window6;
 	NextGameState = STATE_QUIT;
 }
