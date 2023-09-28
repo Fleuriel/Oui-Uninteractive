@@ -25,7 +25,7 @@
 class Background
 {
 public:
-	Background(){};
+	Background(): position (0,0), scaleModel(10,10), model_To_NDC_xform(glm::mat3(1.0)), texID(0){};
 	
 	~Background(){};
 

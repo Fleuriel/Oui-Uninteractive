@@ -68,8 +68,13 @@ std::map<std::string, std::function<void()>> shortcuts;
  * @see keyStates - The array used to store the state of various keyboard keys.
  * @see glfwSetKeyCallback() - Function to register this callback with GLFW.
  *************************************************************************/
-void KeyCallBack(GLFWwindow* window, int key, int scancode, int action, int mod)
+void keyCallBack(GLFWwindow* window3, int key, int scancode, int action, int mod)
 {
+	(void)window3;
+	(void)mod;
+	(void)action;
+	(void)scancode;
+
 	// Return if unknown key pressed (e.g. multimedia keys)
 	if (key == GLFW_KEY_UNKNOWN)
 		return;
@@ -114,8 +119,11 @@ void KeyCallBack(GLFWwindow* window, int key, int scancode, int action, int mod)
  * @see mouseButtonStates - The array used to store the state of various input events.
  * @see glfwSetMouseButtonCallback() - Function to register this callback with GLFW.
  *************************************************************************/
-void MouseCallBack(GLFWwindow* window, int button, int action, int mod) {
+void mouseCallBack(GLFWwindow* window4, int button, int action, int mod) {
 
+	(void)window4;
+
+	(void)mod;
 	//UNREFERENCED_PARAMETER(window);
 	//UNREFERENCED_PARAMETER(mod);
 
@@ -148,13 +156,15 @@ float mouse_scroll_total_Y_offset;	// KEEPS TRACK OF TOTAL VERTICAL SCROLLING
  * @see mouseScrollState - The array used to store the state of various input events.
  * @see glfwSetScrollCallback() - Function to register this callback with GLFW.
  *************************************************************************/
-void ScrollCallBack(GLFWwindow* window, double xOffset, double yOffset ) {
+void scrollCallBack(GLFWwindow* window5, double xOffset, double yOffset ) {
 
+	(void)xOffset;
+	(void)window5;
 	//UNREFERENCED_PARAMETER(window);
 	//UNREFERENCED_PARAMETER(xOffset);
 
 	//Update variable to track total vertical scrolling
-	mouse_scroll_total_Y_offset += yOffset;
+	mouse_scroll_total_Y_offset += static_cast<float>(yOffset);
 
 	//Change the scroll states based on y offset value
 	mouseScrollState = (yOffset > 0) ? 1 : (yOffset == 0) ? 0 : -1;
@@ -202,8 +212,8 @@ void UpdateStatesForNextFrame() {
  *       The value assigned here typically represents the intention to quit or close
  *       the application.
  *************************************************************************/
-void WindowCloseCallback(GLFWwindow* window)
+void windowCloseCallback(GLFWwindow* window6)
 {
-	(void)window;
+	(void)window6;
 	NextGameState = STATE_QUIT;
 }

@@ -21,7 +21,7 @@ std::vector<OpenGLShader> Background::shdrpgms;
 unsigned int Background::mdl_ref = 0; // Define and initialize mdl_ref
 unsigned int Background::shd_ref = 0; // Define and initialize shd_ref
 
-extern std::pair<unsigned short, unsigned short> windowSize;
+extern std::pair<int,int> windowSize;
 
 GLuint Background::VAO = 0;
 GLuint Background::VBO = 0;
@@ -62,8 +62,8 @@ void Background::Init()
 
 	using glm::radians;
 
-	scaleModel.x = windowSize.first;
-	scaleModel.y = windowSize.second;
+	scaleModel.x = static_cast<float>(windowSize.first);
+	scaleModel.y = static_cast<float>(windowSize.second);
 
 	glm::mat3 Translate = glm::mat3
 	{
@@ -216,7 +216,7 @@ void Background::Draw() const
 	glDrawElements(
 		OpenGLObject::models[mdl_ref].primitive_type,
 		OpenGLObject::models[mdl_ref].draw_cnt,
-		GL_UNSIGNED_SHORT, NULL);
+		GL_UNSIGNED_SHORT, nullptr);
 
 
 

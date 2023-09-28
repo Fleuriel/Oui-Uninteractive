@@ -207,10 +207,10 @@ OpenGLObject::OpenGLModel OpenGLObject::Box_Model(glm::vec3 color)
 	// Define the vertices of a textured square
 	std::vector<Vertex> vertices
 	{
-		 { glm::vec2(0.5f, -0.5f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec2(1.0f, 1.0f) }, // Bottom-right
-		 { glm::vec2(0.5f, 0.5f),  glm::vec3(1.0f, 1.0f, 1.0f), glm::vec2(1.0f, 0.0f) }, // Top-right
-		 { glm::vec2(-0.5f, 0.5f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec2(0.0f, 0.0f) }, // Top-left
-		 { glm::vec2(-0.5f, -0.5f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec2(0.0f, 1.0f) }  // Bottom-left
+		 { glm::vec2(0.5f,  -0.5f), color, glm::vec2(1.0f, 1.0f) }, // Bottom-right
+		 { glm::vec2(0.5f,   0.5f), color, glm::vec2(1.0f, 0.0f) }, // Top-right
+		 { glm::vec2(-0.5f,  0.5f), color, glm::vec2(0.0f, 0.0f) }, // Top-left
+		 { glm::vec2(-0.5f, -0.5f), color, glm::vec2(0.0f, 1.0f) }  // Bottom-left
 	};
 
 	// Create Model.
@@ -256,7 +256,7 @@ OpenGLObject::OpenGLModel OpenGLObject::Box_Model(glm::vec3 color)
 	// Store information in the model structure
 	mdl.vaoid = vaoid;
 	mdl.primitive_type = GL_TRIANGLE_FAN; // Use GL_TRIANGLE_FAN for a square
-	mdl.draw_cnt = idx_vtx.size();
+	mdl.draw_cnt = static_cast<GLsizei>(idx_vtx.size());
 	mdl.primitive_cnt = vertices.size();
 
 
@@ -391,7 +391,7 @@ void OpenGLObject::Draw() const
 	glDrawElements(
 		models[mdl_ref].primitive_type,
 		models[mdl_ref].draw_cnt,
-		GL_UNSIGNED_SHORT, NULL);
+		GL_UNSIGNED_SHORT, nullptr);
 
 	// Part 5: Clean up
 	glBindVertexArray(0); // Unbind the VAO
@@ -534,17 +534,9 @@ void OpenGLObject::DrawCollisionBox(Vector2D min, Vector2D max)
 	float bY = max.y;
 
 	using glm::radians;
-
-	// midpoint of both X and Y min and max
-	float mpointX = (max.x + min.x) / 2;
-	float mpointY = (max.y + min.y) / 2;
 	
 	// set angle displacement to 0, as we do not need to rotate
 	angleDisplacment = 0;
-
-	// Set Scales
-	float scaleX = 2.0f / windowSize.first;
-	float scaleY = 2.0f / windowSize.second;
 
 	// Set Scale to World NDC
 	glm::mat3 ScaleToWorldToNDC = glm::mat3(
