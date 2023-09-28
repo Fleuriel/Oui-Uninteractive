@@ -48,15 +48,12 @@
                     "Speed": 500.0
                 },
                 "Transform": {
-                    "PositionX": 200.40103149414063,
-                    "PositionY": 108.22107696533203,
-                    "Rotation": 182.5876007080078,
-                    "Scale": 220.0
-                }
+                    "PositionX": 200.08004760742188,
+                    "PositionY": 101.64083099365234,
+                    "Rotation": 73.56244659423828,
             }
         },
         {
-            "Name": "PlayerObjFromPrefab",
             "Type": "Player",
             "Components": {
                 "PhysicsBody": {
