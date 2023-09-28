@@ -470,24 +470,21 @@ void OpenGLObject::InitObjects(float userInput_x, float userInput_y, float userI
 	angleSpeed = userInput_angleSpeed;
 
 	// matrix for translate
-	glm::mat3 Translate = glm::mat3
-	{
+	glm::mat3 Translate = glm::mat3	{
 		1, 0, 0,
 		0, 1, 0,
 		 position.x,  position.y, 1
 	};
 
 	// matrix for rotation
-	glm::mat3 Rotation = glm::mat3
-	{
+	glm::mat3 Rotation = glm::mat3	{
 		cosf(radians(angleDisplacment)), sinf(radians(angleDisplacment)) , 0,
 		-sinf(radians(angleDisplacment)),  cosf(radians(angleDisplacment)) , 0,
 		0, 0, 1
 	};
 
 	// matrix for scale
-	glm::mat3 Scale = glm::mat3
-	{
+	glm::mat3 Scale = glm::mat3	{
 		scaleModel.x, 0, 0,
 		0, scaleModel.y, 0,
 		0, 0, 1
@@ -498,8 +495,7 @@ void OpenGLObject::InitObjects(float userInput_x, float userInput_y, float userI
 	float scaleY = 2.0f / windowSize.second;
 
 	// Scale To World NDC-coordinates matrix
-	glm::mat3 ScaleToWorldToNDC = glm::mat3
-	{
+	glm::mat3 ScaleToWorldToNDC = glm::mat3	{
 		scaleX, 0, 0,
 		0, scaleY, 0,
 		0, 0, 1
