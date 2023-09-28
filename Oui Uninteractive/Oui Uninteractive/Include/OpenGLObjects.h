@@ -26,7 +26,7 @@
 #include <Vector2D.h>
 
 // External Texture Color
-extern int importTexture, secondTexture, bgTexture;
+extern int importTexture, secondTexture, thirdTexture;
 
 
 class OpenGLObject

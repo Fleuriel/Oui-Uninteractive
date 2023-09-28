@@ -12,9 +12,9 @@
                     "Speed": 500.0
                 },
                 "Transform": {
-                    "PositionX": -223.07086181640625,
-                    "PositionY": 155.30902099609375,
-                    "Rotation": 28.376922607421875,
+                    "PositionX": -250.0,
+                    "PositionY": 200.0,
+                    "Rotation": 45.0,
                     "Scale": 200.0
                 }
             }
@@ -30,9 +30,9 @@
                     "Speed": 700.0
                 },
                 "Transform": {
-                    "PositionX": 50.40102767944336,
-                    "PositionY": -199.7994842529297,
-                    "Rotation": 182.5876007080078,
+                    "PositionX": 50.14476013183594,
+                    "PositionY": -199.9276123046875,
+                    "Rotation": 319.71307373046875,
                     "Scale": 130.0
                 }
             }
@@ -48,12 +48,15 @@
                     "Speed": 500.0
                 },
                 "Transform": {
-                    "PositionX": 200.08004760742188,
-                    "PositionY": 101.64083099365234,
-                    "Rotation": 73.56244659423828,
+                    "PositionX": 200.14476013183594,
+                    "PositionY": 102.96760559082031,
+                    "Rotation": 319.71307373046875,
+                    "Scale": 220.0
+                }
             }
         },
         {
+            "Name": "PlayerObjFromPrefab",
             "Type": "Player",
             "Components": {
                 "PhysicsBody": {
@@ -83,7 +86,7 @@
                 "Transform": {
                     "PositionX": 450.0,
                     "PositionY": 50.0,
-                    "Rotation": 125.98136901855469,
+                    "Rotation": 44.4322395324707,
                     "Scale": 200.0
                 }
             }

@@ -47,7 +47,7 @@ GLuint OpenGLObject::VAO = 0;
 GLuint OpenGLObject::VBO = 0;
 
 // Global Variable to set it, and then use it eventually.
-int bgTexture, firstTexture, secondTexture;
+int firstTexture, secondTexture, thirdTexture;
 
 
 
@@ -77,9 +77,9 @@ void OpenGLObject::Init()
 	init_shdrpgms_cont(fileName);
 
 
-	firstTexture = OpenGLObject::Setup_TextureObject("../texture/pepethefrog.png");
-	secondTexture = OpenGLObject::Setup_TextureObject("../texture/pepe.jpg");
-	bgTexture = OpenGLObject::Setup_TextureObject("../texture/background.jpg");
+	firstTexture = OpenGLObject::Setup_TextureObject("../texture/flower.jpg");
+	secondTexture = OpenGLObject::Setup_TextureObject("../texture/bag.jpg");
+	thirdTexture = OpenGLObject::Setup_TextureObject("../texture/mosquito.jpg");
 
 	// Emplace model to the model vector
 	models.emplace_back(OpenGLObject::Box_Model(color));
@@ -358,13 +358,13 @@ void OpenGLObject::Draw() const
 	switch (TagID)
 	{
 	case 0:
-		tex = bgTexture;
-		break;
-	case 1:
 		tex = firstTexture;
 		break;
-	case 2:
+	case 1:
 		tex = secondTexture;
+		break;
+	case 2:
+		tex = thirdTexture;
 		break;
 	default:
 		break;
