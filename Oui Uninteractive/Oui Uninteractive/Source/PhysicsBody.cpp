@@ -46,6 +46,7 @@ void PhysicsBody::Initialize() {
 		txPtr = GetOwner()->GetComponentType<Transform>(ComponentType::TRANSFORM);
 	}
 	//physicsSys->bodyList.push_back(this);
+	size_t dee = GetOwner()->GetGameObjectID();
 	physicsSys->bodyList.insert(std::pair<size_t, PhysicsBody*>(GetOwner()->GetGameObjectID(), this));
 }
 

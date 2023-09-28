@@ -169,6 +169,7 @@ GameObject* ObjectFactory::BuildObjectFromPrefab(const std::string& name, const 
 	}
 	else {
 		GameObject* gameObject{ new GameObject(name, type) };
+	
 		std::string componentName;
 
 		for (size_t i{}; i < prefabMap[type].size(); ++i) {
@@ -189,12 +190,12 @@ GameObject* ObjectFactory::BuildObjectFromPrefab(const std::string& name, const 
 				gameObject->AddComponent(component, componentFactory->type);
 			}
 		}
-
+		// Assign an ID to the game object
+		AssignObjectID(gameObject);
 		// Initialize the components in the current object
 		gameObject->Initialize();
 
-		// Assign an ID to the game object
-		AssignObjectID(gameObject);
+
 
 		return gameObject;
 	}
