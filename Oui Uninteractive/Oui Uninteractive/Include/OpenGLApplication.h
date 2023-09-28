@@ -19,7 +19,7 @@
 
 #define GET_COMPONENT(GameObject, Component, ComponentType) (GameObject->GetComponentType<Component>(ComponentType))
 
-extern GLFWwindow* window;
+extern GLFWwindow* windowNew;
 extern OpenGLObject Objects;
 extern std::pair<int, int> windowSize;
 

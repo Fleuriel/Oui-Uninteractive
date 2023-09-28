@@ -36,10 +36,10 @@ int main()
 	sysManager->AddSystem(new SoundManager());
 	sysManager->Initialize();
 	// Set callback for window close button (top right button).
-	glfwSetWindowCloseCallback(window, WindowCloseCallback);
+	glfwSetWindowCloseCallback(windowNew, WindowCloseCallback);
 
 	// Frame Buffer Callback for Window.
-	glfwSetFramebufferSizeCallback(window, OpenGLApplication::OpenGLWindowResizeCallback);
+	glfwSetFramebufferSizeCallback(windowNew, OpenGLApplication::OpenGLWindowResizeCallback);
 	// Initialize the GameStateManager
 	// Initialize Game State, Input here.
 	GameStateManagerInit(STATE_GRAPHICS_TEST);
@@ -48,7 +48,7 @@ int main()
 	previousTime = std::chrono::high_resolution_clock::now();
 
 	// The Main Window.
-	while (!glfwWindowShouldClose(window))
+	while (!glfwWindowShouldClose(windowNew))
 	{
 		// Changing in CurrentGameState would make it TRUE for this,
 		// so it will update the manager, to change the state.
@@ -83,7 +83,7 @@ int main()
 			
 
 			// Swap Buffers with the window, similar to GOL in Y1T1 [OpenGL Function]
-			glfwSwapBuffers(window);
+			glfwSwapBuffers(windowNew);
 
 
 			// At the end, if check the state is quite else go away.

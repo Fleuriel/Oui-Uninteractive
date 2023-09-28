@@ -35,7 +35,7 @@
 std::string title = "Oui Uninteractive Game Engine Editor";
 
  // Pointer to the window
-GLFWwindow* window;
+GLFWwindow* windowNew;
 
 // To store the window dimensions for duration of program
 std::pair<int, int> windowSize;
@@ -93,8 +93,8 @@ void OpenGLApplication::OpenGLWindowInit(){
 	std::cout << windowSize.first << windowSize.second;
 #endif
 	// Create window application based on the windowSize.
-	window = glfwCreateWindow(windowSize.first, windowSize.second, "hello", NULL, NULL);
-	if (!window)
+	windowNew = glfwCreateWindow(windowSize.first, windowSize.second, "hello", NULL, NULL);
+	if (!windowNew)
 	{
 		glfwTerminate();
 
@@ -118,21 +118,21 @@ void OpenGLApplication::OpenGLWindowInit(){
 	glfwSwapInterval(1);
 
 	// Receives Key input/output [Checks for Key Presses]
-	glfwSetKeyCallback(window, KeyCallBack);
+	glfwSetKeyCallback(windowNew, KeyCallBack);
 
 	// Receives Mouse input/output [Checks for Mouse Clicks]
-	glfwSetMouseButtonCallback(window, MouseCallBack);
+	glfwSetMouseButtonCallback(windowNew, MouseCallBack);
 
-	glfwSetScrollCallback(window, ScrollCallBack);
+	glfwSetScrollCallback(windowNew, ScrollCallBack);
 
 	// Make the current window the current context
-	glfwMakeContextCurrent(window);
+	glfwMakeContextCurrent(windowNew);
 
 	// Set input mode for the window with the cursor (Enables Cursor Input)
-	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+	glfwSetInputMode(windowNew, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
 
 	// Set glfw window resize callback function
-	glfwSetWindowSizeCallback(window, OpenGLWindowResizeCallback);
+	glfwSetWindowSizeCallback(windowNew, OpenGLWindowResizeCallback);
 
 
 }
@@ -190,7 +190,7 @@ void OpenGLApplication::OpenGLInit(){
 
 	// Initializing ImGui
 	if (!imguiInitialized) {
-		myImGui.Init(window, glsl_vers);
+		myImGui.Init(windowNew, glsl_vers);
 		imguiInitialized = true;
 	}
 	// Initializing Editor
@@ -268,7 +268,7 @@ void OpenGLApplication::OpenGLUpdate(){
 		// End the Game.
 		if (keyStates[GLFW_KEY_ESCAPE]) {
 			// set the window to CLOSE.
-			glfwSetWindowShouldClose(window, GLFW_TRUE);
+			glfwSetWindowShouldClose(windowNew, GLFW_TRUE);
 			// Set game state to quit to exit the while loop
 			CurrentGameState = STATE_QUIT;
 		}
@@ -278,7 +278,7 @@ void OpenGLApplication::OpenGLUpdate(){
 		particleSystem.update();
 		// Create x and y pos variables to collect data from the mouse position.
 		double xpos, ypos{};
-		glfwGetCursorPos(window, &xpos, &ypos);
+		glfwGetCursorPos(windowNew, &xpos, &ypos);
 
 #ifdef _DEBUG
 		// For Debugging Purposes on angles.
@@ -599,7 +599,7 @@ void OpenGLApplication::Draw() {
 			<< "FPS:  | " << GetFrames();
 
 		// setting the text as the window title
-		glfwSetWindowTitle(window, sStr.str().c_str());
+		glfwSetWindowTitle(windowNew, sStr.str().c_str());
 	}
 
 }
