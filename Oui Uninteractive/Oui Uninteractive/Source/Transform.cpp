@@ -32,7 +32,7 @@ Transform::~Transform() {
 *************************************************************************/
 void Transform::Initialize() {
 	//Produce the OpenGLObject based off the Transform component variables
-	shape->InitObjects(position.x, position.y, scale, scale, rotation, 0);
+	shape->InitObjects();
 }
 /**************************************************************************
 * @brief Initialize this instance of the Transform component via file

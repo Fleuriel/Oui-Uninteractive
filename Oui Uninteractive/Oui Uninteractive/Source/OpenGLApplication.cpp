@@ -305,11 +305,12 @@ void OpenGLApplication::OpenGLUpdate(){
 		if (keyStates[GLFW_KEY_SPACE] == 1){
 			// Create Object Tag ID , 2
 			OpenGLObject newObject(2);
-			// Set Model ID
+
 #ifdef _DEBUG
 			std::cout << "Tag ID: " << newObject.TagID << '\n';
 #endif
-			newObject.InitObjects(0,0, 0,0,0,45);
+			// Init Objects
+			newObject.InitObjects();
 
 			// Emplace back into the container.
 			objects.emplace_back(newObject);
@@ -322,16 +323,16 @@ void OpenGLApplication::OpenGLUpdate(){
 			std::cout << "Tag ID: " << newObject1.TagID << '\n';
 #endif
 
-			newObject1.InitObjects(positionX, 100, 0, 0, 45, 45);
+			newObject1.InitObjects();
 
 			// Emplace back into the container.
 			objects.emplace_back(newObject1);
 		}
-		//If A is held down
+		
+		// Moves Object left. can add positionY to change as well.
 		if (keyStates[GLFW_KEY_A] ==2)
 		{
 			positionX--;
-			std::cout << positionX<< '\n';
 		}
 
 
@@ -535,11 +536,6 @@ void OpenGLApplication::OpenGLUpdate(){
 			{
 				obj.Update(300, 400, 50, 50);
 			}
-
-
-			//obj.DrawCollisionBox(Vector2D(00, 00), Vector2D(1, 1));
-
-
 		}
 
 		// Updates the Game Object

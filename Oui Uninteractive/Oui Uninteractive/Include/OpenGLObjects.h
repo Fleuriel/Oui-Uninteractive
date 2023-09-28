@@ -163,9 +163,9 @@ public:
 	*
 	* @return void
 	*************************************************************************/
-	void InitObjects(float userInput_x, float userInput_y, float userInput_sizeX,
-					float userInput_sizeY, float userInput_angleDisplacement,
-					float userInput_angleSpeed);
+	void InitObjects(float userInput_x = 0.0f, float userInput_y = 0.0f, float userInput_sizeX = 0.0f,
+					float userInput_sizeY = 0.0f, float userInput_angleDisplacement = 0.0f,
+					float userInput_angleSpeed = 0.0f);
 
 	/**************************************************************************
 	* @brief		 Cleanup the Object Creation.
