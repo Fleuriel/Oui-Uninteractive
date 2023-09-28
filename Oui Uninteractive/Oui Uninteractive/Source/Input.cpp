@@ -7,11 +7,11 @@
  * @date 09-05-2023
  * @brief This file does Input Handling and Callback Functions.
  *		  The functions include:
- *			- keyCallBack
- * 			- mouseCallBack
- * 			- scrollCallBack
- * 			- updateStatesForNextFrame
- * 			- windowCloseCallback
+ *			- KeyCallBack
+ * 			- MouseCallBack
+ * 			- ScrollCallBack
+ * 			- UpdateStatesForNextFrame
+ * 			- WindowCloseCallback
  *************************************************************************/
 
 #include <gl/glew.h>
@@ -174,7 +174,7 @@ void scrollCallBack(GLFWwindow* window5, double xOffset, double yOffset ) {
  *       the state of each keyboard key, and `mouseScrollState` has been initialized
  *       to store the state of the mouse scroll wheel.
  *************************************************************************/
-void updateStatesForNextFrame() {
+void UpdateStatesForNextFrame() {
 
 	// Loop through all keyboard keys (represented by indices)
 	for (size_t i = 0; i < GLFW_KEY_LAST + 1; ++i)

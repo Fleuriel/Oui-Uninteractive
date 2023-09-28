@@ -118,12 +118,12 @@ void OpenGLApplication::OpenGLWindowInit(){
 	glfwSwapInterval(1);
 
 	// Receives Key input/output [Checks for Key Presses]
-	glfwSetKeyCallback(window, keyCallBack);
+	glfwSetKeyCallback(window, KeyCallBack);
 
 	// Receives Mouse input/output [Checks for Mouse Clicks]
-	glfwSetMouseButtonCallback(window, mouseCallBack);
+	glfwSetMouseButtonCallback(window, MouseCallBack);
 
-	glfwSetScrollCallback(window, scrollCallBack);
+	glfwSetScrollCallback(window, ScrollCallBack);
 
 	// Make the current window the current context
 	glfwMakeContextCurrent(window);
@@ -492,7 +492,7 @@ void OpenGLApplication::OpenGLUpdate(){
 #endif
 		}
 
-		updateStatesForNextFrame();
+		UpdateStatesForNextFrame();
 
 		
 		
