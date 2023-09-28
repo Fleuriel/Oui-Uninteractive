@@ -1,10 +1,7 @@
-#ifndef COLLISION_H
-#define COLLISION_H
-
 /**************************************************************************
  * @file		  Collision.h
- * @author
- * @par DP email:
+ * @author		  Emery Quek Cheng Kwang
+ * @par DP email: c.quek@digipen.edu
  * @par Course:	  CSD 2401
  * @par			  Software Engineering Project 3
  * @date		  09-25-2023
@@ -12,7 +9,9 @@
  *				  the function names and is to be included by other files
  *				  that wishes to access collision functions.
  *************************************************************************/
-#pragma once
+#ifndef COLLISION_H
+#define COLLISION_H
+
 #include <CoordinateSystem.h>
 #include "PhysicsBody.h"
 

@@ -1,7 +1,7 @@
 /**************************************************************************
  * @file		  Collision.cpp
- * @author		  
- * @par DP email:
+ * @author		  Emery Quek Cheng Kwang
+ * @par DP email: c.quek@digipen.edu
  * @par Course:	  CSD 2401
  * @par			  Software Engineering Project 3
  * @date		  09-25-2023
