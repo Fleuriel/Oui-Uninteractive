@@ -51,7 +51,9 @@ JsonSerializer serializer;
 OpenGLObject Objects;								// First Instance of Object to Update.
 std::list<OpenGLObject> objects;					// singleton
 
+// Initialize Background
 Background background;
+
 ParticleSystem particleSystem;
 
 
@@ -325,6 +327,7 @@ void OpenGLApplication::OpenGLUpdate(){
 			// Emplace back into the container.
 			objects.emplace_back(newObject1);
 		}
+		//If A is held down
 		if (keyStates[GLFW_KEY_A] ==2)
 		{
 			positionX--;

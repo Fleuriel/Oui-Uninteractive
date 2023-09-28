@@ -34,7 +34,6 @@ public:
 	glm::mat3 model_To_NDC_xform;				// Model to NDC 
 	static GLuint mdl_ref, shd_ref;				// Model and Shader Reference
 
-	std::vector<GLuint> textures;				// integer for texture (stb returns integer).
 	int texID;
 	static GLuint VAO, VBO;						// Object VAO VBO
 
