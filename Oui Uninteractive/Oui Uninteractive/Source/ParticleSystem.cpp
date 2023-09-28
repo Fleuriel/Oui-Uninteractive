@@ -5,7 +5,22 @@
  * @par Course: CSD 2401
  * @par Software Engineering Project 3
  * @date 09-05-2023
- * @brief 
+* @brief Implementation of Particle and ParticleSystem classes.
+ *
+ * This file contains the implementation of the Particle and ParticleSystem
+ * classes for a software engineering project. These classes are part of a
+ * particle system simulation, where particles are represented using OpenGL
+ * objects and are updated and drawn on the screen. This file defines the
+ * constructors, initialization, update, and draw functions for both the
+ * Particle and ParticleSystem classes.
+ *
+ * The Particle class represents individual particles in the system, each
+ * with its own properties such as position, size, velocity, transparency,
+ * and lifespan. The ParticleSystem class manages a collection of particles,
+ * updating and rendering them as a group.
+ *
+ * @see Particle
+ * @see ParticleSystem
  *************************************************************************/
 
 #include <ParticleSystem.h>
