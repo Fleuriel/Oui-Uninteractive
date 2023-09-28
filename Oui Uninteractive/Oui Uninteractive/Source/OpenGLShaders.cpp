@@ -13,7 +13,12 @@
 #include <fstream>
 #include <sstream>
 
-
+ /**************************************************************************
+ * @brief		Link the Shader
+ *
+ * @param none
+ * @return GLboolean
+ *************************************************************************/
 GLboolean OpenGLShader::Link() {
     if (GL_TRUE == is_linked) {
         return GL_TRUE;
@@ -42,11 +47,21 @@ GLboolean OpenGLShader::Link() {
     }
     return is_linked = GL_TRUE;
 }
-
+/**************************************************************************
+* @brief		Get Handle of the Shader
+*
+* @param none
+* @return GLuint
+*************************************************************************/
 GLuint OpenGLShader::GetHandle() const {
     return pgm_handle;
 }
-
+/**************************************************************************
+* @brief		Validate the Shader
+*
+* @param NONE
+* @return GLboolean
+*************************************************************************/
 GLboolean OpenGLShader::Validate() {
     if (pgm_handle <= 0 || is_linked == GL_FALSE) {
         return GL_FALSE;
@@ -72,15 +87,30 @@ GLboolean OpenGLShader::Validate() {
         return GL_TRUE;
     }
 }
-
+/**************************************************************************
+* @brief		Gets Log of the shader if there are any errors
+*
+* @param NONE
+* @return std::string
+*************************************************************************/
 std::string OpenGLShader::GetLog() const {
     return log_string;
 }
-
+/**************************************************************************
+* @brief		Check if the Shader is linked.
+*
+* @param NONE
+* @return GLboolean
+*************************************************************************/
 GLboolean OpenGLShader::IsLinked() const {
     return is_linked;
 }
-
+/**************************************************************************
+* @brief		CompileLinkValidate
+*
+* @param std::vector<std::pair<GLenum, std::string>>
+* @return void
+*************************************************************************/
 GLboolean OpenGLShader::CompileLinkValidate(std::vector<std::pair<GLenum, std::string>> vec) {
     for (auto& elem : vec) {
         if (GL_FALSE == CompileShaderFromFile(elem.first, elem.second.c_str())) {
@@ -99,7 +129,14 @@ GLboolean OpenGLShader::CompileLinkValidate(std::vector<std::pair<GLenum, std::s
     return GL_TRUE;
 }
 
-
+/**************************************************************************
+* @brief		Compile Shader From File
+*
+* @param GLenum 	shader Type i.e. Frag Shader | Vert Shader
+* @param std::string string of the file name
+*
+* @return void
+*************************************************************************/
 GLboolean OpenGLShader::CompileShaderFromFile(GLenum shader_type, const std::string& file_name) {
     if (GL_FALSE == FileExists(file_name)) {
         log_string = "File not found";
@@ -123,7 +160,14 @@ GLboolean OpenGLShader::CompileShaderFromFile(GLenum shader_type, const std::str
     shader_file.close();
     return CompileShaderFromString(shader_type, buffer.str());
 }
-
+/**************************************************************************
+* @brief		Deletes Shader Program
+*
+* @param name
+* @param ...   boolean | int | float | x,y, | x,y,z, | x,y,z,w | vec2 |
+*				vec3| vec4 | mat3 | mat4
+* @return void
+*************************************************************************/
 void
 OpenGLShader::DeleteShaderProgram() {
     if (pgm_handle > 0) {
@@ -131,6 +175,14 @@ OpenGLShader::DeleteShaderProgram() {
     }
 }
 
+/**************************************************************************
+* @brief		Compile Shader from String
+*
+* @param GLenum		shader Type i.e. Frag Shader | Vert Shader
+* @param std::string string of the shader soruce
+*
+* @return GLboolean
+*************************************************************************/
 GLboolean
 OpenGLShader::CompileShaderFromString(GLenum shader_type,
     const std::string& shader_src) {
@@ -183,17 +235,35 @@ OpenGLShader::CompileShaderFromString(GLenum shader_type,
         return GL_TRUE;
     }
 }
-
+/**************************************************************************
+* @brief		Use the Shader
+*
+* @param none
+* @return void
+*************************************************************************/
 void OpenGLShader::Use() {
     if (pgm_handle > 0 && is_linked == GL_TRUE) {
         glUseProgram(pgm_handle);
     }
-}
+}	
+/**************************************************************************
+    * @brief		Unuse the shader
+    *
+    * @param none
+    * @return void
+    *************************************************************************/
 void OpenGLShader::UnUse() {
     glUseProgram(0);
 }
 
-
+/**************************************************************************
+* @brief		Gets Uniform Location
+*
+* @param name
+* @param ...   boolean | int | float | x,y, | x,y,z, | x,y,z,w | vec2 |
+*				vec3| vec4 | mat3 | mat4
+* @return void
+*************************************************************************/
 void OpenGLShader::SetUniform(GLchar const* name, GLboolean val) {
     GLint loc = glGetUniformLocation(pgm_handle, name);
     if (loc >= 0) {
@@ -203,7 +273,14 @@ void OpenGLShader::SetUniform(GLchar const* name, GLboolean val) {
         std::cout << "Uniform variable " << name << " doesn't exist" << std::endl;
     }
 }
-
+/**************************************************************************
+* @brief		Gets Uniform Location
+*
+* @param name
+* @param ...   boolean | int | float | x,y, | x,y,z, | x,y,z,w | vec2 |
+*				vec3| vec4 | mat3 | mat4
+* @return void
+*************************************************************************/
 void OpenGLShader::SetUniform(GLchar const* name, GLint val) {
     GLint loc = glGetUniformLocation(pgm_handle, name);
     if (loc >= 0) {
@@ -213,7 +290,14 @@ void OpenGLShader::SetUniform(GLchar const* name, GLint val) {
         std::cout << "Uniform variable " << name << " doesn't exist" << std::endl;
     }
 }
-
+/**************************************************************************
+* @brief		Gets Uniform Location
+*
+* @param name
+* @param ...   boolean | int | float | x,y, | x,y,z, | x,y,z,w | vec2 |
+*				vec3| vec4 | mat3 | mat4
+* @return void
+*************************************************************************/
 void OpenGLShader::SetUniform(GLchar const* name, GLfloat val) {
     GLint loc = glGetUniformLocation(pgm_handle, name);
     if (loc >= 0) {
@@ -222,7 +306,15 @@ void OpenGLShader::SetUniform(GLchar const* name, GLfloat val) {
     else {
         std::cout << "Uniform variable " << name << " doesn't exist" << std::endl;
     }
-}
+}	
+/**************************************************************************
+* @brief		Gets Uniform Location
+*
+* @param name
+* @param ...   boolean | int | float | x,y, | x,y,z, | x,y,z,w | vec2 |
+*				vec3| vec4 | mat3 | mat4
+* @return void
+*************************************************************************/
 void OpenGLShader::SetUniform(GLchar const* name, GLfloat x, GLfloat y) {
     GLint loc = glGetUniformLocation(pgm_handle, name);
     if (loc >= 0) {
@@ -232,7 +324,14 @@ void OpenGLShader::SetUniform(GLchar const* name, GLfloat x, GLfloat y) {
         std::cout << "Uniform variable " << name << " doesn't exist" << std::endl;
     }
 }
-
+/**************************************************************************
+* @brief		Gets Uniform Location
+*
+* @param name
+* @param ...   boolean | int | float | x,y, | x,y,z, | x,y,z,w | vec2 |
+*				vec3| vec4 | mat3 | mat4
+* @return void
+*************************************************************************/
 void OpenGLShader::SetUniform(GLchar const* name, GLfloat x, GLfloat y, GLfloat z) {
     GLint loc = glGetUniformLocation(pgm_handle, name);
     if (loc >= 0) {
@@ -242,7 +341,14 @@ void OpenGLShader::SetUniform(GLchar const* name, GLfloat x, GLfloat y, GLfloat 
         std::cout << "Uniform variable " << name << " doesn't exist" << std::endl;
     }
 }
-
+/**************************************************************************
+* @brief		Gets Uniform Location
+*
+* @param name
+* @param ...   boolean | int | float | x,y, | x,y,z, | x,y,z,w | vec2 |
+*				vec3| vec4 | mat3 | mat4
+* @return void
+*************************************************************************/
 void 
 OpenGLShader::SetUniform(GLchar const* name, GLfloat x, GLfloat y, GLfloat z, GLfloat w) {
     GLint loc = glGetUniformLocation(pgm_handle, name);
@@ -253,7 +359,14 @@ OpenGLShader::SetUniform(GLchar const* name, GLfloat x, GLfloat y, GLfloat z, GL
         std::cout << "Uniform variable " << name << " doesn't exist" << std::endl;
     }
 }
-
+/**************************************************************************
+* @brief		Gets Uniform Location
+*
+* @param name
+* @param ...   boolean | int | float | x,y, | x,y,z, | x,y,z,w | vec2 |
+*				vec3| vec4 | mat3 | mat4
+* @return void
+*************************************************************************/
 void OpenGLShader::SetUniform(GLchar const* name, glm::vec2 const& val) {
     GLint loc = glGetUniformLocation(pgm_handle, name);
     if (loc >= 0) {
@@ -263,7 +376,14 @@ void OpenGLShader::SetUniform(GLchar const* name, glm::vec2 const& val) {
         std::cout << "Uniform variable " << name << " doesn't exist" << std::endl;
     }
 }
-
+/**************************************************************************
+* @brief		Gets Uniform Location
+*
+* @param name
+* @param ...   boolean | int | float | x,y, | x,y,z, | x,y,z,w | vec2 |
+*				vec3| vec4 | mat3 | mat4
+* @return void
+*************************************************************************/
 void OpenGLShader::SetUniform(GLchar const* name, glm::vec3 const& val) {
     GLint loc = glGetUniformLocation(pgm_handle, name);
     if (loc >= 0) {
@@ -273,7 +393,14 @@ void OpenGLShader::SetUniform(GLchar const* name, glm::vec3 const& val) {
         std::cout << "Uniform variable " << name << " doesn't exist" << std::endl;
     }
 }
-
+/**************************************************************************
+* @brief		Gets Uniform Location
+*
+* @param name
+* @param ...   boolean | int | float | x,y, | x,y,z, | x,y,z,w | vec2 |
+*				vec3| vec4 | mat3 | mat4
+* @return void
+*************************************************************************/
 void OpenGLShader::SetUniform(GLchar const* name, glm::vec4 const& val) {
     GLint loc = glGetUniformLocation(pgm_handle, name);
     if (loc >= 0) {
@@ -283,7 +410,14 @@ void OpenGLShader::SetUniform(GLchar const* name, glm::vec4 const& val) {
         std::cout << "Uniform variable " << name << " doesn't exist" << std::endl;
     }
 }
-
+/**************************************************************************
+* @brief		Gets Uniform Location
+*
+* @param name
+* @param ...   boolean | int | float | x,y, | x,y,z, | x,y,z,w | vec2 |
+*				vec3| vec4 | mat3 | mat4
+* @return void
+*************************************************************************/
 void OpenGLShader::SetUniform(GLchar const* name, glm::mat3 const& val) {
     GLint loc = glGetUniformLocation(pgm_handle, name);
     if (loc >= 0) {
@@ -293,7 +427,14 @@ void OpenGLShader::SetUniform(GLchar const* name, glm::mat3 const& val) {
         std::cout << "Uniform variable " << name << " doesn't exist" << std::endl;
     }
 }
-
+/**************************************************************************
+* @brief		Gets Uniform Location
+*
+* @param name
+* @param ...   boolean | int | float | x,y, | x,y,z, | x,y,z,w | vec2 |
+*				vec3| vec4 | mat3 | mat4
+* @return void
+*************************************************************************/
 void OpenGLShader::SetUniform(GLchar const* name, glm::mat4 const& val) {
     GLint loc = glGetUniformLocation(pgm_handle, name);
     if (loc >= 0) {
@@ -303,7 +444,15 @@ void OpenGLShader::SetUniform(GLchar const* name, glm::mat4 const& val) {
         std::cout << "Uniform variable " << name << " doesn't exist" << std::endl;
     }
 }
-
+/**************************************************************************
+* @brief		display the list of active vertex attributes used by vertex
+                shader
+*
+* @param name
+* @param ...   boolean | int | float | x,y, | x,y,z, | x,y,z,w | vec2 |
+*				vec3| vec4 | mat3 | mat4
+* @return void
+*************************************************************************/
 void OpenGLShader::PrintActiveAttribs() const {
 #if 1
     GLint max_length, num_attribs;
@@ -340,7 +489,14 @@ void OpenGLShader::PrintActiveAttribs() const {
     }
 #endif
 }
-
+/**************************************************************************
+* @brief		display the list of active uniform variables
+*
+* @param name
+* @param ...   boolean | int | float | x,y, | x,y,z, | x,y,z,w | vec2 |
+*				vec3| vec4 | mat3 | mat4
+* @return void
+*************************************************************************/
 void OpenGLShader::PrintActiveUniforms() const {
     GLint max_length;
     glGetProgramiv(pgm_handle, GL_ACTIVE_UNIFORM_MAX_LENGTH, &max_length);

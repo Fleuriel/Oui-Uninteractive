@@ -16,10 +16,7 @@
 #include <OpenGLShaders.h>
 #include <map>
 #include <OpenGLObjects.h>
-#include <utility>
 
-#define ROTATION_CLOCKWISE 1
-#define ROTATION_ANTI_CLOCKWISE 0
 #define GET_COMPONENT(GameObject, Component, ComponentType) (GameObject->GetComponentType<Component>(ComponentType))
 
 extern GLFWwindow* window;
@@ -29,31 +26,88 @@ extern std::pair<unsigned short, unsigned short> windowSize;
 class OpenGLApplication {
 
 public:
-	// Window Functions
+	// < Window Functions >
+	/**************************************************************************
+	* @brief		Set the parameters for the window, and then Initialize the
+	*				Window.
+	*				Then, Set parameters for OpenGL Context.
+	*				> Drawing the Window.
+	* @param  none
+	* @return void
+	*************************************************************************/
 	static void OpenGLWindowInit();
+	/**************************************************************************
+	* @brief		Cleanup the Window at the end of the loop.
+	*
+	* @param  none
+	* @return void
+	*************************************************************************/
 	static void OpenGLWindowCleanup();
+	/**************************************************************************
+	* @brief		Resize Window Callback
+	* @param none
+	* @return void
+	*************************************************************************/
 	static void OpenGLWindowResizeCallback(GLFWwindow* window, int width, int height);
 
 
-	// Functions to set data ...
+	// < OpenGL Functions to Interact with Graphics Pipeline >
+	/**************************************************************************
+	* @brief		Initialize the Graphics Pipeline to enable usage of OpenGL
+	*
+	*				> Drawing the Window.
+	*
+	* @param  none
+	* @return void
+	*************************************************************************/
 	static void OpenGLInit();
+
+	/**************************************************************************
+	* @brief		Updates anything that is required to be on the window.
+	*				> Update Game Object
+	*				> Update Background
+	*				> Update Color
+	*				> Draw
+	* @param  none
+	* @return void
+	*************************************************************************/
 	static void OpenGLUpdate();
+	/**************************************************************************
+	* @brief Cleanup the applcation process.
+	* @param none
+	* @return void
+	*************************************************************************/
 	static void OpenGLCleanup();
+#ifdef _DEBUG
+	/**************************************************************************
+	* @brief			Test Changing of States in the Game Engine..
+	* @warning			OpenGLObjects init lines must be drawn for it to work.
+	*
+	* @param none
+	* @return void
+	*************************************************************************/
 	static void OpenGLTestChangingStates();
-
-	//	static void OpenGLWindowInitialization(GLFWwindow*& window, GLint width, GLint height);
-	static void OpenGLObjectsInitialization();
-//	static void render_square(glm::vec2 scaling, glm::vec2 position);
-
-
+#endif
+	/**************************************************************************
+	* @brief		Draws any thing that the window is required.
+	*
+	* @param none
+	* @return void
+	*************************************************************************/
 	static void Draw();
-
+	/**************************************************************************
+	* @brief		Sets Background Color, Easier for people to see what it is
+	*				for compared to glClearColor.
+	* @param none
+	* @return void
+	*************************************************************************/
 	static void OpenGLSetBackgroundColor(float r, float g, float b, float a);
 
-
-	//static std::list<OpenGLObject> objects; // singleton
-
-	~OpenGLApplication();
+	/**************************************************************************
+	* @brief Constructor and Destructor
+	*************************************************************************/
+	OpenGLApplication() {};
+	~OpenGLApplication() {};
 };
 
 #endif // OPENGL_APPLICATION_H

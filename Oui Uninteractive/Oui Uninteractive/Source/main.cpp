@@ -24,7 +24,7 @@ int main()
 		_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
 	#endif
 
-
+	// check if the application is !glfwInit();
 	if (!glfwInit())
 		return -1;
 
@@ -37,12 +37,13 @@ int main()
 	// Set callback for window close button (top right button).
 	glfwSetWindowCloseCallback(window, windowCloseCallback);
 
-
+	// Frame Buffer Callback for Window.
 	glfwSetFramebufferSizeCallback(window, OpenGLApplication::OpenGLWindowResizeCallback);
 	// Initialize the GameStateManager
-	// Someone needs to put 
+	// Initialize Game State, Input here.
 	GameStateManagerInit(STATE_GRAPHICS_TEST);
 	
+	// set previousTime as NOW. first, then will be able to calculate.
 	previousTime = std::chrono::high_resolution_clock::now();
 
 	// The Main Window.
@@ -75,23 +76,13 @@ int main()
 			glfwPollEvents();
 
 			sysManager->UpdateSystems(static_cast<float>(GetDT()));
+
+			// Update the Game Loop, based on the currentGameState
 			GameUpdate();
 			
-			//needs to be changed, currently input is being checked before physics
-		//	physicsSys->Update(GetDT());
-
 
 			// Swap Buffers with the window, similar to GOL in Y1T1 [OpenGL Function]
 			glfwSwapBuffers(window);
-
-
-			/*std::cout << GetDT() << '\n';
-			*/
-
-
-
-			// Running the Runtime in cout, will need to change eventually.
-			//std::cout << GetGameRunTime() << '\n';
 
 
 			// At the end, if check the state is quite else go away.
@@ -133,7 +124,10 @@ int main()
 
 
 
-
+/**************************************************************************
+* @brief  Update the time, reduce clutter
+* @return void
+*************************************************************************/
 void TimeUpdate()
 {
 	currentTime = std::chrono::high_resolution_clock::now();

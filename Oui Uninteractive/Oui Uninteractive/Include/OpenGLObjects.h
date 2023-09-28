@@ -20,24 +20,23 @@
 #include <OpenGLShaders.h>
 #include <Vector2D.h>
 
-
-#define TRIANGLE "Triangle"
-#define SQUARE   "Square"
-#define CIRCLE   "Circle"
-
+// External Texture Color
 extern int importTexture, secondTexture, bgTexture;
 
 class OpenGLObject
 {
 public:
+	/**************************************************************************
+	* @brief Constructor and Destructor
+	**************************************************************************/
+	// Default Constructor
 	OpenGLObject(int id = 0) : 
 		scaleModel(0.5, 0.5) , orientation(0.0, 0.0f), position(0, 0), 
 		model_To_NDC_xform(glm::mat3(1.0f)), color(0.0f, 0.0f, 1.0f), interactable(true),
 		angleDisplacment(0.0f), angleSpeed(0.0f), TagID(id)
-	{
+	{};
 
-	};
-
+	// Constructor for Particles
 	OpenGLObject(glm::vec3 particlecolor) : 
 		scaleModel(1, 1), orientation(0.0, 0.0f), position(0, 0), 
 		model_To_NDC_xform(glm::mat3(1.0f)), color(particlecolor), interactable(true),
@@ -46,6 +45,7 @@ public:
 	};
 	
 	~OpenGLObject() {};
+
 
 	int TagID;						// Id for the Model to Texture
 
@@ -59,118 +59,142 @@ public:
 	glm::vec3 color;				// Set Object Color
 	bool interactable;				// if the object is interactable?
 	static GLuint mdl_ref, shd_ref; // Model and Shader Reference
-	//GLuint texture;					// integer for texture (stb returns integer).
-
-	Vector2D boundingAABB;
 
 	static GLuint VAO, VBO;			// Object VAO VBO
 
-
-//	void AddModel(int modelID, int TextureID,);
-
-
 	// encapsulates state required to render a geometrical model
 	struct OpenGLModel {
-		GLenum primitive_type;
-		size_t primitive_cnt;
-		GLuint vaoid;
-		GLuint draw_cnt;
-
-		size_t idx_elem_cnt;
-		GLuint model_cnt;			// added to check model count
-		GLuint texture;
+		GLenum primitive_type;		// Primitive Type
+		size_t primitive_cnt;		// Primitive Count
+		GLuint vaoid;				// Vaoid of the Model
+		GLuint draw_cnt;			// Draw Count of the model
+		size_t idx_elem_cnt;		// Index Element Count of the Model
 		
-		int ModelID;
 
-		std::vector <glm::vec2> Position_Vertex;
-
-		OpenGLModel() : primitive_type(0), primitive_cnt(0), vaoid(0), draw_cnt(0), model_cnt(0), ModelID(0) {}
-
+		OpenGLModel() : primitive_type(0), primitive_cnt(0), vaoid(0), draw_cnt(0), idx_elem_cnt(0)  {}
 
 		struct VAO_Object
 		{
 			glm::vec2 position;				// VAO position
-			glm::vec3 color;					// VAO color
+			glm::vec3 color;				// VAO color
 			glm::vec2 texture;				// VAO texture
 
-			// ctor for VAO_Obj ...
+			// constructor for VAO_Obj ...
 			VAO_Object() : position(0.0, 0.0), color(0.0, 0.0, 0.0), texture(0, 0) {}
 
 			// Member Functions:
 
-			// Set Values for VAO (Position, Color)
+			/**************************************************************************
+			* @brief		set Texture Positon, Color
+			*
+			* @param  float x axis of texture
+			* @param  float y axis of texture
+			* @param  float r Red Color Value
+			* @param  float g Green Color Value
+			* @param  float b Blue Color Value
+			*
+			* @return void
+			*************************************************************************/
 			void setTextureValue(float, float, float, float, float);
 
-			// Set Texture for VAO (texture)
-			void setTexture(float, float);
 
+			/**************************************************************************
+			* @brief		set Texture Positon, Color
+			*
+			* @param  float s axis of texture
+			* @param  float t axis of texture
+			*
+			* @return void
+			*************************************************************************/
+			void setTexture(float, float);
 		};
-		void draw() const;
-		void setup_TextureVAO();
 	};
 
-
-
-
-	//std::map<std::string, OpenGLModel>::iterator mdl_ref;
-	//std::map<std::string, OpenGLShader>::iterator shd_ref;
-
-	// set up initial state
+/**************************************************************************
+	* @brief		Initialize OpenGLObject that does Model Creation for future
+	*				Drawing Capabilities and Shader Emplacement.
+	*
+	* @WARNING _DEBUG debug draws a model of square.
+	*
+	* @param  none
+	* @return void
+	*************************************************************************/
 	void Init(); 
-
+	/**************************************************************************
+	* @brief		Updates each OpenGLObject with Movement, Scale rotation.
+	*				Option for rotation has been added.
+	*
+	* @param float  Acceleration of x-Axis
+	* @param float  Acceleration of y-Axis
+	* @param float  Scale on both X and Y axes. (Might need to change)
+	* @param float  Angle Rotation Speed
+	* @param bool   Boolean for Rotation Enable or Disable
+	* @return void
+	*************************************************************************/
 	void Update(float xSpeed = 0.0f, float ySpeed = 0.0f, float scaleX = 100.0f, float scaleY = 100.0f, float aSpeed = 10.0f, bool enRot = false);
-	//static void OpenGLShadersInitialization();
-
+	/**************************************************************************
+	* @brief		Draws a Debug Collision Box (AABB)
+	*
+	* @param  Vector2D	Minimum Coordinates of AABB
+	* @param  Vector2D  Maximum Coordinates of AABB
+	*
+	* @return void
+	*************************************************************************/
 	void DrawCollisionBox(Vector2D min, Vector2D max);
+	/**************************************************************************
+	* @brief		Draws the OpenGLObject.
+	*
+	* @param  none
+	* @return void
+	*************************************************************************/
 	void Draw() const;
 
+	/**************************************************************************
+	* @brief		Initialize the Shaders for Graphics Pipeline for Object to
+	*				Render and/or Translate their objects.
+	*
+	* @param  float User Input X coordinate
+	* @param  float User Input Y Coordinate
+	* @param  float User Input Size X (Scale X Axis)
+	* @param  float User Input Size Y (Scale Y Axis)
+	* @param  float User Input Angle Displacement (Anti Clockwise)
+	* @param  float User Input Angle Speed (Speed of rotation)
+	*
+	* @return void
+	*************************************************************************/
 	void InitObjects(float userInput_x, float userInput_y, float userInput_sizeX,
 					float userInput_sizeY, float userInput_angleDisplacement,
 					float userInput_angleSpeed);
+
+	/**************************************************************************
+	* @brief		 Cleanup the Object Creation.
+	* @param  none
+	* @return void
+	*************************************************************************/
 	static void Cleanup();
-//	static void Setup_Quad_VAO();
-	static void init_scenes(std::string);
-	static void Insert_Shader_Program(std::string shdr_pgm_name, std::string vtx_shdr_name, std::string frg_shdr_name);
 
+	// 
+	using VectorPairStrStr = std::vector <std::pair<std::string, std::string>>;
+	// Initialize the shader programs to encapsulate the shader to 
+	// allow drawing.
+	static void init_shdrpgms_cont(VectorPairStrStr const& vpss);
 
+	// < Models >
+	// Square/Box Model
+	static OpenGLModel Box_Model(glm::vec3);
+
+	// < Texture >
+	static int Setup_TextureObject(std::string filePath);
+
+	// Create Container For OpenGLModel
 	static std::vector<OpenGLModel> models;
 
 	//Shaders
 	static std::vector<OpenGLShader>shdrpgms;
-	using VectorPairStrStr = std::vector <std::pair<std::string, std::string>>;
+
+#ifdef _DEBUG
 	static GLuint ShaderProgram;
-	//static std::map<std::string, OpenGLShader> shdrpgms;
-
-
-	static std::vector<GLuint> textures;
-
-
-	static void init_shdrpgms_cont(VectorPairStrStr const& vpss);
-
-	// Models
-
-	static OpenGLModel Box_Model(int ID, glm::vec3, int);
-
-
-	// Texture
-	static int Setup_TextureObject(std::string filePath);
-	//void setTextureValue(float, float, float, float, float);
-	//void setTexture(float, float);
-
-
-	// Data for Square and Triangles
-	static std::vector<glm::vec2> square;
-	static std::vector<glm::vec2> triangle;
-	static std::vector<std::string> mesh_Directory;
-	
-	static GLuint textureID;
-
-	// Store Models inside:
-	static std::map<std::string, OpenGLModel> Model_Storage;
-	static std::map<std::string, OpenGLObject> Object_Storage;
-
-
-
+#endif
 private:
 
 };
