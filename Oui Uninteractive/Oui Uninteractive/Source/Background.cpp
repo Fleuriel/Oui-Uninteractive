@@ -48,8 +48,7 @@ int backgroundTexture;	//Texture for background
  *       It also assumes that the class has member variables such as `bgTexture`, `mdl_ref`, `shd_ref`,
  *       `position`, `scaleModel`, and `model_To_NDC_xform` to store background-related information.
  *************************************************************************/
-void Background::Init()
-{
+void Background::Init() {
 #ifdef _DEBUG
 	// Print debug information indicating the start of initialization
 	std::cout << "Background::Init()\n\n";
@@ -80,8 +79,7 @@ void Background::Init()
 	scaleModel.y = static_cast<float>(windowSize.second);
 
 	// Create transformation matrices for translation, rotation, and scaling
-	glm::mat3 Translate = glm::mat3
-	{
+	glm::mat3 Translate = glm::mat3 {
 		1, 0, 0,
 		0, 1, 0,
 		 position.x,  position.y, 1
@@ -93,8 +91,7 @@ void Background::Init()
 		0.0f, 0.0f, 1.0f
 	);
 
-	glm::mat3 Scale = glm::mat3
-	{
+	glm::mat3 Scale = glm::mat3 {
 		scaleModel.x, 0, 0,
 		0, scaleModel.y, 0,
 		0, 0, 1
@@ -104,8 +101,7 @@ void Background::Init()
 	float scaleX = 2.0f / windowSize.first;
 	float scaleY = 2.0f / windowSize.second;
 
-	glm::mat3 ScaleToWorldToNDC = glm::mat3
-	{
+	glm::mat3 ScaleToWorldToNDC = glm::mat3 {
 		scaleX, 0, 0,
 		0, scaleY, 0,
 		0, 0, 1
@@ -133,8 +129,7 @@ void Background::Init()
 * @param bool   Boolean for Rotation Enable or Disable
 * @return void
 *************************************************************************/
-void Background::Update(float newX, float newY, float scaleX, float scaleY)
-{	
+void Background::Update(float newX, float newY, float scaleX, float scaleY) {	
 
 	//Scale the model based on float variable.
 	scaleModel = glm::vec2(scaleX, scaleY);
@@ -169,8 +164,7 @@ void Background::Update(float newX, float newY, float scaleX, float scaleY)
 	float valX = 2.0f / windowSize.first;
 	float valY = 2.0f / windowSize.second;
 
-	glm::mat3 ScaleToWorldToNDC = glm::mat3
-	{
+	glm::mat3 ScaleToWorldToNDC = glm::mat3 {
 		valX, 0, 0,
 		0, valY, 0,
 		0, 0, 1
@@ -193,12 +187,10 @@ void Background::Update(float newX, float newY, float scaleX, float scaleY)
  * @note This function assumes that certain global variables and functions like `OpenGLObject::models`,
  *       `shdrpgms`, and OpenGL bindings are available and properly defined.
 *************************************************************************/
-void Background::Draw() const
-{
+void Background::Draw() const {
 	// Bind the background texture to texture image unit 6
 	int tex{};
-	switch (texID)
-	{
+	switch (texID) {
 	case 0:
 		tex = backgroundTexture;
 		break;
@@ -247,8 +239,7 @@ void Background::Draw() const
  *
  * @note This function assumes that OpenGL bindings are available and properly defined.
 *************************************************************************/
-void Background::Cleanup()
-{
+void Background::Cleanup() {
 	// Delete the vertex array object (VAO)
 	glDeleteVertexArrays(1, &VAO);
 	// Delete the vertex buffer object (VBO)
@@ -299,8 +290,7 @@ void Background::init_shdrpgms_cont(VectorPairStrStr const& vpss) {
  * @param filePath The file path to the image file.
  * @return The OpenGL texture object handler, or 0 if the texture setup failed.
  *************************************************************************/
-int Background::Setup_TextureObject(std::string filePath)
-{
+int Background::Setup_TextureObject(std::string filePath) {
 	GLuint textureObj_Handler; // OpenGL texture object handler
 
 	int width, height, channels;
@@ -308,8 +298,7 @@ int Background::Setup_TextureObject(std::string filePath)
 	// Load the image from the file using stb_image
 	unsigned char* image = stbi_load(filePath.c_str(), &width, &height, &channels, STBI_rgb_alpha);
 
-	if (!image)
-	{
+	if (!image) {
 		// If the image loading fails, print an error message and return 0 (failure)
 		std::cout << "Failed to load texture: " << filePath << std::endl;
 		return 0; // Return 0 to indicate failure
