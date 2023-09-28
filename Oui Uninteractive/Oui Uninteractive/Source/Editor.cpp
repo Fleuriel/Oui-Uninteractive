@@ -369,7 +369,7 @@ void Editor::CreateObjectList() {
 					}
 
 					scale2 = GET_COMPONENT(objectFactory->GetGameObjectByID(gameobjID), Transform, ComponentType::TRANSFORM)->scale;
-					if (ImGui::SliderFloat("Scale", &scale2, 0.0f, 500.0f, "%.2f")) { // Slider for Scale
+					if (ImGui::SliderFloat("Scale %", &scale2, 0.0f, 500.0f, "%.2f")) { // Slider for Scale
 						GET_COMPONENT(objectFactory->GetGameObjectByID(gameobjID), Transform, ComponentType::TRANSFORM)->scale = scale2;
 					}
 
