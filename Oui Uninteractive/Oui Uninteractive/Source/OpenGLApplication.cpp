@@ -136,7 +136,7 @@ void OpenGLApplication::OpenGLWindowCleanup()
 	// Save window size
 	std::string filePath = "../window-data/window-data.JSON";
 	rapidjson::Document windowDoc;
-	if (serializer.ReadJSONFile(filePath, windowDoc)) {
+	if (serializer.ReadJSONFile(filePath, windowDoc) && windowSize.first != 0 && windowSize.second != 0) {
 		windowDoc["windowX"] = windowSize.first;
 		windowDoc["windowY"] = windowSize.second;
 		serializer.WriteJSONFile(filePath, windowDoc);
