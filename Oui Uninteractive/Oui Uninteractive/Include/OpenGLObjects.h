@@ -132,7 +132,6 @@ public:
 	static void init_scenes(std::string);
 	static void Insert_Shader_Program(std::string shdr_pgm_name, std::string vtx_shdr_name, std::string frg_shdr_name);
 
-	Vector2D ApplyTransformationToAABB(Vector2D aabb, glm::mat3 transformation);
 
 	static std::vector<OpenGLModel> models;
 

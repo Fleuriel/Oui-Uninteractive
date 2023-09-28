@@ -80,16 +80,19 @@ void OpenGLApplication::OpenGLWindowInit()
 		windowSize.first = windowDoc["windowX"].GetInt();
 		windowSize.second = windowDoc["windowY"].GetInt();
 	}
-
+#ifdef _DEBUG
+	std::cout << "Win Size\n";
 	std::cout << windowSize.first << windowSize.second;
-
+#endif
 	// Create window application based on the windowSize.
 	window = glfwCreateWindow(windowSize.first, windowSize.second, "hello", NULL, NULL);
 	if (!window)
 	{
 		glfwTerminate();
 
-		std::cout << "Problem\n";
+		std::cout << "Window parameters are wrong.\n";
+		std::cout << "Parameter: WinSize Width: " << windowSize.first << " (If it is 0, Error)" << '\n';
+		std::cout << "Parameter: WinSize Height: " << windowSize.second << " (If it is 0, Error)" << '\n';
 		return;
 	}
 
@@ -463,7 +466,7 @@ void OpenGLApplication::OpenGLUpdate()
 		
 		// Draws every second...
 		
-		Draw();
+
 	
 		
 
@@ -517,7 +520,7 @@ void OpenGLApplication::OpenGLUpdate()
 		}
 		
 
-			
+		Draw();
 
 		particleSystem.update();
 		particleSystem.draw();

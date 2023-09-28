@@ -70,20 +70,15 @@ void OpenGLObject::Init()
 #endif // _DEBUG
 
 
-//	Load_Meshes();
-	
-
-	//modl.setup_TextureVAO();
-
 	VectorPairStrStr fileName{
 		std::make_pair<std::string, std::string>
 		("../shaders/Oui_Uninteractive.vert", "../shaders/Oui_Uninteractive.frag")
 	};
 
+
+
 	init_shdrpgms_cont(fileName);
 	
-	
-	//modl.setup_TextureVAO();
 	
 
 	//Suffering = OpenGLObject::Setup_TextureObject("../texture/pantheon.jpg");
@@ -102,8 +97,6 @@ void OpenGLObject::Init()
 	models.emplace_back(OpenGLObject::Box_Model(2, color, bgTexture));
 
 	
-
-
 
 //	const char* vertexShaderSource =
 //	R"(#version 450 core
@@ -588,13 +581,6 @@ void OpenGLObject::OpenGLModel::setup_TextureVAO()
 
 
 }
-
-
-
-
-
-
-
 
 
 void OpenGLObject::init_shdrpgms_cont(VectorPairStrStr const& vpss) {
