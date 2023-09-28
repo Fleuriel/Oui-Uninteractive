@@ -21,7 +21,7 @@ Particle::Particle(){
 void Particle::init(int userInput_x, int userInput_y, float userInput_sizeX,
 					float userInput_sizeY, float userInput_angleDisplacement,
 					float userInput_angleSpeed) {
-    object.InitObjects(userInput_x, userInput_y, userInput_sizeX, userInput_sizeY, userInput_angleDisplacement, userInput_angleSpeed);
+    object.InitObjects(static_cast<float>(userInput_x), static_cast<float>(userInput_y), userInput_sizeX, userInput_sizeY, userInput_angleDisplacement, userInput_angleSpeed);
 }
 
 void Particle::update() {

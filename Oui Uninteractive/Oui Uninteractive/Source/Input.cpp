@@ -197,5 +197,6 @@ void updateStatesForNextFrame() {
  *************************************************************************/
 void windowCloseCallback(GLFWwindow* window)
 {
+	(void)window;
 	NextGameState = STATE_QUIT;
 }
