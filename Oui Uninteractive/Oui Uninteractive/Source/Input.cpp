@@ -68,7 +68,7 @@ std::map<std::string, std::function<void()>> shortcuts;
  * @see keyStates - The array used to store the state of various keyboard keys.
  * @see glfwSetKeyCallback() - Function to register this callback with GLFW.
  *************************************************************************/
-void keyCallBack(GLFWwindow* window3, int key, int scancode, int action, int mod)
+void KeyCallBack(GLFWwindow* window3, int key, int scancode, int action, int mod)
 {
 	(void)window3;
 	(void)mod;
@@ -119,7 +119,7 @@ void keyCallBack(GLFWwindow* window3, int key, int scancode, int action, int mod
  * @see mouseButtonStates - The array used to store the state of various input events.
  * @see glfwSetMouseButtonCallback() - Function to register this callback with GLFW.
  *************************************************************************/
-void mouseCallBack(GLFWwindow* window4, int button, int action, int mod) {
+void MouseCallBack(GLFWwindow* window4, int button, int action, int mod) {
 
 	(void)window4;
 
@@ -156,7 +156,7 @@ float mouse_scroll_total_Y_offset;	// KEEPS TRACK OF TOTAL VERTICAL SCROLLING
  * @see mouseScrollState - The array used to store the state of various input events.
  * @see glfwSetScrollCallback() - Function to register this callback with GLFW.
  *************************************************************************/
-void scrollCallBack(GLFWwindow* window5, double xOffset, double yOffset ) {
+void ScrollCallBack(GLFWwindow* window5, double xOffset, double yOffset ) {
 
 	(void)xOffset;
 	(void)window5;
@@ -212,7 +212,7 @@ void UpdateStatesForNextFrame() {
  *       The value assigned here typically represents the intention to quit or close
  *       the application.
  *************************************************************************/
-void windowCloseCallback(GLFWwindow* window6)
+void WindowCloseCallback(GLFWwindow* window6)
 {
 	(void)window6;
 	NextGameState = STATE_QUIT;
