@@ -12,11 +12,6 @@
  * 			- scrollCallBack
  * 			- updateStatesForNextFrame
  * 			- windowCloseCallback
- * 			- 
- * 			- 
- * 			- 
- * 			- 
- * 			- 
  *************************************************************************/
 
 #include <gl/glew.h>
