@@ -74,6 +74,7 @@ struct SystemTime {
 	float graphicsTime;
 	float editorTime;
 	float soundTime;
+	float particlesTime;
 };
 static SystemTime timeRecorder;
 

@@ -508,7 +508,7 @@ void OpenGLApplication::OpenGLUpdate()
 			}
 
 
-			obj.DrawCollisionBox(Vector2D(00, 00), Vector2D(1, 1));
+			//obj.DrawCollisionBox(Vector2D(00, 00), Vector2D(1, 1));
 
 
 		}

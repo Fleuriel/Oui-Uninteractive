@@ -1,6 +1,8 @@
 #include <ParticleSystem.h>
 #include <Physics.h>
 #include <OpenGLObjects.h>
+#include <chrono>
+#include "Editor.h"
 
 
 extern ParticleSystem particleSystem;
@@ -41,12 +43,16 @@ void Particle::draw() {
 
 
 void ParticleSystem::update() {
+    std::chrono::high_resolution_clock::time_point timeStart = std::chrono::high_resolution_clock::now();
     // i starts at 1 to skip updating the background
     for (size_t i = 1; i<particles.size();++i)
     {
         std::cout << i << "update " << particles[i].object.position.x << " " << particles[i].object.position.y << "\n";
         particles[i].update();
     }
+    std::chrono::high_resolution_clock::time_point timeEnd = std::chrono::high_resolution_clock::now();
+    std::chrono::duration<float, std::milli> duration = timeEnd - timeStart;
+    Editor::timeRecorder.particlesTime = duration.count();
 }
 
 void ParticleSystem::draw() {
