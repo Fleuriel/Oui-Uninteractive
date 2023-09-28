@@ -12,9 +12,9 @@
                     "Speed": 500.0
                 },
                 "Transform": {
-                    "PositionX": -250.0,
-                    "PositionY": 200.0,
-                    "Rotation": 32.124942779541016,
+                    "PositionX": -193.7462158203125,
+                    "PositionY": 256.1439208984375,
+                    "Rotation": -18.988439559936523,
                     "Scale": 200.0
                 }
             }
@@ -30,9 +30,9 @@
                     "Speed": 700.0
                 },
                 "Transform": {
-                    "PositionX": 50.344669342041016,
-                    "PositionY": -199.82766723632813,
-                    "Rotation": 66.01506805419922,
+                    "PositionX": 50.37094497680664,
+                    "PositionY": -199.8145294189453,
+                    "Rotation": 117.90837097167969,
                     "Scale": 130.0
                 }
             }
@@ -48,9 +48,9 @@
                     "Speed": 500.0
                 },
                 "Transform": {
-                    "PositionX": 200.34466552734375,
-                    "PositionY": 107.06573486328125,
-                    "Rotation": 66.01506805419922,
+                    "PositionX": 200.37094116210938,
+                    "PositionY": 107.60440826416016,
+                    "Rotation": 117.90837097167969,
                     "Scale": 220.0
                 }
             }
@@ -86,7 +86,7 @@
                 "Transform": {
                     "PositionX": 450.0,
                     "PositionY": 50.0,
-                    "Rotation": 44.363155364990234,
+                    "Rotation": 202.76275634765625,
                     "Scale": 200.0
                 }
             }
