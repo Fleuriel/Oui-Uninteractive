@@ -281,7 +281,7 @@ void OpenGLApplication::OpenGLUpdate() {
 	myImGui.CreateFrame();
 	myEditor.Update();
 	myImGui.Update();
-	particleSystem.update();
+	particleSystem.Update();
 	// Create x and y pos variables to collect data from the mouse position.
 	double xpos, ypos{};
 	glfwGetCursorPos(windowNew, &xpos, &ypos);
@@ -342,7 +342,7 @@ void OpenGLApplication::OpenGLUpdate() {
 	if (keyStates[GLFW_KEY_H] == 1) {
 		Particle newparticle;
 
-		newparticle.init(0, 0, 15000, 15000, 0, 0);
+		newparticle.Init(0, 0, 15000, 15000, 0, 0);
 		particleSystem.particles.emplace_back(newparticle);
 		//std::cout << "R : " << newparticle.object.color.r << "\nG : " << newparticle.object.color.g << "\nB : " << newparticle.object.color.b << "\n";
 
@@ -519,7 +519,7 @@ void OpenGLApplication::OpenGLUpdate() {
 	-----------------------------------*/
 	myEditor.Update();
 
-	particleSystem.update();
+	particleSystem.Update();
 	if (angle > 360)
 		angle = 0;
 	// Set the Background Color.
@@ -549,7 +549,7 @@ void OpenGLApplication::OpenGLUpdate() {
 
 	myImGui.Draw();
 	Draw();
-	particleSystem.draw();
+	particleSystem.Draw();
 
 }
 
