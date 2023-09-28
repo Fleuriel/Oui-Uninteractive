@@ -1,6 +1,6 @@
 /**************************************************************************
  * @file Sound.cpp
- * @author Mark Low
+ * @author LOW Wang Chun, Mark
  * @par DP email: l.wangchunmark@digipen.edu
  * @par Course: CSD 2401
  * @par Software Engineering Project 3
@@ -61,6 +61,7 @@ void SoundManager::Update(float dt) {
 	std::chrono::high_resolution_clock::time_point timeEnd = std::chrono::high_resolution_clock::now();
 	std::chrono::duration<float, std::milli> duration = timeEnd - timeStart;
 	Editor::timeRecorder.soundTime = duration.count();
+	(void)dt;
 }
 
 

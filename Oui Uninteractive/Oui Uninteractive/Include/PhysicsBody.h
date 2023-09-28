@@ -49,11 +49,10 @@ public:
 	virtual void Initialize();
 	/**************************************************************************
 	* @brief Initialize this instance of the PhysicsBody component via file
-	* @param filePath - file path to read from
 	* @param itr - iterator through json object
 	* @return void
 	*************************************************************************/
-	virtual void Serialize(const std::string& filePath, rapidjson::Value::ConstMemberIterator& itr);
+	virtual void Serialize(rapidjson::Value::ConstMemberIterator& itr);
 	/**************************************************************************
 	* @brief Function to Clone a PhysicsBody Component
 	* @return PhysicsBody* - the cloned PhysicsBody

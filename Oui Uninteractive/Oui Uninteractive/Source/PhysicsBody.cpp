@@ -45,8 +45,6 @@ void PhysicsBody::Initialize() {
 	if (GetOwner()->Has(ComponentType::TRANSFORM) != -1) {
 		txPtr = GetOwner()->GetComponentType<Transform>(ComponentType::TRANSFORM);
 	}
-	//physicsSys->bodyList.push_back(this);
-	size_t dee = GetOwner()->GetGameObjectID();
 	physicsSys->bodyList.insert(std::pair<size_t, PhysicsBody*>(GetOwner()->GetGameObjectID(), this));
 }
 
@@ -56,7 +54,7 @@ void PhysicsBody::Initialize() {
 * @param itr - iterator through json object
 * @return void
 *************************************************************************/
-void PhysicsBody::Serialize(const std::string& filePath, rapidjson::Value::ConstMemberIterator& itr) {
+void PhysicsBody::Serialize(rapidjson::Value::ConstMemberIterator& itr) {
 	const rapidjson::Value& components{itr->value};
 	velocity.x = components["VelocityX"].GetFloat();
 	velocity.y = components["VelocityY"].GetFloat();

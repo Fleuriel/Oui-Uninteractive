@@ -40,7 +40,7 @@ void Transform::Initialize() {
 * @param itr - iterator through json object
 * @return void
 *************************************************************************/
-void Transform::Serialize(const std::string& filePath, rapidjson::Value::ConstMemberIterator& itr) {
+void Transform::Serialize(rapidjson::Value::ConstMemberIterator& itr) {
 	const rapidjson::Value& components{ itr->value };
 	position.x = components["PositionX"].GetFloat();
 	position.y = components["PositionY"].GetFloat();
