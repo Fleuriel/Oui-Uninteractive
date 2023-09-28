@@ -26,6 +26,7 @@ std::array<bool, GLFW_MOUSE_BUTTON_LAST + 1> mouseButtonStates;
 // 1 for scrolling up, 0 for not scrolling, -1 for scrolling down
 int mouseScrollState{};
 
+// Container to store commands (not implemented yet)
 std::map<std::string, std::function<void()>> shortcuts;
 
 //shortcuts["Ctrl+S"] = SaveFunction;
@@ -147,10 +148,27 @@ void scrollCallBack(GLFWwindow* window, double xOffset, double yOffset ) {
 }
 
 
-
+/**************************************************************************
+ * @brief Updates the states of keyboard keys and mouse scroll for the next frame.
+ *
+ * This function is typically called once per frame to update the state of keyboard
+ * keys and reset the mouse scroll state for the next frame.
+ *
+ * @note It assumes that the `keyStates` array has been previously initialized to store
+ *       the state of each keyboard key, and `mouseScrollState` has been initialized
+ *       to store the state of the mouse scroll wheel.
+ *************************************************************************/
 void updateStatesForNextFrame() {
+
+	// Loop through all keyboard keys (represented by indices)
 	for (size_t i = 0; i < GLFW_KEY_LAST + 1; ++i)
+
+		// Update the state of each key
+		// If the key state is 1 (pressed in the current frame), change it to 2 (held down)
+		// If the key state is 0 (not pressed), it remains 0
 		keyStates[i] = (keyStates[i] == 1) ? 2 : keyStates[i];
+
+	// Reset the mouse scroll state to 0 for the next frame
 	mouseScrollState = 0;
 }
 
