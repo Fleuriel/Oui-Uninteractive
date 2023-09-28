@@ -417,17 +417,11 @@ void OpenGLApplication::OpenGLUpdate(){
 		else {
 
 			if (keyStates[GLFW_KEY_A]) {
-				//std::cout << "WALK LEFT\n";
 				physicsSys->SetCurrentRotationSpeed(GET_COMPONENT(objectFactory->GetGameObjectByID(0), PhysicsBody, ComponentType::PHYSICS_BODY)->rotationSpeed, 0);
-				//Objects.position.x -= 0.001;
-
-
 			}
 
 			else if (keyStates[GLFW_KEY_D]) {
-				//std::cout << "WALK RIGHT\n";
 				physicsSys->SetCurrentRotationSpeed(-(GET_COMPONENT(objectFactory->GetGameObjectByID(0), PhysicsBody, ComponentType::PHYSICS_BODY)->rotationSpeed), 0);
-				//Objects.position.x += 0.001;
 
 			}
 			else{
@@ -435,16 +429,11 @@ void OpenGLApplication::OpenGLUpdate(){
 			}
 
 			if (keyStates[GLFW_KEY_S]) {
-				//Objects.position.y -= 0.001;
 				physicsSys->MoveBackwards(0);
-				//physicsSys->setVelocity(Vec2(50.f, 0.0));
-				//std::cout << "WALK DOWN\n";
 			}
 
 			else if (keyStates[GLFW_KEY_W]) {
-				//Objects.position.y += 0.001;
 				physicsSys->MoveForward(0);
-				//std::cout << "WALK UP\n";
 			}
 			else {
 				physicsSys->SetVelocity(Vec2(0.0f, 0.0f));
