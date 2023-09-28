@@ -5,7 +5,15 @@
  * @par Course: CSD 2401
  * @par Software Engineering Project 3
  * @date 09-05-2023
- * @brief 
+ * @brief Implementation of the Background class for rendering background objects in OpenGL.
+ *
+ * This source file contains the implementation of the Background class, which is responsible for
+ * rendering background objects in an OpenGL-based application. It includes functions for initializing,
+ * updating, rendering, and cleaning up background objects. The class utilizes shaders, textures,
+ * and transformation matrices to achieve rendering effects.
+ *
+ * @note This file assumes the existence of relevant header files, OpenGL bindings, and external libraries
+ *       such as GLM and STB Image for image loading.
  *************************************************************************/
 
 
