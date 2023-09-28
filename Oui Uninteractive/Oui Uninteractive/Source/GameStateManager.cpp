@@ -92,7 +92,7 @@ void GameStateManagerUpdate()
 		return;
 
 	//  window is closed, exit
-	if (glfwWindowShouldClose(window))
+	if (glfwWindowShouldClose(windowNew))
 	{
 		CurrentGameState = STATE_QUIT;
 		return;
