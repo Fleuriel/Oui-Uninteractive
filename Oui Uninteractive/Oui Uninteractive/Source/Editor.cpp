@@ -275,6 +275,7 @@ void Editor::CreateObjectList() {
 					objectFactory->BuildObjectRunTime(newName, "");
 					highestNumber++; // Increment the highest assigned ID
 				}
+				gameobjID = objectFactory->GetGameObjectIDMap().begin()->first;
 			}
 
 			ImGui::SameLine(); 
@@ -326,16 +327,17 @@ void Editor::CreateObjectList() {
 
 			ImGui::SameLine();
 			// Used for testing M1 Rubric: Have 2.5k Objects with FPS >60
+			size_t startIndex = copyMap.rbegin()->first;
 			if (ImGui::Button("Spawn 2500 Objects")) {
 				for (size_t i{}; i < 2500; ++i) {
-					std::string goName{ "ObjectRunTime" + std::to_string(i + 1) };
+					std::string goName{ "ObjectRunTime" + std::to_string(startIndex + i + 1) };
 					objectFactory->BuildObjectRunTime(goName, "Enemy");
-					objectFactory->AddComponent(ComponentType::PHYSICS_BODY, objectFactory->GetGameObjectByID(i));
-					objectFactory->AddComponent(ComponentType::TRANSFORM, objectFactory->GetGameObjectByID(i));
-					objectFactory->GetGameObjectByID(i)->Initialize();
+					objectFactory->AddComponent(ComponentType::PHYSICS_BODY, objectFactory->GetGameObjectByID(startIndex+ i));
+					objectFactory->AddComponent(ComponentType::TRANSFORM, objectFactory->GetGameObjectByID(startIndex + i));
+					objectFactory->GetGameObjectByID(startIndex + i)->Initialize();
 
-					GET_COMPONENT(objectFactory->GetGameObjectByID(i), Transform, ComponentType::TRANSFORM)->position.x = rand() % 800;
-					GET_COMPONENT(objectFactory->GetGameObjectByID(i), Transform, ComponentType::TRANSFORM)->position.y = rand() % 600;
+					GET_COMPONENT(objectFactory->GetGameObjectByID(startIndex + i), Transform, ComponentType::TRANSFORM)->position.x = rand() % 800;
+					GET_COMPONENT(objectFactory->GetGameObjectByID(startIndex + i), Transform, ComponentType::TRANSFORM)->position.y = rand() % 600;
 				}
 			}
 		
