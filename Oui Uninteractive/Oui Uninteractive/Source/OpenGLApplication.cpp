@@ -359,8 +359,10 @@ void OpenGLApplication::OpenGLUpdate(){
 		/*-----------------------------------
 		|            ALPHABETS              |
 		-----------------------------------*/
+		bool controlactivate = ((keyStates[GLFW_KEY_RIGHT_CONTROL] > 0) || (keyStates[GLFW_KEY_LEFT_CONTROL] > 0));
+		bool shiftactivate = ((keyStates[GLFW_KEY_RIGHT_SHIFT] > 0) || (keyStates[GLFW_KEY_LEFT_SHIFT] > 0));
 
-		if (keyStates[GLFW_KEY_RIGHT_CONTROL] || keyStates[GLFW_KEY_LEFT_CONTROL]) {
+		if (controlactivate) {
 			if (keyStates[GLFW_KEY_A]) {
 #ifdef _DEBUG
 				std::cout << "CROUCH LEFT";
@@ -372,7 +374,7 @@ void OpenGLApplication::OpenGLUpdate(){
 				std::cout << "CROUCH RIGHT";
 #endif
 			}
-			
+
 			if (keyStates[GLFW_KEY_S]) {
 #ifdef _DEBUG
 				std::cout << "CROUCH DOWN";
@@ -383,12 +385,13 @@ void OpenGLApplication::OpenGLUpdate(){
 #ifdef _DEBUG
 				std::cout << "CROUCH UP";
 #endif
-				
+
 			}
 		}
-		else
-		// IF BIG LETTERS
-		if (((keyStates[GLFW_KEY_RIGHT_SHIFT] || keyStates[GLFW_KEY_LEFT_SHIFT]) && !keyStates[GLFW_KEY_CAPS_LOCK]) + !(keyStates[GLFW_KEY_RIGHT_SHIFT] || keyStates[GLFW_KEY_LEFT_SHIFT]) && keyStates[GLFW_KEY_CAPS_LOCK]) {
+		
+			// IF BIG LETTERS
+		
+		else if (shiftactivate) {
 
 			if (keyStates[GLFW_KEY_A]) {
 
