@@ -54,6 +54,8 @@ int bgTexture, firstTexture, secondTexture;
 GLuint Suffering; 
 
 
+
+
 /**************************************************************************
 * @brief		Loads Meshes for models and/or other shader files to
 *				enable creation of GameObjects.
@@ -394,8 +396,8 @@ void OpenGLObject::Update(float newX, float newY, float scaleX, float scaleY, fl
 
 	// Compute the scaling matrix to map from world coordinates to NDC coordinates
 	glm::mat3 ScaleToWorldToNDC = glm::mat3(
-		1.0f / (1920 / 2), 0.0f, 0.0f,
-		0.0f, 1.0f / (1080 / 2), 0.0f,
+		1.0f / (windowSize.first / 2), 0.0f, 0.0f,
+		0.0f, 1.0f / (windowSize.second / 2), 0.0f,
 		0.0f, 0.0f, 1.0f
 	);
 
@@ -665,22 +667,58 @@ void OpenGLObject::InitObjects(float userInput_x, float userInput_y, float userI
 	//	   x2 y2 z2						 z0 z1 z2
 	model_To_NDC_xform = ScaleToWorldToNDC* Translate * Rotation * Scale;
 
+
 }
 
 
-void OpenGLObject::DrawCollisionBox(float minX, float minY, float maxX, float maxY)
+
+void OpenGLObject::DrawCollisionBox(Vector2D min, Vector2D max)
 {
 
-	float height = maxY - minY;
-	float width = maxX - minX;
+	float height = max.y - min.y;
+	float width = max.x - min.x;
 
 
-	float sX = minX - (width) / 2;
-	float bX = maxX - (width) / 2;
-	float sY = minY - (height) / 2;
-	float bY = maxY - (height) / 2;
+	//float sX = min.x - (width) / 2;
+	//float bX = max.x - (width) / 2;
+	//float sY = min.y - (height) / 2;
+	//float bY = max.y - (height) / 2;
+
+	float sX = min.x;
+	float bX = max.x;
+	float sY = min.y;
+	float bY = max.y;
+
+	using glm::radians;
+
+	float mpointX = (max.x + min.x) / 2;
+	float mpointY = (max.y + min.y) / 2;
+	
+	angleDisplacment = 0;
 
 
+	glm::mat3 Translate = glm::mat3
+	{
+		1, 0, 0,
+		0, 1, 0,
+		mpointX,  mpointY, 1
+	};
+
+
+	float scaleX = 2.0f / windowSize.first;
+	float scaleY = 2.0f / windowSize.second;
+
+	glm::mat3 ScaleToWorldToNDC = glm::mat3(
+		1.0f / (windowSize.first / 2), 0.0f, 0.0f,
+		0.0f, 1.0f / (windowSize.second / 2), 0.0f,
+		0.0f, 0.0f, 1.0f
+	);
+	// Instead of doing transpose, you can do what OpenGL matrix does:
+	// Row-Major Order:				Column Major Order;
+	//	   x0 y0 z0						 x0 x1 x2
+	//	   x1 y1 z1						 y0 y1 y2
+	//	   x2 y2 z2						 z0 z1 z2
+	model_To_NDC_xform = ScaleToWorldToNDC /** Translate*/;
 
 	// Define the vertices of the collision box in local coordinates (before transformation)
 	glm::vec2 localVertices[4] = {
@@ -694,9 +732,7 @@ void OpenGLObject::DrawCollisionBox(float minX, float minY, float maxX, float ma
 		glm::vec2(bX, bY),
 		glm::vec2(sX, bY)
 
-
-
-	};	//
+	};
 
 	// Apply the transformation matrix to the local vertices
 	glm::vec2 transformedVertices[4];
