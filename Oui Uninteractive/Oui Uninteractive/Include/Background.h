@@ -1,6 +1,6 @@
 /**************************************************************************
- * @file OpenGLObjects.h
- * @author 
+ * @file Background.h
+ * @author CHAN Aaron Jun Xiang
  * @par DP email: 
  * @par Course: CSD 2401
  * @par Software Engineering Project 3
