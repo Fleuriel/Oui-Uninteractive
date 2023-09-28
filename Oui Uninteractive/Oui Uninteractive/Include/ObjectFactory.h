@@ -16,6 +16,7 @@
  *			- BuildObjectFromPrefab
  *			- LoadPrefab
  *			- CloneObject
+ *			- SaveObjectsToFile
  *			- Update
  *			- AssignObjectID
  *			- DestroyObject

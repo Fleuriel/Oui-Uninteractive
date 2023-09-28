@@ -73,7 +73,7 @@ int main()
 			// Poll the events from the window. [OpenGL Function]
 			glfwPollEvents();
 
-			sysManager->UpdateSystems(GetDT());
+			sysManager->UpdateSystems(static_cast<float>(GetDT()));
 			GameUpdate();
 			
 			//needs to be changed, currently input is being checked before physics

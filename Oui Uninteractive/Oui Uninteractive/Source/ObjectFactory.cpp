@@ -14,6 +14,7 @@
  *			- BuildObjectFromFile
  *			- BuildObjectRunTime
  *			- CloneObjects
+ *			- SaveObjectsToFile
  *			- Update
  *			- AssignObjectID
  *			- DestroyObject

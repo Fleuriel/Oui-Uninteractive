@@ -217,11 +217,11 @@ void OpenGLApplication::OpenGLInit()
 	GET_COMPONENT(objectFactory->GetGameObjectByID(4), Transform, ComponentType::TRANSFORM)->position.y = 50;
 	std::cout << "Cloning object with ID 0... completed." << std::endl;
 
-	// Modifying value of Object2
-	std::cout << "\nUpdating JSONEnemy2..." << std::endl;
+	// Modifying value of JSONEnemy2
+	std::cout << "\nUpdating JSONEnemy2 during initialization..." << std::endl;
 	GET_COMPONENT(objectFactory->GetGameObjectByName("JSONEnemy2"), PhysicsBody, ComponentType::PHYSICS_BODY)->velocity.y = 20.5f;
 	objectFactory->SaveObjectsToFile("../scenes/TestsceneWriting.JSON");
-	std::cout << "Updating Object2... completed." << std::endl;
+	std::cout << "Updating JSONEnemy2 during initialization... completed." << std::endl;
 
 	background.init(0, 0, windowSize.first, windowSize.second, 0, 0);
 }
