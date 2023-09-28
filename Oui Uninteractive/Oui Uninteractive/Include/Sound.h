@@ -32,7 +32,7 @@ public:
 	std::filesystem::path bgmPath{"../sounds/bgm"};
 	std::filesystem::path sfxPath{"../sounds/sfx"};
 
-	FMOD_RESULT result; // To store FMOD function results
+	FMOD_RESULT result{ FMOD_OK }; // To store FMOD function results
 
 	// Container for sounds
 	std::vector<FMOD::Sound*> bgmSounds{};
@@ -42,10 +42,10 @@ public:
 	std::vector<FMOD::Channel*> bgmChannels{3};
 	std::vector<FMOD::Channel*> sfxChannels{3};
 
-	int sfxChoice;
+	int sfxChoice{0};
 
 private:
-	FMOD::System* system;
+	FMOD::System* system{ nullptr };
 };
 extern SoundManager* soundManager;
 
