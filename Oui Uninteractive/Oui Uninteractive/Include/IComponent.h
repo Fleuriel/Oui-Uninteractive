@@ -54,12 +54,14 @@ public:
 	* @return void
 	*************************************************************************/
 	virtual void Serialize(rapidjson::Value::ConstMemberIterator& itr) = 0;
+
 	/**************************************************************************
 	* @brief Clone function to be overloaded by each individual component
 	* Usage inside respective Component.cpp file:
 	* @return IComponent*
 	*************************************************************************/
 	virtual IComponent* Clone() const = 0;
+
 	/**************************************************************************
 	* @brief Destructor
 	*************************************************************************/

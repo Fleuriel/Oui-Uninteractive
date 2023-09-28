@@ -56,9 +56,6 @@ public:
 	*************************************************************************/
 	void Initialize();
 
-	//void Update();
-	//virtual void Render() = 0;
-
 	// For future event/message system
 	//void SendMessage(Event* event);
 
