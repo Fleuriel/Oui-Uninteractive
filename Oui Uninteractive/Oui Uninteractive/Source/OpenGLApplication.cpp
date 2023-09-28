@@ -514,17 +514,6 @@ void OpenGLApplication::OpenGLUpdate()
 				GET_COMPONENT(gObj.second, Transform, ComponentType::TRANSFORM)->shape->Draw();
 			}	
 
-
-			if (testPhase)
-			{
-				if ((gObj.second->Has(ComponentType::PHYSICS_BODY) != -1) && (gObj.second->Has(ComponentType::TRANSFORM) != -1) && (gObj.second != nullptr)) {
-					static Vector2D min, max;
-					max = GET_COMPONENT(gObj.second, PhysicsBody, ComponentType::PHYSICS_BODY)->boundingbox->max;
-					min = GET_COMPONENT(gObj.second, PhysicsBody, ComponentType::PHYSICS_BODY)->boundingbox->min;
-
-					GET_COMPONENT(gObj.second, Transform, ComponentType::TRANSFORM)->shape->DrawCollisionBox(min, max);
-				}
-			}
 		}
 		
 

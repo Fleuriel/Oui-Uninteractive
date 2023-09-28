@@ -453,8 +453,25 @@ void Editor::CreateDebugPanel() {
 		ImPlot::EndPlot();
 	}
 
-	if (ImGui::CollapsingHeader("Tools")) {	
-		ImGui::Checkbox("Display bounding box", &panelList.soundPanel); // Checkbox for sound panel
+	if (ImGui::CollapsingHeader("Tools")) {
+		static bool drawBB = false;
+		static size_t gameobjID = 0;
+		ImGui::Checkbox("Display bounding box", &drawBB);
+		std::map<size_t, GameObject*> copyMap = objectFactory->GetGameObjectIDMap();
+		std::map<size_t, GameObject*>::iterator it = copyMap.begin();
+		if (drawBB) {
+			for (std::map<size_t, GameObject*>::iterator it = copyMap.begin(); it != copyMap.end(); it++) {
+				gameobjID = it->first;
+				if ((objectFactory->GetGameObjectByID(gameobjID)->Has(ComponentType::PHYSICS_BODY) != -1) && (objectFactory->GetGameObjectByID(gameobjID)->Has(ComponentType::TRANSFORM) != -1) && (objectFactory->GetGameObjectByID(gameobjID) != nullptr)) {
+					static Vector2D min, max;
+					max = GET_COMPONENT(objectFactory->GetGameObjectByID(gameobjID), PhysicsBody, ComponentType::PHYSICS_BODY)->boundingbox->max;
+					min = GET_COMPONENT(objectFactory->GetGameObjectByID(gameobjID), PhysicsBody, ComponentType::PHYSICS_BODY)->boundingbox->min;
+
+					GET_COMPONENT(objectFactory->GetGameObjectByID(gameobjID), Transform, ComponentType::TRANSFORM)->shape->DrawCollisionBox(min, max);
+				}
+			}		
+		}
+
 		ImGui::Separator();
 	}
 
