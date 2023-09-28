@@ -15,8 +15,7 @@
 * @param rhs - the vector to add
 * @return Vector2D&
 *************************************************************************/
-Vector2D& Vector2D::operator+=(const Vector2D& rhs)
-{
+Vector2D& Vector2D::operator+=(const Vector2D& rhs) {
 	*this = *this + rhs;
 	return *this;
 }
@@ -26,8 +25,7 @@ Vector2D& Vector2D::operator+=(const Vector2D& rhs)
 * @param rhs - the vector to subtract
 * @return Vector2D&
 **************************************************************************/
-Vector2D& Vector2D::operator-=(const Vector2D& rhs)
-{
+Vector2D& Vector2D::operator-=(const Vector2D& rhs) {
 	*this = *this - rhs;
 	return *this;
 }
@@ -37,8 +35,7 @@ Vector2D& Vector2D::operator-=(const Vector2D& rhs)
 * @param rhs - the scalar multiple
 * @return Vector2D &
 **************************************************************************/
-Vector2D& Vector2D::operator*=(float rhs)
-{
+Vector2D& Vector2D::operator*=(float rhs) {
 	*this = *this * rhs;
 	return *this;
 }
@@ -48,8 +45,7 @@ Vector2D& Vector2D::operator*=(float rhs)
 * @param rhs - the divisor
 * @return Vector2D &
 **************************************************************************/
-Vector2D& Vector2D::operator/=(float rhs)
-{
+Vector2D& Vector2D::operator/=(float rhs) {
 	*this = *this / rhs;
 	return *this;
 }
@@ -58,8 +54,7 @@ Vector2D& Vector2D::operator/=(float rhs)
 * @brief Operator overload unary minus, this function negates the vector
 * @return Vector2D 
 **************************************************************************/
-Vector2D Vector2D::operator-() const
-{
+Vector2D Vector2D::operator-() const {
 	return Vector2D(-x,-y);
 }
 
@@ -69,8 +64,7 @@ Vector2D Vector2D::operator-() const
 * @param rhs - operand two
 * @return Vector2D
 **************************************************************************/
-Vector2D operator+(const Vector2D& lhs, const Vector2D& rhs)
-{
+Vector2D operator+(const Vector2D& lhs, const Vector2D& rhs) {
 	return Vector2D(lhs.x + rhs.x, lhs.y + rhs.y);
 }
 	
@@ -80,8 +74,7 @@ Vector2D operator+(const Vector2D& lhs, const Vector2D& rhs)
 * @param rhs - operand two
 * @return Vector2D
 **************************************************************************/
-Vector2D operator-(const Vector2D& lhs, const Vector2D& rhs)
-{
+Vector2D operator-(const Vector2D& lhs, const Vector2D& rhs) {
 	return Vector2D(lhs.x - rhs.x, lhs.y - rhs.y);
 }
 
@@ -91,8 +84,7 @@ Vector2D operator-(const Vector2D& lhs, const Vector2D& rhs)
 * @param rhs - operand two
 * @return Vector2D
 **************************************************************************/
-Vector2D operator*(const Vector2D& lhs, float rhs)
-{
+Vector2D operator*(const Vector2D& lhs, float rhs) {
 	return Vector2D(lhs.x * rhs , lhs.y * rhs);
 }
 
@@ -102,8 +94,7 @@ Vector2D operator*(const Vector2D& lhs, float rhs)
 * @param rhs - operand two
 * @return Vector2D
 **************************************************************************/
-Vector2D operator*(float lhs, const Vector2D& rhs)
-{
+Vector2D operator*(float lhs, const Vector2D& rhs) {
 	return rhs*lhs;
 }
 
@@ -113,8 +104,7 @@ Vector2D operator*(float lhs, const Vector2D& rhs)
 * @param rhs - operand two
 * @return Vector2D
 **************************************************************************/
-Vector2D operator/(const Vector2D& lhs, float rhs)
-{
+Vector2D operator/(const Vector2D& lhs, float rhs) {
 	return Vector2D(lhs.x / rhs, lhs.y / rhs);
 }
 
@@ -125,8 +115,7 @@ Vector2D operator/(const Vector2D& lhs, float rhs)
 * @param pVec0 - the vector to normalize
 * @return void
 **************************************************************************/
-void Vector2DNormalize(Vector2D& pResult, const Vector2D& pVec0)
-{
+void Vector2DNormalize(Vector2D& pResult, const Vector2D& pVec0) {
 	pResult = pVec0 / Vector2DLength(pVec0);
 }
 
@@ -135,8 +124,7 @@ void Vector2DNormalize(Vector2D& pResult, const Vector2D& pVec0)
 * @param pVec0 - the vector to calculate from
 * @return float
 **************************************************************************/
-float Vector2DLength(const Vector2D& pVec0)
-{
+float Vector2DLength(const Vector2D& pVec0) {
 	return static_cast<float>(sqrt(pow(pVec0.x, 2.0) + pow(pVec0.y, 2.0)));
 }
 
@@ -145,8 +133,7 @@ float Vector2DLength(const Vector2D& pVec0)
 * @param pVec0 - the vector to calculate from
 * @return float
 **************************************************************************/
-float Vector2DSquareLength(const Vector2D& pVec0)
-{
+float Vector2DSquareLength(const Vector2D& pVec0) {
 	return static_cast<float>(pow(pVec0.x, 2.0) + pow(pVec0.y, 2.0));
 }
 
@@ -156,8 +143,7 @@ float Vector2DSquareLength(const Vector2D& pVec0)
 * @param pVec1 - the 2nd point to calculate from
 * @return float
 **************************************************************************/
-float Vector2DDistance(const Vector2D& pVec0, const Vector2D& pVec1)
-{
+float Vector2DDistance(const Vector2D& pVec0, const Vector2D& pVec1) {
 	return Vector2DLength(Vector2D(pVec1.x - pVec0.x, pVec1.y - pVec0.y));
 }
 
@@ -167,8 +153,7 @@ float Vector2DDistance(const Vector2D& pVec0, const Vector2D& pVec1)
 * @param pVec1 - the 2nd point to calculate from
 * @return float
 **************************************************************************/
-float Vector2DSquareDistance(const Vector2D& pVec0, const Vector2D& pVec1)
-{
+float Vector2DSquareDistance(const Vector2D& pVec0, const Vector2D& pVec1) {
 	return Vector2DSquareLength(Vector2D(pVec1.x - pVec0.x, pVec1.y - pVec0.y));
 }
 
@@ -178,8 +163,7 @@ float Vector2DSquareDistance(const Vector2D& pVec0, const Vector2D& pVec1)
 * @param pVec1 - the 2nd vector to calculate from
 * @return float
 **************************************************************************/
-float Vector2DDotProduct(const Vector2D& pVec0, const Vector2D& pVec1)
-{
+float Vector2DDotProduct(const Vector2D& pVec0, const Vector2D& pVec1) {
 	return pVec0.x * pVec1.x + pVec0.y * pVec1.y;
 }
 
@@ -189,7 +173,6 @@ float Vector2DDotProduct(const Vector2D& pVec0, const Vector2D& pVec1)
 * @param pVec1 - the 2nd vector to calculate from
 * @return float
 **************************************************************************/
-float Vector2DCrossProductMag(const Vector2D& pVec0, const Vector2D& pVec1)
-{
+float Vector2DCrossProductMag(const Vector2D& pVec0, const Vector2D& pVec1) {
 	return pVec0.x * pVec1.y - pVec0.y * pVec1.x;
 }
