@@ -30,7 +30,7 @@ int main()
 		return -1;
 
 	CreateWindow();
-	SystemManager* sysManager = new SystemManager();
+	sysManager = new SystemManager();
 	sysManager->AddSystem(new ObjectFactory());
 	sysManager->AddSystem(new Physics());
 	sysManager->AddSystem(new SoundManager());
