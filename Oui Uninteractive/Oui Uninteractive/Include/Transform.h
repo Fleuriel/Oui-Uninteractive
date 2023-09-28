@@ -36,11 +36,10 @@ public:
 	virtual void Initialize();
 	/**************************************************************************
 	* @brief Initialize this instance of the Transform component via file
-	* @param filePath - file path to read from
 	* @param itr - iterator through json object
 	* @return void
 	*************************************************************************/
-	void Serialize(const std::string& filePath, rapidjson::Value::ConstMemberIterator& itr);
+	void Serialize(rapidjson::Value::ConstMemberIterator& itr);
 	/**************************************************************************
 	* @brief Function to Clone a Transform Component
 	* @return Transform* - the cloned Transform

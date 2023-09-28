@@ -126,7 +126,7 @@ void ObjectFactory::BuildObjectFromFile(const std::string& filePath) {
 					IComponent* component = componentFactory->CreateComponent();
 
 					// Serialize to store component data
-					component->Serialize(filePath, itr);
+					component->Serialize(itr);
 
 					// Add the component to the game object
 					gameObject->AddComponent(component, componentFactory->type);
@@ -174,14 +174,14 @@ GameObject* ObjectFactory::BuildObjectFromPrefab(const std::string& name, const 
 
 		for (size_t i{}; i < prefabMap[type].size(); ++i) {
 			componentName = prefabMap[type][i];
-			ComponentType type = StringToEnum(componentName);
+			ComponentType componentType{ StringToEnum(componentName) };
 
-			if (componentFactoryMap.find(type) == componentFactoryMap.end()) {
+			if (componentFactoryMap.find(componentType) == componentFactoryMap.end()) {
 				std::cerr << "Component name not found." << std::endl;
 			}
 			else {
 				// Set componentFactory to create the component itself
-				ComponentFactoryBase* componentFactory = componentFactoryMap[type];
+				ComponentFactoryBase* componentFactory = componentFactoryMap[componentType];
 
 				// Create the component
 				IComponent* component = componentFactory->CreateComponent();
@@ -192,10 +192,9 @@ GameObject* ObjectFactory::BuildObjectFromPrefab(const std::string& name, const 
 		}
 		// Assign an ID to the game object
 		AssignObjectID(gameObject);
+
 		// Initialize the components in the current object
 		gameObject->Initialize();
-
-
 
 		return gameObject;
 	}
@@ -338,6 +337,7 @@ void ObjectFactory::SaveObjectsToFile(const std::string& filePath) {
 * @return void
 *************************************************************************/
 void ObjectFactory::Update(float dt) {
+	(void)dt;
 	std::set<GameObject*>::iterator setIt = gameObjectDestroyList.begin();
 
 	// Destroy game objects in destroy list

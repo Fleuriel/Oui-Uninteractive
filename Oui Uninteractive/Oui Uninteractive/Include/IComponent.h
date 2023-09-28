@@ -50,11 +50,10 @@ public:
 	* const rapidjson::Value& components{itr->value};
 	* variableName = components["VariableName"].GetFloat();	// Float variable
 	* 
-	* @param fiilePath - name of JSON file
 	* @param itr - iterator pointing to the current component
 	* @return void
 	*************************************************************************/
-	virtual void Serialize(const std::string& filePath, rapidjson::Value::ConstMemberIterator& itr) {};
+	virtual void Serialize(rapidjson::Value::ConstMemberIterator& itr) = 0;
 	/**************************************************************************
 	* @brief Clone function to be overloaded by each individual component
 	* Usage inside respective Component.cpp file:

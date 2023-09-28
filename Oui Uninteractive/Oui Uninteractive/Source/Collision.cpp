@@ -59,7 +59,7 @@ bool CollisionMouseCircle(Coordinates Coords1, float r1 = 2) {
 	double xpos, ypos{};
 	glfwGetCursorPos(window, &xpos, &ypos);
 	
-	return (Coords1.DistanceIsWithinThreshold(Coordinates(xpos, ypos), (r1)));
+	return (Coords1.DistanceIsWithinThreshold(Coordinates(static_cast<float>(xpos), static_cast<float>(ypos)), (r1)));
 }
 
 
