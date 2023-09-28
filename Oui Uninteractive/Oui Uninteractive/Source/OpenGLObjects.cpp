@@ -76,7 +76,7 @@ void OpenGLObject::Init()
 	// Initialize the Shader Program
 	init_shdrpgms_cont(fileName);
 
-	//Suffering = OpenGLObject::Setup_TextureObject("../texture/pantheon.jpg");
+
 	firstTexture = OpenGLObject::Setup_TextureObject("../texture/pepethefrog.png");
 	secondTexture = OpenGLObject::Setup_TextureObject("../texture/pepe.jpg");
 	bgTexture = OpenGLObject::Setup_TextureObject("../texture/background.jpg");
