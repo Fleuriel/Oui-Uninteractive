@@ -23,8 +23,7 @@
 #include <fstream>
 #include <sstream>
 
-class OpenGLShader
-{
+class OpenGLShader {
 
 public:
 
