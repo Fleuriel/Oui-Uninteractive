@@ -1,7 +1,7 @@
 /**************************************************************************
  * @file RandomUtilities.h
- * @author 
- * @par DP email: 
+ * @author TAN Angus Yit Hoe
+ * @par DP email: tan.a@digipen.edu
  * @par Course: CSD 2401
  * @par Software Engineering Project 3
  * @date 09-05-2023
