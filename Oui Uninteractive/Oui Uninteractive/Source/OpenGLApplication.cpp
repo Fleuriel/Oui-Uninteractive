@@ -121,7 +121,7 @@ void OpenGLApplication::OpenGLWindowInit() {
 	// Create viewport of width and height.
 	glViewport(0, 0, windowSize.first, windowSize.second);
 
-	glfwSwapInterval(1);
+	glfwSwapInterval(0);
 
 	// Receives Key input/output [Checks for Key Presses]
 	glfwSetKeyCallback(windowNew, KeyCallBack);

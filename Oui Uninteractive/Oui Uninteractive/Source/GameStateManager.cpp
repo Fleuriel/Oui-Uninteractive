@@ -150,7 +150,7 @@ bool IsTimeElapsed(unsigned int time) {
 	// Get Time Elapsed.
 	seconds += GetDT();
 #ifdef _DEBUG	
-	std::cout << seconds << GetDT() << '\n';
+	//std::cout << seconds << GetDT() << '\n';
 #endif
 	// refresh seconds to 0
 	if (seconds >= time) {
