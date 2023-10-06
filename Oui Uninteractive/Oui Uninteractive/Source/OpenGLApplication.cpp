@@ -16,6 +16,7 @@
  *************************************************************************/
 
 #include <iostream>
+#include "LogicComponent.h"
 #include <OpenGLApplication.h>
 #include <Input.h>
 #include <RandomUtilities.h>
@@ -33,6 +34,7 @@
 #include <glm/gtc/type_ptr.hpp>
 #include <iterator>
 #include <Background.h>
+#include "TestScript.h"
 
 #define STB_IMAGE_IMPLEMENTATION
 #include <stb_image.h>
@@ -237,8 +239,11 @@ void OpenGLApplication::OpenGLInit() {
 	std::cout << "\nCloning object with ID 0..." << std::endl;
 #endif
 	objectFactory->CloneObject(0);
+	objectFactory->GetGameObjectByID(4)->AddComponent(new LogicComponent(), ComponentType::LOGIC_COMPONENT);
+	objectFactory->GetGameObjectByID(4)->Initialize();
 	GET_COMPONENT(objectFactory->GetGameObjectByID(4), Transform, ComponentType::TRANSFORM)->position.x = 450;
 	GET_COMPONENT(objectFactory->GetGameObjectByID(4), Transform, ComponentType::TRANSFORM)->position.y = 50;
+
 
 #ifdef _DEBUG	
 	std::cout << "Cloning object with ID 0... completed." << std::endl;
@@ -256,6 +261,10 @@ void OpenGLApplication::OpenGLInit() {
 	std::cout << "Updating JSONEnemy2 during initialization... completed." << std::endl;
 #endif
 
+	//SCRIPTS
+
+	TestScript* testScript = new TestScript();
+	testScript->Initialize();
 	background.Init();
 }
 

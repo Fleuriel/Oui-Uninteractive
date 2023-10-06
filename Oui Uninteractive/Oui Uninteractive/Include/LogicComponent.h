@@ -1,7 +1,7 @@
 #pragma once
 #include "IComponent.h"
 class LogicComponent : public IComponent {
-protected:
+public:
 	unsigned int logicIndex;
 
 public:

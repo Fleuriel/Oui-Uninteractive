@@ -1,5 +1,6 @@
 #include "Logic.h"
 #include "ComponentFactory.h"
+#include <iostream>
 
 LogicSystem* logicSystem = nullptr;
 LogicSystem::LogicSystem() {
@@ -18,7 +19,13 @@ void LogicSystem::Initialize() {
 
 void LogicSystem::Update(float dt) {
 	for (auto& iter : logicComponentVec) {
-		scriptVec[iter->GetLogicIndex()]->Update(dt);
+		if (iter->GetLogicIndex() < scriptVec.size()) {
+			scriptVec[iter->GetLogicIndex()]->Update(iter->GetOwner()->GetGameObjectID());
+		}
+		else {
+			std::cout << "Script missing at " << iter->GetLogicIndex() << "\n";
+		}
+		
 	}
 }
 void LogicSystem::AddLogicScript(IScript* newScript) {

@@ -12,9 +12,9 @@
                     "Speed": 500.0
                 },
                 "Transform": {
-                    "PositionX": -199.60452270507813,
-                    "PositionY": 175.42938232421875,
-                    "Rotation": -81.4478988647461,
+                    "PositionX": -250.0,
+                    "PositionY": 200.0,
+                    "Rotation": 45.0,
                     "Scale": 200.0
                 }
             }
@@ -30,9 +30,9 @@
                     "Speed": 700.0
                 },
                 "Transform": {
-                    "PositionX": 50.04705810546875,
-                    "PositionY": -199.97647094726563,
-                    "Rotation": 76.42723846435547,
+                    "PositionX": 50.11062240600586,
+                    "PositionY": -199.94468688964844,
+                    "Rotation": 19.80283546447754,
                     "Scale": 130.0
                 }
             }
@@ -48,9 +48,9 @@
                     "Speed": 500.0
                 },
                 "Transform": {
-                    "PositionX": 200.04705810546875,
-                    "PositionY": 100.9647216796875,
-                    "Rotation": 76.42723846435547,
+                    "PositionX": 200.11062622070313,
+                    "PositionY": 102.26776885986328,
+                    "Rotation": 19.80283546447754,
                     "Scale": 220.0
                 }
             }
@@ -80,15 +80,16 @@
                 "PhysicsBody": {
                     "VelocityX": 0.0,
                     "VelocityY": 0.0,
-                    "RotationSpeed": 200.0,
+                    "RotationSpeed": 500.0,
                     "Speed": 500.0
                 },
                 "Transform": {
-                    "PositionX": 450.0,
-                    "PositionY": 50.0,
-                    "Rotation": 148.0526580810547,
+                    "PositionX": 791.8192749023438,
+                    "PositionY": 909.0341796875,
+                    "Rotation": 266.2208557128906,
                     "Scale": 200.0
-                }
+                },
+                "None": {}
             }
         }
     ]
