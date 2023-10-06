@@ -83,9 +83,11 @@ void UsingImGui::Update() {
 *************************************************************************/
 void UsingImGui::Draw() {
 	// Create the master panel to control other panels
-
 	Editor::CreateMasterPanel();
 
+	if (panelList.gamePanel) {
+		Editor::CreateRenderWindow();
+	}
 	if (panelList.soundPanel) {
 		Editor::CreateSoundPanel();
 	}
@@ -144,7 +146,6 @@ void Editor::Update() {
 	CREATING INDIVIDUAL DOCKABLE IMGUI PANELS
    ============================================ */
 
-
 /**************************************************************************
 * @brief This function creates the Master Panel used to control the other sub panels
 * @return void
@@ -152,9 +153,28 @@ void Editor::Update() {
 void Editor::CreateMasterPanel() {
 	ImGui::Begin("Master Control Panel");
 	ImGui::Text("Show panels:");
+	ImGui::Checkbox("Game Window", &panelList.gamePanel); // Checkbox for sound panel
 	ImGui::Checkbox("Sound Panel", &panelList.soundPanel); // Checkbox for sound panel
 	ImGui::Checkbox("Objects Panel", &panelList.objectPanel); // Checkbox for sound panel
 	ImGui::Checkbox("Debug Panel", &panelList.debugPanel); // Checkbox for debug panel
+	ImGui::End();
+}
+
+
+/**************************************************************************
+* @brief This function creates the window to the game world
+* @return void
+*************************************************************************/
+void Editor::CreateRenderWindow() {
+	ImGui::Begin("Game Window");
+	if (ImGui::BeginChild("GameWindow")) {
+		// Get draw size of window
+		ImVec2 wsize = ImGui::GetWindowSize();
+		// Invert V from openGL
+		//ImGui::Image(reinterpret_cast<ImTextureID>(0), wsize, ImVec2(0, 1), ImVec2(1, 0));
+		ImGui::Image(reinterpret_cast<ImTextureID>(secondTexture), wsize, ImVec2(0, 1), ImVec2(1, 0));
+		ImGui::EndChild();
+	}
 	ImGui::End();
 }
 

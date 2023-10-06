@@ -28,6 +28,7 @@
 #include "Transform.h"
 #include "PhysicsBody.h"
 #include "Input.h"
+#include "OpenGLObjects.h"
 
 #define GET_COMPONENT(GameObject, Component, ComponentType) (GameObject->GetComponentType<Component>(ComponentType))
 
@@ -47,6 +48,7 @@ class Editor {
 public:
 	void Init();
 	void Update();
+	static void CreateRenderWindow();
 	static void CreateMasterPanel();
 	static void CreateSoundPanel();
 	static void CreateObjectList();
@@ -84,6 +86,7 @@ private:
 
 // Store panel selection
 struct Panels {
+	bool gamePanel;
 	bool soundPanel;
 	bool objectPanel;
 	bool debugPanel;
