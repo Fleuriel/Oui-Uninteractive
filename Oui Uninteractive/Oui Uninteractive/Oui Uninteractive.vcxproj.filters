@@ -178,9 +178,6 @@
     <ClCompile Include="Source\AssetManager.cpp">
       <Filter>Systems\AssetManager</Filter>
     </ClCompile>
-    <ClCompile Include="Source\StbImage.cpp">
-      <Filter>Graphics</Filter>
-    </ClCompile>
     <ClCompile Include="..\lib\imgui-docking\implot.cpp">
       <Filter>ImGui</Filter>
     </ClCompile>
@@ -189,6 +186,12 @@
     </ClCompile>
     <ClCompile Include="Source\Background.cpp">
       <Filter>Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Logic.cpp">
+      <Filter>Systems</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\LogicComponent.cpp">
+      <Filter>Component</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -270,9 +273,6 @@
     <ClInclude Include="Include\CoordinateSystem.h">
       <Filter>Engine\CoordinateSystem</Filter>
     </ClInclude>
-    <ClInclude Include="Include\ReadMe.h">
-      <Filter>Engine</Filter>
-    </ClInclude>
     <ClInclude Include="Include\RandomUtilities.h">
       <Filter>Engine\Utilities</Filter>
     </ClInclude>
@@ -291,5 +291,13 @@
     <ClInclude Include="Include\Background.h">
       <Filter>Graphics</Filter>
     </ClInclude>
+    <ClInclude Include="Include\Logic.h">
+      <Filter>Systems</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\LogicComponent.h">
+      <Filter>Component</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\IScript.h" />
+    <ClInclude Include="Include\TestScript.h" />
   </ItemGroup>
 </Project>
