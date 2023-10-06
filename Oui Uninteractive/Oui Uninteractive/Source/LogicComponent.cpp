@@ -9,6 +9,11 @@ void LogicComponent::Initialize() {
 void LogicComponent::SetLogicIndex(const unsigned int& newLogicIndex) {
 	logicIndex = newLogicIndex;
 }
+
+void LogicComponent::Serialize(rapidjson::Value::ConstMemberIterator& itr) {
+	const rapidjson::Value& components{ itr->value };
+	logicIndex = components["LogicIndex"].GetFloat();
+}
 LogicComponent* LogicComponent::Clone() const {
 	LogicComponent* newLogic = new LogicComponent();
 	newLogic->logicIndex = logicIndex;
