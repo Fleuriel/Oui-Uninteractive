@@ -1,5 +1,7 @@
 #include "LogicComponent.h"
 #include "Logic.h"
+
+//Logic Components Index denotes which Script u want it to run
 void LogicComponent::Initialize() {
 	logicSystem->logicComponentVec.push_back(this);
 	logicIndex = logicSystem->logicComponentVec.size() - 1;
