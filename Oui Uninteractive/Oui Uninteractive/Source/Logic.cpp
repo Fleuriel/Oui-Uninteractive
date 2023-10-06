@@ -1,7 +1,8 @@
 #include "Logic.h"
+#include "ComponentFactory.h"
 
 LogicSystem* logicSystem = nullptr;
-void LogicSystem::Initialize() {
+LogicSystem::LogicSystem() {
 	if (logicSystem != nullptr) {
 		//instantiate physics system
 		return;
@@ -9,6 +10,10 @@ void LogicSystem::Initialize() {
 	else {
 		logicSystem = this;
 	}
+}
+void LogicSystem::Initialize() {
+	ComponentFactory<LogicComponent>* testPtr = new ComponentFactory<LogicComponent>(ComponentType::LOGIC_COMPONENT);
+	objectFactory->AddComponentFactory(ComponentType::LOGIC_COMPONENT, testPtr);
 }
 
 void LogicSystem::Update(float dt) {

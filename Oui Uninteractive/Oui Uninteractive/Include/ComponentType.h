@@ -13,7 +13,8 @@
 typedef enum class ComponentType {
 	NONE = 0,
 	PHYSICS_BODY,
-	TRANSFORM
+	TRANSFORM,
+	LOGIC_COMPONENT
 } componentType;
 
 #endif

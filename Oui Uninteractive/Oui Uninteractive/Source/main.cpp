@@ -15,6 +15,7 @@
 #include "Physics.h"
 #include "SystemManager.h"
 #include "ObjectFactory.h"
+#include "Logic.h"
 #include "Sound.h"
 
 
@@ -31,6 +32,7 @@ int main(){
 
 	CreateWindow();
 	sysManager = new SystemManager();
+	sysManager->AddSystem(new LogicSystem());
 	sysManager->AddSystem(new ObjectFactory());
 	sysManager->AddSystem(new Physics());
 	sysManager->AddSystem(new SoundManager());
