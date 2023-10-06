@@ -13,6 +13,7 @@ LogicComponent* LogicComponent::Clone() const {
 
 	return newLogic;
 }
+//which script do u want to run (can make it a range in the future)
 unsigned int LogicComponent::GetLogicIndex() {
 	return logicIndex;
 }
