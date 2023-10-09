@@ -75,3 +75,7 @@ PhysicsBody* PhysicsBody::Clone() const{
 
 	return newBody;
 }
+
+void ForceManager::AddForce(Force* force) {
+	forceVec.push_back(force);
+}

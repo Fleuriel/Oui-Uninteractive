@@ -81,6 +81,7 @@ public:
 
 	//Member Variables
 	// 
+	float mass;
 	//Speed of Rotation
 	float rotationSpeed;
 	//Movement Speed

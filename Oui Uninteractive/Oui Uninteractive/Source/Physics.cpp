@@ -64,10 +64,12 @@ void Physics::Update(float dt) {
 		//calculate physics
 		//Direction
 		Vector2DNormalize(body->direction, body->direction + AngleToVec(body->txPtr->rotation * (static_cast<float>(M_PI) / 180.0f)));
-		//Position
-		body->txPtr->position = body->txPtr->position + body->velocity * dt;
+		//  body->acceleration = body->summedForce * body->mass ;
 		//Velocity
 		body->velocity = body->velocity + body->acceleration * dt;
+		//Position
+		body->txPtr->position = body->txPtr->position + body->velocity * dt;
+		
 		//Just spins all other objects
 		if (body->GetOwner()->GetGameObjectID() != 0) {
 			body->currentRotationSpeed = body->rotationSpeed;
