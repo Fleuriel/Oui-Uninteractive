@@ -20,6 +20,26 @@
 
 //Forward declaration for PhysicsBody
 class PhysicsBody;
+class Force {
+	float lifetime;
+	float age;
+	bool isActive;
+};
+
+class LinearForce : public Force {
+	Vec2 direction;
+	float magnitude;
+};
+class RotationalForce : public Force {
+	float torque;
+};
+class ForceManager {
+	std::vector<Force*> forceVec;
+	void AddForce(Force* newForce);
+	void Update();
+	void CalculateResultantForce();
+};
+
 
 class AABB {
 public:
@@ -60,6 +80,7 @@ public:
 	virtual PhysicsBody* Clone() const;
 
 	//Member Variables
+	// 
 	//Speed of Rotation
 	float rotationSpeed;
 	//Movement Speed
@@ -78,6 +99,8 @@ public:
 	Transform* txPtr; 
 	// flag for engine to ignore objects that we won't move.
 	bool isStatic; 
+
+	ForceManager forceManager;
 };
 
 #endif

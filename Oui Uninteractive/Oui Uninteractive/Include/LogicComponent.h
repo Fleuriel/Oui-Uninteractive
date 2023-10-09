@@ -6,7 +6,7 @@ public:
 
 public:
 	void Initialize();
-	void Serialize(rapidjson::Value::ConstMemberIterator& itr) {};
+	void Serialize(rapidjson::Value::ConstMemberIterator& itr) ;
 	LogicComponent* Clone() const;
 	~LogicComponent() {};
 	void SetLogicIndex(const unsigned int & newLogicIndex);
