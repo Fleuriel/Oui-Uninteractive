@@ -23,7 +23,7 @@ class PhysicsBody;
 
 class LinearForce {
 public:
-	LinearForce(float lifetime, bool isActive, float magnitude, bool frictionFlag = false);
+	LinearForce(float lifetime, bool isActive, float magnitude);
 	float lifetime;
 	float age;
 	bool isActive;
@@ -108,6 +108,7 @@ public:
 	Transform* txPtr; 
 	// flag for engine to ignore objects that we won't move.
 	bool isStatic; 
+	float frictionForce;
 
 	ForceManager forceManager;
 };

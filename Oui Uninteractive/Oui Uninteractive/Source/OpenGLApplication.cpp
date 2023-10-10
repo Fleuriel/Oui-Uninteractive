@@ -221,7 +221,7 @@ void OpenGLApplication::OpenGLInit() {
 #endif
 	objectFactory->BuildObjectFromFile("../scenes/TestsceneReading.JSON");
 	PhysicsBody* playerBody = GET_COMPONENT(objectFactory->GetGameObjectByID(0), PhysicsBody, ComponentType::PHYSICS_BODY);
-	playerBody->forceManager.AddForce(new LinearForce(0.3f, false, playerBody->speed, false));
+	playerBody->forceManager.AddForce(new LinearForce(0.3f, false, playerBody->speed));
 
 #ifdef _DEBUG
 	std::cout << "De-serializing objects from JSON file... completed." << std::endl;
@@ -244,8 +244,8 @@ void OpenGLApplication::OpenGLInit() {
 	objectFactory->GetGameObjectByID(4)->Initialize();
 	GET_COMPONENT(objectFactory->GetGameObjectByID(4), Transform, ComponentType::TRANSFORM)->position.x = 450;
 	GET_COMPONENT(objectFactory->GetGameObjectByID(4), Transform, ComponentType::TRANSFORM)->position.y = 50;
-	GET_COMPONENT(objectFactory->GetGameObjectByID(4), PhysicsBody, ComponentType::PHYSICS_BODY)->forceManager.AddForce(new LinearForce(0.1f, false, 20, false));
-	GET_COMPONENT(objectFactory->GetGameObjectByID(4), PhysicsBody, ComponentType::PHYSICS_BODY)->forceManager.AddForce(new LinearForce(0.1f, false, 20, true));
+	GET_COMPONENT(objectFactory->GetGameObjectByID(4), PhysicsBody, ComponentType::PHYSICS_BODY)->forceManager.AddForce(new LinearForce(0.1f, false, 20));
+	GET_COMPONENT(objectFactory->GetGameObjectByID(4), PhysicsBody, ComponentType::PHYSICS_BODY)->forceManager.AddForce(new LinearForce(0.1f, false, 20));
 
 #ifdef _DEBUG	
 	std::cout << "Cloning object with ID 0... completed." << std::endl;

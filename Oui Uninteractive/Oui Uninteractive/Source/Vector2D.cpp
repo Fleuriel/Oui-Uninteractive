@@ -106,7 +106,7 @@ Vector2D operator*(float lhs, const Vector2D& rhs) {
 * @return Vector2D
 **************************************************************************/
 Vector2D operator/(const Vector2D& lhs, float rhs) {
-	return Vector2D(lhs.x / rhs, lhs.y / rhs);
+		return Vector2D(lhs.x / rhs, lhs.y / rhs);
 }
 
 
@@ -117,7 +117,13 @@ Vector2D operator/(const Vector2D& lhs, float rhs) {
 * @return void
 **************************************************************************/
 void Vector2DNormalize(Vector2D& pResult, const Vector2D& pVec0) {
-	pResult = pVec0 / Vector2DLength(pVec0);
+	if (pVec0.x == 0 && pVec0.y == 0) {
+		pResult = Vec2(0, 0);
+	}
+	else {
+		pResult = pVec0 / Vector2DLength(pVec0);
+	}
+	
 }
 
 /**************************************************************************

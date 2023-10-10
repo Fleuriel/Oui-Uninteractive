@@ -58,16 +58,20 @@ void Physics::Update(float dt) {
 		if (body->isStatic) {
 			continue;
 		}
+		Vector2DNormalize(body->direction, body->direction + AngleToVec(body->txPtr->rotation * (static_cast<float>(M_PI) / 180.0f)));
 		body->forceManager.Update(dt);
 		//Check update
 		body->boundingbox->min = Vec2((-1 / 2.f) * body->txPtr->scale + body->txPtr->position.x, (-1 / 2.f) * body->txPtr->scale + body->txPtr->position.y);
 		body->boundingbox->max = Vec2((1 / 2.f) * body->txPtr->scale + body->txPtr->position.x, (1 / 2.f) * body->txPtr->scale + body->txPtr->position.y);
 		//calculate physics
 		//Direction
-		Vector2DNormalize(body->direction, body->direction + AngleToVec(body->txPtr->rotation * (static_cast<float>(M_PI) / 180.0f)));
-		body->acceleration = body->forceManager.CalculateResultantForce() * body->mass;
+		Vec2 normalizedVel = Vec2(0,0);
+		Vector2DNormalize(normalizedVel, body->velocity);
+		body->acceleration = (body->forceManager.CalculateResultantForce() - (body->frictionForce * normalizedVel)) * body->mass;
+		
 		//Velocity
 		body->velocity = body->velocity + body->acceleration * dt;
+		
 		//Position
 		body->txPtr->position = body->txPtr->position + body->velocity * dt;
 		

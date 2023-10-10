@@ -28,6 +28,7 @@ PhysicsBody::PhysicsBody() {
 	boundingbox = new AABB();
 	boundingbox->min = Vec2(0,0);
 	boundingbox->max = Vec2(0,0);
+	frictionForce = 20;
 }
 /**************************************************************************
 * @brief Destructor for PhysicsBody component
@@ -114,7 +115,7 @@ Vec2 ForceManager::CalculateResultantForce() {
 	}
 	return summedForce;
 }
-LinearForce::LinearForce(float newLifetime, bool activeFlag, float newMagnitude, bool isFriction) {
+LinearForce::LinearForce(float newLifetime, bool activeFlag, float newMagnitude) {
 	lifetime = newLifetime;
 	age = 0.0f;
 	isActive = activeFlag;
