@@ -79,6 +79,11 @@ PhysicsBody* PhysicsBody::Clone() const{
 	newBody->boundingbox->min = boundingbox->min;
 	newBody->boundingbox->max = boundingbox->max;
 
+	for (int i = 0; i < forceManager.forceVec.size(); i++) {
+		LinearForce* newForce = new LinearForce(*forceManager.forceVec[i]);
+		newBody->forceManager.forceVec.push_back(newForce);
+	}
+
 	return newBody;
 }
 

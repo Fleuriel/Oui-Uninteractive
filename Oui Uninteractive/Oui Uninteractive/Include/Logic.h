@@ -14,7 +14,9 @@ public:
 
 	//insert script container
 	std::vector<IScript*> scriptVec;
+	std::map<std::string, IScript*> scriptMap;
 	//insert logic component container
-	std::vector<LogicComponent*> logicComponentVec;
+	std::map<size_t, LogicComponent*> logicComponentMap;
+	//std::vector<LogicComponent*> logicComponentVec;
 };
 extern LogicSystem* logicSystem;

@@ -18,14 +18,8 @@ void LogicSystem::Initialize() {
 }
 
 void LogicSystem::Update(float dt) {
-	for (auto& iter : logicComponentVec) {
-		if (iter->GetLogicIndex() < scriptVec.size()) {
-			scriptVec[iter->GetLogicIndex()]->Update(iter->GetOwner()->GetGameObjectID());
-		}
-		else {
-			std::cout << "Script missing at " << iter->GetLogicIndex() << "\n";
-		}
-		
+	for (auto& iter : logicComponentMap) {
+		scriptVec[iter.second->GetLogicIndex()]->Update(iter.second->GetOwner()->GetGameObjectID());
 	}
 }
 void LogicSystem::AddLogicScript(IScript* newScript) {

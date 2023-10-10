@@ -244,7 +244,6 @@ void OpenGLApplication::OpenGLInit() {
 	objectFactory->GetGameObjectByID(4)->Initialize();
 	GET_COMPONENT(objectFactory->GetGameObjectByID(4), Transform, ComponentType::TRANSFORM)->position.x = 450;
 	GET_COMPONENT(objectFactory->GetGameObjectByID(4), Transform, ComponentType::TRANSFORM)->position.y = 50;
-	GET_COMPONENT(objectFactory->GetGameObjectByID(4), PhysicsBody, ComponentType::PHYSICS_BODY)->forceManager.AddForce(new LinearForce(0.1f, false, 60));
 
 #ifdef _DEBUG	
 	std::cout << "Cloning object with ID 0... completed." << std::endl;

@@ -1,20 +1,20 @@
 {
-    "ObjectCount": 5,
+    "ObjectCount": 8,
     "Objects": [
         {
             "Name": "JSONPlayer",
             "Type": "Player",
             "Components": {
                 "PhysicsBody": {
-                    "VelocityX": 0.0,
-                    "VelocityY": 0.0,
+                    "VelocityX": -4.608860969543457,
+                    "VelocityY": -15.535541534423828,
                     "RotationSpeed": 200.0,
                     "Speed": 50.0
                 },
                 "Transform": {
-                    "PositionX": -250.0,
-                    "PositionY": 200.0,
-                    "Rotation": 45.0,
+                    "PositionX": 348.591552734375,
+                    "PositionY": 375.2342224121094,
+                    "Rotation": -16.59446144104004,
                     "Scale": 200.0
                 }
             }
@@ -32,7 +32,7 @@
                 "Transform": {
                     "PositionX": 50.0,
                     "PositionY": -200.0,
-                    "Rotation": 157.86587524414063,
+                    "Rotation": 222.27911376953125,
                     "Scale": 130.0
                 }
             }
@@ -50,7 +50,7 @@
                 "Transform": {
                     "PositionX": 200.0,
                     "PositionY": 100.0,
-                    "Rotation": 157.86587524414063,
+                    "Rotation": 222.27911376953125,
                     "Scale": 220.0
                 }
             }
@@ -78,15 +78,71 @@
             "Type": "Player",
             "Components": {
                 "PhysicsBody": {
-                    "VelocityX": 979.00927734375,
+                    "VelocityX": -812.423583984375,
                     "VelocityY": 0.0,
                     "RotationSpeed": 200.0,
                     "Speed": 50.0
                 },
                 "Transform": {
-                    "PositionX": 678.235595703125,
+                    "PositionX": 510.7618713378906,
                     "PositionY": 50.0,
-                    "Rotation": 241.218017578125,
+                    "Rotation": 153.1236114501953,
+                    "Scale": 200.0
+                },
+                "None": {}
+            }
+        },
+        {
+            "Name": "Object6",
+            "Type": "Player",
+            "Components": {
+                "PhysicsBody": {
+                    "VelocityX": 0.0,
+                    "VelocityY": 0.0,
+                    "RotationSpeed": 200.0,
+                    "Speed": 50.0
+                },
+                "Transform": {
+                    "PositionX": -250.0,
+                    "PositionY": 200.0,
+                    "Rotation": 109.77165985107422,
+                    "Scale": 200.0
+                }
+            }
+        },
+        {
+            "Name": "Object7",
+            "Type": "Player",
+            "Components": {
+                "PhysicsBody": {
+                    "VelocityX": -636.3204956054688,
+                    "VelocityY": 0.0,
+                    "RotationSpeed": 200.0,
+                    "Speed": 50.0
+                },
+                "Transform": {
+                    "PositionX": 546.0936889648438,
+                    "PositionY": 50.0,
+                    "Rotation": 153.1236114501953,
+                    "Scale": 200.0
+                },
+                "None": {}
+            }
+        },
+        {
+            "Name": "Object8",
+            "Type": "Player",
+            "Components": {
+                "PhysicsBody": {
+                    "VelocityX": -636.3204956054688,
+                    "VelocityY": 0.0,
+                    "RotationSpeed": 200.0,
+                    "Speed": 50.0
+                },
+                "Transform": {
+                    "PositionX": 546.0936889648438,
+                    "PositionY": 50.0,
+                    "Rotation": 153.1236114501953,
                     "Scale": 200.0
                 },
                 "None": {}

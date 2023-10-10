@@ -1,10 +1,14 @@
 #include "LogicComponent.h"
 #include "Logic.h"
-
+#include <algorithm>
 //Logic Components Index denotes which Script u want it to run
+LogicComponent::~LogicComponent() {
+	logicSystem->logicComponentMap.erase(GetOwner()->GetGameObjectID());
+}
 void LogicComponent::Initialize() {
-	logicSystem->logicComponentVec.push_back(this);
-	logicIndex = logicSystem->logicComponentVec.size() - 1;
+	//logicSystem->logicComponentVec.push_back(this);
+	logicSystem->logicComponentMap.insert(std::pair<size_t, LogicComponent*>(GetOwner()->GetGameObjectID(), this));
+	logicIndex = 0;
 }
 void LogicComponent::SetLogicIndex(const unsigned int& newLogicIndex) {
 	logicIndex = newLogicIndex;
@@ -14,6 +18,7 @@ void LogicComponent::Serialize(rapidjson::Value::ConstMemberIterator& itr) {
 	const rapidjson::Value& components{ itr->value };
 	logicIndex = components["LogicIndex"].GetFloat();
 }
+
 LogicComponent* LogicComponent::Clone() const {
 	LogicComponent* newLogic = new LogicComponent();
 	newLogic->logicIndex = logicIndex;
