@@ -6,15 +6,15 @@
             "Type": "Player",
             "Components": {
                 "PhysicsBody": {
-                    "VelocityX": 0.06448408961296082,
-                    "VelocityY": 1.1341423988342285,
+                    "VelocityX": 10.645286560058594,
+                    "VelocityY": -10.645286560058594,
                     "RotationSpeed": 200.0,
                     "Speed": 50.0
                 },
                 "Transform": {
-                    "PositionX": 245.35763549804688,
-                    "PositionY": 639.8424072265625,
-                    "Rotation": -3.254401206970215,
+                    "PositionX": 247.11541748046875,
+                    "PositionY": -297.115478515625,
+                    "Rotation": 45.0,
                     "Scale": 200.0
                 }
             }
@@ -32,7 +32,7 @@
                 "Transform": {
                     "PositionX": 50.0,
                     "PositionY": -200.0,
-                    "Rotation": 250.4319610595703,
+                    "Rotation": 102.2874984741211,
                     "Scale": 130.0
                 }
             }
@@ -50,7 +50,7 @@
                 "Transform": {
                     "PositionX": 200.0,
                     "PositionY": 100.0,
-                    "Rotation": 250.4319610595703,
+                    "Rotation": 102.2874984741211,
                     "Scale": 220.0
                 }
             }
@@ -78,15 +78,15 @@
             "Type": "Player",
             "Components": {
                 "PhysicsBody": {
-                    "VelocityX": -13.56103801727295,
+                    "VelocityX": 383.53802490234375,
                     "VelocityY": 0.0,
                     "RotationSpeed": 200.0,
                     "Speed": 50.0
                 },
                 "Transform": {
-                    "PositionX": 429.5305480957031,
+                    "PositionX": 630.2738037109375,
                     "PositionY": 50.0,
-                    "Rotation": 83.1956558227539,
+                    "Rotation": 46.57719802856445,
                     "Scale": 200.0
                 },
                 "None": {}

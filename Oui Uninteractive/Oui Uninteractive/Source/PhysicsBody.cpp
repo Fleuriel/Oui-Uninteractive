@@ -65,6 +65,7 @@ void PhysicsBody::Serialize(rapidjson::Value::ConstMemberIterator& itr) {
 	velocity.y = components["VelocityY"].GetFloat();
 	rotationSpeed = components["RotationSpeed"].GetFloat();
 	speed = components["Speed"].GetFloat();
+	mass = components["Mass"].GetFloat();
 }
 /**************************************************************************
 * @brief Function to Clone a PhysicsBody Component
