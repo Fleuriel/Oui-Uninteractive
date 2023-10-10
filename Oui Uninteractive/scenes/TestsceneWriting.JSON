@@ -1,22 +1,23 @@
 {
-    "ObjectCount": 8,
+    "ObjectCount": 5,
     "Objects": [
         {
             "Name": "JSONPlayer",
             "Type": "Player",
             "Components": {
                 "PhysicsBody": {
-                    "VelocityX": -4.608860969543457,
-                    "VelocityY": -15.535541534423828,
+                    "VelocityX": -13.886710166931152,
+                    "VelocityY": -5.817381858825684,
                     "RotationSpeed": 200.0,
                     "Speed": 50.0
                 },
                 "Transform": {
-                    "PositionX": 348.591552734375,
-                    "PositionY": 375.2342224121094,
-                    "Rotation": -16.59446144104004,
+                    "PositionX": -275.4546203613281,
+                    "PositionY": 179.61160278320313,
+                    "Rotation": -8.73240852355957,
                     "Scale": 200.0
-                }
+                },
+                "None": {}
             }
         },
         {
@@ -32,7 +33,7 @@
                 "Transform": {
                     "PositionX": 50.0,
                     "PositionY": -200.0,
-                    "Rotation": 222.27911376953125,
+                    "Rotation": 326.4585876464844,
                     "Scale": 130.0
                 }
             }
@@ -50,7 +51,7 @@
                 "Transform": {
                     "PositionX": 200.0,
                     "PositionY": 100.0,
-                    "Rotation": 222.27911376953125,
+                    "Rotation": 326.4585876464844,
                     "Scale": 220.0
                 }
             }
@@ -78,73 +79,18 @@
             "Type": "Player",
             "Components": {
                 "PhysicsBody": {
-                    "VelocityX": -812.423583984375,
+                    "VelocityX": -1137.08056640625,
                     "VelocityY": 0.0,
                     "RotationSpeed": 200.0,
                     "Speed": 50.0
                 },
                 "Transform": {
-                    "PositionX": 510.7618713378906,
+                    "PositionX": -537.41064453125,
                     "PositionY": 50.0,
-                    "Rotation": 153.1236114501953,
+                    "Rotation": 121.4520492553711,
                     "Scale": 200.0
                 },
-                "None": {}
-            }
-        },
-        {
-            "Name": "Object6",
-            "Type": "Player",
-            "Components": {
-                "PhysicsBody": {
-                    "VelocityX": 0.0,
-                    "VelocityY": 0.0,
-                    "RotationSpeed": 200.0,
-                    "Speed": 50.0
-                },
-                "Transform": {
-                    "PositionX": -250.0,
-                    "PositionY": 200.0,
-                    "Rotation": 109.77165985107422,
-                    "Scale": 200.0
-                }
-            }
-        },
-        {
-            "Name": "Object7",
-            "Type": "Player",
-            "Components": {
-                "PhysicsBody": {
-                    "VelocityX": -636.3204956054688,
-                    "VelocityY": 0.0,
-                    "RotationSpeed": 200.0,
-                    "Speed": 50.0
-                },
-                "Transform": {
-                    "PositionX": 546.0936889648438,
-                    "PositionY": 50.0,
-                    "Rotation": 153.1236114501953,
-                    "Scale": 200.0
-                },
-                "None": {}
-            }
-        },
-        {
-            "Name": "Object8",
-            "Type": "Player",
-            "Components": {
-                "PhysicsBody": {
-                    "VelocityX": -636.3204956054688,
-                    "VelocityY": 0.0,
-                    "RotationSpeed": 200.0,
-                    "Speed": 50.0
-                },
-                "Transform": {
-                    "PositionX": 546.0936889648438,
-                    "PositionY": 50.0,
-                    "Rotation": 153.1236114501953,
-                    "Scale": 200.0
-                },
+                "None": {},
                 "None": {}
             }
         }

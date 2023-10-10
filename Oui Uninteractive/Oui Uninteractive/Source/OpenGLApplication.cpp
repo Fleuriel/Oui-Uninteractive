@@ -220,6 +220,9 @@ void OpenGLApplication::OpenGLInit() {
 	std::cout << "\nDe-serializing objects from JSON file..." << std::endl;
 #endif
 	objectFactory->BuildObjectFromFile("../scenes/TestsceneReading.JSON");
+	objectFactory->GetGameObjectByID(0)->AddComponent(new LogicComponent(), ComponentType::LOGIC_COMPONENT);
+	objectFactory->GetGameObjectByID(0)->Initialize();
+	LogicComponent* playerLogic = GET_COMPONENT(objectFactory->GetGameObjectByID(0), LogicComponent, ComponentType::LOGIC_COMPONENT);
 	PhysicsBody* playerBody = GET_COMPONENT(objectFactory->GetGameObjectByID(0), PhysicsBody, ComponentType::PHYSICS_BODY);
 	playerBody->forceManager.AddForce(new LinearForce(0.3f, false, playerBody->speed));
 
@@ -242,6 +245,8 @@ void OpenGLApplication::OpenGLInit() {
 	objectFactory->CloneObject(0);
 	objectFactory->GetGameObjectByID(4)->AddComponent(new LogicComponent(), ComponentType::LOGIC_COMPONENT);
 	objectFactory->GetGameObjectByID(4)->Initialize();
+	LogicComponent* logicTest = GET_COMPONENT(objectFactory->GetGameObjectByID(4), LogicComponent, ComponentType::LOGIC_COMPONENT);
+	logicTest->scriptIndexSet.insert(LOGIC_ENUM::TEST_SCRIPT1);
 	GET_COMPONENT(objectFactory->GetGameObjectByID(4), Transform, ComponentType::TRANSFORM)->position.x = 450;
 	GET_COMPONENT(objectFactory->GetGameObjectByID(4), Transform, ComponentType::TRANSFORM)->position.y = 50;
 
@@ -264,6 +269,13 @@ void OpenGLApplication::OpenGLInit() {
 
 	TestScript* testScript = new TestScript();
 	testScript->Initialize();
+	
+
+	TestScript2* testScript2 = new TestScript2();
+	testScript2->Initialize();
+
+	//apply movement script to player
+	playerLogic->scriptIndexSet.insert(LOGIC_ENUM::PLAYER_MOVEMENT);
 	background.Init();
 }
 
@@ -444,21 +456,23 @@ void OpenGLApplication::OpenGLUpdate() {
 		}
 
 		if (keyStates[GLFW_KEY_S]) {
-			PhysicsBody* playerBody = GET_COMPONENT(objectFactory->GetGameObjectByID(0), PhysicsBody, ComponentType::PHYSICS_BODY);
+			/*PhysicsBody* playerBody = GET_COMPONENT(objectFactory->GetGameObjectByID(0), PhysicsBody, ComponentType::PHYSICS_BODY);
 			playerBody->forceManager.SetActive(true, 0);
 			playerBody->forceManager.SetDirection(-playerBody->direction, 0);
-			//physicsSys->MoveBackwards(0);
+			//physicsSys->MoveBackwards(0);*/
 		}
 
 		else if (keyStates[GLFW_KEY_W]) {
+			/*
 			PhysicsBody* playerBody = GET_COMPONENT(objectFactory->GetGameObjectByID(0), PhysicsBody, ComponentType::PHYSICS_BODY);
 			playerBody->forceManager.SetActive(true, 0);
 			playerBody->forceManager.SetDirection(playerBody->direction, 0);
-			//physicsSys->MoveForward(0);
+			//physicsSys->MoveForward(0);*/
 		}
 		else {
+			/*
 			PhysicsBody* playerBody = GET_COMPONENT(objectFactory->GetGameObjectByID(0), PhysicsBody, ComponentType::PHYSICS_BODY);
-			playerBody->forceManager.DeactivateForce(0);
+			playerBody->forceManager.DeactivateForce(0);*/
 		}
 
 		if (keyStates[GLFW_KEY_M]) {

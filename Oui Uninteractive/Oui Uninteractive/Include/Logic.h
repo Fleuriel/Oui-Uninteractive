@@ -4,6 +4,10 @@
 #include "LogicComponent.h"
 #include "ObjectFactory.h"
 #include <vector>
+enum LOGIC_ENUM {
+	TEST_SCRIPT1 = 0,
+	PLAYER_MOVEMENT
+};
 class LogicSystem : public ISystem {
 public:
 	LogicSystem();

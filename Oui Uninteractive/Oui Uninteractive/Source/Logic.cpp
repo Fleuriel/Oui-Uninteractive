@@ -19,7 +19,9 @@ void LogicSystem::Initialize() {
 
 void LogicSystem::Update(float dt) {
 	for (auto& iter : logicComponentMap) {
-		scriptVec[iter.second->GetLogicIndex()]->Update(iter.second->GetOwner()->GetGameObjectID());
+		for (unsigned int index : iter.second->scriptIndexSet) {
+			scriptVec[index]->Update(iter.second->GetOwner()->GetGameObjectID());
+		}
 	}
 }
 void LogicSystem::AddLogicScript(IScript* newScript) {

@@ -9,6 +9,7 @@ void LogicComponent::Initialize() {
 	//logicSystem->logicComponentVec.push_back(this);
 	logicSystem->logicComponentMap.insert(std::pair<size_t, LogicComponent*>(GetOwner()->GetGameObjectID(), this));
 	logicIndex = 0;
+	
 }
 void LogicComponent::SetLogicIndex(const unsigned int& newLogicIndex) {
 	logicIndex = newLogicIndex;
