@@ -16,6 +16,7 @@
 * @brief Default constructor for PhysicsBody component
 *************************************************************************/
 PhysicsBody::PhysicsBody() {
+	mass = 50.f;
 	velocity = Vec2(0, 0);
 	acceleration = Vec2(0, 0);
 	isStatic = false;
@@ -33,6 +34,9 @@ PhysicsBody::PhysicsBody() {
 *************************************************************************/
 PhysicsBody::~PhysicsBody() {
 	physicsSys->bodyList.erase(GetOwner()->GetGameObjectID());
+	for (LinearForce* force : forceManager.forceVec) {
+		delete force;
+	}
 	delete boundingbox;
 }
 /**************************************************************************
@@ -76,6 +80,43 @@ PhysicsBody* PhysicsBody::Clone() const{
 	return newBody;
 }
 
-void ForceManager::AddForce(Force* force) {
+void ForceManager::Update(float dt) {
+	for (LinearForce* force : forceVec) {
+		if (force->isActive) {
+			force->age += dt;
+			if (force->age >= force->lifetime) {
+				force->isActive = false;
+				force->age = 0.0f;
+			}
+		}
+	}
+}
+
+void ForceManager::AddForce(LinearForce* force) {
 	forceVec.push_back(force);
+}
+void ForceManager::DeactivateForce(int index) {
+	forceVec[index]->age = 0.0f;
+	forceVec[index]->isActive = false;
+}
+void ForceManager::SetActive(bool activeFlag, int index) {
+	forceVec[index]->isActive = activeFlag;
+}
+void ForceManager::SetDirection(Vec2 dir, int index) {
+	forceVec[index]->direction = dir;
+}
+Vec2 ForceManager::CalculateResultantForce() {
+	Vec2 summedForce = Vec2(0.0f, 0.0f);
+	for (LinearForce* force : forceVec) {
+		if (force->isActive) {
+			summedForce += force->direction * force->magnitude;
+		}
+	}
+	return summedForce;
+}
+LinearForce::LinearForce(float newLifetime, bool activeFlag, float newMagnitude, bool isFriction) {
+	lifetime = newLifetime;
+	age = 0.0f;
+	isActive = activeFlag;
+	magnitude = newMagnitude;
 }

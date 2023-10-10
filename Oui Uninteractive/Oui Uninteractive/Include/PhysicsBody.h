@@ -20,24 +20,32 @@
 
 //Forward declaration for PhysicsBody
 class PhysicsBody;
-class Force {
+
+class LinearForce {
+public:
+	LinearForce(float lifetime, bool isActive, float magnitude, bool frictionFlag = false);
 	float lifetime;
 	float age;
 	bool isActive;
-};
-
-class LinearForce : public Force {
 	Vec2 direction;
 	float magnitude;
 };
-class RotationalForce : public Force {
-	float torque;
+class RotationalForce  {
+	public:
+		float lifetime;
+		float age;
+		bool isActive;
+		float torque;
 };
 class ForceManager {
-	std::vector<Force*> forceVec;
-	void AddForce(Force* newForce);
-	void Update();
-	void CalculateResultantForce();
+public:
+	std::vector<LinearForce*> forceVec;
+	void AddForce(LinearForce* newForce);
+	void DeactivateForce(int index);
+	void SetActive(bool activeFlag, int index);
+	void SetDirection(Vec2 newDir, int index);
+	void Update(float dt);
+	Vec2 CalculateResultantForce();
 };
 
 

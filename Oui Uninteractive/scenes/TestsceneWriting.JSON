@@ -6,15 +6,15 @@
             "Type": "Player",
             "Components": {
                 "PhysicsBody": {
-                    "VelocityX": 0.0,
-                    "VelocityY": 0.0,
+                    "VelocityX": -337.8252258300781,
+                    "VelocityY": -150.10238647460938,
                     "RotationSpeed": 200.0,
-                    "Speed": 500.0
+                    "Speed": 50.0
                 },
                 "Transform": {
-                    "PositionX": -250.0,
-                    "PositionY": 200.0,
-                    "Rotation": 45.0,
+                    "PositionX": -1450.6146240234375,
+                    "PositionY": -631.6143188476563,
+                    "Rotation": -109.58076477050781,
                     "Scale": 200.0
                 }
             }
@@ -30,9 +30,9 @@
                     "Speed": 700.0
                 },
                 "Transform": {
-                    "PositionX": 50.15504837036133,
-                    "PositionY": -199.92247009277344,
-                    "Rotation": 97.22544860839844,
+                    "PositionX": 50.0,
+                    "PositionY": -200.0,
+                    "Rotation": 261.0159912109375,
                     "Scale": 130.0
                 }
             }
@@ -48,9 +48,9 @@
                     "Speed": 500.0
                 },
                 "Transform": {
-                    "PositionX": 200.15504455566406,
-                    "PositionY": 103.17847442626953,
-                    "Rotation": 97.22544860839844,
+                    "PositionX": 200.0,
+                    "PositionY": 100.0,
+                    "Rotation": 261.0159912109375,
                     "Scale": 220.0
                 }
             }
@@ -78,15 +78,15 @@
             "Type": "Player",
             "Components": {
                 "PhysicsBody": {
-                    "VelocityX": 0.0,
+                    "VelocityX": 1228.74365234375,
                     "VelocityY": 0.0,
                     "RotationSpeed": 200.0,
-                    "Speed": 500.0
+                    "Speed": 50.0
                 },
                 "Transform": {
-                    "PositionX": 549.8292846679688,
-                    "PositionY": -99.35092163085938,
-                    "Rotation": 356.084228515625,
+                    "PositionX": -1422.3203125,
+                    "PositionY": 50.0,
+                    "Rotation": 189.66934204101563,
                     "Scale": 200.0
                 },
                 "None": {}

@@ -220,7 +220,8 @@ void OpenGLApplication::OpenGLInit() {
 	std::cout << "\nDe-serializing objects from JSON file..." << std::endl;
 #endif
 	objectFactory->BuildObjectFromFile("../scenes/TestsceneReading.JSON");
-
+	PhysicsBody* playerBody = GET_COMPONENT(objectFactory->GetGameObjectByID(0), PhysicsBody, ComponentType::PHYSICS_BODY);
+	playerBody->forceManager.AddForce(new LinearForce(0.3f, false, playerBody->speed, false));
 
 #ifdef _DEBUG
 	std::cout << "De-serializing objects from JSON file... completed." << std::endl;
@@ -243,7 +244,8 @@ void OpenGLApplication::OpenGLInit() {
 	objectFactory->GetGameObjectByID(4)->Initialize();
 	GET_COMPONENT(objectFactory->GetGameObjectByID(4), Transform, ComponentType::TRANSFORM)->position.x = 450;
 	GET_COMPONENT(objectFactory->GetGameObjectByID(4), Transform, ComponentType::TRANSFORM)->position.y = 50;
-
+	GET_COMPONENT(objectFactory->GetGameObjectByID(4), PhysicsBody, ComponentType::PHYSICS_BODY)->forceManager.AddForce(new LinearForce(0.1f, false, 20, false));
+	GET_COMPONENT(objectFactory->GetGameObjectByID(4), PhysicsBody, ComponentType::PHYSICS_BODY)->forceManager.AddForce(new LinearForce(0.1f, false, 20, true));
 
 #ifdef _DEBUG	
 	std::cout << "Cloning object with ID 0... completed." << std::endl;
@@ -254,7 +256,6 @@ void OpenGLApplication::OpenGLInit() {
 #ifdef _DEBUG	
 	std::cout << "\nUpdating JSONEnemy2 during initialization..." << std::endl;
 #endif
-	GET_COMPONENT(objectFactory->GetGameObjectByName("JSONEnemy2"), PhysicsBody, ComponentType::PHYSICS_BODY)->velocity.y = 20.5f;
 	objectFactory->SaveObjectsToFile("../scenes/TestsceneWriting.JSON");
 
 #ifdef _DEBUG	
@@ -445,14 +446,21 @@ void OpenGLApplication::OpenGLUpdate() {
 		}
 
 		if (keyStates[GLFW_KEY_S]) {
-			physicsSys->MoveBackwards(0);
+			PhysicsBody* playerBody = GET_COMPONENT(objectFactory->GetGameObjectByID(0), PhysicsBody, ComponentType::PHYSICS_BODY);
+			playerBody->forceManager.SetActive(true, 0);
+			playerBody->forceManager.SetDirection(-playerBody->direction, 0);
+			//physicsSys->MoveBackwards(0);
 		}
 
 		else if (keyStates[GLFW_KEY_W]) {
-			physicsSys->MoveForward(0);
+			PhysicsBody* playerBody = GET_COMPONENT(objectFactory->GetGameObjectByID(0), PhysicsBody, ComponentType::PHYSICS_BODY);
+			playerBody->forceManager.SetActive(true, 0);
+			playerBody->forceManager.SetDirection(playerBody->direction, 0);
+			//physicsSys->MoveForward(0);
 		}
 		else {
-			physicsSys->SetVelocity(Vec2(0.0f, 0.0f));
+			PhysicsBody* playerBody = GET_COMPONENT(objectFactory->GetGameObjectByID(0), PhysicsBody, ComponentType::PHYSICS_BODY);
+			playerBody->forceManager.DeactivateForce(0);
 		}
 
 		if (keyStates[GLFW_KEY_M]) {

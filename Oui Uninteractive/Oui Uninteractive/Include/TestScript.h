@@ -13,7 +13,17 @@ public:
 		Transform* tx = GET_COMPONENT(objectFactory->GetGameObjectByID(gameObjectID), Transform, ComponentType::TRANSFORM);
 		PhysicsBody* physBod = GET_COMPONENT(objectFactory->GetGameObjectByID(gameObjectID), PhysicsBody, ComponentType::PHYSICS_BODY);
 		if (tx != nullptr && physBod != nullptr) {
-			physicsSys->SetVelocity(physBod->speed * Vec2(physBod->direction.x, physBod->direction.y), gameObjectID);
+			
+			if (physBod->forceManager.forceVec.size() >= 1) {
+				physBod->forceManager.SetActive(true, 0);
+				if (tx->position.x < -300) {
+					physBod->forceManager.SetDirection(Vec2(1.f, 0), 0);
+				}
+				else if (tx->position.x > 300) {
+					physBod->forceManager.SetDirection(Vec2(-1.f, 0), 0);
+				}	
+			}
+			
 		}
 	};
 
