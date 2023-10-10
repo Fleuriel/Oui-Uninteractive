@@ -6,14 +6,14 @@
             "Type": "Player",
             "Components": {
                 "PhysicsBody": {
-                    "VelocityX": 10.645286560058594,
-                    "VelocityY": -10.645286560058594,
+                    "VelocityX": 0.0,
+                    "VelocityY": 0.0,
                     "RotationSpeed": 200.0,
                     "Speed": 50.0
                 },
                 "Transform": {
-                    "PositionX": 247.11541748046875,
-                    "PositionY": -297.115478515625,
+                    "PositionX": -250.0,
+                    "PositionY": 200.0,
                     "Rotation": 45.0,
                     "Scale": 200.0
                 }
@@ -32,7 +32,7 @@
                 "Transform": {
                     "PositionX": 50.0,
                     "PositionY": -200.0,
-                    "Rotation": 102.2874984741211,
+                    "Rotation": 157.86587524414063,
                     "Scale": 130.0
                 }
             }
@@ -50,7 +50,7 @@
                 "Transform": {
                     "PositionX": 200.0,
                     "PositionY": 100.0,
-                    "Rotation": 102.2874984741211,
+                    "Rotation": 157.86587524414063,
                     "Scale": 220.0
                 }
             }
@@ -78,15 +78,15 @@
             "Type": "Player",
             "Components": {
                 "PhysicsBody": {
-                    "VelocityX": 383.53802490234375,
+                    "VelocityX": 979.00927734375,
                     "VelocityY": 0.0,
                     "RotationSpeed": 200.0,
                     "Speed": 50.0
                 },
                 "Transform": {
-                    "PositionX": 630.2738037109375,
+                    "PositionX": 678.235595703125,
                     "PositionY": 50.0,
-                    "Rotation": 46.57719802856445,
+                    "Rotation": 241.218017578125,
                     "Scale": 200.0
                 },
                 "None": {}
