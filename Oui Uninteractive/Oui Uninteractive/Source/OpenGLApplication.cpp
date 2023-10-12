@@ -251,7 +251,7 @@ void OpenGLApplication::OpenGLInit() {
 	objectFactory->GetGameObjectByID(4)->Initialize();
 	//LogicComponent* logicTest = GET_COMPONENT(objectFactory->GetGameObjectByID(4), LogicComponent, ComponentType::LOGIC_COMPONENT);
 	//logicTest->scriptIndexSet.insert(LOGIC_ENUM::TEST_SCRIPT1);
-	GET_COMPONENT(objectFactory->GetGameObjectByID(4), Transform, ComponentType::TRANSFORM)->position.x = 450;
+	//GET_COMPONENT(objectFactory->GetGameObjectByID(4), Transform, ComponentType::TRANSFORM)->position.x = 450;
 	GET_COMPONENT(objectFactory->GetGameObjectByID(4), Transform, ComponentType::TRANSFORM)->position.y = 50;
 
 #ifdef _DEBUG	

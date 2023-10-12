@@ -25,15 +25,15 @@
             "Type": "Enemy",
             "Components": {
                 "PhysicsBody": {
-                    "VelocityX": 3629.229248046875,
+                    "VelocityX": -3875.385498046875,
                     "VelocityY": 0.0,
                     "RotationSpeed": 20.0,
-                    "Speed": 200.0
+                    "Speed": 120.0
                 },
                 "Transform": {
-                    "PositionX": 3020.7236328125,
+                    "PositionX": -1065.653076171875,
                     "PositionY": -200.0,
-                    "Rotation": 123.76820373535156,
+                    "Rotation": 298.1803283691406,
                     "Scale": 130.0
                 },
                 "LogicComponent": {}
@@ -52,7 +52,7 @@
                 "Transform": {
                     "PositionX": 200.0,
                     "PositionY": 100.0,
-                    "Rotation": 123.76820373535156,
+                    "Rotation": 298.1803283691406,
                     "Scale": 220.0
                 }
             }
@@ -80,15 +80,15 @@
             "Type": "Enemy",
             "Components": {
                 "PhysicsBody": {
-                    "VelocityX": -6425.201171875,
+                    "VelocityX": -3875.385498046875,
                     "VelocityY": 0.0,
                     "RotationSpeed": 20.0,
-                    "Speed": 200.0
+                    "Speed": 120.0
                 },
                 "Transform": {
-                    "PositionX": 871.2214965820313,
+                    "PositionX": -1065.653076171875,
                     "PositionY": 50.0,
-                    "Rotation": 123.76820373535156,
+                    "Rotation": 298.1803283691406,
                     "Scale": 130.0
                 },
                 "LogicComponent": {}

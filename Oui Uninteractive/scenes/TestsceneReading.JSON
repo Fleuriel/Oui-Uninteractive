@@ -32,7 +32,7 @@
                     "VelocityX": 0.0,
                     "VelocityY": 0.0,
                     "RotationSpeed": 20.0,
-                    "Speed": 200.0,
+                    "Speed": 120.0,
                     "Mass": 80.0
                 },
                 "Transform": {
