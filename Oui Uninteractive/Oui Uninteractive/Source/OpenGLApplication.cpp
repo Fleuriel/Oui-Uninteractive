@@ -221,12 +221,12 @@ void OpenGLApplication::OpenGLInit() {
 #endif
 	//PLAYER OBJECT
 	objectFactory->BuildObjectFromFile("../scenes/TestsceneReading.JSON");
-	objectFactory->GetGameObjectByID(0)->AddComponent(new LogicComponent(), ComponentType::LOGIC_COMPONENT);
+	//objectFactory->GetGameObjectByID(0)->AddComponent(new LogicComponent(), ComponentType::LOGIC_COMPONENT);
 	objectFactory->GetGameObjectByID(0)->Initialize();
-	LogicComponent* playerLogic = GET_COMPONENT(objectFactory->GetGameObjectByID(0), LogicComponent, ComponentType::LOGIC_COMPONENT);
+	//LogicComponent* playerLogic = GET_COMPONENT(objectFactory->GetGameObjectByID(0), LogicComponent, ComponentType::LOGIC_COMPONENT);
 	PhysicsBody* playerBody = GET_COMPONENT(objectFactory->GetGameObjectByID(0), PhysicsBody, ComponentType::PHYSICS_BODY);
 	//apply movement script to player
-	playerLogic->scriptIndexSet.insert(LOGIC_ENUM::PLAYER_MOVEMENT);
+	//playerLogic->scriptIndexSet.insert(LOGIC_ENUM::PLAYER_MOVEMENT);
 
 #ifdef _DEBUG
 	std::cout << "De-serializing objects from JSON file... completed." << std::endl;
@@ -245,11 +245,12 @@ void OpenGLApplication::OpenGLInit() {
 	std::cout << "\nCloning object with ID 0..." << std::endl;
 #endif
 	//AI OBJECT
-	objectFactory->CloneObject(0);
-	objectFactory->GetGameObjectByID(4)->AddComponent(new LogicComponent(), ComponentType::LOGIC_COMPONENT);
+	
+	objectFactory->CloneObject(1);
+	//objectFactory->GetGameObjectByID(4)->AddComponent(new LogicComponent(), ComponentType::LOGIC_COMPONENT);
 	objectFactory->GetGameObjectByID(4)->Initialize();
-	LogicComponent* logicTest = GET_COMPONENT(objectFactory->GetGameObjectByID(4), LogicComponent, ComponentType::LOGIC_COMPONENT);
-	logicTest->scriptIndexSet.insert(LOGIC_ENUM::TEST_SCRIPT1);
+	//LogicComponent* logicTest = GET_COMPONENT(objectFactory->GetGameObjectByID(4), LogicComponent, ComponentType::LOGIC_COMPONENT);
+	//logicTest->scriptIndexSet.insert(LOGIC_ENUM::TEST_SCRIPT1);
 	GET_COMPONENT(objectFactory->GetGameObjectByID(4), Transform, ComponentType::TRANSFORM)->position.x = 450;
 	GET_COMPONENT(objectFactory->GetGameObjectByID(4), Transform, ComponentType::TRANSFORM)->position.y = 50;
 

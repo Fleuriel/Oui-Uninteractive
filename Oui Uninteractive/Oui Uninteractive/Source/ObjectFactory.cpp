@@ -46,6 +46,9 @@ ComponentType ObjectFactory::StringToEnum(std::string str) {
 	else if (str == "Transform") {
 		return ComponentType::TRANSFORM;
 	}
+	else if (str == "LogicComponent") {
+		return ComponentType::LOGICCOMPONENT;
+	}
 	else {
 		return ComponentType::NONE;
 	}
@@ -62,6 +65,9 @@ std::string ObjectFactory::EnumToString(ComponentType ct) {
 	}
 	else if (ct == ComponentType::TRANSFORM) {
 		return "Transform";
+	}
+	else if (ct == ComponentType::LOGICCOMPONENT) {
+		return "LogicComponent";
 	}
 	else {
 		return "None";

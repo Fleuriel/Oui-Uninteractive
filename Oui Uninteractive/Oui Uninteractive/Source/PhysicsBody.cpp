@@ -77,6 +77,7 @@ PhysicsBody* PhysicsBody::Clone() const{
 	newBody->rotationSpeed = rotationSpeed;
 	newBody->boundingbox->min = boundingbox->min;
 	newBody->boundingbox->max = boundingbox->max;
+	newBody->mass = mass;
 
 	for (int i = 0; i < forceManager.forceVec.size(); i++) {
 		LinearForce* newForce = new LinearForce(*forceManager.forceVec[i]);

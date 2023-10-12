@@ -71,6 +71,7 @@ void Physics::Update(float dt) {
 		
 		//Velocity
 		body->velocity = body->velocity + body->acceleration * dt;
+
 		
 		//Position
 		body->txPtr->position = body->txPtr->position + body->velocity * dt;

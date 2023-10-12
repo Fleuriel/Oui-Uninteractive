@@ -17,12 +17,30 @@ void LogicComponent::SetLogicIndex(const unsigned int& newLogicIndex) {
 
 void LogicComponent::Serialize(rapidjson::Value::ConstMemberIterator& itr) {
 	const rapidjson::Value& components{ itr->value };
-	logicIndex = components["LogicIndex"].GetFloat();
+	
+	for (rapidjson::Value::ConstMemberIterator iter = components.MemberBegin(); iter != components.MemberEnd(); ++iter) {
+		printf("%s\t", iter->name.GetString());
+		for (auto& scriptID : iter->value.GetArray()) {
+			switch (scriptID.GetInt()) {
+			case 0:
+				scriptIndexSet.insert(LOGIC_ENUM::TEST_SCRIPT1);
+				break;
+			case 1:
+				scriptIndexSet.insert(LOGIC_ENUM::PLAYER_MOVEMENT);
+				break;
+			default:
+				scriptIndexSet.insert(LOGIC_ENUM::TEST_SCRIPT1);
+			}
+		}
+	}
+	
+	
 }
 
 LogicComponent* LogicComponent::Clone() const {
 	LogicComponent* newLogic = new LogicComponent();
-	newLogic->logicIndex = logicIndex;
+	
+	newLogic->scriptIndexSet = scriptIndexSet;
 
 	return newLogic;
 }

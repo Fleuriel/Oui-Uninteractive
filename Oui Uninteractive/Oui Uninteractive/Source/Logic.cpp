@@ -13,8 +13,8 @@ LogicSystem::LogicSystem() {
 	}
 }
 void LogicSystem::Initialize() {
-	ComponentFactory<LogicComponent>* testPtr = new ComponentFactory<LogicComponent>(ComponentType::LOGIC_COMPONENT);
-	objectFactory->AddComponentFactory(ComponentType::LOGIC_COMPONENT, testPtr);
+	ComponentFactory<LogicComponent>* testPtr = new ComponentFactory<LogicComponent>(ComponentType::LOGICCOMPONENT);
+	objectFactory->AddComponentFactory(ComponentType::LOGICCOMPONENT, testPtr);
 }
 
 void LogicSystem::Update(float dt) {
