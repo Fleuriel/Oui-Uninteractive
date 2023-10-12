@@ -17,7 +17,11 @@
                     "PositionY": 200.0,
                     "Rotation": 45.0,
                     "Scale": 200.0
+                },
+                "LogicComponent": {
+                    "ScriptID":[1]
                 }
+                
             }
         },
         {
@@ -28,7 +32,7 @@
                     "VelocityX": 0.0,
                     "VelocityY": 0.0,
                     "RotationSpeed": 20.0,
-                    "Speed": 700.0,
+                    "Speed": 200.0,
                     "Mass": 80.0
                 },
                 "Transform": {
@@ -36,6 +40,9 @@
                     "PositionY": -200.0,
                     "Rotation": 30.0,
                     "Scale": 130.0
+                },
+                "LogicComponent": {
+                    "ScriptID":[0]
                 }
             }
         },
