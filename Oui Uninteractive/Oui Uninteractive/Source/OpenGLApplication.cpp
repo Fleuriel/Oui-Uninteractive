@@ -219,12 +219,14 @@ void OpenGLApplication::OpenGLInit() {
 #ifdef _DEBUG
 	std::cout << "\nDe-serializing objects from JSON file..." << std::endl;
 #endif
+	//PLAYER OBJECT
 	objectFactory->BuildObjectFromFile("../scenes/TestsceneReading.JSON");
 	objectFactory->GetGameObjectByID(0)->AddComponent(new LogicComponent(), ComponentType::LOGIC_COMPONENT);
 	objectFactory->GetGameObjectByID(0)->Initialize();
 	LogicComponent* playerLogic = GET_COMPONENT(objectFactory->GetGameObjectByID(0), LogicComponent, ComponentType::LOGIC_COMPONENT);
 	PhysicsBody* playerBody = GET_COMPONENT(objectFactory->GetGameObjectByID(0), PhysicsBody, ComponentType::PHYSICS_BODY);
-	playerBody->forceManager.AddForce(new LinearForce(0.3f, false, playerBody->speed));
+	//apply movement script to player
+	playerLogic->scriptIndexSet.insert(LOGIC_ENUM::PLAYER_MOVEMENT);
 
 #ifdef _DEBUG
 	std::cout << "De-serializing objects from JSON file... completed." << std::endl;
@@ -242,6 +244,7 @@ void OpenGLApplication::OpenGLInit() {
 #ifdef _DEBUG	
 	std::cout << "\nCloning object with ID 0..." << std::endl;
 #endif
+	//AI OBJECT
 	objectFactory->CloneObject(0);
 	objectFactory->GetGameObjectByID(4)->AddComponent(new LogicComponent(), ComponentType::LOGIC_COMPONENT);
 	objectFactory->GetGameObjectByID(4)->Initialize();
@@ -274,8 +277,7 @@ void OpenGLApplication::OpenGLInit() {
 	TestScript2* testScript2 = new TestScript2();
 	testScript2->Initialize();
 
-	//apply movement script to player
-	playerLogic->scriptIndexSet.insert(LOGIC_ENUM::PLAYER_MOVEMENT);
+	
 	background.Init();
 }
 
@@ -454,7 +456,7 @@ void OpenGLApplication::OpenGLUpdate() {
 		else {
 			physicsSys->SetCurrentRotationSpeed(0, 0);
 		}
-
+		
 		if (keyStates[GLFW_KEY_S]) {
 			/*PhysicsBody* playerBody = GET_COMPONENT(objectFactory->GetGameObjectByID(0), PhysicsBody, ComponentType::PHYSICS_BODY);
 			playerBody->forceManager.SetActive(true, 0);

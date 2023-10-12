@@ -11,7 +11,6 @@
  *		  and rotation.
  *************************************************************************/
 #include "Physics.h"
-
 /**************************************************************************
 * @brief Default constructor for PhysicsBody component
 *************************************************************************/
@@ -87,15 +86,24 @@ PhysicsBody* PhysicsBody::Clone() const{
 	return newBody;
 }
 
+ForceManager::ForceManager() {
+	forceVec.push_back(new LinearForce(0.5, false, 50));
+	forceVec.push_back(new LinearForce(0.5, false, 50));
+}
+void ForceManager::SetMagnitude(float new_mag, FORCE_INDEX index) {
+
+	forceVec[index]->magnitude = new_mag;
+}
 void ForceManager::Update(float dt) {
+	int currIndex = 0;
 	for (LinearForce* force : forceVec) {
 		if (force->isActive) {
 			force->age += dt;
 			if (force->age >= force->lifetime) {
-				force->isActive = false;
-				force->age = 0.0f;
+				DeactivateForce(currIndex);
 			}
 		}
+		currIndex++;
 	}
 }
 
@@ -105,12 +113,23 @@ void ForceManager::AddForce(LinearForce* force) {
 void ForceManager::DeactivateForce(int index) {
 	forceVec[index]->age = 0.0f;
 	forceVec[index]->isActive = false;
+	forceVec[index]->direction = Vec2(0, 0);
+	forceVec[index]->magnitude = 0;
 }
 void ForceManager::SetActive(bool activeFlag, int index) {
 	forceVec[index]->isActive = activeFlag;
 }
 void ForceManager::SetDirection(Vec2 dir, int index) {
 	forceVec[index]->direction = dir;
+}
+void ForceManager::ApplyToForce(Vec2 direction, float magnitude, float lifetime, int index) {
+	if (index < forceVec.size()) {
+		Vec2 combinedForce = (forceVec[index]->direction * forceVec[index]->magnitude) + (direction * magnitude);
+		forceVec[index]->magnitude = Vector2DLength(combinedForce);
+		Vector2DNormalize(forceVec[index]->direction, combinedForce);
+		forceVec[index]->lifetime = lifetime;
+		forceVec[index]->isActive = true;
+	}
 }
 Vec2 ForceManager::CalculateResultantForce() {
 	Vec2 summedForce = Vec2(0.0f, 0.0f);

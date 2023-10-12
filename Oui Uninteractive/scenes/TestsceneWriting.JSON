@@ -6,15 +6,15 @@
             "Type": "Player",
             "Components": {
                 "PhysicsBody": {
-                    "VelocityX": -13.886710166931152,
-                    "VelocityY": -5.817381858825684,
+                    "VelocityX": -3.531178200297528e-19,
+                    "VelocityY": -6.226850509643555,
                     "RotationSpeed": 200.0,
                     "Speed": 50.0
                 },
                 "Transform": {
-                    "PositionX": -275.4546203613281,
-                    "PositionY": 179.61160278320313,
-                    "Rotation": -8.73240852355957,
+                    "PositionX": -258.95965576171875,
+                    "PositionY": 321.26507568359375,
+                    "Rotation": 253.1717987060547,
                     "Scale": 200.0
                 },
                 "None": {}
@@ -33,7 +33,7 @@
                 "Transform": {
                     "PositionX": 50.0,
                     "PositionY": -200.0,
-                    "Rotation": 326.4585876464844,
+                    "Rotation": 345.5890197753906,
                     "Scale": 130.0
                 }
             }
@@ -51,7 +51,7 @@
                 "Transform": {
                     "PositionX": 200.0,
                     "PositionY": 100.0,
-                    "Rotation": 326.4585876464844,
+                    "Rotation": 345.5890197753906,
                     "Scale": 220.0
                 }
             }
@@ -79,15 +79,15 @@
             "Type": "Player",
             "Components": {
                 "PhysicsBody": {
-                    "VelocityX": -1137.08056640625,
+                    "VelocityX": 7.860132217407227,
                     "VelocityY": 0.0,
                     "RotationSpeed": 200.0,
                     "Speed": 50.0
                 },
                 "Transform": {
-                    "PositionX": -537.41064453125,
+                    "PositionX": -165.0873260498047,
                     "PositionY": 50.0,
-                    "Rotation": 121.4520492553711,
+                    "Rotation": 312.8286437988281,
                     "Scale": 200.0
                 },
                 "None": {},

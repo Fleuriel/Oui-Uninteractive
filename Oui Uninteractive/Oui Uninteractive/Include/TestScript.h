@@ -16,12 +16,14 @@ public:
 		if (tx != nullptr && physBod != nullptr) {
 			
 			if (physBod->forceManager.forceVec.size() >= 1) {
-				physBod->forceManager.SetActive(true, 0);
+				physBod->forceManager.SetActive(true, FORCE_INDEX::EXTERNAL);
 				if (tx->position.x < -300) {
-					physBod->forceManager.SetDirection(Vec2(1.f, 0), 0);
+					physBod->forceManager.SetDirection(Vec2(1.f, 0), FORCE_INDEX::EXTERNAL);
+					physBod->forceManager.SetMagnitude(physBod->speed, FORCE_INDEX::EXTERNAL);
 				}
 				else if (tx->position.x > 300) {
-					physBod->forceManager.SetDirection(Vec2(-1.f, 0), 0);
+					physBod->forceManager.SetDirection(Vec2(-1.f, 0), FORCE_INDEX::EXTERNAL);
+					physBod->forceManager.SetMagnitude(physBod->speed, FORCE_INDEX::EXTERNAL);
 				}	
 			}
 			
@@ -41,22 +43,28 @@ public:
 		Transform* tx = GET_COMPONENT(objectFactory->GetGameObjectByID(gameObjectID), Transform, ComponentType::TRANSFORM);
 		PhysicsBody* physBod = GET_COMPONENT(objectFactory->GetGameObjectByID(gameObjectID), PhysicsBody, ComponentType::PHYSICS_BODY);
 		if (tx != nullptr && physBod != nullptr) {
+			if (keyStates[GLFW_KEY_Z]) {
+				PhysicsBody* playerBody = GET_COMPONENT(objectFactory->GetGameObjectByID(0), PhysicsBody, ComponentType::PHYSICS_BODY);
+				playerBody->forceManager.ApplyToForce(Vec2(0.0f, 0.1f), 20.f, 0.3f, FORCE_INDEX::EXTERNAL);
+			}
 			if (keyStates[GLFW_KEY_S]) {
 				PhysicsBody* playerBody = GET_COMPONENT(objectFactory->GetGameObjectByID(0), PhysicsBody, ComponentType::PHYSICS_BODY);
-				playerBody->forceManager.SetActive(true, 0);
-				playerBody->forceManager.SetDirection(-playerBody->direction, 0);
+				playerBody->forceManager.SetActive(true, FORCE_INDEX::INTERNAL);
+				playerBody->forceManager.SetDirection(-playerBody->direction, FORCE_INDEX::INTERNAL);
+				playerBody->forceManager.SetMagnitude(playerBody->speed, FORCE_INDEX::INTERNAL);
 				//physicsSys->MoveBackwards(0);
 			}
-
+			
 			else if (keyStates[GLFW_KEY_W]) {
 				PhysicsBody* playerBody = GET_COMPONENT(objectFactory->GetGameObjectByID(0), PhysicsBody, ComponentType::PHYSICS_BODY);
-				playerBody->forceManager.SetActive(true, 0);
-				playerBody->forceManager.SetDirection(playerBody->direction, 0);
+				playerBody->forceManager.SetActive(true, FORCE_INDEX::INTERNAL);
+				playerBody->forceManager.SetDirection(playerBody->direction, FORCE_INDEX::INTERNAL);
+				playerBody->forceManager.SetMagnitude(playerBody->speed, FORCE_INDEX::INTERNAL);
 				//physicsSys->MoveForward(0);
 			}
 			else {
 				PhysicsBody* playerBody = GET_COMPONENT(objectFactory->GetGameObjectByID(0), PhysicsBody, ComponentType::PHYSICS_BODY);
-				playerBody->forceManager.DeactivateForce(0);
+				playerBody->forceManager.DeactivateForce(FORCE_INDEX::INTERNAL);
 			}
 		}
 	};
