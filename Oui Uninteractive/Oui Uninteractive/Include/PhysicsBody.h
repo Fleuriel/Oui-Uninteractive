@@ -45,10 +45,11 @@ public:
 	ForceManager();
 	std::vector<LinearForce*> forceVec;
 	void AddForce(LinearForce* newForce);
-	void ApplyToForce(Vec2 direction, float magnitude, float lifetime,int index);
+	void ApplyToForce(Vec2 direction, float magnitude, float lifetime, FORCE_INDEX index);
+	void DeactivateForce(FORCE_INDEX index);
 	void DeactivateForce(int index);
-	void SetActive(bool activeFlag, int index);
-	void SetDirection(Vec2 newDir, int index);
+	void SetActive(bool activeFlag, FORCE_INDEX index);
+	void SetDirection(Vec2 newDir, FORCE_INDEX index);
 	void SetMagnitude(float new_magnitude, FORCE_INDEX index);
 	void Update(float dt);
 	Vec2 CalculateResultantForce();

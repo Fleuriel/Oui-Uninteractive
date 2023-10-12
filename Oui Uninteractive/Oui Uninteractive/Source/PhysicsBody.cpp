@@ -116,13 +116,19 @@ void ForceManager::DeactivateForce(int index) {
 	forceVec[index]->direction = Vec2(0, 0);
 	forceVec[index]->magnitude = 0;
 }
-void ForceManager::SetActive(bool activeFlag, int index) {
+void ForceManager::DeactivateForce(FORCE_INDEX index) {
+	forceVec[index]->age = 0.0f;
+	forceVec[index]->isActive = false;
+	forceVec[index]->direction = Vec2(0, 0);
+	forceVec[index]->magnitude = 0;
+}
+void ForceManager::SetActive(bool activeFlag, FORCE_INDEX index) {
 	forceVec[index]->isActive = activeFlag;
 }
-void ForceManager::SetDirection(Vec2 dir, int index) {
+void ForceManager::SetDirection(Vec2 dir, FORCE_INDEX index) {
 	forceVec[index]->direction = dir;
 }
-void ForceManager::ApplyToForce(Vec2 direction, float magnitude, float lifetime, int index) {
+void ForceManager::ApplyToForce(Vec2 direction, float magnitude, float lifetime, FORCE_INDEX index) {
 	if (index < forceVec.size()) {
 		Vec2 combinedForce = (forceVec[index]->direction * forceVec[index]->magnitude) + (direction * magnitude);
 		forceVec[index]->magnitude = Vector2DLength(combinedForce);
