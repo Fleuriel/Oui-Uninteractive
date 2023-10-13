@@ -67,11 +67,14 @@ void Physics::Update(float dt) {
 		//Direction
 		Vec2 normalizedVel = Vec2(0,0);
 		Vector2DNormalize(normalizedVel, body->velocity);
-		body->acceleration = (body->forceManager.CalculateResultantForce() - (body->frictionForce * normalizedVel)) * body->mass;
+		Vec2 summedForce = body->forceManager.CalculateResultantForce();
+		body->acceleration = (summedForce - (body->frictionForce * normalizedVel)) * body->mass;
 		
 		//Velocity
 		body->velocity = body->velocity + body->acceleration * dt;
-
+		if (Vector2DLength(body->velocity) < 0.5f && Vector2DLength(body->velocity) > -0.5f) {
+			body->velocity = Vec2(0, 0);
+		}
 		
 		//Position
 		body->txPtr->position = body->txPtr->position + body->velocity * dt;
