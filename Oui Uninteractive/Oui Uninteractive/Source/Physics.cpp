@@ -273,6 +273,23 @@ void Physics::CapVelocity(Vec2 originalVelocity, Vec2& bodyVelocity) {
 			bodyVelocity.x = 0;
 		}
 	}
+
+	
+	if (bodyVelocity.x > 3000.f) {
+		bodyVelocity.x = 3000.f;
+	}
+	if (bodyVelocity.x < -3000.f) {
+		bodyVelocity.x = -3000.f;
+	}
+	if (bodyVelocity.y > 3000.f) {
+		bodyVelocity.y = 3000.f;
+	}
+	if (bodyVelocity.y < -3000.f) {
+		bodyVelocity.y = -3000.f;
+	}
+	
+
+
 	if (originalVelocity.y < 0) {
 		if (bodyVelocity.y > 0) {
 			bodyVelocity.y = 0;
