@@ -77,34 +77,12 @@ void Physics::Update(float dt) {
 		
 		body->velocity = body->velocity + body->acceleration * dt;
 
-		if (originalVelocity.x > 0) {
-			if (body->velocity.x  < 0) {
-				body->velocity.x = 0;
-			}
-		}
-		else if (originalVelocity.x < 0) {
-			if (body->velocity.x > 0) {
-				body->velocity.x = 0;
-			}
-		}
-		if (originalVelocity.y < 0) {
-			if (body->velocity.y > 0) {
-				body->velocity.y = 0;
-			}
-		}
-		else if (originalVelocity.y > 0) {
-			if (body->velocity.y < 0) {
-				body->velocity.y = 0;
-			}
-		}
+		CapVelocity(originalVelocity, body->velocity);
+		
 		if (body->GetOwner()->GetGameObjectID() == 0) {
 			std::cout << "velocity: " << body->velocity.x << " : " << body->velocity.y << "\n";
 		}
-		/*
-		if (Vector2DLength(body->velocity) < 0.5f && Vector2DLength(body->velocity) > -0.5f) {
-			body->velocity = Vec2(0, 0);
-		}
-		*/
+		
 		//Position
 		body->txPtr->position = body->txPtr->position + body->velocity * dt;
 		
@@ -283,4 +261,26 @@ Vec2 Physics::AngleToVec(float angle) {
 	//angle should be in radians
 	Vec2 dir = Vec2(-sinf(angle), cosf(angle));
 	return dir;
+}
+void Physics::CapVelocity(Vec2 originalVelocity, Vec2& bodyVelocity) {
+	if (originalVelocity.x > 0) {
+		if (bodyVelocity.x < 0) {
+			bodyVelocity.x = 0;
+		}
+	}
+	else if (originalVelocity.x < 0) {
+		if (bodyVelocity.x > 0) {
+			bodyVelocity.x = 0;
+		}
+	}
+	if (originalVelocity.y < 0) {
+		if (bodyVelocity.y > 0) {
+			bodyVelocity.y = 0;
+		}
+	}
+	else if (originalVelocity.y > 0) {
+		if (bodyVelocity.y < 0) {
+			bodyVelocity.y = 0;
+		}
+	}
 }

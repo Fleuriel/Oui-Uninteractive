@@ -121,6 +121,7 @@ public:
 	* @return double
 	*************************************************************************/
 	Vec2 AngleToVec(float angle);
+	void CapVelocity(Vec2 originalVelocity, Vec2& bodyVelocity);
 	//insert linked list of all physics body components
 	std::map<size_t, PhysicsBody*> bodyList;
 };
