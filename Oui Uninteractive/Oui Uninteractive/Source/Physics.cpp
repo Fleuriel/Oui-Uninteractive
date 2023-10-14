@@ -69,13 +69,42 @@ void Physics::Update(float dt) {
 		Vector2DNormalize(normalizedVel, body->velocity);
 		Vec2 summedForce = body->forceManager.CalculateResultantForce();
 		body->acceleration = (summedForce - (body->frictionForce * normalizedVel)) * body->mass;
-		
+		if (body->GetOwner()->GetGameObjectID() == 0) {
+			std::cout << "Acceleration: " << body->acceleration.x << " : " << body->acceleration.y << "\n";
+		}
 		//Velocity
+		Vec2 originalVelocity = body->velocity;
+		
 		body->velocity = body->velocity + body->acceleration * dt;
+
+		if (originalVelocity.x > 0) {
+			if (body->velocity.x  < 0) {
+				body->velocity.x = 0;
+			}
+		}
+		else if (originalVelocity.x < 0) {
+			if (body->velocity.x > 0) {
+				body->velocity.x = 0;
+			}
+		}
+		if (originalVelocity.y < 0) {
+			if (body->velocity.y > 0) {
+				body->velocity.y = 0;
+			}
+		}
+		else if (originalVelocity.y > 0) {
+			if (body->velocity.y < 0) {
+				body->velocity.y = 0;
+			}
+		}
+		if (body->GetOwner()->GetGameObjectID() == 0) {
+			std::cout << "velocity: " << body->velocity.x << " : " << body->velocity.y << "\n";
+		}
+		/*
 		if (Vector2DLength(body->velocity) < 0.5f && Vector2DLength(body->velocity) > -0.5f) {
 			body->velocity = Vec2(0, 0);
 		}
-		
+		*/
 		//Position
 		body->txPtr->position = body->txPtr->position + body->velocity * dt;
 		

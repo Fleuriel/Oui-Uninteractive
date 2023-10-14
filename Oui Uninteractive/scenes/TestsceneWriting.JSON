@@ -12,9 +12,9 @@
                     "Speed": 50.0
                 },
                 "Transform": {
-                    "PositionX": 261.592041015625,
-                    "PositionY": 269.019775390625,
-                    "Rotation": -103.0590591430664,
+                    "PositionX": -443.9751892089844,
+                    "PositionY": 411.5031433105469,
+                    "Rotation": -94.71867370605469,
                     "Scale": 200.0
                 },
                 "LogicComponent": {}
@@ -25,15 +25,15 @@
             "Type": "Enemy",
             "Components": {
                 "PhysicsBody": {
-                    "VelocityX": -5397.24267578125,
+                    "VelocityX": 3926.787841796875,
                     "VelocityY": 0.0,
                     "RotationSpeed": 20.0,
                     "Speed": 120.0
                 },
                 "Transform": {
-                    "PositionX": -419.3893737792969,
+                    "PositionX": -228.26502990722656,
                     "PositionY": -200.0,
-                    "Rotation": 171.49900817871094,
+                    "Rotation": 312.4520263671875,
                     "Scale": 130.0
                 },
                 "LogicComponent": {}
@@ -52,7 +52,7 @@
                 "Transform": {
                     "PositionX": 200.0,
                     "PositionY": 100.0,
-                    "Rotation": 171.49900817871094,
+                    "Rotation": 312.4520263671875,
                     "Scale": 220.0
                 }
             }
@@ -80,15 +80,15 @@
             "Type": "Enemy",
             "Components": {
                 "PhysicsBody": {
-                    "VelocityX": -5397.24267578125,
+                    "VelocityX": 3926.787841796875,
                     "VelocityY": 0.0,
                     "RotationSpeed": 20.0,
                     "Speed": 120.0
                 },
                 "Transform": {
-                    "PositionX": -419.3893737792969,
+                    "PositionX": -228.26502990722656,
                     "PositionY": 50.0,
-                    "Rotation": 171.49900817871094,
+                    "Rotation": 312.4520263671875,
                     "Scale": 130.0
                 },
                 "LogicComponent": {}
