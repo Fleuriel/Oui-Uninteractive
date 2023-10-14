@@ -69,19 +69,21 @@ void Physics::Update(float dt) {
 		Vector2DNormalize(normalizedVel, body->velocity);
 		Vec2 summedForce = body->forceManager.CalculateResultantForce();
 		body->acceleration = (summedForce - (body->frictionForce * normalizedVel)) * body->mass;
+		/*
 		if (body->GetOwner()->GetGameObjectID() == 0) {
 			std::cout << "Acceleration: " << body->acceleration.x << " : " << body->acceleration.y << "\n";
-		}
+		}*/
 		//Velocity
 		Vec2 originalVelocity = body->velocity;
 		
 		body->velocity = body->velocity + body->acceleration * dt;
 
 		CapVelocity(originalVelocity, body->velocity);
-		
+		/*
 		if (body->GetOwner()->GetGameObjectID() == 0) {
 			std::cout << "velocity: " << body->velocity.x << " : " << body->velocity.y << "\n";
 		}
+		*/
 		
 		//Position
 		body->txPtr->position = body->txPtr->position + body->velocity * dt;
