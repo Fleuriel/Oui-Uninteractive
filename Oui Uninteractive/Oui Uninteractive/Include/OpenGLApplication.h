@@ -21,6 +21,8 @@
 #include <OpenGLShaders.h>
 #include <map>
 #include <OpenGLObjects.h>
+#include <ISystem.h>
+
 
 #define GET_COMPONENT(GameObject, Component, ComponentType) (GameObject->GetComponentType<Component>(ComponentType))
 
@@ -28,7 +30,7 @@ extern GLFWwindow* windowNew;
 extern OpenGLObject Objects;
 extern std::pair<int, int> windowSize;
 
-class OpenGLApplication {
+class OpenGLApplication : public ISystem{
 
 public:
 	// < Window Functions >
@@ -86,7 +88,9 @@ public:
 
 
 
+	void Initialize() override;
 
+	virtual void Update(float dt) override;
 
 
 

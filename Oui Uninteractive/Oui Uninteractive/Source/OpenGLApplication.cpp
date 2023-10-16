@@ -429,7 +429,14 @@ void OpenGLApplication::OpenGLCleanup() {
 }
 
 
+void OpenGLApplication::Initialize() {
+	OpenGLInit();
+}
 
+void OpenGLApplication::Update(float dt)
+{
+	OpenGLUpdate();
+}
 
 
 
