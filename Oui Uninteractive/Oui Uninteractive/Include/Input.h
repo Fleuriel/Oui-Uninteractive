@@ -136,4 +136,6 @@ void UpdateStatesForNextFrame();
  *************************************************************************/
 void WindowCloseCallback(GLFWwindow* window);
 
+void InputSystemUpdate();
+
 #endif // INPUTKEYS_H
