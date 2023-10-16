@@ -24,12 +24,13 @@
 #include <iterator>
 #include <OpenGLShaders.h>
 #include <Vector2D.h>
+#include <ISystem.h>
 
 // External Texture Color
 extern int importTexture, secondTexture, thirdTexture;
 
 
-class OpenGLObject{
+class OpenGLObject : public ISystem{
 public:
 	/**************************************************************************
 	* @brief Constructor and Destructor
@@ -124,7 +125,7 @@ public:
 	* @param  none
 	* @return void
 	*************************************************************************/
-	void Init(); 
+	void Initialize(); 
 	/**************************************************************************
 	* @brief		Updates each OpenGLObject with Movement, Scale rotation.
 	*				Option for rotation has been added.
@@ -136,7 +137,7 @@ public:
 	* @param bool   Boolean for Rotation Enable or Disable
 	* @return void
 	*************************************************************************/
-	void Update(float xSpeed = 0.0f, float ySpeed = 0.0f, float scaleX = 100.0f, float scaleY = 100.0f, float aSpeed = 10.0f, bool enRot = false);
+	virtual void Update(float dt);
 	/**************************************************************************
 	* @brief		Draws a Debug Collision Box (AABB)
 	*

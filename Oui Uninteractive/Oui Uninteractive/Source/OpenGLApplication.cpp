@@ -193,7 +193,7 @@ void OpenGLApplication::OpenGLInit() {
 	const char* glsl_vers = "#version 130";
 
 	// Creates an Object to Initialize it.
-	Objects.Init();
+	Objects.Initialize();
 
 
 	// Initializing ImGui
@@ -555,11 +555,11 @@ void OpenGLApplication::OpenGLUpdate() {
 
 	for (OpenGLObject& obj : objects) {
 		if (obj.TagID == 1)
-			obj.Update(positionX, 300, 100, 100, angle, true);
+			obj.Update(GetDT());
 
 		// Tag ID 2
 		if (obj.TagID == 2) {
-			obj.Update(300, 400, 50, 50);
+			obj.Update(GetDT());
 		}
 	}
 
@@ -588,6 +588,8 @@ void OpenGLApplication::OpenGLCleanup() {
 	OpenGLSetBackgroundColor(0.0f, 0.0f, 0.0f, 0.0f);
 
 }
+
+
 
 
 

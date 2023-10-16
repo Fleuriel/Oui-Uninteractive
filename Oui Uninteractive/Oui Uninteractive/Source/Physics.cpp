@@ -105,7 +105,7 @@ void Physics::Update(float dt) {
 			CollisionStaticDynamicRectRect(*(body->boundingbox), *(body2->boundingbox));
 		}
 		//apply calculations to object
-		body->txPtr->shape->Update(body->txPtr->position.x, body->txPtr->position.y, body->txPtr->scale, body->txPtr->scale, body->txPtr->rotation, true);
+		body->txPtr->shape->Update(GetDT());
 	}
 	std::chrono::high_resolution_clock::time_point timeEnd = std::chrono::high_resolution_clock::now();
 	std::chrono::duration<float, std::milli> duration = timeEnd - timeStart;

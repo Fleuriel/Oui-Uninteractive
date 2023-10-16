@@ -83,6 +83,15 @@ public:
 	* @return void
 	*************************************************************************/
 	static void OpenGLCleanup();
+
+
+
+
+
+
+
+
+
 #ifdef _DEBUG
 	/**************************************************************************
 	* @brief			Test Changing of States in the Game Engine..
