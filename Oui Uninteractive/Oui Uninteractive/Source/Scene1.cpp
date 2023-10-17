@@ -1,4 +1,5 @@
 #include "Scene1.h"
+
 Scene1::Scene1(unsigned int id) : IScene(id) {
 	sceneID = id;
 }
@@ -53,6 +54,9 @@ void Scene1::Initialize() {
 	#endif
 }
 void Scene1::Update(float dt) {
+	if (GET_COMPONENT(objectFactory->GetGameObjectByID(0), Transform, ComponentType::TRANSFORM)->position.x > 1000) {
+		sceneManager->nextSceneID = GameStateList::STATE_LEVEL_TEST;
+	}
 	//scene transitions
 }
 void Scene1::Draw() {
@@ -60,6 +64,7 @@ void Scene1::Draw() {
 }
 void Scene1::Free() {
 	//free object memory
+	objectFactory->DestroyAllObjects();
 }
 void Scene1::Unload() {
 	//unload objects

@@ -3,6 +3,8 @@
 #include <iostream>
 #include "ObjectFactory.h"
 #include "Transform.h"
+#include "SceneManager.h"
+#include <Input.h>
 #ifndef SCENE1_H
 #define SCENE1_H
 class Scene1 : public IScene {

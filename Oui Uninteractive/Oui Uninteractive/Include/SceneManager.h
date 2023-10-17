@@ -2,6 +2,7 @@
 #include "ISystem.h"
 #include "IScene.h"
 #include "Scene1.h"
+#include "Scene2.h"
 #include <map>
 
 #ifndef SCENEMANAGER_H
@@ -9,8 +10,7 @@
 // Game State List Enumeration
 enum GameStateList
 {
-	STATE_MENU_TEST = 0,
-	STATE_GRAPHICS_TEST,
+	STATE_GRAPHICS_TEST = 0,
 	STATE_LEVEL_TEST,
 	STATE_GAME_TEST,
 	STATE_RESTART,
@@ -29,6 +29,9 @@ public:
 	void Load();
 	void Initialize();
 	virtual void Update(float dt) override;
+	void Draw();
+	void Free();
+	void Unload();
 	~SceneManager();
 
 	void InitScene();

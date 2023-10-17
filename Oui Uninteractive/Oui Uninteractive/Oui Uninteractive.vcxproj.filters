@@ -200,6 +200,7 @@
       <Filter>Systems</Filter>
     </ClCompile>
     <ClCompile Include="Source\Scene1.cpp" />
+    <ClCompile Include="Source\Scene2.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Include\Matrix3x3.h">
@@ -314,5 +315,6 @@
     </ClInclude>
     <ClInclude Include="Include\IScene.h" />
     <ClInclude Include="Include\Scene1.h" />
+    <ClInclude Include="Include\Scene2.h" />
   </ItemGroup>
 </Project>

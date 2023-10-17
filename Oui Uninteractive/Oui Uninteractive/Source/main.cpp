@@ -58,7 +58,7 @@ int main(){
 	while (!glfwWindowShouldClose(windowNew)){
 		// Changing in CurrentGameState would make it TRUE for this,
 		// so it will update the manager, to change the state.
-		if (sceneManager->currSceneID != sceneManager->nextSceneID){
+		if (sceneManager->currSceneID != GameStateList::STATE_RESTART){
 			//GameStateManagerUpdate();
 			sceneManager->Load();
 		}
@@ -97,7 +97,7 @@ int main(){
 
 		// Before anything, cleanup as it is out of the state loop
 	//	GameCleanup();
-		//sceneManager.Free
+		sceneManager->Free();
 		// QUIT [ After cleanup ]
 		if (CurrentGameState == STATE_QUIT)
 			break;
