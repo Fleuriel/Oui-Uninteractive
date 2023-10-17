@@ -30,7 +30,7 @@
 extern int importTexture, secondTexture, thirdTexture;
 
 
-class OpenGLObject : public ISystem{
+class OpenGLObject{
 public:
 	/**************************************************************************
 	* @brief Constructor and Destructor
@@ -137,7 +137,7 @@ public:
 	* @param bool   Boolean for Rotation Enable or Disable
 	* @return void
 	*************************************************************************/
-	virtual void Update(float dt);
+	virtual void Update(float newX, float newY, float scaleX, float scaleY, float newAngle, bool enRot);
 	/**************************************************************************
 	* @brief		Draws a Debug Collision Box (AABB)
 	*

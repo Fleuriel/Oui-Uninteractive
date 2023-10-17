@@ -394,11 +394,11 @@ void OpenGLApplication::OpenGLUpdate() {
 
 	for (OpenGLObject& obj : objects) {
 		if (obj.TagID == 1)
-			obj.Update(GetDT());
+			obj.Update(positionX, 300, 100, 100, angle, true);
 
 		// Tag ID 2
 		if (obj.TagID == 2) {
-			obj.Update(GetDT());
+			obj.Update(300, 400, 50, 50, angle, false);
 		}
 	}
 

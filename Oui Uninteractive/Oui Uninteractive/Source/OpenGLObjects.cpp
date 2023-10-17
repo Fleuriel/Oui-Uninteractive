@@ -278,28 +278,28 @@ OpenGLObject::OpenGLModel OpenGLObject::Box_Model(glm::vec3 color){
 * @param bool   Boolean for Rotation Enable or Disable
 * @return void
 *************************************************************************/
-void OpenGLObject::Update(float dt){
+void OpenGLObject::Update(float newX, float newY, float scaleX, float scaleY, float newAngle, bool enRot){
 	//std::cout << "Object Update\n";
 	// Compute the angular displacement in radians
 
 	
 	
 	//Scale the model based on float variable.
- 	// scaleModel = glm::vec2(scaleX, scaleY);
-	scaleModel = glm::vec2(100, 100);
+ 	scaleModel = glm::vec2(scaleX, scaleY);
+	//scaleModel = glm::vec2(100, 100);
 
 	// Increase the position based on the xSpeed of the user.
 	// i.e if the user acceleration is 0, then speed increase
 	// of xAccel is 0, and position would not change.
-	// position = glm::vec2(newX, newY);
-	position = glm::vec2(0, 0);
+	position = glm::vec2(newX, newY);
+	//position = glm::vec2(0, 0);
 
 	// Boolean from the user to set if rotation is yes or no.
 
 
-	//if (enRot == true)	{
-	//	angleDisplacment = newAngle;
-	//}
+	if (enRot == true)	{
+		angleDisplacment = newAngle;
+	}
 
 
 
