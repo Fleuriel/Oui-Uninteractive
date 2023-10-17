@@ -50,7 +50,7 @@ int main(){
 	// Initialize the GameStateManager
 	// Initialize Game State, Input here.
 	GameStateManagerInit(STATE_GRAPHICS_TEST);
-	
+	sceneManager->Load();
 	// set previousTime as NOW. first, then will be able to calculate.
 	previousTime = std::chrono::high_resolution_clock::now();
 
@@ -60,17 +60,18 @@ int main(){
 		// so it will update the manager, to change the state.
 		if (CurrentGameState != NextGameState){
 			GameStateManagerUpdate();
+			sceneManager->Load();
 		}
 		// else initialize all states to be the same.
 		else		{
 			NextGameState = CurrentGameState = PreviousGameState;
 		}
 
-
+		sceneManager->InitScene();
 		// Happen ONLY once, 
 		// ONLY if changing of states
 	//	GameInit();
-
+		
 		while (CurrentGameState == NextGameState){
 			// Acquire Time Updates, setup for deltaTime
 			// For FPS, DeltaTime and Runtime
