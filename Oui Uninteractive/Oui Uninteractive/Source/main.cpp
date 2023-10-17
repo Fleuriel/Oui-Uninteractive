@@ -17,7 +17,7 @@
 #include "ObjectFactory.h"
 #include "Logic.h"
 #include "Sound.h"
-
+#include "TransformSystem.h"
 
 void TimeUpdate();
 
@@ -37,6 +37,7 @@ int main(){
 	sysManager->AddSystem(new LogicSystem());
 	sysManager->AddSystem(new ObjectFactory());
 	sysManager->AddSystem(new Physics());
+	sysManager->AddSystem(new TransformSystem());
 	sysManager->AddSystem(new SoundManager());
 	sysManager->Initialize();
 	// Set callback for window close button (top right button).

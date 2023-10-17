@@ -54,6 +54,7 @@
     <ClCompile Include="Source\Sound.cpp" />
     <ClCompile Include="Source\SystemManager.cpp" />
     <ClCompile Include="Source\Transform.cpp" />
+    <ClCompile Include="Source\TransformSystem.cpp" />
     <ClCompile Include="Source\Vector2D.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -92,6 +93,7 @@
     <ClInclude Include="Include\SystemManager.h" />
     <ClInclude Include="Include\TestScript.h" />
     <ClInclude Include="Include\Transform.h" />
+    <ClInclude Include="Include\TransformSystem.h" />
     <ClInclude Include="Include\Vector2D.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
