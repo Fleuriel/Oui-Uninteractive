@@ -51,6 +51,7 @@
     <ClCompile Include="Source\Physics.cpp" />
     <ClCompile Include="Source\PhysicsBody.cpp" />
     <ClCompile Include="Source\RandomUtilities.cpp" />
+    <ClCompile Include="Source\SceneManager.cpp" />
     <ClCompile Include="Source\Sound.cpp" />
     <ClCompile Include="Source\SystemManager.cpp" />
     <ClCompile Include="Source\Transform.cpp" />
@@ -89,6 +90,7 @@
     <ClInclude Include="Include\PhysicsBody.h" />
     <ClInclude Include="Include\PhysicsHeaders.h" />
     <ClInclude Include="Include\RandomUtilities.h" />
+    <ClInclude Include="Include\SceneManager.h" />
     <ClInclude Include="Include\Sound.h" />
     <ClInclude Include="Include\SystemManager.h" />
     <ClInclude Include="Include\TestScript.h" />

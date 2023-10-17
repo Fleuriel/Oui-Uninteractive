@@ -18,6 +18,7 @@
 #include "Logic.h"
 #include "Sound.h"
 #include "TransformSystem.h"
+#include "SceneManager.h"
 
 void TimeUpdate();
 
@@ -30,15 +31,16 @@ int main(){
 	if (!glfwInit())
 		return -1;
 
-	CreateWindow();
+	//CreateWindow();
 	sysManager = new SystemManager();
 	// Have Errors for now. need fix
-	//sysManager->AddSystem(new OpenGLApplication());
+	sysManager->AddSystem(new OpenGLApplication());
 	sysManager->AddSystem(new LogicSystem());
 	sysManager->AddSystem(new ObjectFactory());
 	sysManager->AddSystem(new Physics());
 	sysManager->AddSystem(new TransformSystem());
 	sysManager->AddSystem(new SoundManager());
+	sysManager->AddSystem(new SceneManager());
 	sysManager->Initialize();
 	// Set callback for window close button (top right button).
 	glfwSetWindowCloseCallback(windowNew, WindowCloseCallback);
@@ -67,7 +69,7 @@ int main(){
 
 		// Happen ONLY once, 
 		// ONLY if changing of states
-		GameInit();
+	//	GameInit();
 
 		while (CurrentGameState == NextGameState){
 			// Acquire Time Updates, setup for deltaTime
@@ -80,7 +82,7 @@ int main(){
 			sysManager->UpdateSystems(static_cast<float>(GetDT()));
 
 			// Update the Game Loop, based on the currentGameState
-			GameUpdate();
+			//GameUpdate();
 			
 
 			// Swap Buffers with the window, similar to GOL in Y1T1 [OpenGL Function]
@@ -93,7 +95,7 @@ int main(){
 		}
 
 		// Before anything, cleanup as it is out of the state loop
-		GameCleanup();
+	//	GameCleanup();
 
 		// QUIT [ After cleanup ]
 		if (CurrentGameState == STATE_QUIT)

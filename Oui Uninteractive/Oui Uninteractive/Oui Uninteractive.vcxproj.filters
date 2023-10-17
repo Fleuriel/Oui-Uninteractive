@@ -196,6 +196,9 @@
     <ClCompile Include="Source\TransformSystem.cpp">
       <Filter>Systems</Filter>
     </ClCompile>
+    <ClCompile Include="Source\SceneManager.cpp">
+      <Filter>Systems</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Include\Matrix3x3.h">
@@ -303,6 +306,9 @@
     <ClInclude Include="Include\IScript.h" />
     <ClInclude Include="Include\TestScript.h" />
     <ClInclude Include="Include\TransformSystem.h">
+      <Filter>Systems</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\SceneManager.h">
       <Filter>Systems</Filter>
     </ClInclude>
   </ItemGroup>
