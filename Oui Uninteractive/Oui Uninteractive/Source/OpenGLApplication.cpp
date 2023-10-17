@@ -21,7 +21,7 @@
 #include <Input.h>
 #include <RandomUtilities.h>
 #include <glm/gtc/matrix_transform.hpp>
-#include <GameStateManager.h>
+#include "SceneManager.h"
 #include <Editor.h>	
 #include <Mapping.h>
 #include <ObjectFactory.h>

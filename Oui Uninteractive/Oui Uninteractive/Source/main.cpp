@@ -49,8 +49,8 @@ int main(){
 	glfwSetFramebufferSizeCallback(windowNew, OpenGLApplication::OpenGLWindowResizeCallback);
 	// Initialize the GameStateManager
 	// Initialize Game State, Input here.
-	GameStateManagerInit(STATE_GRAPHICS_TEST);
-	sceneManager->Load();
+	//GameStateManagerInit(STATE_GRAPHICS_TEST);
+	
 	// set previousTime as NOW. first, then will be able to calculate.
 	previousTime = std::chrono::high_resolution_clock::now();
 
@@ -58,13 +58,13 @@ int main(){
 	while (!glfwWindowShouldClose(windowNew)){
 		// Changing in CurrentGameState would make it TRUE for this,
 		// so it will update the manager, to change the state.
-		if (CurrentGameState != NextGameState){
-			GameStateManagerUpdate();
+		if (sceneManager->currSceneID != sceneManager->nextSceneID){
+			//GameStateManagerUpdate();
 			sceneManager->Load();
 		}
 		// else initialize all states to be the same.
 		else		{
-			NextGameState = CurrentGameState = PreviousGameState;
+			sceneManager->nextSceneID = sceneManager->currSceneID = sceneManager->prevSceneID;
 		}
 
 		sceneManager->InitScene();
@@ -72,7 +72,7 @@ int main(){
 		// ONLY if changing of states
 	//	GameInit();
 		
-		while (CurrentGameState == NextGameState){
+		while (sceneManager->currSceneID == sceneManager->nextSceneID){
 			// Acquire Time Updates, setup for deltaTime
 			// For FPS, DeltaTime and Runtime
 			TimeUpdate();
@@ -91,25 +91,22 @@ int main(){
 
 
 			// At the end, if check the state is quite else go away.
-			if (CurrentGameState == STATE_QUIT)
+			if (sceneManager->currSceneID == STATE_QUIT)
 				break;
 		}
 
 		// Before anything, cleanup as it is out of the state loop
 	//	GameCleanup();
-
+		//sceneManager.Free
 		// QUIT [ After cleanup ]
 		if (CurrentGameState == STATE_QUIT)
 			break;
 
 		std::cout << "State is NOT Quit\n";
 
-		GameStateManagerUpdate();
-
-
 		// Set the states.
-		PreviousGameState = CurrentGameState;
-		CurrentGameState = NextGameState;
+		sceneManager->prevSceneID = sceneManager->currSceneID;
+		sceneManager->currSceneID = sceneManager->nextSceneID;
 	}
 
 
