@@ -311,5 +311,7 @@
     <ClInclude Include="Include\SceneManager.h">
       <Filter>Systems</Filter>
     </ClInclude>
+    <ClInclude Include="IScene.h" />
+    <ClInclude Include="Scene1.h" />
   </ItemGroup>
 </Project>

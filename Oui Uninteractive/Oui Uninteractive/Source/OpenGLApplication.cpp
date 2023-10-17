@@ -383,7 +383,9 @@ void OpenGLApplication::Update(float dt)
 {
 	OpenGLUpdate();
 }
-
+OpenGLApplication::~OpenGLApplication() {
+	OpenGLCleanup();
+}
 
 
 /**************************************************************************
