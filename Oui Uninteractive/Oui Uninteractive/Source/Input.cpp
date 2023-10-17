@@ -49,7 +49,14 @@ extern ParticleSystem particleSystem;
 
 
 #define UNREFERENCED_PARAMETER(P)(P)
-
+bool GetKeyInput(int glfwKey) {
+	if (keyStates[glfwKey]) {
+		return true;
+	}
+	else {
+		return false;
+	}
+}
 /**************************************************************************
  * @brief Callback function for handling keyboard input in a GLFW window.
  * 
