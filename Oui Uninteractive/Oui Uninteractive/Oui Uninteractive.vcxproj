@@ -61,7 +61,6 @@
     <ClInclude Include="Include\AI.h" />
     <ClInclude Include="Include\AssetManager.h" />
     <ClInclude Include="Include\Background.h" />
-    <ClInclude Include="Include\IBroadcaster.h" />
     <ClInclude Include="Include\Collision.h" />
     <ClInclude Include="Include\ComponentFactory.h" />
     <ClInclude Include="Include\ComponentType.h" />
@@ -80,7 +79,6 @@
     <ClInclude Include="Include\ISystem.h" />
     <ClInclude Include="Include\Matrix3x3.h" />
     <ClInclude Include="Include\ObjectFactory.h" />
-    <ClInclude Include="Include\IObserver.h" />
     <ClInclude Include="Include\OpenGLObjects.h" />
     <ClInclude Include="Include\OpenGLShaders.h" />
     <ClInclude Include="Include\OpenGLApplication.h" />

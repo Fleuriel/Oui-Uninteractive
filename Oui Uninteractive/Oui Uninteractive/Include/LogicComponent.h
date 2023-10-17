@@ -12,4 +12,10 @@ public:
 	~LogicComponent() ;
 	void SetLogicIndex(const unsigned int & newLogicIndex);
 	unsigned int GetLogicIndex();
+
+	/*----------TESTING MESSAGING SYSTEM----------*/
+	virtual void RegisterObserver(IObserver* observer);
+	virtual void UnregisterObserver(IObserver* observer);
+	virtual void NotifyObservers(IMessage* message);
+	/*----------TESTING MESSAGING SYSTEM----------*/
 };	

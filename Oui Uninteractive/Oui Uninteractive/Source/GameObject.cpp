@@ -51,6 +51,9 @@ void GameObject::Initialize() {
 	for (size_t i{}; i < componentList.size(); ++i) {
 		componentList[i]->base = this;
 		componentList[i]->Initialize();
+
+		// Test messaging
+		//componentList[i]->RegisterObserver();
 	}
 	std::cout << "Initialized " << gameObjectName << std::endl;  // Debugging
 }

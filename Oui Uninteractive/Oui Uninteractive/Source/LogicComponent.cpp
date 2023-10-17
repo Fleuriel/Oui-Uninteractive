@@ -48,3 +48,17 @@ LogicComponent* LogicComponent::Clone() const {
 unsigned int LogicComponent::GetLogicIndex() {
 	return logicIndex;
 }
+
+/*----------TESTING MESSAGING SYSTEM----------*/
+void LogicComponent::RegisterObserver(IObserver* observer) {
+
+}
+
+void LogicComponent::UnregisterObserver(IObserver* observer) {
+
+}
+
+void LogicComponent::NotifyObservers(IMessage* message) {
+
+}
+/*----------TESTING MESSAGING SYSTEM----------*/

@@ -30,6 +30,8 @@ public:
 	virtual ~IMessage() {}
 };
 
+class IObserver;
+
 class IBroadcaster {
 private:
 	std::string message;
@@ -41,10 +43,11 @@ public:
 	IBroadcaster() {}
 	~IBroadcaster() {}
 
-	void RegisterObserver(IObserver* observer);
-	void SendToObservers();
-	void UnregisterObserver();
-	void ProcessMessage();
+	void RegisterObserver(IObserver* observer) {}
+	void UnregisterObserver(IObserver* observer) {}
+	void NotifyObservers(IMessage* message) {}
+
+	void ProcessMessage(IMessage* message) {}
 };
 
 class IObserver {
@@ -55,7 +58,7 @@ public:
 	IObserver() {}
 	~IObserver() {}
 
-	void HandleMessage();
+	void HandleMessage() {}
 };
 
 #endif
