@@ -51,9 +51,12 @@
     <ClCompile Include="Source\Physics.cpp" />
     <ClCompile Include="Source\PhysicsBody.cpp" />
     <ClCompile Include="Source\RandomUtilities.cpp" />
+    <ClCompile Include="Source\Scene1.cpp" />
+    <ClCompile Include="Source\SceneManager.cpp" />
     <ClCompile Include="Source\Sound.cpp" />
     <ClCompile Include="Source\SystemManager.cpp" />
     <ClCompile Include="Source\Transform.cpp" />
+    <ClCompile Include="Source\TransformSystem.cpp" />
     <ClCompile Include="Source\Vector2D.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -71,6 +74,7 @@
     <ClInclude Include="Include\GameStateManager.h" />
     <ClInclude Include="Include\Global.h" />
     <ClInclude Include="Include\IComponent.h" />
+    <ClInclude Include="Include\IScene.h" />
     <ClInclude Include="Include\IScript.h" />
     <ClInclude Include="Include\JsonSerializer.h" />
     <ClInclude Include="Include\Logic.h" />
@@ -88,10 +92,13 @@
     <ClInclude Include="Include\PhysicsBody.h" />
     <ClInclude Include="Include\PhysicsHeaders.h" />
     <ClInclude Include="Include\RandomUtilities.h" />
+    <ClInclude Include="Include\Scene1.h" />
+    <ClInclude Include="Include\SceneManager.h" />
     <ClInclude Include="Include\Sound.h" />
     <ClInclude Include="Include\SystemManager.h" />
     <ClInclude Include="Include\TestScript.h" />
     <ClInclude Include="Include\Transform.h" />
+    <ClInclude Include="Include\TransformSystem.h" />
     <ClInclude Include="Include\Vector2D.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

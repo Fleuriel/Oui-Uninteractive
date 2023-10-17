@@ -125,7 +125,7 @@ public:
 	* @brief Constructor and Destructor
 	*************************************************************************/
 	OpenGLApplication() {};
-	~OpenGLApplication() {};
+	~OpenGLApplication();
 };
 
 #endif // OPENGL_APPLICATION_H

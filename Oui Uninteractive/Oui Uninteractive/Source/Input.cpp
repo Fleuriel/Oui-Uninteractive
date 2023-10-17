@@ -18,7 +18,7 @@
 #include <GLFW/glfw3.h>
 #include <Input.h>
 #include <iostream>
-#include <GameStateManager.h>
+#include "SceneManager.h"
 #include <array>
 #include <functional>
 #include <Physics.h>
