@@ -63,7 +63,6 @@ void Scene1::Update(float dt) {
 	//scene transitions
 }
 void Scene1::Draw() {
-
 }
 void Scene1::Free() {
 	//free object memory

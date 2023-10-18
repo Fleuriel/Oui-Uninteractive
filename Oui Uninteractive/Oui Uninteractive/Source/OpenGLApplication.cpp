@@ -352,7 +352,6 @@ void OpenGLApplication::OpenGLUpdate() {
 		if (gObj.second->Has(ComponentType::TRANSFORM) != -1) {
 			GET_COMPONENT(gObj.second, Transform, ComponentType::TRANSFORM)->shape->Draw();
 		}
-
 	}
 
 	myImGui.Draw();
