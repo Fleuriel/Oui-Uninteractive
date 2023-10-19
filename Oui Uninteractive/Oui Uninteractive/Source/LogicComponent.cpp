@@ -51,14 +51,14 @@ unsigned int LogicComponent::GetLogicIndex() {
 
 /*----------TESTING MESSAGING SYSTEM----------*/
 void LogicComponent::RegisterObserver(IObserver* observer) {
-
+	observer = nullptr;
 }
 
 void LogicComponent::UnregisterObserver(IObserver* observer) {
-
+	observer = nullptr;
 }
 
-void LogicComponent::NotifyObservers(IMessage* message) {
-
+void LogicComponent::NotifyObservers(IMessage* msg) {
+	msg = nullptr;
 }
 /*----------TESTING MESSAGING SYSTEM----------*/

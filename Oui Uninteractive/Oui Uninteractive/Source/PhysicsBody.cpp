@@ -89,15 +89,15 @@ PhysicsBody* PhysicsBody::Clone() const{
 
 /*----------TESTING MESSAGING SYSTEM----------*/
 void PhysicsBody::RegisterObserver(IObserver* observer) {
-
+	observer = nullptr;
 }
 
 void PhysicsBody::UnregisterObserver(IObserver* observer) {
-
+	observer = nullptr;
 }
 
-void PhysicsBody::NotifyObservers(IMessage* message) {
-	
+void PhysicsBody::NotifyObservers(IMessage* msg) {
+	msg = nullptr;
 }
 /*----------TESTING MESSAGING SYSTEM----------*/
 

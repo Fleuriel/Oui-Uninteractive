@@ -106,7 +106,7 @@ public:
 	/*----------TESTING MESSAGING SYSTEM----------*/
 	virtual void RegisterObserver(IObserver* observer);
 	virtual void UnregisterObserver(IObserver* observer);
-	virtual void NotifyObservers(IMessage* message);
+	virtual void NotifyObservers(IMessage* msg);
 	/*----------TESTING MESSAGING SYSTEM----------*/
 
 	//Member Variables
