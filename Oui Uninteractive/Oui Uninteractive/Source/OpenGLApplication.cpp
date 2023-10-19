@@ -232,7 +232,8 @@ void OpenGLApplication::OpenGLInit() {
 * @return void
 *************************************************************************/
 void OpenGLApplication::OpenGLUpdate() {
-
+	// Start time profiling for grpahics system
+	//TimeProfiler profiler(Editor::timeRecorder.graphicsTime);
 	// End the Game.
 	if (keyStates[GLFW_KEY_ESCAPE]) {
 		// set the window to CLOSE.

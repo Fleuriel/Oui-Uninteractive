@@ -119,8 +119,8 @@ void Particle::Draw() {
  * on each of them to modify their properties.
  *************************************************************************/
 void ParticleSystem::Update() {
-    // Record the starting time for performance measurement.
-    std::chrono::high_resolution_clock::time_point timeStart = std::chrono::high_resolution_clock::now();
+    // Start time profiling for particle system
+    TimeProfiler profiler(Editor::timeRecorder.particlesTime);
     // Iterate through the particles
     for (size_t i = 0; i<particles.size();++i){
         // Print debug information about the current particle's position.
@@ -128,11 +128,6 @@ void ParticleSystem::Update() {
         // Update the current particle's state.
         particles[i].Update();
     }
-    // Record the ending time and calculate the duration of the update operation.
-    std::chrono::high_resolution_clock::time_point timeEnd = std::chrono::high_resolution_clock::now();
-    std::chrono::duration<float, std::milli> duration = timeEnd - timeStart;
-    // Update the time recorded for particle updates in the performance recorder.
-    Editor::timeRecorder.particlesTime = duration.count();
 }
 
 /*************************************************************************
