@@ -72,6 +72,8 @@ float angle;
 
 bool togglePolygonMode = false;
 // For Input
+extern bool capsLockReleased;
+extern bool capsLockOn;
 extern float mouse_scroll_total_Y_offset;
 extern int lastkeyedcommand;
 
@@ -304,7 +306,85 @@ void OpenGLApplication::OpenGLUpdate() {
 		CurrentGameState = STATE_LEVEL_TEST;
 #endif
 
-	InputSystemUpdate();
+	bool ctrlKeyPressed = (keyStates[GLFW_KEY_RIGHT_CONTROL] || keyStates[GLFW_KEY_LEFT_CONTROL]);
+	bool shiftKeyPressed = (keyStates[GLFW_KEY_RIGHT_SHIFT] || keyStates[GLFW_KEY_LEFT_SHIFT]);
+
+	if (ctrlKeyPressed) {
+#ifdef _DEBUG
+		std::cout << "CONTROL ON\n";
+#endif
+	}
+
+	if (shiftKeyPressed) {
+#ifdef _DEBUG
+		std::cout << "SHIFT ON\n";
+#endif
+	}
+
+	if (keyStates[GLFW_KEY_CAPS_LOCK]) {
+		if (keyStates[GLFW_KEY_CAPS_LOCK] == 1) {
+			capsLockOn = !capsLockOn;
+		}
+	}
+
+	if (capsLockOn) {
+#ifdef _DEBUG
+		std::cout << "CAPS LOCK ON\n";
+#endif
+	}
+
+	if (shiftKeyPressed != capsLockOn) {
+#ifdef _DEBUG
+		std::cout << "BIG LETTERS\n";
+#endif
+	}
+
+	if (keyStates[GLFW_KEY_A]) {
+		physicsSys->SetCurrentRotationSpeed(GET_COMPONENT(objectFactory->GetGameObjectByID(0), PhysicsBody, ComponentType::PHYSICS_BODY)->rotationSpeed, 0);
+	}
+
+	if (keyStates[GLFW_KEY_D]) {
+		physicsSys->SetCurrentRotationSpeed(-(GET_COMPONENT(objectFactory->GetGameObjectByID(0), PhysicsBody, ComponentType::PHYSICS_BODY)->rotationSpeed), 0);
+	}
+
+	if ((keyStates[GLFW_KEY_A] && keyStates[GLFW_KEY_D]) || (!keyStates[GLFW_KEY_A] && !keyStates[GLFW_KEY_D])) {
+		physicsSys->SetCurrentRotationSpeed(0, 0);
+	}
+
+	// Create new Particle of Size 15000,15000 to test if it spawns.
+	if (keyStates[GLFW_KEY_H] == 1) {
+		Particle newparticle;
+
+		newparticle.Init(0, 0, 100, 100, 0, 0);
+		particleSystem.particles.emplace_back(newparticle);
+		//std::cout << "R : " << newparticle.object.color.r << "\nG : " << newparticle.object.color.g << "\nB : " << newparticle.object.color.b << "\n";
+	}
+
+	if (mouseButtonStates[GLFW_MOUSE_BUTTON_LEFT]) {
+#ifdef _DEBUG
+		std::cout << "LCLICK\n";
+#endif
+	}
+	if (mouseButtonStates[GLFW_MOUSE_BUTTON_RIGHT]) {
+#ifdef _DEBUG
+		std::cout << "RCLICK\n";
+#endif
+	}
+
+	if (mouseScrollState == 1) {
+#ifdef _DEBUG
+		std::cout << "SCROLL UP\n";
+		std::cout << "Total Scroll Y Offset:" << mouse_scroll_total_Y_offset << "\n";
+#endif
+	}
+	if (mouseScrollState == -1) {
+#ifdef _DEBUG
+		std::cout << "SCROLL DOWN\n";
+		std::cout << "Total Scroll Y Offset:" << mouse_scroll_total_Y_offset << "\n";
+#endif
+	}
+
+
 	UpdateStatesForNextFrame();
 
 
