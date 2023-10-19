@@ -43,6 +43,19 @@ public:
 	static void HelpMarker(std::string desc);
 };
 
+class TimeProfiler {
+public:
+	TimeProfiler(float& recorder) : tStart(std::chrono::high_resolution_clock::now()), tRecorder(recorder) {}
+	~TimeProfiler() {
+		auto tEnd = std::chrono::high_resolution_clock::now();
+		std::chrono::duration<float, std::milli> duration = tEnd - tStart;
+		tRecorder = duration.count();
+	}
+private:
+	std::chrono::high_resolution_clock::time_point tStart;
+	float& tRecorder;
+};
+
 
 class Editor {
 public:
