@@ -28,6 +28,7 @@
     <ClCompile Include="..\lib\imgui-docking\implot.cpp" />
     <ClCompile Include="..\lib\imgui-docking\implot_items.cpp" />
     <ClCompile Include="Source\AI.cpp" />
+    <ClCompile Include="Source\Animation.cpp" />
     <ClCompile Include="Source\AssetManager.cpp" />
     <ClCompile Include="Source\Background.cpp" />
     <ClCompile Include="Source\Collision.cpp" />
@@ -63,6 +64,7 @@
   <ItemGroup>
     <ClInclude Include="..\lib\stb-master\stb_image.h" />
     <ClInclude Include="Include\AI.h" />
+    <ClInclude Include="Include\Animation.h" />
     <ClInclude Include="Include\AssetManager.h" />
     <ClInclude Include="Include\Background.h" />
     <ClInclude Include="Include\Collision.h" />

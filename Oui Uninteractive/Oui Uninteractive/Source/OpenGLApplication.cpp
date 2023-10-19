@@ -361,6 +361,12 @@ void OpenGLApplication::OpenGLUpdate() {
 		//std::cout << "R : " << newparticle.object.color.r << "\nG : " << newparticle.object.color.g << "\nB : " << newparticle.object.color.b << "\n";
 	}
 
+	if (keyStates[GLFW_KEY_L]) {
+		for (size_t i = 0; i < particleSystem.particles.size(); ++i) {
+			particleSystem.particles[i].~Particle();
+		}
+	}
+
 	if (mouseButtonStates[GLFW_MOUSE_BUTTON_LEFT]) {
 #ifdef _DEBUG
 		std::cout << "LCLICK\n";

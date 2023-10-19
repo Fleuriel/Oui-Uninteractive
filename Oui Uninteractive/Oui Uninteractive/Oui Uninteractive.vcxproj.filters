@@ -201,6 +201,9 @@
     </ClCompile>
     <ClCompile Include="Source\Scene1.cpp" />
     <ClCompile Include="Source\Scene2.cpp" />
+    <ClCompile Include="Source\Animation.cpp">
+      <Filter>Graphics</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Include\Matrix3x3.h">
@@ -316,11 +319,8 @@
     <ClInclude Include="Include\IMessage.h">
       <Filter>Message</Filter>
     </ClInclude>
-    <ClInclude Include="Include\IBroadcaster.h">
-      <Filter>Message</Filter>
-    </ClInclude>
-    <ClInclude Include="Include\IObserver.h">
-      <Filter>Message</Filter>
+    <ClInclude Include="Include\Animation.h">
+      <Filter>Graphics</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
