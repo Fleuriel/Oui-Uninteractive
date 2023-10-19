@@ -1,6 +1,7 @@
 #pragma once
 #include "SceneManager.h"
 #include "OpenGLApplication.h"
+#include "Editor.h"
 // Game State List Enumeration
 
 #ifndef SCENEMANAGER_H
@@ -47,6 +48,9 @@ void SceneManager::InitScene() {
 	currScene->Initialize();
 }
 void SceneManager::Update(float dt) {
+	// Start time profiling for scenemanager
+	TimeProfiler profiler(Editor::timeRecorder.scenemanagerTime);
+
 	currScene->Update(dt);
 
 	// if quit, exit

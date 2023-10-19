@@ -90,6 +90,7 @@ struct SystemTime {
 	float editorTime;
 	float soundTime;
 	float particlesTime;
+	float scenemanagerTime;
 };
 static SystemTime timeRecorder;
 
