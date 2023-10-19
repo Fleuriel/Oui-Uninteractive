@@ -43,11 +43,11 @@ public:
 	IBroadcaster() {}
 	~IBroadcaster() {}
 
-	void RegisterObserver(IObserver* observer) {}
-	void UnregisterObserver(IObserver* observer) {}
-	void NotifyObservers(IMessage* message) {}
+	void RegisterObserver(IObserver* observer) { observer = nullptr; }
+	void UnregisterObserver(IObserver* observer) { observer = nullptr; }
+	void NotifyObservers(IMessage* msg) { msg = nullptr; }
 
-	void ProcessMessage(IMessage* message) {}
+	void ProcessMessage(IMessage* msg) { msg = nullptr; }
 };
 
 class IObserver {

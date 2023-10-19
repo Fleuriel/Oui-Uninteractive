@@ -64,9 +64,9 @@ public:
 	virtual IComponent* Clone() const = 0;
 
 	/*----------TESTING MESSAGING SYSTEM----------*/
-	virtual void RegisterObserver(IObserver* observer) {}
-	virtual void UnregisterObserver(IObserver* observer) {}
-	virtual void NotifyObservers(IMessage* message) {}
+	virtual void RegisterObserver(IObserver* observer) { observer = nullptr; }
+	virtual void UnregisterObserver(IObserver* observer) { observer = nullptr; }
+	virtual void NotifyObservers(IMessage* msg) { msg = nullptr; }
 	/*----------TESTING MESSAGING SYSTEM----------*/
 
 	/**************************************************************************
