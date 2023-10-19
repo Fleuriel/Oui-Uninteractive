@@ -21,6 +21,8 @@
 #include <OpenGLShaders.h>
 #include <map>
 #include <OpenGLObjects.h>
+#include <ISystem.h>
+
 
 #define GET_COMPONENT(GameObject, Component, ComponentType) (GameObject->GetComponentType<Component>(ComponentType))
 
@@ -28,7 +30,7 @@ extern GLFWwindow* windowNew;
 extern OpenGLObject Objects;
 extern std::pair<int, int> windowSize;
 
-class OpenGLApplication {
+class OpenGLApplication : public ISystem{
 
 public:
 	// < Window Functions >
@@ -83,6 +85,17 @@ public:
 	* @return void
 	*************************************************************************/
 	static void OpenGLCleanup();
+
+
+
+	void Initialize() override;
+
+	virtual void Update(float dt) override;
+
+
+
+
+
 #ifdef _DEBUG
 	/**************************************************************************
 	* @brief			Test Changing of States in the Game Engine..
@@ -112,7 +125,7 @@ public:
 	* @brief Constructor and Destructor
 	*************************************************************************/
 	OpenGLApplication() {};
-	~OpenGLApplication() {};
+	~OpenGLApplication();
 };
 
 #endif // OPENGL_APPLICATION_H

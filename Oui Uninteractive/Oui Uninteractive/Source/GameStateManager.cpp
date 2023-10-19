@@ -14,6 +14,7 @@
  *************************************************************************/
 
 #include <GameStateManager.h>
+#include "SceneManager.h"
 
 // The three states, before, now and after.
 unsigned int CurrentGameState;

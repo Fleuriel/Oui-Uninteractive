@@ -21,7 +21,7 @@
 #include <Input.h>
 #include <RandomUtilities.h>
 #include <glm/gtc/matrix_transform.hpp>
-#include <GameStateManager.h>
+#include "SceneManager.h"
 #include <Editor.h>	
 #include <Mapping.h>
 #include <ObjectFactory.h>
@@ -193,7 +193,7 @@ void OpenGLApplication::OpenGLInit() {
 	const char* glsl_vers = "#version 130";
 
 	// Creates an Object to Initialize it.
-	Objects.Init();
+	Objects.Initialize();
 
 
 	// Initializing ImGui
@@ -204,62 +204,7 @@ void OpenGLApplication::OpenGLInit() {
 	// Initializing Editor
 	myEditor.Init();
 
-	// Prefabs
-#ifdef _DEBUG 
-	std::cout << "\nLoading prefabs from JSON file..." << std::endl;
-#endif
-	objectFactory->LoadPrefab("../prefab/Prefab.JSON");
-
-#ifdef _DEBUG
-	std::cout << "Loading prefabs from JSON file... completed." << std::endl;
-#endif
-
-	// De-serializing objects from JSON file
-
-#ifdef _DEBUG
-	std::cout << "\nDe-serializing objects from JSON file..." << std::endl;
-#endif
-	//PLAYER OBJECT
-	objectFactory->BuildObjectFromFile("../scenes/TestsceneReading.JSON");
-	objectFactory->GetGameObjectByID(0)->Initialize();
-
-
-#ifdef _DEBUG
-	std::cout << "De-serializing objects from JSON file... completed." << std::endl;
-#endif
-
-#ifdef _DEBUG
-	std::cout << "\nBuilding an object from player prefab..." << std::endl;
-#endif
-	objectFactory->BuildObjectFromPrefab("PlayerObjFromPrefab", "Player");
-
-#ifdef _DEBUG	
-	std::cout << "Building an object from player prefab... completed." << std::endl;
-#endif
-
-#ifdef _DEBUG	
-	std::cout << "\nCloning object with ID 0..." << std::endl;
-#endif
-	//AI OBJECT
 	
-	objectFactory->CloneObject(1);
-	objectFactory->GetGameObjectByID(4)->Initialize();
-	GET_COMPONENT(objectFactory->GetGameObjectByID(4), Transform, ComponentType::TRANSFORM)->position.y = 50;
-
-#ifdef _DEBUG	
-	std::cout << "Cloning object with ID 0... completed." << std::endl;
-#endif
-
-	// Modifying value of JSONEnemy2
-
-#ifdef _DEBUG	
-	std::cout << "\nUpdating JSONEnemy2 during initialization..." << std::endl;
-#endif
-	objectFactory->SaveObjectsToFile("../scenes/TestsceneWriting.JSON");
-
-#ifdef _DEBUG	
-	std::cout << "Updating JSONEnemy2 during initialization... completed." << std::endl;
-#endif
 
 	//SCRIPTS
 
@@ -353,175 +298,14 @@ void OpenGLApplication::OpenGLUpdate() {
 	}
 
 
-	// Create new Particle of Size 15000,15000 to test if it spawns.
-	if (keyStates[GLFW_KEY_H] == 1) {
-		Particle newparticle;
-
-		newparticle.Init(0, 0, 15000, 15000, 0, 0);
-		particleSystem.particles.emplace_back(newparticle);
-		//std::cout << "R : " << newparticle.object.color.r << "\nG : " << newparticle.object.color.g << "\nB : " << newparticle.object.color.b << "\n";
-
-	}
-
 	// This allows changing of game states.
 #ifdef _DEBUG
 	if (keyStates[GLFW_KEY_1] == 1)
 		CurrentGameState = STATE_LEVEL_TEST;
 #endif
 
-	/*-----------------------------------------------------------------------------
-	|                               INPUT UPDATES                                 |
-	-----------------------------------------------------------------------------*/
-	/*-----------------------------------
-	|            ALPHABETS              |
-	-----------------------------------*/
-	bool controlactivate = ((keyStates[GLFW_KEY_RIGHT_CONTROL] > 0) || (keyStates[GLFW_KEY_LEFT_CONTROL] > 0));
-	bool shiftactivate = ((keyStates[GLFW_KEY_RIGHT_SHIFT] > 0) || (keyStates[GLFW_KEY_LEFT_SHIFT] > 0));
-
-	if (controlactivate) {
-		if (keyStates[GLFW_KEY_A]) {
-#ifdef _DEBUG
-			std::cout << "CROUCH LEFT";
-#endif
-		}
-
-		if (keyStates[GLFW_KEY_D]) {
-#ifdef _DEBUG
-			std::cout << "CROUCH RIGHT";
-#endif
-		}
-
-		if (keyStates[GLFW_KEY_S]) {
-#ifdef _DEBUG
-			std::cout << "CROUCH DOWN";
-#endif
-		}
-
-		if (keyStates[GLFW_KEY_W]) {
-#ifdef _DEBUG
-			std::cout << "CROUCH UP";
-#endif
-
-		}
-	}
-
-	// IF BIG LETTERS
-
-	else if (shiftactivate) {
-
-		if (keyStates[GLFW_KEY_A]) {
-
-#ifdef _DEBUG
-			std::cout << "RUN LEFT\n";
-#endif
-		}
-
-		if (keyStates[GLFW_KEY_D]) {
-#ifdef _DEBUG
-			std::cout << "RUN RIGHT\n";
-#endif
-		}
-
-		if (keyStates[GLFW_KEY_S]) {
-#ifdef _DEBUG
-			std::cout << "RUN DOWN\n";
-#endif
-		}
-
-		if (keyStates[GLFW_KEY_W]) {
-#ifdef _DEBUG
-			std::cout << "RUN UP\n";
-#endif
-
-		}
-	}
-	// IF SMALL LETTERS
-	else {
-
-		if (keyStates[GLFW_KEY_A]) {
-			physicsSys->SetCurrentRotationSpeed(GET_COMPONENT(objectFactory->GetGameObjectByID(0), PhysicsBody, ComponentType::PHYSICS_BODY)->rotationSpeed, 0);
-		}
-
-		else if (keyStates[GLFW_KEY_D]) {
-			physicsSys->SetCurrentRotationSpeed(-(GET_COMPONENT(objectFactory->GetGameObjectByID(0), PhysicsBody, ComponentType::PHYSICS_BODY)->rotationSpeed), 0);
-
-		}
-		else {
-			physicsSys->SetCurrentRotationSpeed(0, 0);
-		}
-		
-		if (keyStates[GLFW_KEY_S]) {
-			/*PhysicsBody* playerBody = GET_COMPONENT(objectFactory->GetGameObjectByID(0), PhysicsBody, ComponentType::PHYSICS_BODY);
-			playerBody->forceManager.SetActive(true, 0);
-			playerBody->forceManager.SetDirection(-playerBody->direction, 0);
-			//physicsSys->MoveBackwards(0);*/
-		}
-
-		else if (keyStates[GLFW_KEY_W]) {
-			/*
-			PhysicsBody* playerBody = GET_COMPONENT(objectFactory->GetGameObjectByID(0), PhysicsBody, ComponentType::PHYSICS_BODY);
-			playerBody->forceManager.SetActive(true, 0);
-			playerBody->forceManager.SetDirection(playerBody->direction, 0);
-			//physicsSys->MoveForward(0);*/
-		}
-		else {
-			/*
-			PhysicsBody* playerBody = GET_COMPONENT(objectFactory->GetGameObjectByID(0), PhysicsBody, ComponentType::PHYSICS_BODY);
-			playerBody->forceManager.DeactivateForce(0);*/
-		}
-
-		if (keyStates[GLFW_KEY_M]) {
-
-		}
-
-		if (keyStates[GLFW_KEY_R]) {
-
-		}
-
-	}
-
-
-	/*-----------------------------------
-	|             NUMBERS               |
-	-----------------------------------*/
-
-
-	/*-----------------------------------
-	|              OTHERS               |
-	-----------------------------------*/
-
-
-
-
-
-	/*-----------------------------------
-	|              Mouse                |
-	-----------------------------------*/
-
-	/*	if (mouseButtonStates[GLFW_MOUSE_BUTTON_LEFT])
-			std::cout << "LCLICK\n";
-		if (mouseButtonStates[GLFW_MOUSE_BUTTON_RIGHT])
-			std::cout << "RCLICK\n";*/
-
-			/*-----------------------------------
-			|              Scroll               |
-			-----------------------------------*/
-
-	if (mouseScrollState == 1) {
-#ifdef _DEBUG
-		std::cout << "SCROLL UP\n";
-		std::cout << "Total Scroll Y Offset:" << mouse_scroll_total_Y_offset << "\n";
-#endif
-	}
-	if (mouseScrollState == -1) {
-#ifdef _DEBUG
-		std::cout << "SCROLL DOWN\n";
-		std::cout << "Total Scroll Y Offset:" << mouse_scroll_total_Y_offset << "\n";
-#endif
-	}
-
+	InputSystemUpdate();
 	UpdateStatesForNextFrame();
-
 
 
 	//std::cout << GetFPS() << '\n';
@@ -559,7 +343,7 @@ void OpenGLApplication::OpenGLUpdate() {
 
 		// Tag ID 2
 		if (obj.TagID == 2) {
-			obj.Update(300, 400, 50, 50);
+			obj.Update(300, 400, 50, 50, angle, false);
 		}
 	}
 
@@ -568,7 +352,6 @@ void OpenGLApplication::OpenGLUpdate() {
 		if (gObj.second->Has(ComponentType::TRANSFORM) != -1) {
 			GET_COMPONENT(gObj.second, Transform, ComponentType::TRANSFORM)->shape->Draw();
 		}
-
 	}
 
 	myImGui.Draw();
@@ -590,6 +373,18 @@ void OpenGLApplication::OpenGLCleanup() {
 }
 
 
+void OpenGLApplication::Initialize() {
+	OpenGLWindowInit();
+	OpenGLInit();
+}
+
+void OpenGLApplication::Update(float dt)
+{
+	OpenGLUpdate();
+}
+OpenGLApplication::~OpenGLApplication() {
+	OpenGLCleanup();
+}
 
 
 /**************************************************************************

@@ -17,7 +17,8 @@
 #include "ObjectFactory.h"
 #include "Logic.h"
 #include "Sound.h"
-
+#include "TransformSystem.h"
+#include "SceneManager.h"
 
 void TimeUpdate();
 
@@ -30,12 +31,16 @@ int main(){
 	if (!glfwInit())
 		return -1;
 
-	CreateWindow();
+	//CreateWindow();
 	sysManager = new SystemManager();
+	// Have Errors for now. need fix
+	sysManager->AddSystem(new OpenGLApplication());
 	sysManager->AddSystem(new LogicSystem());
 	sysManager->AddSystem(new ObjectFactory());
 	sysManager->AddSystem(new Physics());
+	sysManager->AddSystem(new TransformSystem());
 	sysManager->AddSystem(new SoundManager());
+	sysManager->AddSystem(new SceneManager());
 	sysManager->Initialize();
 	// Set callback for window close button (top right button).
 	glfwSetWindowCloseCallback(windowNew, WindowCloseCallback);
@@ -44,7 +49,7 @@ int main(){
 	glfwSetFramebufferSizeCallback(windowNew, OpenGLApplication::OpenGLWindowResizeCallback);
 	// Initialize the GameStateManager
 	// Initialize Game State, Input here.
-	GameStateManagerInit(STATE_GRAPHICS_TEST);
+	//GameStateManagerInit(STATE_GRAPHICS_TEST);
 	
 	// set previousTime as NOW. first, then will be able to calculate.
 	previousTime = std::chrono::high_resolution_clock::now();
@@ -53,20 +58,21 @@ int main(){
 	while (!glfwWindowShouldClose(windowNew)){
 		// Changing in CurrentGameState would make it TRUE for this,
 		// so it will update the manager, to change the state.
-		if (CurrentGameState != NextGameState){
-			GameStateManagerUpdate();
+		if (sceneManager->currSceneID != GameStateList::STATE_RESTART){
+			//GameStateManagerUpdate();
+			sceneManager->Load();
 		}
 		// else initialize all states to be the same.
 		else		{
-			NextGameState = CurrentGameState = PreviousGameState;
+			sceneManager->nextSceneID = sceneManager->currSceneID = sceneManager->prevSceneID;
 		}
 
-
+		sceneManager->InitScene();
 		// Happen ONLY once, 
 		// ONLY if changing of states
-		GameInit();
-
-		while (CurrentGameState == NextGameState){
+	//	GameInit();
+		
+		while (sceneManager->currSceneID == sceneManager->nextSceneID){
 			// Acquire Time Updates, setup for deltaTime
 			// For FPS, DeltaTime and Runtime
 			TimeUpdate();
@@ -77,7 +83,7 @@ int main(){
 			sysManager->UpdateSystems(static_cast<float>(GetDT()));
 
 			// Update the Game Loop, based on the currentGameState
-			GameUpdate();
+			//GameUpdate();
 			
 
 			// Swap Buffers with the window, similar to GOL in Y1T1 [OpenGL Function]
@@ -85,25 +91,22 @@ int main(){
 
 
 			// At the end, if check the state is quite else go away.
-			if (CurrentGameState == STATE_QUIT)
+			if (sceneManager->currSceneID == STATE_QUIT)
 				break;
 		}
 
 		// Before anything, cleanup as it is out of the state loop
-		GameCleanup();
-
+	//	GameCleanup();
+		sceneManager->Free();
 		// QUIT [ After cleanup ]
 		if (CurrentGameState == STATE_QUIT)
 			break;
 
 		std::cout << "State is NOT Quit\n";
 
-		GameStateManagerUpdate();
-
-
 		// Set the states.
-		PreviousGameState = CurrentGameState;
-		CurrentGameState = NextGameState;
+		sceneManager->prevSceneID = sceneManager->currSceneID;
+		sceneManager->currSceneID = sceneManager->nextSceneID;
 	}
 
 
@@ -111,7 +114,7 @@ int main(){
 
 	// Cleanup the window.
 
-	WindowCleanup();
+	//WindowCleanup();
 	objectFactory->SaveObjectsToFile("../scenes/TestsceneWriting.JSON");
 	objectFactory->DestroyAllObjects();
 	sysManager->DestroySystem();

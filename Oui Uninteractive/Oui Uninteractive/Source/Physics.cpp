@@ -41,8 +41,6 @@ void Physics::Initialize() {
 	//Register Component creator of Body here
 	ComponentFactory<PhysicsBody>* testPtr = new ComponentFactory<PhysicsBody>(ComponentType::PHYSICS_BODY);
 	objectFactory->AddComponentFactory(ComponentType::PHYSICS_BODY, testPtr);
-	ComponentFactory<Transform>* testPtr2 = new ComponentFactory<Transform>(ComponentType::TRANSFORM);
-	objectFactory->AddComponentFactory(ComponentType::TRANSFORM, testPtr2);
 }
 /**************************************************************************
 * @brief Update Function of the Physics System
@@ -105,7 +103,7 @@ void Physics::Update(float dt) {
 			CollisionStaticDynamicRectRect(*(body->boundingbox), *(body2->boundingbox));
 		}
 		//apply calculations to object
-		body->txPtr->shape->Update(body->txPtr->position.x, body->txPtr->position.y, body->txPtr->scale, body->txPtr->scale, body->txPtr->rotation, true);
+	//	body->txPtr->shape->Update(body->txPtr->position.x, body->txPtr->position.y, body->txPtr->scale, body->txPtr->scale, body->txPtr->rotation, true);
 	}
 	std::chrono::high_resolution_clock::time_point timeEnd = std::chrono::high_resolution_clock::now();
 	std::chrono::duration<float, std::milli> duration = timeEnd - timeStart;

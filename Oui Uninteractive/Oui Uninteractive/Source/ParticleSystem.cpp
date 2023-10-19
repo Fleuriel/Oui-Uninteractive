@@ -87,7 +87,7 @@ void Particle::Update() {
 
     
     // Update the position of the Particle's OpenGLObject based on its velocity.
-    object.Update(object.position.x + velocity.x, object.position.y + velocity.y, 1000, 1000, 0, false);
+   // object.Update(GetDT());
     
 
     // Uncommenting the following lines would print the scaleModel and position
