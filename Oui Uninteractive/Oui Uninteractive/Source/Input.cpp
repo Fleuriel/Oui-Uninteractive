@@ -18,9 +18,12 @@
 #include <GLFW/glfw3.h>
 #include <Input.h>
 #include <iostream>
-#include <GameStateManager.h>
+#include "SceneManager.h"
 #include <array>
 #include <functional>
+#include <Physics.h>
+#include <Editor.h>	
+#include <ParticleSystem.h>
 
 
 // Define an array to keep track of key states
@@ -30,7 +33,11 @@ std::array<int, GLFW_KEY_LAST + 1> keyStates;
 std::array<bool, GLFW_MOUSE_BUTTON_LAST + 1> mouseButtonStates;
 
 // 1 for scrolling up, 0 for not scrolling, -1 for scrolling down
-int mouseScrollState{};
+int mouseScrollState{ 0 };
+
+// true for on, false for off
+bool capsLockReleased{ true };
+bool capsLockOn{ false };
 
 // Container to store commands (not implemented yet)
 std::map<std::string, std::function<void()>> shortcuts;
@@ -38,11 +45,18 @@ std::map<std::string, std::function<void()>> shortcuts;
 //shortcuts["Ctrl+S"] = SaveFunction;
 //shortcuts["Ctrl+Z"] = UndoFunction;
 
-
+extern ParticleSystem particleSystem;
 
 
 #define UNREFERENCED_PARAMETER(P)(P)
-
+bool GetKeyInput(int glfwKey) {
+	if (keyStates[glfwKey]) {
+		return true;
+	}
+	else {
+		return false;
+	}
+}
 /**************************************************************************
  * @brief Callback function for handling keyboard input in a GLFW window.
  * 
@@ -96,6 +110,8 @@ void KeyCallBack(GLFWwindow* window3, int key, int scancode, int action, int mod
 		// Print debug information based on the key action (press, hold, release)
 		std::cout << ((action == GLFW_PRESS) ? "Pressed Keys\n" : (action == GLFW_REPEAT) ? "Held Keys\n" : "Released Keys\n");
 	#endif
+
+		if (key == GLFW_KEY_CAPS_LOCK) capsLockReleased = (action == GLFW_RELEASE) ? true : false;
 }
 
 
@@ -184,12 +200,13 @@ void ScrollCallBack(GLFWwindow* window5, double xOffset, double yOffset ) {
 void UpdateStatesForNextFrame() {
 
 	// Loop through all keyboard keys (represented by indices)
-	for (size_t i = 0; i < GLFW_KEY_LAST + 1; ++i)
+	for (size_t i = 0; i < GLFW_KEY_LAST + 1; ++i) {
 
 		// Update the state of each key
 		// If the key state is 1 (pressed in the current frame), change it to 2 (held down)
 		// If the key state is 0 (not pressed), it remains 0
 		keyStates[i] = (keyStates[i] == 1) ? 2 : keyStates[i];
+	}
 
 	// Reset the mouse scroll state to 0 for the next frame
 	mouseScrollState = 0;
@@ -215,4 +232,329 @@ void UpdateStatesForNextFrame() {
 void WindowCloseCallback(GLFWwindow* window6){
 	(void)window6;
 	NextGameState = STATE_QUIT;
+}
+
+void InputSystemUpdate() {
+
+	/*
+	if (keyStates[GLFW_KEY_SPACE]) {}
+
+	if (keyStates[GLFW_KEY_APOSTROPHE]) {}
+
+	if (keyStates[GLFW_KEY_COMMA]) {}
+
+	if (keyStates[GLFW_KEY_MINUS]) {}
+
+	if (keyStates[GLFW_KEY_PERIOD]) {}
+
+	if (keyStates[GLFW_KEY_SLASH]) {}
+
+	if (keyStates[GLFW_KEY_0]) {}
+
+	if (keyStates[GLFW_KEY_1]) {}
+
+	if (keyStates[GLFW_KEY_2]) {}
+
+	if (keyStates[GLFW_KEY_3]) {}
+
+	if (keyStates[GLFW_KEY_4]) {}
+
+	if (keyStates[GLFW_KEY_5]) {}
+
+	if (keyStates[GLFW_KEY_6]) {}
+
+	if (keyStates[GLFW_KEY_7]) {}
+
+	if (keyStates[GLFW_KEY_8]) {}
+
+	if (keyStates[GLFW_KEY_9]) {}
+
+	if (keyStates[GLFW_KEY_SEMICOLON]) {}
+
+	if (keyStates[GLFW_KEY_EQUAL]) {}
+
+	if (keyStates[GLFW_KEY_A]) {}
+
+	if (keyStates[GLFW_KEY_B]) {}
+
+	if (keyStates[GLFW_KEY_C]) {}
+
+	if (keyStates[GLFW_KEY_D]) {}
+
+	if (keyStates[GLFW_KEY_E]) {}
+
+	if (keyStates[GLFW_KEY_F]) {}
+
+	if (keyStates[GLFW_KEY_G]) {}
+
+	if (keyStates[GLFW_KEY_H]) {}
+
+	if (keyStates[GLFW_KEY_I]) {}
+
+	if (keyStates[GLFW_KEY_J]) {}
+
+	if (keyStates[GLFW_KEY_K]) {}
+
+	if (keyStates[GLFW_KEY_L]) {}
+
+	if (keyStates[GLFW_KEY_M]) {}
+
+	if (keyStates[GLFW_KEY_N]) {}
+
+	if (keyStates[GLFW_KEY_O]) {}
+
+	if (keyStates[GLFW_KEY_P]) {}
+
+	if (keyStates[GLFW_KEY_Q]) {}
+
+	if (keyStates[GLFW_KEY_R]) {}
+
+	if (keyStates[GLFW_KEY_S]) {}
+
+	if (keyStates[GLFW_KEY_T]) {}
+
+	if (keyStates[GLFW_KEY_U]) {}
+
+	if (keyStates[GLFW_KEY_V]) {}
+
+	if (keyStates[GLFW_KEY_W]) {}
+
+	if (keyStates[GLFW_KEY_X]) {}
+
+	if (keyStates[GLFW_KEY_Y]) {}
+
+	if (keyStates[GLFW_KEY_Z]) {}
+
+	if (keyStates[GLFW_KEY_LEFT_BRACKET]) {}
+
+	if (keyStates[GLFW_KEY_BACKSLASH]) {}
+
+	if (keyStates[GLFW_KEY_RIGHT_BRACKET]) {}
+
+	if (keyStates[GLFW_KEY_GRAVE_ACCENT]) {}
+
+	if (keyStates[GLFW_KEY_WORLD_1]) {}
+
+	if (keyStates[GLFW_KEY_WORLD_2]) {}
+
+	if (keyStates[GLFW_KEY_ESCAPE]) {}
+
+	if (keyStates[GLFW_KEY_ENTER]) {}
+
+	if (keyStates[GLFW_KEY_TAB]) {}
+
+	if (keyStates[GLFW_KEY_BACKSPACE]) {}
+
+	if (keyStates[GLFW_KEY_INSERT]) {}
+
+	if (keyStates[GLFW_KEY_DELETE]) {}
+
+	if (keyStates[GLFW_KEY_RIGHT]) {}
+
+	if (keyStates[GLFW_KEY_LEFT]) {}
+
+	if (keyStates[GLFW_KEY_DOWN]) {}
+
+	if (keyStates[GLFW_KEY_UP]) {}
+
+	if (keyStates[GLFW_KEY_PAGE_UP]) {}
+
+	if (keyStates[GLFW_KEY_PAGE_DOWN]) {}
+
+	if (keyStates[GLFW_KEY_HOME]) {}
+
+	if (keyStates[GLFW_KEY_END]) {}
+
+	if (keyStates[GLFW_KEY_CAPS_LOCK]) {}
+
+	if (keyStates[GLFW_KEY_SCROLL_LOCK]) {}
+
+	if (keyStates[GLFW_KEY_NUM_LOCK]) {}
+
+	if (keyStates[GLFW_KEY_PRINT_SCREEN]) {}
+
+	if (keyStates[GLFW_KEY_PAUSE]) {}
+
+	if (keyStates[GLFW_KEY_F1]) {}
+
+	if (keyStates[GLFW_KEY_F2]) {}
+
+	if (keyStates[GLFW_KEY_F3]) {}
+
+	if (keyStates[GLFW_KEY_F4]) {}
+
+	if (keyStates[GLFW_KEY_F5]) {}
+
+	if (keyStates[GLFW_KEY_F6]) {}
+
+	if (keyStates[GLFW_KEY_F7]) {}
+
+	if (keyStates[GLFW_KEY_F8]) {}
+
+	if (keyStates[GLFW_KEY_F9]) {}
+
+	if (keyStates[GLFW_KEY_F10]) {}
+
+	if (keyStates[GLFW_KEY_F11]) {}
+
+	if (keyStates[GLFW_KEY_F12]) {}
+
+	if (keyStates[GLFW_KEY_F13]) {}
+
+	if (keyStates[GLFW_KEY_F14]) {}
+
+	if (keyStates[GLFW_KEY_F15]) {}
+
+	if (keyStates[GLFW_KEY_F16]) {}
+
+	if (keyStates[GLFW_KEY_F17]) {}
+
+	if (keyStates[GLFW_KEY_F18]) {}
+
+	if (keyStates[GLFW_KEY_F19]) {}
+
+	if (keyStates[GLFW_KEY_F20]) {}
+
+	if (keyStates[GLFW_KEY_F21]) {}
+
+	if (keyStates[GLFW_KEY_F22]) {}
+
+	if (keyStates[GLFW_KEY_F23]) {}
+
+	if (keyStates[GLFW_KEY_F24]) {}
+
+	if (keyStates[GLFW_KEY_F25]) {}
+
+	if (keyStates[GLFW_KEY_KP_0]) {}
+
+	if (keyStates[GLFW_KEY_KP_1]) {}
+
+	if (keyStates[GLFW_KEY_KP_2]) {}
+
+	if (keyStates[GLFW_KEY_KP_3]) {}
+
+	if (keyStates[GLFW_KEY_KP_4]) {}
+
+	if (keyStates[GLFW_KEY_KP_5]) {}
+
+	if (keyStates[GLFW_KEY_KP_6]) {}
+
+	if (keyStates[GLFW_KEY_KP_7]) {}
+
+	if (keyStates[GLFW_KEY_KP_8]) {}
+
+	if (keyStates[GLFW_KEY_KP_9]) {}
+
+	if (keyStates[GLFW_KEY_KP_DECIMAL]) {}
+
+	if (keyStates[GLFW_KEY_KP_DIVIDE]) {}
+
+	if (keyStates[GLFW_KEY_KP_MULTIPLY]) {}
+
+	if (keyStates[GLFW_KEY_KP_SUBTRACT]) {}
+
+	if (keyStates[GLFW_KEY_KP_ADD]) {}
+
+	if (keyStates[GLFW_KEY_KP_ENTER]) {}
+
+	if (keyStates[GLFW_KEY_KP_EQUAL]) {}
+
+	if (keyStates[GLFW_KEY_LEFT_SHIFT]) {}
+
+	if (keyStates[GLFW_KEY_LEFT_CONTROL]) {}
+
+	if (keyStates[GLFW_KEY_LEFT_ALT]) {}
+
+	if (keyStates[GLFW_KEY_LEFT_SUPER]) {}
+
+	if (keyStates[GLFW_KEY_RIGHT_SHIFT]) {}
+
+	if (keyStates[GLFW_KEY_RIGHT_CONTROL]) {}
+
+	if (keyStates[GLFW_KEY_RIGHT_ALT]) {}
+
+	if (keyStates[GLFW_KEY_RIGHT_SUPER]) {}
+
+	if (keyStates[GLFW_KEY_MENU]) {}
+	*/
+
+
+
+	bool ctrlKeyPressed = (keyStates[GLFW_KEY_RIGHT_CONTROL] || keyStates[GLFW_KEY_LEFT_CONTROL]);
+	bool shiftKeyPressed = (keyStates[GLFW_KEY_RIGHT_SHIFT] || keyStates[GLFW_KEY_LEFT_SHIFT]);
+
+	if (ctrlKeyPressed) {
+#ifdef _DEBUG
+		std::cout << "CONTROL ON\n";
+#endif
+	}
+
+	if (shiftKeyPressed) {
+#ifdef _DEBUG
+		std::cout << "SHIFT ON\n";
+#endif
+	}
+
+	if (keyStates[GLFW_KEY_CAPS_LOCK]) {
+		if (keyStates[GLFW_KEY_CAPS_LOCK] == 1) {
+			capsLockOn = !capsLockOn;
+		}
+	}
+
+	if (capsLockOn) {
+#ifdef _DEBUG
+		std::cout << "CAPS LOCK ON\n";
+#endif
+	}
+
+	if (shiftKeyPressed != capsLockOn) {
+#ifdef _DEBUG
+		std::cout << "BIG LETTERS\n";
+#endif
+	}
+
+	if (keyStates[GLFW_KEY_A]) {
+		physicsSys->SetCurrentRotationSpeed(GET_COMPONENT(objectFactory->GetGameObjectByID(0), PhysicsBody, ComponentType::PHYSICS_BODY)->rotationSpeed, 0);
+	}
+
+	if (keyStates[GLFW_KEY_D]) {
+		physicsSys->SetCurrentRotationSpeed(-(GET_COMPONENT(objectFactory->GetGameObjectByID(0), PhysicsBody, ComponentType::PHYSICS_BODY)->rotationSpeed), 0);
+	}
+
+	if ((keyStates[GLFW_KEY_A] && keyStates[GLFW_KEY_D]) || (!keyStates[GLFW_KEY_A] && !keyStates[GLFW_KEY_D])) {
+		physicsSys->SetCurrentRotationSpeed(0, 0);
+	}
+
+	// Create new Particle of Size 15000,15000 to test if it spawns.
+	if (keyStates[GLFW_KEY_H] == 1) {
+		Particle newparticle;
+
+		newparticle.Init(0, 0, 100, 100, 0, 0);
+		particleSystem.particles.emplace_back(newparticle);
+		//std::cout << "R : " << newparticle.object.color.r << "\nG : " << newparticle.object.color.g << "\nB : " << newparticle.object.color.b << "\n";
+	}
+
+	if (mouseButtonStates[GLFW_MOUSE_BUTTON_LEFT]) {
+#ifdef _DEBUG
+		std::cout << "LCLICK\n";
+#endif
+	}
+	if (mouseButtonStates[GLFW_MOUSE_BUTTON_RIGHT]) {
+#ifdef _DEBUG
+		std::cout << "RCLICK\n";
+#endif
+	}
+
+	if (mouseScrollState == 1) {
+#ifdef _DEBUG
+		std::cout << "SCROLL UP\n";
+		std::cout << "Total Scroll Y Offset:" << mouse_scroll_total_Y_offset << "\n";
+#endif
+	}
+	if (mouseScrollState == -1) {
+#ifdef _DEBUG
+		std::cout << "SCROLL DOWN\n";
+		std::cout << "Total Scroll Y Offset:" << mouse_scroll_total_Y_offset << "\n";
+#endif
+	}
 }

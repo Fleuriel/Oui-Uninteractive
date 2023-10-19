@@ -41,18 +41,6 @@ extern void (*GameUpdate)();
 extern void (*GameCleanup)();
 
 
-// Game State List Enumeration
-enum GameStateList
-{
-	STATE_MENU_TEST = 1,
-	STATE_GRAPHICS_TEST,
-	STATE_LEVEL_TEST,
-	STATE_GAME_TEST,
-	STATE_RESTART,
-	STATE_QUIT
-};
-
-
 /**************************************************************************
 * @brief		Initialize the Game State Manager
 *

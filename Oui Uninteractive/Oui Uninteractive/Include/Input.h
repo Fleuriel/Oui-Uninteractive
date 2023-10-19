@@ -31,7 +31,7 @@ extern std::array<bool, GLFW_MOUSE_BUTTON_LAST + 1> mouseButtonStates;
 // 1 for scrolling up, 0 for not scrolling, -1 for scrolling down
 extern int mouseScrollState;
 
-
+bool GetKeyInput(int glfw_key);
 /**************************************************************************
  * @brief Callback function for handling keyboard input in a GLFW window.
  *
@@ -135,5 +135,7 @@ void UpdateStatesForNextFrame();
  *       the application.
  *************************************************************************/
 void WindowCloseCallback(GLFWwindow* window);
+
+void InputSystemUpdate();
 
 #endif // INPUTKEYS_H

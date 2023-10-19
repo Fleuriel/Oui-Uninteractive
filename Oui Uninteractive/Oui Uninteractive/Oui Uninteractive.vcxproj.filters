@@ -193,6 +193,14 @@
     <ClCompile Include="Source\LogicComponent.cpp">
       <Filter>Component</Filter>
     </ClCompile>
+    <ClCompile Include="Source\TransformSystem.cpp">
+      <Filter>Systems</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\SceneManager.cpp">
+      <Filter>Systems</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Scene1.cpp" />
+    <ClCompile Include="Source\Scene2.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Include\Matrix3x3.h">
@@ -296,6 +304,15 @@
     </ClInclude>
     <ClInclude Include="Include\IScript.h" />
     <ClInclude Include="Include\TestScript.h" />
+    <ClInclude Include="Include\TransformSystem.h">
+      <Filter>Systems</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\SceneManager.h">
+      <Filter>Systems</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\IScene.h" />
+    <ClInclude Include="Include\Scene1.h" />
+    <ClInclude Include="Include\Scene2.h" />
     <ClInclude Include="Include\IMessage.h">
       <Filter>Message</Filter>
     </ClInclude>
