@@ -67,14 +67,6 @@ public:
 	AABB() {};
 };
 
-/*----------TESTING MESSAGING SYSTEM----------*/
-class MessageCollision : public IMessage {
-public:
-	// Message information
-
-};
-/*----------TESTING MESSAGING SYSTEM----------*/
-
 class PhysicsBody : public IComponent {
 public:
 	/**************************************************************************
@@ -101,13 +93,6 @@ public:
 	* @return PhysicsBody* - the cloned PhysicsBody
 	*************************************************************************/
 	virtual PhysicsBody* Clone() const;
-
-
-	/*----------TESTING MESSAGING SYSTEM----------*/
-	virtual void RegisterObserver(IObserver* observer);
-	virtual void UnregisterObserver(IObserver* observer);
-	virtual void NotifyObservers(IMessage* msg);
-	/*----------TESTING MESSAGING SYSTEM----------*/
 
 	//Member Variables
 	// 

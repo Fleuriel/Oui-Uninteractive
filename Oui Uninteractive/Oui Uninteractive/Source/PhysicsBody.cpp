@@ -87,20 +87,6 @@ PhysicsBody* PhysicsBody::Clone() const{
 	return newBody;
 }
 
-/*----------TESTING MESSAGING SYSTEM----------*/
-void PhysicsBody::RegisterObserver(IObserver* observer) {
-	observer = nullptr;
-}
-
-void PhysicsBody::UnregisterObserver(IObserver* observer) {
-	observer = nullptr;
-}
-
-void PhysicsBody::NotifyObservers(IMessage* msg) {
-	msg = nullptr;
-}
-/*----------TESTING MESSAGING SYSTEM----------*/
-
 ForceManager::ForceManager() {
 	forceVec.push_back(new LinearForce(0.5, false, 50));
 	forceVec.push_back(new LinearForce(0.5, false, 50));

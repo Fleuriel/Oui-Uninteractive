@@ -11,7 +11,9 @@
 #ifndef ISYSTEM_H
 #define ISYSTEM_H
 
-class ISystem {
+#include "IMessage.h"
+
+class ISystem : public IBroadcaster {
 public:
 	// Initialize the system
 	virtual void Initialize() {};
@@ -21,6 +23,29 @@ public:
 
 	// Terminate the system
 	virtual ~ISystem() {};
+
+	/*----------TESTING MESSAGING SYSTEM----------*/
+	/*virtual void RegisterObserver(IObserver* observer) = 0;
+	virtual void UnregisterObserver(IObserver* observer) = 0;
+	virtual void NotifyObservers(IMessage* msg) = 0;*/
+
+	/*void RegisterObserver(const std::string& message, IObserver* observer) override {
+
+	}
+
+	virtual void UnregisterObserver(std::string message, IObserver* observer) override {
+
+	}
+
+	virtual void SendToObservers(IMessage* msg) override {
+
+	}
+
+	virtual void ProcessMessage(IMessage* msg) override {
+
+	}*/
+
+	/*----------TESTING MESSAGING SYSTEM----------*/
 };
 
 #endif
