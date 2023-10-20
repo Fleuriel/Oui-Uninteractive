@@ -30,6 +30,8 @@ Physics::Physics() {
 		return;
 	}
 	else {
+		cellWidth = 0;
+		cellHeight = 0;
 		physicsSys = this;
 	}
 }
@@ -39,8 +41,11 @@ Physics::Physics() {
 *************************************************************************/
 void Physics::Initialize() {
 	//Register Component creator of Body here
+	
 	ComponentFactory<PhysicsBody>* testPtr = new ComponentFactory<PhysicsBody>(ComponentType::PHYSICS_BODY);
 	objectFactory->AddComponentFactory(ComponentType::PHYSICS_BODY, testPtr);
+	//cellWidth = windowSize.first / WIDTH;
+	//cellHeight = windowSize.second / HEIGHT;
 }
 /**************************************************************************
 * @brief Update Function of the Physics System
@@ -87,7 +92,21 @@ void Physics::Update(float dt) {
 		
 		//Position
 		body->txPtr->position = body->txPtr->position + body->velocity * dt;
+		size_t test = body->GetOwner()->GetGameObjectID();
 		
+		//rowsBitArray[body->implicitGridPos.first].set(body->GetOwner()->GetGameObjectID(), 0);
+		//colBitArray[body->implicitGridPos.second].set(body->GetOwner()->GetGameObjectID(), 0);
+		/*Vec2 absPosition = Vec2(0, 0);
+		
+		absPosition.x = body->txPtr->position.x + (windowSize.first / 2.0f);
+		absPosition.y = body->txPtr->position.y + (windowSize.second / 2.0f);
+		
+		body->implicitGridPos.first = absPosition.x / cellWidth; //which row
+		body->implicitGridPos.second = absPosition.y / cellHeight; //which col
+
+		rowsBitArray[body->implicitGridPos.first].set(test);
+		colBitArray[body->implicitGridPos.second].set(test);
+		*/
 		//Just spins all other objects
 		if (body->GetOwner()->GetGameObjectID() != 0) {
 			body->currentRotationSpeed = body->rotationSpeed;

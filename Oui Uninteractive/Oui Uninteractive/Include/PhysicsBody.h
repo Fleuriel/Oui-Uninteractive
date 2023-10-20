@@ -133,6 +133,7 @@ public:
 	float frictionForce;
 
 	ForceManager forceManager;
+	//std::pair<int, int> implicitGridPos;
 };
 
 #endif
