@@ -77,18 +77,16 @@ int main(){
 			// For FPS, DeltaTime and Runtime
 			TimeUpdate();
 			
-			// Poll the events from the window. [OpenGL Function]
-			glfwPollEvents();
 
-			sysManager->UpdateSystems(static_cast<float>(GetDT()));
 
-			// Update the Game Loop, based on the currentGameState
-			//GameUpdate();
+			sysManager->UpdateSystems(static_cast<float>(GetDT()));			
+
 			
-
 			// Swap Buffers with the window, similar to GOL in Y1T1 [OpenGL Function]
 			glfwSwapBuffers(windowNew);
 
+			// Poll the events from the window. [OpenGL Function]
+			glfwPollEvents();
 
 			// At the end, if check the state is quite else go away.
 			if (sceneManager->currSceneID == STATE_QUIT)

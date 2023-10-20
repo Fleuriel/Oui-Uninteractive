@@ -121,11 +121,12 @@ void OpenGLApplication::OpenGLWindowInit() {
 
 	// Tell GLFW that we are using the CORE Profile
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+	
 
 	// Create viewport of width and height.
 	glViewport(0, 0, windowSize.first, windowSize.second);
 
-	glfwSwapInterval(0);
+	glfwSwapInterval(1);
 
 	// Receives Key input/output [Checks for Key Presses]
 	glfwSetKeyCallback(windowNew, KeyCallBack);
@@ -241,6 +242,17 @@ void OpenGLApplication::OpenGLUpdate() {
 		// Set game state to quit to exit the while loop
 		CurrentGameState = STATE_QUIT;
 	}
+	//glBindFramebuffer(GL_FRAMEBUFFER, OpenGLObject::FBO);
+
+	// Clear the FBO and render your graphics
+	glClear(GL_COLOR_BUFFER_BIT);
+	// Bind the FBO for rendering
+	glBindFramebuffer(GL_FRAMEBUFFER, OpenGLObject::FBO);
+
+
+
+
+
 	myImGui.CreateFrame();
 	myEditor.Update();
 	myImGui.Update();
@@ -420,7 +432,7 @@ void OpenGLApplication::OpenGLUpdate() {
 	// Set the Background Color.
 	OpenGLSetBackgroundColor(0.5f, 0.5f, 0.5f, 1.0f);
 	// Clear the Color Buffer Bit to enable 'reloading'
-	glClear(GL_COLOR_BUFFER_BIT);
+	
 	// Draws the Background
 	background.Draw();
 
@@ -441,9 +453,13 @@ void OpenGLApplication::OpenGLUpdate() {
 		}
 	}
 
-	myImGui.Draw();
 	Draw();
 	particleSystem.Draw();
+	// Unbind the FBO to restore the default framebuffer
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+
+	myImGui.Draw();
+
 
 }
 
