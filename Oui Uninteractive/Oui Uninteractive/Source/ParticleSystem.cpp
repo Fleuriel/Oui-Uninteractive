@@ -40,7 +40,9 @@ extern ParticleSystem particleSystem;
  * The Particle consists of an OpenGLObject, velocity, alpha (transparency),
  * lifespan, and an interactability flag.
  *************************************************************************/
-Particle::Particle(){
+Particle::Particle(int userInput_x, int userInput_y, float userInput_sizeX,
+    float userInput_sizeY, float userInput_angleDisplacement,
+    float userInput_angleSpeed, float userInput_lifespan) {
     // Initialize the OpenGLObject with a default color of {1, 1, 1}.
     object = OpenGLObject({ 1,1,1 });
     // Set the TagID for the Particle to 0.
@@ -50,10 +52,29 @@ Particle::Particle(){
     // Set the initial alpha (transparency) value to 1 (fully opaque).
 	alpha = 1;
     // Set the initial lifespan of the Particle to 1 unit of time.
-    lifespan = 1;
+    lifespan = userInput_lifespan;
+
     // Set the interactability flag to false, indicating that
     // the Particle is not initially interactable.
     object.interactable = false;
+
+    Init(userInput_x, userInput_y, userInput_sizeX,
+        userInput_sizeY, userInput_angleDisplacement,
+        userInput_angleSpeed);
+
+    ID = particleSystem.particles.size()+1;
+    particleSystem.particles.push_back(*this);
+    
+}
+
+void Particle::RemoveParticle() {
+    particleSystem.particles.erase(particleSystem.particles.begin() + ID-1);
+    UpdateIDs();
+}
+
+void Particle::UpdateIDs() {
+    for (size_t i = 0; i < particleSystem.particles.size(); ++i)
+        particleSystem.particles[i].ID = i+1;
 }
 
 /*************************************************************************
@@ -96,6 +117,10 @@ void Particle::Update() {
     //std::cout << object.scaleModel.x << object.scaleModel.y << '\n';
     //std::cout << "XA : " << object.position.x << std::endl;
     //std::cout << "YA : " << object.position.y << std::endl;
+
+    if ((lifespan -= GetDT())<0)
+        RemoveParticle();
+    std::cout << lifespan;
 }
 
 
@@ -124,7 +149,7 @@ void ParticleSystem::Update() {
     // Iterate through the particles
     for (size_t i = 0; i<particles.size();++i){
         // Print debug information about the current particle's position.
-        std::cout << i << "update " << particles[i].object.position.x << " " << particles[i].object.position.y << "\n";
+        //std::cout << particles[i].ID << "update " << particles[i].object.position.x << " " << particles[i].object.position.y << "\n";
         // Update the current particle's state.
         particles[i].Update();
     }
@@ -139,15 +164,21 @@ void ParticleSystem::Update() {
  *************************************************************************/
 void ParticleSystem::Draw() {
 
-		// std::cout << "Particle Storage Size:" << particles.size() << '\n';
+		std::cout << "Particle Storage Size:" << particles.size() << '\n';
 
         // Iterate through the particles
         for (size_t i = 0; i < particles.size(); ++i){   
             // Print debug information to indicate that the current particle is being drawn.
             // std::cout << i << "Draw\n";
             // Call the `draw` function on the current particle to render it.
+
             particles[i].Draw();
+
             // std::cout << particle.object.scaleModel.x << '\t' << particle.object.scaleModel.y << '\n';
         }
 
+}
+
+void ParticleSystem::EmptyParticleSystem() {
+    particles.clear();
 }
