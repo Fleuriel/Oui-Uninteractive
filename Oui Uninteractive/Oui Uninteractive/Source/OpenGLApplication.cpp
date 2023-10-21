@@ -35,6 +35,7 @@
 #include <iterator>
 #include <Background.h>
 #include "TestScript.h"
+#include <Animation.h>
 
 #define STB_IMAGE_IMPLEMENTATION
 #include <stb_image.h>
@@ -366,17 +367,16 @@ void OpenGLApplication::OpenGLUpdate() {
 
 	// Create new Particle of Size 15000,15000 to test if it spawns.
 	if (keyStates[GLFW_KEY_H] == 1) {
-		Particle newparticle;
+		Particle newparticle(0, 0, 100, 100, 0, 0);
 
-		newparticle.Init(0, 0, 100, 100, 0, 0);
-		particleSystem.particles.emplace_back(newparticle);
+		//newparticle.Init(0, 0, 100, 100, 0, 0);
 		//std::cout << "R : " << newparticle.object.color.r << "\nG : " << newparticle.object.color.g << "\nB : " << newparticle.object.color.b << "\n";
 	}
 
-	if (keyStates[GLFW_KEY_L]) {
-		for (size_t i = 0; i < particleSystem.particles.size(); ++i) {
-			particleSystem.particles[i].~Particle();
-		}
+	if (keyStates[GLFW_KEY_L] == 1) {
+		//Grid(3, 3);
+		Animation_Top_Left_To_Bottom_Right(5, 5, 20);
+		//particleSystem.EmptyParticleSystem();
 	}
 
 	if (mouseButtonStates[GLFW_MOUSE_BUTTON_LEFT]) {
@@ -453,6 +453,11 @@ void OpenGLApplication::OpenGLUpdate() {
 		}
 	}
 
+
+	UpdateAnimationTimers();
+	UpdateAnimation();
+
+	myImGui.Draw();
 	Draw();
 	particleSystem.Draw();
 	// Unbind the FBO to restore the default framebuffer
@@ -461,6 +466,7 @@ void OpenGLApplication::OpenGLUpdate() {
 	myImGui.Draw();
 
 
+	
 }
 
 
