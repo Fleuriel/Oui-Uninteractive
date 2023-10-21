@@ -457,7 +457,6 @@ void OpenGLApplication::OpenGLUpdate() {
 	UpdateAnimationTimers();
 	UpdateAnimation();
 
-	myImGui.Draw();
 	Draw();
 	particleSystem.Draw();
 	// Unbind the FBO to restore the default framebuffer
