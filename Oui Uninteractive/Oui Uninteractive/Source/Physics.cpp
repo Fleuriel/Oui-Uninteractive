@@ -116,6 +116,14 @@ void Physics::Update(float dt) {
 		if (body->txPtr->rotation >= 360.0f || body->txPtr->rotation <= -360.0f)
 			body->txPtr->rotation = 0.0f;
 		//Collision Detection
+	
+		bitArray result = rowsBitArray[body->implicitGridPos.first] & colBitArray[body->implicitGridPos.second];
+		if (result.count() > 1) {
+
+
+
+			
+		}
 		for (; it2 != bodyList.end(); it2++) {
 			PhysicsBody* body2 = it2->second;
 			if (body2->GetOwner()->GetGameObjectID() == body->GetOwner()->GetGameObjectID()) {
