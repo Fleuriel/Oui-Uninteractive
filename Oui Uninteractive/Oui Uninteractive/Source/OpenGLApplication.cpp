@@ -122,7 +122,6 @@ void OpenGLApplication::OpenGLWindowInit() {
 
 	// Tell GLFW that we are using the CORE Profile
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-	
 
 	// Create viewport of width and height.
 	glViewport(0, 0, windowSize.first, windowSize.second);
@@ -146,7 +145,10 @@ void OpenGLApplication::OpenGLWindowInit() {
 	// Set glfw window resize callback function
 	glfwSetWindowSizeCallback(windowNew, OpenGLWindowResizeCallback);
 
-
+	// Set OpenGL states
+	glEnable(GL_CULL_FACE);
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 }
 
 

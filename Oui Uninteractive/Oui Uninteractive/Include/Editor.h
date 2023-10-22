@@ -29,6 +29,7 @@
 #include "PhysicsBody.h"
 #include "Input.h"
 #include "OpenGLObjects.h"
+#include "FontManager.h"
 
 #define GET_COMPONENT(GameObject, Component, ComponentType) (GameObject->GetComponentType<Component>(ComponentType))
 
@@ -100,7 +101,7 @@ private:
 
 // Store panel selection
 struct Panels {
-	bool gamePanel;
+	bool gamePanel{ true };
 	bool soundPanel;
 	bool objectPanel;
 	bool debugPanel;

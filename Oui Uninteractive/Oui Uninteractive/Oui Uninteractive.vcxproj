@@ -34,6 +34,7 @@
     <ClCompile Include="Source\Collision.cpp" />
     <ClCompile Include="Source\CoordinateSystem.cpp" />
     <ClCompile Include="Source\Editor.cpp" />
+    <ClCompile Include="Source\FontManager.cpp" />
     <ClCompile Include="Source\GameObject.cpp" />
     <ClCompile Include="Source\GameStateManager.cpp" />
     <ClCompile Include="Source\Global.cpp" />
@@ -72,6 +73,7 @@
     <ClInclude Include="Include\ComponentType.h" />
     <ClInclude Include="Include\CoordinateSystem.h" />
     <ClInclude Include="Include\Editor.h" />
+    <ClInclude Include="Include\FontManager.h" />
     <ClInclude Include="Include\GameObject.h" />
     <ClInclude Include="Include\GameStateManager.h" />
     <ClInclude Include="Include\Global.h" />
