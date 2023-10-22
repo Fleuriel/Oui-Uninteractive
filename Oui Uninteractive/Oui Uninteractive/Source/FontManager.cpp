@@ -33,10 +33,11 @@ FontManager::FontManager() {
 * @return No return
 *************************************************************************/
 void FontManager::Initialize() {
-	FT_Library test;
-	if (FT_Init_FreeType(&test)) {
-		std::cout << "Error initializing FreeType library";
+	result = FT_Init_FreeType(&ft); // Returns 0 if successful
+	if (!result) {
+		std::cout << "FreeType Library Initialization Successful" << std::endl;
 	}
+	LoadFonts();
 }
 
 
@@ -47,6 +48,28 @@ void FontManager::Initialize() {
 *************************************************************************/
 void FontManager::Update(float dt) {
 
+}
+
+
+/**************************************************************************
+* @brief This function loads the fonts from the file directories
+* @return No return
+*************************************************************************/
+void FontManager::LoadFonts() {
+	// Search font directory and load fonts
+	for (const auto& i : std::filesystem::directory_iterator(fontPath)) {
+		/*FMOD::Sound* newSound;
+		result = system->createSound(i.path().string().c_str(), FMOD_DEFAULT, 0, &newSound);
+		if (result != FMOD_OK) {
+			std::cout << "FMOD error: " << FMOD_ErrorString(result);
+		}
+		bgmSounds.push_back(newSound);*/
+		FT_Face newFace;
+		result = FT_New_Face(ft, i.path().string().c_str(), 0, &newFace);
+		if (!result) {
+			std::cout << "Successfully loaded font: " << i.path().filename().string() << std::endl;
+		}
+	}
 }
 
 

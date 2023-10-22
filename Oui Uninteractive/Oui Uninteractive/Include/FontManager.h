@@ -10,7 +10,7 @@
 #ifndef FONTMANAGER_H
 #define FONTMANAGER_H
 
-
+#include <string>
 #include <filesystem>
 #include <ft2build.h>
 #include FT_FREETYPE_H
@@ -21,10 +21,18 @@ public:
 	FontManager();
 	void Initialize();
 	virtual void Update(float dt);
-
+	void LoadFonts();
 	~FontManager();
+	
+	// File paths to the respetive fonts
+	std::filesystem::path fontPath{ "../fonts/" };
+	// To store FreeType result codes
+	int result; 
+	// Container for fonts
+	std::vector<FT_Face> fontVec{};
+
 private:
-	FT_Library ftLibrary;
+	FT_Library ft;
 
 };
 extern FontManager* fontManager;
