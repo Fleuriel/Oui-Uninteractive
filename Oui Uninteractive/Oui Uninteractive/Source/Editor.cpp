@@ -172,7 +172,7 @@ void Editor::CreateRenderWindow() {
 		ImVec2 wsize = ImGui::GetWindowSize();
 		// Invert V from openGL
 		//ImGui::Image(reinterpret_cast<ImTextureID>(0), wsize, ImVec2(0, 1), ImVec2(1, 0));
-		ImGui::Image(reinterpret_cast<ImTextureID>(thirdTexture), wsize, ImVec2(0, 0), ImVec2(1, 1)); // Replace thirdTexture with handle to FBO when graphics done rendering to FBO
+		ImGui::Image(reinterpret_cast<ImTextureID>(OpenGLObject::FrameTexture), wsize, ImVec2(0.0f, 1.0f), ImVec2(1.0f, 0.0f)); // Replace thirdTexture with handle to FBO when graphics done rendering to FBO
 		ImGui::EndChild();
 	}
 	ImGui::End();

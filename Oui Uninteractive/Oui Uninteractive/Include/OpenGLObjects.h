@@ -28,7 +28,7 @@
 
 // External Texture Color
 extern int importTexture, secondTexture, thirdTexture;
-
+extern GLuint texture_id;
 
 class OpenGLObject{
 public:
@@ -67,6 +67,15 @@ public:
 	static GLuint mdl_ref, shd_ref; // Model and Shader Reference
 
 	static GLuint VAO, VBO;			// Object VAO VBO
+	
+	// Frame Buffers
+	static GLuint FBO;
+	static GLuint RBO;				// rendering buffer object
+
+	static GLuint FrameTexture;
+
+
+
 
 	// encapsulates state required to render a geometrical model
 	struct OpenGLModel {
