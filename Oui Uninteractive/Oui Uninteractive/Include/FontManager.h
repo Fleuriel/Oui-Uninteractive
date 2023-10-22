@@ -4,7 +4,7 @@
  * @par DP email: l.wangchunmark@digipen.edu
  * @par Course: CSD 2401
  * @par Software Engineering Project 3
- * @date 09-05-2023
+ * @date 18-10-2023
  * @brief This source file contains the decleration of the FontManager class used to setup FreeType and handle rendering of fonts
  *************************************************************************/
 #ifndef FONTMANAGER_H
@@ -16,8 +16,6 @@
 #include FT_FREETYPE_H
 #include "ISystem.h"
 
-
-
 class FontManager : public ISystem {
 public:
 	FontManager();
@@ -26,7 +24,7 @@ public:
 
 	~FontManager();
 private:
-	FT_Library ftLibrary{ nullptr };
+	FT_Library ftLibrary;
 
 };
 extern FontManager* fontManager;

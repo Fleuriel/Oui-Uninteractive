@@ -1,5 +1,14 @@
+/**************************************************************************
+ * @file FontManager.cpp
+ * @author LOW Wang Chun, Mark
+ * @par DP email: l.wangchunmark@digipen.edu
+ * @par Course: CSD 2401
+ * @par Software Engineering Project 3
+ * @date 18-10-2023
+ * @brief This source file contains the definition of the FontManager class used to setup FreeType and handle rendering of fonts
+ *************************************************************************/
 
-
+#include <iostream>
 #include "FontManager.h"
 
 // Initialize global pointer
@@ -24,7 +33,10 @@ FontManager::FontManager() {
 * @return No return
 *************************************************************************/
 void FontManager::Initialize() {
-
+	FT_Library test;
+	if (FT_Init_FreeType(&test)) {
+		std::cout << "Error initializing FreeType library";
+	}
 }
 
 

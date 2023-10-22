@@ -164,7 +164,7 @@ void ParticleSystem::Update() {
  *************************************************************************/
 void ParticleSystem::Draw() {
 
-		std::cout << "Particle Storage Size:" << particles.size() << '\n';
+		//std::cout << "Particle Storage Size:" << particles.size() << '\n';
 
         // Iterate through the particles
         for (size_t i = 0; i < particles.size(); ++i){   
