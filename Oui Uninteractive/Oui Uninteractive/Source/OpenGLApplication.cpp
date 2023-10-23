@@ -66,7 +66,7 @@ Background background;
 
 ParticleSystem particleSystem;
 
-
+bool OpenGLObject::renderBoundingBox = false;
 OpenGLObject::OpenGLModel mdl;
 float positionX = 0;
 float angle;
@@ -245,12 +245,13 @@ void OpenGLApplication::OpenGLUpdate() {
 	}
 	//glBindFramebuffer(GL_FRAMEBUFFER, OpenGLObject::FBO);
 
-	// Clear the FBO and render your graphics
+	// Clear the original window
 	glClear(GL_COLOR_BUFFER_BIT);
 	// Bind the FBO for rendering
 	glBindFramebuffer(GL_FRAMEBUFFER, OpenGLObject::FBO);
 
-
+	// Clear the FBO and render.
+	glClear(GL_COLOR_BUFFER_BIT);
 
 
 
@@ -313,6 +314,7 @@ void OpenGLApplication::OpenGLUpdate() {
 		positionX--;
 	}
 
+	
 
 	// This allows changing of game states.
 #ifdef _DEBUG
@@ -444,6 +446,7 @@ void OpenGLApplication::OpenGLUpdate() {
 		if (obj.TagID == 2) {
 			obj.Update(300, 400, 50, 50, angle, false);
 		}
+
 	}
 
 	// Updates the Game Object
@@ -453,6 +456,23 @@ void OpenGLApplication::OpenGLUpdate() {
 		}
 	}
 
+
+	if (OpenGLObject::renderBoundingBox)
+	{
+		static size_t gameobjID = 0;
+		std::map<size_t, GameObject*> copyMap = objectFactory->GetGameObjectIDMap();
+		for (std::map<size_t, GameObject*>::iterator it2 = copyMap.begin(); it2 != copyMap.end(); it2++) {
+			gameobjID = it2->first;
+			if ((objectFactory->GetGameObjectByID(gameobjID)->Has(ComponentType::PHYSICS_BODY) != -1) && (objectFactory->GetGameObjectByID(gameobjID)->Has(ComponentType::TRANSFORM) != -1) && (objectFactory->GetGameObjectByID(gameobjID) != nullptr)) {
+				static Vector2D min, max;
+				max = GET_COMPONENT(objectFactory->GetGameObjectByID(gameobjID), PhysicsBody, ComponentType::PHYSICS_BODY)->boundingbox->max;
+				min = GET_COMPONENT(objectFactory->GetGameObjectByID(gameobjID), PhysicsBody, ComponentType::PHYSICS_BODY)->boundingbox->min;
+
+				GET_COMPONENT(objectFactory->GetGameObjectByID(gameobjID), Transform, ComponentType::TRANSFORM)->shape->DrawCollisionBox(min, max);
+			}
+		}
+
+	}
 
 	UpdateAnimationTimers();
 	UpdateAnimation();
@@ -464,7 +484,7 @@ void OpenGLApplication::OpenGLUpdate() {
 
 	myImGui.Draw();
 
-
+	
 	
 }
 

@@ -52,6 +52,8 @@ public:
 	
 	~OpenGLObject() {};
 
+	static bool renderBoundingBox;
+
 
 	int TagID;						// Id for the Model to Texture
 
