@@ -31,7 +31,9 @@ public:
 	IMessage(const std::string& message) : messageID(message) {}
 	virtual ~IMessage() {}
 
-	std::string GetMessageID() { return messageID; }
+	std::string GetMessageID() { 
+		return messageID; 
+	}
 };
 
 // Define a message handler
@@ -44,12 +46,23 @@ private:
 
 public:
 	IObserver() {}
+	IObserver(const std::string& id) : messageID(id) {}
 	~IObserver() {}
 
-	//void HandleMessage() {}
-	void AddMessageHandler(const std::string& message, MessageHandler mh) { messageHandlerMap.emplace(message, mh); }
-	void RemoveMessageHandler(const std::string& message) { messageHandlerMap.erase(message); }
-	MessageHandler GetMessageHandler(const std::string& message) { return messageHandlerMap[message]; }
+	// Observer to add message handler
+	void AddMessageHandler(const std::string& message, MessageHandler mh) {
+		messageHandlerMap.emplace(message, mh); 
+	}
+
+	// Observer to remove message handler
+	void RemoveMessageHandler(const std::string& message) { 
+		messageHandlerMap.erase(message);
+	}
+
+	// Observer to get message handler (to be called)
+	MessageHandler GetMessageHandler(const std::string& message) { 
+		return messageHandlerMap[message]; 
+	}
 };
 
 class IBroadcaster {
@@ -67,11 +80,13 @@ public:
 		observerMap.emplace(observer, message); 
 	}*/
 
+	// Broadcaster to register observer
 	void RegisterObserver(const std::string& message, IObserver* observer) {
 		observerMap.emplace(message, observer);
 	}
 
 	//void UnregisterObserver(IObserver* observer) { observerMap.erase(observer); }
+	// Broadcaster to unregister observer
 	void UnregisterObserver(std::string message, IObserver* observer) {
 		typedef std::multimap<std::string, IObserver*>::iterator iterator;
 		std::pair<iterator, iterator> itPair = observerMap.equal_range(message);
@@ -85,9 +100,19 @@ public:
 		}
 	}
 
-	void SendToObservers(IMessage* msg) { msg = nullptr; }
+	//void SendToObservers(IMessage* msg) { msg = nullptr; }
 
-	void ProcessMessage(IMessage* msg) { msg = nullptr; }
+	void ProcessMessage(IMessage* msg) {
+		// Send message to observers who subscribed to specified message
+		typedef std::multimap<std::string, IObserver*>::iterator iterator;
+		std::pair<iterator, iterator> itPair = observerMap.equal_range(msg->GetMessageID());
+
+		iterator it = itPair.first;
+		for (; it != itPair.second; ++it) {
+			// Call the function pointed to by GetMessageHandler
+			it->second->GetMessageHandler(msg->GetMessageID())(msg);
+		}
+	}
 
 	/*virtual void RegisterObserver(const std::string& message, IObserver* observer) = 0;
 	virtual void UnregisterObserver(std::string message, IObserver* observer) = 0;

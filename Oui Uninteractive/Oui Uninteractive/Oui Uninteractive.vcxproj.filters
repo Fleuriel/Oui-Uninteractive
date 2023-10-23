@@ -23,6 +23,9 @@
     <Filter Include="Component\Transform">
       <UniqueIdentifier>{80f82db0-5e12-4ac3-8aad-7566da48ea04}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Component\LogicComponent">
+      <UniqueIdentifier>{497b768f-ce1a-42b5-922c-fb0037a23067}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Graphics">
       <UniqueIdentifier>{b850807c-cc0b-4cd6-9f77-e56f58fe6902}</UniqueIdentifier>
     </Filter>
@@ -80,11 +83,20 @@
     <Filter Include="Systems\AssetManager">
       <UniqueIdentifier>{1033705e-fc34-48f4-b347-5753e4516bcc}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Systems\Fonts">
+      <UniqueIdentifier>{d8c3b620-4d25-47bc-9b39-502a121f2bed}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Systems\Logic">
+      <UniqueIdentifier>{68e4998f-2d6d-4e0b-becc-d8681d46f2c2}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Message">
       <UniqueIdentifier>{42e61a1f-2d95-49db-b283-60b550577bab}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Systems\Fonts">
-      <UniqueIdentifier>{d8c3b620-4d25-47bc-9b39-502a121f2bed}</UniqueIdentifier>
+    <Filter Include="Scripts">
+      <UniqueIdentifier>{e11bcda0-fda8-41f4-8db4-69d11785ce7f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scenes">
+      <UniqueIdentifier>{239246d4-7ca6-4752-ac90-7f3d3980f498}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -191,10 +203,10 @@
       <Filter>Graphics</Filter>
     </ClCompile>
     <ClCompile Include="Source\Logic.cpp">
-      <Filter>Systems</Filter>
+      <Filter>Systems\Logic</Filter>
     </ClCompile>
     <ClCompile Include="Source\LogicComponent.cpp">
-      <Filter>Component</Filter>
+      <Filter>Component\LogicComponent</Filter>
     </ClCompile>
     <ClCompile Include="Source\TransformSystem.cpp">
       <Filter>Systems</Filter>
@@ -202,8 +214,12 @@
     <ClCompile Include="Source\SceneManager.cpp">
       <Filter>Systems</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Scene1.cpp" />
-    <ClCompile Include="Source\Scene2.cpp" />
+    <ClCompile Include="Source\Scene1.cpp">
+      <Filter>Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Scene2.cpp">
+      <Filter>Scenes</Filter>
+    </ClCompile>
     <ClCompile Include="Source\Animation.cpp">
       <Filter>Graphics</Filter>
     </ClCompile>
@@ -306,22 +322,35 @@
       <Filter>Graphics</Filter>
     </ClInclude>
     <ClInclude Include="Include\Logic.h">
-      <Filter>Systems</Filter>
+      <Filter>Systems\Logic</Filter>
     </ClInclude>
     <ClInclude Include="Include\LogicComponent.h">
-      <Filter>Component</Filter>
+      <Filter>Component\LogicComponent</Filter>
     </ClInclude>
-    <ClInclude Include="Include\IScript.h" />
-    <ClInclude Include="Include\TestScript.h" />
+    <ClInclude Include="Include\IScript.h">
+      <Filter>Scripts</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\TestScript.h">
+      <Filter>Scripts</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\EnemyAIScript.h">
+      <Filter>Scripts</Filter>
+    </ClInclude>
     <ClInclude Include="Include\TransformSystem.h">
       <Filter>Systems</Filter>
     </ClInclude>
     <ClInclude Include="Include\SceneManager.h">
       <Filter>Systems</Filter>
     </ClInclude>
-    <ClInclude Include="Include\IScene.h" />
-    <ClInclude Include="Include\Scene1.h" />
-    <ClInclude Include="Include\Scene2.h" />
+    <ClInclude Include="Include\IScene.h">
+      <Filter>Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\Scene1.h">
+      <Filter>Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\Scene2.h">
+      <Filter>Scenes</Filter>
+    </ClInclude>
     <ClInclude Include="Include\IMessage.h">
       <Filter>Message</Filter>
     </ClInclude>
