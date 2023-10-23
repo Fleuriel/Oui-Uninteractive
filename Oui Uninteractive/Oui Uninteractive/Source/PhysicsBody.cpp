@@ -25,6 +25,7 @@ PhysicsBody::PhysicsBody() {
 	direction = Vec2(0, 0);
 	speed = 50;
 	boundingbox = new AABB();
+	boundingbox->center = Vec2(0, 0);
 	boundingbox->min = Vec2(0,0);
 	boundingbox->max = Vec2(0,0);
 	implicitGridPos = std::pair<int, int>(0, 0);
@@ -51,6 +52,8 @@ void PhysicsBody::Initialize() {
 		txPtr = GetOwner()->GetComponentType<Transform>(ComponentType::TRANSFORM);
 	}
 	physicsSys->bodyList.insert(std::pair<size_t, PhysicsBody*>(GetOwner()->GetGameObjectID(), this));
+
+	mask.flip(GetOwner()->GetGameObjectID());
 }
 
 /**************************************************************************
@@ -66,6 +69,8 @@ void PhysicsBody::Serialize(rapidjson::Value::ConstMemberIterator& itr) {
 	rotationSpeed = components["RotationSpeed"].GetFloat();
 	speed = components["Speed"].GetFloat();
 	mass = components["Mass"].GetFloat();
+	isStatic = components["IsStatic"].GetBool();
+	frictionForce = components["FrictionForce"].GetFloat();
 }
 /**************************************************************************
 * @brief Function to Clone a PhysicsBody Component
@@ -87,20 +92,6 @@ PhysicsBody* PhysicsBody::Clone() const{
 
 	return newBody;
 }
-
-/*----------TESTING MESSAGING SYSTEM----------*/
-void PhysicsBody::RegisterObserver(IObserver* observer) {
-	observer = nullptr;
-}
-
-void PhysicsBody::UnregisterObserver(IObserver* observer) {
-	observer = nullptr;
-}
-
-void PhysicsBody::NotifyObservers(IMessage* msg) {
-	msg = nullptr;
-}
-/*----------TESTING MESSAGING SYSTEM----------*/
 
 ForceManager::ForceManager() {
 	forceVec.push_back(new LinearForce(0.5, false, 50));

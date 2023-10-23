@@ -11,8 +11,17 @@
 #ifndef ISYSTEM_H
 #define ISYSTEM_H
 
+#include "IMessage.h"
+
 class ISystem {
 public:
+	IBroadcaster broadcaster;
+	IObserver observer;
+
+public:
+	// Constructor
+	ISystem() : broadcaster{}, observer{} {};
+
 	// Initialize the system
 	virtual void Initialize() {};
 
@@ -21,6 +30,50 @@ public:
 
 	// Terminate the system
 	virtual ~ISystem() {};
+
+	/*----------TESTING MESSAGING SYSTEM----------*/
+	/*virtual void RegisterObserver(IObserver* observer) = 0;
+	virtual void UnregisterObserver(IObserver* observer) = 0;
+	virtual void NotifyObservers(IMessage* msg) = 0;*/
+
+	/*void RegisterObserver(const std::string& message, IObserver* observer) override {
+
+	}
+
+	virtual void UnregisterObserver(std::string message, IObserver* observer) override {
+
+	}
+
+	virtual void SendToObservers(IMessage* msg) override {
+
+	}
+
+	virtual void ProcessMessage(IMessage* msg) override {
+
+	}*/
+	
+
+	void RegisterObserver(const std::string& message, IObserver* observer) {
+		broadcaster.RegisterObserver(message, observer);
+	}
+
+	void UnregisterObserver(const std::string& message, IObserver* observer) {
+		broadcaster.UnregisterObserver(message, observer);
+	}
+
+	/*void SendToObservers(IMessage* msg) {
+		broadcaster.SendToObservers(msg);
+	}*/
+
+	void ProcessMessage(IMessage* msg) {
+		broadcaster.ProcessMessage(msg);
+	}
+
+	void AddMessageHandler(const std::string& message, MessageHandler mh) {
+		observer.AddMessageHandler(message, mh);
+	}
+
+	/*----------TESTING MESSAGING SYSTEM----------*/
 };
 
 #endif

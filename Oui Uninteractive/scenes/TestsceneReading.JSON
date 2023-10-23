@@ -10,7 +10,10 @@
                     "VelocityY": 0.0,
                     "RotationSpeed": 200.0,
                     "Speed": 50.0,
-                    "Mass": 100.0
+                    "Mass": 100.0,
+                    "IsStatic": false,
+                    "FrictionForce": 20.0
+                    
                 },
                 "Transform": {
                     "PositionX": -250.0,
@@ -33,7 +36,9 @@
                     "VelocityY": 0.0,
                     "RotationSpeed": 20.0,
                     "Speed": 120.0,
-                    "Mass": 80.0
+                    "Mass": 80.0,
+                    "IsStatic": false,
+                    "FrictionForce": 20.0
                 },
                 "Transform": {
                     "PositionX": 50.0,
@@ -55,7 +60,9 @@
                     "VelocityY": 0.0,
                     "RotationSpeed": 20.0,
                     "Speed": 500.0,
-                    "Mass": 80.0
+                    "Mass": 80.0,
+                    "IsStatic": false,
+                    "FrictionForce": 20.0
                 },
                 "Transform": {
                     "PositionX": 200.0,

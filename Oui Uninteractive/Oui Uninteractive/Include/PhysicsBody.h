@@ -17,6 +17,7 @@
 #include "Transform.h"
 #include "Vector2D.h"
 #include "GameObject.h"
+#include <bitset>
 
 //Forward declaration for PhysicsBody
 class PhysicsBody;
@@ -59,21 +60,13 @@ public:
 class AABB {
 public:
 	//Extents of the Axis Aligned Bounding Box
-	Vec2 min, max;
+	Vec2 min, max, x, y, center;
 
 	/**************************************************************************
 	* @brief Default constructor for AABB
 	*************************************************************************/
 	AABB() {};
 };
-
-/*----------TESTING MESSAGING SYSTEM----------*/
-class MessageCollision : public IMessage {
-public:
-	// Message information
-
-};
-/*----------TESTING MESSAGING SYSTEM----------*/
 
 class PhysicsBody : public IComponent {
 public:
@@ -102,13 +95,6 @@ public:
 	*************************************************************************/
 	virtual PhysicsBody* Clone() const;
 
-
-	/*----------TESTING MESSAGING SYSTEM----------*/
-	virtual void RegisterObserver(IObserver* observer);
-	virtual void UnregisterObserver(IObserver* observer);
-	virtual void NotifyObservers(IMessage* msg);
-	/*----------TESTING MESSAGING SYSTEM----------*/
-
 	//Member Variables
 	// 
 	float mass;
@@ -134,6 +120,7 @@ public:
 
 	ForceManager forceManager;
 	std::pair<int, int> implicitGridPos;
+	std::bitset<3000> mask;
 };
 
 #endif

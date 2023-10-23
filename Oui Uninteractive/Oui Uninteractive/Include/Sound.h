@@ -26,7 +26,7 @@ public:
 	void PlaySFXSounds();
 	void TogglePlayChannel(FMOD::Channel* selectedChannel);
 
-	 ~SoundManager() ;
+	 ~SoundManager();
 
 	// File paths to the respective sounds
 	std::filesystem::path bgmPath{"../sounds/bgm"};

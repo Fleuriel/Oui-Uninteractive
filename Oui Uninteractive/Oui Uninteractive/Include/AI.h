@@ -8,13 +8,13 @@
  * @brief This file contains the declaration of the AI class.
  *		(FOR FUTURE ENEMY AI)
  *************************************************************************/
-#ifndef AI_H
-#define AI_H
-
-#include "IComponent.h"
-
-class EnemyAI : public IComponent {
-
-};
-
-#endif
+//#ifndef AI_H
+//#define AI_H
+//
+//#include "IComponent.h"
+//
+//class EnemyAI : public IComponent {
+//
+//};
+//
+//#endif

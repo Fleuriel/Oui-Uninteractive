@@ -23,11 +23,6 @@
 #include <iostream>
 #include "GameObject.h"
 
-// For future event/message system
-/*void SendMessage(Event* event) {
-
-}*/
-
 /**************************************************************************
 * @brief Default Constructor
 *************************************************************************/

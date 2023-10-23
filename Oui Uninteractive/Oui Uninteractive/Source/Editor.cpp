@@ -157,6 +157,10 @@ void Editor::CreateMasterPanel() {
 	ImGui::Checkbox("Sound Panel", &panelList.soundPanel); // Checkbox for sound panel
 	ImGui::Checkbox("Objects Panel", &panelList.objectPanel); // Checkbox for sound panel
 	ImGui::Checkbox("Debug Panel", &panelList.debugPanel); // Checkbox for debug panel
+	// The "do smth" button. Interchangable quick access button used for quick testing of features
+	if (ImGui::Button("Do Something")) {
+		std::cout << "fk u";
+	}
 	ImGui::End();
 }
 

@@ -14,6 +14,8 @@
 #include <cmath>
 #include "Vector2D.h"
 #include "GameStateManager.h"
+#include "Physics.h"
+#include "PhysicsBody.h"
 
 
 /**************************************************************************
@@ -91,9 +93,30 @@ bool CollisionStaticDynamicRectRect(AABB Rect1, AABB Rect2) {
 			 Rect1.max.y > Rect2.min.y) &&
 			(Rect2.max.x > Rect1.min.x  &&
 			 Rect2.max.y > Rect1.min.y)) {
-			std::cout << "Collision detected\n";
+		std::cout << "Collision detected\n";
+		//std::cout << "X " << physicsSys->bodyList[0]->txPtr->position.x << "Y " << physicsSys->bodyList[0]->txPtr->position.y << " \n";
+		//std::cout << Rect1.max.x << " " << Rect1.center.x;
+		Vector2D direction;
+		direction = Rect2.center - Rect1.center;
+		std::cout << "Direction X: " << direction.x << "Direction Y: " << direction.y << "\n";
+		//std::cout << "Direction: " << direction.center.x << " " << direction.center.y;
+		
+		Vector2D Rect1norm;
+		Vector2DNormalize(Rect1norm, direction);
+
+		if (Vector2DDotProduct(direction, Rect1norm) < 0.f) {
+			Rect1norm = -Rect1norm;
+			physicsSys->bodyList[0]->velocity = Rect1norm;
+		}
+		
+		
+		//physicsSys->bodyList[0]->velocity.x = -20;
+		//physicsSys->bodyList[0]->velocity.y = -20;
+		
+		
 		return true;
 		}
+
 		else {
 		return false;
 		}

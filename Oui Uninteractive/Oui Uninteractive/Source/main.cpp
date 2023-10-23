@@ -19,6 +19,7 @@
 #include "Sound.h"
 #include "TransformSystem.h"
 #include "SceneManager.h"
+#include "FontManager.h"
 
 void TimeUpdate();
 
@@ -40,6 +41,7 @@ int main(){
 	sysManager->AddSystem(new Physics());
 	sysManager->AddSystem(new TransformSystem());
 	sysManager->AddSystem(new SoundManager());
+	sysManager->AddSystem(new FontManager());
 	sysManager->AddSystem(new SceneManager());
 	sysManager->Initialize();
 	// Set callback for window close button (top right button).

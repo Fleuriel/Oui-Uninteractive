@@ -122,7 +122,6 @@ void OpenGLApplication::OpenGLWindowInit() {
 
 	// Tell GLFW that we are using the CORE Profile
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-	
 
 	// Create viewport of width and height.
 	glViewport(0, 0, windowSize.first, windowSize.second);
@@ -146,7 +145,10 @@ void OpenGLApplication::OpenGLWindowInit() {
 	// Set glfw window resize callback function
 	glfwSetWindowSizeCallback(windowNew, OpenGLWindowResizeCallback);
 
-
+	// Set OpenGL states
+	glEnable(GL_CULL_FACE);
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 }
 
 
@@ -258,7 +260,7 @@ void OpenGLApplication::OpenGLUpdate() {
 	myImGui.CreateFrame();
 	myEditor.Update();
 	myImGui.Update();
-	particleSystem.Update();
+	
 	// Create x and y pos variables to collect data from the mouse position.
 	double xpos, ypos{};
 	glfwGetCursorPos(windowNew, &xpos, &ypos);
@@ -377,7 +379,7 @@ void OpenGLApplication::OpenGLUpdate() {
 
 	if (keyStates[GLFW_KEY_L] == 1) {
 		//Grid(3, 3);
-		Animation_Top_Left_To_Bottom_Right(5, 5, 20);
+		Animation_Top_Left_To_Bottom_Right(10, 10, 1);
 		//particleSystem.EmptyParticleSystem();
 	}
 
@@ -429,6 +431,7 @@ void OpenGLApplication::OpenGLUpdate() {
 	myEditor.Update();
 
 	particleSystem.Update();
+
 	if (angle > 360)
 		angle = 0;
 	// Set the Background Color.

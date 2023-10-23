@@ -13,7 +13,6 @@
 
 #include "ComponentType.h"
 #include "JsonSerializer.h"
-#include "IMessage.h"
 
 //Forward Declaration
 class GameObject;
@@ -62,12 +61,6 @@ public:
 	* @return IComponent*
 	*************************************************************************/
 	virtual IComponent* Clone() const = 0;
-
-	/*----------TESTING MESSAGING SYSTEM----------*/
-	virtual void RegisterObserver(IObserver* observer) { observer = nullptr; }
-	virtual void UnregisterObserver(IObserver* observer) { observer = nullptr; }
-	virtual void NotifyObservers(IMessage* msg) { msg = nullptr; }
-	/*----------TESTING MESSAGING SYSTEM----------*/
 
 	/**************************************************************************
 	* @brief Destructor

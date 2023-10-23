@@ -30,7 +30,7 @@ SoundManager::SoundManager() {
 
 
 /**************************************************************************
-* @brief Default constructor for PhysicsBody component
+* @brief Initializer for SoundManager class
 * @return No return
 *************************************************************************/
 void SoundManager::Initialize() {

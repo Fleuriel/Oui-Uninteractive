@@ -67,6 +67,7 @@ void Physics::Update(float dt) {
 		Vector2DNormalize(body->direction, body->direction + AngleToVec(body->txPtr->rotation * (static_cast<float>(M_PI) / 180.0f)));
 		body->forceManager.Update(dt);
 		//Check update
+		body->boundingbox->center = body->txPtr->position;
 		body->boundingbox->min = Vec2((-0.5f) * body->txPtr->scale + body->txPtr->position.x, (-0.5f) * body->txPtr->scale + body->txPtr->position.y);
 		body->boundingbox->max = Vec2((0.5f) * body->txPtr->scale + body->txPtr->position.x, (0.5f) * body->txPtr->scale + body->txPtr->position.y);
 		//calculate physics
@@ -100,6 +101,9 @@ void Physics::Update(float dt) {
 		
 		absPosition.x = body->txPtr->position.x + (windowSize.first / 2.0f);
 		absPosition.y = body->txPtr->position.y + (windowSize.second / 2.0f);
+
+		rowsBitArray[body->implicitGridPos.first].flip(body->GetOwner()->GetGameObjectID());
+		colBitArray[body->implicitGridPos.second].flip(body->GetOwner()->GetGameObjectID());
 		
 		body->implicitGridPos.first = absPosition.x / cellWidth; //which row
 		body->implicitGridPos.second = absPosition.y / cellHeight; //which col
@@ -116,6 +120,25 @@ void Physics::Update(float dt) {
 		if (body->txPtr->rotation >= 360.0f || body->txPtr->rotation <= -360.0f)
 			body->txPtr->rotation = 0.0f;
 		//Collision Detection
+	
+	/*	if (result.count() > 1 && body->GetOwner()->GetGameObjectID() == 0) {
+			std::cout << result << "\n";
+			
+		}*/
+		/*if (body->GetOwner()->GetGameObjectID() == 0) {
+			std::cout << "ID: 0" << '\n';
+			std::cout << body->implicitGridPos.first << " | " << body->implicitGridPos.second << "\n";
+			std::cout << result << "\n";
+		}
+		if (body->GetOwner()->GetGameObjectID() == 1) {
+			std::cout << "ID: 1" << "\n";
+			std::cout << body->implicitGridPos.first << " | " << body->implicitGridPos.second << "\n";
+			std::cout << result << "\n";
+		}*/
+
+
+			
+		
 		for (; it2 != bodyList.end(); it2++) {
 			PhysicsBody* body2 = it2->second;
 			if (body2->GetOwner()->GetGameObjectID() == body->GetOwner()->GetGameObjectID()) {
@@ -126,6 +149,50 @@ void Physics::Update(float dt) {
 		//apply calculations to object
 	//	body->txPtr->shape->Update(body->txPtr->position.x, body->txPtr->position.y, body->txPtr->scale, body->txPtr->scale, body->txPtr->rotation, true);
 	}
+	/*
+	std::bitset<3000> mask;
+	
+	for (int i = 0; i < WIDTH; i++) {
+		if (rowsBitArray[i].count() == 0) {
+			continue;
+		}
+		for (int j = 0; j < HEIGHT; j++) {
+			if (colBitArray[j].count() == 0) {
+				continue;
+			}
+			bitArray result = rowsBitArray[i] & colBitArray[j];
+			if (result.count() < 1) {
+				continue;
+			}
+			int count = result.count();
+			int currIndex = 0;
+			int baseObjectIndex = -1;
+			PhysicsBody* basePhysicsComp = nullptr;
+			while (count > 0) {
+				mask.flip(currIndex);
+				if ((result & (mask)) == currIndex) {
+					if (baseObjectIndex == -1) {
+						baseObjectIndex = currIndex;
+						basePhysicsComp = GET_COMPONENT(objectFactory->GetGameObjectByID(baseObjectIndex), PhysicsBody, ComponentType::PHYSICS_BODY);
+						
+					}
+					else {
+						if (basePhysicsComp != nullptr) {
+							PhysicsBody* other = GET_COMPONENT(objectFactory->GetGameObjectByID(currIndex), PhysicsBody, ComponentType::PHYSICS_BODY);
+							CollisionStaticDynamicRectRect(*(basePhysicsComp->boundingbox), *(other->boundingbox));
+						}
+					}
+					count--;
+				}
+				currIndex++;
+				if (currIndex >= 3000) {
+					break;
+				}
+				mask.reset();
+			}
+		}
+	}*/
+	
 	//std::chrono::high_resolution_clock::time_point timeEnd = std::chrono::high_resolution_clock::now();
 	//std::chrono::duration<float, std::milli> duration = timeEnd - timeStart;
 	//Editor::timeRecorder.physicsTime = duration.count();

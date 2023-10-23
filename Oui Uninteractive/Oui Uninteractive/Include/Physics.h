@@ -19,9 +19,9 @@
 #include <bitset>
 #include "OpenGLApplication.h"
 
-#define HEIGHT 5
-#define WIDTH 5
-
+#define HEIGHT 2
+#define WIDTH 2
+using bitArray = std::bitset<3000>;
 class Physics : public ISystem{
 public:
 	/**************************************************************************
@@ -129,8 +129,10 @@ public:
 	void CapVelocity(Vec2 originalVelocity, Vec2& bodyVelocity);
 	//insert linked list of all physics body components
 	std::map<size_t, PhysicsBody*> bodyList;
-	std::bitset<100> rowsBitArray[WIDTH];
-	std::bitset<100> colBitArray[HEIGHT];
+
+	
+	bitArray rowsBitArray[WIDTH];
+	bitArray colBitArray[HEIGHT];
 
 	int cellWidth;
 	int cellHeight;
