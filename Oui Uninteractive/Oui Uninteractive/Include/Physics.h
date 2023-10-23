@@ -19,8 +19,8 @@
 #include <bitset>
 #include "OpenGLApplication.h"
 
-#define HEIGHT 3
-#define WIDTH 3
+#define HEIGHT 2
+#define WIDTH 2
 using bitArray = std::bitset<3000>;
 class Physics : public ISystem{
 public:
