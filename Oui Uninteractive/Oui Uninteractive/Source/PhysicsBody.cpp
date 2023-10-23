@@ -51,7 +51,8 @@ void PhysicsBody::Initialize() {
 		txPtr = GetOwner()->GetComponentType<Transform>(ComponentType::TRANSFORM);
 	}
 	physicsSys->bodyList.insert(std::pair<size_t, PhysicsBody*>(GetOwner()->GetGameObjectID(), this));
-	//body->mask.flip(GetOwner()->GetGameObjectID());
+
+	mask.flip(GetOwner()->GetGameObjectID());
 }
 
 /**************************************************************************
@@ -67,6 +68,8 @@ void PhysicsBody::Serialize(rapidjson::Value::ConstMemberIterator& itr) {
 	rotationSpeed = components["RotationSpeed"].GetFloat();
 	speed = components["Speed"].GetFloat();
 	mass = components["Mass"].GetFloat();
+	isStatic = components["IsStatic"].GetBool();
+	frictionForce = components["FrictionForce"].GetFloat();
 }
 /**************************************************************************
 * @brief Function to Clone a PhysicsBody Component

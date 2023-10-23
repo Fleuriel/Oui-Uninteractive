@@ -17,6 +17,7 @@
 #include "Transform.h"
 #include "Vector2D.h"
 #include "GameObject.h"
+#include <bitset>
 
 //Forward declaration for PhysicsBody
 class PhysicsBody;
@@ -119,7 +120,7 @@ public:
 
 	ForceManager forceManager;
 	std::pair<int, int> implicitGridPos;
-	//bitArray mask;
+	std::bitset<3000> mask;
 };
 
 #endif

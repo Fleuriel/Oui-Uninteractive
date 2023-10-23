@@ -100,6 +100,9 @@ void Physics::Update(float dt) {
 		
 		absPosition.x = body->txPtr->position.x + (windowSize.first / 2.0f);
 		absPosition.y = body->txPtr->position.y + (windowSize.second / 2.0f);
+
+		rowsBitArray[body->implicitGridPos.first].flip(body->GetOwner()->GetGameObjectID());
+		colBitArray[body->implicitGridPos.second].flip(body->GetOwner()->GetGameObjectID());
 		
 		body->implicitGridPos.first = absPosition.x / cellWidth; //which row
 		body->implicitGridPos.second = absPosition.y / cellHeight; //which col
@@ -119,11 +122,27 @@ void Physics::Update(float dt) {
 	
 		bitArray result = rowsBitArray[body->implicitGridPos.first] & colBitArray[body->implicitGridPos.second];
 		if (result.count() > 1) {
-
+			
+		}
+		
+	/*	if (result.count() > 1 && body->GetOwner()->GetGameObjectID() == 0) {
+			std::cout << result << "\n";
+			
+		}*/
+		/*if (body->GetOwner()->GetGameObjectID() == 0) {
+			std::cout << "ID: 0" << '\n';
+			std::cout << body->implicitGridPos.first << " | " << body->implicitGridPos.second << "\n";
+			std::cout << result << "\n";
+		}
+		if (body->GetOwner()->GetGameObjectID() == 1) {
+			std::cout << "ID: 1" << "\n";
+			std::cout << body->implicitGridPos.first << " | " << body->implicitGridPos.second << "\n";
+			std::cout << result << "\n";
+		}*/
 
 
 			
-		}
+		
 		for (; it2 != bodyList.end(); it2++) {
 			PhysicsBody* body2 = it2->second;
 			if (body2->GetOwner()->GetGameObjectID() == body->GetOwner()->GetGameObjectID()) {
@@ -134,6 +153,8 @@ void Physics::Update(float dt) {
 		//apply calculations to object
 	//	body->txPtr->shape->Update(body->txPtr->position.x, body->txPtr->position.y, body->txPtr->scale, body->txPtr->scale, body->txPtr->rotation, true);
 	}
+
+	
 	//std::chrono::high_resolution_clock::time_point timeEnd = std::chrono::high_resolution_clock::now();
 	//std::chrono::duration<float, std::milli> duration = timeEnd - timeStart;
 	//Editor::timeRecorder.physicsTime = duration.count();
