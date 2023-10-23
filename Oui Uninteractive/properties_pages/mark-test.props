@@ -4,7 +4,7 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup>
     <IncludePath>$(ProjectDir)include;$(SolutionDir)lib\glfw-3.3.8.bin.WIN64\include;$(SolutionDir)lib\glew-2.2.0\include;$(SolutionDir)lib\glm-0.9.9.8;$(SolutionDir)lib\imgui-docking;$(SolutionDir)lib\imgui-docking\backends;$(SolutionDir)lib\stb-master;$(SolutionDir)lib\freetype-2.13.2\include;$(IncludePath)</IncludePath>
-    <LibraryPath>$(ProjectDir)include;$(SolutionDir)lib\glfw-3.3.8.bin.WIN64\lib-vc2022;$(SolutionDir)lib\glew-2.2.0\lib\Release\x64;$(SolutionDir)lib\fmod;$(SolutionDir)lib\freetype-2.13.2\objs\x64\Release;$(LibraryPath)</LibraryPath>
+    <LibraryPath>$(ProjectDir)include;$(SolutionDir)lib\glfw-3.3.8.bin.WIN64\lib-vc2022;$(SolutionDir)lib\glew-2.2.0\lib\Release\x64;$(SolutionDir)lib\fmod;$(SolutionDir)lib\freetype-2.13.2\objs\;$(LibraryPath)</LibraryPath>
     <RunCodeAnalysis>false</RunCodeAnalysis>
     <EnableClangTidyCodeAnalysis>false</EnableClangTidyCodeAnalysis>
     <_PropertySheetDisplayName>Oui-Uninteractive</_PropertySheetDisplayName>
@@ -17,7 +17,7 @@
       <Command>copy "$(SolutionDir)lib\glfw-3.3.8.bin.WIN64\lib-vc2022\glfw3.dll" "$(TargetDir)glfw3.dll" /Y
 copy "$(SolutionDir)lib\glew-2.2.0\bin\Release\x64\glew32.dll" "$(TargetDir)glew32.dll" /Y
 copy "$(SolutionDir)lib\fmod\fmod.dll" "$(TargetDir)fmod.dll" /Y
-copy "$(SolutionDir)lib\freetype-2.13.2\objs\x64\Release\freetype.dll" "$(TargetDir)freetype.dll" /Y</Command>
+copy "$(SolutionDir)lib\freetype-2.13.2\objs\freetype.dll" "$(TargetDir)freetype.dll" /Y</Command>
     </PostBuildEvent>
     <ClCompile>
       <PreprocessorDefinitions>GLFW_DLL;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
