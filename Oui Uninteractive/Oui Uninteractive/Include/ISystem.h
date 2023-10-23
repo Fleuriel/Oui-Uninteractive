@@ -13,8 +13,15 @@
 
 #include "IMessage.h"
 
-class ISystem : public IBroadcaster {
+class ISystem {
 public:
+	IBroadcaster broadcaster;
+	IObserver observer;
+
+public:
+	// Constructor
+	ISystem() : broadcaster{}, observer{} {};
+
 	// Initialize the system
 	virtual void Initialize() {};
 
@@ -44,6 +51,27 @@ public:
 	virtual void ProcessMessage(IMessage* msg) override {
 
 	}*/
+	
+
+	void RegisterObserver(const std::string& message, IObserver* observer) {
+		broadcaster.RegisterObserver(message, observer);
+	}
+
+	void UnregisterObserver(const std::string& message, IObserver* observer) {
+		broadcaster.UnregisterObserver(message, observer);
+	}
+
+	/*void SendToObservers(IMessage* msg) {
+		broadcaster.SendToObservers(msg);
+	}*/
+
+	void ProcessMessage(IMessage* msg) {
+		broadcaster.ProcessMessage(msg);
+	}
+
+	void AddMessageHandler(const std::string& message, MessageHandler mh) {
+		observer.AddMessageHandler(message, mh);
+	}
 
 	/*----------TESTING MESSAGING SYSTEM----------*/
 };
