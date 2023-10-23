@@ -64,6 +64,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\lib\stb-master\stb_image.h" />
+    <ClInclude Include="EnemyAIScript.h" />
     <ClInclude Include="Include\AI.h" />
     <ClInclude Include="Include\Animation.h" />
     <ClInclude Include="Include\AssetManager.h" />
