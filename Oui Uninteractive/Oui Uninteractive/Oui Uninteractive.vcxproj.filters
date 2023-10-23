@@ -83,6 +83,9 @@
     <Filter Include="Message">
       <UniqueIdentifier>{42e61a1f-2d95-49db-b283-60b550577bab}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Systems\Fonts">
+      <UniqueIdentifier>{d8c3b620-4d25-47bc-9b39-502a121f2bed}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\GameStateManager.cpp">
@@ -201,6 +204,12 @@
     </ClCompile>
     <ClCompile Include="Source\Scene1.cpp" />
     <ClCompile Include="Source\Scene2.cpp" />
+    <ClCompile Include="Source\Animation.cpp">
+      <Filter>Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\FontManager.cpp">
+      <Filter>Systems\Fonts</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Include\Matrix3x3.h">
@@ -316,11 +325,11 @@
     <ClInclude Include="Include\IMessage.h">
       <Filter>Message</Filter>
     </ClInclude>
-    <ClInclude Include="Include\IBroadcaster.h">
-      <Filter>Message</Filter>
+    <ClInclude Include="Include\Animation.h">
+      <Filter>Graphics</Filter>
     </ClInclude>
-    <ClInclude Include="Include\IObserver.h">
-      <Filter>Message</Filter>
+    <ClInclude Include="Include\FontManager.h">
+      <Filter>Systems\Fonts</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

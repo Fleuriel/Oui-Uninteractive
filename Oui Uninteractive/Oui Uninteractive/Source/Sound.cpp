@@ -30,7 +30,7 @@ SoundManager::SoundManager() {
 
 
 /**************************************************************************
-* @brief Default constructor for PhysicsBody component
+* @brief Initializer for SoundManager class
 * @return No return
 *************************************************************************/
 void SoundManager::Initialize() {
@@ -54,13 +54,16 @@ void SoundManager::Initialize() {
 * @return No return
 *************************************************************************/
 void SoundManager::Update(float dt) {
-	std::chrono::high_resolution_clock::time_point timeStart = std::chrono::high_resolution_clock::now();
+	// Start time profiling for sound system
+	TimeProfiler profiler(Editor::timeRecorder.soundTime);
+	
+	//std::chrono::high_resolution_clock::time_point timeStart = std::chrono::high_resolution_clock::now();
 	
 	system->update();
 
-	std::chrono::high_resolution_clock::time_point timeEnd = std::chrono::high_resolution_clock::now();
-	std::chrono::duration<float, std::milli> duration = timeEnd - timeStart;
-	Editor::timeRecorder.soundTime = duration.count();
+	//std::chrono::high_resolution_clock::time_point timeEnd = std::chrono::high_resolution_clock::now();
+	//std::chrono::duration<float, std::milli> duration = timeEnd - timeStart;
+	//Editor::timeRecorder.soundTime = duration.count();
 	(void)dt;
 }
 

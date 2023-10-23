@@ -35,6 +35,7 @@
 #include <iterator>
 #include <Background.h>
 #include "TestScript.h"
+#include <Animation.h>
 
 #define STB_IMAGE_IMPLEMENTATION
 #include <stb_image.h>
@@ -72,6 +73,8 @@ float angle;
 
 bool togglePolygonMode = false;
 // For Input
+extern bool capsLockReleased;
+extern bool capsLockOn;
 extern float mouse_scroll_total_Y_offset;
 extern int lastkeyedcommand;
 
@@ -123,7 +126,7 @@ void OpenGLApplication::OpenGLWindowInit() {
 	// Create viewport of width and height.
 	glViewport(0, 0, windowSize.first, windowSize.second);
 
-	glfwSwapInterval(0);
+	glfwSwapInterval(1);
 
 	// Receives Key input/output [Checks for Key Presses]
 	glfwSetKeyCallback(windowNew, KeyCallBack);
@@ -142,7 +145,10 @@ void OpenGLApplication::OpenGLWindowInit() {
 	// Set glfw window resize callback function
 	glfwSetWindowSizeCallback(windowNew, OpenGLWindowResizeCallback);
 
-
+	// Set OpenGL states
+	glEnable(GL_CULL_FACE);
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 }
 
 
@@ -230,7 +236,8 @@ void OpenGLApplication::OpenGLInit() {
 * @return void
 *************************************************************************/
 void OpenGLApplication::OpenGLUpdate() {
-
+	// Start time profiling for grpahics system
+	//TimeProfiler profiler(Editor::timeRecorder.graphicsTime);
 	// End the Game.
 	if (keyStates[GLFW_KEY_ESCAPE]) {
 		// set the window to CLOSE.
@@ -238,10 +245,21 @@ void OpenGLApplication::OpenGLUpdate() {
 		// Set game state to quit to exit the while loop
 		CurrentGameState = STATE_QUIT;
 	}
+	//glBindFramebuffer(GL_FRAMEBUFFER, OpenGLObject::FBO);
+
+	// Clear the FBO and render your graphics
+	glClear(GL_COLOR_BUFFER_BIT);
+	// Bind the FBO for rendering
+	glBindFramebuffer(GL_FRAMEBUFFER, OpenGLObject::FBO);
+
+
+
+
+
 	myImGui.CreateFrame();
 	myEditor.Update();
 	myImGui.Update();
-	particleSystem.Update();
+	
 	// Create x and y pos variables to collect data from the mouse position.
 	double xpos, ypos{};
 	glfwGetCursorPos(windowNew, &xpos, &ypos);
@@ -304,7 +322,90 @@ void OpenGLApplication::OpenGLUpdate() {
 		CurrentGameState = STATE_LEVEL_TEST;
 #endif
 
-	InputSystemUpdate();
+	bool ctrlKeyPressed = (keyStates[GLFW_KEY_RIGHT_CONTROL] || keyStates[GLFW_KEY_LEFT_CONTROL]);
+	bool shiftKeyPressed = (keyStates[GLFW_KEY_RIGHT_SHIFT] || keyStates[GLFW_KEY_LEFT_SHIFT]);
+
+	if (ctrlKeyPressed) {
+#ifdef _DEBUG
+		std::cout << "CONTROL ON\n";
+#endif
+	}
+
+	if (shiftKeyPressed) {
+#ifdef _DEBUG
+		std::cout << "SHIFT ON\n";
+#endif
+	}
+
+	if (keyStates[GLFW_KEY_CAPS_LOCK]) {
+		if (keyStates[GLFW_KEY_CAPS_LOCK] == 1) {
+			capsLockOn = !capsLockOn;
+		}
+	}
+
+	if (capsLockOn) {
+#ifdef _DEBUG
+		std::cout << "CAPS LOCK ON\n";
+#endif
+	}
+
+	if (shiftKeyPressed != capsLockOn) {
+#ifdef _DEBUG
+		std::cout << "BIG LETTERS\n";
+#endif
+	}
+
+	if (keyStates[GLFW_KEY_A]) {
+		physicsSys->SetCurrentRotationSpeed(GET_COMPONENT(objectFactory->GetGameObjectByID(0), PhysicsBody, ComponentType::PHYSICS_BODY)->rotationSpeed, 0);
+	}
+
+	if (keyStates[GLFW_KEY_D]) {
+		physicsSys->SetCurrentRotationSpeed(-(GET_COMPONENT(objectFactory->GetGameObjectByID(0), PhysicsBody, ComponentType::PHYSICS_BODY)->rotationSpeed), 0);
+	}
+
+	if ((keyStates[GLFW_KEY_A] && keyStates[GLFW_KEY_D]) || (!keyStates[GLFW_KEY_A] && !keyStates[GLFW_KEY_D])) {
+		physicsSys->SetCurrentRotationSpeed(0, 0);
+	}
+
+	// Create new Particle of Size 15000,15000 to test if it spawns.
+	if (keyStates[GLFW_KEY_H] == 1) {
+		Particle newparticle(0, 0, 100, 100, 0, 0);
+
+		//newparticle.Init(0, 0, 100, 100, 0, 0);
+		//std::cout << "R : " << newparticle.object.color.r << "\nG : " << newparticle.object.color.g << "\nB : " << newparticle.object.color.b << "\n";
+	}
+
+	if (keyStates[GLFW_KEY_L] == 1) {
+		//Grid(3, 3);
+		Animation_Top_Left_To_Bottom_Right(10, 10, 1);
+		//particleSystem.EmptyParticleSystem();
+	}
+
+	if (mouseButtonStates[GLFW_MOUSE_BUTTON_LEFT]) {
+#ifdef _DEBUG
+		std::cout << "LCLICK\n";
+#endif
+	}
+	if (mouseButtonStates[GLFW_MOUSE_BUTTON_RIGHT]) {
+#ifdef _DEBUG
+		std::cout << "RCLICK\n";
+#endif
+	}
+
+	if (mouseScrollState == 1) {
+#ifdef _DEBUG
+		std::cout << "SCROLL UP\n";
+		std::cout << "Total Scroll Y Offset:" << mouse_scroll_total_Y_offset << "\n";
+#endif
+	}
+	if (mouseScrollState == -1) {
+#ifdef _DEBUG
+		std::cout << "SCROLL DOWN\n";
+		std::cout << "Total Scroll Y Offset:" << mouse_scroll_total_Y_offset << "\n";
+#endif
+	}
+
+
 	UpdateStatesForNextFrame();
 
 
@@ -328,12 +429,13 @@ void OpenGLApplication::OpenGLUpdate() {
 	myEditor.Update();
 
 	particleSystem.Update();
+
 	if (angle > 360)
 		angle = 0;
 	// Set the Background Color.
 	OpenGLSetBackgroundColor(0.5f, 0.5f, 0.5f, 1.0f);
 	// Clear the Color Buffer Bit to enable 'reloading'
-	glClear(GL_COLOR_BUFFER_BIT);
+	
 	// Draws the Background
 	background.Draw();
 
@@ -354,10 +456,19 @@ void OpenGLApplication::OpenGLUpdate() {
 		}
 	}
 
-	myImGui.Draw();
+
+	UpdateAnimationTimers();
+	UpdateAnimation();
+
 	Draw();
 	particleSystem.Draw();
+	// Unbind the FBO to restore the default framebuffer
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
+	myImGui.Draw();
+
+
+	
 }
 
 
@@ -383,7 +494,9 @@ void OpenGLApplication::Update(float dt)
 	OpenGLUpdate();
 }
 OpenGLApplication::~OpenGLApplication() {
+	OpenGLWindowCleanup();
 	OpenGLCleanup();
+	
 }
 
 

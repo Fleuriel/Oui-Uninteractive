@@ -39,7 +39,13 @@ public:
      * The Particle consists of an OpenGLObject, velocity, alpha (transparency),
      * lifespan, and an interactability flag.
      *************************************************************************/
-    Particle();
+    Particle(int userInput_x, int userInput_y, float userInput_sizeX,
+        float userInput_sizeY, float userInput_angleDisplacement,
+        float userInput_angleSpeed, float userInput_lifespan = 10);
+
+    void RemoveParticle();
+
+    void UpdateIDs();
 
     /*************************************************************************
      * @brief Initialize a Particle object with user-provided parameters.
@@ -76,15 +82,11 @@ public:
      *************************************************************************/
     void Draw();
 
-    /*************************************************************************
-     * @brief Destructor for the Particle class.
-     *************************************************************************/
-    ~Particle() {};
-
     OpenGLObject object;
+    int ID;
 private:
     Vector2D velocity;  //stores the speed and direction of particle movement
-    int lifespan;       //determines how long the particle exists
+    float lifespan;       //determines how long the particle exists
     int alpha;          //determines the opacity of the particle
     
 };
@@ -112,9 +114,9 @@ public:
     std::vector<Particle> particles; //container storing all particles
 
     /*************************************************************************
-     * @brief Destructor for the ParticleSystem class.
+     * @brief 
      *************************************************************************/
-    ~ParticleSystem() {};
+    void EmptyParticleSystem();
 
 private:
 };

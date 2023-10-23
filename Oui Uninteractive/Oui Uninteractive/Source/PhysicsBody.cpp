@@ -27,6 +27,7 @@ PhysicsBody::PhysicsBody() {
 	boundingbox = new AABB();
 	boundingbox->min = Vec2(0,0);
 	boundingbox->max = Vec2(0,0);
+	implicitGridPos = std::pair<int, int>(0, 0);
 	frictionForce = 20;
 }
 /**************************************************************************
@@ -50,6 +51,7 @@ void PhysicsBody::Initialize() {
 		txPtr = GetOwner()->GetComponentType<Transform>(ComponentType::TRANSFORM);
 	}
 	physicsSys->bodyList.insert(std::pair<size_t, PhysicsBody*>(GetOwner()->GetGameObjectID(), this));
+	//body->mask.flip(GetOwner()->GetGameObjectID());
 }
 
 /**************************************************************************

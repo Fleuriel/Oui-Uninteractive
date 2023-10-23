@@ -16,7 +16,12 @@
 #include "PhysicsBody.h"
 #include <list>
 
+#include <bitset>
+#include "OpenGLApplication.h"
 
+#define HEIGHT 5
+#define WIDTH 5
+using bitArray = std::bitset<10>;
 class Physics : public ISystem{
 public:
 	/**************************************************************************
@@ -124,6 +129,13 @@ public:
 	void CapVelocity(Vec2 originalVelocity, Vec2& bodyVelocity);
 	//insert linked list of all physics body components
 	std::map<size_t, PhysicsBody*> bodyList;
+
+	
+	bitArray rowsBitArray[WIDTH];
+	bitArray colBitArray[HEIGHT];
+
+	int cellWidth;
+	int cellHeight;
 };
 //Global pointer
 extern Physics* physicsSys;

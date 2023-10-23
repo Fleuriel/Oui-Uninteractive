@@ -28,11 +28,13 @@
     <ClCompile Include="..\lib\imgui-docking\implot.cpp" />
     <ClCompile Include="..\lib\imgui-docking\implot_items.cpp" />
     <ClCompile Include="Source\AI.cpp" />
+    <ClCompile Include="Source\Animation.cpp" />
     <ClCompile Include="Source\AssetManager.cpp" />
     <ClCompile Include="Source\Background.cpp" />
     <ClCompile Include="Source\Collision.cpp" />
     <ClCompile Include="Source\CoordinateSystem.cpp" />
     <ClCompile Include="Source\Editor.cpp" />
+    <ClCompile Include="Source\FontManager.cpp" />
     <ClCompile Include="Source\GameObject.cpp" />
     <ClCompile Include="Source\GameStateManager.cpp" />
     <ClCompile Include="Source\Global.cpp" />
@@ -64,6 +66,7 @@
     <ClInclude Include="..\lib\stb-master\stb_image.h" />
     <ClInclude Include="EnemyAIScript.h" />
     <ClInclude Include="Include\AI.h" />
+    <ClInclude Include="Include\Animation.h" />
     <ClInclude Include="Include\AssetManager.h" />
     <ClInclude Include="Include\Background.h" />
     <ClInclude Include="Include\Collision.h" />
@@ -71,6 +74,7 @@
     <ClInclude Include="Include\ComponentType.h" />
     <ClInclude Include="Include\CoordinateSystem.h" />
     <ClInclude Include="Include\Editor.h" />
+    <ClInclude Include="Include\FontManager.h" />
     <ClInclude Include="Include\GameObject.h" />
     <ClInclude Include="Include\GameStateManager.h" />
     <ClInclude Include="Include\Global.h" />

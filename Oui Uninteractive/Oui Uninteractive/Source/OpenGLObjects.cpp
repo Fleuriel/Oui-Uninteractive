@@ -45,11 +45,15 @@ GLuint OpenGLObject::ShaderProgram{};
 // VAO and VBO initializiation
 GLuint OpenGLObject::VAO = 0;
 GLuint OpenGLObject::VBO = 0;
+GLuint OpenGLObject::FBO = 0;
+GLuint OpenGLObject::RBO = 0;
+GLuint OpenGLObject::FrameTexture = 0;
 
 // Global Variable to set it, and then use it eventually.
 int firstTexture, secondTexture, thirdTexture;
 
 
+GLuint texture_id; // the texture id we'll need later to create a texture 
 
 
 /**************************************************************************
@@ -83,7 +87,49 @@ void OpenGLObject::Initialize(){
 	// Emplace model to the model vector
 	models.emplace_back(OpenGLObject::Box_Model(color));
 
-	
+
+	const GLint WIDTH = windowSize.first;
+	const GLint HEIGHT = windowSize.second;
+
+	// Generate the framebuffer
+	glGenFramebuffers(1, &FBO);
+	glBindFramebuffer(GL_FRAMEBUFFER, FBO);
+
+	// Generate and bind the texture
+	glGenTextures(1, &FrameTexture);
+	glBindTexture(GL_TEXTURE_2D, FrameTexture);
+
+	// Configure the texture
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, WIDTH, HEIGHT, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+	// Attach the texture to the framebuffer
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, FrameTexture, 0);
+
+	// Generate and bind the renderbuffer
+	glGenRenderbuffers(1, &RBO);
+	glBindRenderbuffer(GL_RENDERBUFFER, RBO);
+
+	// Configure the renderbuffer
+	glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, WIDTH, HEIGHT);
+
+	// Attach the renderbuffer to the framebuffer
+	glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, RBO);
+
+	// Check if the framebuffer is complete
+	if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
+		std::cout << "ERROR::FRAMEBUFFER:: Framebuffer is not complete!\n";
+
+	// Unbind the framebuffer, texture, and renderbuffer
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+	glBindTexture(GL_TEXTURE_2D, 0);
+	glBindRenderbuffer(GL_RENDERBUFFER, 0);
+
+
+
+
+
 #ifdef _DEBUG // This is to Make sure that the graphics Pipeline WORKS as intended
 			  // AND HAS TO BE UNCOMMENTED TO CHANGE STATES.!
 			  // Draws a Box with color.

@@ -25,11 +25,14 @@ Physics* physicsSys = nullptr;
 * @brief Default constructor for Physics System
 *************************************************************************/
 Physics::Physics() {
+	cellWidth = 0;
+	cellHeight = 0;
 	if (physicsSys != nullptr) {
 		//instantiate physics system
 		return;
 	}
 	else {
+		
 		physicsSys = this;
 	}
 }
@@ -39,8 +42,11 @@ Physics::Physics() {
 *************************************************************************/
 void Physics::Initialize() {
 	//Register Component creator of Body here
+	
 	ComponentFactory<PhysicsBody>* testPtr = new ComponentFactory<PhysicsBody>(ComponentType::PHYSICS_BODY);
 	objectFactory->AddComponentFactory(ComponentType::PHYSICS_BODY, testPtr);
+	cellWidth = windowSize.first / WIDTH;
+	cellHeight = windowSize.second / HEIGHT;
 }
 /**************************************************************************
 * @brief Update Function of the Physics System
@@ -48,7 +54,9 @@ void Physics::Initialize() {
 * @return void
 *************************************************************************/
 void Physics::Update(float dt) {
-	std::chrono::high_resolution_clock::time_point timeStart = std::chrono::high_resolution_clock::now();
+	// Start time profiling for physics system
+	TimeProfiler profiler(Editor::timeRecorder.physicsTime);
+	//std::chrono::high_resolution_clock::time_point timeStart = std::chrono::high_resolution_clock::now();
 	std::map<size_t, PhysicsBody*>::iterator it = bodyList.begin();
 	std::map<size_t, PhysicsBody*>::iterator it2 = bodyList.begin();
 	for (; it != bodyList.end(); it++) {
@@ -59,8 +67,8 @@ void Physics::Update(float dt) {
 		Vector2DNormalize(body->direction, body->direction + AngleToVec(body->txPtr->rotation * (static_cast<float>(M_PI) / 180.0f)));
 		body->forceManager.Update(dt);
 		//Check update
-		body->boundingbox->min = Vec2((-1 / 2.f) * body->txPtr->scale + body->txPtr->position.x, (-1 / 2.f) * body->txPtr->scale + body->txPtr->position.y);
-		body->boundingbox->max = Vec2((1 / 2.f) * body->txPtr->scale + body->txPtr->position.x, (1 / 2.f) * body->txPtr->scale + body->txPtr->position.y);
+		body->boundingbox->min = Vec2((-0.5f) * body->txPtr->scale + body->txPtr->position.x, (-0.5f) * body->txPtr->scale + body->txPtr->position.y);
+		body->boundingbox->max = Vec2((0.5f) * body->txPtr->scale + body->txPtr->position.x, (0.5f) * body->txPtr->scale + body->txPtr->position.y);
 		//calculate physics
 		//Direction
 		Vec2 normalizedVel = Vec2(0,0);
@@ -85,6 +93,19 @@ void Physics::Update(float dt) {
 		
 		//Position
 		body->txPtr->position = body->txPtr->position + body->velocity * dt;
+		size_t test = body->GetOwner()->GetGameObjectID();
+		
+		
+		Vec2 absPosition = Vec2(0, 0);
+		
+		absPosition.x = body->txPtr->position.x + (windowSize.first / 2.0f);
+		absPosition.y = body->txPtr->position.y + (windowSize.second / 2.0f);
+		
+		body->implicitGridPos.first = absPosition.x / cellWidth; //which row
+		body->implicitGridPos.second = absPosition.y / cellHeight; //which col
+
+		rowsBitArray[body->implicitGridPos.first].flip(body->GetOwner()->GetGameObjectID());
+		colBitArray[body->implicitGridPos.second].flip(body->GetOwner()->GetGameObjectID());
 		
 		//Just spins all other objects
 		if (body->GetOwner()->GetGameObjectID() != 0) {
@@ -95,6 +116,14 @@ void Physics::Update(float dt) {
 		if (body->txPtr->rotation >= 360.0f || body->txPtr->rotation <= -360.0f)
 			body->txPtr->rotation = 0.0f;
 		//Collision Detection
+	
+		bitArray result = rowsBitArray[body->implicitGridPos.first] & colBitArray[body->implicitGridPos.second];
+		if (result.count() > 1) {
+
+
+
+			
+		}
 		for (; it2 != bodyList.end(); it2++) {
 			PhysicsBody* body2 = it2->second;
 			if (body2->GetOwner()->GetGameObjectID() == body->GetOwner()->GetGameObjectID()) {
@@ -105,9 +134,9 @@ void Physics::Update(float dt) {
 		//apply calculations to object
 	//	body->txPtr->shape->Update(body->txPtr->position.x, body->txPtr->position.y, body->txPtr->scale, body->txPtr->scale, body->txPtr->rotation, true);
 	}
-	std::chrono::high_resolution_clock::time_point timeEnd = std::chrono::high_resolution_clock::now();
-	std::chrono::duration<float, std::milli> duration = timeEnd - timeStart;
-	Editor::timeRecorder.physicsTime = duration.count();
+	//std::chrono::high_resolution_clock::time_point timeEnd = std::chrono::high_resolution_clock::now();
+	//std::chrono::duration<float, std::milli> duration = timeEnd - timeStart;
+	//Editor::timeRecorder.physicsTime = duration.count();
 }
 /**************************************************************************
 * @brief Set the position of all object's Physics Body

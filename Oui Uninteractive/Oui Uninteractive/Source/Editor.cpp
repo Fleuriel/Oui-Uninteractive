@@ -157,6 +157,10 @@ void Editor::CreateMasterPanel() {
 	ImGui::Checkbox("Sound Panel", &panelList.soundPanel); // Checkbox for sound panel
 	ImGui::Checkbox("Objects Panel", &panelList.objectPanel); // Checkbox for sound panel
 	ImGui::Checkbox("Debug Panel", &panelList.debugPanel); // Checkbox for debug panel
+	// The "do smth" button. Interchangable quick access button used for quick testing of features
+	if (ImGui::Button("Do Something")) {
+		std::cout << "fk u";
+	}
 	ImGui::End();
 }
 
@@ -172,7 +176,7 @@ void Editor::CreateRenderWindow() {
 		ImVec2 wsize = ImGui::GetWindowSize();
 		// Invert V from openGL
 		//ImGui::Image(reinterpret_cast<ImTextureID>(0), wsize, ImVec2(0, 1), ImVec2(1, 0));
-		ImGui::Image(reinterpret_cast<ImTextureID>(thirdTexture), wsize, ImVec2(0, 0), ImVec2(1, 1)); // Replace thirdTexture with handle to FBO when graphics done rendering to FBO
+		ImGui::Image(reinterpret_cast<ImTextureID>(OpenGLObject::FrameTexture), wsize, ImVec2(0.0f, 1.0f), ImVec2(1.0f, 0.0f)); // Replace thirdTexture with handle to FBO when graphics done rendering to FBO
 		ImGui::EndChild();
 	}
 	ImGui::End();
@@ -525,9 +529,10 @@ void Editor::CreateDebugPanel() {
 		float grpahicsPercentage = static_cast<float>(timeRecorder.graphicsTime / GetDT());
 		float soundPercentage = static_cast<float>(timeRecorder.soundTime / GetDT());
 		float particlesPercentage = static_cast<float>(timeRecorder.particlesTime / GetDT());
-		static const char* chartLabels[] = { "Physics", "Graphics" , "Sound", "Particles"};
+		float scenemanagerPercentage = static_cast<float>(timeRecorder.scenemanagerTime / GetDT());
+		static const char* chartLabels[] = { "Physics", "Graphics" , "Sound", "Particles", "Scene Manager"};
 		float data[] = {
-			physicsPercentage, grpahicsPercentage, soundPercentage, particlesPercentage
+			physicsPercentage, grpahicsPercentage, soundPercentage, particlesPercentage, scenemanagerPercentage
 		};
 		static ImPlotPieChartFlags flags = 0;
 		// Draw pie chart

@@ -29,6 +29,7 @@
 #include "PhysicsBody.h"
 #include "Input.h"
 #include "OpenGLObjects.h"
+#include "FontManager.h"
 
 #define GET_COMPONENT(GameObject, Component, ComponentType) (GameObject->GetComponentType<Component>(ComponentType))
 
@@ -41,6 +42,19 @@ public:
 	void Draw();
 	void Exit();
 	static void HelpMarker(std::string desc);
+};
+
+class TimeProfiler {
+public:
+	TimeProfiler(float& recorder) : tStart(std::chrono::high_resolution_clock::now()), tRecorder(recorder) {}
+	~TimeProfiler() {
+		auto tEnd = std::chrono::high_resolution_clock::now();
+		std::chrono::duration<float, std::milli> duration = tEnd - tStart;
+		tRecorder = duration.count();
+	}
+private:
+	std::chrono::high_resolution_clock::time_point tStart;
+	float& tRecorder;
 };
 
 
@@ -77,6 +91,7 @@ struct SystemTime {
 	float editorTime;
 	float soundTime;
 	float particlesTime;
+	float scenemanagerTime;
 };
 static SystemTime timeRecorder;
 
@@ -86,7 +101,7 @@ private:
 
 // Store panel selection
 struct Panels {
-	bool gamePanel;
+	bool gamePanel{ true };
 	bool soundPanel;
 	bool objectPanel;
 	bool debugPanel;
