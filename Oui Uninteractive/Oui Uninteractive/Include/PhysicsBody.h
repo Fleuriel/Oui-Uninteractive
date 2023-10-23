@@ -60,7 +60,7 @@ public:
 class AABB {
 public:
 	//Extents of the Axis Aligned Bounding Box
-	Vec2 min, max;
+	Vec2 min, max, x, y, center;
 
 	/**************************************************************************
 	* @brief Default constructor for AABB

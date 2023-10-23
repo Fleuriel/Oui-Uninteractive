@@ -25,6 +25,7 @@ PhysicsBody::PhysicsBody() {
 	direction = Vec2(0, 0);
 	speed = 50;
 	boundingbox = new AABB();
+	boundingbox->center = Vec2(0, 0);
 	boundingbox->min = Vec2(0,0);
 	boundingbox->max = Vec2(0,0);
 	implicitGridPos = std::pair<int, int>(0, 0);
