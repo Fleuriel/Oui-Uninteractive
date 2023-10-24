@@ -22,6 +22,10 @@
                 },
                 "LogicComponent": {
                     "ScriptID":[1]
+                },
+                "Collider": {
+                    "ColliderSize": 200.0,
+                    "ColliderRotation": 0.0
                 }
                 
             }
@@ -48,6 +52,10 @@
                 },
                 "LogicComponent": {
                     "ScriptID":[0]
+                },
+                "Collider": {
+                    "ColliderSize": 130.0,
+                    "ColliderRotation": 0.0
                 }
             }
         }
