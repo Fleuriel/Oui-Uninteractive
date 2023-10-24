@@ -26,8 +26,6 @@ Physics* physicsSys = nullptr;
 * @brief Default constructor for Physics System
 *************************************************************************/
 Physics::Physics() {
-	cellWidth = 0;
-	cellHeight = 0;
 	if (physicsSys != nullptr) {
 		//instantiate physics system
 		return;
@@ -46,8 +44,6 @@ void Physics::Initialize() {
 	
 	ComponentFactory<PhysicsBody>* testPtr = new ComponentFactory<PhysicsBody>(ComponentType::PHYSICS_BODY);
 	objectFactory->AddComponentFactory(ComponentType::PHYSICS_BODY, testPtr);
-	cellWidth = windowSize.first / WIDTH;
-	cellHeight = windowSize.second / HEIGHT;
 }
 /**************************************************************************
 * @brief Update Function of the Physics System
@@ -89,17 +85,9 @@ void Physics::Update(float dt) {
 			
 
 			CapVelocity(originalVelocity, body->velocity);
-			/*
-			if (body->GetOwner()->GetGameObjectID() == 0) {
-				std::cout << "velocity: " << body->velocity.x << " : " << body->velocity.y << "\n";
-			}
-			*/
-
+		
 			//Position
 			body->txPtr->position = body->txPtr->position + body->velocity * fixedDeltaTime;
-			if (body->GetOwner()->GetGameObjectID() == 4) {
-				std::cout << body->txPtr->position.x << "|" << body->txPtr->position.y << "\n";
-			}
 
 			//Just spins all other objects
 			/*if (body->GetOwner()->GetGameObjectID() != 0) {
@@ -109,23 +97,8 @@ void Physics::Update(float dt) {
 			body->txPtr->rotation = body->txPtr->rotation + body->currentRotationSpeed * dt;
 			if (body->txPtr->rotation >= 360.0f || body->txPtr->rotation <= -360.0f)
 				body->txPtr->rotation = 0.0f;
-			//Collision Detection
 
-		/*	if (result.count() > 1 && body->GetOwner()->GetGameObjectID() == 0) {
-				std::cout << result << "\n";
-
-			}*/
-			/*if (body->GetOwner()->GetGameObjectID() == 0) {
-				std::cout << "ID: 0" << '\n';
-				std::cout << body->implicitGridPos.first << " | " << body->implicitGridPos.second << "\n";
-				std::cout << result << "\n";
-			}
-			if (body->GetOwner()->GetGameObjectID() == 1) {
-				std::cout << "ID: 1" << "\n";
-				std::cout << body->implicitGridPos.first << " | " << body->implicitGridPos.second << "\n";
-				std::cout << result << "\n";
-			}*/
-
+		
 			//apply calculations to object
 		//	body->txPtr->shape->Update(body->txPtr->position.x, body->txPtr->position.y, body->txPtr->scale, body->txPtr->scale, body->txPtr->rotation, true);
 

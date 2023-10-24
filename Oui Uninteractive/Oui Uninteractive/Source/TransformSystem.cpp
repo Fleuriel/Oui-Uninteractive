@@ -7,6 +7,7 @@ void TransformSystem::Initialize() {
 	objectFactory->AddComponentFactory(ComponentType::TRANSFORM, testPtr2);
 }
 void TransformSystem::Update(float dt) {
+	TimeProfiler profiler(Editor::timeRecorder.transformTime);
 	std::map<size_t, GameObject*> copyMap = objectFactory->GetGameObjectIDMap();
 	std::map<size_t, GameObject*>::iterator it = copyMap.begin();
 	

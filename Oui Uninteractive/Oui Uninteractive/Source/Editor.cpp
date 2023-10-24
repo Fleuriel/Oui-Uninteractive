@@ -532,9 +532,11 @@ void Editor::CreateDebugPanel() {
 		float soundPercentage = static_cast<float>(timeRecorder.soundTime / GetDT());
 		float particlesPercentage = static_cast<float>(timeRecorder.particlesTime / GetDT());
 		float scenemanagerPercentage = static_cast<float>(timeRecorder.scenemanagerTime / GetDT());
-		static const char* chartLabels[] = { "Physics", "Graphics" , "Sound", "Particles", "Scene Manager"};
+		float colliderPercentage = static_cast<float>(timeRecorder.colliderTime / GetDT());
+		float transformPercentage = static_cast<float>(timeRecorder.transformTime / GetDT());
+		static const char* chartLabels[] = { "Physics", "Graphics" , "Sound", "Particles", "Scene Manager", "Collider", "Transform"};
 		float data[] = {
-			physicsPercentage, grpahicsPercentage, soundPercentage, particlesPercentage, scenemanagerPercentage
+			physicsPercentage, grpahicsPercentage, soundPercentage, particlesPercentage, scenemanagerPercentage, colliderPercentage, transformPercentage
 		};
 		static ImPlotPieChartFlags flags = 0;
 		// Draw pie chart

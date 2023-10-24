@@ -19,9 +19,7 @@
 #include <bitset>
 #include "OpenGLApplication.h"
 
-#define HEIGHT 2
-#define WIDTH 2
-using bitArray = std::bitset<3000>;
+
 class Physics : public ISystem{
 public:
 	/**************************************************************************
@@ -130,16 +128,10 @@ public:
 	//insert linked list of all physics body components
 	std::map<size_t, PhysicsBody*> bodyList;
 
-	
-	bitArray rowsBitArray[WIDTH];
-	bitArray colBitArray[HEIGHT];
-
 	double accumulatedTime = 0.0;//one time definition
 	int currentNumberOfSteps = 0;
 	const double fixedDeltaTime = 1.0 / 60;
 
-	int cellWidth;
-	int cellHeight;
 };
 //Global pointer
 extern Physics* physicsSys;

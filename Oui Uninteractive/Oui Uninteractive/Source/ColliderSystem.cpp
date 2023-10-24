@@ -10,12 +10,16 @@ ColliderSystem::ColliderSystem() {
 		colliderSys = this;
 	}
 }
+void ColliderSystem::BroadPhase() {
+
+}
 void ColliderSystem::Initialize() {
 	ComponentFactory<Collider>* testPtr = new ComponentFactory<Collider>(ComponentType::COLLIDER);
 	objectFactory->AddComponentFactory(ComponentType::COLLIDER, testPtr);
 }
 
 void ColliderSystem::Update(float dt) {
+	TimeProfiler profiler(Editor::timeRecorder.colliderTime);
 	std::map<size_t, Collider*>::iterator it = colliderMap.begin();
 	std::map<size_t, Collider*>::iterator it2 = colliderMap.begin();
 	for (; it != colliderMap.end(); it++) {

@@ -92,6 +92,8 @@ struct SystemTime {
 	float soundTime;
 	float particlesTime;
 	float scenemanagerTime;
+	float colliderTime;
+	float transformTime;
 };
 static SystemTime timeRecorder;
 
