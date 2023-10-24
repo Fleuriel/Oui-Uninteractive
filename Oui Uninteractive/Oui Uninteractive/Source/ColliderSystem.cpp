@@ -32,11 +32,6 @@ void ColliderSystem::Update(float dt) {
 			CollisionStaticDynamicRectRect(*(collider->boundingbox), *(body2->boundingbox));
 		}
 	}
-
-
-	
-
-	
 	//insert collision detection here
 	//response should be inside the function
 }

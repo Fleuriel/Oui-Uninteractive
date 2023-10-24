@@ -26,7 +26,9 @@ Collider* Collider::Clone() const{
 	newCollider->boundingbox->max = boundingbox->max;
 	newCollider->boundingbox->center = boundingbox->center;
 
-	newCollider->tx = tx->Clone();
+	newCollider->tx->position = tx->position;
+	newCollider->tx->rotation = tx->rotation;
+	newCollider->tx->scale = tx->scale;
 
 	return newCollider;
 }
@@ -40,10 +42,10 @@ Collider::Collider() {
 	boundingbox->max = Vec2(0, 0);
 
 	tx = new Transform();
-	tx->Initialize();
 }
 Collider::~Collider() {
-	colliderSys->colliderMap.erase(GetOwner()->GetGameObjectID());
 	delete tx;
 	delete boundingbox;
+	//colliderSys->colliderMap.erase(GetOwner()->GetGameObjectID());
+	
 }
