@@ -23,6 +23,8 @@
 
 void TimeUpdate();
 
+
+
 int main(){
 	#if defined(DEBUG) | defined(_DEBUG)
 		_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
@@ -132,7 +134,13 @@ int main(){
 * @return void
 *************************************************************************/
 void TimeUpdate(){
+	physicsSys->currentNumberOfSteps = 0;
 	currentTime = std::chrono::high_resolution_clock::now();
 	deltaTime = std::chrono::duration_cast<std::chrono::duration<double>>(currentTime - previousTime);
 	previousTime = currentTime;
+	physicsSys->accumulatedTime += deltaTime.count();
+	while (physicsSys->accumulatedTime >= physicsSys->fixedDeltaTime) {
+		physicsSys->accumulatedTime -= physicsSys->fixedDeltaTime;
+		physicsSys->currentNumberOfSteps++;
+	}
 }

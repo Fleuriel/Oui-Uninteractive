@@ -18,6 +18,7 @@
 #include "Vector2D.h"
 #include "Collision.h"
 #include "Editor.h"
+
 //initialize global pointer
 Physics* physicsSys = nullptr;
 
@@ -60,82 +61,84 @@ void Physics::Update(float dt) {
 	std::map<size_t, PhysicsBody*>::iterator it = bodyList.begin();
 	std::map<size_t, PhysicsBody*>::iterator it2 = bodyList.begin();
 	for (; it != bodyList.end(); it++) {
-		PhysicsBody* body = it->second;
-		if (body->isStatic) {
-			continue;
-		}
-		Vector2DNormalize(body->direction, body->direction + AngleToVec(body->txPtr->rotation * (static_cast<float>(M_PI) / 180.0f)));
-		body->forceManager.Update(dt);
-		//Check update
-		
-		//calculate physics
-		//Direction
-		Vec2 normalizedVel = Vec2(0,0);
-		Vector2DNormalize(normalizedVel, body->velocity);
-		Vec2 summedForce = body->forceManager.CalculateResultantForce();
-		body->acceleration = (summedForce - (body->frictionForce * normalizedVel)) * body->mass;
-		/*
-		if (body->GetOwner()->GetGameObjectID() == 0) {
-			std::cout << "Acceleration: " << body->acceleration.x << " : " << body->acceleration.y << "\n";
-		}*/
-		//Velocity
-		Vec2 originalVelocity = body->velocity;
-		
-		body->velocity = body->velocity + body->acceleration * dt;
+		for (int step = 0; step < currentNumberOfSteps; step++) {
+			PhysicsBody* body = it->second;
+			if (body->isStatic) {
+				continue;
+			}
+			Vector2DNormalize(body->direction, body->direction + AngleToVec(body->txPtr->rotation * (static_cast<float>(M_PI) / 180.0f)));
+			body->forceManager.Update(dt);
+			//Check update
 
-		CapVelocity(originalVelocity, body->velocity);
-		/*
-		if (body->GetOwner()->GetGameObjectID() == 0) {
-			std::cout << "velocity: " << body->velocity.x << " : " << body->velocity.y << "\n";
-		}
-		*/
-		
-		//Position
-		body->txPtr->position = body->txPtr->position + body->velocity * dt;
-		size_t test = body->GetOwner()->GetGameObjectID();
-		
-		
-		Vec2 absPosition = Vec2(0, 0);
-		
-		absPosition.x = body->txPtr->position.x + (windowSize.first / 2.0f);
-		absPosition.y = body->txPtr->position.y + (windowSize.second / 2.0f);
+			//calculate physics
+			//Direction
+			Vec2 normalizedVel = Vec2(0, 0);
+			Vector2DNormalize(normalizedVel, body->velocity);
+			Vec2 summedForce = body->forceManager.CalculateResultantForce();
+			body->acceleration = (summedForce - (body->frictionForce * normalizedVel)) * body->mass;
+			/*
+			if (body->GetOwner()->GetGameObjectID() == 0) {
+				std::cout << "Acceleration: " << body->acceleration.x << " : " << body->acceleration.y << "\n";
+			}*/
+			//Velocity
+			Vec2 originalVelocity = body->velocity;
 
-		rowsBitArray[body->implicitGridPos.first].flip(body->GetOwner()->GetGameObjectID());
-		colBitArray[body->implicitGridPos.second].flip(body->GetOwner()->GetGameObjectID());
-		
-		body->implicitGridPos.first = absPosition.x / cellWidth; //which row
-		body->implicitGridPos.second = absPosition.y / cellHeight; //which col
+			body->velocity = body->velocity + body->acceleration * fixedDeltaTime;
 
-		rowsBitArray[body->implicitGridPos.first].flip(body->GetOwner()->GetGameObjectID());
-		colBitArray[body->implicitGridPos.second].flip(body->GetOwner()->GetGameObjectID());
-		
-		//Just spins all other objects
-		if (body->GetOwner()->GetGameObjectID() != 0) {
-			body->currentRotationSpeed = body->rotationSpeed;
-		}
-		//Rotation
-		body->txPtr->rotation = body->txPtr->rotation + body->currentRotationSpeed * dt;
-		if (body->txPtr->rotation >= 360.0f || body->txPtr->rotation <= -360.0f)
-			body->txPtr->rotation = 0.0f;
-		//Collision Detection
-	
-	/*	if (result.count() > 1 && body->GetOwner()->GetGameObjectID() == 0) {
-			std::cout << result << "\n";
-			
-		}*/
-		/*if (body->GetOwner()->GetGameObjectID() == 0) {
-			std::cout << "ID: 0" << '\n';
-			std::cout << body->implicitGridPos.first << " | " << body->implicitGridPos.second << "\n";
-			std::cout << result << "\n";
-		}
-		if (body->GetOwner()->GetGameObjectID() == 1) {
-			std::cout << "ID: 1" << "\n";
-			std::cout << body->implicitGridPos.first << " | " << body->implicitGridPos.second << "\n";
-			std::cout << result << "\n";
-		}*/
+			CapVelocity(originalVelocity, body->velocity);
+			/*
+			if (body->GetOwner()->GetGameObjectID() == 0) {
+				std::cout << "velocity: " << body->velocity.x << " : " << body->velocity.y << "\n";
+			}
+			*/
 
-		//apply calculations to object
-	//	body->txPtr->shape->Update(body->txPtr->position.x, body->txPtr->position.y, body->txPtr->scale, body->txPtr->scale, body->txPtr->rotation, true);
+			//Position
+			body->txPtr->position = body->txPtr->position + body->velocity * fixedDeltaTime;
+			size_t test = body->GetOwner()->GetGameObjectID();
+
+
+			Vec2 absPosition = Vec2(0, 0);
+
+			absPosition.x = body->txPtr->position.x + (windowSize.first / 2.0f);
+			absPosition.y = body->txPtr->position.y + (windowSize.second / 2.0f);
+
+			rowsBitArray[body->implicitGridPos.first].flip(body->GetOwner()->GetGameObjectID());
+			colBitArray[body->implicitGridPos.second].flip(body->GetOwner()->GetGameObjectID());
+
+			body->implicitGridPos.first = absPosition.x / cellWidth; //which row
+			body->implicitGridPos.second = absPosition.y / cellHeight; //which col
+
+			rowsBitArray[body->implicitGridPos.first].flip(body->GetOwner()->GetGameObjectID());
+			colBitArray[body->implicitGridPos.second].flip(body->GetOwner()->GetGameObjectID());
+
+			//Just spins all other objects
+			if (body->GetOwner()->GetGameObjectID() != 0) {
+				body->currentRotationSpeed = body->rotationSpeed;
+			}
+			//Rotation
+			body->txPtr->rotation = body->txPtr->rotation + body->currentRotationSpeed * dt;
+			if (body->txPtr->rotation >= 360.0f || body->txPtr->rotation <= -360.0f)
+				body->txPtr->rotation = 0.0f;
+			//Collision Detection
+
+		/*	if (result.count() > 1 && body->GetOwner()->GetGameObjectID() == 0) {
+				std::cout << result << "\n";
+
+			}*/
+			/*if (body->GetOwner()->GetGameObjectID() == 0) {
+				std::cout << "ID: 0" << '\n';
+				std::cout << body->implicitGridPos.first << " | " << body->implicitGridPos.second << "\n";
+				std::cout << result << "\n";
+			}
+			if (body->GetOwner()->GetGameObjectID() == 1) {
+				std::cout << "ID: 1" << "\n";
+				std::cout << body->implicitGridPos.first << " | " << body->implicitGridPos.second << "\n";
+				std::cout << result << "\n";
+			}*/
+
+			//apply calculations to object
+		//	body->txPtr->shape->Update(body->txPtr->position.x, body->txPtr->position.y, body->txPtr->scale, body->txPtr->scale, body->txPtr->rotation, true);
+		}
 	}
 	/*
 	std::bitset<3000> mask;

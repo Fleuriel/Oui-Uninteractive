@@ -134,6 +134,10 @@ public:
 	bitArray rowsBitArray[WIDTH];
 	bitArray colBitArray[HEIGHT];
 
+	double accumulatedTime = 0.0;//one time definition
+	int currentNumberOfSteps = 0;
+	const double fixedDeltaTime = 1.0 / 120;
+
 	int cellWidth;
 	int cellHeight;
 };
