@@ -416,7 +416,9 @@ void Editor::CreateObjectList() {
 			else {
 				startIndex = 0;
 			}
-			
+			if (startIndex > 1) {
+				startIndex++;
+			}
 			if (ImGui::Button("Spawn 2500 Objects")) {
 				for (size_t i{}; i < 2500; ++i) {
 					std::string goName{ "ObjectRunTime" + std::to_string(startIndex + i + 1) };

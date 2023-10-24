@@ -95,7 +95,7 @@ bool CollisionStaticDynamicRectRect(Collider::AABB Rect1, Collider::AABB Rect2) 
 		//std::cout << Rect1.max.x << " " << Rect1.center.x;
 		Vector2D direction;
 		direction = Rect2.center - Rect1.center;
-		std::cout << "Direction X: " << direction.x << "Direction Y: " << direction.y << "\n";
+		//std::cout << "Direction X: " << direction.x << "Direction Y: " << direction.y << "\n";
 		//std::cout << "Direction: " << direction.center.x << " " << direction.center.y;
 		
 		Vector2D Rect1norm;

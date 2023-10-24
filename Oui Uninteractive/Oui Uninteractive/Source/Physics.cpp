@@ -61,7 +61,6 @@ void Physics::Update(float dt) {
 	//std::chrono::high_resolution_clock::time_point timeStart = std::chrono::high_resolution_clock::now();
 	std::map<size_t, PhysicsBody*>::iterator it = bodyList.begin();
 	std::map<size_t, PhysicsBody*>::iterator it2 = bodyList.begin();
-	std::cout << "inside physics: " << currentNumberOfSteps << "\n";
 		for (; it != bodyList.end(); it++) {
 
 			
@@ -87,6 +86,7 @@ void Physics::Update(float dt) {
 			Vec2 originalVelocity = body->velocity;
 
 			body->velocity = body->velocity + body->acceleration * fixedDeltaTime;
+			
 
 			CapVelocity(originalVelocity, body->velocity);
 			/*
@@ -97,14 +97,14 @@ void Physics::Update(float dt) {
 
 			//Position
 			body->txPtr->position = body->txPtr->position + body->velocity * fixedDeltaTime;
-			size_t test = body->GetOwner()->GetGameObjectID();
-
-			
+			if (body->GetOwner()->GetGameObjectID() == 4) {
+				std::cout << body->txPtr->position.x << "|" << body->txPtr->position.y << "\n";
+			}
 
 			//Just spins all other objects
-			if (body->GetOwner()->GetGameObjectID() != 0) {
+			/*if (body->GetOwner()->GetGameObjectID() != 0) {
 				body->currentRotationSpeed = body->rotationSpeed;
-			}
+			}*/
 			//Rotation
 			body->txPtr->rotation = body->txPtr->rotation + body->currentRotationSpeed * dt;
 			if (body->txPtr->rotation >= 360.0f || body->txPtr->rotation <= -360.0f)
