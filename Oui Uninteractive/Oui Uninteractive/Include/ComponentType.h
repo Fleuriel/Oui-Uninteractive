@@ -14,7 +14,8 @@ typedef enum class ComponentType {
 	NONE = 0,
 	PHYSICS_BODY,
 	TRANSFORM,
-	LOGICCOMPONENT
+	LOGICCOMPONENT,
+	COLLIDER
 } componentType;
 
 #endif

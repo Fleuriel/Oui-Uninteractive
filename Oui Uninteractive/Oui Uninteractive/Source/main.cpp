@@ -39,6 +39,7 @@ int main(){
 	sysManager->AddSystem(new LogicSystem());
 	sysManager->AddSystem(new ObjectFactory());
 	sysManager->AddSystem(new Physics());
+	sysManager->AddSystem(new ColliderSystem());
 	sysManager->AddSystem(new TransformSystem());
 	sysManager->AddSystem(new SoundManager());
 	sysManager->AddSystem(new FontManager());

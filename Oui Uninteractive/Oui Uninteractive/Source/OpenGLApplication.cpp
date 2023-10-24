@@ -36,6 +36,7 @@
 #include <Background.h>
 #include "TestScript.h"
 #include <Animation.h>
+#include "ColliderSystem.h"
 
 #define STB_IMAGE_IMPLEMENTATION
 #include <stb_image.h>
@@ -466,10 +467,10 @@ void OpenGLApplication::OpenGLUpdate() {
 		std::map<size_t, GameObject*> copyMap = objectFactory->GetGameObjectIDMap();
 		for (std::map<size_t, GameObject*>::iterator it2 = copyMap.begin(); it2 != copyMap.end(); it2++) {
 			gameobjID = it2->first;
-			if ((objectFactory->GetGameObjectByID(gameobjID)->Has(ComponentType::PHYSICS_BODY) != -1) && (objectFactory->GetGameObjectByID(gameobjID)->Has(ComponentType::TRANSFORM) != -1) && (objectFactory->GetGameObjectByID(gameobjID) != nullptr)) {
+			if ((objectFactory->GetGameObjectByID(gameobjID)->Has(ComponentType::COLLIDER) != -1) && (objectFactory->GetGameObjectByID(gameobjID) != nullptr)) {
 				static Vector2D min, max;
-				max = GET_COMPONENT(objectFactory->GetGameObjectByID(gameobjID), PhysicsBody, ComponentType::PHYSICS_BODY)->boundingbox->max;
-				min = GET_COMPONENT(objectFactory->GetGameObjectByID(gameobjID), PhysicsBody, ComponentType::PHYSICS_BODY)->boundingbox->min;
+				max = colliderSys->colliderMap[gameobjID]->boundingbox->min;
+				min = colliderSys->colliderMap[gameobjID]->boundingbox->min;
 
 				GET_COMPONENT(objectFactory->GetGameObjectByID(gameobjID), Transform, ComponentType::TRANSFORM)->shape->DrawCollisionBox(min, max);
 			}

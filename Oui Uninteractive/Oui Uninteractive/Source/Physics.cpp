@@ -67,9 +67,7 @@ void Physics::Update(float dt) {
 		Vector2DNormalize(body->direction, body->direction + AngleToVec(body->txPtr->rotation * (static_cast<float>(M_PI) / 180.0f)));
 		body->forceManager.Update(dt);
 		//Check update
-		body->boundingbox->center = body->txPtr->position;
-		body->boundingbox->min = Vec2((-0.5f) * body->txPtr->scale + body->txPtr->position.x, (-0.5f) * body->txPtr->scale + body->txPtr->position.y);
-		body->boundingbox->max = Vec2((0.5f) * body->txPtr->scale + body->txPtr->position.x, (0.5f) * body->txPtr->scale + body->txPtr->position.y);
+		
 		//calculate physics
 		//Direction
 		Vec2 normalizedVel = Vec2(0,0);
