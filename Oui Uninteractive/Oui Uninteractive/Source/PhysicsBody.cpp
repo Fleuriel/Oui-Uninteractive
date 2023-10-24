@@ -24,8 +24,6 @@ PhysicsBody::PhysicsBody() {
 	currentRotationSpeed = 0;
 	direction = Vec2(0, 0);
 	speed = 50;
-	
-	implicitGridPos = std::pair<int, int>(0, 0);
 	frictionForce = 20;
 }
 /**************************************************************************
@@ -49,7 +47,6 @@ void PhysicsBody::Initialize() {
 	}
 	physicsSys->bodyList.insert(std::pair<size_t, PhysicsBody*>(GetOwner()->GetGameObjectID(), this));
 
-	mask.flip(GetOwner()->GetGameObjectID());
 }
 
 /**************************************************************************

@@ -108,8 +108,6 @@ public:
 	float frictionForce;
 
 	ForceManager forceManager;
-	std::pair<int, int> implicitGridPos;
-	std::bitset<3000> mask;
 };
 
 #endif

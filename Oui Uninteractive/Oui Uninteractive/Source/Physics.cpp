@@ -99,20 +99,7 @@ void Physics::Update(float dt) {
 			body->txPtr->position = body->txPtr->position + body->velocity * fixedDeltaTime;
 			size_t test = body->GetOwner()->GetGameObjectID();
 
-			/*
-			Vec2 absPosition = Vec2(0, 0);
-
-			absPosition.x = body->txPtr->position.x + (windowSize.first / 2.0f);
-			absPosition.y = body->txPtr->position.y + (windowSize.second / 2.0f);
-		
-			rowsBitArray[body->implicitGridPos.first].flip(body->GetOwner()->GetGameObjectID());
-			colBitArray[body->implicitGridPos.second].flip(body->GetOwner()->GetGameObjectID());
-
-			body->implicitGridPos.first = absPosition.x / cellWidth; //which row
-			body->implicitGridPos.second = absPosition.y / cellHeight; //which col
-
-			rowsBitArray[body->implicitGridPos.first].flip(body->GetOwner()->GetGameObjectID());
-			colBitArray[body->implicitGridPos.second].flip(body->GetOwner()->GetGameObjectID());*/
+			
 
 			//Just spins all other objects
 			if (body->GetOwner()->GetGameObjectID() != 0) {
