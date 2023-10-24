@@ -14,6 +14,12 @@
 
 #include <CoordinateSystem.h>
 #include "PhysicsBody.h"
+#include "Collider.h"
+#include <cmath>
+#include "Vector2D.h"
+#include "GameStateManager.h"
+#include "Physics.h"
+#include "PhysicsBody.h"
 
  /**************************************************************************
   * @brief Check for collision for mouse and rectangle
@@ -23,7 +29,7 @@
   *
   * @param AABB Rect1 The Coordinates (x,y) of the rectangle
   *************************************************************************/
-bool CollisionMouseRect(AABB Rect1);
+bool CollisionMouseRect(Collider::AABB Rect1);
 
 /**************************************************************************
  * @brief Check for collision for mouse and circle
@@ -59,7 +65,7 @@ bool CollisionStaticCircleCircle(Coordinates Coords1, Coordinates Coords2, float
  * @param Rect1 Coordinates of the first rectangle
  * @param Rect2 Coordinates of the second rectangle
  *************************************************************************/
-bool CollisionStaticDynamicRectRect(AABB Rect1, AABB Rect2);
+bool CollisionStaticDynamicRectRect(Collider::AABB Rect1, Collider::AABB Rect2);
 
 /**************************************************************************
  * @brief Check for collision between moving rectangles

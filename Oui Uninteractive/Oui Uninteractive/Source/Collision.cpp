@@ -11,11 +11,8 @@
  *************************************************************************/
 
 #include "Collision.h"
-#include <cmath>
-#include "Vector2D.h"
-#include "GameStateManager.h"
-#include "Physics.h"
-#include "PhysicsBody.h"
+
+
 
 
 /**************************************************************************
@@ -26,7 +23,7 @@
  *
  * @param AABB Rect1 The Coordinates (x,y) of the rectangle
  *************************************************************************/
-bool CollisionMouseRect(AABB Rect1) {
+bool CollisionMouseRect(Collider::AABB Rect1) {
 
 	double xpos, ypos{};
 	glfwGetCursorPos(windowNew, &xpos, &ypos);
@@ -88,7 +85,7 @@ bool CollisionStaticCircleCircle(Coordinates Coords1, Coordinates Coords2, float
  * @param Rect1 Coordinates of the first rectangle
  * @param Rect2 Coordinates of the second rectangle
  *************************************************************************/
-bool CollisionStaticDynamicRectRect(AABB Rect1, AABB Rect2) {
+bool CollisionStaticDynamicRectRect(Collider::AABB Rect1, Collider::AABB Rect2) {
 		if ((Rect1.max.x > Rect2.min.x  && 
 			 Rect1.max.y > Rect2.min.y) &&
 			(Rect2.max.x > Rect1.min.x  &&

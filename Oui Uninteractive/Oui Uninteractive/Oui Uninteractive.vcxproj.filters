@@ -226,6 +226,9 @@
     <ClCompile Include="Source\FontManager.cpp">
       <Filter>Systems\Fonts</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Collider.cpp">
+      <Filter>Component</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Include\Matrix3x3.h">
@@ -333,9 +336,6 @@
     <ClInclude Include="Include\TestScript.h">
       <Filter>Scripts</Filter>
     </ClInclude>
-    <ClInclude Include="Include\EnemyAIScript.h">
-      <Filter>Scripts</Filter>
-    </ClInclude>
     <ClInclude Include="Include\TransformSystem.h">
       <Filter>Systems</Filter>
     </ClInclude>
@@ -359,6 +359,10 @@
     </ClInclude>
     <ClInclude Include="Include\FontManager.h">
       <Filter>Systems\Fonts</Filter>
+    </ClInclude>
+    <ClInclude Include="EnemyAIScript.h" />
+    <ClInclude Include="Include\Collider.h">
+      <Filter>Component</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

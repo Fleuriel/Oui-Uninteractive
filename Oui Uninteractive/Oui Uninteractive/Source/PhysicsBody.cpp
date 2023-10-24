@@ -24,10 +24,7 @@ PhysicsBody::PhysicsBody() {
 	currentRotationSpeed = 0;
 	direction = Vec2(0, 0);
 	speed = 50;
-	boundingbox = new AABB();
-	boundingbox->center = Vec2(0, 0);
-	boundingbox->min = Vec2(0,0);
-	boundingbox->max = Vec2(0,0);
+	
 	implicitGridPos = std::pair<int, int>(0, 0);
 	frictionForce = 20;
 }
@@ -39,7 +36,6 @@ PhysicsBody::~PhysicsBody() {
 	for (LinearForce* force : forceManager.forceVec) {
 		delete force;
 	}
-	delete boundingbox;
 }
 /**************************************************************************
 * @brief Initialize this instance of the PhysicsBody component
@@ -81,8 +77,6 @@ PhysicsBody* PhysicsBody::Clone() const{
 	
 	newBody->speed = speed;
 	newBody->rotationSpeed = rotationSpeed;
-	newBody->boundingbox->min = boundingbox->min;
-	newBody->boundingbox->max = boundingbox->max;
 	newBody->mass = mass;
 
 	for (int i = 0; i < forceManager.forceVec.size(); i++) {
