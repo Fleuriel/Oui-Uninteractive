@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -31,6 +31,8 @@
     <ClCompile Include="Source\Animation.cpp" />
     <ClCompile Include="Source\AssetManager.cpp" />
     <ClCompile Include="Source\Background.cpp" />
+    <ClCompile Include="Source\Collider.cpp" />
+    <ClCompile Include="Source\ColliderSystem.cpp" />
     <ClCompile Include="Source\Collision.cpp" />
     <ClCompile Include="Source\CoordinateSystem.cpp" />
     <ClCompile Include="Source\Editor.cpp" />
@@ -69,6 +71,8 @@
     <ClInclude Include="Include\Animation.h" />
     <ClInclude Include="Include\AssetManager.h" />
     <ClInclude Include="Include\Background.h" />
+    <ClInclude Include="Include\Collider.h" />
+    <ClInclude Include="Include\ColliderSystem.h" />
     <ClInclude Include="Include\Collision.h" />
     <ClInclude Include="Include\ComponentFactory.h" />
     <ClInclude Include="Include\ComponentType.h" />

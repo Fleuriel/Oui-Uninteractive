@@ -57,16 +57,7 @@ public:
 };
 
 
-class AABB {
-public:
-	//Extents of the Axis Aligned Bounding Box
-	Vec2 min, max, x, y, center;
 
-	/**************************************************************************
-	* @brief Default constructor for AABB
-	*************************************************************************/
-	AABB() {};
-};
 
 class PhysicsBody : public IComponent {
 public:
@@ -102,8 +93,6 @@ public:
 	float rotationSpeed;
 	//Movement Speed
 	float speed;
-	//Pointer to Bounding Box object
-	AABB* boundingbox;
 	//Vector to hold velocity
 	Vec2 velocity;
 	//Variable to hold current rotation speed

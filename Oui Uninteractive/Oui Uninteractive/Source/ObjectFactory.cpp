@@ -49,6 +49,9 @@ ComponentType ObjectFactory::StringToEnum(std::string str) {
 	else if (str == "LogicComponent") {
 		return ComponentType::LOGICCOMPONENT;
 	}
+	else if (str == "Collider") {
+		return ComponentType::COLLIDER;
+	}
 	else {
 		return ComponentType::NONE;
 	}
@@ -68,6 +71,9 @@ std::string ObjectFactory::EnumToString(ComponentType ct) {
 	}
 	else if (ct == ComponentType::LOGICCOMPONENT) {
 		return "LogicComponent";
+	}
+	else if (ct == ComponentType::COLLIDER) {
+		return "Collider";
 	}
 	else {
 		return "None";
