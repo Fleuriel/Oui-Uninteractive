@@ -57,11 +57,14 @@ void Physics::Initialize() {
 void Physics::Update(float dt) {
 	// Start time profiling for physics system
 	TimeProfiler profiler(Editor::timeRecorder.physicsTime);
+	for (int step = 0; step < currentNumberOfSteps; step++) {
 	//std::chrono::high_resolution_clock::time_point timeStart = std::chrono::high_resolution_clock::now();
 	std::map<size_t, PhysicsBody*>::iterator it = bodyList.begin();
 	std::map<size_t, PhysicsBody*>::iterator it2 = bodyList.begin();
-	for (; it != bodyList.end(); it++) {
-		for (int step = 0; step < currentNumberOfSteps; step++) {
+	std::cout << "inside physics: " << currentNumberOfSteps << "\n";
+		for (; it != bodyList.end(); it++) {
+
+			
 			PhysicsBody* body = it->second;
 			if (body->isStatic) {
 				continue;
@@ -96,12 +99,12 @@ void Physics::Update(float dt) {
 			body->txPtr->position = body->txPtr->position + body->velocity * fixedDeltaTime;
 			size_t test = body->GetOwner()->GetGameObjectID();
 
-
+			/*
 			Vec2 absPosition = Vec2(0, 0);
 
 			absPosition.x = body->txPtr->position.x + (windowSize.first / 2.0f);
 			absPosition.y = body->txPtr->position.y + (windowSize.second / 2.0f);
-
+		
 			rowsBitArray[body->implicitGridPos.first].flip(body->GetOwner()->GetGameObjectID());
 			colBitArray[body->implicitGridPos.second].flip(body->GetOwner()->GetGameObjectID());
 
@@ -109,7 +112,7 @@ void Physics::Update(float dt) {
 			body->implicitGridPos.second = absPosition.y / cellHeight; //which col
 
 			rowsBitArray[body->implicitGridPos.first].flip(body->GetOwner()->GetGameObjectID());
-			colBitArray[body->implicitGridPos.second].flip(body->GetOwner()->GetGameObjectID());
+			colBitArray[body->implicitGridPos.second].flip(body->GetOwner()->GetGameObjectID());*/
 
 			//Just spins all other objects
 			if (body->GetOwner()->GetGameObjectID() != 0) {
@@ -138,51 +141,10 @@ void Physics::Update(float dt) {
 
 			//apply calculations to object
 		//	body->txPtr->shape->Update(body->txPtr->position.x, body->txPtr->position.y, body->txPtr->scale, body->txPtr->scale, body->txPtr->rotation, true);
+
 		}
 	}
-	/*
-	std::bitset<3000> mask;
 	
-	for (int i = 0; i < WIDTH; i++) {
-		if (rowsBitArray[i].count() == 0) {
-			continue;
-		}
-		for (int j = 0; j < HEIGHT; j++) {
-			if (colBitArray[j].count() == 0) {
-				continue;
-			}
-			bitArray result = rowsBitArray[i] & colBitArray[j];
-			if (result.count() < 1) {
-				continue;
-			}
-			int count = result.count();
-			int currIndex = 0;
-			int baseObjectIndex = -1;
-			PhysicsBody* basePhysicsComp = nullptr;
-			while (count > 0) {
-				mask.flip(currIndex);
-				if ((result & (mask)) == currIndex) {
-					if (baseObjectIndex == -1) {
-						baseObjectIndex = currIndex;
-						basePhysicsComp = GET_COMPONENT(objectFactory->GetGameObjectByID(baseObjectIndex), PhysicsBody, ComponentType::PHYSICS_BODY);
-						
-					}
-					else {
-						if (basePhysicsComp != nullptr) {
-							PhysicsBody* other = GET_COMPONENT(objectFactory->GetGameObjectByID(currIndex), PhysicsBody, ComponentType::PHYSICS_BODY);
-							CollisionStaticDynamicRectRect(*(basePhysicsComp->boundingbox), *(other->boundingbox));
-						}
-					}
-					count--;
-				}
-				currIndex++;
-				if (currIndex >= 3000) {
-					break;
-				}
-				mask.reset();
-			}
-		}
-	}*/
 	
 	//std::chrono::high_resolution_clock::time_point timeEnd = std::chrono::high_resolution_clock::now();
 	//std::chrono::duration<float, std::milli> duration = timeEnd - timeStart;

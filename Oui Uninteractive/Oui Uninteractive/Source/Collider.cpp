@@ -46,6 +46,6 @@ Collider::Collider() {
 Collider::~Collider() {
 	delete tx;
 	delete boundingbox;
-	//colliderSys->colliderMap.erase(GetOwner()->GetGameObjectID());
+	colliderSys->colliderMap.erase(GetOwner()->GetGameObjectID());
 	
 }

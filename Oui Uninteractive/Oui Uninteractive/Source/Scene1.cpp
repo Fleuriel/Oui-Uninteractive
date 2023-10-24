@@ -57,8 +57,10 @@ void Scene1::Update(float dt) {
 	if (GetKeyInput(GLFW_KEY_1)) {
 		sceneManager->nextSceneID = GameStateList::STATE_LEVEL_TEST;
 	}
-	if (GET_COMPONENT(objectFactory->GetGameObjectByID(0), Transform, ComponentType::TRANSFORM)->position.x > 1000) {
-		sceneManager->nextSceneID = GameStateList::STATE_LEVEL_TEST;
+	if (objectFactory->GetGameObjectByID(0) != nullptr) {
+		if (GET_COMPONENT(objectFactory->GetGameObjectByID(0), Transform, ComponentType::TRANSFORM)->position.x > 1000) {
+			sceneManager->nextSceneID = GameStateList::STATE_LEVEL_TEST;
+		}
 	}
 	//scene transitions
 }

@@ -143,4 +143,9 @@ void TimeUpdate(){
 		physicsSys->accumulatedTime -= physicsSys->fixedDeltaTime;
 		physicsSys->currentNumberOfSteps++;
 	}
+
+	if (physicsSys->currentNumberOfSteps > 20) {
+		physicsSys->currentNumberOfSteps = 20;
+	}
+	
 }
