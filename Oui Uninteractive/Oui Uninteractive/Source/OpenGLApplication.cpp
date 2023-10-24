@@ -469,7 +469,7 @@ void OpenGLApplication::OpenGLUpdate() {
 			gameobjID = it2->first;
 			if ((objectFactory->GetGameObjectByID(gameobjID)->Has(ComponentType::COLLIDER) != -1) && (objectFactory->GetGameObjectByID(gameobjID) != nullptr)) {
 				static Vector2D min, max;
-				max = colliderSys->colliderMap[gameobjID]->boundingbox->min;
+				max = colliderSys->colliderMap[gameobjID]->boundingbox->max;
 				min = colliderSys->colliderMap[gameobjID]->boundingbox->min;
 
 				GET_COMPONENT(objectFactory->GetGameObjectByID(gameobjID), Transform, ComponentType::TRANSFORM)->shape->DrawCollisionBox(min, max);

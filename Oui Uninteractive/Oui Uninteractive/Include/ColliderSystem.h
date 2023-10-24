@@ -3,6 +3,7 @@
 #ifndef COLLIDERSYS_H
 #define COLLIDERSYS_H
 #include "Collider.h"
+#include "Collision.h"
 #include "ISystem.h"
 #include "ObjectFactory.h"
 #include "ComponentFactory.h"

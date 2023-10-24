@@ -2,10 +2,23 @@
 
 void Collider::Initialize() {
 	colliderSys->colliderMap.insert(std::pair<size_t, Collider*>(GetOwner()->GetGameObjectID(), this));
+	Transform* gameObjTX = GET_COMPONENT(GetOwner(), Transform, ComponentType::TRANSFORM);
+	tx->position = gameObjTX->position;
+	/*
+	
+	if (gameObjTX != nullptr) {
+		tx = gameObjTX->Clone();
+	}
+	else {
+		std::cout << "game object has no transform\n";
+	}*/
+	
 }
 
 void Collider::Serialize(rapidjson::Value::ConstMemberIterator& itr) {
-
+	const rapidjson::Value& components{ itr->value };
+	tx->scale = components["ColliderSize"].GetFloat();
+	tx->rotation = components["ColliderRotation"].GetFloat();
 }
 Collider* Collider::Clone() const{
 	Collider* newCollider = new Collider();

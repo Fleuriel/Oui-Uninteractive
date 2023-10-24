@@ -134,16 +134,6 @@ void Physics::Update(float dt) {
 			std::cout << result << "\n";
 		}*/
 
-
-			
-		/*
-		for (; it2 != bodyList.end(); it2++) {
-			PhysicsBody* body2 = it2->second;
-			if (body2->GetOwner()->GetGameObjectID() == body->GetOwner()->GetGameObjectID()) {
-				continue;
-			}
-			CollisionStaticDynamicRectRect(*(body->boundingbox), *(body2->boundingbox));
-		}*/
 		//apply calculations to object
 	//	body->txPtr->shape->Update(body->txPtr->position.x, body->txPtr->position.y, body->txPtr->scale, body->txPtr->scale, body->txPtr->rotation, true);
 	}
