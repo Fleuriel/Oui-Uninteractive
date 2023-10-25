@@ -144,8 +144,8 @@ void TimeUpdate(){
 		sysManager->currentNumberOfSteps++;
 	}
 
-	if (sysManager->currentNumberOfSteps > 20) {
-		sysManager->currentNumberOfSteps = 20;
+	if (sysManager->currentNumberOfSteps > sysManager->maxNoOfStep) {
+		sysManager->currentNumberOfSteps = sysManager->maxNoOfStep;
 	}
 	
 }
