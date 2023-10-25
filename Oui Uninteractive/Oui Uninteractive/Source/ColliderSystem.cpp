@@ -77,17 +77,54 @@ void ColliderSystem::Update(float dt) {
 
 		Vec2 absPosition = Vec2(0, 0);
 
-		absPosition.x = collider->tx->position.x + (windowSize.first / 2.0f);
-		absPosition.y = collider->tx->position.y + (windowSize.second / 2.0f);
+		absPosition.x = collider->boundingbox->min.x + (windowSize.first / 2.0f);
+		absPosition.y = collider->boundingbox->min.y + (windowSize.second / 2.0f);
+		int newRowIndex = absPosition.x / cellWidth;
+		int newColIndex = absPosition.y / cellHeight;
 
-		rowsBitArray[collider->implicitGridPos.first].reset(collider->GetOwner()->GetGameObjectID());
-		colBitArray[collider->implicitGridPos.second].reset(collider->GetOwner()->GetGameObjectID());
+		if (newRowIndex != collider->implicitGridPos.first) {
+			if (newRowIndex < WIDTH) {
+				rowsBitArray[collider->implicitGridPos.first].reset(collider->GetOwner()->GetGameObjectID());
+				collider->implicitGridPos.first = newRowIndex; //which row
+				rowsBitArray[collider->implicitGridPos.first].set(collider->GetOwner()->GetGameObjectID());
+			}
+			else {
+				std::cout << "SHIT\n";
+			}
+		}
+		if (newColIndex != collider->implicitGridPos.second) {
+			if (newColIndex < HEIGHT) {
+				colBitArray[collider->implicitGridPos.second].reset(collider->GetOwner()->GetGameObjectID());
+				collider->implicitGridPos.second = newColIndex; //which col
+				colBitArray[collider->implicitGridPos.second].set(collider->GetOwner()->GetGameObjectID());
+			}
+			else {
+				std::cout << "SHIT\n";
+			}
+		}
 
-		collider->implicitGridPos.first = absPosition.x / cellWidth; //which row
-		collider->implicitGridPos.second = absPosition.y / cellHeight; //which col
+		/*Vec2 absPosition2 = Vec2(0, 0);
 
-		rowsBitArray[collider->implicitGridPos.first].set(collider->GetOwner()->GetGameObjectID());
-		colBitArray[collider->implicitGridPos.second].set(collider->GetOwner()->GetGameObjectID());
+		absPosition2.x = collider->boundingbox->max.x + (windowSize.first / 2.0f);
+		absPosition2.y = collider->boundingbox->max.x + (windowSize.second / 2.0f);
+		int newRowIndex2 = absPosition.x / cellWidth;
+		int newColIndex2 = absPosition.y / cellHeight;
+
+		if (newRowIndex2 != collider->implicitGridPos2.first) {
+			if (newRowIndex2 < WIDTH) {
+				rowsBitArray[collider->implicitGridPos2.first].reset(collider->GetOwner()->GetGameObjectID());
+				collider->implicitGridPos2.first = newRowIndex2; //which row
+				rowsBitArray[collider->implicitGridPos2.first].set(collider->GetOwner()->GetGameObjectID());
+			}
+		}
+		if (newColIndex2 != collider->implicitGridPos2.second) {
+			if (newColIndex < HEIGHT) {
+				colBitArray[collider->implicitGridPos2.second].reset(collider->GetOwner()->GetGameObjectID());
+				collider->implicitGridPos2.second = newColIndex2; //which col
+				colBitArray[collider->implicitGridPos2.second].set(collider->GetOwner()->GetGameObjectID());
+			}
+		}*/
+		
 		/*for (; it2 != colliderMap.end(); it2++) {
 			Collider* body2 = it2->second;
 			if (body2->GetOwner()->GetGameObjectID() == collider->GetOwner()->GetGameObjectID()) {

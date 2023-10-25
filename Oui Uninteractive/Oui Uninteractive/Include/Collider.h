@@ -28,5 +28,6 @@ public:
 	Transform* tx;
 	AABB* boundingbox;
 	std::pair<int, int> implicitGridPos;
+	std::pair<int, int> implicitGridPos2;
 };
 #endif
