@@ -27,5 +27,6 @@ public:
 	//Pointer to Bounding Box object
 	Transform* tx;
 	AABB* boundingbox;
+	std::pair<int, int> implicitGridPos;
 };
 #endif

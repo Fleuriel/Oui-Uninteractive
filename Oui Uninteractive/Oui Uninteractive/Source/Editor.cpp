@@ -425,6 +425,7 @@ void Editor::CreateObjectList() {
 					objectFactory->BuildObjectRunTime(goName, "Enemy");
 					objectFactory->AddComponent(ComponentType::PHYSICS_BODY, objectFactory->GetGameObjectByID(startIndex+ i));
 					objectFactory->AddComponent(ComponentType::TRANSFORM, objectFactory->GetGameObjectByID(startIndex + i));
+					objectFactory->AddComponent(ComponentType::COLLIDER, objectFactory->GetGameObjectByID(startIndex + i));
 					objectFactory->GetGameObjectByID(startIndex + i)->Initialize();
 
 					GET_COMPONENT(objectFactory->GetGameObjectByID(startIndex + i), Transform, ComponentType::TRANSFORM)->position.x = static_cast<float>(rand() % 800);
