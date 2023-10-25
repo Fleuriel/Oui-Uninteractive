@@ -40,14 +40,14 @@ void ColliderSystem::BroadPhase() {
 				std::set<int> collisionResult;
 				while (result.count() != 0) {
 					int count = 0;
-					for (; nextSetBit < 3000; nextSetBit++) {
+					for (; nextSetBit < MAX_COLLIDABLE_ENTITIES; nextSetBit++) {
 						if (result.test(nextSetBit) == 1) {
 							count = nextSetBit;
-							break;
+							result.reset(count);
+							collisionResult.insert(count);
 						}
 					}
-					result.reset(count);
-					collisionResult.insert(count);			
+								
 				}
 				collisionData.push_back(collisionResult);
 				

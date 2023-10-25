@@ -13,7 +13,8 @@
 #include "ComponentFactory.h"
 #include "Editor.h"
 #include <map>
-using bitArray = std::bitset<3000>;
+#define MAX_COLLIDABLE_ENTITIES 3000
+using bitArray = std::bitset<MAX_COLLIDABLE_ENTITIES>;
 class ColliderSystem : public ISystem {
 public:
 	ColliderSystem();

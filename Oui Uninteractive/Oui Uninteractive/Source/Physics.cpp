@@ -276,17 +276,17 @@ void Physics::CapVelocity(Vec2 originalVelocity, Vec2& bodyVelocity) {
 	}
 
 	
-	if (bodyVelocity.x > 3000.f) {
-		bodyVelocity.x = 3000.f;
+	if (bodyVelocity.x > maxVelocity) {
+		bodyVelocity.x = maxVelocity;
 	}
-	if (bodyVelocity.x < -3000.f) {
-		bodyVelocity.x = -3000.f;
+	if (bodyVelocity.x < -maxVelocity) {
+		bodyVelocity.x = -maxVelocity;
 	}
-	if (bodyVelocity.y > 3000.f) {
-		bodyVelocity.y = 3000.f;
+	if (bodyVelocity.y > maxVelocity) {
+		bodyVelocity.y = maxVelocity;
 	}
-	if (bodyVelocity.y < -3000.f) {
-		bodyVelocity.y = -3000.f;
+	if (bodyVelocity.y < -maxVelocity) {
+		bodyVelocity.y = -maxVelocity;
 	}
 	
 
