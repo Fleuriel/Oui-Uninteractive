@@ -46,6 +46,8 @@ public:
 	// Container for characters
 	std::map<char, Character> charactersMap;
 	
+	void RenderText(); // Function to render text
+
 private:
 	FT_Library ft;
 
