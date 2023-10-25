@@ -75,39 +75,44 @@ void ColliderSystem::Update(float dt) {
 		collider->boundingbox->min = Vec2((-0.5f) * collider->tx->scale + collider->tx->position.x, (-0.5f) * collider->tx->scale + collider->tx->position.y);
 		collider->boundingbox->max = Vec2((0.5f) * collider->tx->scale + collider->tx->position.x, (0.5f) * collider->tx->scale + collider->tx->position.y);
 
-		Vec2 absPosition = Vec2(0, 0);
+		/*Vec2 absPosition = Vec2(0, 0);
 
 		absPosition.x = collider->tx->position.x + (windowSize.first / 2.0f);
 		absPosition.y = collider->tx->position.y + (windowSize.second / 2.0f);
 
+		int newRowIndex = absPosition.x / cellWidth; //which row
+		int newColIndex = absPosition.y / cellHeight; //which col
+
 		rowsBitArray[collider->implicitGridPos.first].reset(collider->GetOwner()->GetGameObjectID());
 		colBitArray[collider->implicitGridPos.second].reset(collider->GetOwner()->GetGameObjectID());
+		if (newRowIndex < 4 && newColIndex < 4) {
+			collider->implicitGridPos.first = newRowIndex;
+			collider->implicitGridPos.second = newColIndex;
 
-		collider->implicitGridPos.first = absPosition.x / cellWidth; //which row
-		collider->implicitGridPos.second = absPosition.y / cellHeight; //which col
-
-		rowsBitArray[collider->implicitGridPos.first].set(collider->GetOwner()->GetGameObjectID());
-		colBitArray[collider->implicitGridPos.second].set(collider->GetOwner()->GetGameObjectID());
-		/*for (; it2 != colliderMap.end(); it2++) {
+			rowsBitArray[collider->implicitGridPos.first].set(collider->GetOwner()->GetGameObjectID());
+			colBitArray[collider->implicitGridPos.second].set(collider->GetOwner()->GetGameObjectID());
+		}*/
+		
+		for (; it2 != colliderMap.end(); it2++) {
 			Collider* body2 = it2->second;
 			if (body2->GetOwner()->GetGameObjectID() == collider->GetOwner()->GetGameObjectID()) {
 				continue;
 			}
 			CollisionStaticDynamicRectRect(*(collider->boundingbox), *(body2->boundingbox));
-		}*/
+		}
 	}
 
-	BroadPhase();
+	//BroadPhase();
 
 	//Narrow Phase
- 	for (std::set<int> colSet : collisionData) {
+ 	/*for (std::set<int> colSet : collisionData) {
 		for (int num : colSet) {
 			std::set<int>::iterator it = colSet.upper_bound(num);
 			if (it != colSet.end()) {
 				CollisionStaticDynamicRectRect(*(colliderMap[num])->boundingbox, *(colliderMap[*it])->boundingbox);
 			}
 		}
-	}
+	}*/
 
 //	}
 	//insert collision detection here
