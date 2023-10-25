@@ -105,12 +105,35 @@ void FontManager::LoadFonts() {
 			fontVec[0]->glyph->advance.x
 		};
 		charactersMap.insert(std::pair<char, Character>(ch, character));
-		std::cout << "Characters successfully loaded" << std::endl;
 	}
+	std::cout << "Characters successfully loaded" << std::endl;
 	// Free up faces
 	FT_Done_Face(fontVec[0]);
 	// Free FreeType
 	FT_Done_FreeType(ft);
+}
+
+
+/**************************************************************************
+* @brief This function handles rendering for the font system
+* @return No return
+*************************************************************************/
+void FontManager::RenderText(std::string text, float xPos, float yPos, float scale, float rot) {
+	// Loop through entire string
+	for (std::string::const_iterator it = text.begin(); it != text.end(); it++) {
+		// Find character with char key
+		Character ch = charactersMap[*it];
+		// Setup dimensions
+		float renderX = xPos + ch.glyphBearing.x * scale;
+		float renderY = yPos - (ch.glyphSize.y - ch.glyphBearing.y) * scale;
+		float renderWidth = ch.glyphSize.x * scale;
+		float renderHeight = ch.glyphSize.y * scale;
+		// Render textured quad
+		//texture = ch.glyphTexID
+
+		// Move cursor to next glyph
+		xPos += (ch.advance >> 6) * scale;
+	}
 }
 
 
