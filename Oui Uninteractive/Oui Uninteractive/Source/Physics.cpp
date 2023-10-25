@@ -9,15 +9,9 @@
  *		  which handles all Physics calculations done on the Physics
  *		  Body component.
  *************************************************************************/
-#include <iostream>
-#include <algorithm>
-#include <chrono>
+
 #include "Physics.h"
-#include "ComponentFactory.h"
-#include "ObjectFactory.h"
-#include "Vector2D.h"
-#include "Collision.h"
-#include "Editor.h"
+
 
 //initialize global pointer
 Physics* physicsSys = nullptr;
@@ -53,7 +47,7 @@ void Physics::Initialize() {
 void Physics::Update(float dt) {
 	// Start time profiling for physics system
 	TimeProfiler profiler(Editor::timeRecorder.physicsTime);
-	for (int step = 0; step < currentNumberOfSteps; step++) {
+	for (int step = 0; step < sysManager->currentNumberOfSteps; step++) {
 	//std::chrono::high_resolution_clock::time_point timeStart = std::chrono::high_resolution_clock::now();
 	std::map<size_t, PhysicsBody*>::iterator it = bodyList.begin();
 	std::map<size_t, PhysicsBody*>::iterator it2 = bodyList.begin();
@@ -81,13 +75,13 @@ void Physics::Update(float dt) {
 			//Velocity
 			Vec2 originalVelocity = body->velocity;
 
-			body->velocity = body->velocity + body->acceleration * fixedDeltaTime;
+			body->velocity = body->velocity + body->acceleration * sysManager->fixedDeltaTime;
 			
 
 			CapVelocity(originalVelocity, body->velocity);
 		
 			//Position
-			body->txPtr->position = body->txPtr->position + body->velocity * fixedDeltaTime;
+			body->txPtr->position = body->txPtr->position + body->velocity * sysManager->fixedDeltaTime;
 
 			//Just spins all other objects
 			/*if (body->GetOwner()->GetGameObjectID() != 0) {

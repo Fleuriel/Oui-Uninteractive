@@ -15,9 +15,17 @@
 #include "ISystem.h"
 #include "PhysicsBody.h"
 #include <list>
-
+#include "SystemManager.h"
 #include <bitset>
 #include "OpenGLApplication.h"
+#include "ComponentFactory.h"
+#include "ObjectFactory.h"
+#include "Vector2D.h"
+#include "Collision.h"
+#include "Editor.h"
+#include <iostream>
+#include <algorithm>
+#include <chrono>
 
 
 class Physics : public ISystem{
@@ -130,9 +138,7 @@ public:
 
 	float maxVelocity = 3000.f;
 
-	double accumulatedTime = 0.0;//one time definition
-	int currentNumberOfSteps = 0;
-	const double fixedDeltaTime = 1.0 / 60;
+	
 
 };
 //Global pointer

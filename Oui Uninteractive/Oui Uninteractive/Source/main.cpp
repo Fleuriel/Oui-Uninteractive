@@ -134,18 +134,18 @@ int main(){
 * @return void
 *************************************************************************/
 void TimeUpdate(){
-	physicsSys->currentNumberOfSteps = 0;
+	sysManager->currentNumberOfSteps = 0;
 	currentTime = std::chrono::high_resolution_clock::now();
 	deltaTime = std::chrono::duration_cast<std::chrono::duration<double>>(currentTime - previousTime);
 	previousTime = currentTime;
-	physicsSys->accumulatedTime += deltaTime.count();
-	while (physicsSys->accumulatedTime >= physicsSys->fixedDeltaTime) {
-		physicsSys->accumulatedTime -= physicsSys->fixedDeltaTime;
-		physicsSys->currentNumberOfSteps++;
+	sysManager->accumulatedTime += deltaTime.count();
+	while (sysManager->accumulatedTime >= sysManager->fixedDeltaTime) {
+		sysManager->accumulatedTime -= sysManager->fixedDeltaTime;
+		sysManager->currentNumberOfSteps++;
 	}
 
-	if (physicsSys->currentNumberOfSteps > 20) {
-		physicsSys->currentNumberOfSteps = 20;
+	if (sysManager->currentNumberOfSteps > 20) {
+		sysManager->currentNumberOfSteps = 20;
 	}
 	
 }

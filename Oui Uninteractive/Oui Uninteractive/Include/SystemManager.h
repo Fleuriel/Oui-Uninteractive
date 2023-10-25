@@ -46,6 +46,9 @@ public:
 	* @return void
 	*************************************************************************/
 	void DestroySystem();
+	double accumulatedTime = 0.0;//one time definition
+	int currentNumberOfSteps = 0;
+	const double fixedDeltaTime = 1.0 / 60;
 private:
 	//Vector of Systems
 	std::vector<ISystem*> Systems;
