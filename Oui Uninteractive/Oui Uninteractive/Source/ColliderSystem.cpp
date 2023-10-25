@@ -23,22 +23,7 @@ void ColliderSystem::BroadPhase() {
 	std::map<size_t, Collider*>::iterator it = colliderMap.begin();
 	std::map<size_t, Collider*>::iterator it2 = colliderMap.begin();
 	collisionData.clear();
-	for (; it != colliderMap.end(); it++) {
-		Collider* collider = it->second;
-		Vec2 absPosition = Vec2(0, 0);
-
-		absPosition.x = collider->tx->position.x + (windowSize.first / 2.0f);
-		absPosition.y = collider->tx->position.y + (windowSize.second / 2.0f);
-
-		rowsBitArray[collider->implicitGridPos.first].reset(collider->GetOwner()->GetGameObjectID());
-		colBitArray[collider->implicitGridPos.second].reset(collider->GetOwner()->GetGameObjectID());
-
-		collider->implicitGridPos.first = absPosition.x / cellWidth; //which row
-		collider->implicitGridPos.second = absPosition.y / cellHeight; //which col
-
-		rowsBitArray[collider->implicitGridPos.first].set(collider->GetOwner()->GetGameObjectID());
-		colBitArray[collider->implicitGridPos.second].set(collider->GetOwner()->GetGameObjectID());
-	}
+	
 	bitArray result;
 	
 	for (int i = 0; i < WIDTH; i++) {
@@ -80,14 +65,29 @@ void ColliderSystem::Update(float dt) {
 	TimeProfiler profiler(Editor::timeRecorder.colliderTime);
 	std::map<size_t, Collider*>::iterator it = colliderMap.begin();
 	std::map<size_t, Collider*>::iterator it2 = colliderMap.begin();
-	BroadPhase();
+
 
 	for (; it != colliderMap.end(); it++) {
 		Collider* collider = it->second;
+
 		collider->tx->position = GET_COMPONENT(collider->GetOwner(), Transform, ComponentType::TRANSFORM)->position;
 		collider->boundingbox->center = collider->tx->position;
 		collider->boundingbox->min = Vec2((-0.5f) * collider->tx->scale + collider->tx->position.x, (-0.5f) * collider->tx->scale + collider->tx->position.y);
 		collider->boundingbox->max = Vec2((0.5f) * collider->tx->scale + collider->tx->position.x, (0.5f) * collider->tx->scale + collider->tx->position.y);
+
+		Vec2 absPosition = Vec2(0, 0);
+
+		absPosition.x = collider->tx->position.x + (windowSize.first / 2.0f);
+		absPosition.y = collider->tx->position.y + (windowSize.second / 2.0f);
+
+		rowsBitArray[collider->implicitGridPos.first].reset(collider->GetOwner()->GetGameObjectID());
+		colBitArray[collider->implicitGridPos.second].reset(collider->GetOwner()->GetGameObjectID());
+
+		collider->implicitGridPos.first = absPosition.x / cellWidth; //which row
+		collider->implicitGridPos.second = absPosition.y / cellHeight; //which col
+
+		rowsBitArray[collider->implicitGridPos.first].set(collider->GetOwner()->GetGameObjectID());
+		colBitArray[collider->implicitGridPos.second].set(collider->GetOwner()->GetGameObjectID());
 		/*for (; it2 != colliderMap.end(); it2++) {
 			Collider* body2 = it2->second;
 			if (body2->GetOwner()->GetGameObjectID() == collider->GetOwner()->GetGameObjectID()) {
@@ -96,6 +96,10 @@ void ColliderSystem::Update(float dt) {
 			CollisionStaticDynamicRectRect(*(collider->boundingbox), *(body2->boundingbox));
 		}*/
 	}
+
+	BroadPhase();
+
+	//Narrow Phase
  	for (std::set<int> colSet : collisionData) {
 		for (int num : colSet) {
 			std::set<int>::iterator it = colSet.upper_bound(num);
