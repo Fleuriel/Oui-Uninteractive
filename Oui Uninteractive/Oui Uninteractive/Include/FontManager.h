@@ -10,11 +10,16 @@
 #ifndef FONTMANAGER_H
 #define FONTMANAGER_H
 
+#include <GL/glew.h>
 #include <string>
 #include <filesystem>
 #include <ft2build.h>
 #include FT_FREETYPE_H
 #include "ISystem.h"
+#include <GLFW/glfw3.h>
+#include <glm/glm.hpp>
+#include <glm/gtc/type_ptr.hpp>
+
 
 class FontManager : public ISystem {
 public:
@@ -31,6 +36,16 @@ public:
 	// Container for fonts
 	std::vector<FT_Face> fontVec{};
 
+	// Struct to store character data
+	struct Character {
+		GLuint glyphTexID;
+		glm::vec2 glyphSize;
+		glm::vec2 glyphBearing; // Offset from baseline to top left of glyph
+		GLuint advance; // Horizontal offset to next glyph
+	};
+	// Container for characters
+	std::map<char, Character> charactersMap;
+	
 private:
 	FT_Library ft;
 
