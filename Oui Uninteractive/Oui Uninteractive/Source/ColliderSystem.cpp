@@ -102,13 +102,11 @@ void ColliderSystem::Update(float dt) {
 				continue;
 			}
 
-			if (CollisionStaticDynamicRectRect(*(collider->boundingbox), *(body2->boundingbox)) == true) {
-				CollisionMessage collisionMessage(collider, body2);
-				ProcessMessage(&collisionMessage);
-				//std::cout << "Collision Detected lmao" << std::endl;
+			/*if (CollisionStaticDynamicRectRect(*(collider->boundingbox), *(body2->boundingbox)) == true) {
+				
 			}
 			if (CollisionStaticDynamicRectRect(*(collider->boundingbox), *(body2->boundingbox)) == false) {
-				PhysicsBody* pBody1 = GET_COMPONENT(collider->GetOwner(), PhysicsBody, ComponentType::PHYSICS_BODY);
+				PhysicsBody* pBody1 = GET_COMPONENT(collider->GetOwner(), PhysicsBody, ComponentType::PHYSICS_BODY);*/
 			PhysicsBody* pBody1 = GET_COMPONENT(collider->GetOwner(), PhysicsBody, ComponentType::PHYSICS_BODY);
 			bool staticCollided = CollisionStaticDynamicRectRect(*(collider->boundingbox), *(body2->boundingbox));
 			bool dynamicCollided;
@@ -121,6 +119,9 @@ void ColliderSystem::Update(float dt) {
 			}
 			
 			if (staticCollided){
+				CollisionMessage collisionMessage(collider, body2);
+				ProcessMessage(&collisionMessage);
+				//std::cout << "Collision Detected lmao" << std::endl;
 				Vec2 normal = Vec2(0,0);
 				float depth = CalculateEntryTimeAndNormal(collider->boundingbox, body2->boundingbox, pBody1->velocity, normal.x, normal.y);
 				//depth = depth / Vector2DLength(normal);
