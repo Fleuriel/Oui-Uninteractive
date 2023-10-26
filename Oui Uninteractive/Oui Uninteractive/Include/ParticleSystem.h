@@ -41,7 +41,7 @@ public:
      *************************************************************************/
     Particle(int userInput_x, int userInput_y, float userInput_sizeX,
         float userInput_sizeY, float userInput_angleDisplacement,
-        float userInput_angleSpeed, float userInput_lifespan = 10);
+        float userInput_angleSpeed, float userInput_lifespan = 10, bool userInput_visibility = true);
 
     void RemoveParticle();
 
@@ -84,6 +84,7 @@ public:
 
     OpenGLObject object;
     int ID;
+    bool visibility;
 private:
     Vector2D velocity;  //stores the speed and direction of particle movement
     float lifespan;       //determines how long the particle exists
@@ -119,5 +120,4 @@ public:
     void EmptyParticleSystem();
 
 private:
-
 };
