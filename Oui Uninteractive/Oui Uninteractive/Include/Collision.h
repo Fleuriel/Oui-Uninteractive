@@ -79,8 +79,6 @@ bool CollisionStaticDynamicRectRect(Collider::AABB Rect1, Collider::AABB Rect2);
 		  velocities of each coordinate points
  * @param s1, s2  Width of first and second rectangle respectively
  *************************************************************************/
-bool CollisionMovingRectRect(float r1x, float r1y, float r2x, float r2y,
-	float r1velocityX, float r1velocityY, float r2velocityX, float r2velocityY,
-	float s1, float s2);
+bool CollisionMovingRectRect(Collider::AABB Rect1, Collider::AABB Rect2, Vec2 Rect1Vel, Vec2 Rect2Vel);
 
 #endif

@@ -26,6 +26,7 @@ void TransformSystem::Update(float dt) {
 		}
 	}
 	
+	
 	for (; it != copyMap.end(); it++) {
 
 		Transform* tx = GET_COMPONENT(it->second, Transform, ComponentType::TRANSFORM);

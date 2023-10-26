@@ -93,19 +93,20 @@ bool CollisionStaticDynamicRectRect(Collider::AABB Rect1, Collider::AABB Rect2) 
 		std::cout << "Collision detected\n";
 		//std::cout << "X " << physicsSys->bodyList[0]->txPtr->position.x << "Y " << physicsSys->bodyList[0]->txPtr->position.y << " \n";
 		//std::cout << Rect1.max.x << " " << Rect1.center.x;
-		Vector2D direction;
-		direction = Rect2.center - Rect1.center;
-		//std::cout << "Direction X: " << direction.x << "Direction Y: " << direction.y << "\n";
-		//std::cout << "Direction: " << direction.center.x << " " << direction.center.y;
-		
-		Vector2D Rect1norm;
-		Vector2DNormalize(Rect1norm, direction);
+		//Vector2D direction;
+		//direction = Rect2.center - Rect1.center;
+		////std::cout << "Direction X: " << direction.x << "Direction Y: " << direction.y << "\n";
+		////std::cout << "Direction: " << direction.center.x << " " << direction.center.y;
+		//
+		//Vector2D Rect1norm;
 
-		if (Vector2DDotProduct(direction, Rect1norm) < 0.f) {
-			Rect1norm = -Rect1norm;
-			physicsSys->bodyList[0]->velocity = Rect1norm;
-		}
-		
+		//Vector2DNormalize(Rect1norm, direction);
+
+		//if (Vector2DDotProduct(direction, Rect1norm) < 0.f) {
+		//	Rect1norm = -Rect1norm;
+		//	physicsSys->bodyList[0]->velocity = Rect1norm;
+		//}
+		//
 		
 		//physicsSys->bodyList[0]->velocity.x = -20;
 		//physicsSys->bodyList[0]->velocity.y = -20;
@@ -113,7 +114,6 @@ bool CollisionStaticDynamicRectRect(Collider::AABB Rect1, Collider::AABB Rect2) 
 		
 		return true;
 		}
-
 		else {
 		return false;
 		}
@@ -132,71 +132,75 @@ bool CollisionStaticDynamicRectRect(Collider::AABB Rect1, Collider::AABB Rect2) 
 		  velocities of each coordinate points
  * @param s1, s2  Width of first and second rectangle respectively
  *************************************************************************/
-bool CollisionMovingRectRect(float r1x = 1, float r1y = 2, float r2x = 3, float r2y = 4, 
-							 float r1velocityX = 5, float r1velocityY = 6, float r2velocityX = 7, float r2velocityY = 8,
-							 float s1 = 9, float s2 = 10) {
-	//Smallest X-coordinate of both rectangle
-	float leftA, leftB{ 0 };
-	leftA = r1x - (s1 / 2);
-	leftB = r2x - (s2 / 2);
+bool CollisionMovingRectRect(Collider::AABB Rect1, Collider::AABB Rect2, Vec2 Rect1Vel, Vec2 Rect2Vel) {
+	////Smallest X-coordinate of both rectangle
+	//float leftA, leftB{ 0 };
+	//leftA = r1x - (s1 / 2);
+	//leftB = r2x - (s2 / 2);
 
-	//Biggest X-coordinate of both rectangle
-	float rightA, rightB{ 0 };
-	rightA = r1x + (s1 / 2);
-	rightB = r2x + (s2 / 2);
+	////Biggest X-coordinate of both rectangle
+	//float rightA, rightB{ 0 };
+	//rightA = r1x + (s1 / 2);
+	//rightB = r2x + (s2 / 2);
 
-	//Biggest Y-coordinate of both rectangle
-	float topA, topB{ 0 };
-	topA = r1y + (s1 / 2);
-	topB = r2y + (s2 / 2);
+	////Biggest Y-coordinate of both rectangle
+	//float topA, topB{ 0 };
+	//topA = r1y + (s1 / 2);
+	//topB = r2y + (s2 / 2);
 
-	//Smallest Y-coordinate of both rectangle
-	float bottomA, bottomB{ 0 };
-	bottomA = r1y - (s1 / 2);
-	bottomB = r2y - (s2 / 2);
+	////Smallest Y-coordinate of both rectangle
+	//float bottomA, bottomB{ 0 };
+	//bottomA = r1y - (s1 / 2);
+	//bottomB = r2y - (s2 / 2);
 
 	//Velocity variables
-	float RelativeVel_X = r2velocityX - r1velocityX;
-	float RelativeVel_Y = r2velocityY - r1velocityY;
+	Vec2 RelativeVel = Rect2Vel - Rect1Vel;
+
+	if (Vector2DLength(RelativeVel) == 0) {
+		return false;
+	}
+	
 
 	//Timer variables
 	float TimeFirst{ 0 };
 	float TimeLast = static_cast<float>(GetDT());
 
-
+	float dFirstX = Rect1.min.x - Rect2.max.x;
+	float dLastX = Rect1.max.x - Rect2.min.x;
 	////////////////////
 	///////X-Axis///////
 	////////////////////
 	
 	//Time lesser than 0
-	if (RelativeVel_X < 0) {
+	if (RelativeVel.x < 0) {
 		//Case 1
-		if (leftA > rightB) {
+		if (Rect1.min.x > Rect2.max.x) {
 			return false;
 		}
 
 		//Case 4
-		if (rightA < leftB) {
-			TimeFirst = std::max(((rightA - leftB) / RelativeVel_X), TimeFirst);
-		}
-		if (leftA < rightB) {
-			TimeLast = std::min(((leftA - rightB) / RelativeVel_X), TimeLast);
+		if (Rect1.max.x < Rect2.min.x) {
+			
+			if ((dFirstX / RelativeVel.x) > TimeFirst) { //Case 4
+				TimeFirst = (dFirstX / RelativeVel.x);
+			}
+			if ((dLastX / RelativeVel.x) < TimeLast) {
+				TimeLast = dLastX / RelativeVel.x;
+			}
 		}
 	}
-
 	//Time more than 0
-	if (RelativeVel_X > 0) {
-		//Case 2
-		if (leftA > rightB) {
-			TimeFirst = std::max(((leftA - rightB) / RelativeVel_X), TimeFirst);
+	if (RelativeVel.x > 0) {
+		if (Rect1.max.x > Rect2.min.x) {
+			if ((dFirstX / RelativeVel.x) > TimeFirst) {
+				TimeFirst = dFirstX / RelativeVel.x; // Case 2
+			}
+			if ((dLastX / RelativeVel.x) < TimeLast) {
+				TimeLast = (dLastX / RelativeVel.x);
+			}
 		}
-		if (rightA > leftB) {
-			TimeLast = std::min(((rightA - leftB) / RelativeVel_X), TimeLast);
-		}
-
-		//Case 3
-		if (rightA < leftB) {
-			return false;
+		if (Rect1.max.x < Rect2.min.x) {
+			return 0;
 		}
 	}
 
@@ -208,33 +212,41 @@ bool CollisionMovingRectRect(float r1x = 1, float r1y = 2, float r2x = 3, float 
 	////////////////////
 	///////Y-Axis///////
 	////////////////////
-	
+	float dFirstY = Rect1.min.y - Rect2.max.y;
+	float dLastY = Rect1.max.y - Rect2.min.y;
 	//Time lesser than 0
-	if (RelativeVel_Y < 0) {
+	if (RelativeVel.x < 0) {
 		//Case 1
-		if (bottomA > topB) {
+		if (Rect1.min.y > Rect2.max.y) {
 			return false;
 		}
 		//Case 4
-		if (topA < bottomB) {
-			TimeFirst = std::max(((topA - bottomB) / RelativeVel_Y), TimeFirst);
+		if (Rect1.max.y < Rect2.min.y) {
+			if (dFirstY / RelativeVel.y > TimeFirst) {
+				TimeFirst = dFirstY / RelativeVel.y;
+			}
+			if ((dLastY / RelativeVel.y) < TimeLast) {
+				TimeLast = dLastY / RelativeVel.y;
+			}
+			
 		}
-		if (bottomA < topB) {
-			TimeLast = std::min(((bottomA - topB) / RelativeVel_Y), TimeLast);
-		}
+	
 	}
-	if (RelativeVel_Y > 0) {
+	if (RelativeVel.y > 0) {
 		//Case 2
-		if (bottomA > topB) {
-			TimeFirst = std::max(((bottomA - topB) / RelativeVel_Y), TimeFirst);
-		}
-		if (topA > bottomB) {
-			TimeLast = std::min(((topA - bottomB) / RelativeVel_Y), TimeLast);
+		if (Rect1.max.y > Rect2.min.y) {
+			if ((dFirstY / RelativeVel.y) > TimeFirst) {
+				TimeFirst = dFirstY / RelativeVel.y;
+			}
+			if ((dLastY / RelativeVel.y) > TimeLast) {
+				TimeLast = dFirstY / RelativeVel.y;
+			}
+			
 		}
 
-		//Case 3
-		if (topA < bottomB) {
-			return false;
+		//Case3
+		if (Rect1.max.y < Rect2.min.y) {
+			return 0;
 		}
 	}
 
@@ -243,5 +255,7 @@ bool CollisionMovingRectRect(float r1x = 1, float r1y = 2, float r2x = 3, float 
 		return false; //No collision
 	}
 
-	return false;
+	std::cout << "dynamic collision!";
+	return 1;
+
 }

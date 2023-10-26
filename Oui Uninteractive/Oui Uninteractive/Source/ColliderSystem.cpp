@@ -98,7 +98,12 @@ void ColliderSystem::Update(float dt) {
 			if (body2->GetOwner()->GetGameObjectID() == collider->GetOwner()->GetGameObjectID()) {
 				continue;
 			}
-			CollisionStaticDynamicRectRect(*(collider->boundingbox), *(body2->boundingbox));
+
+			if (CollisionStaticDynamicRectRect(*(collider->boundingbox), *(body2->boundingbox)) == false) {
+				PhysicsBody* pBody1 = GET_COMPONENT(collider->GetOwner(), PhysicsBody, ComponentType::PHYSICS_BODY);
+				PhysicsBody* pBody2 = GET_COMPONENT(body2->GetOwner(), PhysicsBody, ComponentType::PHYSICS_BODY);
+				CollisionMovingRectRect(*(collider->boundingbox), *(body2->boundingbox), pBody1->velocity, pBody2->velocity);
+			}
 		}
 	}
 
