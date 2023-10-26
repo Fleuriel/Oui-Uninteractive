@@ -381,7 +381,7 @@ void OpenGLApplication::OpenGLUpdate() {
 
 	if (keyStates[GLFW_KEY_L] == 1) {
 		//Grid(3, 3);
-		Animation_Top_Left_To_Bottom_Right(20, 20, 2);
+		Animation_Top_Left_To_Bottom_Right(20, 20, 3);
 		//particleSystem.EmptyParticleSystem();
 	}
 
