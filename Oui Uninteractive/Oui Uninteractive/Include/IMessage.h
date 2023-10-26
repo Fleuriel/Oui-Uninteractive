@@ -37,7 +37,7 @@ public:
 };
 
 // Define a message handler
-typedef void (*MessageHandler)(IMessage* msg);
+typedef void (*MessageHandler)(IMessage*);
 
 class IObserver {
 private:

@@ -336,6 +336,9 @@
     <ClInclude Include="Include\TestScript.h">
       <Filter>Scripts</Filter>
     </ClInclude>
+    <ClInclude Include="Include\EnemyAIScript.h">
+      <Filter>Scripts</Filter>
+    </ClInclude>
     <ClInclude Include="Include\TransformSystem.h">
       <Filter>Systems</Filter>
     </ClInclude>
@@ -360,7 +363,6 @@
     <ClInclude Include="Include\FontManager.h">
       <Filter>Systems\Fonts</Filter>
     </ClInclude>
-    <ClInclude Include="EnemyAIScript.h" />
     <ClInclude Include="Include\Collider.h">
       <Filter>Component</Filter>
     </ClInclude>

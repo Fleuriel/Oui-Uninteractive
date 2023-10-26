@@ -18,6 +18,9 @@ void ColliderSystem::Initialize() {
 	objectFactory->AddComponentFactory(ComponentType::COLLIDER, testPtr);
 	cellWidth = windowSize.first / WIDTH;
 	cellHeight = windowSize.second / HEIGHT;
+
+	// Register physics system as an observer
+	RegisterObserver("MSG_COLLISION", &physicsSys->observer);
 }
 void ColliderSystem::BroadPhase() {
 	std::map<size_t, Collider*>::iterator it = colliderMap.begin();
@@ -99,6 +102,13 @@ void ColliderSystem::Update(float dt) {
 				continue;
 			}
 
+			if (CollisionStaticDynamicRectRect(*(collider->boundingbox), *(body2->boundingbox)) == true) {
+				CollisionMessage collisionMessage(collider, body2);
+				ProcessMessage(&collisionMessage);
+				//std::cout << "Collision Detected lmao" << std::endl;
+			}
+			if (CollisionStaticDynamicRectRect(*(collider->boundingbox), *(body2->boundingbox)) == false) {
+				PhysicsBody* pBody1 = GET_COMPONENT(collider->GetOwner(), PhysicsBody, ComponentType::PHYSICS_BODY);
 			PhysicsBody* pBody1 = GET_COMPONENT(collider->GetOwner(), PhysicsBody, ComponentType::PHYSICS_BODY);
 			bool staticCollided = CollisionStaticDynamicRectRect(*(collider->boundingbox), *(body2->boundingbox));
 			bool dynamicCollided;
