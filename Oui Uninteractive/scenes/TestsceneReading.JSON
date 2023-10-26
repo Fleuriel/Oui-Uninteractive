@@ -41,7 +41,7 @@
                     "RotationSpeed": 20.0,
                     "Speed": 120.0,
                     "Mass": 80.0,
-                    "IsStatic": false,
+                    "IsStatic": true,
                     "FrictionForce": 20.0
                 },
                 "Transform": {
