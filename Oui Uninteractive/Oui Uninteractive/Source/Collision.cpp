@@ -90,7 +90,7 @@ bool CollisionStaticDynamicRectRect(Collider::AABB Rect1, Collider::AABB Rect2) 
 			 Rect1.max.y > Rect2.min.y) &&
 			(Rect2.max.x > Rect1.min.x  &&
 			 Rect2.max.y > Rect1.min.y)) {
-		std::cout << "Collision detected\n";
+		//std::cout << "Collision detected\n";
 		//std::cout << "X " << physicsSys->bodyList[0]->txPtr->position.x << "Y " << physicsSys->bodyList[0]->txPtr->position.y << " \n";
 		//std::cout << Rect1.max.x << " " << Rect1.center.x;
 		//Vector2D direction;

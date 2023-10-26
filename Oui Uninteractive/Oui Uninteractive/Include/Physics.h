@@ -27,6 +27,19 @@
 #include <algorithm>
 #include <chrono>
 
+class CollisionMessage : public IMessage {
+private:
+	//CollisionMessage
+	Collider* firstCollider;
+	Collider* secondCollider;
+
+public:
+	CollisionMessage(Collider* first, Collider* second) : IMessage("MSG_COLLISION"), firstCollider(first), secondCollider(second) {}
+	~CollisionMessage() {}
+
+	Collider* GetFirstCollider() { return firstCollider; }
+	Collider* GetSecondCollider() { return secondCollider; }
+};
 
 class Physics : public ISystem{
 public:
@@ -133,6 +146,10 @@ public:
 	*************************************************************************/
 	Vec2 AngleToVec(float angle);
 	void CapVelocity(Vec2 originalVelocity, Vec2& bodyVelocity);
+
+	// Collision Response Possibly
+	static void CollisionResponse(CollisionMessage* msg);
+	
 	//insert linked list of all physics body components
 	std::map<size_t, PhysicsBody*> bodyList;
 

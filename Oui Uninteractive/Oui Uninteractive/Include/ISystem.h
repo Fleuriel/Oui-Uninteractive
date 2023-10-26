@@ -53,12 +53,12 @@ public:
 	}*/
 	
 
-	void RegisterObserver(const std::string& message, IObserver* observer) {
-		broadcaster.RegisterObserver(message, observer);
+	void RegisterObserver(const std::string& msg, IObserver* ob) {
+		broadcaster.RegisterObserver(msg, ob);
 	}
 
-	void UnregisterObserver(const std::string& message, IObserver* observer) {
-		broadcaster.UnregisterObserver(message, observer);
+	void UnregisterObserver(const std::string& msg, IObserver* ob) {
+		broadcaster.UnregisterObserver(msg, ob);
 	}
 
 	/*void SendToObservers(IMessage* msg) {
@@ -69,8 +69,8 @@ public:
 		broadcaster.ProcessMessage(msg);
 	}
 
-	void AddMessageHandler(const std::string& message, MessageHandler mh) {
-		observer.AddMessageHandler(message, mh);
+	void AddMessageHandler(const std::string& msg, MessageHandler mh) {
+		observer.AddMessageHandler(msg, mh);
 	}
 
 	/*----------TESTING MESSAGING SYSTEM----------*/

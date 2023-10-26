@@ -38,6 +38,9 @@ void Physics::Initialize() {
 	
 	ComponentFactory<PhysicsBody>* testPtr = new ComponentFactory<PhysicsBody>(ComponentType::PHYSICS_BODY);
 	objectFactory->AddComponentFactory(ComponentType::PHYSICS_BODY, testPtr);
+
+	// Message System
+	AddMessageHandler("MSG_COLLISION", (MessageHandler)CollisionResponse);
 }
 /**************************************************************************
 * @brief Update Function of the Physics System
@@ -295,4 +298,9 @@ void Physics::CapVelocity(Vec2 originalVelocity, Vec2& bodyVelocity) {
 			bodyVelocity.y = 0;
 		}
 	}
+}
+
+void Physics::CollisionResponse(CollisionMessage* msg) {
+	std::cout << "Collision detected between " << msg->GetFirstCollider()->GetOwner()->GetName() << " (x,y): "<< msg->GetFirstCollider()->boundingbox->center.x << ", " << msg->GetFirstCollider()->boundingbox->center.y;
+	std::cout << " and " << msg->GetSecondCollider()->GetOwner()->GetName() << "(x, y): " << msg->GetSecondCollider()->boundingbox->center.x << ", " << msg->GetSecondCollider()->boundingbox->center.y << std::endl;
 }
