@@ -70,9 +70,6 @@ void Physics::Update(float dt) {
 			Vec2 normalizedVel = Vec2(0, 0);
 			Vector2DNormalize(normalizedVel, body->velocity);
 			Vec2 summedForce = body->forceManager.CalculateResultantForce();
-			if (body->GetOwner()->GetGameObjectID() == 0) {
-				std::cout << "Summed force: "<< summedForce.x << "|" << summedForce.y << "\n";
-			}
 			body->acceleration = (summedForce - (body->frictionForce * normalizedVel)) * body->mass;
 			/*
 			if (body->GetOwner()->GetGameObjectID() == 0) {
