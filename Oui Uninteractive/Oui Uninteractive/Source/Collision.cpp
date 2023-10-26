@@ -132,6 +132,138 @@ bool CollisionStaticDynamicRectRect(Collider::AABB Rect1, Collider::AABB Rect2) 
 		  velocities of each coordinate points
  * @param s1, s2  Width of first and second rectangle respectively
  *************************************************************************/
+
+float CalculateEntryTimeAndNormal(Collider::AABB* Rect1, Collider::AABB* Rect2, Vec2 Rect1Vel, float& normalX, float& normalY) {
+	float distanceXEntry;
+	float distanceYEntry;
+
+	if (Rect1Vel.x < 0) {
+		distanceXEntry = Rect2->max.x - Rect1->min.x;
+	}
+	else {
+		distanceXEntry = Rect2->min.x - Rect1->max.x;
+	}
+	
+	if (Rect1Vel.y < 0) {
+		distanceYEntry = Rect2->max.y - Rect1->min.y;
+	}
+	else {
+		distanceYEntry = Rect2->min.y - Rect1->max.y;
+	}
+
+	if (abs(distanceXEntry) < abs(distanceYEntry)) {
+		//if distance is negative, i am coming from the left
+		// else coming from the right
+		if (distanceXEntry < 0) {
+			normalX = 1;
+			return distanceXEntry;
+		}
+		else {
+			normalX = -1;
+			return -distanceXEntry;
+		}
+		std::cout << "X AXIS\n";
+		
+	}
+	else {
+		//negative from bottom
+		//positive from top
+		if (distanceYEntry < 0) {
+			normalY = 1;
+			return distanceYEntry;
+		}
+		else {
+			normalY = -1;
+			return -distanceYEntry;
+		}
+
+ 		std::cout << " Y AXIS";
+		
+	}
+	
+	//min of static - max of dynamic
+	//float distanceXEntry, distanceYEntry;
+	//float distanceXExit, distanceYExit;
+	//if (Rect1Vel.x > 0.0f) {
+	//	distanceXEntry = Rect2->min.x - Rect1->max.x;
+	//	distanceXExit = Rect2->max.x - Rect1->min.x;
+	//}
+	//else {
+	//	distanceXEntry = Rect2->max.x - Rect1->min.x;
+	//	distanceXExit = Rect2->min.x - Rect1->max.x;
+	//}
+
+	//if (Rect1Vel.y > 0.0f) {
+	//	distanceYEntry = Rect2->max.y - Rect1->min.y;
+	//	distanceYExit = Rect2->min.y - Rect1->max.y;
+	//}
+	//else {
+	//	distanceYEntry = Rect2->min.y - Rect1->max.y;
+	//	distanceYExit = Rect2->max.y - Rect1->min.y;
+	//}
+
+	//float xEntryTime, yEntryTime;
+	//float xExitTime, yExitTime;
+
+	//if (Rect1Vel.x == 0.0f)
+	//{
+	//	
+	//}
+	//else
+	//{
+	//	xEntryTime = distanceXEntry / Rect1Vel.x;
+	//	xExitTime = distanceXExit / Rect1Vel.x;
+	//}
+
+	//if (Rect1Vel.y == 0.0f)
+	//{
+	//
+	//}
+	//else
+	//{
+	//	yEntryTime = distanceYEntry / Rect1Vel.y;
+	//	yExitTime = distanceYExit / Rect1Vel.y;
+	//}
+	//float entryTime = std::min(xEntryTime, yEntryTime);
+	//float exitTime = std::min(xExitTime, yExitTime);
+
+	//if (entryTime > exitTime || (xEntryTime < 0.0f && yEntryTime < 0.0f) || xEntryTime > 1.0f || yEntryTime > 1.0f) {
+	//	normalX = 0.0f;
+	//	normalY = 0.0f;
+	//	return 1.0f;
+	//}
+	//else // if there was a collision 
+	//{
+	//	// calculate normal of collided surface
+	//	if (xEntryTime > yEntryTime)
+	//	{
+	//		if (distanceXEntry < 0.0f)
+	//		{
+	//			normalX = 1.0f;
+	//			normalY = 0.0f;
+	//		}
+	//		else
+	//		{
+	//			normalX = -1.0f;
+	//			normalY = 0.0f;
+	//		}
+	//	}
+	//	else
+	//	{
+	//		if (distanceYEntry < 0.0f)
+	//		{
+	//			normalX = 0.0f;
+	//			normalY = 1.0f;
+	//		}
+	//		else
+	//		{
+	//			normalX = 0.0f;
+	//			normalY = -1.0f;
+	//		}
+	//	} // return the time of collisionreturn entryTime; 
+	//	return entryTime;
+	//}
+}
 bool CollisionMovingRectRect(Collider::AABB Rect1, Collider::AABB Rect2, Vec2 Rect1Vel, Vec2 Rect2Vel) {
 	////Smallest X-coordinate of both rectangle
 	//float leftA, leftB{ 0 };

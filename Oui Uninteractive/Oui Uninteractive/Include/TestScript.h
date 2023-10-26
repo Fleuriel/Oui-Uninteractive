@@ -17,7 +17,7 @@ public:
 			
 			if (physBod->forceManager.forceVec.size() >= 1) {
 				
-				if (tx->position.x < -300) {
+				/*if (tx->position.x < -300) {
 					physBod->forceManager.SetActive(true, FORCE_INDEX::EXTERNAL);
 					physBod->forceManager.SetDirection(Vec2(1.f, 0), FORCE_INDEX::EXTERNAL);
 					physBod->forceManager.SetMagnitude(physBod->speed, FORCE_INDEX::EXTERNAL);
@@ -33,7 +33,7 @@ public:
 						physBod->forceManager.SetDirection(Vec2(-1.f, 0), FORCE_INDEX::EXTERNAL);
 						physBod->forceManager.SetMagnitude(physBod->speed, FORCE_INDEX::EXTERNAL);
 					}
-				}
+				}*/
 			}
 			
 		}

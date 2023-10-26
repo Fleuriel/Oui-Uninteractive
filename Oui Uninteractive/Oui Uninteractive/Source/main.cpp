@@ -40,9 +40,9 @@ int main(){
 	sysManager->AddSystem(new OpenGLApplication());
 	sysManager->AddSystem(new LogicSystem());
 	sysManager->AddSystem(new ObjectFactory());
+	sysManager->AddSystem(new ColliderSystem());
 	sysManager->AddSystem(new Physics());
 	sysManager->AddSystem(new TransformSystem());
-	sysManager->AddSystem(new ColliderSystem());
 	sysManager->AddSystem(new SoundManager());
 	sysManager->AddSystem(new FontManager());
 	sysManager->AddSystem(new SceneManager());

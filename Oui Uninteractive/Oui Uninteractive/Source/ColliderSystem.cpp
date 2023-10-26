@@ -102,15 +102,61 @@ void ColliderSystem::Update(float dt) {
 				continue;
 			}
 
-			if (CollisionStaticDynamicRectRect(*(collider->boundingbox), *(body2->boundingbox)) == true) {
+			/*if (CollisionStaticDynamicRectRect(*(collider->boundingbox), *(body2->boundingbox)) == true) {
+				
+			}
+			if (CollisionStaticDynamicRectRect(*(collider->boundingbox), *(body2->boundingbox)) == false) {
+				PhysicsBody* pBody1 = GET_COMPONENT(collider->GetOwner(), PhysicsBody, ComponentType::PHYSICS_BODY);*/
+			PhysicsBody* pBody1 = GET_COMPONENT(collider->GetOwner(), PhysicsBody, ComponentType::PHYSICS_BODY);
+			bool staticCollided = CollisionStaticDynamicRectRect(*(collider->boundingbox), *(body2->boundingbox));
+			bool dynamicCollided;
+			if (!staticCollided) {
+				PhysicsBody* pBody2 = GET_COMPONENT(body2->GetOwner(), PhysicsBody, ComponentType::PHYSICS_BODY);
+				dynamicCollided = CollisionMovingRectRect(*(collider->boundingbox), *(body2->boundingbox), pBody1->velocity, pBody2->velocity);
+				if (dynamicCollided) {
+
+				}
+			}
+			
+			if (staticCollided){
 				CollisionMessage collisionMessage(collider, body2);
 				ProcessMessage(&collisionMessage);
 				//std::cout << "Collision Detected lmao" << std::endl;
-			}
-			if (CollisionStaticDynamicRectRect(*(collider->boundingbox), *(body2->boundingbox)) == false) {
-				PhysicsBody* pBody1 = GET_COMPONENT(collider->GetOwner(), PhysicsBody, ComponentType::PHYSICS_BODY);
+				Vec2 normal = Vec2(0,0);
+				float depth = CalculateEntryTimeAndNormal(collider->boundingbox, body2->boundingbox, pBody1->velocity, normal.x, normal.y);
+				//depth = depth / Vector2DLength(normal);
+				float halfDepth = depth / 2;
+				Vec2 dir = body2->boundingbox->center - collider->boundingbox->center;
+				Vector2DNormalize(normal, normal);
+				if (Vector2DDotProduct(dir, normal) < 0.f) {
+					normal = -normal;
+				}
+
+				
+				//coll response
+				Vec2 penetration = normal * halfDepth;
+				Transform* tx1 = GET_COMPONENT(objectFactory->GetGameObjectByID(0), Transform, ComponentType::TRANSFORM);
+				Transform* tx2 = GET_COMPONENT(body2->GetOwner(), Transform, ComponentType::TRANSFORM);
 				PhysicsBody* pBody2 = GET_COMPONENT(body2->GetOwner(), PhysicsBody, ComponentType::PHYSICS_BODY);
-				CollisionMovingRectRect(*(collider->boundingbox), *(body2->boundingbox), pBody1->velocity, pBody2->velocity);
+
+				if (pBody2->isStatic) {
+					tx1->position += normal * depth;
+				}
+				else {
+				//	pBody1->forceManager.ApplyToForce(normal, depth / 2, 0.1f, FORCE_INDEX::EXTERNAL);
+					tx1->position += normal * (depth / 2);
+				//	pBody2->forceManager.ApplyToForce(-normal, depth / 2, 0.1f, FORCE_INDEX::EXTERNAL);
+					tx2->position += (-normal * (depth / 2));
+				}
+
+			/*	Vec2 direction;
+				Vector2DNormalize(direction, pBody1->velocity);
+				float magnitude = Vector2DLength(pBody1->velocity);
+				pBody1->forceManager.ApplyToForce(-direction, pBody1->speed, 0.2f, FORCE_INDEX::EXTERNAL);*/
+			//	pBody1->forceManager.DeactivateForce(FORCE_INDEX::INTERNAL);
+			}
+			else if (staticCollided == false && dynamicCollided == false) {
+				
 			}
 		}
 	}
@@ -130,4 +176,4 @@ void ColliderSystem::Update(float dt) {
 //	}
 	//insert collision detection here
 	//response should be inside the function
-}
+	}
