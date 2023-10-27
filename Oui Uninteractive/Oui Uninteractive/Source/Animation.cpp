@@ -6,26 +6,29 @@
 
 #define numberOfElements 1
 std::vector<bool>timerSwitches(numberOfElements);
-std::vector<float>timers(numberOfElements);
-std::vector<std::pair<float, float>> gridInfoContainer[numberOfElements];
+std::vector<double>timers(numberOfElements);
+std::vector<std::pair<double, double>> gridInfoContainer[numberOfElements];
+std::vector<int> IDContainer;
 
-std::vector<std::pair<float, float>> Grid(int rows, int columns) {
+extern ParticleSystem particleSystem;
 
-	float width{ static_cast<float>(windowSize.first / columns) }, height{ static_cast<float>(windowSize.second / rows) };
+std::vector<std::pair<double, double>> Grid(int rows, int columns) {
+
+	double width{ static_cast<double>(windowSize.first / columns) }, height{ static_cast<double>(windowSize.second / rows) };
 	//std::cout << "WIDTH: " << width << " HEIGHT: " << height << "\n";
 
-	std::vector<std::pair<float, float>> gridInfo;
-	std::pair<float, float> boxDimensions{ width,height };
+	std::vector<std::pair<double, double>> gridInfo;
+	std::pair<double, double> boxDimensions{ width,height };
 	gridInfo.emplace_back(boxDimensions);
 
-	float topLeftxCoord{ (width / 2) - (windowSize.first / 2) }, topLeftyCoord{ (windowSize.second / 2) - (height / 2) };
+	double topLeftxCoord{ (width / 2) - (windowSize.first / 2) }, topLeftyCoord{ (windowSize.second / 2) - (height / 2) };
 
-	float xCoord = topLeftxCoord;
-	float yCoord = topLeftyCoord;
+	double xCoord = topLeftxCoord;
+	double yCoord = topLeftyCoord;
 	for (int i = 0; i < rows; ++i) {
 		xCoord = topLeftxCoord;
 		for (int i = 0; i < columns; ++i) {
-			std::pair<float, float> coords{ xCoord, yCoord };
+			std::pair<double, double> coords{ xCoord, yCoord };
 			gridInfo.emplace_back(coords);
 			//Particle newparticle(xCoord, yCoord, width, height, 0, 0);
 			xCoord += width;
@@ -44,37 +47,51 @@ void UpdateAnimationTimers() {
 		}
 	}
 }
-int particleNumber = 1;
-float Animationduration;
+int particleNumber{};
+double Animationduration;
 void UpdateAnimation() {
-	if (timerSwitches[0] == true) {
-
-		std::pair<float, float> dimensions = gridInfoContainer[0][0];
-
-		float postanimationlifespan = 3;
+	if (timerSwitches[animationTopLeftToBottomRight] == true) {
 		
 
-		if ( timers[0] > particleNumber * Animationduration / (gridInfoContainer[0].size() - 1)) {
-			Particle newparticle(gridInfoContainer[0][particleNumber].first, gridInfoContainer[0][particleNumber].second,
-				dimensions.first, dimensions.second,
-				0, 0,
-				postanimationlifespan + Animationduration - particleNumber * Animationduration / (gridInfoContainer[0].size() - 1));
+		if ( timers[animationTopLeftToBottomRight] > static_cast<double> (particleNumber) * Animationduration / static_cast<double>(gridInfoContainer[animationTopLeftToBottomRight].size() - 1)) {
+			particleSystem.particles[IDContainer[particleNumber]-1].visibility = true;
+			//std::cout << "PARTICLE NUMBER : " << particleNumber;
 			++particleNumber;
 		}
 
-		if (particleNumber > gridInfoContainer[0].size()-1) {
-			timerSwitches[0] = false;
-			timers[0] = 0.f;
-			particleNumber = 1;
+		/*
+		Choose one if statement.
+		first if statement prioritises printing all particles, even if the program lagged and printed them at the wrong time
+		second if statement prioritises following the animation duration
+		*/
+
+
+		if ((particleNumber > gridInfoContainer[0].size()-2) || timers[animationTopLeftToBottomRight] > Animationduration) {
+			timerSwitches[animationTopLeftToBottomRight] = false;
+			timers[animationTopLeftToBottomRight] = 0.f;
+			particleNumber = 0;
+			std::cout << "PPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPP";
 		}
 		
 	}
 }
 
-void Animation_Top_Left_To_Bottom_Right(int rows, int columns , float duration) {
-	if (!timerSwitches[0]) {
-		timerSwitches[0] = true;
-		gridInfoContainer[0] = Grid(rows, columns);
+void Animation_Top_Left_To_Bottom_Right(int rows, int columns , double duration) {
+	if (timerSwitches[animationTopLeftToBottomRight] == false) {
+		timerSwitches[animationTopLeftToBottomRight] = true;
+		gridInfoContainer[animationTopLeftToBottomRight] = Grid(rows, columns);
 		Animationduration = duration;
+		double postAnimationDuration = 5;
+		std::pair<double, double> dimensions = gridInfoContainer[animationTopLeftToBottomRight][0];
+		for (int c = 1; c <= gridInfoContainer[0].size() - 1; c++) {
+			Particle newparticle(gridInfoContainer[animationTopLeftToBottomRight][c].first, gridInfoContainer[animationTopLeftToBottomRight][c].second,
+				dimensions.first, dimensions.second, 0, 0, Animationduration + postAnimationDuration, false);
+			IDContainer.push_back(newparticle.ID);
+			particleSystem.particles.push_back(newparticle);
+		}
 	}
+}
+
+void Animation_Spiral_From_Top_Left(int rows, int columns, double duration) {
+	
 }

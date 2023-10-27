@@ -373,6 +373,7 @@ void OpenGLApplication::OpenGLUpdate() {
 	// Create new Particle of Size 15000,15000 to test if it spawns.
 	if (keyStates[GLFW_KEY_H] == 1) {
 		Particle newparticle(0, 0, 100, 100, 0, 0);
+		particleSystem.particles.push_back(newparticle);
 
 		//newparticle.Init(0, 0, 100, 100, 0, 0);
 		//std::cout << "R : " << newparticle.object.color.r << "\nG : " << newparticle.object.color.g << "\nB : " << newparticle.object.color.b << "\n";
@@ -380,7 +381,7 @@ void OpenGLApplication::OpenGLUpdate() {
 
 	if (keyStates[GLFW_KEY_L] == 1) {
 		//Grid(3, 3);
-		Animation_Top_Left_To_Bottom_Right(10, 10, 1);
+		Animation_Top_Left_To_Bottom_Right(20, 20, 3);
 		//particleSystem.EmptyParticleSystem();
 	}
 
