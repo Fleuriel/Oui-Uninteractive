@@ -116,6 +116,9 @@
     <Filter Include="States\EnemyStates">
       <UniqueIdentifier>{9e2168e4-1016-4179-95a1-a22588a25e24}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Systems\UI">
+      <UniqueIdentifier>{fb570f6a-b544-4a0d-8583-86bb7c02a324}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\GameStateManager.cpp">
@@ -249,6 +252,9 @@
     </ClCompile>
     <ClCompile Include="Source\Collider.cpp">
       <Filter>Component\Collider</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\UI.cpp">
+      <Filter>Systems\UI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -395,6 +401,9 @@
     </ClInclude>
     <ClInclude Include="Include\FontManager.h">
       <Filter>Systems\Fonts</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\UI.h">
+      <Filter>Systems\UI</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
