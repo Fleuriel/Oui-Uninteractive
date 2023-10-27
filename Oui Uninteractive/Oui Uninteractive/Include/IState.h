@@ -10,6 +10,14 @@
 #ifndef ISTATE_H
 #define ISTATE_H
 
+typedef enum class State {
+	NONE = 0,
+	ALIVE,
+	DEAD,
+	ENEMY_ROAM,
+	ENEMY_ATTACK,
+} State;
+
 class IState
 {
 public:

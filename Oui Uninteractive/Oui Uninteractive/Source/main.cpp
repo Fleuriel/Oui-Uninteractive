@@ -121,8 +121,8 @@ int main(){
 	// Cleanup the window.
 
 	//WindowCleanup();
-	objectFactory->SaveObjectsToFile("../scenes/TestsceneWriting.JSON");
-	objectFactory->DestroyAllObjects();
+	//objectFactory->SaveObjectsToFile("../scenes/TestsceneWriting.JSON");
+	//objectFactory->DestroyAllObjects();
 	sysManager->DestroySystem();
 	delete sysManager;
 

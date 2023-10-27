@@ -79,6 +79,20 @@ public:
 	std::string EnumToString(ComponentType ct);
 
 	/**************************************************************************
+	* @brief Convert a string to State enum
+	* @param str - string to convert to State
+	* @return State
+	*************************************************************************/
+	State StringToState(std::string str);
+
+	/**************************************************************************
+	* @brief Convert State enum to a string
+	* @param ct - State to convert to string
+	* @return std::string - name of state
+	*************************************************************************/
+	std::string StateToString(State s);
+
+	/**************************************************************************
 	* @brief Create a game object based on serialized data
 	* @param filePath - directory of JSON file
 	* @return void
@@ -91,7 +105,7 @@ public:
 	* @param type - type of GameObject
 	* @return GameObject*
 	*************************************************************************/
-	GameObject* BuildObjectRunTime(const std::string& name, const std::string& type);
+	GameObject* BuildObjectRunTime(const std::string& name, const std::string& type, const State& state);
 
 	/**************************************************************************
 	* @brief Create a game object based on a prefab in the prefab map
@@ -99,7 +113,7 @@ public:
 	* @param type - type of GameObject
 	* @return GameObject*
 	*************************************************************************/
-	GameObject* BuildObjectFromPrefab(const std::string& name, const std::string& type);
+	GameObject* BuildObjectFromPrefab(const std::string& name, const std::string& type, const State& state);
 
 	/**************************************************************************
 	* @brief Load prefab JSON file

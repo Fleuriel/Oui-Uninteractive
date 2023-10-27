@@ -24,6 +24,7 @@
 
 #include <vector>
 #include "IComponent.h"
+#include "IState.h"
 
 class GameObject {
 private:
@@ -37,7 +38,7 @@ private:
 	std::string gameObjectType;
 
 	// String to represent game object state
-	//std::string gameObjectState;
+	State gameObjectState;
 
 	// Vector of components
 	std::vector<IComponent*> componentList;	// may use typedef to represent vector in the future
@@ -50,7 +51,7 @@ public:
 	/**************************************************************************
 	* @brief Constructor and Destructor
 	*************************************************************************/
-	GameObject(const std::string& name, const std::string& type);
+	GameObject(const std::string& name, const std::string& type, const State& state);
 	~GameObject();
 	
 	/**************************************************************************
@@ -101,15 +102,23 @@ public:
 
 	/**************************************************************************
 	* @brief Get component with component type
+	* @param typeID - component type
 	* @return IComponent*
 	*************************************************************************/
 	IComponent* GetComponent(ComponentType typeID);
 
 	/**************************************************************************
 	* @brief Return the component type
+	* @param typeID - component type
 	* @return T* - component type
 	*************************************************************************/
 	template <typename T> T* GetComponentType(ComponentType typeID);
+
+	/**************************************************************************
+	* @brief Get state of game object
+	* @return State
+	*************************************************************************/
+	inline State GetState();
 };
 
 /**************************************************************************

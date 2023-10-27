@@ -26,9 +26,10 @@
 /**************************************************************************
 * @brief Default Constructor
 *************************************************************************/
-GameObject::GameObject(const std::string& name, const std::string& type) : gameObjectID{} {
+GameObject::GameObject(const std::string& name, const std::string& type, const State& state) : gameObjectID{} {
 	gameObjectName = name;
 	gameObjectType = type;
+	gameObjectState = state;
 }
 
 /**************************************************************************
@@ -46,9 +47,6 @@ void GameObject::Initialize() {
 	for (size_t i{}; i < componentList.size(); ++i) {
 		componentList[i]->base = this;
 		componentList[i]->Initialize();
-
-		// Test messaging
-		//componentList[i]->RegisterObserver();
 	}
 	std::cout << "Initialized " << gameObjectName << std::endl;  // Debugging
 }
@@ -124,4 +122,12 @@ IComponent* GameObject::GetComponent(ComponentType typeID) {
 		return componentList.at(index);
 	}
 	return nullptr;
+}
+
+/**************************************************************************
+	* @brief Get state of game object
+	* @return State
+	*************************************************************************/
+State GameObject::GetState() {
+	return gameObjectState;
 }
