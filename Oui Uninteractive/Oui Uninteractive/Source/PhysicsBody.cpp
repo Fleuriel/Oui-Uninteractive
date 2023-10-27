@@ -24,11 +24,6 @@ PhysicsBody::PhysicsBody() {
 	currentRotationSpeed = 0;
 	direction = Vec2(0, 0);
 	speed = 50;
-	boundingbox = new AABB();
-	boundingbox->center = Vec2(0, 0);
-	boundingbox->min = Vec2(0,0);
-	boundingbox->max = Vec2(0,0);
-	implicitGridPos = std::pair<int, int>(0, 0);
 	frictionForce = 20;
 }
 /**************************************************************************
@@ -39,7 +34,6 @@ PhysicsBody::~PhysicsBody() {
 	for (LinearForce* force : forceManager.forceVec) {
 		delete force;
 	}
-	delete boundingbox;
 }
 /**************************************************************************
 * @brief Initialize this instance of the PhysicsBody component
@@ -53,7 +47,6 @@ void PhysicsBody::Initialize() {
 	}
 	physicsSys->bodyList.insert(std::pair<size_t, PhysicsBody*>(GetOwner()->GetGameObjectID(), this));
 
-	mask.flip(GetOwner()->GetGameObjectID());
 }
 
 /**************************************************************************
@@ -81,8 +74,6 @@ PhysicsBody* PhysicsBody::Clone() const{
 	
 	newBody->speed = speed;
 	newBody->rotationSpeed = rotationSpeed;
-	newBody->boundingbox->min = boundingbox->min;
-	newBody->boundingbox->max = boundingbox->max;
 	newBody->mass = mass;
 
 	for (int i = 0; i < forceManager.forceVec.size(); i++) {
@@ -105,7 +96,7 @@ void ForceManager::Update(float dt) {
 	int currIndex = 0;
 	for (LinearForce* force : forceVec) {
 		if (force->isActive) {
-			force->age += dt;
+			force->age += sysManager->fixedDeltaTime;
 			if (force->age >= force->lifetime) {
 				DeactivateForce(currIndex);
 			}
@@ -134,6 +125,10 @@ void ForceManager::SetActive(bool activeFlag, FORCE_INDEX index) {
 }
 void ForceManager::SetDirection(Vec2 dir, FORCE_INDEX index) {
 	forceVec[index]->direction = dir;
+}
+
+void ForceManager::SetLifetime(float lf, FORCE_INDEX index) {
+	forceVec[index]->lifetime = lf;
 }
 void ForceManager::ApplyToForce(Vec2 direction, float magnitude, float lifetime, FORCE_INDEX index) {
 	if (index < forceVec.size()) {

@@ -24,14 +24,14 @@ void Scene1::Initialize() {
 	#ifdef _DEBUG
 		std::cout << "\nBuilding an object from player prefab..." << std::endl;
 	#endif
-		objectFactory->BuildObjectFromPrefab("PlayerObjFromPrefab", "Player");
+		objectFactory->BuildObjectFromPrefab("PlayerObjFromPrefab", "Player", objectFactory->StringToState("None"));
 
 	#ifdef _DEBUG	
 		std::cout << "Building an object from player prefab... completed." << std::endl;
 	#endif
 
 	#ifdef _DEBUG	
-		std::cout << "\nCloning object with ID 0..." << std::endl;
+		std::cout << "\nCloning object with ID 4..." << std::endl;
 	#endif
 		//AI OBJECT
 
@@ -39,7 +39,7 @@ void Scene1::Initialize() {
 		GET_COMPONENT(objectFactory->GetGameObjectByID(4), Transform, ComponentType::TRANSFORM)->position.y = 50;
 
 	#ifdef _DEBUG	
-		std::cout << "Cloning object with ID 0... completed." << std::endl;
+		std::cout << "Cloning object with ID 4... completed." << std::endl;
 	#endif
 
 		// Modifying value of JSONEnemy2
@@ -57,14 +57,18 @@ void Scene1::Update(float dt) {
 	if (GetKeyInput(GLFW_KEY_1)) {
 		sceneManager->nextSceneID = GameStateList::STATE_LEVEL_TEST;
 	}
-	if (GET_COMPONENT(objectFactory->GetGameObjectByID(0), Transform, ComponentType::TRANSFORM)->position.x > 1000) {
-		sceneManager->nextSceneID = GameStateList::STATE_LEVEL_TEST;
+	if (objectFactory->GetGameObjectByID(0) != nullptr) {
+		if (GET_COMPONENT(objectFactory->GetGameObjectByID(0), Transform, ComponentType::TRANSFORM)->position.x > 1000) {
+			sceneManager->nextSceneID = GameStateList::STATE_LEVEL_TEST;
+		}
 	}
 	//scene transitions
 }
 void Scene1::Draw() {
 }
 void Scene1::Free() {
+	// Save objects to JSON
+	objectFactory->SaveObjectsToFile("../scenes/TestsceneWriting.JSON");
 	//free object memory
 	objectFactory->DestroyAllObjects();
 }

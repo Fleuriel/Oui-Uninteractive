@@ -9,15 +9,10 @@
  *		  which handles all Physics calculations done on the Physics
  *		  Body component.
  *************************************************************************/
-#include <iostream>
-#include <algorithm>
-#include <chrono>
+
 #include "Physics.h"
-#include "ComponentFactory.h"
-#include "ObjectFactory.h"
-#include "Vector2D.h"
-#include "Collision.h"
-#include "Editor.h"
+
+
 //initialize global pointer
 Physics* physicsSys = nullptr;
 
@@ -25,8 +20,6 @@ Physics* physicsSys = nullptr;
 * @brief Default constructor for Physics System
 *************************************************************************/
 Physics::Physics() {
-	cellWidth = 0;
-	cellHeight = 0;
 	if (physicsSys != nullptr) {
 		//instantiate physics system
 		return;
@@ -45,8 +38,9 @@ void Physics::Initialize() {
 	
 	ComponentFactory<PhysicsBody>* testPtr = new ComponentFactory<PhysicsBody>(ComponentType::PHYSICS_BODY);
 	objectFactory->AddComponentFactory(ComponentType::PHYSICS_BODY, testPtr);
-	cellWidth = windowSize.first / WIDTH;
-	cellHeight = windowSize.second / HEIGHT;
+
+	// Message System
+	AddMessageHandler("MSG_COLLISION", (MessageHandler)CollisionResponse);
 }
 /**************************************************************************
 * @brief Update Function of the Physics System
@@ -56,146 +50,58 @@ void Physics::Initialize() {
 void Physics::Update(float dt) {
 	// Start time profiling for physics system
 	TimeProfiler profiler(Editor::timeRecorder.physicsTime);
-	//std::chrono::high_resolution_clock::time_point timeStart = std::chrono::high_resolution_clock::now();
+	for (int step = 0; step < sysManager->currentNumberOfSteps; step++) {
+	
 	std::map<size_t, PhysicsBody*>::iterator it = bodyList.begin();
 	std::map<size_t, PhysicsBody*>::iterator it2 = bodyList.begin();
-	for (; it != bodyList.end(); it++) {
-		PhysicsBody* body = it->second;
-		if (body->isStatic) {
-			continue;
-		}
-		Vector2DNormalize(body->direction, body->direction + AngleToVec(body->txPtr->rotation * (static_cast<float>(M_PI) / 180.0f)));
-		body->forceManager.Update(dt);
-		//Check update
-		body->boundingbox->center = body->txPtr->position;
-		body->boundingbox->min = Vec2((-0.5f) * body->txPtr->scale + body->txPtr->position.x, (-0.5f) * body->txPtr->scale + body->txPtr->position.y);
-		body->boundingbox->max = Vec2((0.5f) * body->txPtr->scale + body->txPtr->position.x, (0.5f) * body->txPtr->scale + body->txPtr->position.y);
-		//calculate physics
-		//Direction
-		Vec2 normalizedVel = Vec2(0,0);
-		Vector2DNormalize(normalizedVel, body->velocity);
-		Vec2 summedForce = body->forceManager.CalculateResultantForce();
-		body->acceleration = (summedForce - (body->frictionForce * normalizedVel)) * body->mass;
-		/*
-		if (body->GetOwner()->GetGameObjectID() == 0) {
-			std::cout << "Acceleration: " << body->acceleration.x << " : " << body->acceleration.y << "\n";
-		}*/
-		//Velocity
-		Vec2 originalVelocity = body->velocity;
-		
-		body->velocity = body->velocity + body->acceleration * dt;
-
-		CapVelocity(originalVelocity, body->velocity);
-		/*
-		if (body->GetOwner()->GetGameObjectID() == 0) {
-			std::cout << "velocity: " << body->velocity.x << " : " << body->velocity.y << "\n";
-		}
-		*/
-		
-		//Position
-		body->txPtr->position = body->txPtr->position + body->velocity * dt;
-		size_t test = body->GetOwner()->GetGameObjectID();
-		
-		
-		Vec2 absPosition = Vec2(0, 0);
-		
-		absPosition.x = body->txPtr->position.x + (windowSize.first / 2.0f);
-		absPosition.y = body->txPtr->position.y + (windowSize.second / 2.0f);
-
-		rowsBitArray[body->implicitGridPos.first].flip(body->GetOwner()->GetGameObjectID());
-		colBitArray[body->implicitGridPos.second].flip(body->GetOwner()->GetGameObjectID());
-		
-		body->implicitGridPos.first = absPosition.x / cellWidth; //which row
-		body->implicitGridPos.second = absPosition.y / cellHeight; //which col
-
-		rowsBitArray[body->implicitGridPos.first].flip(body->GetOwner()->GetGameObjectID());
-		colBitArray[body->implicitGridPos.second].flip(body->GetOwner()->GetGameObjectID());
-		
-		//Just spins all other objects
-		if (body->GetOwner()->GetGameObjectID() != 0) {
-			body->currentRotationSpeed = body->rotationSpeed;
-		}
-		//Rotation
-		body->txPtr->rotation = body->txPtr->rotation + body->currentRotationSpeed * dt;
-		if (body->txPtr->rotation >= 360.0f || body->txPtr->rotation <= -360.0f)
-			body->txPtr->rotation = 0.0f;
-		//Collision Detection
-	
-	/*	if (result.count() > 1 && body->GetOwner()->GetGameObjectID() == 0) {
-			std::cout << result << "\n";
+		for (; it != bodyList.end(); it++) {
 			
-		}*/
-		/*if (body->GetOwner()->GetGameObjectID() == 0) {
-			std::cout << "ID: 0" << '\n';
-			std::cout << body->implicitGridPos.first << " | " << body->implicitGridPos.second << "\n";
-			std::cout << result << "\n";
-		}
-		if (body->GetOwner()->GetGameObjectID() == 1) {
-			std::cout << "ID: 1" << "\n";
-			std::cout << body->implicitGridPos.first << " | " << body->implicitGridPos.second << "\n";
-			std::cout << result << "\n";
-		}*/
-
-
-			
-		
-		for (; it2 != bodyList.end(); it2++) {
-			PhysicsBody* body2 = it2->second;
-			if (body2->GetOwner()->GetGameObjectID() == body->GetOwner()->GetGameObjectID()) {
+			PhysicsBody* body = it->second;
+			if (body->isStatic) {
 				continue;
 			}
-			CollisionStaticDynamicRectRect(*(body->boundingbox), *(body2->boundingbox));
+			Vector2DNormalize(body->direction, body->direction + AngleToVec(body->txPtr->rotation * (static_cast<float>(M_PI) / 180.0f)));
+			body->forceManager.Update(dt);
+			//Check update
+
+			//calculate physics
+			//Direction
+			Vec2 normalizedVel = Vec2(0, 0);
+			Vector2DNormalize(normalizedVel, body->velocity);
+			Vec2 summedForce = body->forceManager.CalculateResultantForce();
+			body->acceleration = (summedForce - (body->frictionForce * normalizedVel)) * body->mass;
+			/*
+			if (body->GetOwner()->GetGameObjectID() == 0) {
+				std::cout << "Acceleration: " << body->acceleration.x << " : " << body->acceleration.y << "\n";
+			}*/
+			//Velocity
+			Vec2 originalVelocity = body->velocity;
+
+			body->velocity = body->velocity + body->acceleration * sysManager->fixedDeltaTime;
+			
+
+			CapVelocity(originalVelocity, body->velocity);
+		
+			//Position	
+			body->txPtr->position = body->txPtr->position + body->velocity * sysManager->fixedDeltaTime;
+
+			//Just spins all other objects
+			/*if (body->GetOwner()->GetGameObjectID() != 0) {
+				body->currentRotationSpeed = body->rotationSpeed;
+			}*/
+			//Rotation
+			body->txPtr->rotation = body->txPtr->rotation + body->currentRotationSpeed * dt;
+			if (body->txPtr->rotation >= 360.0f || body->txPtr->rotation <= -360.0f)
+				body->txPtr->rotation = 0.0f;
+
+		
+			//apply calculations to object
+		//	body->txPtr->shape->Update(body->txPtr->position.x, body->txPtr->position.y, body->txPtr->scale, body->txPtr->scale, body->txPtr->rotation, true);
+
 		}
-		//apply calculations to object
-	//	body->txPtr->shape->Update(body->txPtr->position.x, body->txPtr->position.y, body->txPtr->scale, body->txPtr->scale, body->txPtr->rotation, true);
 	}
-	/*
-	std::bitset<3000> mask;
 	
-	for (int i = 0; i < WIDTH; i++) {
-		if (rowsBitArray[i].count() == 0) {
-			continue;
-		}
-		for (int j = 0; j < HEIGHT; j++) {
-			if (colBitArray[j].count() == 0) {
-				continue;
-			}
-			bitArray result = rowsBitArray[i] & colBitArray[j];
-			if (result.count() < 1) {
-				continue;
-			}
-			int count = result.count();
-			int currIndex = 0;
-			int baseObjectIndex = -1;
-			PhysicsBody* basePhysicsComp = nullptr;
-			while (count > 0) {
-				mask.flip(currIndex);
-				if ((result & (mask)) == currIndex) {
-					if (baseObjectIndex == -1) {
-						baseObjectIndex = currIndex;
-						basePhysicsComp = GET_COMPONENT(objectFactory->GetGameObjectByID(baseObjectIndex), PhysicsBody, ComponentType::PHYSICS_BODY);
-						
-					}
-					else {
-						if (basePhysicsComp != nullptr) {
-							PhysicsBody* other = GET_COMPONENT(objectFactory->GetGameObjectByID(currIndex), PhysicsBody, ComponentType::PHYSICS_BODY);
-							CollisionStaticDynamicRectRect(*(basePhysicsComp->boundingbox), *(other->boundingbox));
-						}
-					}
-					count--;
-				}
-				currIndex++;
-				if (currIndex >= 3000) {
-					break;
-				}
-				mask.reset();
-			}
-		}
-	}*/
-	
-	//std::chrono::high_resolution_clock::time_point timeEnd = std::chrono::high_resolution_clock::now();
-	//std::chrono::duration<float, std::milli> duration = timeEnd - timeStart;
-	//Editor::timeRecorder.physicsTime = duration.count();
+
 }
 /**************************************************************************
 * @brief Set the position of all object's Physics Body
@@ -363,17 +269,17 @@ void Physics::CapVelocity(Vec2 originalVelocity, Vec2& bodyVelocity) {
 	}
 
 	
-	if (bodyVelocity.x > 3000.f) {
-		bodyVelocity.x = 3000.f;
+	if (bodyVelocity.x > maxVelocity) {
+		bodyVelocity.x = maxVelocity;
 	}
-	if (bodyVelocity.x < -3000.f) {
-		bodyVelocity.x = -3000.f;
+	if (bodyVelocity.x < -maxVelocity) {
+		bodyVelocity.x = -maxVelocity;
 	}
-	if (bodyVelocity.y > 3000.f) {
-		bodyVelocity.y = 3000.f;
+	if (bodyVelocity.y > maxVelocity) {
+		bodyVelocity.y = maxVelocity;
 	}
-	if (bodyVelocity.y < -3000.f) {
-		bodyVelocity.y = -3000.f;
+	if (bodyVelocity.y < -maxVelocity) {
+		bodyVelocity.y = -maxVelocity;
 	}
 	
 
@@ -389,3 +295,45 @@ void Physics::CapVelocity(Vec2 originalVelocity, Vec2& bodyVelocity) {
 		}
 	}
 }
+
+void Physics::CollisionResponse(CollisionMessage* msg) {
+	std::cout << "Collision detected between " << msg->GetFirstCollider()->GetOwner()->GetName() << " (x,y): "<< msg->GetFirstCollider()->boundingbox->center.x << ", " << msg->GetFirstCollider()->boundingbox->center.y;
+	std::cout << " and " << msg->GetSecondCollider()->GetOwner()->GetName() << "(x, y): " << msg->GetSecondCollider()->boundingbox->center.x << ", " << msg->GetSecondCollider()->boundingbox->center.y << std::endl;
+
+	float halfDepth = msg->GetDepth() / 2;
+	Vec2 dir = msg->GetSecondCollider()->boundingbox->center - msg->GetFirstCollider()->boundingbox->center;
+	if (Vector2DDotProduct(dir, msg->GetContactNormal()) < 0.f) {
+	//	normal = -normal;
+		msg->SetContactNormal(-msg->GetContactNormal());
+	}
+
+	//coll response
+	Vec2 penetration = msg->GetContactNormal() * halfDepth;
+
+//	PhysicsBody* pBody2 = GET_COMPONENT(body2->GetOwner(), PhysicsBody, ComponentType::PHYSICS_BODY);
+	PhysicsBody* pBody1 = physicsSys->bodyList[msg->GetFirstCollider()->GetOwner()->GetGameObjectID()];
+	PhysicsBody* pBody2 = physicsSys->bodyList[msg->GetSecondCollider()->GetOwner()->GetGameObjectID()];
+
+	if (pBody2->isStatic) {
+		pBody1->txPtr->position += msg->GetContactNormal() * msg->GetDepth();
+	}
+	else if (pBody1->isStatic) {
+		pBody2->txPtr->position += (-msg->GetContactNormal()) * msg->GetDepth();
+	}
+	else {
+		//pBody1->forceManager.ApplyToForce(normal, depth / 2, 0.05f, FORCE_INDEX::EXTERNAL);
+		pBody1->txPtr->position += msg->GetContactNormal() * (msg->GetDepth() / 2);
+		//pBody2->forceManager.ApplyToForce(-normal, depth / 2, 0.05f, FORCE_INDEX::EXTERNAL);
+		pBody2->txPtr->position += (-msg->GetContactNormal() * (msg->GetDepth() / 2));
+	}
+
+
+
+}
+
+
+
+
+
+
+

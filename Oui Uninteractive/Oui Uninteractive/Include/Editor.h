@@ -70,6 +70,8 @@ public:
 
 public:
 	bool soundPanel;
+	static std::pair<int, int> gameWindowOrigin;
+	static std::pair<int, int> gameWindowSize;
 
 public:
 	// ImGui colour definitions
@@ -92,6 +94,8 @@ struct SystemTime {
 	float soundTime;
 	float particlesTime;
 	float scenemanagerTime;
+	float colliderTime;
+	float transformTime;
 };
 static SystemTime timeRecorder;
 

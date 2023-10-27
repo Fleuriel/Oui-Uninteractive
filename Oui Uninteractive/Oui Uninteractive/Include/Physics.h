@@ -15,13 +15,44 @@
 #include "ISystem.h"
 #include "PhysicsBody.h"
 #include <list>
-
+#include "SystemManager.h"
 #include <bitset>
 #include "OpenGLApplication.h"
+#include "ComponentFactory.h"
+#include "ObjectFactory.h"
+#include "Vector2D.h"
+#include "Collision.h"
+#include "Editor.h"
+#include <iostream>
+#include <algorithm>
+#include <chrono>
 
-#define HEIGHT 2
-#define WIDTH 2
-using bitArray = std::bitset<3000>;
+class CollisionMessage : public IMessage {
+private:
+	//CollisionMessage
+	Collider* firstCollider;
+	Collider* secondCollider;
+	float depth;
+	Vec2 contactNormal;
+
+public:
+	CollisionMessage(Collider* first, Collider* second, float newDepth, Vec2 newContactNormal) : IMessage("MSG_COLLISION"), firstCollider(first), secondCollider(second) , depth(newDepth), contactNormal(newContactNormal)
+	{ }
+	~CollisionMessage() {}
+
+	Collider* GetFirstCollider() { return firstCollider; }
+	Collider* GetSecondCollider() { return secondCollider; }
+	float GetDepth() {
+		return depth;
+	}
+	Vec2 GetContactNormal() {
+		return contactNormal;
+	}
+	void SetContactNormal(Vec2 newNorm) {
+		contactNormal = newNorm;
+	}
+};
+
 class Physics : public ISystem{
 public:
 	/**************************************************************************
@@ -127,15 +158,17 @@ public:
 	*************************************************************************/
 	Vec2 AngleToVec(float angle);
 	void CapVelocity(Vec2 originalVelocity, Vec2& bodyVelocity);
+
+	// Collision Response Possibly
+	static void CollisionResponse(CollisionMessage* msg);
+	
 	//insert linked list of all physics body components
 	std::map<size_t, PhysicsBody*> bodyList;
 
-	
-	bitArray rowsBitArray[WIDTH];
-	bitArray colBitArray[HEIGHT];
+	float maxVelocity = 1000.f;
 
-	int cellWidth;
-	int cellHeight;
+	
+
 };
 //Global pointer
 extern Physics* physicsSys;

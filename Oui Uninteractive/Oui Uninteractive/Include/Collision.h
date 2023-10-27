@@ -14,6 +14,12 @@
 
 #include <CoordinateSystem.h>
 #include "PhysicsBody.h"
+#include "Collider.h"
+#include <cmath>
+#include "Vector2D.h"
+#include "GameStateManager.h"
+#include "Physics.h"
+#include "PhysicsBody.h"
 
  /**************************************************************************
   * @brief Check for collision for mouse and rectangle
@@ -23,7 +29,7 @@
   *
   * @param AABB Rect1 The Coordinates (x,y) of the rectangle
   *************************************************************************/
-bool CollisionMouseRect(AABB Rect1);
+bool CollisionMouseRect(Collider::AABB Rect1, int mouseX, int mouseY);
 
 /**************************************************************************
  * @brief Check for collision for mouse and circle
@@ -59,7 +65,7 @@ bool CollisionStaticCircleCircle(Coordinates Coords1, Coordinates Coords2, float
  * @param Rect1 Coordinates of the first rectangle
  * @param Rect2 Coordinates of the second rectangle
  *************************************************************************/
-bool CollisionStaticDynamicRectRect(AABB Rect1, AABB Rect2);
+bool CollisionStaticDynamicRectRect(Collider::AABB Rect1, Collider::AABB Rect2);
 
 /**************************************************************************
  * @brief Check for collision between moving rectangles
@@ -73,8 +79,6 @@ bool CollisionStaticDynamicRectRect(AABB Rect1, AABB Rect2);
 		  velocities of each coordinate points
  * @param s1, s2  Width of first and second rectangle respectively
  *************************************************************************/
-bool CollisionMovingRectRect(float r1x, float r1y, float r2x, float r2y,
-	float r1velocityX, float r1velocityY, float r2velocityX, float r2velocityY,
-	float s1, float s2);
-
+float CollisionMovingRectRect(Collider::AABB Rect1, Collider::AABB Rect2, Vec2 Rect1Vel, Vec2 Rect2Vel);
+float CalculateEntryTimeAndNormal(Collider::AABB* Rect1, Collider::AABB* Rect2, Vec2 Rect1Vel, float& normalX, float& normalY);
 #endif

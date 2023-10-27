@@ -20,8 +20,11 @@
 #include "TransformSystem.h"
 #include "SceneManager.h"
 #include "FontManager.h"
+#include "UI.h"
 
 void TimeUpdate();
+
+
 
 int main(){
 	#if defined(DEBUG) | defined(_DEBUG)
@@ -39,10 +42,13 @@ int main(){
 	sysManager->AddSystem(new LogicSystem());
 	sysManager->AddSystem(new ObjectFactory());
 	sysManager->AddSystem(new Physics());
+	sysManager->AddSystem(new ColliderSystem());
+	
 	sysManager->AddSystem(new TransformSystem());
 	sysManager->AddSystem(new SoundManager());
 	sysManager->AddSystem(new FontManager());
 	sysManager->AddSystem(new SceneManager());
+	sysManager->AddSystem(new UIManager());
 	sysManager->Initialize();
 	// Set callback for window close button (top right button).
 	glfwSetWindowCloseCallback(windowNew, WindowCloseCallback);
@@ -115,8 +121,8 @@ int main(){
 	// Cleanup the window.
 
 	//WindowCleanup();
-	objectFactory->SaveObjectsToFile("../scenes/TestsceneWriting.JSON");
-	objectFactory->DestroyAllObjects();
+	//objectFactory->SaveObjectsToFile("../scenes/TestsceneWriting.JSON");
+	//objectFactory->DestroyAllObjects();
 	sysManager->DestroySystem();
 	delete sysManager;
 
@@ -131,7 +137,18 @@ int main(){
 * @return void
 *************************************************************************/
 void TimeUpdate(){
+	sysManager->currentNumberOfSteps = 0;
 	currentTime = std::chrono::high_resolution_clock::now();
 	deltaTime = std::chrono::duration_cast<std::chrono::duration<double>>(currentTime - previousTime);
 	previousTime = currentTime;
+	sysManager->accumulatedTime += deltaTime.count();
+	while (sysManager->accumulatedTime >= sysManager->fixedDeltaTime) {
+		sysManager->accumulatedTime -= sysManager->fixedDeltaTime;
+		sysManager->currentNumberOfSteps++;
+	}
+
+	if (sysManager->currentNumberOfSteps > sysManager->maxNoOfStep) {
+		sysManager->currentNumberOfSteps = sysManager->maxNoOfStep;
+	}
+	
 }

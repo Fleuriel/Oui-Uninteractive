@@ -42,7 +42,7 @@ extern ParticleSystem particleSystem;
  *************************************************************************/
 Particle::Particle(int userInput_x, int userInput_y, float userInput_sizeX,
     float userInput_sizeY, float userInput_angleDisplacement,
-    float userInput_angleSpeed, float userInput_lifespan) {
+    float userInput_angleSpeed, float userInput_lifespan, bool userInput_visibility) {
     // Initialize the OpenGLObject with a default color of {1, 1, 1}.
     object = OpenGLObject({ 1,1,1 });
     // Set the TagID for the Particle to 0.
@@ -54,6 +54,8 @@ Particle::Particle(int userInput_x, int userInput_y, float userInput_sizeX,
     // Set the initial lifespan of the Particle to 1 unit of time.
     lifespan = userInput_lifespan;
 
+    visibility = userInput_visibility;
+
     // Set the interactability flag to false, indicating that
     // the Particle is not initially interactable.
     object.interactable = false;
@@ -63,7 +65,6 @@ Particle::Particle(int userInput_x, int userInput_y, float userInput_sizeX,
         userInput_angleSpeed);
 
     ID = particleSystem.particles.size()+1;
-    particleSystem.particles.push_back(*this);
     
 }
 
@@ -120,7 +121,7 @@ void Particle::Update() {
 
     if ((lifespan -= GetDT())<0)
         RemoveParticle();
-    std::cout << lifespan;
+    //std::cout << lifespan;
 }
 
 
@@ -132,6 +133,7 @@ void Particle::Update() {
  * the visual representation of the Particle.
  *************************************************************************/
 void Particle::Draw() {
+    if (visibility)
     // Delegate the drawing task to the OpenGLObject associated with this Particle.
 	object.Draw();
 }

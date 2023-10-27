@@ -36,6 +36,7 @@
 #include <Background.h>
 #include "TestScript.h"
 #include <Animation.h>
+#include "ColliderSystem.h"
 
 #define STB_IMAGE_IMPLEMENTATION
 #include <stb_image.h>
@@ -360,21 +361,12 @@ void OpenGLApplication::OpenGLUpdate() {
 #endif
 	}
 
-	if (keyStates[GLFW_KEY_A]) {
-		physicsSys->SetCurrentRotationSpeed(GET_COMPONENT(objectFactory->GetGameObjectByID(0), PhysicsBody, ComponentType::PHYSICS_BODY)->rotationSpeed, 0);
-	}
 
-	if (keyStates[GLFW_KEY_D]) {
-		physicsSys->SetCurrentRotationSpeed(-(GET_COMPONENT(objectFactory->GetGameObjectByID(0), PhysicsBody, ComponentType::PHYSICS_BODY)->rotationSpeed), 0);
-	}
-
-	if ((keyStates[GLFW_KEY_A] && keyStates[GLFW_KEY_D]) || (!keyStates[GLFW_KEY_A] && !keyStates[GLFW_KEY_D])) {
-		physicsSys->SetCurrentRotationSpeed(0, 0);
-	}
 
 	// Create new Particle of Size 15000,15000 to test if it spawns.
 	if (keyStates[GLFW_KEY_H] == 1) {
 		Particle newparticle(0, 0, 100, 100, 0, 0);
+		particleSystem.particles.push_back(newparticle);
 
 		//newparticle.Init(0, 0, 100, 100, 0, 0);
 		//std::cout << "R : " << newparticle.object.color.r << "\nG : " << newparticle.object.color.g << "\nB : " << newparticle.object.color.b << "\n";
@@ -382,7 +374,7 @@ void OpenGLApplication::OpenGLUpdate() {
 
 	if (keyStates[GLFW_KEY_L] == 1) {
 		//Grid(3, 3);
-		Animation_Top_Left_To_Bottom_Right(10, 10, 1);
+		Animation_Top_Left_To_Bottom_Right(20, 20, 3);
 		//particleSystem.EmptyParticleSystem();
 	}
 
@@ -469,10 +461,10 @@ void OpenGLApplication::OpenGLUpdate() {
 		std::map<size_t, GameObject*> copyMap = objectFactory->GetGameObjectIDMap();
 		for (std::map<size_t, GameObject*>::iterator it2 = copyMap.begin(); it2 != copyMap.end(); it2++) {
 			gameobjID = it2->first;
-			if ((objectFactory->GetGameObjectByID(gameobjID)->Has(ComponentType::PHYSICS_BODY) != -1) && (objectFactory->GetGameObjectByID(gameobjID)->Has(ComponentType::TRANSFORM) != -1) && (objectFactory->GetGameObjectByID(gameobjID) != nullptr)) {
+			if ((objectFactory->GetGameObjectByID(gameobjID)->Has(ComponentType::COLLIDER) != -1) && (objectFactory->GetGameObjectByID(gameobjID) != nullptr)) {
 				static Vector2D min, max;
-				max = GET_COMPONENT(objectFactory->GetGameObjectByID(gameobjID), PhysicsBody, ComponentType::PHYSICS_BODY)->boundingbox->max;
-				min = GET_COMPONENT(objectFactory->GetGameObjectByID(gameobjID), PhysicsBody, ComponentType::PHYSICS_BODY)->boundingbox->min;
+				max = colliderSys->colliderMap[gameobjID]->boundingbox->max;
+				min = colliderSys->colliderMap[gameobjID]->boundingbox->min;
 
 				GET_COMPONENT(objectFactory->GetGameObjectByID(gameobjID), Transform, ComponentType::TRANSFORM)->shape->DrawCollisionBox(min, max);
 			}
