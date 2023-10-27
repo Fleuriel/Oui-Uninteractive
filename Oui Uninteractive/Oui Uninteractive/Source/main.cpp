@@ -20,6 +20,7 @@
 #include "TransformSystem.h"
 #include "SceneManager.h"
 #include "FontManager.h"
+#include "UI.h"
 
 void TimeUpdate();
 
@@ -47,6 +48,7 @@ int main(){
 	sysManager->AddSystem(new SoundManager());
 	sysManager->AddSystem(new FontManager());
 	sysManager->AddSystem(new SceneManager());
+	//sysManager->AddSystem(new UIManager());
 	sysManager->Initialize();
 	// Set callback for window close button (top right button).
 	glfwSetWindowCloseCallback(windowNew, WindowCloseCallback);
