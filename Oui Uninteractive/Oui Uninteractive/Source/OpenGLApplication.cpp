@@ -252,8 +252,7 @@ void OpenGLApplication::OpenGLUpdate() {
 	// Bind the FBO for rendering
 	glBindFramebuffer(GL_FRAMEBUFFER, OpenGLObject::FBO);
 
-	// Clear the FBO and render.
-	glClear(GL_COLOR_BUFFER_BIT);
+
 
 
 
@@ -264,6 +263,10 @@ void OpenGLApplication::OpenGLUpdate() {
 	// Create x and y pos variables to collect data from the mouse position.
 	double xpos, ypos{};
 	glfwGetCursorPos(windowNew, &xpos, &ypos);
+
+
+		// Clear the FBO and render.
+	glClear(GL_COLOR_BUFFER_BIT);
 
 #ifdef _DEBUG
 	// For Debugging Purposes on angles.
@@ -511,8 +514,10 @@ void OpenGLApplication::Initialize() {
 
 void OpenGLApplication::Update(float dt)
 {
+	dt;
 	OpenGLUpdate();
 }
+
 OpenGLApplication::~OpenGLApplication() {
 	OpenGLWindowCleanup();
 	OpenGLCleanup();
