@@ -78,6 +78,7 @@
     <ClInclude Include="Include\ComponentType.h" />
     <ClInclude Include="Include\CoordinateSystem.h" />
     <ClInclude Include="Include\Editor.h" />
+    <ClInclude Include="Include\EnemyStates.h" />
     <ClInclude Include="Include\FontManager.h" />
     <ClInclude Include="Include\GameObject.h" />
     <ClInclude Include="Include\GameStateManager.h" />
@@ -86,6 +87,7 @@
     <ClInclude Include="Include\IScene.h" />
     <ClInclude Include="Include\IMessage.h" />
     <ClInclude Include="Include\IScript.h" />
+    <ClInclude Include="Include\IState.h" />
     <ClInclude Include="Include\JsonSerializer.h" />
     <ClInclude Include="Include\Logic.h" />
     <ClInclude Include="Include\LogicComponent.h" />
