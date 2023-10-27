@@ -27,7 +27,7 @@ bool CollisionMouseRect(Collider::AABB Rect1) {
 
 	double xpos, ypos{};
 	glfwGetCursorPos(windowNew, &xpos, &ypos);
-
+	//std::cout << xpos << " " << ypos<< std::endl;
 	if ((Rect1.max.x > xpos &&
 		Rect1.max.y > ypos) &&
 		(xpos > Rect1.min.x &&

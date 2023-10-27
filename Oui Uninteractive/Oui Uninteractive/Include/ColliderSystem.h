@@ -11,6 +11,7 @@
 #include "ISystem.h"
 #include "ObjectFactory.h"
 #include "ComponentFactory.h"
+#include "ComponentType.h"
 #include "Editor.h"
 #include <map>
 #define MAX_COLLIDABLE_ENTITIES 3000

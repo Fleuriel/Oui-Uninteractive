@@ -171,7 +171,9 @@ void Editor::CreateMasterPanel() {
 *************************************************************************/
 void Editor::CreateRenderWindow() {
 	ImGui::Begin("Game Window");
+	
 	if (ImGui::BeginChild("GameWindow")) {
+		std::cout << ImGui::GetWindowPos().x << std::endl;
 		// Get draw size of window
 		ImVec2 wsize = ImGui::GetWindowSize();
 		// Invert V from openGL

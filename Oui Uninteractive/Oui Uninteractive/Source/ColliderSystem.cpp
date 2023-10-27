@@ -68,6 +68,11 @@ void ColliderSystem::Update(float dt) {
 	TimeProfiler profiler(Editor::timeRecorder.colliderTime);
 	std::map<size_t, Collider*>::iterator it = colliderMap.begin();
 	std::map<size_t, Collider*>::iterator it2 = colliderMap.begin();
+	
+	
+	//if (it->second->GetOwner()->Has(ComponentType::PHYSICS_BODY) != -1) {
+	//	
+	//}
 
 
 	for (; it != colliderMap.end(); it++) {

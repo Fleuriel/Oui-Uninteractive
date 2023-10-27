@@ -10,14 +10,19 @@
 #ifndef UI_H
 #define UI_H
 
+#include "ObjectFactory.h"
 #include "ISystem.h"
+#include "Collision.h"
+#include <iostream>
+
+#define GET_COMPONENT(GameObject, Component, ComponentType) (GameObject->GetComponentType<Component>(ComponentType))
 
 class UIManager : public ISystem {
 public:
 	UIManager();
 	void Initialize();
 	virtual void Update(float dt);
-
+	bool test;
 	~UIManager();
 
 private:
