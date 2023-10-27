@@ -23,15 +23,12 @@
  *
  * @param AABB Rect1 The Coordinates (x,y) of the rectangle
  *************************************************************************/
-bool CollisionMouseRect(Collider::AABB Rect1) {
+bool CollisionMouseRect(Collider::AABB Rect1, int mouseX, int mouseY) {
 
-	double xpos, ypos{};
-	glfwGetCursorPos(windowNew, &xpos, &ypos);
-	//std::cout << xpos << " " << ypos<< std::endl;
-	if ((Rect1.max.x > xpos &&
-		Rect1.max.y > ypos) &&
-		(xpos > Rect1.min.x &&
-		 ypos > Rect1.min.y)){
+	if ((Rect1.max.x > mouseX &&
+		Rect1.max.y > mouseY) &&
+		(mouseX > Rect1.min.x &&
+			mouseY > Rect1.min.y)){
 		std::cout << "Collision detected\n";
 		return true;
 	}

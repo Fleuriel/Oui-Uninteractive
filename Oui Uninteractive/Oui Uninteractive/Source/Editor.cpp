@@ -14,6 +14,8 @@
 // Defining static containers
 Editor::SystemTime Editor::timeRecorder;
 std::vector<float> Editor::fpsData;
+std::pair<int, int> Editor::gameWindowOrigin;
+std::pair<int, int> Editor::gameWindowSize;
 
 
 /**************************************************************************
@@ -173,7 +175,10 @@ void Editor::CreateRenderWindow() {
 	ImGui::Begin("Game Window");
 	
 	if (ImGui::BeginChild("GameWindow")) {
-		std::cout << ImGui::GetWindowPos().x << std::endl;
+		gameWindowOrigin.first = ImGui::GetWindowPos().x;
+		gameWindowOrigin.second = ImGui::GetWindowPos().y;
+		gameWindowSize.first = ImGui::GetWindowSize().x;
+		gameWindowSize.second = ImGui::GetWindowSize().y;
 		// Get draw size of window
 		ImVec2 wsize = ImGui::GetWindowSize();
 		// Invert V from openGL

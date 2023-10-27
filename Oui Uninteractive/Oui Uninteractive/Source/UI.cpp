@@ -45,7 +45,12 @@ void UIManager::Initialize() {
 void UIManager::Update(float dt) {
 	// Start time profiling for sound system
 	//TimeProfiler profiler(Editor::timeRecorder.soundTime);
-
+	
+	// Convert window mouse pos to gamewindow mousepos, and top left to middle
+	std::pair<int, int> convertedMousePos;
+	//this is the problem u dumb fk the. u not even taking the mouse position anywhere
+	convertedMousePos.first = (Editor::gameWindowSize.first - Editor::gameWindowOrigin.first) / 2;
+	convertedMousePos.second = (Editor::gameWindowSize.second - Editor::gameWindowOrigin.second) / 2;
 	// 1. Loop through game obj list
 	// 2. if its type is button
 	// 3. if its name is exit
@@ -53,6 +58,7 @@ void UIManager::Update(float dt) {
 	// 5. Quit
 	std::map<size_t, GameObject*> copyMap = objectFactory->GetGameObjectIDMap();
 	std::map<size_t, GameObject*>::iterator it = copyMap.begin();
+	std::cout << Editor::gameWindowSize.first << " " << Editor::gameWindowSize.second << std::endl;
 	//for (; it != objectFactory->GetGameObjectIDMap().end(); it++) {
 	for (int x = 0; x < 6; x++, it++) {
 			//std::cout << it->second->GetName() << std::endl;
@@ -60,7 +66,7 @@ void UIManager::Update(float dt) {
 				if (it->second->GetName() == "Exit") {
 					//std::cout << it->second->GetName();
 					Collider* collider = GET_COMPONENT(it->second, Collider, ComponentType::COLLIDER);
-					if (CollisionMouseRect(*(collider->boundingbox))) {
+					if (CollisionMouseRect(*(collider->boundingbox), convertedMousePos.first, convertedMousePos.second)) {
 						std::cout << "YESSS";
 					}
 				}

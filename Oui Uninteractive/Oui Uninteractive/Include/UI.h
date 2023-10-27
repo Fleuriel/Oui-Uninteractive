@@ -13,6 +13,7 @@
 #include "ObjectFactory.h"
 #include "ISystem.h"
 #include "Collision.h"
+#include "Editor.h"
 #include <iostream>
 
 #define GET_COMPONENT(GameObject, Component, ComponentType) (GameObject->GetComponentType<Component>(ComponentType))

@@ -70,6 +70,8 @@ public:
 
 public:
 	bool soundPanel;
+	static std::pair<int, int> gameWindowOrigin;
+	static std::pair<int, int> gameWindowSize;
 
 public:
 	// ImGui colour definitions

@@ -90,14 +90,27 @@
             "Name": "Exit",
             "Type": "Button",
             "State": "None",
-            "Components": {
-                "Transform": {
-                    "PositionX": 200.0,
-                    "PositionY": 100.0,
-                    "Rotation": 30.0,
-                    "Scale": 220.0
-                }
+          "Components": {
+            "Transform": {
+              "PositionX": 200.0,
+              "PositionY": 100.0,
+              "Rotation": 30.0,
+              "Scale": 220.0
+            },
+            "Collider": {
+              "ColliderSize": 220.0,
+              "ColliderRotation": 0.0
+            },
+            "PhysicsBody": {
+              "VelocityX": 0.0,
+              "VelocityY": 0.0,
+              "RotationSpeed": 20.0,
+              "Speed": 500.0,
+              "Mass": 80.0,
+              "IsStatic": true,
+              "FrictionForce": 20.0
             }
+          }
         }
     ]
 }
