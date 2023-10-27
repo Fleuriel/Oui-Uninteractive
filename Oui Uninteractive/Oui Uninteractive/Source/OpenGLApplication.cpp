@@ -358,17 +358,7 @@ void OpenGLApplication::OpenGLUpdate() {
 #endif
 	}
 
-	if (keyStates[GLFW_KEY_A]) {
-		physicsSys->SetCurrentRotationSpeed(GET_COMPONENT(objectFactory->GetGameObjectByID(0), PhysicsBody, ComponentType::PHYSICS_BODY)->rotationSpeed, 0);
-	}
 
-	if (keyStates[GLFW_KEY_D]) {
-		physicsSys->SetCurrentRotationSpeed(-(GET_COMPONENT(objectFactory->GetGameObjectByID(0), PhysicsBody, ComponentType::PHYSICS_BODY)->rotationSpeed), 0);
-	}
-
-	if ((keyStates[GLFW_KEY_A] && keyStates[GLFW_KEY_D]) || (!keyStates[GLFW_KEY_A] && !keyStates[GLFW_KEY_D])) {
-		physicsSys->SetCurrentRotationSpeed(0, 0);
-	}
 
 	// Create new Particle of Size 15000,15000 to test if it spawns.
 	if (keyStates[GLFW_KEY_H] == 1) {
