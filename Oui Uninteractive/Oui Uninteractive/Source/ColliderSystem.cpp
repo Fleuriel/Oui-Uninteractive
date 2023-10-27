@@ -119,33 +119,15 @@ void ColliderSystem::Update(float dt) {
 			}
 			
 			if (staticCollided){
-				CollisionMessage collisionMessage(collider, body2);
+				Vec2 normal = Vec2(0, 0);
+				float depth = CalculateEntryTimeAndNormal(collider->boundingbox, body2->boundingbox, pBody1->velocity, normal.x, normal.y);
+				Vector2DNormalize(normal, normal);
+				CollisionMessage collisionMessage(collider, body2, depth, normal);
 				ProcessMessage(&collisionMessage);
 				//std::cout << "Collision Detected lmao" << std::endl;
-				Vec2 normal = Vec2(0,0);
-				float depth = CalculateEntryTimeAndNormal(collider->boundingbox, body2->boundingbox, pBody1->velocity, normal.x, normal.y);
+				
 				//depth = depth / Vector2DLength(normal);
-				float halfDepth = depth / 2;
-				Vec2 dir = body2->boundingbox->center - collider->boundingbox->center;
-				Vector2DNormalize(normal, normal);
-				if (Vector2DDotProduct(dir, normal) < 0.f) {
-					normal = -normal;
-				}
-
-				//coll response
-				Vec2 penetration = normal * halfDepth;
-
-				PhysicsBody* pBody2 = GET_COMPONENT(body2->GetOwner(), PhysicsBody, ComponentType::PHYSICS_BODY);
-
-				if (pBody2->isStatic) {
-					pBody1->txPtr->position += normal * depth;
-				}
-				else {
-					//pBody1->forceManager.ApplyToForce(normal, depth / 2, 0.05f, FORCE_INDEX::EXTERNAL);
-					pBody1->txPtr->position += normal * (depth / 2);
-					//pBody2->forceManager.ApplyToForce(-normal, depth / 2, 0.05f, FORCE_INDEX::EXTERNAL);
-					pBody2->txPtr->position += (-normal * (depth / 2));
-				}
+				
 
 			/*	Vec2 direction;
 				Vector2DNormalize(direction, pBody1->velocity);

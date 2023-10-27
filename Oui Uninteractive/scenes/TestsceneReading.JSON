@@ -18,7 +18,7 @@
                 "Transform": {
                     "PositionX": -250.0,
                     "PositionY": 200.0,
-                    "Rotation": 45.0,
+                    "Rotation": 0.0,
                     "Scale": 200.0
                 },
                 "LogicComponent": {
@@ -48,7 +48,7 @@
                 "Transform": {
                     "PositionX": 50.0,
                     "PositionY": -200.0,
-                    "Rotation": 30.0,
+                    "Rotation": 0.0,
                     "Scale": 130.0
                 },
                 "LogicComponent": {
@@ -71,7 +71,7 @@
                     "RotationSpeed": 20.0,
                     "Speed": 500.0,
                     "Mass": 80.0,
-                    "IsStatic": false,
+                    "IsStatic": true,
                     "FrictionForce": 20.0
                 },
                 "Transform": {

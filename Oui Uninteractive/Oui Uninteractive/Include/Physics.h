@@ -32,13 +32,25 @@ private:
 	//CollisionMessage
 	Collider* firstCollider;
 	Collider* secondCollider;
+	float depth;
+	Vec2 contactNormal;
 
 public:
-	CollisionMessage(Collider* first, Collider* second) : IMessage("MSG_COLLISION"), firstCollider(first), secondCollider(second) {}
+	CollisionMessage(Collider* first, Collider* second, float newDepth, Vec2 newContactNormal) : IMessage("MSG_COLLISION"), firstCollider(first), secondCollider(second) , depth(newDepth), contactNormal(newContactNormal)
+	{ }
 	~CollisionMessage() {}
 
 	Collider* GetFirstCollider() { return firstCollider; }
 	Collider* GetSecondCollider() { return secondCollider; }
+	float GetDepth() {
+		return depth;
+	}
+	Vec2 GetContactNormal() {
+		return contactNormal;
+	}
+	void SetContactNormal(Vec2 newNorm) {
+		contactNormal = newNorm;
+	}
 };
 
 class Physics : public ISystem{
