@@ -1,35 +1,50 @@
 {
-    "ObjectCount": 7,
+    "ObjectCount": 6,
     "Objects": [
         {
             "Name": "JSONPlayer",
             "Type": "Player",
+            "State": "Alive",
             "Components": {
                 "PhysicsBody": {
                     "VelocityX": 0.0,
                     "VelocityY": 0.0,
                     "RotationSpeed": 200.0,
-                    "Speed": 50.0
+                    "Speed": 50.0,
+                    "Mass": 100.0,
+                    "IsStatic": false,
+                    "FrictionForce": 20.0
                 },
                 "Transform": {
-                    "PositionX": -250.0,
-                    "PositionY": 200.0,
+                    "PositionX": -341.5766296386719,
+                    "PositionY": -303.03826904296875,
                     "Rotation": 45.0,
                     "Scale": 200.0
                 },
-                "LogicComponent": {},
-                "Collider": {}
+                "LogicComponent": {
+                    "ScriptID": [
+                        1
+                    ]
+                },
+                "Collider": {
+                    "ColliderSize": 205.0,
+                    "ColliderRotation": 0.0
+                }
             }
         },
         {
             "Name": "JSONEnemy1",
             "Type": "Enemy",
+            "State": "EnemyRoam",
             "Components": {
                 "PhysicsBody": {
                     "VelocityX": 0.0,
                     "VelocityY": 0.0,
                     "RotationSpeed": 20.0,
-                    "Speed": 120.0
+                    "Speed": 120.0,
+                    "Mass": 80.0,
+                    "IsStatic": true,
+                    "FrictionForce": 20.0
                 },
                 "Transform": {
                     "PositionX": 50.0,
@@ -37,64 +52,69 @@
                     "Rotation": 30.0,
                     "Scale": 130.0
                 },
-                "LogicComponent": {},
-                "Collider": {}
+                "LogicComponent": {
+                    "ScriptID": [
+                        0
+                    ]
+                },
+                "Collider": {
+                    "ColliderSize": 130.0,
+                    "ColliderRotation": 0.0
+                }
             }
         },
         {
             "Name": "JSONEnemy2",
             "Type": "Enemy",
+            "State": "EnemyRoam",
             "Components": {
                 "PhysicsBody": {
                     "VelocityX": 0.0,
                     "VelocityY": 0.0,
                     "RotationSpeed": 20.0,
-                    "Speed": 500.0
+                    "Speed": 500.0,
+                    "Mass": 80.0,
+                    "IsStatic": false,
+                    "FrictionForce": 20.0
                 },
                 "Transform": {
-                    "PositionX": 200.0,
-                    "PositionY": 100.0,
+                    "PositionX": 316.3272705078125,
+                    "PositionY": -696.6322631835938,
                     "Rotation": 30.0,
                     "Scale": 220.0
                 },
-                "Collider": {}
+                "Collider": {
+                    "ColliderSize": 220.0,
+                    "ColliderRotation": 0.0
+                }
             }
         },
         {
             "Name": "Exit",
             "Type": "Button",
+            "State": "None",
             "Components": {
                 "Transform": {
                     "PositionX": 200.0,
                     "PositionY": 100.0,
                     "Rotation": 30.0,
                     "Scale": 220.0
-                },
-                "Collider": {}
-            }
-        },
-        {
-            "Name": "Play",
-            "Type": "Button",
-            "Components": {
-                "Transform": {
-                    "PositionX": 200.0,
-                    "PositionY": 50.0,
-                    "Rotation": 30.0,
-                    "Scale": 220.0
-                },
-                "Collider": {}
+                }
             }
         },
         {
             "Name": "PlayerObjFromPrefab",
             "Type": "Player",
+            "State": "None",
             "Components": {
                 "PhysicsBody": {
                     "VelocityX": 0.0,
                     "VelocityY": 0.0,
                     "RotationSpeed": 0.0,
-                    "Speed": 50.0
+                    "Speed": 50.0,
+                    "Mass": 50.0,
+                    "IsStatic": false,
+                    "FrictionForce": 20.0
                 },
                 "Transform": {
                     "PositionX": -250.0,
@@ -105,23 +125,34 @@
             }
         },
         {
-            "Name": "Object7",
+            "Name": "Object6",
             "Type": "Enemy",
+            "State": "EnemyRoam",
             "Components": {
                 "PhysicsBody": {
                     "VelocityX": 0.0,
                     "VelocityY": 0.0,
                     "RotationSpeed": 20.0,
-                    "Speed": 120.0
+                    "Speed": 120.0,
+                    "Mass": 80.0,
+                    "IsStatic": false,
+                    "FrictionForce": 20.0
                 },
                 "Transform": {
-                    "PositionX": 50.0,
-                    "PositionY": -200.0,
+                    "PositionX": 35.98952865600586,
+                    "PositionY": -216.5691680908203,
                     "Rotation": 30.0,
                     "Scale": 130.0
                 },
-                "LogicComponent": {},
-                "Collider": {}
+                "LogicComponent": {
+                    "ScriptID": [
+                        0
+                    ]
+                },
+                "Collider": {
+                    "ColliderSize": 130.0,
+                    "ColliderRotation": 0.0
+                }
             }
         }
     ]

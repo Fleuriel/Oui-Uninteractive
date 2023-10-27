@@ -354,7 +354,7 @@ void Editor::CreateObjectList() {
 
 				for (int i = 0; i < addCount; i++) {
 					std::string newName = "Object" + std::to_string(highestNumber + 1);
-					objectFactory->BuildObjectRunTime(newName, "");
+					objectFactory->BuildObjectRunTime(newName, "", State::NONE);
 					highestNumber++; // Increment the highest assigned ID
 				}
 				gameobjID = objectFactory->GetGameObjectIDMap().begin()->first;
@@ -422,7 +422,7 @@ void Editor::CreateObjectList() {
 			if (ImGui::Button("Spawn 2500 Objects")) {
 				for (size_t i{}; i < 2500; ++i) {
 					std::string goName{ "ObjectRunTime" + std::to_string(startIndex + i + 1) };
-					objectFactory->BuildObjectRunTime(goName, "Enemy");
+					objectFactory->BuildObjectRunTime(goName, "Enemy", State::NONE);
 					objectFactory->AddComponent(ComponentType::PHYSICS_BODY, objectFactory->GetGameObjectByID(startIndex+ i));
 					objectFactory->AddComponent(ComponentType::TRANSFORM, objectFactory->GetGameObjectByID(startIndex + i));
 					objectFactory->AddComponent(ComponentType::COLLIDER, objectFactory->GetGameObjectByID(startIndex + i));

@@ -24,14 +24,14 @@ void Scene2::Initialize() {
 #ifdef _DEBUG
 	std::cout << "\nBuilding an object from player prefab..." << std::endl;
 #endif
-	objectFactory->BuildObjectFromPrefab("PlayerObjFromPrefab", "Player");
+	objectFactory->BuildObjectFromPrefab("PlayerObjFromPrefab", "Player", objectFactory->StringToState("None"));
 
 #ifdef _DEBUG	
 	std::cout << "Building an object from player prefab... completed." << std::endl;
 #endif
 
 #ifdef _DEBUG	
-	std::cout << "\nCloning object with ID 0..." << std::endl;
+	std::cout << "\nCloning object with ID 1..." << std::endl;
 #endif
 	//AI OBJECT
 
@@ -66,6 +66,8 @@ void Scene2::Draw() {
 	
 }
 void Scene2::Free() {
+	// Save onjects to JSON
+	objectFactory->SaveObjectsToFile("../scenes/TestsceneWriting.JSON");
 	//free object memory
 	objectFactory->DestroyAllObjects();
 }
