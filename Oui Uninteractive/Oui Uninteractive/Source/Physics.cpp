@@ -51,11 +51,10 @@ void Physics::Update(float dt) {
 	// Start time profiling for physics system
 	TimeProfiler profiler(Editor::timeRecorder.physicsTime);
 	for (int step = 0; step < sysManager->currentNumberOfSteps; step++) {
-	//std::chrono::high_resolution_clock::time_point timeStart = std::chrono::high_resolution_clock::now();
+	
 	std::map<size_t, PhysicsBody*>::iterator it = bodyList.begin();
 	std::map<size_t, PhysicsBody*>::iterator it2 = bodyList.begin();
 		for (; it != bodyList.end(); it++) {
-
 			
 			PhysicsBody* body = it->second;
 			if (body->isStatic) {
@@ -102,10 +101,7 @@ void Physics::Update(float dt) {
 		}
 	}
 	
-	
-	//std::chrono::high_resolution_clock::time_point timeEnd = std::chrono::high_resolution_clock::now();
-	//std::chrono::duration<float, std::milli> duration = timeEnd - timeStart;
-	//Editor::timeRecorder.physicsTime = duration.count();
+
 }
 /**************************************************************************
 * @brief Set the position of all object's Physics Body

@@ -59,30 +59,62 @@
                 }
             }
         },
-        {
-            "Name": "JSONEnemy2",
-            "Type": "Enemy",
-            "Components": {
-                "PhysicsBody": {
-                    "VelocityX": 0.0,
-                    "VelocityY": 0.0,
-                    "RotationSpeed": 20.0,
-                    "Speed": 500.0,
-                    "Mass": 80.0,
-                    "IsStatic": false,
-                    "FrictionForce": 20.0
-                },
-                "Transform": {
-                    "PositionX": 200.0,
-                    "PositionY": 100.0,
-                    "Rotation": 30.0,
-                    "Scale": 220.0
-                },
-                "Collider": {
-                    "ColliderSize": 220.0,
-                    "ColliderRotation": 0.0
-                }
-            }
+      {
+        "Name": "JSONEnemy2",
+        "Type": "Enemy",
+        "Components": {
+          "PhysicsBody": {
+            "VelocityX": 0.0,
+            "VelocityY": 0.0,
+            "RotationSpeed": 20.0,
+            "Speed": 500.0,
+            "Mass": 80.0,
+            "IsStatic": false,
+            "FrictionForce": 20.0
+          },
+          "Transform": {
+            "PositionX": 200.0,
+            "PositionY": 100.0,
+            "Rotation": 30.0,
+            "Scale": 220.0
+          },
+          "Collider": {
+            "ColliderSize": 220.0,
+            "ColliderRotation": 0.0
+          }
         }
+      },
+      {
+        "Name": "Exit",
+        "Type": "Button",
+        "Components": {
+          "Transform": {
+            "PositionX": 200.0,
+            "PositionY": 100.0,
+            "Rotation": 30.0,
+            "Scale": 220.0
+          },
+          "Collider": {
+            "ColliderSize": 220.0,
+            "ColliderRotation": 0.0
+          }
+        }
+      },
+      {
+        "Name": "Play",
+        "Type": "Button",
+        "Components": {
+          "Transform": {
+            "PositionX": 200.0,
+            "PositionY": 100.0,
+            "Rotation": 30.0,
+            "Scale": 220.0
+          },
+          "Collider": {
+            "ColliderSize": 220.0,
+            "ColliderRotation": 0.0
+          }
+        }
+      }
     ]
 }
