@@ -264,7 +264,7 @@ float CalculateEntryTimeAndNormal(Collider::AABB* Rect1, Collider::AABB* Rect2, 
 	//	return entryTime;
 	//}
 }
-bool CollisionMovingRectRect(Collider::AABB Rect1, Collider::AABB Rect2, Vec2 Rect1Vel, Vec2 Rect2Vel) {
+float CollisionMovingRectRect(Collider::AABB Rect1, Collider::AABB Rect2, Vec2 Rect1Vel, Vec2 Rect2Vel) {
 	////Smallest X-coordinate of both rectangle
 	//float leftA, leftB{ 0 };
 	//leftA = r1x - (s1 / 2);
@@ -388,6 +388,6 @@ bool CollisionMovingRectRect(Collider::AABB Rect1, Collider::AABB Rect2, Vec2 Re
 	}
 
 	std::cout << "dynamic collision!";
-	return 1;
+	return TimeFirst;
 
 }

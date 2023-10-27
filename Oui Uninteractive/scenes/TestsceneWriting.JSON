@@ -1,5 +1,5 @@
 {
-    "ObjectCount": 7,
+    "ObjectCount": 6,
     "Objects": [
         {
             "Name": "JSONPlayer",
@@ -14,7 +14,7 @@
                 "Transform": {
                     "PositionX": -250.0,
                     "PositionY": 200.0,
-                    "Rotation": 45.0,
+                    "Rotation": 0.0,
                     "Scale": 200.0
                 },
                 "LogicComponent": {},
@@ -34,7 +34,7 @@
                 "Transform": {
                     "PositionX": 50.0,
                     "PositionY": -200.0,
-                    "Rotation": 30.0,
+                    "Rotation": 0.0,
                     "Scale": 130.0
                 },
                 "LogicComponent": {},
@@ -54,7 +54,7 @@
                 "Transform": {
                     "PositionX": 200.0,
                     "PositionY": 100.0,
-                    "Rotation": 30.0,
+                    "Rotation": 0.0,
                     "Scale": 220.0
                 },
                 "Collider": {}
@@ -69,21 +69,7 @@
                     "PositionY": 100.0,
                     "Rotation": 30.0,
                     "Scale": 220.0
-                },
-                "Collider": {}
-            }
-        },
-        {
-            "Name": "Play",
-            "Type": "Button",
-            "Components": {
-                "Transform": {
-                    "PositionX": 200.0,
-                    "PositionY": 50.0,
-                    "Rotation": 30.0,
-                    "Scale": 220.0
-                },
-                "Collider": {}
+                }
             }
         },
         {
@@ -105,7 +91,7 @@
             }
         },
         {
-            "Name": "Object7",
+            "Name": "Object6",
             "Type": "Enemy",
             "Components": {
                 "PhysicsBody": {
@@ -117,7 +103,7 @@
                 "Transform": {
                     "PositionX": 50.0,
                     "PositionY": -200.0,
-                    "Rotation": 30.0,
+                    "Rotation": 0.0,
                     "Scale": 130.0
                 },
                 "LogicComponent": {},
