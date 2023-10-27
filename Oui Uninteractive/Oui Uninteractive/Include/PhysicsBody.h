@@ -53,6 +53,8 @@ public:
 	void SetDirection(Vec2 newDir, FORCE_INDEX index);
 	void SetMagnitude(float new_magnitude, FORCE_INDEX index);
 	void Update(float dt);
+	void SetLifetime(float lifetime, FORCE_INDEX index);
+
 	Vec2 CalculateResultantForce();
 };
 

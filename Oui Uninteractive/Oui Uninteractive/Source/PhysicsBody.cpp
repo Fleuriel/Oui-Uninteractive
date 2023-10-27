@@ -126,6 +126,10 @@ void ForceManager::SetActive(bool activeFlag, FORCE_INDEX index) {
 void ForceManager::SetDirection(Vec2 dir, FORCE_INDEX index) {
 	forceVec[index]->direction = dir;
 }
+
+void ForceManager::SetLifetime(float lf, FORCE_INDEX index) {
+	forceVec[index]->lifetime = lf;
+}
 void ForceManager::ApplyToForce(Vec2 direction, float magnitude, float lifetime, FORCE_INDEX index) {
 	if (index < forceVec.size()) {
 		Vec2 combinedForce = (forceVec[index]->direction * forceVec[index]->magnitude) + (direction * magnitude);
