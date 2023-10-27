@@ -265,34 +265,14 @@ float CalculateEntryTimeAndNormal(Collider::AABB* Rect1, Collider::AABB* Rect2, 
 	//}
 }
 float CollisionMovingRectRect(Collider::AABB Rect1, Collider::AABB Rect2, Vec2 Rect1Vel, Vec2 Rect2Vel) {
-	////Smallest X-coordinate of both rectangle
-	//float leftA, leftB{ 0 };
-	//leftA = r1x - (s1 / 2);
-	//leftB = r2x - (s2 / 2);
-
-	////Biggest X-coordinate of both rectangle
-	//float rightA, rightB{ 0 };
-	//rightA = r1x + (s1 / 2);
-	//rightB = r2x + (s2 / 2);
-
-	////Biggest Y-coordinate of both rectangle
-	//float topA, topB{ 0 };
-	//topA = r1y + (s1 / 2);
-	//topB = r2y + (s2 / 2);
-
-	////Smallest Y-coordinate of both rectangle
-	//float bottomA, bottomB{ 0 };
-	//bottomA = r1y - (s1 / 2);
-	//bottomB = r2y - (s2 / 2);
-
+	
 	//Velocity variables
 	Vec2 RelativeVel = Rect2Vel - Rect1Vel;
 
 	if (Vector2DLength(RelativeVel) == 0) {
-		return false;
+		return 0.f;
 	}
 	
-
 	//Timer variables
 	float TimeFirst{ 0 };
 	float TimeLast = static_cast<float>(GetDT());
@@ -307,7 +287,7 @@ float CollisionMovingRectRect(Collider::AABB Rect1, Collider::AABB Rect2, Vec2 R
 	if (RelativeVel.x < 0) {
 		//Case 1
 		if (Rect1.min.x > Rect2.max.x) {
-			return false;
+			return 0.f;
 		}
 
 		//Case 4
@@ -332,13 +312,13 @@ float CollisionMovingRectRect(Collider::AABB Rect1, Collider::AABB Rect2, Vec2 R
 			}
 		}
 		if (Rect1.max.x < Rect2.min.x) {
-			return 0;
+			return 0.f;
 		}
 	}
 
 	//Final check
 	if (TimeFirst > TimeLast) {
-		return false; //No collision
+		return 0.f; //No collision
 	}
 
 	////////////////////
@@ -378,16 +358,15 @@ float CollisionMovingRectRect(Collider::AABB Rect1, Collider::AABB Rect2, Vec2 R
 
 		//Case3
 		if (Rect1.max.y < Rect2.min.y) {
-			return 0;
+			return 0.f;
 		}
 	}
 
 	//Final check
 	if (TimeFirst > TimeLast) {
-		return false; //No collision
+		return 0.f; //No collision
 	}
 
-	std::cout << "dynamic collision!";
 	return TimeFirst;
 
 }

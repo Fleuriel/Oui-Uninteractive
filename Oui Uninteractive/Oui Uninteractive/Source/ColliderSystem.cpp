@@ -78,62 +78,29 @@ void ColliderSystem::Update(float dt) {
 		collider->boundingbox->min = Vec2((-0.5f) * collider->tx->scale + collider->tx->position.x, (-0.5f) * collider->tx->scale + collider->tx->position.y);
 		collider->boundingbox->max = Vec2((0.5f) * collider->tx->scale + collider->tx->position.x, (0.5f) * collider->tx->scale + collider->tx->position.y);
 
-		/*Vec2 absPosition = Vec2(0, 0);
-
-		absPosition.x = collider->tx->position.x + (windowSize.first / 2.0f);
-		absPosition.y = collider->tx->position.y + (windowSize.second / 2.0f);
-
-		int newRowIndex = absPosition.x / cellWidth; //which row
-		int newColIndex = absPosition.y / cellHeight; //which col
-
-		rowsBitArray[collider->implicitGridPos.first].reset(collider->GetOwner()->GetGameObjectID());
-		colBitArray[collider->implicitGridPos.second].reset(collider->GetOwner()->GetGameObjectID());
-		if (newRowIndex < 4 && newColIndex < 4) {
-			collider->implicitGridPos.first = newRowIndex;
-			collider->implicitGridPos.second = newColIndex;
-
-			rowsBitArray[collider->implicitGridPos.first].set(collider->GetOwner()->GetGameObjectID());
-			colBitArray[collider->implicitGridPos.second].set(collider->GetOwner()->GetGameObjectID());
-		}*/
 		
 		for (; it2 != colliderMap.end(); it2++) {
 			Collider* body2 = it2->second;
 			if (body2->GetOwner()->GetGameObjectID() == collider->GetOwner()->GetGameObjectID()) {
 				continue;
 			}
-
-			/*if (CollisionStaticDynamicRectRect(*(collider->boundingbox), *(body2->boundingbox)) == true) {
-				
-			}
-			if (CollisionStaticDynamicRectRect(*(collider->boundingbox), *(body2->boundingbox)) == false) {
-				PhysicsBody* pBody1 = GET_COMPONENT(collider->GetOwner(), PhysicsBody, ComponentType::PHYSICS_BODY);*/
-			PhysicsBody* pBody1 = GET_COMPONENT(collider->GetOwner(), PhysicsBody, ComponentType::PHYSICS_BODY);
 			bool staticCollided = CollisionStaticDynamicRectRect(*(collider->boundingbox), *(body2->boundingbox));
-			bool dynamicCollided;
+			float dynamicCollided = 0.f;
+			PhysicsBody* pBody1 = GET_COMPONENT(collider->GetOwner(), PhysicsBody, ComponentType::PHYSICS_BODY);
 			if (!staticCollided) {
+				
 				PhysicsBody* pBody2 = GET_COMPONENT(body2->GetOwner(), PhysicsBody, ComponentType::PHYSICS_BODY);
 				dynamicCollided = CollisionMovingRectRect(*(collider->boundingbox), *(body2->boundingbox), pBody1->velocity, pBody2->velocity);
-				if (dynamicCollided) {
-
+				if (dynamicCollided > 0.f) {
+					std::cout << "Collision dynamic\n";
 				}
 			}
-			
 			if (staticCollided){
 				Vec2 normal = Vec2(0, 0);
 				float depth = CalculateEntryTimeAndNormal(collider->boundingbox, body2->boundingbox, pBody1->velocity, normal.x, normal.y);
 				Vector2DNormalize(normal, normal);
 				CollisionMessage collisionMessage(collider, body2, depth, normal);
 				ProcessMessage(&collisionMessage);
-				//std::cout << "Collision Detected lmao" << std::endl;
-				
-				//depth = depth / Vector2DLength(normal);
-				
-
-			/*	Vec2 direction;
-				Vector2DNormalize(direction, pBody1->velocity);
-				float magnitude = Vector2DLength(pBody1->velocity);
-				pBody1->forceManager.ApplyToForce(-direction, pBody1->speed, 0.2f, FORCE_INDEX::EXTERNAL);*/
-			//	pBody1->forceManager.DeactivateForce(FORCE_INDEX::INTERNAL);
 			}
 			else if (staticCollided == false && dynamicCollided == false) {
 				
