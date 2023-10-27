@@ -153,7 +153,7 @@ public:
 	//insert linked list of all physics body components
 	std::map<size_t, PhysicsBody*> bodyList;
 
-	float maxVelocity = 3000.f;
+	float maxVelocity = 1000.f;
 
 	
 

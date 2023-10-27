@@ -36,6 +36,9 @@ private:
 	// String to represent game object type
 	std::string gameObjectType;
 
+	// String to represent game object state
+	//std::string gameObjectState;
+
 	// Vector of components
 	std::vector<IComponent*> componentList;	// may use typedef to represent vector in the future
 	
@@ -55,9 +58,6 @@ public:
 	* @return void
 	*************************************************************************/
 	void Initialize();
-
-	// For future event/message system
-	//void SendMessage(Event* event);
 
 	/**************************************************************************
 	* @brief Add component to componentList

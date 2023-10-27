@@ -98,6 +98,24 @@
     <Filter Include="Scenes">
       <UniqueIdentifier>{239246d4-7ca6-4752-ac90-7f3d3980f498}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Systems\Transform">
+      <UniqueIdentifier>{2bd80c2f-14dd-486f-9e85-d3f0b5e25552}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Systems\SceneManager">
+      <UniqueIdentifier>{9ae3507b-d043-46f7-b2b1-3f81a771bfa5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Systems\Collider">
+      <UniqueIdentifier>{b3967d07-e370-49f0-a485-4772c7c0aa5e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Component\Collider">
+      <UniqueIdentifier>{ee6f7b8e-2e70-4ae3-a069-a009f2cf89a0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="States">
+      <UniqueIdentifier>{26ec657a-e8e0-460a-ad0d-95feb23993a4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="States\EnemyStates">
+      <UniqueIdentifier>{9e2168e4-1016-4179-95a1-a22588a25e24}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\GameStateManager.cpp">
@@ -205,12 +223,6 @@
     <ClCompile Include="Source\LogicComponent.cpp">
       <Filter>Component\LogicComponent</Filter>
     </ClCompile>
-    <ClCompile Include="Source\TransformSystem.cpp">
-      <Filter>Systems</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\SceneManager.cpp">
-      <Filter>Systems</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Scene1.cpp">
       <Filter>Scenes</Filter>
     </ClCompile>
@@ -222,6 +234,21 @@
     </ClCompile>
     <ClCompile Include="Source\ParticleSystem.cpp">
       <Filter>ParticleSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\FontManager.cpp">
+      <Filter>Systems\Fonts</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\TransformSystem.cpp">
+      <Filter>Systems\Transform</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\SceneManager.cpp">
+      <Filter>Systems\SceneManager</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\ColliderSystem.cpp">
+      <Filter>Systems\Collider</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Collider.cpp">
+      <Filter>Component\Collider</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -327,15 +354,6 @@
     <ClInclude Include="Include\TestScript.h">
       <Filter>Scripts</Filter>
     </ClInclude>
-    <ClInclude Include="Include\EnemyAIScript.h">
-      <Filter>Scripts</Filter>
-    </ClInclude>
-    <ClInclude Include="Include\TransformSystem.h">
-      <Filter>Systems</Filter>
-    </ClInclude>
-    <ClInclude Include="Include\SceneManager.h">
-      <Filter>Systems</Filter>
-    </ClInclude>
     <ClInclude Include="Include\IScene.h">
       <Filter>Scenes</Filter>
     </ClInclude>
@@ -353,6 +371,30 @@
     </ClInclude>
     <ClInclude Include="Include\ParticleSystem.h">
       <Filter>ParticleSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\IState.h">
+      <Filter>States</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\ColliderSystem.h">
+      <Filter>Systems\Collider</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\Collider.h">
+      <Filter>Component\Collider</Filter>
+    </ClInclude>
+    <ClInclude Include="EnemyAIScript.h">
+      <Filter>Scripts</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\EnemyStates.h">
+      <Filter>States\EnemyStates</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\TransformSystem.h">
+      <Filter>Systems\Transform</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\SceneManager.h">
+      <Filter>Systems\SceneManager</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\FontManager.h">
+      <Filter>Systems\Fonts</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

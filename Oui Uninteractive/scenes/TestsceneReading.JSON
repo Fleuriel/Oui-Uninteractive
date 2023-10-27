@@ -25,7 +25,7 @@
                     "ScriptID":[1]
                 },
                 "Collider": {
-                    "ColliderSize": 200.0,
+                    "ColliderSize": 205.0,
                     "ColliderRotation": 0.0
                 }
                 

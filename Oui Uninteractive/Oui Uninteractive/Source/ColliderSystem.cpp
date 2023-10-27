@@ -132,21 +132,19 @@ void ColliderSystem::Update(float dt) {
 					normal = -normal;
 				}
 
-				
 				//coll response
 				Vec2 penetration = normal * halfDepth;
-				Transform* tx1 = GET_COMPONENT(objectFactory->GetGameObjectByID(0), Transform, ComponentType::TRANSFORM);
-				Transform* tx2 = GET_COMPONENT(body2->GetOwner(), Transform, ComponentType::TRANSFORM);
+
 				PhysicsBody* pBody2 = GET_COMPONENT(body2->GetOwner(), PhysicsBody, ComponentType::PHYSICS_BODY);
 
 				if (pBody2->isStatic) {
-					tx1->position += normal * depth;
+					pBody1->txPtr->position += normal * depth;
 				}
 				else {
-				//	pBody1->forceManager.ApplyToForce(normal, depth / 2, 0.1f, FORCE_INDEX::EXTERNAL);
-					tx1->position += normal * (depth / 2);
-				//	pBody2->forceManager.ApplyToForce(-normal, depth / 2, 0.1f, FORCE_INDEX::EXTERNAL);
-					tx2->position += (-normal * (depth / 2));
+					//pBody1->forceManager.ApplyToForce(normal, depth / 2, 0.05f, FORCE_INDEX::EXTERNAL);
+					pBody1->txPtr->position += normal * (depth / 2);
+					//pBody2->forceManager.ApplyToForce(-normal, depth / 2, 0.05f, FORCE_INDEX::EXTERNAL);
+					pBody2->txPtr->position += (-normal * (depth / 2));
 				}
 
 			/*	Vec2 direction;
