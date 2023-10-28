@@ -134,23 +134,49 @@ bool CollisionStaticDynamicRectRect(Collider::AABB Rect1, Collider::AABB Rect2) 
  *************************************************************************/
 
 float CalculateEntryTimeAndNormal(Collider::AABB* Rect1, Collider::AABB* Rect2, Vec2 Rect1Vel, float& normalX, float& normalY) {
-	float distanceXEntry;
-	float distanceYEntry;
+	float distanceXEntry = 0;
+	float distanceYEntry = 0;
+
+	bool Xinitialized = false;
+	bool Yinitialized = false;
 
 	if (Rect1Vel.x < 0) {
+		Xinitialized = true;
 		distanceXEntry = Rect2->max.x - Rect1->min.x;
 	}
-	else {
+	else if (Rect1Vel.x > 0) {
+		Xinitialized = true;
 		distanceXEntry = Rect2->min.x - Rect1->max.x;
 	}
 	
 	if (Rect1Vel.y < 0) {
+		Yinitialized = true;
 		distanceYEntry = Rect2->max.y - Rect1->min.y;
 	}
-	else {
+	else if (Rect1Vel.y > 0){
+		Yinitialized = true;
 		distanceYEntry = Rect2->min.y - Rect1->max.y;
 	}
-
+	if (Xinitialized == false){
+		if (distanceYEntry < 0) {
+			normalY = 1;
+			return distanceYEntry;
+		}
+		else {
+			normalY = -1;
+			return -distanceYEntry;
+		}
+	}
+	if (Yinitialized == false) {
+		if (distanceXEntry < 0) {
+			normalX = 1;
+			return distanceXEntry;
+		}
+		else {
+			normalX = -1;
+			return -distanceXEntry;
+		}
+	}
 	if (abs(distanceXEntry) < abs(distanceYEntry)) {
 		//if distance is negative, i am coming from the left
 		// else coming from the right

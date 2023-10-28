@@ -66,11 +66,11 @@ void ColliderSystem::BroadPhase() {
 
 void ColliderSystem::Update(float dt) {
 	TimeProfiler profiler(Editor::timeRecorder.colliderTime);
-	std::map<size_t, Collider*>::iterator it = colliderMap.begin();
-	std::map<size_t, Collider*>::iterator it2 = colliderMap.begin();
+	
+	
 
 
-	for (; it != colliderMap.end(); it++) {
+	for (std::map<size_t, Collider*>::iterator it = colliderMap.begin(); it != colliderMap.end(); it++) {
 		Collider* collider = it->second;
 		collider->contactTime = 1.0f;
 
@@ -80,7 +80,7 @@ void ColliderSystem::Update(float dt) {
 		collider->boundingbox->max = Vec2((0.5f) * collider->tx->scale + collider->tx->position.x, (0.5f) * collider->tx->scale + collider->tx->position.y);
 
 		
-			for (; it2 != colliderMap.end(); it2++) {
+			for (std::map<size_t, Collider*>::iterator it2 = colliderMap.begin(); it2 != colliderMap.end(); it2++) {
 				Collider* body2 = it2->second;
 				if (body2->GetOwner()->GetGameObjectID() == collider->GetOwner()->GetGameObjectID()) {
 					continue;
@@ -112,7 +112,7 @@ void ColliderSystem::Update(float dt) {
 					collided = CollisionStaticDynamicRectRect(*(collider->boundingbox), *(body2->boundingbox));
 					
 					if (collided) {
-						std::cout << "Static Collision\n";
+					std::cout << "Static Collision\n";
 						Vec2 normal = Vec2(0, 0);
 						float depth = CalculateEntryTimeAndNormal(collider->boundingbox, body2->boundingbox, pBody1->velocity, normal.x, normal.y);
 						Vector2DNormalize(normal, normal);
