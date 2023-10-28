@@ -11,6 +11,7 @@
  *************************************************************************/
 
 #include "Physics.h"
+#include "ColliderSystem.h"
 
 
 //initialize global pointer
@@ -81,10 +82,16 @@ void Physics::Update(float dt) {
 			
 
 			CapVelocity(originalVelocity, body->velocity);
-		
+			Collider* collider = GET_COMPONENT(body->GetOwner(), Collider, ComponentType::COLLIDER);
 			//Position	
 			body->txPtr->previousPosition = body->txPtr->position;
-			body->txPtr->position = body->txPtr->position + body->velocity * GetDT();//* sysManager->fixedDeltaTime;
+			if (collider != nullptr) {
+				body->txPtr->position = body->txPtr->position + body->velocity * collider->contactTime * GetDT();//* sysManager->fixedDeltaTime;
+			}
+			else {
+				body->txPtr->position = body->txPtr->position + body->velocity * GetDT();//* sysManager->fixedDeltaTime;
+			}
+			
 
 			//Just spins all other objects
 			/*if (body->GetOwner()->GetGameObjectID() != 0) {

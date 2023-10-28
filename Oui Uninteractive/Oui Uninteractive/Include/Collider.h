@@ -27,6 +27,7 @@ public:
 	//Pointer to Bounding Box object
 	Transform* tx;
 	AABB* boundingbox;
+	float contactTime;
 	std::pair<int, int> implicitGridPos;
 };
 #endif

@@ -72,6 +72,7 @@ void ColliderSystem::Update(float dt) {
 
 	for (; it != colliderMap.end(); it++) {
 		Collider* collider = it->second;
+		collider->contactTime = 1.0f;
 
 		collider->tx->position = GET_COMPONENT(collider->GetOwner(), Transform, ComponentType::TRANSFORM)->position;
 		collider->boundingbox->center = collider->tx->position;
@@ -94,12 +95,13 @@ void ColliderSystem::Update(float dt) {
 					collided = CollisionMovingRectRect(*(collider->boundingbox), *(body2->boundingbox), pBody1->velocity, pBody2->velocity, contactTime, normal, contactPt, GetDT());
 					//dynamic coll response
 					if (collided) {
-						Vec2 relVelocity = pBody2->velocity - pBody1->velocity;
+						//Vec2 relVelocity = pBody2->velocity - pBody1->velocity;
 						//pBody1->forceManager.ApplyToForce(normal * Vec2(abs(pBody1->velocity.x), abs(pBody1->velocity.y)), (1 - contactTime), 0.25f,FORCE_INDEX::EXTERNAL);
-						pBody1->txPtr->position = contactPt;/*normal * Vec2(abs(relVelocity.x), abs(relVelocity.y)) * GetDT() * (1 - contactTime);*/
-
-
+						//pBody1->txPtr->position = contactPt;/*normal * Vec2(abs(relVelocity.x), abs(relVelocity.y)) * GetDT() * (1 - contactTime);*/
 						/*w += normal * Vec2(abs(pBody1->velocity.x), abs(pBody1->velocity.y)) * (1 - contactTime);*/
+						pBody1->forceManager.DeactivateForce(0);
+						pBody1->forceManager.DeactivateForce(1);
+						collider->contactTime = contactTime;
 						std::cout << contactTime << "\n";
 						std::cout << normal.x << "|" << normal.y << "\n";
 					
