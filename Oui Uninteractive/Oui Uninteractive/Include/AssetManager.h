@@ -10,11 +10,22 @@
 #ifndef ASSET_MANAGER_H
 #define ASSET_MANAGER_H
 
-#include <filesystem>
+#include <map>
+#include <string>
 
-class AssetManager {
+class AssetManager
+{
 public:
-	//static LoadAudio()
+	AssetManager();
+	~AssetManager();
+	void Init();
+
+	bool LoadTextures();
+	int Setup_TextureObject(std::string filePath);
+	int GetTexture(std::string);
+
+private:
+	std::map<std::string, int> textures;
 };
 
 #endif

@@ -25,6 +25,8 @@
 #include <OpenGLShaders.h>
 #include <Vector2D.h>
 #include <ISystem.h>
+#include <AssetManager.h>
+
 
 // External Texture Color
 extern int importTexture, secondTexture, thirdTexture;

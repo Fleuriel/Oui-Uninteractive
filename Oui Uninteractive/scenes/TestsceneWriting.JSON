@@ -74,13 +74,13 @@
                     "RotationSpeed": 20.0,
                     "Speed": 500.0,
                     "Mass": 80.0,
-                    "IsStatic": false,
+                    "IsStatic": true,
                     "FrictionForce": 20.0
                 },
                 "Transform": {
                     "PositionX": 200.0,
                     "PositionY": 100.0,
-                    "Rotation": 0.0,
+                    "Rotation": 30.0,
                     "Scale": 220.0
                 },
                 "Collider": {
@@ -99,6 +99,19 @@
                     "PositionY": 100.0,
                     "Rotation": 30.0,
                     "Scale": 220.0
+                },
+                "Collider": {
+                    "ColliderSize": 220.0,
+                    "ColliderRotation": 0.0
+                },
+                "PhysicsBody": {
+                    "VelocityX": 0.0,
+                    "VelocityY": 0.0,
+                    "RotationSpeed": 20.0,
+                    "Speed": 500.0,
+                    "Mass": 80.0,
+                    "IsStatic": true,
+                    "FrictionForce": 20.0
                 }
             }
         },
@@ -130,7 +143,7 @@
             "State": "EnemyRoam",
             "Components": {
                 "PhysicsBody": {
-                    "VelocityX": 0.0,
+                    "VelocityX": 1000.0,
                     "VelocityY": 0.0,
                     "RotationSpeed": 20.0,
                     "Speed": 120.0,
@@ -139,7 +152,7 @@
                     "FrictionForce": 20.0
                 },
                 "Transform": {
-                    "PositionX": 50.0,
+                    "PositionX": -252.8889923095703,
                     "PositionY": -200.0,
                     "Rotation": 0.0,
                     "Scale": 130.0
