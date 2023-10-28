@@ -2,11 +2,11 @@
 #include "Physics.h"
 #include "ObjectFactory.h"
 #include "Logic.h"
+
 class TestScript : public IScript {
 public:
 	void Initialize() {
 		logicSystem->AddLogicScript(this);
-
 	};
 
 	void Update(size_t gameObjectID) {
@@ -39,8 +39,10 @@ public:
 		}
 	};
 
-	void End() {};
+	void End() {}
+	~TestScript() {}
 };
+
 class TestScript2 : public IScript {
 public:
 	void Initialize() {
@@ -101,8 +103,6 @@ public:
 		}
 	};
 
-	void End() {};
-
-
-
+	void End() {}
+	~TestScript2() {}
 };

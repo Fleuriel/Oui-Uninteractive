@@ -37,9 +37,6 @@ private:
 	// String to represent game object type
 	std::string gameObjectType;
 
-	// String to represent game object state
-	State gameObjectState;
-
 	// Vector of components
 	std::vector<IComponent*> componentList;	// may use typedef to represent vector in the future
 	
@@ -51,7 +48,7 @@ public:
 	/**************************************************************************
 	* @brief Constructor and Destructor
 	*************************************************************************/
-	GameObject(const std::string& name, const std::string& type, const State& state);
+	GameObject(const std::string& name, const std::string& type);
 	~GameObject();
 	
 	/**************************************************************************
@@ -113,12 +110,6 @@ public:
 	* @return T* - component type
 	*************************************************************************/
 	template <typename T> T* GetComponentType(ComponentType typeID);
-
-	/**************************************************************************
-	* @brief Get state of game object
-	* @return State
-	*************************************************************************/
-	inline State GetState();
 };
 
 /**************************************************************************

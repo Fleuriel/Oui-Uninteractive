@@ -24,7 +24,8 @@ void Scene2::Initialize() {
 #ifdef _DEBUG
 	std::cout << "\nBuilding an object from player prefab..." << std::endl;
 #endif
-	objectFactory->BuildObjectFromPrefab("PlayerObjFromPrefab", "Player", objectFactory->StringToState("None"));
+
+	objectFactory->BuildObjectFromPrefab("PlayerObjFromPrefab", "Player");
 
 #ifdef _DEBUG	
 	std::cout << "Building an object from player prefab... completed." << std::endl;

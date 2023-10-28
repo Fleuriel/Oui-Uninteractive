@@ -1,5 +1,5 @@
 /**************************************************************************
- * @file IMessage.h
+ * @file IState.h
  * @author HWANG Jing Rui, Austin
  * @par DP email: jingruiaustin.hwang@digipen.edu
  * @par Course:	CSD 2401
@@ -10,22 +10,35 @@
 #ifndef ISTATE_H
 #define ISTATE_H
 
-typedef enum class State {
-	NONE = 0,
-	ALIVE,
-	DEAD,
-	ENEMY_ROAM,
-	ENEMY_ATTACK,
-} State;
+#include <map>
+#include <string>
+#include "ObjectFactory.h"
 
 class IState
 {
 public:
-	virtual void Enter() = 0;
-	virtual void Update() = 0;
-	virtual void Exit() = 0;
-
-	virtual ~IState() {};
+	virtual void Update(size_t gameObjectID) = 0;
 };
+
+/*class FSM {
+private:
+	std::map<std::string, IState*> statesMap;
+	IState* currentState;
+
+public:
+	FSM() {}
+
+	void AddState(std::string name, IState* state) {
+		statesMap[name] = state;
+	}
+
+	void TransitionTo(std::string name) {
+		currentState = statesMap[name];
+	}
+
+	void Update() {
+		currentState->Update();
+	}
+};*/
 
 #endif

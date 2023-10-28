@@ -26,10 +26,9 @@
 /**************************************************************************
 * @brief Default Constructor
 *************************************************************************/
-GameObject::GameObject(const std::string& name, const std::string& type, const State& state) : gameObjectID{} {
+GameObject::GameObject(const std::string& name, const std::string& type) : gameObjectID{} {
 	gameObjectName = name;
 	gameObjectType = type;
-	gameObjectState = state;
 }
 
 /**************************************************************************
@@ -122,12 +121,4 @@ IComponent* GameObject::GetComponent(ComponentType typeID) {
 		return componentList.at(index);
 	}
 	return nullptr;
-}
-
-/**************************************************************************
-	* @brief Get state of game object
-	* @return State
-	*************************************************************************/
-State GameObject::GetState() {
-	return gameObjectState;
 }

@@ -35,6 +35,7 @@
 #include <iterator>
 #include <Background.h>
 #include "TestScript.h"
+#include "EnemyFSM.h"
 #include <Animation.h>
 #include "ColliderSystem.h"
 
@@ -221,6 +222,9 @@ void OpenGLApplication::OpenGLInit() {
 
 	TestScript2* testScript2 = new TestScript2();
 	testScript2->Initialize();
+
+	FSM* enemyFSMScript = new FSM();
+	enemyFSMScript->Initialize();
 
 	
 	background.Init();
