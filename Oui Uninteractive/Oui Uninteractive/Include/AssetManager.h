@@ -12,20 +12,56 @@
 
 #include <map>
 #include <string>
+#include "FontManager.h"
+#include <Sound.h>
 
 class AssetManager
 {
 public:
+	// General functions
 	AssetManager();
 	~AssetManager();
-	void Init();
+	void LoadAll();
+	void FreeAll();
+	void ReloadAll();
 
+	// Texture functions
 	bool LoadTextures();
-	int Setup_TextureObject(std::string filePath);
+	int SetUpTexture(std::string filePath);
+	bool FreeTextures();
+	bool ReloadTextures();
+	
+
+	// Sounds
+	bool LoadSounds();
+	bool LoadBGM();
+	bool LoadSFX();
+	bool FreeSounds();
+	bool FreeBGM();
+	bool FreeSFX();
+	bool ReloadSounds();
+	
+
+	// Fonts
+	bool LoadFonts();
+	bool FreeFonts();
+	bool ReloadFonts();
+
+
+	// Access Assets
 	int GetTexture(std::string);
+	FMOD::Sound* GetBGM(int);
+	FMOD::Sound* GetSFX(int);
+
 
 private:
+	//Containers
 	std::map<std::string, int> textures;
+	std::vector<FMOD::Sound*> bgmSounds{};
+	std::vector<FMOD::Sound*> sfxSounds{};
+	std::vector<FT_Face> fontVec{};
 };
+
+extern AssetManager assetManager;
 
 #endif

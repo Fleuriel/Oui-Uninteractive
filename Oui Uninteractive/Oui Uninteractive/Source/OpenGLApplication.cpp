@@ -207,7 +207,7 @@ void OpenGLApplication::OpenGLInit() {
 
 	// Creates an Object to Initialize it.
 	Objects.Initialize();
-	assetManager.Init();
+	
 
 	// Initializing ImGui
 	if (!imguiInitialized) {
@@ -216,7 +216,7 @@ void OpenGLApplication::OpenGLInit() {
 	}
 	// Initializing Editor
 	myEditor.Init();
-
+	
 	
 
 	//SCRIPTS
@@ -232,7 +232,9 @@ void OpenGLApplication::OpenGLInit() {
 	enemyFSMScript->Initialize();
 
 	
+	assetManager.LoadAll();
 	background.Init();
+	
 }
 
 
@@ -386,7 +388,7 @@ void OpenGLApplication::OpenGLUpdate() {
 	}
 
 	if (mouseButtonStates[GLFW_MOUSE_BUTTON_LEFT]) {
-
+		assetManager.ReloadAll();
 #ifdef _DEBUG
 		std::cout << "LCLICK\n";
 #endif

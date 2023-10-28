@@ -55,8 +55,6 @@ int firstTexture, secondTexture, thirdTexture;
 
 GLuint texture_id; // the texture id we'll need later to create a texture 
 
-extern AssetManager assetManager;
-
 
 /**************************************************************************
 * @brief		Initialize OpenGLObject that does Model Creation for future
