@@ -181,192 +181,147 @@ float CalculateEntryTimeAndNormal(Collider::AABB* Rect1, Collider::AABB* Rect2, 
 		
 	}
 	
-	//min of static - max of dynamic
-	//float distanceXEntry, distanceYEntry;
-	//float distanceXExit, distanceYExit;
-	//if (Rect1Vel.x > 0.0f) {
-	//	distanceXEntry = Rect2->min.x - Rect1->max.x;
-	//	distanceXExit = Rect2->max.x - Rect1->min.x;
-	//}
-	//else {
-	//	distanceXEntry = Rect2->max.x - Rect1->min.x;
-	//	distanceXExit = Rect2->min.x - Rect1->max.x;
-	//}
-
-	//if (Rect1Vel.y > 0.0f) {
-	//	distanceYEntry = Rect2->max.y - Rect1->min.y;
-	//	distanceYExit = Rect2->min.y - Rect1->max.y;
-	//}
-	//else {
-	//	distanceYEntry = Rect2->min.y - Rect1->max.y;
-	//	distanceYExit = Rect2->max.y - Rect1->min.y;
-	//}
-
-	//float xEntryTime, yEntryTime;
-	//float xExitTime, yExitTime;
-
-	//if (Rect1Vel.x == 0.0f)
-	//{
-	//	
-	//}
-	//else
-	//{
-	//	xEntryTime = distanceXEntry / Rect1Vel.x;
-	//	xExitTime = distanceXExit / Rect1Vel.x;
-	//}
-
-	//if (Rect1Vel.y == 0.0f)
-	//{
-	//
-	//}
-	//else
-	//{
-	//	yEntryTime = distanceYEntry / Rect1Vel.y;
-	//	yExitTime = distanceYExit / Rect1Vel.y;
-	//}
-	//float entryTime = std::min(xEntryTime, yEntryTime);
-	//float exitTime = std::min(xExitTime, yExitTime);
-
-	//if (entryTime > exitTime || (xEntryTime < 0.0f && yEntryTime < 0.0f) || xEntryTime > 1.0f || yEntryTime > 1.0f) {
-	//	normalX = 0.0f;
-	//	normalY = 0.0f;
-	//	return 1.0f;
-	//}
-	//else // if there was a collision 
-	//{
-	//	// calculate normal of collided surface
-	//	if (xEntryTime > yEntryTime)
-	//	{
-	//		if (distanceXEntry < 0.0f)
-	//		{
-	//			normalX = 1.0f;
-	//			normalY = 0.0f;
-	//		}
-	//		else
-	//		{
-	//			normalX = -1.0f;
-	//			normalY = 0.0f;
-	//		}
-	//	}
-	//	else
-	//	{
-	//		if (distanceYEntry < 0.0f)
-	//		{
-	//			normalX = 0.0f;
-	//			normalY = 1.0f;
-	//		}
-	//		else
-	//		{
-	//			normalX = 0.0f;
-	//			normalY = -1.0f;
-	//		}
-	//	} // return the time of collisionreturn entryTime; 
-	//	return entryTime;
-	//}
+	
 }
-float CollisionMovingRectRect(Collider::AABB Rect1, Collider::AABB Rect2, Vec2 Rect1Vel, Vec2 Rect2Vel) {
-	
-	//Velocity variables
-	Vec2 RelativeVel = Rect2Vel - Rect1Vel;
+bool MovingPointRectCollision(Vec2 origin, Vec2 direction, Collider::AABB target, Vec2& contactPoint, Vec2& contactNormal, float& contactTime) {
+	float tNearX = (target.min.x - origin.x) / direction.x;
+	float tFarX = (target.max.x - origin.x) / direction.x;
 
-	if (Vector2DLength(RelativeVel) == 0) {
-		return 0.f;
+	if (tNearX > tFarX) {
+		std::swap(tNearX, tFarX);
+	}
+
+	float tNearY = (target.min.y - origin.y) / direction.y;
+	float tFarY = (target.max.y - origin.y) / direction.y;
+
+	if (tNearY > tFarY) {
+		std::swap(tNearY, tFarY);
 	}
 	
-	//Timer variables
-	float TimeFirst{ 0 };
-	float TimeLast = static_cast<float>(GetDT());
+	contactTime = std::max(tNearX, tNearY);
+	float tFarthest = std::min(tFarX, tFarY);
+	if (tFarthest < 0) {
+		return false;
+	}
 
-	float dFirstX = Rect1.min.x - Rect2.max.x;
-	float dLastX = Rect1.max.x - Rect2.min.x;
-	////////////////////
-	///////X-Axis///////
-	////////////////////
+	contactPoint = origin + (direction * contactTime);
+
+	if (tNearX > tNearY) {
+		if (direction.x > 0) {
+			contactNormal = Vec2(-1, 0);
+		}
+		else {
+			contactNormal = Vec2(1, 0);
+		}
+	}
+	else if (tNearY > tNearX) {
+		if (direction.y > 0) {
+			contactNormal = Vec2(0, -1);
+		}
+		else {
+			contactNormal = Vec2(0, 1);
+		}
+	}
+	return true;
+}
+bool CollisionMovingRectRect(Collider::AABB A, Collider::AABB B, Vec2 AVel, Vec2 BVel, float& contactTime, Vec2& normal, Vec2& contactPoint, float dt) {
+		
+	if (AVel.x == 0 && AVel.y == 0) {
+		return false;
+	}
+	Collider expanded_target;
+	expanded_target.boundingbox->center = B.center;
+	expanded_target.boundingbox->max = Vec2(B.max.x + A.txPtr->scale / 2, B.max.y + A.txPtr->scale / 2);
+	expanded_target.boundingbox->min = Vec2(B.min.x - A.txPtr->scale / 2, B.min.y - A.txPtr->scale / 2);
 	
-	//Time lesser than 0
-	if (RelativeVel.x < 0) {
-		//Case 1
-		if (Rect1.min.x > Rect2.max.x) {
-			return 0.f;
-		}
 
-		//Case 4
-		if (Rect1.max.x < Rect2.min.x) {
-			
-			if ((dFirstX / RelativeVel.x) > TimeFirst) { //Case 4
-				TimeFirst = (dFirstX / RelativeVel.x);
-			}
-			if ((dLastX / RelativeVel.x) < TimeLast) {
-				TimeLast = dLastX / RelativeVel.x;
-			}
+	if (MovingPointRectCollision(A.center, AVel * dt, *(expanded_target.boundingbox), contactPoint, normal, contactTime)) {
+		if (contactTime <= 1.0f) {
+			return true;
 		}
 	}
-	//Time more than 0
-	if (RelativeVel.x > 0) {
-		if (Rect1.max.x > Rect2.min.x) {
-			if ((dFirstX / RelativeVel.x) > TimeFirst) {
-				TimeFirst = dFirstX / RelativeVel.x; // Case 2
-			}
-			if ((dLastX / RelativeVel.x) < TimeLast) {
-				TimeLast = (dLastX / RelativeVel.x);
-			}
-		}
-		if (Rect1.max.x < Rect2.min.x) {
-			return 0.f;
-		}
-	}
+	return false;
+		////Velocity variables
+		//Vec2 RelativeVel = BVel - AVel;
+		//float TimeFirst{ 0 };
+		//
+		//bool alreadyOverlapX = false;
+		//float dFirstX = A.min.x - B.max.x;
+		//float test = A.min.x - B.min.x;
+		//// A moving Left
+		//if (abs(dFirstX) < abs(test)) {
+		//	normalX = -1;
+		//	normalY = 0;
+		//	//A moving Left into B
+		//	if (RelativeVel.x < 0) {
+		//		
+		//		TimeFirst = -dFirstX / (RelativeVel.x * GetDT());
+		//	}
+		//	//B moving into A
+		//	if (RelativeVel.x > 0) {
+		//		TimeFirst = dFirstX / (RelativeVel.x * GetDT()) ;
+		//	}
+		//}
+		//else if (abs(dFirstX) > abs(test)) {
+		//	//A moving Right
+		//	float test2 = A.max.x - B.min.x;
+		//	if (RelativeVel.x < 0) {
+		//		//B moving Right onto A
+		//		TimeFirst = test2 / (RelativeVel.x * GetDT());
 
-	//Final check
-	if (TimeFirst > TimeLast) {
-		return 0.f; //No collision
-	}
+		//	}
+		//	if (RelativeVel.x > 0) {
+		//		TimeFirst = -test2 / (RelativeVel.x * GetDT());
+		//	}
+		//}
 
-	////////////////////
-	///////Y-Axis///////
-	////////////////////
-	float dFirstY = Rect1.min.y - Rect2.max.y;
-	float dLastY = Rect1.max.y - Rect2.min.y;
-	//Time lesser than 0
-	if (RelativeVel.x < 0) {
-		//Case 1
-		if (Rect1.min.y > Rect2.max.y) {
-			return false;
-		}
-		//Case 4
-		if (Rect1.max.y < Rect2.min.y) {
-			if (dFirstY / RelativeVel.y > TimeFirst) {
-				TimeFirst = dFirstY / RelativeVel.y;
-			}
-			if ((dLastY / RelativeVel.y) < TimeLast) {
-				TimeLast = dLastY / RelativeVel.y;
-			}
-			
-		}
-	
-	}
-	if (RelativeVel.y > 0) {
-		//Case 2
-		if (Rect1.max.y > Rect2.min.y) {
-			if ((dFirstY / RelativeVel.y) > TimeFirst) {
-				TimeFirst = dFirstY / RelativeVel.y;
-			}
-			if ((dLastY / RelativeVel.y) > TimeLast) {
-				TimeLast = dFirstY / RelativeVel.y;
-			}
-			
-		}
+		//if ((A.min.x < B.max.x) && (A.max.x > B.min.x)){
+		//	alreadyOverlapX = true;
+		//}
+		////Decide which side the object is coming from
+		//float dFirstY = A.max.y - B.min.y;
+		//float test3 = A.max.y - B.max.y;
+		//bool alreadyOverlapY = false;
+		//float TimeFirstY = 0.0f;
 
-		//Case3
-		if (Rect1.max.y < Rect2.min.y) {
-			return 0.f;
-		}
-	}
+		//if (abs(dFirstY) < abs(test3)) {
+		//	
+		//	//A moving Upwards
+		//	if (RelativeVel.y > 0) {
+		//		TimeFirstY = -dFirstY / (RelativeVel.y * GetDT());
+		//	}
+		//	// if B is faster
+		//	if (RelativeVel.y < 0) {
+		//		TimeFirstY = dFirstY / (RelativeVel.y * GetDT());
+		//	}
+		//}
+		//else if (abs(dFirstY) > abs(test3)) {
+		//	float test4 = A.min.y - B.max.y;
+		//	if (RelativeVel.y > 0) {
+		//		TimeFirstY = -test4 / (RelativeVel.y * GetDT());
+		//	}
+		//	if (RelativeVel.y < 0) {
+		//		//A moving down into B
+		//		TimeFirstY = test4 / (RelativeVel.y * GetDT());
+		//	}
 
-	//Final check
-	if (TimeFirst > TimeLast) {
-		return 0.f; //No collision
-	}
+		//}
+		////check if already overlapping y axis
+		//if ((A.min.y < B.max.y) && (B.min.y < A.max.y) ){
+		//	alreadyOverlapY = true;
+		//} 
 
-	return TimeFirst;
+		//if (alreadyOverlapY && (TimeFirst > 0.f && TimeFirst < 1.f)) {	
+		//	tFirst = TimeFirst;
+		//	return 1;
+		//}
+		//if (alreadyOverlapX && (TimeFirstY > 0.f && TimeFirstY < 1.f)) {
+		//	tFirst = TimeFirstY;
+		//	return 1;
+		//}
+		//else {
+		//	return 0;
+		//}
+		//
 
 }

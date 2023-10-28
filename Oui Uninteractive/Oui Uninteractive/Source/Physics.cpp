@@ -83,6 +83,7 @@ void Physics::Update(float dt) {
 			CapVelocity(originalVelocity, body->velocity);
 		
 			//Position	
+			body->txPtr->previousPosition = body->txPtr->position;
 			body->txPtr->position = body->txPtr->position + body->velocity * sysManager->fixedDeltaTime;
 
 			//Just spins all other objects

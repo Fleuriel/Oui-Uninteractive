@@ -13,7 +13,7 @@ public:
 	public:
 		//Extents of the Axis Aligned Bounding Box
 		Vec2 min, max, x, y, center;
-		
+		Transform* txPtr;
 		/**************************************************************************
 		* @brief Default constructor for AABB
 		*************************************************************************/

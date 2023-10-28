@@ -76,6 +76,7 @@ PhysicsBody* PhysicsBody::Clone() const{
 	newBody->rotationSpeed = rotationSpeed;
 	newBody->mass = mass;
 
+	//NOTE TO SELF 4 FORCEs BUG HERE
 	for (int i = 0; i < forceManager.forceVec.size(); i++) {
 		LinearForce* newForce = new LinearForce(*forceManager.forceVec[i]);
 		newBody->forceManager.forceVec.push_back(newForce);

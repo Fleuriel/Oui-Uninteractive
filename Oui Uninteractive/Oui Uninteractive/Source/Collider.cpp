@@ -29,11 +29,12 @@ Collider* Collider::Clone() const{
 	newCollider->tx->position = tx->position;
 	newCollider->tx->rotation = tx->rotation;
 	newCollider->tx->scale = tx->scale;
+	newCollider->boundingbox->txPtr = newCollider->tx;
 
 	return newCollider;
 }
 Collider::AABB::AABB() {
-	
+	txPtr = nullptr;
 }
 Collider::Collider() {
 	boundingbox = new AABB();
@@ -42,10 +43,15 @@ Collider::Collider() {
 	boundingbox->max = Vec2(0, 0);
 
 	tx = new Transform();
+
+	boundingbox->txPtr = tx;
 }
 Collider::~Collider() {
 	delete tx;
 	delete boundingbox;
-	colliderSys->colliderMap.erase(GetOwner()->GetGameObjectID());
+	if (GetOwner() != nullptr) {
+		colliderSys->colliderMap.erase(GetOwner()->GetGameObjectID());
+	}
+	
 	
 }

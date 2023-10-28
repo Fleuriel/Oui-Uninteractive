@@ -17,21 +17,24 @@ public:
 			
 			if (physBod->forceManager.forceVec.size() >= 1) {
 				
-				if (tx->position.x < -300) {
+				if (tx->position.x < -800) {
 					physBod->forceManager.SetActive(true, FORCE_INDEX::EXTERNAL);
 					physBod->forceManager.SetDirection(Vec2(1.f, 0), FORCE_INDEX::EXTERNAL);
 					physBod->forceManager.SetMagnitude(physBod->speed, FORCE_INDEX::EXTERNAL);
+					physBod->forceManager.SetLifetime(3.f, FORCE_INDEX::EXTERNAL);
 				}
-				else if (tx->position.x > 300) {
+				else if (tx->position.x > 800) {
 					physBod->forceManager.SetActive(true, FORCE_INDEX::EXTERNAL);
 					physBod->forceManager.SetDirection(Vec2(-1.f, 0), FORCE_INDEX::EXTERNAL);
 					physBod->forceManager.SetMagnitude(physBod->speed, FORCE_INDEX::EXTERNAL);
+					physBod->forceManager.SetLifetime(3.f, FORCE_INDEX::EXTERNAL);
 				}	
 				else {
 					if (physBod->forceManager.forceVec[FORCE_INDEX::EXTERNAL]->isActive == false) {
 						physBod->forceManager.SetActive(true, FORCE_INDEX::EXTERNAL);
 						physBod->forceManager.SetDirection(Vec2(-1.f, 0), FORCE_INDEX::EXTERNAL);
 						physBod->forceManager.SetMagnitude(physBod->speed, FORCE_INDEX::EXTERNAL);
+						physBod->forceManager.SetLifetime(1.f, FORCE_INDEX::EXTERNAL);
 					}
 				}
 			}

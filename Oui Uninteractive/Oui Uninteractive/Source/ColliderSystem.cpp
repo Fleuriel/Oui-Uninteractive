@@ -79,33 +79,75 @@ void ColliderSystem::Update(float dt) {
 		collider->boundingbox->max = Vec2((0.5f) * collider->tx->scale + collider->tx->position.x, (0.5f) * collider->tx->scale + collider->tx->position.y);
 
 		
-		for (; it2 != colliderMap.end(); it2++) {
-			Collider* body2 = it2->second;
-			if (body2->GetOwner()->GetGameObjectID() == collider->GetOwner()->GetGameObjectID()) {
-				continue;
-			}
-			bool staticCollided = CollisionStaticDynamicRectRect(*(collider->boundingbox), *(body2->boundingbox));
-			float dynamicCollided = 0.f;
-			PhysicsBody* pBody1 = GET_COMPONENT(collider->GetOwner(), PhysicsBody, ComponentType::PHYSICS_BODY);
-			if (!staticCollided) {
-				
-				PhysicsBody* pBody2 = GET_COMPONENT(body2->GetOwner(), PhysicsBody, ComponentType::PHYSICS_BODY);
-				dynamicCollided = CollisionMovingRectRect(*(collider->boundingbox), *(body2->boundingbox), pBody1->velocity, pBody2->velocity);
-				if (dynamicCollided > 0.f) {
-					std::cout << "Collision dynamic\n";
+			for (; it2 != colliderMap.end(); it2++) {
+				Collider* body2 = it2->second;
+				if (body2->GetOwner()->GetGameObjectID() == collider->GetOwner()->GetGameObjectID()) {
+					continue;
 				}
-			}
-			if (staticCollided){
-				Vec2 normal = Vec2(0, 0);
-				float depth = CalculateEntryTimeAndNormal(collider->boundingbox, body2->boundingbox, pBody1->velocity, normal.x, normal.y);
-				Vector2DNormalize(normal, normal);
-				CollisionMessage collisionMessage(collider, body2, depth, normal);
-				ProcessMessage(&collisionMessage);
-			}
-			else if (staticCollided == false && dynamicCollided == false) {
+				PhysicsBody* pBody1 = GET_COMPONENT(collider->GetOwner(), PhysicsBody, ComponentType::PHYSICS_BODY);
+				PhysicsBody* pBody2 = GET_COMPONENT(body2->GetOwner(), PhysicsBody, ComponentType::PHYSICS_BODY);
+				float contactTime = 0;
+				bool collided = false;
+				if (Vector2DLength(pBody1->velocity) > 0 && Vector2DLength(pBody2->velocity) > 0) {
+					Vec2 normal = Vec2(0, 0);
+					Vec2 contactPt = Vec2(0, 0);
+					collided = CollisionMovingRectRect(*(collider->boundingbox), *(body2->boundingbox), pBody1->velocity, pBody2->velocity, contactTime, normal, contactPt, GetDT());
+					//dynamic coll response
+					if (collided) {
+						Vec2 relVelocity = pBody2->velocity - pBody1->velocity;
+						//pBody1->forceManager.ApplyToForce(normal * Vec2(abs(pBody1->velocity.x), abs(pBody1->velocity.y)), (1 - contactTime), 0.25f,FORCE_INDEX::EXTERNAL);
+						pBody1->txPtr->position += normal * Vec2(abs(relVelocity.x), abs(relVelocity.y)) * GetDT() * (1 - contactTime);
+
+
+						/*w += normal * Vec2(abs(pBody1->velocity.x), abs(pBody1->velocity.y)) * (1 - contactTime);*/
+						std::cout << contactTime << "\n";
+						std::cout << normal.x << "|" << normal.y << "\n";
+					
+					}
+					
+				}
+				else {
+					collided = CollisionStaticDynamicRectRect(*(collider->boundingbox), *(body2->boundingbox));
+					
+					if (collided) {
+						std::cout << "Static Collision\n";
+						Vec2 normal = Vec2(0, 0);
+						float depth = CalculateEntryTimeAndNormal(collider->boundingbox, body2->boundingbox, pBody1->velocity, normal.x, normal.y);
+						Vector2DNormalize(normal, normal);
+						CollisionMessage collisionMessage(collider, body2, depth, normal);
+						ProcessMessage(&collisionMessage);
+					}
+					
+				}
 				
+
+				//bool staticCollided = CollisionStaticDynamicRectRect(*(collider->boundingbox), *(body2->boundingbox));
+				//float dynamicCollided = 0.f;
+				//PhysicsBody* pBody1 = GET_COMPONENT(collider->GetOwner(), PhysicsBody, ComponentType::PHYSICS_BODY);
+				//if (!staticCollided) {
+
+				//	PhysicsBody* pBody2 = GET_COMPONENT(body2->GetOwner(), PhysicsBody, ComponentType::PHYSICS_BODY);
+
+				//	float tFirst = 0.0f;
+				//	dynamicCollided = CollisionMovingRectRect(*(collider->boundingbox), *(body2->boundingbox), pBody1->velocity, pBody2->velocity, tFirst);
+				//	if (dynamicCollided) {
+				//		std::cout << "!\n";
+				//		pBody1->txPtr->position = pBody1->txPtr->previousPosition + (1 - tFirst) * pBody1->velocity * dt;
+				//	}
+				//}
+				//if (staticCollided) {
+				//	std::cout << "Static Collision\n";
+				//	Vec2 normal = Vec2(0, 0);
+				//	float depth = CalculateEntryTimeAndNormal(collider->boundingbox, body2->boundingbox, pBody1->velocity, normal.x, normal.y);
+				//	Vector2DNormalize(normal, normal);
+				//	//	CollisionMessage collisionMessage(collider, body2, depth, normal);
+				//	//	ProcessMessage(&collisionMessage);
+				//}
+				//else if (staticCollided == false && dynamicCollided == false) {
+
+				//}
 			}
-		}
+		
 	}
 
 	//BroadPhase();
