@@ -90,15 +90,10 @@ void ColliderSystem::Update(float dt) {
 				collided = CollisionMovingRectRect(*(collider->boundingbox), *(body2->boundingbox), pBody1->velocity, pBody2->velocity, contactTime, normal, contactPt, GetDT());
 				//dynamic coll response
 				if (collided) {
-					
-					//acceleration = mass * resultantForces
-					//v = v + a * dt
+					Vec2 relVelocity = pBody2->velocity - pBody1->velocity;
 					//pBody1->forceManager.ApplyToForce(normal * Vec2(abs(pBody1->velocity.x), abs(pBody1->velocity.y)), (1 - contactTime), 0.25f,FORCE_INDEX::EXTERNAL);
-					pBody1->txPtr->position += normal * Vec2(abs(pBody1->velocity.x), abs(pBody1->velocity.y)) * GetDT() * (1 - contactTime);
-					collider->tx->position = GET_COMPONENT(collider->GetOwner(), Transform, ComponentType::TRANSFORM)->position;
-					collider->boundingbox->center = collider->tx->position;
-					collider->boundingbox->min = Vec2((-0.5f) * collider->tx->scale + collider->tx->position.x, (-0.5f) * collider->tx->scale + collider->tx->position.y);
-					collider->boundingbox->max = Vec2((0.5f) * collider->tx->scale + collider->tx->position.x, (0.5f) * collider->tx->scale + collider->tx->position.y);
+					pBody1->txPtr->position += normal * Vec2(abs(relVelocity.x), abs(relVelocity.y)) * GetDT() * (1 - contactTime);
+
 
 					/*w += normal * Vec2(abs(pBody1->velocity.x), abs(pBody1->velocity.y)) * (1 - contactTime);*/
 					std::cout << contactTime << "\n";
