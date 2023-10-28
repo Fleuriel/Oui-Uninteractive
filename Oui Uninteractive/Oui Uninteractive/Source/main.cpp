@@ -37,7 +37,7 @@ int main(){
 
 	//CreateWindow();
 	sysManager = new SystemManager();
-	// Have Errors for now. need fix
+
 	sysManager->AddSystem(new OpenGLApplication());
 	sysManager->AddSystem(new LogicSystem());
 	sysManager->AddSystem(new ObjectFactory());

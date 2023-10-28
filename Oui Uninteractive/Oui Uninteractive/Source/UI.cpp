@@ -58,7 +58,7 @@ void UIManager::Update(float dt) {
 	// 5. Quit
 	std::map<size_t, GameObject*> copyMap = objectFactory->GetGameObjectIDMap();
 	std::map<size_t, GameObject*>::iterator it = copyMap.begin();
-	std::cout << Editor::gameWindowSize.first << " " << Editor::gameWindowSize.second << std::endl;
+	//std::cout << Editor::gameWindowSize.first << " " << Editor::gameWindowSize.second << std::endl;
 	//for (; it != objectFactory->GetGameObjectIDMap().end(); it++) {
 	for (int x = 0; x < 6; x++, it++) {
 			//std::cout << it->second->GetName() << std::endl;

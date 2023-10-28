@@ -263,9 +263,6 @@ void OpenGLApplication::OpenGLUpdate() {
 	glBindFramebuffer(GL_FRAMEBUFFER, OpenGLObject::FBO);
 
 
-
-
-
 	myImGui.CreateFrame();
 	myEditor.Update();
 	myImGui.Update();
@@ -447,6 +444,9 @@ void OpenGLApplication::OpenGLUpdate() {
 	// Draws the Background
 	background.Draw();
 
+
+
+
 	for (OpenGLObject& obj : objects) {
 		if (obj.TagID == 1)
 			obj.Update(positionX, 300, 100, 100, angle, true);
@@ -485,14 +485,17 @@ void OpenGLApplication::OpenGLUpdate() {
 
 	UpdateAnimationTimers();
 	UpdateAnimation();
-
+	fontManager->RenderText("The quick brown fox jumps over the lazy dog.", 100, 200, 1.0f, glm::vec3(236.0f/255.0f, 1.0f, 220.0f/255.0f));
+	fontManager->RenderText("0123456789 .:,; '\" (!?) +-*/ = ", 100, 100, 1.0f, glm::vec3(0.4, 0.7, 0.9));
 	Draw();
 	particleSystem.Draw();
+
 	// Unbind the FBO to restore the default framebuffer
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
 	myImGui.Draw();
 
+	
 	
 	
 }

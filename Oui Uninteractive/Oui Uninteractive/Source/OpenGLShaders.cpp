@@ -337,7 +337,10 @@ void OpenGLShader::SetUniform(GLchar const* name, GLfloat x, GLfloat y) {
 *************************************************************************/
 void OpenGLShader::SetUniform(GLchar const* name, GLfloat x, GLfloat y, GLfloat z) {
     GLint loc = glGetUniformLocation(pgm_handle, name);
+    //std::cout << loc << '\n';
+
     if (loc >= 0) {
+        //std::cout << loc << '\n';
         glUniform3f(loc, x, y, z);
     }
     else {

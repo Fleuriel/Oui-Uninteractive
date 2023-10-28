@@ -27,6 +27,12 @@
 #include <ISystem.h>
 #include <AssetManager.h>
 
+enum class SHADER_ORDER {
+	MODEL = 0,
+	FONT = 1,
+
+};
+
 
 // External Texture Color
 extern int importTexture, secondTexture, thirdTexture;
@@ -217,5 +223,11 @@ public:
 private:
 
 };
+
+
+
+// Vector for shdrpgms
+extern std::vector<OpenGLShader> shdrpgms;
+
 
 #endif // OPENGL_OBJECTS_H
