@@ -96,7 +96,7 @@ void ColliderSystem::Update(float dt) {
 					if (collided) {
 						Vec2 relVelocity = pBody2->velocity - pBody1->velocity;
 						//pBody1->forceManager.ApplyToForce(normal * Vec2(abs(pBody1->velocity.x), abs(pBody1->velocity.y)), (1 - contactTime), 0.25f,FORCE_INDEX::EXTERNAL);
-						pBody1->txPtr->position += normal * Vec2(abs(relVelocity.x), abs(relVelocity.y)) * GetDT() * (1 - contactTime);
+						pBody1->txPtr->position = contactPt;/*normal * Vec2(abs(relVelocity.x), abs(relVelocity.y)) * GetDT() * (1 - contactTime);*/
 
 
 						/*w += normal * Vec2(abs(pBody1->velocity.x), abs(pBody1->velocity.y)) * (1 - contactTime);*/
