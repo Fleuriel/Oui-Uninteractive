@@ -141,7 +141,7 @@ void TimeUpdate(){
 	currentTime = std::chrono::high_resolution_clock::now();
 	deltaTime = std::chrono::duration_cast<std::chrono::duration<double>>(currentTime - previousTime);
 	previousTime = currentTime;
-	sysManager->accumulatedTime += deltaTime.count();
+	/*sysManager->accumulatedTime += deltaTime.count();
 	while (sysManager->accumulatedTime >= sysManager->fixedDeltaTime) {
 		sysManager->accumulatedTime -= sysManager->fixedDeltaTime;
 		sysManager->currentNumberOfSteps++;
@@ -150,5 +150,5 @@ void TimeUpdate(){
 	if (sysManager->currentNumberOfSteps > sysManager->maxNoOfStep) {
 		sysManager->currentNumberOfSteps = sysManager->maxNoOfStep;
 	}
-	
+	*/
 }

@@ -50,7 +50,7 @@ void Physics::Initialize() {
 void Physics::Update(float dt) {
 	// Start time profiling for physics system
 	TimeProfiler profiler(Editor::timeRecorder.physicsTime);
-	for (int step = 0; step < sysManager->currentNumberOfSteps; step++) {
+	//for (int step = 0; step < sysManager->currentNumberOfSteps; step++) {
 	
 	std::map<size_t, PhysicsBody*>::iterator it = bodyList.begin();
 	std::map<size_t, PhysicsBody*>::iterator it2 = bodyList.begin();
@@ -77,14 +77,14 @@ void Physics::Update(float dt) {
 			//Velocity
 			Vec2 originalVelocity = body->velocity;
 
-			body->velocity = body->velocity + body->acceleration * sysManager->fixedDeltaTime;
+			body->velocity = body->velocity + body->acceleration * GetDT();//* sysManager->fixedDeltaTime;
 			
 
 			CapVelocity(originalVelocity, body->velocity);
 		
 			//Position	
 			body->txPtr->previousPosition = body->txPtr->position;
-			body->txPtr->position = body->txPtr->position + body->velocity * sysManager->fixedDeltaTime;
+			body->txPtr->position = body->txPtr->position + body->velocity * GetDT();//* sysManager->fixedDeltaTime;
 
 			//Just spins all other objects
 			/*if (body->GetOwner()->GetGameObjectID() != 0) {
@@ -100,7 +100,7 @@ void Physics::Update(float dt) {
 		//	body->txPtr->shape->Update(body->txPtr->position.x, body->txPtr->position.y, body->txPtr->scale, body->txPtr->scale, body->txPtr->rotation, true);
 
 		}
-	}
+	//}
 	
 
 }
