@@ -35,8 +35,10 @@
 #include <iterator>
 #include <Background.h>
 #include "TestScript.h"
+#include "EnemyFSM.h"
 #include <Animation.h>
 #include "ColliderSystem.h"
+#include "AssetManager.h"
 
 #define STB_IMAGE_IMPLEMENTATION
 #include <stb_image.h>
@@ -81,6 +83,8 @@ extern int lastkeyedcommand;
 
 static bool glewInitialized = false;
 static bool imguiInitialized = false;
+
+AssetManager assetManager;
 
 
 
@@ -150,6 +154,8 @@ void OpenGLApplication::OpenGLWindowInit() {
 	glEnable(GL_CULL_FACE);
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+	
 }
 
 
@@ -201,7 +207,7 @@ void OpenGLApplication::OpenGLInit() {
 
 	// Creates an Object to Initialize it.
 	Objects.Initialize();
-
+	assetManager.Init();
 
 	// Initializing ImGui
 	if (!imguiInitialized) {
@@ -221,6 +227,9 @@ void OpenGLApplication::OpenGLInit() {
 
 	TestScript2* testScript2 = new TestScript2();
 	testScript2->Initialize();
+
+	FSM* enemyFSMScript = new FSM();
+	enemyFSMScript->Initialize();
 
 	
 	background.Init();
@@ -368,17 +377,19 @@ void OpenGLApplication::OpenGLUpdate() {
 		Particle newparticle(0, 0, 100, 100, 0, 0);
 		particleSystem.particles.push_back(newparticle);
 
+
 		//newparticle.Init(0, 0, 100, 100, 0, 0);
 		//std::cout << "R : " << newparticle.object.color.r << "\nG : " << newparticle.object.color.g << "\nB : " << newparticle.object.color.b << "\n";
 	}
 
 	if (keyStates[GLFW_KEY_L] == 1) {
 		//Grid(3, 3);
-		Animation_Top_Left_To_Bottom_Right(20, 20, 3);
+		Animation_Top_Left_To_Bottom_Right(3, 3, 3);
 		//particleSystem.EmptyParticleSystem();
 	}
 
 	if (mouseButtonStates[GLFW_MOUSE_BUTTON_LEFT]) {
+
 #ifdef _DEBUG
 		std::cout << "LCLICK\n";
 #endif

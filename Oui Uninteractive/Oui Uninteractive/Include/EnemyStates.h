@@ -1,5 +1,5 @@
 /**************************************************************************
- * @file IMessage.h
+ * @file EnemyStates.h
  * @author HWANG Jing Rui, Austin
  * @par DP email: jingruiaustin.hwang@digipen.edu
  * @par Course:	CSD 2401
@@ -13,17 +13,28 @@
 #include "IState.h"
 
 class EnemyRoam : public IState {
+private:
+	
+
 public:
-	void Enter();
-	void Update();
-	void Exit();
+	//EnemyRoam() {}
+	//~EnemyRoam() {}
+
+	//void Enter();
+	void Update(size_t gameObjectID) override;
+	//void Exit();
 };
 
 class EnemyAttack : public IState {
+private:
+
 public:
-	void Enter();
-	void Update();
-	void Exit();
+	//EnemyAttack() {}
+	//~EnemyAttack() {}
+
+	//void Enter();
+	void Update(size_t gameObjectID) override;
+	//void Exit();
 };
 
 #endif
