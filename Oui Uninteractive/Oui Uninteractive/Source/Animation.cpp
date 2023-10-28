@@ -70,7 +70,6 @@ void UpdateAnimation() {
 			timerSwitches[animationTopLeftToBottomRight] = false;
 			timers[animationTopLeftToBottomRight] = 0.f;
 			particleNumber = 0;
-			std::cout << "PPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPP";
 		}
 		
 	}

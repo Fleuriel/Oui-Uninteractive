@@ -22,6 +22,7 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 #include <stb_image.h>
+#include "AssetManager.h"
 
 
 std::vector<OpenGLShader> Background::shdrpgms; //singleton
@@ -36,6 +37,7 @@ GLuint Background::VBO = 0; //initialize to 0
 
 int backgroundTexture;	//Texture for background
 
+extern AssetManager assetManager;
 
 /**************************************************************************
  * @brief Initialize the Background class.
@@ -62,9 +64,10 @@ void Background::Init() {
 
 	// Initialize shader programs using the provided file names
 	init_shdrpgms_cont(fileName);
-	
+
+
 	// Load a background texture from a file
-	backgroundTexture = Background::Setup_TextureObject("../texture/background.jpg");
+	backgroundTexture = assetManager.GetTexture("background");
 
 	// Initialize model and shader references to zero
 	mdl_ref = 0;

@@ -137,7 +137,7 @@
             "Type": "Enemy",
             "Components": {
                 "PhysicsBody": {
-                    "VelocityX": -560.0000610351563,
+                    "VelocityX": 1000.0,
                     "VelocityY": 0.0,
                     "RotationSpeed": 20.0,
                     "Speed": 120.0,
