@@ -11,13 +11,13 @@
                     "VelocityY": 0.0,
                     "RotationSpeed": 200.0,
                     "Speed": 50.0,
-                    "Mass": 80.0,
+                    "Mass": 10.0,
                     "IsStatic": false,
                     "FrictionForce": 20.0
                 },
                 "Transform": {
-                    "PositionX": 166.5882110595703,
-                    "PositionY": -121.43006134033203,
+                    "PositionX": -250.0,
+                    "PositionY": 200.0,
                     "Rotation": 0.0,
                     "Scale": 200.0
                 },
@@ -27,7 +27,7 @@
                     ]
                 },
                 "Collider": {
-                    "ColliderSize": 210.0,
+                    "ColliderSize": 205.0,
                     "ColliderRotation": 0.0
                 }
             }
@@ -42,13 +42,13 @@
                     "VelocityY": 0.0,
                     "RotationSpeed": 20.0,
                     "Speed": 120.0,
-                    "Mass": 80.0,
+                    "Mass": 10.0,
                     "IsStatic": false,
                     "FrictionForce": 20.0
                 },
                 "Transform": {
-                    "PositionX": -1018.2464599609375,
-                    "PositionY": 217.2449493408203,
+                    "PositionX": 50.0,
+                    "PositionY": -200.0,
                     "Rotation": 0.0,
                     "Scale": 130.0
                 },
@@ -78,8 +78,8 @@
                     "FrictionForce": 20.0
                 },
                 "Transform": {
-                    "PositionX": 261.92169189453125,
-                    "PositionY": 105.29207611083984,
+                    "PositionX": 200.0,
+                    "PositionY": 100.0,
                     "Rotation": 30.0,
                     "Scale": 220.0
                 },
@@ -134,13 +134,13 @@
                     "VelocityY": 0.0,
                     "RotationSpeed": 20.0,
                     "Speed": 120.0,
-                    "Mass": 80.0,
+                    "Mass": 10.0,
                     "IsStatic": false,
                     "FrictionForce": 20.0
                 },
                 "Transform": {
-                    "PositionX": 414.9696044921875,
-                    "PositionY": -182.20420837402344,
+                    "PositionX": 50.0,
+                    "PositionY": -200.0,
                     "Rotation": 0.0,
                     "Scale": 130.0
                 },
