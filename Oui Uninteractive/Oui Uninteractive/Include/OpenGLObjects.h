@@ -152,7 +152,7 @@ public:
 		glm::mat3 view_xform, CameraWindow_to_NDC_xform, World_to_NDC_xform;
 		
 		GLint height{ 1000 }; // Current Height of the depth i.e. Zoom
-		GLint min_Height{ 500 }, max_height{ 2000 };
+		GLint min_Height{ 0 }, max_height{ 8000 };
 
 
 		GLfloat aspectRatio;
