@@ -55,7 +55,7 @@
                     "ScriptID":[0]
                 },
                 "Collider": {
-                    "ColliderSize": 130.0,
+                    "ColliderSize": 140.0,
                     "ColliderRotation": 0.0
                 }
             }
@@ -71,7 +71,7 @@
                     "RotationSpeed": 20.0,
                     "Speed": 500.0,
                     "Mass": 80.0,
-                    "IsStatic": false,
+                    "IsStatic": true,
                     "FrictionForce": 20.0
                 },
                 "Transform": {

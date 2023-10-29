@@ -82,19 +82,8 @@ void Physics::Update(float dt) {
 			Vec2 previousVelocity = body->velocity;
 
 			body->velocity = body->velocity + body->acceleration * GetDT();//* sysManager->fixedDeltaTime;
-			//if (collider != nullptr) {
-			//	if (collider->contactNormal.x != 0) {
-			//		body->velocity.x = previousVelocity.x + body->acceleration.x * GetDT() * collider->contactTime;//* sysManager->fixedDeltaTime;
-			//		body->velocity.y = previousVelocity.y + body->acceleration.y * GetDT();
-			//	}
-
-			//	else if (collider->contactNormal.y != 0) {
-			//		body->velocity.x = previousVelocity.x + body->acceleration.x * GetDT();//* sysManager->fixedDeltaTime;
-			//		body->velocity.y = previousVelocity.y + body->acceleration.y * GetDT() * collider->contactTime;;
-			//	}
-			//}
-
-			//CapVelocity(originalVelocity, body->velocity);
+			
+			CapVelocity(originalVelocity, body->velocity);
 			
 			//Position	
 			body->txPtr->previousPosition = body->txPtr->position;
@@ -106,9 +95,6 @@ void Physics::Update(float dt) {
 				body->txPtr->rotation = 0.0f;
 
 		
-			//apply calculations to object
-		//	body->txPtr->shape->Update(body->txPtr->position.x, body->txPtr->position.y, body->txPtr->scale, body->txPtr->scale, body->txPtr->rotation, true);
-
 		}
 	//}
 	
@@ -324,16 +310,16 @@ void Physics::CollisionResponse(CollisionMessage* msg) {
 
 	if (pBody2->isStatic) {
 		//pBody1->txPtr->position += msg->GetContactNormal() * msg->GetDepth();
-		pBody1->velocity += msg->GetContactNormal() * msg->GetDepth();
+		pBody1->velocity += msg->GetContactNormal() * msg->GetDepth();// * msg->GetFirstCollider()->contactTime;
 	}
 	else if (pBody1->isStatic) {
 		//pBody2->txPtr->position += (-msg->GetContactNormal()) * msg->GetDepth();
-		pBody2->velocity += msg->GetContactNormal() * msg->GetDepth();
+		pBody2->velocity += msg->GetContactNormal() * msg->GetDepth();//* msg->GetFirstCollider()->contactTime;
 	
 	}
 	else {
-		pBody1->velocity += msg->GetContactNormal() * msg->GetDepth() / 2;
-		pBody2->velocity -= msg->GetContactNormal() * msg->GetDepth() / 2;
+		pBody1->velocity += msg->GetContactNormal() * msg->GetDepth() / 2;// *msg->GetFirstCollider()->contactTime;
+		pBody2->velocity -= msg->GetContactNormal() * msg->GetDepth() / 2; // *msg->GetFirstCollider()->contactTime;
 		//pBody1->forceManager.ApplyToForce(normal, depth / 2, 0.05f, FORCE_INDEX::EXTERNAL);
 		//pBody1->txPtr->position += msg->GetContactNormal() * (msg->GetDepth() / 2);
 		//pBody2->forceManager.ApplyToForce(-normal, depth / 2, 0.05f, FORCE_INDEX::EXTERNAL);
