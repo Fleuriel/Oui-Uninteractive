@@ -362,6 +362,15 @@ void Editor::CreateObjectList() {
 				for (int i = 0; i < addCount; i++) {
 					std::string newName = "Object" + std::to_string(highestNumber + 1);
 					objectFactory->BuildObjectRunTime(newName, "");
+
+					objectFactory->AddComponent(ComponentType::TRANSFORM, objectFactory->GetGameObjectByID(highestNumber));
+					objectFactory->GetGameObjectByID(highestNumber)->Initialize();
+					int randX, randY;
+					randX = rand() % ((windowSize.first / 2) - (-(windowSize.first / 2)) + 1) + (-(windowSize.first / 2));
+					randY = rand() % ((windowSize.second / 2) - (-(windowSize.second / 2)) + 1) + (-(windowSize.second / 2));
+					GET_COMPONENT(objectFactory->GetGameObjectByID(highestNumber), Transform, ComponentType::TRANSFORM)->position.x = static_cast<float>(randX);
+					GET_COMPONENT(objectFactory->GetGameObjectByID(highestNumber), Transform, ComponentType::TRANSFORM)->position.y = static_cast<float>(randY);
+
 					highestNumber++; // Increment the highest assigned ID
 				}
 				gameobjID = objectFactory->GetGameObjectIDMap().begin()->first;
@@ -434,7 +443,6 @@ void Editor::CreateObjectList() {
 					objectFactory->AddComponent(ComponentType::TRANSFORM, objectFactory->GetGameObjectByID(startIndex + i));
 					objectFactory->AddComponent(ComponentType::COLLIDER, objectFactory->GetGameObjectByID(startIndex + i));
 					objectFactory->GetGameObjectByID(startIndex + i)->Initialize();
-
 					GET_COMPONENT(objectFactory->GetGameObjectByID(startIndex + i), Transform, ComponentType::TRANSFORM)->position.x = static_cast<float>(rand() % 800);
 					GET_COMPONENT(objectFactory->GetGameObjectByID(startIndex + i), Transform, ComponentType::TRANSFORM)->position.y = static_cast<float>(rand() % 600);
 				}
@@ -456,7 +464,7 @@ void Editor::CreateObjectList() {
 					}
 
 					yPos2 = GET_COMPONENT(objectFactory->GetGameObjectByID(gameobjID), Transform, ComponentType::TRANSFORM)->position.y;
-					if (ImGui::SliderFloat("Y-Position", &yPos2, static_cast<float>(-(windowSize.second / 2)), static_cast<float>(windowSize.first / 2), "%.2f")) { // Slider for Y-Position
+					if (ImGui::SliderFloat("Y-Position", &yPos2, static_cast<float>(-(windowSize.second / 2)), static_cast<float>(windowSize.second / 2), "%.2f")) { // Slider for Y-Position
 						GET_COMPONENT(objectFactory->GetGameObjectByID(gameobjID), Transform, ComponentType::TRANSFORM)->position.y = yPos2;
 					}
 
