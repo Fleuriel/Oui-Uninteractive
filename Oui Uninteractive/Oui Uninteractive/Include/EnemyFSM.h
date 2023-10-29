@@ -38,15 +38,20 @@ public:
 
 		// If within range of player, enter attack state
 		Vec2 playerPos = Vec2(0, 0);
-		Transform* playerTx = GET_COMPONENT(objectFactory->GetGameObjectByName("JSONPlayer"), Transform, ComponentType::TRANSFORM);
-		if (playerTx != nullptr) {
-			playerPos = playerTx->position;
-		}
-		
-		Transform* enemyTx = GET_COMPONENT(objectFactory->GetGameObjectByName("JSONPlayer"), Transform, ComponentType::TRANSFORM);
 		Vec2 enemyPos = Vec2(0, 0);
-		if (enemyTx != nullptr) {
-			enemyPos = enemyTx->position;
+		GameObject* player = objectFactory->GetGameObjectByName("JSONPlayer");
+		if (player != nullptr) {
+
+			Transform* playerTx = GET_COMPONENT(objectFactory->GetGameObjectByName("JSONPlayer"), Transform, ComponentType::TRANSFORM);
+			if (playerTx != nullptr) {
+				playerPos = playerTx->position;
+			}
+
+			Transform* enemyTx = GET_COMPONENT(objectFactory->GetGameObjectByName("JSONPlayer"), Transform, ComponentType::TRANSFORM);
+			
+			if (enemyTx != nullptr) {
+				enemyPos = enemyTx->position;
+			}
 		}
 
 		if (Vector2DDistance(playerPos, enemyPos) < 300.0f) {
