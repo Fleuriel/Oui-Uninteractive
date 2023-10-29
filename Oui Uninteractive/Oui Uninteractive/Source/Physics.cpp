@@ -78,23 +78,11 @@ void Physics::Update(float dt) {
 			//Velocity
 			Vec2 originalVelocity = body->velocity;
 			Collider* collider = GET_COMPONENT(body->GetOwner(), Collider, ComponentType::COLLIDER);
-			//body->velocity = body->velocity + body->acceleration * GetDT() * collider->contactTime;//* sysManager->fixedDeltaTime;
 			Vec2 previousVelocity = body->velocity;
 
 			body->velocity = body->velocity + body->acceleration * GetDT();//* sysManager->fixedDeltaTime;
-			//if (collider != nullptr) {
-			//	if (collider->contactNormal.x != 0) {
-			//		body->velocity.x = previousVelocity.x + body->acceleration.x * GetDT() * collider->contactTime;//* sysManager->fixedDeltaTime;
-			//		body->velocity.y = previousVelocity.y + body->acceleration.y * GetDT();
-			//	}
-
-			//	else if (collider->contactNormal.y != 0) {
-			//		body->velocity.x = previousVelocity.x + body->acceleration.x * GetDT();//* sysManager->fixedDeltaTime;
-			//		body->velocity.y = previousVelocity.y + body->acceleration.y * GetDT() * collider->contactTime;;
-			//	}
-			//}
-
-			//CapVelocity(originalVelocity, body->velocity);
+			
+			CapVelocity(originalVelocity, body->velocity);
 			
 			//Position	
 			body->txPtr->previousPosition = body->txPtr->position;
@@ -317,8 +305,6 @@ void Physics::CollisionResponse(CollisionMessage* msg) {
 
 	//coll response
 	Vec2 penetration = msg->GetContactNormal() * halfDepth;
-
-//	PhysicsBody* pBody2 = GET_COMPONENT(body2->GetOwner(), PhysicsBody, ComponentType::PHYSICS_BODY);
 	PhysicsBody* pBody1 = physicsSys->bodyList[msg->GetFirstCollider()->GetOwner()->GetGameObjectID()];
 	PhysicsBody* pBody2 = physicsSys->bodyList[msg->GetSecondCollider()->GetOwner()->GetGameObjectID()];
 
@@ -334,10 +320,6 @@ void Physics::CollisionResponse(CollisionMessage* msg) {
 	else {
 		pBody1->velocity += msg->GetContactNormal() * msg->GetDepth() / 2;
 		pBody2->velocity -= msg->GetContactNormal() * msg->GetDepth() / 2;
-		//pBody1->forceManager.ApplyToForce(normal, depth / 2, 0.05f, FORCE_INDEX::EXTERNAL);
-		//pBody1->txPtr->position += msg->GetContactNormal() * (msg->GetDepth() / 2);
-		//pBody2->forceManager.ApplyToForce(-normal, depth / 2, 0.05f, FORCE_INDEX::EXTERNAL);
-		//pBody2->txPtr->position += (-msg->GetContactNormal() * (msg->GetDepth() / 2));
 	}
 
 
