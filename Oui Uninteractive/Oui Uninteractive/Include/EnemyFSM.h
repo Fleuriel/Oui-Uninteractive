@@ -37,8 +37,17 @@ public:
 		currentState->Update(gameObjectID);
 
 		// If within range of player, enter attack state
-		Vec2 playerPos{GET_COMPONENT(objectFactory->GetGameObjectByName("JSONPlayer"), Transform, ComponentType::TRANSFORM)->position};
-		Vec2 enemyPos{GET_COMPONENT(objectFactory->GetGameObjectByID(gameObjectID), Transform, ComponentType::TRANSFORM)->position};
+		Vec2 playerPos = Vec2(0, 0);
+		Transform* playerTx = GET_COMPONENT(objectFactory->GetGameObjectByName("JSONPlayer"), Transform, ComponentType::TRANSFORM);
+		if (playerTx != nullptr) {
+			playerPos = playerTx->position;
+		}
+		
+		Transform* enemyTx = GET_COMPONENT(objectFactory->GetGameObjectByName("JSONPlayer"), Transform, ComponentType::TRANSFORM);
+		Vec2 enemyPos = Vec2(0, 0);
+		if (enemyTx != nullptr) {
+			enemyPos = enemyTx->position;
+		}
 
 		if (Vector2DDistance(playerPos, enemyPos) < 300.0f) {
 			currentState = statesMap["EnemyAttack"];
