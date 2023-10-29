@@ -52,7 +52,8 @@
                 },
                 "LogicComponent": {
                     "ScriptID": [
-                        0
+                        0,
+                        2
                     ]
                 },
                 "Collider": {
@@ -153,7 +154,8 @@
                 },
                 "LogicComponent": {
                     "ScriptID": [
-                        0
+                        0,
+                        2
                     ]
                 },
                 "Collider": {
