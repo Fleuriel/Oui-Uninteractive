@@ -25,6 +25,7 @@ PhysicsBody::PhysicsBody() {
 	direction = Vec2(0, 0);
 	speed = 50;
 	frictionForce = 20;
+	restitution = 10;
 }
 /**************************************************************************
 * @brief Destructor for PhysicsBody component
@@ -76,6 +77,7 @@ PhysicsBody* PhysicsBody::Clone() const{
 	newBody->rotationSpeed = rotationSpeed;
 	newBody->mass = mass;
 
+	//NOTE TO SELF 4 FORCEs BUG HERE
 	for (int i = 0; i < forceManager.forceVec.size(); i++) {
 		LinearForce* newForce = new LinearForce(*forceManager.forceVec[i]);
 		newBody->forceManager.forceVec.push_back(newForce);
@@ -96,7 +98,7 @@ void ForceManager::Update(float dt) {
 	int currIndex = 0;
 	for (LinearForce* force : forceVec) {
 		if (force->isActive) {
-			force->age += sysManager->fixedDeltaTime;
+			force->age += GetDT();
 			if (force->age >= force->lifetime) {
 				DeactivateForce(currIndex);
 			}

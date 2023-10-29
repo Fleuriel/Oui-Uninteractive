@@ -18,6 +18,7 @@
 #include "Background.h"
 #include "AssetManager.h"
 #include "Sound.h"
+#include "FontManager.h"
 
 
 namespace fs = std::filesystem;
@@ -36,7 +37,8 @@ AssetManager::~AssetManager()
 void AssetManager::LoadAll() {
     std::cout 
     << ((AssetManager::LoadTextures()) ? "Textures loaded successfully" : "Failed to load textures") << std::endl
-    << ((AssetManager::LoadSounds()) ? "Sounds loaded successfully" : "Failed to load sounds") << std::endl;
+    << ((AssetManager::LoadSounds()) ? "Sounds loaded successfully" : "Failed to load sounds") << std::endl
+    << ((AssetManager::LoadFonts()) ? "Fonts loaded successfully" : "Failed to load fonts") << std::endl;
 }
 
 void AssetManager::FreeAll() {
@@ -236,4 +238,86 @@ bool AssetManager::FreeSFX() {
 bool AssetManager::ReloadSounds() {
     // Return true if free and load successfully
     return (AssetManager::FreeSounds() && AssetManager::LoadSounds());
+}
+
+
+/**************************************************************************
+* @brief This function loads the fonts from the file directories
+* @return No return
+*************************************************************************/
+bool AssetManager::LoadFonts() {
+
+    // File paths to the respetive fonts
+    std::filesystem::path fontPath{ "../fonts/" };
+
+    bool result{ true };
+
+    if (fs::is_directory(fontPath)) {
+        for (const auto& entry : fs::directory_iterator(fontPath)) {
+            // std::cout << "font file path : " << entry.path().string() << std::endl;
+            FT_Face newFace;
+            fontManager->result = FT_New_Face(fontManager->ft, entry.path().string().c_str(), 0, &newFace);
+            if (!fontManager->result) {
+                std::cout << "Successfully loaded font: " << entry.path().filename().string() << std::endl;
+            }
+            fonts.push_back(newFace);
+        }
+    }
+    else {
+        // Print error
+        std::cout << "The specified font path is not a directory." << std::endl;
+        result = false;
+    }
+
+    // Set font sizes
+    FT_Set_Pixel_Sizes(assetManager.GetFont(0), 0, 48);
+    // Disable byte alignment restriction
+    glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+    // Load 128 chars of ASCII
+    for (unsigned char ch = 0; ch < 128; ch++) {
+        // Load the glyphs
+        if (FT_Load_Char(assetManager.GetFont(0), ch, FT_LOAD_RENDER)) { // Returns non 0 if fail
+            std::cout << "Character load failure: '" << ch << "'" << std::endl;
+            continue;
+        }
+        // Generate individual textures
+        GLuint tex;
+        glGenTextures(1, &tex);
+        glBindTexture(GL_TEXTURE_2D, tex);
+        glTexImage2D(
+            GL_TEXTURE_2D,
+            0,
+            GL_RED,
+            assetManager.GetFont(0)->glyph->bitmap.width,
+            assetManager.GetFont(0)->glyph->bitmap.rows,
+            0,
+            GL_RED,
+            GL_UNSIGNED_BYTE,
+            assetManager.GetFont(0)->glyph->bitmap.buffer
+        );
+        // Texture settings
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+        // Store character
+        FontManager::Character character = {
+            tex,
+            glm::vec2(assetManager.GetFont(0)->glyph->bitmap.width, assetManager.GetFont(0)->glyph->bitmap.rows),
+            glm::vec2(assetManager.GetFont(0)->glyph->bitmap_left, assetManager.GetFont(0)->glyph->bitmap_top),
+            assetManager.GetFont(0)->glyph->advance.x
+        };
+        fontManager->charactersMap.insert(std::pair<char, FontManager::Character>(ch, character));
+    }
+    std::cout << "Characters successfully loaded" << std::endl;
+    // Free up faces
+    FT_Done_Face(assetManager.GetFont(0));
+    // Free FreeType
+    FT_Done_FreeType(fontManager->ft);
+
+    return result;
+}
+
+FT_Face AssetManager::GetFont(int index) {
+    return fonts[index];
 }

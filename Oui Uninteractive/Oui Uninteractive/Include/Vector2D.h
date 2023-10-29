@@ -115,7 +115,8 @@ Vector2D operator*(float lhs, const Vector2D &rhs);
 * @return Vector2D
 **************************************************************************/
 Vector2D operator/(const Vector2D &lhs, float rhs);
-
+Vector2D operator/(const Vector2D& lhs, const Vector2D& rhs);
+Vector2D operator*(const Vector2D& lhs, const Vector2D& rhs);
 /**************************************************************************
 * @brief Normalizes a vector, returns result to pResult
 * @param pResult - the vector to write to

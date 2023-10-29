@@ -1,5 +1,5 @@
 {
-    "ObjectCount": 6,
+    "ObjectCount": 2,
     "Objects": [
         {
             "Name": "JSONPlayer",
@@ -10,13 +10,13 @@
                     "VelocityY": 0.0,
                     "RotationSpeed": 200.0,
                     "Speed": 50.0,
-                    "Mass": 100.0,
+                    "Mass": 10.0,
                     "IsStatic": false,
                     "FrictionForce": 20.0
                 },
                 "Transform": {
-                    "PositionX": 684.7313842773438,
-                    "PositionY": -155.64108276367188,
+                    "PositionX": 444.0798034667969,
+                    "PositionY": -25.468036651611328,
                     "Rotation": 0.0,
                     "Scale": 200.0
                 },
@@ -138,7 +138,7 @@
             "Type": "Enemy",
             "Components": {
                 "PhysicsBody": {
-                    "VelocityX": -426.6667175292969,
+                    "VelocityX": 0.0,
                     "VelocityY": 0.0,
                     "RotationSpeed": 20.0,
                     "Speed": 120.0,
@@ -147,8 +147,8 @@
                     "FrictionForce": 20.0
                 },
                 "Transform": {
-                    "PositionX": 32.20099639892578,
-                    "PositionY": -174.95590209960938,
+                    "PositionX": 50.0,
+                    "PositionY": -200.0,
                     "Rotation": 0.0,
                     "Scale": 130.0
                 },

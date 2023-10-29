@@ -26,11 +26,9 @@ public:
 	FontManager();
 	void Initialize();
 	virtual void Update(float dt);
-	void LoadFonts();
 	~FontManager();
 	
-	// File paths to the respetive fonts
-	std::filesystem::path fontPath{ "../fonts/" };
+	
 	// To store FreeType result codes
 	int result; 
 	// Container for fonts
@@ -50,8 +48,10 @@ public:
 
 	void RenderText(std::string text, float xPos, float yPos, float scale, glm::vec3 color); // Function to render text
 
-private:
 	FT_Library ft;
+
+private:
+	
 
 };
 extern FontManager* fontManager;

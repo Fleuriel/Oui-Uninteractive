@@ -22,6 +22,8 @@ void Collider::Serialize(rapidjson::Value::ConstMemberIterator& itr) {
 }
 Collider* Collider::Clone() const{
 	Collider* newCollider = new Collider();
+	newCollider->contactTime = contactTime;
+	newCollider->contactNormal = contactNormal;
 	newCollider->boundingbox->min = boundingbox->min;
 	newCollider->boundingbox->max = boundingbox->max;
 	newCollider->boundingbox->center = boundingbox->center;
@@ -29,23 +31,31 @@ Collider* Collider::Clone() const{
 	newCollider->tx->position = tx->position;
 	newCollider->tx->rotation = tx->rotation;
 	newCollider->tx->scale = tx->scale;
+	newCollider->boundingbox->txPtr = newCollider->tx;
 
 	return newCollider;
 }
 Collider::AABB::AABB() {
-	
+	txPtr = nullptr;
 }
 Collider::Collider() {
 	boundingbox = new AABB();
 	boundingbox->center = Vec2(0, 0);
 	boundingbox->min = Vec2(0, 0);
 	boundingbox->max = Vec2(0, 0);
+	contactTime = 0;
+	contactNormal = Vec2(0, 0);
 
 	tx = new Transform();
+
+	boundingbox->txPtr = tx;
 }
 Collider::~Collider() {
 	delete tx;
 	delete boundingbox;
-	colliderSys->colliderMap.erase(GetOwner()->GetGameObjectID());
+	if (GetOwner() != nullptr) {
+		colliderSys->colliderMap.erase(GetOwner()->GetGameObjectID());
+	}
+	
 	
 }

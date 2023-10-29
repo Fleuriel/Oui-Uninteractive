@@ -105,6 +105,7 @@ public:
 	Vec2 direction;
 	//Ptr to transform component for each physics body
 	Transform* txPtr; 
+	float restitution;
 	// flag for engine to ignore objects that we won't move.
 	bool isStatic; 
 	float frictionForce;

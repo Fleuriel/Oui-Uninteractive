@@ -109,7 +109,13 @@ Vector2D operator/(const Vector2D& lhs, float rhs) {
 		return Vector2D(lhs.x / rhs, lhs.y / rhs);
 }
 
+Vector2D operator/(const Vector2D& lhs, const Vector2D& rhs) {
+	return Vector2D(lhs.x / rhs.x, lhs.y / rhs.y);
+}
 
+Vector2D operator*(const Vector2D& lhs, const Vector2D& rhs) {
+	return Vector2D(lhs.x * rhs.x, lhs.y * rhs.y);
+}
 /**************************************************************************
 * @brief Normalizes a vector, returns result to pResult
 * @param pResult - the vector to write to
