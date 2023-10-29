@@ -780,7 +780,7 @@ void OpenGLObject::Camera2D::Update(GLFWwindow* camWindow, int positionX, int po
 	};
 
 
-	std::cout << height << '\n';
+	//std::cout << height << '\n';
 
 	World_to_NDC_xform = CameraWindow_to_NDC_xform * view_xform;
 
