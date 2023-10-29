@@ -22,8 +22,7 @@
 #include <RandomUtilities.h>
 #include <glm/gtc/matrix_transform.hpp>
 #include "SceneManager.h"
-#include <Editor.h>	
-#include <Mapping.h>
+#include <Editor.h>
 #include <ObjectFactory.h>
 #include <Physics.h>
 #include <JsonSerializer.h>
@@ -99,7 +98,7 @@ AssetManager assetManager;
 *************************************************************************/
 void OpenGLApplication::OpenGLWindowInit() {
 	// Read window size from JSON
-	std::string filePath = "../window-data/window-data.JSON";
+	std::string filePath = "assets/window-data/window-data.JSON";
 	rapidjson::Document windowDoc;
 	// Initialize window dimensions from JSON
 	if (serializer.ReadJSONFile(filePath, windowDoc)) {
@@ -168,7 +167,7 @@ void OpenGLApplication::OpenGLWindowInit() {
 *************************************************************************/
 void OpenGLApplication::OpenGLWindowCleanup() {
 	// Save window size
-	std::string filePath = "../window-data/window-data.JSON";
+	std::string filePath = "assets/window-data/window-data.JSON";
 	rapidjson::Document windowDoc;
 	if (serializer.ReadJSONFile(filePath, windowDoc) && windowSize.first != 0 && windowSize.second != 0) {
 		windowDoc["windowX"] = windowSize.first;

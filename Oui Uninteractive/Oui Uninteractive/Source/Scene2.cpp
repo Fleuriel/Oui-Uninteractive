@@ -8,7 +8,7 @@ void Scene2::Load() {
 #ifdef _DEBUG 
 	std::cout << "\nLoading prefabs from JSON file..." << std::endl;
 #endif
-	objectFactory->LoadPrefab("../prefab/Prefab.JSON");
+	objectFactory->LoadPrefab("assets/prefab/Prefab.JSON");
 }
 void Scene2::Initialize() {
 
@@ -16,7 +16,7 @@ void Scene2::Initialize() {
 	std::cout << "\nDe-serializing objects from JSON file..." << std::endl;
 #endif
 	//PLAYER OBJECT
-	objectFactory->BuildObjectFromFile("../scenes/TestsceneReading2.JSON");
+	objectFactory->BuildObjectFromFile("assets/scenes/TestsceneReading2.JSON");
 #ifdef _DEBUG
 	std::cout << "De-serializing objects from JSON file... completed." << std::endl;
 #endif
@@ -48,7 +48,7 @@ void Scene2::Initialize() {
 #ifdef _DEBUG	
 	std::cout << "\nUpdating JSONEnemy2 during initialization..." << std::endl;
 #endif
-	objectFactory->SaveObjectsToFile("../scenes/TestsceneWriting.JSON");
+	objectFactory->SaveObjectsToFile("assets/scenes/TestsceneWriting.JSON");
 
 #ifdef _DEBUG	
 	std::cout << "Updating JSONEnemy2 during initialization... completed." << std::endl;
@@ -68,7 +68,7 @@ void Scene2::Draw() {
 }
 void Scene2::Free() {
 	// Save onjects to JSON
-	objectFactory->SaveObjectsToFile("../scenes/TestsceneWriting.JSON");
+	objectFactory->SaveObjectsToFile("assets/scenes/TestsceneWriting.JSON");
 	//free object memory
 	objectFactory->DestroyAllObjects();
 }

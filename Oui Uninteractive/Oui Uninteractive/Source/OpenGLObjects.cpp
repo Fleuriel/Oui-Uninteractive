@@ -73,18 +73,18 @@ void OpenGLObject::Initialize(){
 	// Create file name
 	VectorPairStrStr MODELSSHADER{
 		std::make_pair<std::string, std::string>
-		("../shaders/Oui_Uninteractive_models.vert", "../shaders/Oui_Uninteractive_models.frag")
+		("assets/shaders/Oui_Uninteractive_models.vert", "assets/shaders/Oui_Uninteractive_models.frag")
 	};
 
 	VectorPairStrStr FONTSHADER{
 		std::make_pair<std::string, std::string>
-		("../shaders/Oui_Uninteractive_font.vert", "../shaders/Oui_Uninteractive_font.frag")
+		("assets/shaders/Oui_Uninteractive_font.vert", "assets/shaders/Oui_Uninteractive_font.frag")
 	};
 
 
 	VectorPairStrStr CAMERASHADER{
 		std::make_pair<std::string, std::string>
-		("../shaders/Oui_Uninteractive_camera.vert", "../shaders/Oui_Uninteractive_camera.frag")
+		("assets/shaders/Oui_Uninteractive_camera.vert", "assets/shaders/Oui_Uninteractive_camera.frag")
 	};
 
 	// Initialize the Shader Program for Models

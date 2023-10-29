@@ -56,7 +56,7 @@ void AssetManager::ReloadAll() {
 
 bool AssetManager::LoadTextures() {
 
-    std::string directoryPath = "../texture"; // Change this to the directory of texture folder
+    std::string directoryPath = "assets/texture"; // Change this to the directory of texture folder
 
     if (fs::is_directory(directoryPath)) {
         for (const auto& entry : fs::directory_iterator(directoryPath)) {
@@ -150,7 +150,7 @@ bool AssetManager::LoadSounds() {
 bool AssetManager::LoadBGM() {
 
     // BGM file path
-    std::filesystem::path bgmPath{ "../sounds/bgm" };
+    std::filesystem::path bgmPath{ "assets/sounds/bgm" };
 
     if (fs::is_directory(bgmPath)) {
         for (const auto& entry : fs::directory_iterator(bgmPath)) {
@@ -172,7 +172,7 @@ bool AssetManager::LoadBGM() {
 bool AssetManager::LoadSFX() {
 
     // SFX file path
-    std::filesystem::path sfxPath{ "../sounds/sfx" };
+    std::filesystem::path sfxPath{ "assets/sounds/sfx" };
 
     if (fs::is_directory(sfxPath)) {
         for (const auto& entry : fs::directory_iterator(sfxPath)) {
@@ -248,7 +248,7 @@ bool AssetManager::ReloadSounds() {
 bool AssetManager::LoadFonts() {
 
     // File paths to the respetive fonts
-    std::filesystem::path fontPath{ "../fonts/" };
+    std::filesystem::path fontPath{ "assets/fonts/" };
 
     bool result{ true };
 

@@ -45,6 +45,7 @@ void UsingImGui::Init(GLFWwindow* glfwWindow, const char* glsl_vers) {
 	ImGui::CreateContext();
 	ImPlot::CreateContext();
 	ImGuiIO& io = ImGui::GetIO();
+	io.IniFilename = "assets/imgui.ini";
 
 	// Config Flags
 	io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
