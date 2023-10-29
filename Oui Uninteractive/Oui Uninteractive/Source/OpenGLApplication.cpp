@@ -330,16 +330,16 @@ void OpenGLApplication::OpenGLUpdate() {
 
 	// Moves Object left. can add positionY to change as well.
 	if (keyStates[GLFW_KEY_KP_4] == 2) {
-		positionX--;
+		positionX-= 5;
 	}
 	if (keyStates[GLFW_KEY_KP_6] == 2) {
-		positionX++;
+		positionX+= 5;
 	}
 	if (keyStates[GLFW_KEY_KP_8] == 2) {
-		positionY++;
+		positionY+= 5;
 	}
 	if (keyStates[GLFW_KEY_KP_2] == 2) {
-		positionY--;
+		positionY-= 5;
 	}
 
 
@@ -426,15 +426,22 @@ void OpenGLApplication::OpenGLUpdate() {
 		std::cout << "Total Scroll Y Offset:" << mouse_scroll_total_Y_offset << "\n";
 #endif
 	}
+	//keyStates[GLFW_KEY_RIGHT_SHIFT] == 1
+	if (keyStates[GLFW_KEY_O] == 1)
+	{
+		OpenGLObject newObject1(3);
+#ifdef _DEBUG
+		std::cout << "Tag ID: " << newObject1.TagID << '\n';
+#endif
+		std::cout << "HEHAEOAHDS\n";
+		newObject1.InitObjects();
 
+		// Emplace back into the container.
+		objects.emplace_back(newObject1);
+
+	}
 
 	UpdateStatesForNextFrame();
-
-
-	//std::cout << GetFPS() << '\n';
-
-	// Draws every second...
-
 
 
 
@@ -477,6 +484,9 @@ void OpenGLApplication::OpenGLUpdate() {
 
 		if (obj.TagID == 9)
 			obj.Update(positionX, positionY, 0, 0, 0, 0);
+
+		if (obj.TagID == 3)
+			obj.Update(4000, 4000, 1000, 1000, 0, 0);
 
 	}
 
@@ -594,10 +604,12 @@ void OpenGLApplication::OpenGLSetBackgroundColor(float r, float g, float b, floa
 	glClearColor(r, g, b, a);
 }
 
+#ifdef _DEBUG
 void OpenGLApplication::OpenGLTestChangingStates()
 {
 
 }
+#endif
 
 
 

@@ -394,6 +394,8 @@ void OpenGLObject::Draw(int shaderNumber) const{
 		case 2:
 			tex = assetManager.GetTexture("mosquito");
 			break;
+		case 77:
+			tex = assetManager.GetTexture("camera");
 		default:
 			break;
 		}
