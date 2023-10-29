@@ -209,9 +209,26 @@ float CalculateEntryTimeAndNormal(Collider::AABB* Rect1, Collider::AABB* Rect2, 
 	
 	
 }
-bool MovingPointRectCollision(Vec2 origin, Vec2 direction, Collider::AABB target, Vec2& contactPoint, Vec2& contactNormal, float& contactTime) {
+bool MovingPointRectCollision(Vec2 origin, Vec2 direction, Collider::AABB target, Vec2& contactPoint, Vec2& contactNormal, float& contactTime, float& depth) {
 	float tNearX = (target.min.x - origin.x) / direction.x;
 	float tFarX = (target.max.x - origin.x) / direction.x;
+	
+	if (direction.x == 0) {
+		if ((target.min.x - origin.x) >= 0) {
+			tNearX = std::numeric_limits<float>::infinity();
+
+		}
+		if ((target.min.x - origin.x) < 0) {
+			tNearX = -std::numeric_limits<float>::infinity();
+		}
+
+		if ((target.max.x - origin.x) > 0) {
+			tFarX = std::numeric_limits<float>::infinity();
+		}
+		if ((target.max.x - origin.x) <= 0) {
+			tFarX = -std::numeric_limits<float>::infinity();
+		}
+	}
 
 	if (tNearX > tFarX) {
 		std::swap(tNearX, tFarX);
@@ -220,6 +237,24 @@ bool MovingPointRectCollision(Vec2 origin, Vec2 direction, Collider::AABB target
 	float tNearY = (target.min.y - origin.y) / direction.y;
 	float tFarY = (target.max.y - origin.y) / direction.y;
 
+	if (direction.y == 0) {
+		if ((target.min.y - origin.y) >= 0) {
+			tNearY = std::numeric_limits<float>::infinity();
+			
+		}
+		if ((target.min.y - origin.y) < 0) {
+			tNearY = -std::numeric_limits<float>::infinity();
+		}
+
+		if ((target.max.y - origin.y) > 0) {
+			tFarY = std::numeric_limits<float>::infinity();
+		}
+		if ((target.max.y - origin.y) <= 0) {
+			tFarY = -std::numeric_limits<float>::infinity();
+		}
+	}
+
+	
 	if (tNearY > tFarY) {
 		std::swap(tNearY, tFarY);
 	}
@@ -234,23 +269,27 @@ bool MovingPointRectCollision(Vec2 origin, Vec2 direction, Collider::AABB target
 
 	if (tNearX > tNearY) {
 		if (direction.x > 0) {
+			depth = target.min.x - origin.x;
 			contactNormal = Vec2(-1, 0);
 		}
 		else {
+			depth = origin.x - target.max.x;
 			contactNormal = Vec2(1, 0);
 		}
 	}
 	else if (tNearY > tNearX) {
 		if (direction.y > 0) {
+			depth = origin.y - target.max.y;
 			contactNormal = Vec2(0, -1);
 		}
 		else {
+			depth = target.min.y - origin.y;
 			contactNormal = Vec2(0, 1);
 		}
 	}
 	return true;
 }
-bool CollisionMovingRectRect(Collider::AABB A, Collider::AABB B, Vec2 AVel, Vec2 BVel, float& contactTime, Vec2& normal, Vec2& contactPoint, float dt) {
+bool CollisionMovingRectRect(Collider::AABB A, Collider::AABB B, Vec2 AVel, Vec2 BVel, float& contactTime, Vec2& normal, Vec2& contactPoint, float dt, float& depth) {
 		
 	if (AVel.x == 0 && AVel.y == 0) {
 		return false;
@@ -259,10 +298,12 @@ bool CollisionMovingRectRect(Collider::AABB A, Collider::AABB B, Vec2 AVel, Vec2
 	expanded_target.boundingbox->center = B.center;
 	expanded_target.boundingbox->max = Vec2(B.max.x + A.txPtr->scale / 2, B.max.y + A.txPtr->scale / 2);
 	expanded_target.boundingbox->min = Vec2(B.min.x - A.txPtr->scale / 2, B.min.y - A.txPtr->scale / 2);
-	
+	float test = 0.f;
 
-	if (MovingPointRectCollision(A.center, AVel * dt, *(expanded_target.boundingbox), contactPoint, normal, contactTime)) {
+	if (MovingPointRectCollision(A.center, AVel * dt, *(expanded_target.boundingbox), contactPoint, normal, contactTime, test)) {
+		
 		if (contactTime <= 1.0f) {
+			depth = test;
 			return true;
 		}
 	}

@@ -77,34 +77,29 @@ void Physics::Update(float dt) {
 			}*/
 			//Velocity
 			Vec2 originalVelocity = body->velocity;
+			Collider* collider = GET_COMPONENT(body->GetOwner(), Collider, ComponentType::COLLIDER);
+			//body->velocity = body->velocity + body->acceleration * GetDT() * collider->contactTime;//* sysManager->fixedDeltaTime;
+			Vec2 previousVelocity = body->velocity;
 
 			body->velocity = body->velocity + body->acceleration * GetDT();//* sysManager->fixedDeltaTime;
-			
-
-			CapVelocity(originalVelocity, body->velocity);
-			Collider* collider = GET_COMPONENT(body->GetOwner(), Collider, ComponentType::COLLIDER);
-			//Position	
-			body->txPtr->previousPosition = body->txPtr->position;
 			//if (collider != nullptr) {
-			//	if (collider->contactNormal.x == 1 && collider->contactNormal.y == 1) {
-			//		body->txPtr->position.x = body->txPtr->position.x + body->velocity.x * GetDT();//* sysManager->fixedDeltaTime;
-			//		body->txPtr->position.y = body->txPtr->position.y + body->velocity.y * GetDT();
-			//	}
-			//	else if (collider->contactNormal.x != 0) {
-			//		body->txPtr->position.x = body->txPtr->position.x + body->velocity.x * GetDT() * collider->contactTime;//* sysManager->fixedDeltaTime;
-			//		body->txPtr->position.y = body->txPtr->position.y + body->velocity.y * GetDT();
+			//	if (collider->contactNormal.x != 0) {
+			//		body->velocity.x = previousVelocity.x + body->acceleration.x * GetDT() * collider->contactTime;//* sysManager->fixedDeltaTime;
+			//		body->velocity.y = previousVelocity.y + body->acceleration.y * GetDT();
 			//	}
 
 			//	else if (collider->contactNormal.y != 0) {
-			//		body->txPtr->position.x = body->txPtr->position.x + body->velocity.x * GetDT() ;//* sysManager->fixedDeltaTime;
-			//		body->txPtr->position.y = body->txPtr->position.y + body->velocity.y * GetDT() * collider->contactTime;
+			//		body->velocity.x = previousVelocity.x + body->acceleration.x * GetDT();//* sysManager->fixedDeltaTime;
+			//		body->velocity.y = previousVelocity.y + body->acceleration.y * GetDT() * collider->contactTime;;
 			//	}
 			//}
-			//else {
-				body->txPtr->position = body->txPtr->position + body->velocity * GetDT();//* sysManager->fixedDeltaTime;
-			//}
-			
 
+			//CapVelocity(originalVelocity, body->velocity);
+			
+			//Position	
+			body->txPtr->previousPosition = body->txPtr->position;
+			body->txPtr->position = body->txPtr->position + body->velocity * GetDT();//* sysManager->fixedDeltaTime;
+			
 			//Rotation
 			body->txPtr->rotation = body->txPtr->rotation + body->currentRotationSpeed * dt;
 			if (body->txPtr->rotation >= 360.0f || body->txPtr->rotation <= -360.0f)
@@ -273,18 +268,6 @@ Vec2 Physics::AngleToVec(float angle) {
 	return dir;
 }
 void Physics::CapVelocity(Vec2 originalVelocity, Vec2& bodyVelocity) {
-	if (originalVelocity.x > 0) {
-		if (bodyVelocity.x < 0) {
-			bodyVelocity.x = 0;
-		}
-	}
-	else if (originalVelocity.x < 0) {
-		if (bodyVelocity.x > 0) {
-			bodyVelocity.x = 0;
-		}
-	}
-
-	
 	if (bodyVelocity.x > maxVelocity) {
 		bodyVelocity.x = maxVelocity;
 	}
@@ -297,8 +280,17 @@ void Physics::CapVelocity(Vec2 originalVelocity, Vec2& bodyVelocity) {
 	if (bodyVelocity.y < -maxVelocity) {
 		bodyVelocity.y = -maxVelocity;
 	}
-	
 
+	if (originalVelocity.x > 0 ) {
+		if (bodyVelocity.x < 0) {
+			bodyVelocity.x = 0;
+		}
+	}
+	else if (originalVelocity.x < 0) {
+		if (bodyVelocity.x > 0) {
+			bodyVelocity.x = 0;
+		}
+	}
 
 	if (originalVelocity.y < 0) {
 		if (bodyVelocity.y > 0) {
@@ -331,16 +323,21 @@ void Physics::CollisionResponse(CollisionMessage* msg) {
 	PhysicsBody* pBody2 = physicsSys->bodyList[msg->GetSecondCollider()->GetOwner()->GetGameObjectID()];
 
 	if (pBody2->isStatic) {
-		pBody1->txPtr->position += msg->GetContactNormal() * msg->GetDepth();
+		//pBody1->txPtr->position += msg->GetContactNormal() * msg->GetDepth();
+		pBody1->velocity += msg->GetContactNormal() * msg->GetDepth();
 	}
 	else if (pBody1->isStatic) {
-		pBody2->txPtr->position += (-msg->GetContactNormal()) * msg->GetDepth();
+		//pBody2->txPtr->position += (-msg->GetContactNormal()) * msg->GetDepth();
+		pBody2->velocity += msg->GetContactNormal() * msg->GetDepth();
+	
 	}
 	else {
+		pBody1->velocity += msg->GetContactNormal() * msg->GetDepth() / 2;
+		pBody2->velocity -= msg->GetContactNormal() * msg->GetDepth() / 2;
 		//pBody1->forceManager.ApplyToForce(normal, depth / 2, 0.05f, FORCE_INDEX::EXTERNAL);
-		pBody1->txPtr->position += msg->GetContactNormal() * (msg->GetDepth() / 2);
+		//pBody1->txPtr->position += msg->GetContactNormal() * (msg->GetDepth() / 2);
 		//pBody2->forceManager.ApplyToForce(-normal, depth / 2, 0.05f, FORCE_INDEX::EXTERNAL);
-		pBody2->txPtr->position += (-msg->GetContactNormal() * (msg->GetDepth() / 2));
+		//pBody2->txPtr->position += (-msg->GetContactNormal() * (msg->GetDepth() / 2));
 	}
 
 
