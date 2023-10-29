@@ -16,6 +16,7 @@
 *************************************************************************/
 Transform::Transform() {
 	position = Vec2(-250,50);
+	previousPosition = position;
 	rotation = 0;
 	scale = 100.f;
 	shape = new OpenGLObject(1);

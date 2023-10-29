@@ -1,5 +1,5 @@
 {
-    "ObjectCount": 6,
+    "ObjectCount": 2,
     "Objects": [
         {
             "Name": "JSONPlayer",
@@ -10,13 +10,13 @@
                     "VelocityY": 0.0,
                     "RotationSpeed": 200.0,
                     "Speed": 50.0,
-                    "Mass": 100.0,
+                    "Mass": 10.0,
                     "IsStatic": false,
                     "FrictionForce": 20.0
                 },
                 "Transform": {
-                    "PositionX": -250.0,
-                    "PositionY": 200.0,
+                    "PositionX": 444.0798034667969,
+                    "PositionY": -25.468036651611328,
                     "Rotation": 0.0,
                     "Scale": 200.0
                 },
