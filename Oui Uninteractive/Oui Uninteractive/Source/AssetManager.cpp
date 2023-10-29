@@ -250,6 +250,8 @@ bool AssetManager::LoadFonts() {
     // File paths to the respetive fonts
     std::filesystem::path fontPath{ "../fonts/" };
 
+    bool result{ true };
+
     if (fs::is_directory(fontPath)) {
         for (const auto& entry : fs::directory_iterator(fontPath)) {
             // std::cout << "font file path : " << entry.path().string() << std::endl;
@@ -260,12 +262,11 @@ bool AssetManager::LoadFonts() {
             }
             fonts.push_back(newFace);
         }
-        return true;
     }
     else {
         // Print error
         std::cout << "The specified font path is not a directory." << std::endl;
-        return false;
+        result = false;
     }
 
     // Set font sizes
@@ -314,6 +315,7 @@ bool AssetManager::LoadFonts() {
     // Free FreeType
     FT_Done_FreeType(fontManager->ft);
 
+    return result;
 }
 
 FT_Face AssetManager::GetFont(int index) {
