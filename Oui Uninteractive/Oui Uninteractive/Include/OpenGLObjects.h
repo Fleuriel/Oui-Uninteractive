@@ -260,9 +260,7 @@ public:
 	//Shaders
 	static std::vector<OpenGLShader>shdrpgms;
 
-#ifdef _DEBUG
-	static GLuint ShaderProgram;
-#endif
+
 private:
 
 };
