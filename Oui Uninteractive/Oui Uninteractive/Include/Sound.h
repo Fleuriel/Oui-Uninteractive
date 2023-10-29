@@ -21,7 +21,6 @@ public:
 	SoundManager();
 	void Initialize();
 	virtual void Update(float dt);
-	void LoadSounds();
 	void PlayBGMSounds();
 	void PlaySFXSounds();
 	void TogglePlayChannel(FMOD::Channel* selectedChannel);

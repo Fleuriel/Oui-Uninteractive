@@ -52,14 +52,14 @@ public:
 	int GetTexture(std::string);
 	FMOD::Sound* GetBGM(int);
 	FMOD::Sound* GetSFX(int);
-
+	FT_Face GetFont(int);
 
 private:
 	//Containers
-	std::map<std::string, int> textures;
+	std::map<std::string, int> textures{};
 	std::vector<FMOD::Sound*> bgmSounds{};
 	std::vector<FMOD::Sound*> sfxSounds{};
-	std::vector<FT_Face> fontVec{};
+	std::vector<FT_Face> fonts{};
 };
 
 extern AssetManager assetManager;
