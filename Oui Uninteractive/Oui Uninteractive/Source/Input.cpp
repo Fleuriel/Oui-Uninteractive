@@ -108,7 +108,7 @@ void KeyCallBack(GLFWwindow* window3, int key, int scancode, int action, int mod
 
 	#ifdef _DEBUG
 		// Print debug information based on the key action (press, hold, release)
-		std::cout << ((action == GLFW_PRESS) ? "Pressed Keys\n" : (action == GLFW_REPEAT) ? "Held Keys\n" : "Released Keys\n");
+		//std::cout << ((action == GLFW_PRESS) ? "Pressed Keys\n" : (action == GLFW_REPEAT) ? "Held Keys\n" : "Released Keys\n");
 	#endif
 
 		if (key == GLFW_KEY_CAPS_LOCK) capsLockReleased = (action == GLFW_RELEASE) ? true : false;

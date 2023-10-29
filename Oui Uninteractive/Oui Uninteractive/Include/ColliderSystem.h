@@ -24,6 +24,7 @@ public:
 	std::map<size_t, Collider*> colliderMap;
 	std::vector <std::set<int>> collisionData;
 	void BroadPhase();
+
 	bitArray rowsBitArray[WIDTH];
 	bitArray colBitArray[HEIGHT];
 	int cellWidth;

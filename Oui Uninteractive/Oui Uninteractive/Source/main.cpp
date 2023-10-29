@@ -38,15 +38,16 @@ int main(){
 	//CreateWindow();
 	sysManager = new SystemManager();
 
+	// Have Errors for now. need fix
+	sysManager->AddSystem(new SoundManager());
+	sysManager->AddSystem(new FontManager());
 	sysManager->AddSystem(new OpenGLApplication());
 	sysManager->AddSystem(new LogicSystem());
 	sysManager->AddSystem(new ObjectFactory());
-	sysManager->AddSystem(new Physics());
 	sysManager->AddSystem(new ColliderSystem());
-	
+	sysManager->AddSystem(new Physics());
+
 	sysManager->AddSystem(new TransformSystem());
-	sysManager->AddSystem(new SoundManager());
-	sysManager->AddSystem(new FontManager());
 	sysManager->AddSystem(new SceneManager());
 	sysManager->AddSystem(new UIManager());
 	sysManager->Initialize();
@@ -141,7 +142,7 @@ void TimeUpdate(){
 	currentTime = std::chrono::high_resolution_clock::now();
 	deltaTime = std::chrono::duration_cast<std::chrono::duration<double>>(currentTime - previousTime);
 	previousTime = currentTime;
-	sysManager->accumulatedTime += deltaTime.count();
+	/*sysManager->accumulatedTime += deltaTime.count();
 	while (sysManager->accumulatedTime >= sysManager->fixedDeltaTime) {
 		sysManager->accumulatedTime -= sysManager->fixedDeltaTime;
 		sysManager->currentNumberOfSteps++;
@@ -150,5 +151,5 @@ void TimeUpdate(){
 	if (sysManager->currentNumberOfSteps > sysManager->maxNoOfStep) {
 		sysManager->currentNumberOfSteps = sysManager->maxNoOfStep;
 	}
-	
+	*/
 }

@@ -217,7 +217,7 @@ void OpenGLApplication::OpenGLInit() {
 	}
 	// Initializing Editor
 	myEditor.Init();
-
+	
 	
 
 	//SCRIPTS
@@ -229,11 +229,13 @@ void OpenGLApplication::OpenGLInit() {
 	TestScript2* testScript2 = new TestScript2();
 	testScript2->Initialize();
 
-	FSM* enemyFSMScript = new FSM();
+	EnemyFSM* enemyFSMScript = new EnemyFSM();
 	enemyFSMScript->Initialize();
 
 	
+	assetManager.LoadAll();
 	background.Init();
+	
 }
 
 
@@ -401,7 +403,7 @@ void OpenGLApplication::OpenGLUpdate() {
 	}
 
 	if (mouseButtonStates[GLFW_MOUSE_BUTTON_LEFT]) {
-
+		assetManager.ReloadAll();
 #ifdef _DEBUG
 		std::cout << "LCLICK\n";
 #endif

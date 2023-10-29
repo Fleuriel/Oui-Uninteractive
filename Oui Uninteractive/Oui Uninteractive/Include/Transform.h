@@ -47,6 +47,7 @@ public:
 	virtual Transform* Clone() const;
 	//Member Variables
 	Vec2 position;
+	Vec2 previousPosition;
 	float scale;
 	float rotation;
 	OpenGLObject* shape;

@@ -332,8 +332,9 @@ void ObjectFactory::SaveObjectsToFile(const std::string& filePath) {
 			else if (componentName == "LogicComponent") {
 				// Save ScriptID in an array
 				rapidjson::Value scriptIDArray(rapidjson::kArrayType);
-				unsigned int scriptIDToAdd{ *GET_COMPONENT(it.second, LogicComponent, ComponentType::LOGICCOMPONENT)->scriptIndexSet.begin() };
-				scriptIDArray.PushBack(scriptIDToAdd, allocator);
+				for (auto& scriptID : GET_COMPONENT(it.second, LogicComponent, ComponentType::LOGICCOMPONENT)->scriptIndexSet) {
+					scriptIDArray.PushBack(scriptID, allocator);
+				}
 
 				// Add array to individual component
 				individualComponent.AddMember("ScriptID", scriptIDArray, allocator);

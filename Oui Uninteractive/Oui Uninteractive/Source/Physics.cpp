@@ -11,6 +11,7 @@
  *************************************************************************/
 
 #include "Physics.h"
+#include "ColliderSystem.h"
 
 
 //initialize global pointer
@@ -50,7 +51,7 @@ void Physics::Initialize() {
 void Physics::Update(float dt) {
 	// Start time profiling for physics system
 	TimeProfiler profiler(Editor::timeRecorder.physicsTime);
-	for (int step = 0; step < sysManager->currentNumberOfSteps; step++) {
+	//for (int step = 0; step < sysManager->currentNumberOfSteps; step++) {
 	
 	std::map<size_t, PhysicsBody*>::iterator it = bodyList.begin();
 	std::map<size_t, PhysicsBody*>::iterator it2 = bodyList.begin();
@@ -76,30 +77,26 @@ void Physics::Update(float dt) {
 			}*/
 			//Velocity
 			Vec2 originalVelocity = body->velocity;
+			Collider* collider = GET_COMPONENT(body->GetOwner(), Collider, ComponentType::COLLIDER);
+			//body->velocity = body->velocity + body->acceleration * GetDT() * collider->contactTime;//* sysManager->fixedDeltaTime;
+			Vec2 previousVelocity = body->velocity;
 
-			body->velocity = body->velocity + body->acceleration * sysManager->fixedDeltaTime;
+			body->velocity = body->velocity + body->acceleration * GetDT();//* sysManager->fixedDeltaTime;
 			
-
 			CapVelocity(originalVelocity, body->velocity);
-		
+			
 			//Position	
-			body->txPtr->position = body->txPtr->position + body->velocity * sysManager->fixedDeltaTime;
-
-			//Just spins all other objects
-			/*if (body->GetOwner()->GetGameObjectID() != 0) {
-				body->currentRotationSpeed = body->rotationSpeed;
-			}*/
+			body->txPtr->previousPosition = body->txPtr->position;
+			body->txPtr->position = body->txPtr->position + body->velocity * GetDT();//* sysManager->fixedDeltaTime;
+			
 			//Rotation
 			body->txPtr->rotation = body->txPtr->rotation + body->currentRotationSpeed * dt;
 			if (body->txPtr->rotation >= 360.0f || body->txPtr->rotation <= -360.0f)
 				body->txPtr->rotation = 0.0f;
 
 		
-			//apply calculations to object
-		//	body->txPtr->shape->Update(body->txPtr->position.x, body->txPtr->position.y, body->txPtr->scale, body->txPtr->scale, body->txPtr->rotation, true);
-
 		}
-	}
+	//}
 	
 
 }
@@ -257,18 +254,6 @@ Vec2 Physics::AngleToVec(float angle) {
 	return dir;
 }
 void Physics::CapVelocity(Vec2 originalVelocity, Vec2& bodyVelocity) {
-	if (originalVelocity.x > 0) {
-		if (bodyVelocity.x < 0) {
-			bodyVelocity.x = 0;
-		}
-	}
-	else if (originalVelocity.x < 0) {
-		if (bodyVelocity.x > 0) {
-			bodyVelocity.x = 0;
-		}
-	}
-
-	
 	if (bodyVelocity.x > maxVelocity) {
 		bodyVelocity.x = maxVelocity;
 	}
@@ -281,8 +266,17 @@ void Physics::CapVelocity(Vec2 originalVelocity, Vec2& bodyVelocity) {
 	if (bodyVelocity.y < -maxVelocity) {
 		bodyVelocity.y = -maxVelocity;
 	}
-	
 
+	if (originalVelocity.x > 0 ) {
+		if (bodyVelocity.x < 0) {
+			bodyVelocity.x = 0;
+		}
+	}
+	else if (originalVelocity.x < 0) {
+		if (bodyVelocity.x > 0) {
+			bodyVelocity.x = 0;
+		}
+	}
 
 	if (originalVelocity.y < 0) {
 		if (bodyVelocity.y > 0) {
@@ -315,16 +309,21 @@ void Physics::CollisionResponse(CollisionMessage* msg) {
 	PhysicsBody* pBody2 = physicsSys->bodyList[msg->GetSecondCollider()->GetOwner()->GetGameObjectID()];
 
 	if (pBody2->isStatic) {
-		pBody1->txPtr->position += msg->GetContactNormal() * msg->GetDepth();
+		//pBody1->txPtr->position += msg->GetContactNormal() * msg->GetDepth();
+		pBody1->velocity += msg->GetContactNormal() * msg->GetDepth();// * msg->GetFirstCollider()->contactTime;
 	}
 	else if (pBody1->isStatic) {
-		pBody2->txPtr->position += (-msg->GetContactNormal()) * msg->GetDepth();
+		//pBody2->txPtr->position += (-msg->GetContactNormal()) * msg->GetDepth();
+		pBody2->velocity += msg->GetContactNormal() * msg->GetDepth();//* msg->GetFirstCollider()->contactTime;
+	
 	}
 	else {
+		pBody1->velocity += msg->GetContactNormal() * msg->GetDepth() / 2;// *msg->GetFirstCollider()->contactTime;
+		pBody2->velocity -= msg->GetContactNormal() * msg->GetDepth() / 2; // *msg->GetFirstCollider()->contactTime;
 		//pBody1->forceManager.ApplyToForce(normal, depth / 2, 0.05f, FORCE_INDEX::EXTERNAL);
-		pBody1->txPtr->position += msg->GetContactNormal() * (msg->GetDepth() / 2);
+		//pBody1->txPtr->position += msg->GetContactNormal() * (msg->GetDepth() / 2);
 		//pBody2->forceManager.ApplyToForce(-normal, depth / 2, 0.05f, FORCE_INDEX::EXTERNAL);
-		pBody2->txPtr->position += (-msg->GetContactNormal() * (msg->GetDepth() / 2));
+		//pBody2->txPtr->position += (-msg->GetContactNormal() * (msg->GetDepth() / 2));
 	}
 
 

@@ -5,7 +5,10 @@
  * @par Course:	CSD 2401
  * @par Software Engineering Project 3
  * @date 26-10-2023
- * @brief
+ * @brief This file contains the declaration of the enemy states.
+ *		  The enemy states consists of:
+ *		  - Roam
+ *		  - Attack
  *************************************************************************/
 #ifndef ENEMYSTATES_H
 #define ENEMYSTATES_H
@@ -17,24 +20,14 @@ private:
 	
 
 public:
-	//EnemyRoam() {}
-	//~EnemyRoam() {}
-
-	//void Enter();
 	void Update(size_t gameObjectID) override;
-	//void Exit();
 };
 
 class EnemyAttack : public IState {
 private:
 
 public:
-	//EnemyAttack() {}
-	//~EnemyAttack() {}
-
-	//void Enter();
 	void Update(size_t gameObjectID) override;
-	//void Exit();
 };
 
 #endif

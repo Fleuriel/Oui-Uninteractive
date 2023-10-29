@@ -11,6 +11,7 @@
 #include <iostream>
 #include "Sound.h"
 #include "Editor.h"
+#include "AssetManager.h"
 
  // Initialize global pointer
 SoundManager* soundManager = nullptr;
@@ -44,7 +45,6 @@ void SoundManager::Initialize() {
 	if (result != FMOD_OK) {
 		std::cout << "FMOD error: " << FMOD_ErrorString(result);
 	}
-	LoadSounds();
 }
 
 
@@ -69,32 +69,6 @@ void SoundManager::Update(float dt) {
 
 
 /**************************************************************************
-* @brief This function loads the sounds from the file directories
-* @return No return
-*************************************************************************/
-void SoundManager::LoadSounds() {
-	// Search BGM directory and load sounds
-	for (const auto& i : std::filesystem::directory_iterator(bgmPath)) {
-		FMOD::Sound* newSound;
-		result = system->createSound(i.path().string().c_str(), FMOD_DEFAULT, 0, &newSound);
-		if (result != FMOD_OK) {
-			std::cout << "FMOD error: " << FMOD_ErrorString(result);
-		}
-		bgmSounds.push_back(newSound);
-	}
-	// Search SFX directory and load sounds
-	for (const auto& i : std::filesystem::directory_iterator(sfxPath)) {
-		FMOD::Sound* newSound;
-		result = system->createSound(i.path().string().c_str(), FMOD_DEFAULT, 0, &newSound);
-		if (result != FMOD_OK) {
-			std::cout << "FMOD error: " << FMOD_ErrorString(result);
-		}
-		sfxSounds.push_back(newSound);
-	}
-}
-
-
-/**************************************************************************
 * @brief This function plays the BGM sounds
 * @return No return
 *************************************************************************/
@@ -103,7 +77,7 @@ void SoundManager::PlayBGMSounds() {
 	bool playStatus1, playStatus2;
 	bgmChannels[0]->isPlaying(&playStatus1);
 	if (bgmChannels[0] == nullptr || !playStatus1) {
-		result = system->playSound(bgmSounds[0], nullptr, true, &bgmChannels[0]);
+		result = system->playSound(assetManager.GetBGM(0), nullptr, true, &bgmChannels[0]);
 		if (result != FMOD_OK) {
 			std::cout << "FMOD error: " << FMOD_ErrorString(result);
 			return;
@@ -112,7 +86,7 @@ void SoundManager::PlayBGMSounds() {
 	
 	bgmChannels[1]->isPlaying(&playStatus2);
 	if (bgmChannels[1] == nullptr || !playStatus2) {
-		result = system->playSound(bgmSounds[1], nullptr, true, &bgmChannels[1]);
+		result = system->playSound(assetManager.GetBGM(1), nullptr, true, &bgmChannels[1]);
 		if (result != FMOD_OK) {
 			std::cout << "FMOD error: " << FMOD_ErrorString(result);
 			return;
@@ -129,7 +103,7 @@ void SoundManager::PlayBGMSounds() {
 void SoundManager::PlaySFXSounds() {
 	// Play SFX once clicked
 	sfxChannels[0]->stop();
-	result = system->playSound(sfxSounds[sfxChoice], nullptr, false, &sfxChannels[0]);
+	result = system->playSound(assetManager.GetSFX(sfxChoice), nullptr, false, &sfxChannels[0]);
 	if (result != FMOD_OK) {
 		std::cout << "FMOD error: " << FMOD_ErrorString(result);
 	}
@@ -155,14 +129,9 @@ void SoundManager::TogglePlayChannel(FMOD::Channel* selectedChannel) {
 *************************************************************************/
 SoundManager::~SoundManager() {
 	if (system) {
-		// Free individual BGM sounds
-		for (const auto& i : bgmSounds) {
-			i->release();
-		}
-		// Free individual SFX sounds
-		for (const auto& i : sfxSounds) {
-			i->release();
-		}
+		
+		assetManager.FreeSounds();
+
 		system->close();
 		system->release();
 		system = nullptr;
