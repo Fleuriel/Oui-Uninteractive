@@ -444,9 +444,7 @@ void OpenGLObject::Cleanup(){
 	// Cleanup the VAO, VBO and Shader Program
 	glDeleteVertexArrays(1, &VAO);
 	glDeleteBuffers(1, &VBO);
-#ifdef _DEBUG
-	glDeleteProgram(ShaderProgram);
-#endif
+
 }
 
 /**************************************************************************

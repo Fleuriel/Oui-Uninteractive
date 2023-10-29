@@ -594,43 +594,11 @@ void OpenGLApplication::OpenGLSetBackgroundColor(float r, float g, float b, floa
 	glClearColor(r, g, b, a);
 }
 
+void OpenGLApplication::OpenGLTestChangingStates()
+{
 
-
-#ifdef _DEBUG
-/**************************************************************************
-* @brief			Test Changing of States in the Game Engine..
-* @warning			OpenGLObjects init lines must be drawn for it to work.
-*
-* @param none
-* @return void
-*************************************************************************/
-void OpenGLApplication::OpenGLTestChangingStates() {
-	// Set Background Color
-	OpenGLSetBackgroundColor(0.1f, 0.1f, 0.1f, 1.0f);
-	// Clear Color buffer Bit
-	glClear(GL_COLOR_BUFFER_BIT);
-
-	// 
-	glUseProgram(Objects.ShaderProgram);
-	glBindVertexArray(Objects.VAO);
-	glDrawArrays(GL_TRIANGLES, 0, 3);
-
-
-	if (keyStates[GLFW_KEY_D]) {
-		std::cout << "Changing of Game States back to Original" << '\n';
-		std::cout << "Test Over \n";
-		CurrentGameState = STATE_GRAPHICS_TEST;
-	}
-
-
-
-	if (IsTimeElapsed(1))
-	{
-		Draw();
-	}
 }
 
-#endif
 
 
 /**************************************************************************
