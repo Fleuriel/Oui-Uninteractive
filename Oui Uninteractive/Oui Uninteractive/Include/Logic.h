@@ -7,7 +7,8 @@
 enum LOGIC_ENUM {
 	TEST_SCRIPT1 = 0,
 	PLAYER_MOVEMENT,
-	ENEMY_FSM
+	ENEMY_FSM,
+	PLAYER_ATTACK
 };
 class LogicSystem : public ISystem {
 public:

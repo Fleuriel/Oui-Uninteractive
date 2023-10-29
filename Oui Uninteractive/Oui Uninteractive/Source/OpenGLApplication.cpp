@@ -36,6 +36,7 @@
 #include <Background.h>
 #include "TestScript.h"
 #include "EnemyFSM.h"
+#include "PlayerShooting.h"
 #include <Animation.h>
 #include "ColliderSystem.h"
 #include "AssetManager.h"
@@ -231,6 +232,9 @@ void OpenGLApplication::OpenGLInit() {
 
 	EnemyFSM* enemyFSMScript = new EnemyFSM();
 	enemyFSMScript->Initialize();
+	
+	PlayerShooting* playerShootingScript = new PlayerShooting();
+	playerShootingScript->Initialize();
 
 	
 	assetManager.LoadAll();

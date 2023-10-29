@@ -21,7 +21,7 @@
                     "Scale": 200.0
                 },
                 "LogicComponent": {
-                    "ScriptID":[1]
+                    "ScriptID":[1, 3]
                 },
                 "Collider": {
                     "ColliderSize": 205.0,

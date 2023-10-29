@@ -31,7 +31,9 @@ PhysicsBody::PhysicsBody() {
 * @brief Destructor for PhysicsBody component
 *************************************************************************/
 PhysicsBody::~PhysicsBody() {
-	physicsSys->bodyList.erase(GetOwner()->GetGameObjectID());
+	if (GetOwner() != nullptr) {
+		physicsSys->bodyList.erase(GetOwner()->GetGameObjectID());
+	}
 	for (LinearForce* force : forceManager.forceVec) {
 		delete force;
 	}
