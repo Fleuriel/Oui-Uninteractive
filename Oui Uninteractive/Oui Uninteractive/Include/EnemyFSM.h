@@ -7,8 +7,8 @@
  * @date 27-10-2023
  * @brief
  *************************************************************************/
-#ifndef ENEMY_FSM_H
-#define ENEMY_FSM_H
+#ifndef ENEMYFSM_H
+#define ENEMYFSM_H
 
 #include <map>
 #include <string>

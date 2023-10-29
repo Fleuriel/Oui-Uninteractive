@@ -32,15 +32,15 @@
 unsigned int OpenGLObject::mdl_ref = 0; // Define and initialize mdl_ref
 unsigned int OpenGLObject::shd_ref = 0; // Define and initialize shd_ref
 
+OpenGLObject OpenGLObject::cameraTranslator(9); 
+OpenGLObject::Camera2D OpenGLObject::cameraObject;
+
 
 // Vector for shdrpgms
 std::vector<OpenGLShader> OpenGLObject::shdrpgms;
 
 // Vector for models
 std::vector<OpenGLObject::OpenGLModel> OpenGLObject::models;
-#ifdef _DEBUG
-GLuint OpenGLObject::ShaderProgram{};
-#endif
 
 // VAO and VBO initializiation
 GLuint OpenGLObject::VAO = 0;
@@ -50,8 +50,7 @@ GLuint OpenGLObject::RBO = 0;
 GLuint OpenGLObject::FrameTexture = 0;
 
 // Global Variable to set it, and then use it eventually.
-int firstTexture, secondTexture, thirdTexture;
-
+int firstTexture, secondTexture, thirdTexture, camTex;
 
 GLuint texture_id; // the texture id we'll need later to create a texture 
 
@@ -81,12 +80,22 @@ void OpenGLObject::Initialize(){
 		("../shaders/Oui_Uninteractive_font.vert", "../shaders/Oui_Uninteractive_font.frag")
 	};
 
+
+	VectorPairStrStr CAMERASHADER{
+		std::make_pair<std::string, std::string>
+		("../shaders/Oui_Uninteractive_camera.vert", "../shaders/Oui_Uninteractive_camera.frag")
+	};
+
 	// Initialize the Shader Program for Models
 	init_shdrpgms_cont(MODELSSHADER);
 
 	// Initialize the Shader Program for Fonts
 	init_shdrpgms_cont(FONTSHADER);
 
+	// Initialize the Shader Program for Fonts
+	init_shdrpgms_cont(CAMERASHADER);
+
+	// Fonts
 	// Initialize the Projection matrix for the fonts to render into the screen
 	glm::mat4 projection = glm::ortho(0.0f, static_cast<float>(windowSize.first), 0.0f, static_cast<float>(windowSize.second));
 	// Use the shader
@@ -105,14 +114,20 @@ void OpenGLObject::Initialize(){
 	glBindVertexArray(0);
 
 
-
-
 	firstTexture = assetManager.GetTexture("flower");
 	secondTexture = assetManager.GetTexture("bag");
 	thirdTexture = assetManager.GetTexture("mosquito");
+	camTex = assetManager.GetTexture("camera");
 
 	// Emplace model to the model vector
 	models.emplace_back(OpenGLObject::Box_Model(color));
+
+
+	cameraTranslator.InitObjects();
+
+	OpenGLObject::cameraObject.Init(windowNew, &cameraTranslator);
+	
+
 
 
 	const GLint WIDTH = windowSize.first;
@@ -156,114 +171,6 @@ void OpenGLObject::Initialize(){
 	
 
 
-
-#ifdef _DEBUG // This is to Make sure that the graphics Pipeline WORKS as intended
-			  // AND HAS TO BE UNCOMMENTED TO CHANGE STATES.!
-			  // Draws a Box with color.
-//	const char* vertexShaderSource =
-//	R"(#version 450 core
-//		layout(location = 0) in vec3 aPos;
-//		layout(location = 1) in vec3 aColor;
-//		
-//		out vec3 vertexColor;
-//		
-//		uniform mat4 transform;
-//
-//		void main()
-//		{
-//			gl_Position = transform * vec4(aPos, 1.0);
-//			vertexColor = aColor;
-//		}
-//
-//
-//)";
-//
-//	const char* fragmentShaderSource =
-//		R"(#version 450 core
-//			out vec4 FragColor;
-//			in vec3 vertexColor;			
-//
-//
-//			void main()
-//			{
-//			    FragColor = vec4(vertexColor, 1.0f);
-//			}
-// )";
-	//texture = OpenGLObject::Setup_TextureObject("../textures/pepethefrog.png");
-	//
-	//
-	//
-	//
-	//float vertices[] = {
-	//	 0.5f,  0.5f, 0.0f,		0.4f, 0.3f, 0.9f, // top right
-	//	 0.5f, -0.5f, 0.0f,		0.7f, 0.2f, 0.9f, // bottom right
-	//	-0.5f, -0.5f, 0.0f,		0.2f, 0.6f, 0.15f, // bottom left
-	//	-0.5f,  0.5f, 0.0f,		1.0f, 0.4f, 0.15f // top left 
-	//};
-	//unsigned int indices[] = {  // note that we start from 0!
-	//	0, 1, 3,   // first triangle
-	//	1, 2, 3    // second triangle
-	//};
-	//
-	//// Create EBO for indices (Two Triangles for one rectangle)
-	//unsigned int EBO;
-	//glGenBuffers(1, &EBO);
-	//
-	//// Create Vertex Shader to input and compile the vertexShader
-	//GLuint vertexShader = glCreateShader(GL_VERTEX_SHADER);
-	//glShaderSource(vertexShader, 1, &vertexShaderSource, NULL);
-	//glCompileShader(vertexShader);
-	//
-	//
-	//// Create Fragment Shader to input and compile the fragmentShader
-	//GLuint fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
-	//glShaderSource(fragmentShader, 1, &fragmentShaderSource, NULL);
-	//glCompileShader(fragmentShader);
-	//
-	//
-	//// Attach ShaderProgram to CreateProgram.
-	//ShaderProgram = glCreateProgram();
-	//
-	////Attach Shader Program with both vertex and fragment shaders
-	//glAttachShader(ShaderProgram, vertexShader);
-	//glAttachShader(ShaderProgram, fragmentShader);
-	////Link the shaders
-	//glLinkProgram(ShaderProgram);
-	//
-	//
-	//// generate the vertex arrays to VAO. 
-	//glGenVertexArrays(1, &VAO);
-	//// generate the buffer of VBO.
-	//glGenBuffers(1, &VBO);
-	//
-	//// bind the vertex array to VAO.
-	//glBindVertexArray(VAO);
-	//
-	////bind buffer to VAO.
-	//glBindBuffer(GL_ARRAY_BUFFER, VBO);
-	//
-	//glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-	//
-	//glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-	//glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
-	//
-	//
-	//
-	//glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)0);
-	//glEnableVertexAttribArray(0);
-	//
-	//glVertexAttribPointer(1, 3, GL_FLOAT, GL_TRUE, 6 * sizeof(float), (void*)(3 * sizeof(float)));
-	//glEnableVertexAttribArray(1);
-	//
-	//
-	//glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-	//glBindVertexArray(0);
-	//
-	//
-	//
-	//glDeleteShader(vertexShader);
-	//glDeleteShader(fragmentShader);
-#endif
 }
 
 
@@ -356,7 +263,6 @@ void OpenGLObject::Update(float newX, float newY, float scaleX, float scaleY, fl
 	// Compute the angular displacement in radians
 
 	
-	
 	//Scale the model based on float variable.
  	scaleModel = glm::vec2(scaleX, scaleY);
 	//scaleModel = glm::vec2(100, 100);
@@ -368,13 +274,9 @@ void OpenGLObject::Update(float newX, float newY, float scaleX, float scaleY, fl
 	//position = glm::vec2(0, 0);
 
 	// Boolean from the user to set if rotation is yes or no.
-
-
 	if (enRot == true)	{
 		angleDisplacment = newAngle;
 	}
-
-
 
 	// in case user does not set, angleDisplacement will be in the range of
 	// 0 ~ 360 || -360 ~ 0
@@ -414,49 +316,106 @@ void OpenGLObject::Update(float newX, float newY, float scaleX, float scaleY, fl
 
 
 	// Compute the model-to-world-to-NDC transformation matrix
-	model_To_NDC_xform = ScaleToWorldToNDC * glm::transpose(Translation) * glm::transpose(Rotation)  * glm::transpose(Scale);
+	model_To_NDC_xform = cameraObject.World_to_NDC_xform * glm::transpose(Translation) * glm::transpose(Rotation)  * glm::transpose(Scale);
 
 }
 
+void OpenGLObject::Update(int posX, int posY) {
+	//std::cout << "Object Update\n";
+	// Compute the angular displacement in radians
 
+
+	//Scale the model based on float variable.
+	scaleModel = glm::vec2(0, 0);
+
+	position = glm::vec2(posX, posY);
+
+
+
+	// in case user does not set, angleDisplacement will be in the range of
+	// 0 ~ 360 || -360 ~ 0
+	if (angleDisplacment >= 360.0f || angleDisplacment <= -360.0f)
+		angleDisplacment = 0.0f;
+
+
+
+	// Compute the scale matrix
+	glm::mat3 Scale = glm::mat3(
+		scaleModel.x, 0.0f, 0.0f,
+		0.0f, scaleModel.y, 0.0f,
+		0.0f, 0.0f, 1.0f
+	);
+
+	// Compute the rotation matrix
+	glm::mat3 Rotation = glm::mat3(
+		cosf(glm::radians(angleDisplacment)), -sinf(glm::radians(angleDisplacment)), 0.0f,
+		sinf(glm::radians(angleDisplacment)), cosf(glm::radians(angleDisplacment)), 0.0f,
+		0.0f, 0.0f, 1.0f
+	);
+
+	// Compute the translation matrix
+	glm::mat3 Translation = glm::mat3(
+		1.0f, 0.0f, position.x,
+		0.0f, 1.0f, position.y,
+		0.0f, 0.0f, 1.0f
+	);
+
+
+	// Compute the scaling matrix to map from world coordinates to NDC coordinates
+	glm::mat3 ScaleToWorldToNDC = glm::mat3(
+		1.0f / (windowSize.first / 2), 0.0f, 0.0f,
+		0.0f, 1.0f / (windowSize.second / 2), 0.0f,
+		0.0f, 0.0f, 1.0f
+	);
+
+
+	// Compute the model-to-world-to-NDC transformation matrix
+	model_To_NDC_xform = cameraObject.World_to_NDC_xform * glm::transpose(Translation) * glm::transpose(Rotation) * glm::transpose(Scale);
+
+}
 /**************************************************************************
 * @brief		Draws the OpenGLObject.
 *				
 * @param  none
 * @return void
 *************************************************************************/
-void OpenGLObject::Draw() const{
+void OpenGLObject::Draw(int shaderNumber) const{
 	//texture object is to use texture image unit 6
 	int tex{};
-	switch (TagID)	{
-	case 0:
-		tex = assetManager.GetTexture("flower");
-		break;
-	case 1:
-		tex = assetManager.GetTexture("bag");
-		break;
-	case 2:
-		tex = assetManager.GetTexture("mosquito");
-		break;
-	default:
-		break;
+	if (shaderNumber == static_cast<int>(SHADER_ORDER::MODEL))
+	{
+		switch (TagID) {
+		case 0:
+			tex = assetManager.GetTexture("flower");
+			break;
+		case 1:
+			tex = assetManager.GetTexture("bag");
+			break;
+		case 2:
+			tex = assetManager.GetTexture("mosquito");
+			break;
+		default:
+			break;
+		}
+
+		// Bind Texture to 6.
+		glBindTextureUnit(6, tex);
 	}
 
-	// Bind Texture to 6.
-	glBindTextureUnit(6, tex);
-
 	// Install the shader program
-	shdrpgms[shd_ref].Use(); 
+	shdrpgms[shaderNumber].Use();
 
 	// In Shader Program [uTex2d] is the texture uniform position.
 	// set uniform uTex2d to #6.
-	shdrpgms[shd_ref].SetUniform("uTex2d", 6);
+	if(shaderNumber == static_cast<int>(SHADER_ORDER::MODEL))
+		shdrpgms[static_cast<int>(SHADER_ORDER::MODEL)].SetUniform("uTex2d", 6);
+	
 	// Part 2: Bind object's VAO handle
 	glBindVertexArray(models[mdl_ref].vaoid); // Bind object's VAO handle
 
 	// Part 3: Copy object's 3x3 model-to-NDC matrix to vertex shader
 
-	GLint uniform_var_loc1 = glGetUniformLocation(shdrpgms[shd_ref].GetHandle(), "uModel_to_NDC");
+	GLint uniform_var_loc1 = glGetUniformLocation(shdrpgms[shaderNumber].GetHandle(), "uModel_to_NDC");
 	if (uniform_var_loc1 >= 0) {
 		glUniformMatrix3fv(uniform_var_loc1, 1, GL_FALSE, glm::value_ptr(OpenGLObject::model_To_NDC_xform));
 	}
@@ -473,7 +432,7 @@ void OpenGLObject::Draw() const{
 
 	// Part 5: Clean up
 	glBindVertexArray(0); // Unbind the VAO
-	shdrpgms[shd_ref].UnUse(); // Uninstall the shader program
+	shdrpgms[shaderNumber].UnUse(); // Uninstall the shader program
 }
 
 /**************************************************************************
@@ -586,7 +545,7 @@ void OpenGLObject::InitObjects(float userInput_x, float userInput_y, float userI
 	//	   x0 y0 z0						 x0 x1 x2
 	//	   x1 y1 z1						 y0 y1 y2
 	//	   x2 y2 z2						 z0 z1 z2
-	model_To_NDC_xform = ScaleToWorldToNDC* Translate * Rotation * Scale;
+	model_To_NDC_xform = cameraObject.World_to_NDC_xform * Translate * Rotation * Scale;
 }
 
 
@@ -737,3 +696,83 @@ void OpenGLObject::OpenGLModel::VAO_Object::setTexture(float s, float t){
 /*=======================================================================================================================*/
 /*=======================================================================================================================*/
 /*=======================================================================================================================*/
+
+
+void OpenGLObject::Camera2D::Init(GLFWwindow* camWindow, OpenGLObject* ptr) {
+
+	Cam = ptr;
+
+
+	GLsizei fb_width, fb_height;
+	glfwGetFramebufferSize(camWindow, &fb_width, &fb_height);
+	aspectRatio = static_cast<GLfloat>(fb_width) / fb_height;
+
+
+	// compute camera's up and right vectors ...
+	up = glm::vec2{ -sinf(glm::radians(Cam->orientation.x)), cosf(glm::radians(Cam->orientation.x)) };
+
+	// compute camera's right vectors (U)
+	right = glm::vec2{ cosf(glm::radians(Cam->orientation.x)), sinf(glm::radians(Cam->orientation.x)) };
+
+	// view transform 
+	view_xform = glm::mat3
+	{
+		1, 0, 0,
+		0, 1, 0,
+		-Cam->position.x, -Cam->position.y, 1
+	};
+	// Camera to NDC
+	CameraWindow_to_NDC_xform = glm::mat3
+	{
+		2.0f / fb_width, 0.0f          , 0.0f,  
+		0.0f         , 2.0f / fb_height , 0.0f,
+		0.0f         , 0.0f          , 1.0f };
+
+	// World to NDC transform
+	World_to_NDC_xform = CameraWindow_to_NDC_xform * view_xform;
+
+}
+
+void OpenGLObject::Camera2D::Update(GLFWwindow* camWindow, int positionX, int positionY) {
+
+	using glm::radians;
+
+	// ZOOM in
+	if (mouseScrollState == 1)
+	{
+		height /= 1.5f;
+	}
+
+	// ZOOM OUT
+	if (mouseScrollState == -1)
+	{
+		height *= 1.5f;
+	}
+
+
+	// Compute camera window's aspect ratio
+	GLsizei fb_width, fb_height;
+	glfwGetFramebufferSize(windowNew, &fb_width, &fb_height);
+	aspectRatio = static_cast<GLfloat>(fb_width) / fb_height;
+
+	view_xform =
+		glm::mat3
+	{
+		right.x, up.x, 0,
+		right.y, up.y, 0,
+		glm::dot(-right, Cam->position), glm::dot(-up, Cam->position), 1
+	};
+
+	CameraWindow_to_NDC_xform = glm::mat3{
+		2.f / (height * aspectRatio), 0, 0,
+		0, 2.f / height , 0,
+		0, 0, 1
+	};
+
+
+	std::cout << height << '\n';
+
+	World_to_NDC_xform = CameraWindow_to_NDC_xform * view_xform;
+
+	Cam->Update(positionX, positionY);
+}
