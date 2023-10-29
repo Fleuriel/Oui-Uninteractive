@@ -26,7 +26,6 @@
 
 
 std::vector<OpenGLShader> Background::shdrpgms; //singleton
-
 unsigned int Background::mdl_ref = 0; // Define and initialize mdl_ref
 unsigned int Background::shd_ref = 0; // Define and initialize shd_ref
 
@@ -111,7 +110,7 @@ void Background::Init() {
 	};
 
 	// Compute a transformation matrix for scaling from model space to normalized device coordinates (NDC)
-	model_To_NDC_xform = ScaleToWorldToNDC * Translate * Rotation * Scale;
+	model_To_NDC_xform = OpenGLObject::cameraObject.World_to_NDC_xform * Translate * Rotation * Scale;
 
 #ifdef _DEBUG
 	// Print debug information indicating the end of initialization
@@ -173,9 +172,8 @@ void Background::Update(float newX, float newY, float scaleX, float scaleY) {
 		0, 0, 1
 	};
 
-
 	// Compute the model-to-world-to-NDC transformation matrix
-	model_To_NDC_xform = ScaleToWorldToNDC * glm::transpose(Translation) * glm::transpose(Rotation)  * glm::transpose(Scale);
+	model_To_NDC_xform = OpenGLObject::cameraObject.World_to_NDC_xform * glm::transpose(Translation) * glm::transpose(Rotation)  * glm::transpose(Scale);
 
 }
 

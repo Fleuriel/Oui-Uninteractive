@@ -26,10 +26,12 @@
 #include <Vector2D.h>
 #include <ISystem.h>
 #include <AssetManager.h>
+#include <GLFW/glfw3.h>
 
 enum class SHADER_ORDER {
 	MODEL = 0,
 	FONT = 1,
+	CAMERA = 2,
 
 };
 
@@ -135,6 +137,43 @@ public:
 		};
 	};
 
+
+
+
+	// Camera Structure
+	struct Camera2D {
+
+		OpenGLObject *Cam;
+
+		glm::vec2 up, right;
+		glm::mat3 view_xform, CameraWindow_to_NDC_xform, World_to_NDC_xform;
+		
+		GLint height{ 1000 }; // Current Height of the depth i.e. Zoom
+		GLint min_Height{ 500 }, max_height{ 2000 };
+
+
+		GLfloat aspectRatio;
+
+		// 1 or -1.
+		GLint heightChangeBoolean{ 1 };
+
+		GLint heightChangeValue{ 5 };
+
+		GLfloat linearSpeed{ 2.0f };
+
+
+
+		void Init(GLFWwindow*, OpenGLObject* ptr);
+
+		void Update(GLFWwindow*, int, int);
+
+	};
+
+	static OpenGLObject cameraTranslator;
+	static Camera2D cameraObject;
+
+
+
 /**************************************************************************
 	* @brief		Initialize OpenGLObject that does Model Creation for future
 	*				Drawing Capabilities and Shader Emplacement.
@@ -156,7 +195,11 @@ public:
 	* @param bool   Boolean for Rotation Enable or Disable
 	* @return void
 	*************************************************************************/
-	virtual void Update(float newX, float newY, float scaleX, float scaleY, float newAngle, bool enRot);
+	void Update(float newX, float newY, float scaleX, float scaleY, float newAngle, bool enRot);
+
+	void Update(int, int);
+
+
 	/**************************************************************************
 	* @brief		Draws a Debug Collision Box (AABB)
 	*
@@ -172,7 +215,7 @@ public:
 	* @param  none
 	* @return void
 	*************************************************************************/
-	void Draw() const;
+	void Draw(int shaderNumber = 0) const;
 
 	/**************************************************************************
 	* @brief		Initialize the Shaders for Graphics Pipeline for Object to
@@ -229,5 +272,6 @@ private:
 // Vector for shdrpgms
 extern std::vector<OpenGLShader> shdrpgms;
 
+//extern OpenGLObject::Camera2D cameraObject;
 
 #endif // OPENGL_OBJECTS_H

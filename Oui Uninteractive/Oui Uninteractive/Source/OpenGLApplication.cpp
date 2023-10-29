@@ -71,7 +71,7 @@ ParticleSystem particleSystem;
 
 bool OpenGLObject::renderBoundingBox = false;
 OpenGLObject::OpenGLModel mdl;
-float positionX = 0;
+float positionX = 0, positionY = 0;
 float angle;
 
 bool togglePolygonMode = false;
@@ -207,6 +207,7 @@ void OpenGLApplication::OpenGLInit() {
 
 	// Creates an Object to Initialize it.
 	Objects.Initialize();
+	objects.emplace_back(OpenGLObject::cameraTranslator);
 	assetManager.Init();
 
 	// Initializing ImGui
@@ -321,12 +322,26 @@ void OpenGLApplication::OpenGLUpdate() {
 		objects.emplace_back(newObject1);
 	}
 
+
+	OpenGLObject::cameraObject.Update(windowNew, positionX, positionY);
+
+
 	// Moves Object left. can add positionY to change as well.
-	if (keyStates[GLFW_KEY_A] == 2) {
+	if (keyStates[GLFW_KEY_KP_4] == 2) {
 		positionX--;
 	}
+	if (keyStates[GLFW_KEY_KP_6] == 2) {
+		positionX++;
+	}
+	if (keyStates[GLFW_KEY_KP_8] == 2) {
+		positionY++;
+	}
+	if (keyStates[GLFW_KEY_KP_2] == 2) {
+		positionY--;
+	}
 
-	
+
+//	std::cout << positionX << positionY << '\n';
 
 	// This allows changing of game states.
 #ifdef _DEBUG
@@ -441,6 +456,8 @@ void OpenGLApplication::OpenGLUpdate() {
 	OpenGLSetBackgroundColor(0.5f, 0.5f, 0.5f, 1.0f);
 	// Clear the Color Buffer Bit to enable 'reloading'
 	
+
+	background.Update(0,0,windowSize.first,windowSize.second);
 	// Draws the Background
 	background.Draw();
 
@@ -455,6 +472,9 @@ void OpenGLApplication::OpenGLUpdate() {
 		if (obj.TagID == 2) {
 			obj.Update(300, 400, 50, 50, angle, false);
 		}
+
+		if (obj.TagID == 9)
+			obj.Update(positionX, positionY, 0, 0, 0, 0);
 
 	}
 
@@ -541,8 +561,6 @@ void OpenGLApplication::Draw() {
 
 #ifdef _DEBUG
 	//	std::cout << "Object Storage Size:" << OpenGLObject::Object_Storage.size() << '\n';
-
-
 #endif
 	// Iterate through all the objects and draw the textures assosiated with Tag ID
 	for (auto const& obj : objects) {
@@ -561,7 +579,7 @@ void OpenGLApplication::Draw() {
 		// setting the text as the window title
 		glfwSetWindowTitle(windowNew, sStr.str().c_str());
 	}
-
+	OpenGLObject::cameraObject.Cam->Draw(static_cast<int>(SHADER_ORDER::CAMERA));
 }
 
 /**************************************************************************
@@ -574,8 +592,9 @@ void OpenGLApplication::OpenGLSetBackgroundColor(float r, float g, float b, floa
 	glClearColor(r, g, b, a);
 }
 
-#ifdef _DEBUG
 
+
+#ifdef _DEBUG
 /**************************************************************************
 * @brief			Test Changing of States in the Game Engine..
 * @warning			OpenGLObjects init lines must be drawn for it to work.
