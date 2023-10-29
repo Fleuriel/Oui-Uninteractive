@@ -208,7 +208,7 @@ void OpenGLApplication::OpenGLInit() {
 	// Creates an Object to Initialize it.
 	Objects.Initialize();
 	objects.emplace_back(OpenGLObject::cameraTranslator);
-	assetManager.Init();
+
 
 	// Initializing ImGui
 	if (!imguiInitialized) {
