@@ -66,10 +66,6 @@ void ColliderSystem::BroadPhase() {
 
 void ColliderSystem::Update(float dt) {
 	TimeProfiler profiler(Editor::timeRecorder.colliderTime);
-	
-	
-
-
 	for (std::map<size_t, Collider*>::iterator it = colliderMap.begin(); it != colliderMap.end(); it++) {
 		Collider* collider = it->second;
 		collider->contactTime = 1.0f;

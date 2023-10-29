@@ -37,7 +37,10 @@ int main(){
 
 	//CreateWindow();
 	sysManager = new SystemManager();
+
 	// Have Errors for now. need fix
+	sysManager->AddSystem(new SoundManager());
+	sysManager->AddSystem(new FontManager());
 	sysManager->AddSystem(new OpenGLApplication());
 	sysManager->AddSystem(new LogicSystem());
 	sysManager->AddSystem(new ObjectFactory());
@@ -45,10 +48,8 @@ int main(){
 	sysManager->AddSystem(new Physics());
 
 	sysManager->AddSystem(new TransformSystem());
-	sysManager->AddSystem(new SoundManager());
-	sysManager->AddSystem(new FontManager());
 	sysManager->AddSystem(new SceneManager());
-	//sysManager->AddSystem(new UIManager());
+	sysManager->AddSystem(new UIManager());
 	sysManager->Initialize();
 	// Set callback for window close button (top right button).
 	glfwSetWindowCloseCallback(windowNew, WindowCloseCallback);

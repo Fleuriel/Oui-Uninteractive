@@ -21,31 +21,23 @@ public:
 	SoundManager();
 	void Initialize();
 	virtual void Update(float dt);
-	void LoadSounds();
 	void PlayBGMSounds();
 	void PlaySFXSounds();
 	void TogglePlayChannel(FMOD::Channel* selectedChannel);
-
 	 ~SoundManager();
 
-	// File paths to the respective sounds
-	std::filesystem::path bgmPath{"../sounds/bgm"};
-	std::filesystem::path sfxPath{"../sounds/sfx"};
-
 	FMOD_RESULT result{ FMOD_OK }; // To store FMOD function results
-
-	// Container for sounds
-	std::vector<FMOD::Sound*> bgmSounds{};
-	std::vector<FMOD::Sound*> sfxSounds{};
 
 	// Channels
 	std::vector<FMOD::Channel*> bgmChannels{3};
 	std::vector<FMOD::Channel*> sfxChannels{3};
 
 	int sfxChoice{0};
+	
+	FMOD::System* system{ nullptr };
 
 private:
-	FMOD::System* system{ nullptr };
+	
 };
 extern SoundManager* soundManager;
 

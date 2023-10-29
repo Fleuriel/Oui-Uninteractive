@@ -4,7 +4,6 @@
         {
             "Name": "JSONPlayer",
             "Type": "Player",
-            "State": "Alive",
             "Components": {
                 "PhysicsBody": {
                     "VelocityX": 0.0,
@@ -34,7 +33,6 @@
         {
             "Name": "JSONEnemy1",
             "Type": "Enemy",
-            "State": "EnemyRoam",
             "Components": {
                 "PhysicsBody": {
                     "VelocityX": 0.0,
@@ -52,7 +50,7 @@
                     "Scale": 130.0
                 },
                 "LogicComponent": {
-                    "ScriptID":[0]
+                    "ScriptID":[0, 2]
                 },
                 "Collider": {
                     "ColliderSize": 140.0,
@@ -63,7 +61,6 @@
         {
             "Name": "JSONEnemy2",
             "Type": "Enemy",
-            "State": "EnemyRoam",
             "Components": {
                 "PhysicsBody": {
                     "VelocityX": 0.0,
@@ -89,13 +86,25 @@
         {
             "Name": "Exit",
             "Type": "Button",
-            "State": "None",
             "Components": {
                 "Transform": {
                     "PositionX": 200.0,
                     "PositionY": 100.0,
                     "Rotation": 30.0,
                     "Scale": 220.0
+                },
+                "Collider": {
+                    "ColliderSize": 220.0,
+                    "ColliderRotation": 0.0
+                },
+                "PhysicsBody": {
+                    "VelocityX": 0.0,
+                    "VelocityY": 0.0,
+                    "RotationSpeed": 20.0,
+                    "Speed": 500.0,
+                    "Mass": 80.0,
+                    "IsStatic": true,
+                    "FrictionForce": 20.0
                 }
             }
         }

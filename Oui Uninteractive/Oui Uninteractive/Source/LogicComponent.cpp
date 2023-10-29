@@ -28,13 +28,14 @@ void LogicComponent::Serialize(rapidjson::Value::ConstMemberIterator& itr) {
 			case 1:
 				scriptIndexSet.insert(LOGIC_ENUM::PLAYER_MOVEMENT);
 				break;
+			case 2:
+				scriptIndexSet.insert(LOGIC_ENUM::ENEMY_FSM);
+				break;
 			default:
 				scriptIndexSet.insert(LOGIC_ENUM::TEST_SCRIPT1);
 			}
 		}
 	}
-	
-	
 }
 
 LogicComponent* LogicComponent::Clone() const {

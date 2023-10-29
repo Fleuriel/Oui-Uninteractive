@@ -6,4 +6,5 @@ public:
 	virtual void Update(size_t gameObjectID) {};
 
 	virtual void End() {};
+	virtual ~IScript() {};
 };

@@ -70,7 +70,6 @@ private:
 	std::string messageID;
 	//std::map<IObserver* , std::string> observerMap;
 	std::multimap<std::string, IObserver*> observerMap;
-	//std::vector<IObserver*> observersList;
 
 public:
 	IBroadcaster() {}

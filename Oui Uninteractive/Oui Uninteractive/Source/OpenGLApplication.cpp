@@ -35,8 +35,10 @@
 #include <iterator>
 #include <Background.h>
 #include "TestScript.h"
+#include "EnemyFSM.h"
 #include <Animation.h>
 #include "ColliderSystem.h"
+#include "AssetManager.h"
 
 #define STB_IMAGE_IMPLEMENTATION
 #include <stb_image.h>
@@ -81,6 +83,8 @@ extern int lastkeyedcommand;
 
 static bool glewInitialized = false;
 static bool imguiInitialized = false;
+
+AssetManager assetManager;
 
 
 
@@ -150,6 +154,8 @@ void OpenGLApplication::OpenGLWindowInit() {
 	glEnable(GL_CULL_FACE);
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+	
 }
 
 
@@ -201,7 +207,7 @@ void OpenGLApplication::OpenGLInit() {
 
 	// Creates an Object to Initialize it.
 	Objects.Initialize();
-
+	
 
 	// Initializing ImGui
 	if (!imguiInitialized) {
@@ -210,7 +216,7 @@ void OpenGLApplication::OpenGLInit() {
 	}
 	// Initializing Editor
 	myEditor.Init();
-
+	
 	
 
 	//SCRIPTS
@@ -222,8 +228,13 @@ void OpenGLApplication::OpenGLInit() {
 	TestScript2* testScript2 = new TestScript2();
 	testScript2->Initialize();
 
+	FSM* enemyFSMScript = new FSM();
+	enemyFSMScript->Initialize();
+
 	
+	assetManager.LoadAll();
 	background.Init();
+	
 }
 
 
@@ -253,10 +264,6 @@ void OpenGLApplication::OpenGLUpdate() {
 	// Bind the FBO for rendering
 	glBindFramebuffer(GL_FRAMEBUFFER, OpenGLObject::FBO);
 
-	// Clear the FBO and render.
-	glClear(GL_COLOR_BUFFER_BIT);
-
-
 
 	myImGui.CreateFrame();
 	myEditor.Update();
@@ -265,6 +272,10 @@ void OpenGLApplication::OpenGLUpdate() {
 	// Create x and y pos variables to collect data from the mouse position.
 	double xpos, ypos{};
 	glfwGetCursorPos(windowNew, &xpos, &ypos);
+
+
+		// Clear the FBO and render.
+	glClear(GL_COLOR_BUFFER_BIT);
 
 #ifdef _DEBUG
 	// For Debugging Purposes on angles.
@@ -365,17 +376,19 @@ void OpenGLApplication::OpenGLUpdate() {
 		Particle newparticle(0, 0, 100, 100, 0, 0);
 		particleSystem.particles.push_back(newparticle);
 
+
 		//newparticle.Init(0, 0, 100, 100, 0, 0);
 		//std::cout << "R : " << newparticle.object.color.r << "\nG : " << newparticle.object.color.g << "\nB : " << newparticle.object.color.b << "\n";
 	}
 
 	if (keyStates[GLFW_KEY_L] == 1) {
 		//Grid(3, 3);
-		Animation_Top_Left_To_Bottom_Right(20, 20, 3);
+		Animation_Top_Left_To_Bottom_Right(3, 3, 3);
 		//particleSystem.EmptyParticleSystem();
 	}
 
 	if (mouseButtonStates[GLFW_MOUSE_BUTTON_LEFT]) {
+		assetManager.ReloadAll();
 #ifdef _DEBUG
 		std::cout << "LCLICK\n";
 #endif
@@ -433,6 +446,9 @@ void OpenGLApplication::OpenGLUpdate() {
 	// Draws the Background
 	background.Draw();
 
+
+
+
 	for (OpenGLObject& obj : objects) {
 		if (obj.TagID == 1)
 			obj.Update(positionX, 300, 100, 100, angle, true);
@@ -471,14 +487,17 @@ void OpenGLApplication::OpenGLUpdate() {
 
 	UpdateAnimationTimers();
 	UpdateAnimation();
-
+	fontManager->RenderText("The quick brown fox jumps over the lazy dog.", 100, 200, 1.0f, glm::vec3(236.0f/255.0f, 1.0f, 220.0f/255.0f));
+	fontManager->RenderText("0123456789 .:,; '\" (!?) +-*/ = ", 100, 100, 1.0f, glm::vec3(0.4, 0.7, 0.9));
 	Draw();
 	particleSystem.Draw();
+
 	// Unbind the FBO to restore the default framebuffer
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
 	myImGui.Draw();
 
+	
 	
 	
 }
@@ -503,8 +522,10 @@ void OpenGLApplication::Initialize() {
 
 void OpenGLApplication::Update(float dt)
 {
+	dt;
 	OpenGLUpdate();
 }
+
 OpenGLApplication::~OpenGLApplication() {
 	OpenGLWindowCleanup();
 	OpenGLCleanup();

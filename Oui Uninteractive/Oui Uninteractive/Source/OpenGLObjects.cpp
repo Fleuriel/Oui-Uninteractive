@@ -23,7 +23,7 @@
 #include <sstream>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
-
+#include <AssetManager.h>
 #include <RandomUtilities.h>
 #include <GameStateManager.h>
 #include <stb_image.h>
@@ -71,18 +71,45 @@ void OpenGLObject::Initialize(){
 #endif // _DEBUG
 
 	// Create file name
-	VectorPairStrStr fileName{
+	VectorPairStrStr MODELSSHADER{
 		std::make_pair<std::string, std::string>
-		("../shaders/Oui_Uninteractive.vert", "../shaders/Oui_Uninteractive.frag")
+		("../shaders/Oui_Uninteractive_models.vert", "../shaders/Oui_Uninteractive_models.frag")
 	};
 
-	// Initialize the Shader Program
-	init_shdrpgms_cont(fileName);
+	VectorPairStrStr FONTSHADER{
+		std::make_pair<std::string, std::string>
+		("../shaders/Oui_Uninteractive_font.vert", "../shaders/Oui_Uninteractive_font.frag")
+	};
+
+	// Initialize the Shader Program for Models
+	init_shdrpgms_cont(MODELSSHADER);
+
+	// Initialize the Shader Program for Fonts
+	init_shdrpgms_cont(FONTSHADER);
+
+	// Initialize the Projection matrix for the fonts to render into the screen
+	glm::mat4 projection = glm::ortho(0.0f, static_cast<float>(windowSize.first), 0.0f, static_cast<float>(windowSize.second));
+	// Use the shader
+	shdrpgms[static_cast<int>(SHADER_ORDER::FONT)].Use();
+	glUniformMatrix4fv(glGetUniformLocation(shdrpgms[1].GetHandle(), "projection"), 1, GL_FALSE, glm::value_ptr(projection));
+
+	// For FONTS VAO and VBOs
+	glGenVertexArrays(1, &VAO);
+	glGenBuffers(1, &VBO);
+	glBindVertexArray(VAO);
+	glBindBuffer(GL_ARRAY_BUFFER, VBO);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 6 * 4, NULL, GL_DYNAMIC_DRAW);
+	glEnableVertexAttribArray(0);
+	glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 4 * sizeof(float), 0);
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+	glBindVertexArray(0);
 
 
-	firstTexture = OpenGLObject::Setup_TextureObject("../texture/flower.jpg");
-	secondTexture = OpenGLObject::Setup_TextureObject("../texture/bag.jpg");
-	thirdTexture = OpenGLObject::Setup_TextureObject("../texture/mosquito.jpg");
+
+
+	firstTexture = assetManager.GetTexture("flower");
+	secondTexture = assetManager.GetTexture("bag");
+	thirdTexture = assetManager.GetTexture("mosquito");
 
 	// Emplace model to the model vector
 	models.emplace_back(OpenGLObject::Box_Model(color));
@@ -126,7 +153,7 @@ void OpenGLObject::Initialize(){
 	glBindTexture(GL_TEXTURE_2D, 0);
 	glBindRenderbuffer(GL_RENDERBUFFER, 0);
 
-
+	
 
 
 
@@ -403,13 +430,13 @@ void OpenGLObject::Draw() const{
 	int tex{};
 	switch (TagID)	{
 	case 0:
-		tex = firstTexture;
+		tex = assetManager.GetTexture("flower");
 		break;
 	case 1:
-		tex = secondTexture;
+		tex = assetManager.GetTexture("bag");
 		break;
 	case 2:
-		tex = thirdTexture;
+		tex = assetManager.GetTexture("mosquito");
 		break;
 	default:
 		break;
@@ -428,6 +455,7 @@ void OpenGLObject::Draw() const{
 	glBindVertexArray(models[mdl_ref].vaoid); // Bind object's VAO handle
 
 	// Part 3: Copy object's 3x3 model-to-NDC matrix to vertex shader
+
 	GLint uniform_var_loc1 = glGetUniformLocation(shdrpgms[shd_ref].GetHandle(), "uModel_to_NDC");
 	if (uniform_var_loc1 >= 0) {
 		glUniformMatrix3fv(uniform_var_loc1, 1, GL_FALSE, glm::value_ptr(OpenGLObject::model_To_NDC_xform));
@@ -470,6 +498,7 @@ void OpenGLObject::Cleanup(){
 * @return void
 *************************************************************************/
 void OpenGLObject::init_shdrpgms_cont(VectorPairStrStr const& vpss) {
+
 	for (auto const& x : vpss) {
 		// Create Vector for pair of Enum and String
 		std::vector<std::pair<GLenum, std::string>> shdr_files;
@@ -630,42 +659,39 @@ void OpenGLObject::DrawCollisionBox(Vector2D min, Vector2D max){
 /*=======================================================================================================================*/
 /*=======================================================================================================================*/
 
-/**************************************************************************
-* @brief		Setup Texture Object into the parameters (int)
-*
-* @param  std::string filePath of the Texture.
-* @return int	Texture Handler
-*************************************************************************/
-int OpenGLObject::Setup_TextureObject(std::string filePath){
-	// Create a int variable for texture Object
-	GLuint textureObj_Handler;
+int OpenGLObject::Setup_TextureObject(std::string filePath) {
+    // Create a int variable for texture Object
+    GLuint textureObj_Handler;
 
-	// width, height and channels for the image
-	int width, height, channels;
-	// Load the image into *image
-	unsigned char* image = stbi_load(filePath.c_str(), &width, &height, &channels, STBI_rgb_alpha);
+    // width, height and channels for the image
+    int width, height, channels;
+    // Load the image into *image
+    unsigned char* image = stbi_load(filePath.c_str(), &width, &height, &channels, STBI_rgb_alpha);
 
-	// If no image is generated, failed.
-	if (!image)
-	{
-		std::cout << "Failed to load texture: " << filePath << std::endl;
-		return 0; // Return 0 to indicate failure
-	}
+    // If no image is generated, failed.
+    if (!image)
+    {
+        std::cout << "Failed to load texture: " << filePath << std::endl;
+        return 0; // Return 0 to indicate failure
+    }
 
-	// Create Texture into Texture2D, reference to TextureObjHandler
-	glCreateTextures(GL_TEXTURE_2D, 1, &textureObj_Handler);
-	// Store the data into Storage2D
-	glTextureStorage2D(textureObj_Handler, 1, GL_RGBA8, width, height);
-	// Store the sub data into the sub Image
-	glTextureSubImage2D(textureObj_Handler, 0, 0, 0, width, height, GL_RGBA, GL_UNSIGNED_BYTE, image);
+    // Create Texture into Texture2D, reference to TextureObjHandler
+    glCreateTextures(GL_TEXTURE_2D, 1, &textureObj_Handler);
 
-	// Free the image data after it's uploaded to OpenGL
-	stbi_image_free(image); 
 
-	// Return int value of a texture.
-	return textureObj_Handler;
+    // Store the data into Storage2D
+    glTextureStorage2D(textureObj_Handler, 1, GL_RGBA8, width, height);
+
+
+    // Store the sub data into the sub Image
+    glTextureSubImage2D(textureObj_Handler, 0, 0, 0, width, height, GL_RGBA, GL_UNSIGNED_BYTE, image);
+
+    // Free the image data after it's uploaded to OpenGL
+    stbi_image_free(image);
+
+    // Return int value of a texture.
+    return textureObj_Handler;
 }
-
 
 /**************************************************************************
 * @brief		set Texture Positon, Color

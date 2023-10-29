@@ -14,6 +14,8 @@
 // Defining static containers
 Editor::SystemTime Editor::timeRecorder;
 std::vector<float> Editor::fpsData;
+std::pair<int, int> Editor::gameWindowOrigin;
+std::pair<int, int> Editor::gameWindowSize;
 
 
 /**************************************************************************
@@ -171,7 +173,12 @@ void Editor::CreateMasterPanel() {
 *************************************************************************/
 void Editor::CreateRenderWindow() {
 	ImGui::Begin("Game Window");
+	
 	if (ImGui::BeginChild("GameWindow")) {
+		gameWindowOrigin.first = ImGui::GetWindowPos().x;
+		gameWindowOrigin.second = ImGui::GetWindowPos().y;
+		gameWindowSize.first = ImGui::GetWindowSize().x;
+		gameWindowSize.second = ImGui::GetWindowSize().y;
 		// Get draw size of window
 		ImVec2 wsize = ImGui::GetWindowSize();
 		// Invert V from openGL
@@ -354,7 +361,7 @@ void Editor::CreateObjectList() {
 
 				for (int i = 0; i < addCount; i++) {
 					std::string newName = "Object" + std::to_string(highestNumber + 1);
-					objectFactory->BuildObjectRunTime(newName, "", State::NONE);
+					objectFactory->BuildObjectRunTime(newName, "");
 					highestNumber++; // Increment the highest assigned ID
 				}
 				gameobjID = objectFactory->GetGameObjectIDMap().begin()->first;
@@ -422,7 +429,7 @@ void Editor::CreateObjectList() {
 			if (ImGui::Button("Spawn 2500 Objects")) {
 				for (size_t i{}; i < 2500; ++i) {
 					std::string goName{ "ObjectRunTime" + std::to_string(startIndex + i + 1) };
-					objectFactory->BuildObjectRunTime(goName, "Enemy", State::NONE);
+					objectFactory->BuildObjectRunTime(goName, "Enemy");
 					objectFactory->AddComponent(ComponentType::PHYSICS_BODY, objectFactory->GetGameObjectByID(startIndex+ i));
 					objectFactory->AddComponent(ComponentType::TRANSFORM, objectFactory->GetGameObjectByID(startIndex + i));
 					objectFactory->AddComponent(ComponentType::COLLIDER, objectFactory->GetGameObjectByID(startIndex + i));

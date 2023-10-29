@@ -83,52 +83,6 @@ std::string ObjectFactory::EnumToString(ComponentType ct) {
 }
 
 /**************************************************************************
-* @brief Convert a string to State enum
-* @param str - string to convert to State
-* @return State
-*************************************************************************/
-State ObjectFactory::StringToState(std::string str) {
-	if (str == "Alive") {
-		return State::ALIVE;
-	}
-	else if (str == "Dead") {
-		return State::DEAD;
-	}
-	else if (str == "EnemyRoam") {
-		return State::ENEMY_ROAM;
-	}
-	else if (str == "EnemyAttack") {
-		return State::ENEMY_ATTACK;
-	}
-	else {
-		return State::NONE;
-	}
-}
-
-/**************************************************************************
-* @brief Convert State enum to a string
-* @param ct - State to convert to string
-* @return std::string - name of state
-*************************************************************************/
-std::string ObjectFactory::StateToString(State s) {
-	if (s == State::ALIVE) {
-		return "Alive";
-	}
-	else if (s == State::DEAD) {
-		return "Dead";
-	}
-	else if (s == State::ENEMY_ROAM) {
-		return "EnemyRoam";
-	}
-	else if (s == State::ENEMY_ATTACK) {
-		return "EnemyAttack";
-	}
-	else {
-		return "None";
-	}
-}
-
-/**************************************************************************
 * @brief Object Factory Constructor
 *************************************************************************/
 ObjectFactory::ObjectFactory() : gameObjectCurrentID{} {
@@ -166,7 +120,8 @@ void ObjectFactory::BuildObjectFromFile(const std::string& filePath) {
 	if (serializer.ReadJSONFile(filePath, objDoc)) {
 		// For each object in Objects array (in JSON file)
 		for (auto& obj : objDoc["Objects"].GetArray()) {
-			GameObject* gameObject{ new GameObject(obj["Name"].GetString(), obj["Type"].GetString(), StringToState(obj["State"].GetString())) };
+			//GameObject* gameObject{ new GameObject(obj["Name"].GetString(), obj["Type"].GetString(), StringToState(obj["State"].GetString())) };
+			GameObject* gameObject{ new GameObject(obj["Name"].GetString(), obj["Type"].GetString()) };
 
 			// Get each component(s) in current object
 			const rapidjson::Value& components{ obj["Components"] };
@@ -210,8 +165,9 @@ void ObjectFactory::BuildObjectFromFile(const std::string& filePath) {
 * @param name - name of GameObject prefab
 * @return GameObject*
 *************************************************************************/
-GameObject* ObjectFactory::BuildObjectRunTime(const std::string& name, const std::string& type, const State& state) {
-	GameObject* objectRunTime{ new GameObject(name, type, state) };
+GameObject* ObjectFactory::BuildObjectRunTime(const std::string& name, const std::string& type) {
+	//GameObject* objectRunTime{ new GameObject(name, type, state) };
+	GameObject* objectRunTime{ new GameObject(name, type) };
 	AssignObjectID(objectRunTime);
 	return objectRunTime;
 }
@@ -222,13 +178,14 @@ GameObject* ObjectFactory::BuildObjectRunTime(const std::string& name, const std
 * @param type - type of GameObject (name of prefab)
 * @return GameObject*
 *************************************************************************/
-GameObject* ObjectFactory::BuildObjectFromPrefab(const std::string& name, const std::string& type, const State& state) {
+GameObject* ObjectFactory::BuildObjectFromPrefab(const std::string& name, const std::string& type) {
 	// Check if prefab type exists
 	if (prefabMap.find(type) == prefabMap.end()) {
 		return nullptr;
 	}
 	else {
-		GameObject* gameObject{ new GameObject(name, type, state) };
+		//GameObject* gameObject{ new GameObject(name, type, state) };
+		GameObject* gameObject{ new GameObject(name, type) };
 	
 		std::string componentName;
 
@@ -304,7 +261,7 @@ bool ObjectFactory::CloneObject(size_t gameObjectID) {
 		std::string objectStr;
 		objectStr += "Object" + std::to_string(gameObjectCurrentID + 1);
 
-		GameObject* clone = BuildObjectRunTime(objectStr, original->gameObjectType, original->gameObjectState);
+		GameObject* clone = BuildObjectRunTime(objectStr, original->gameObjectType);
 
 		for (int i = 0; i < original->componentList.size(); i++) {
 			clone->AddComponent(original->componentList.at(i)->Clone(), original->componentList[i]->componentType);
@@ -347,9 +304,6 @@ void ObjectFactory::SaveObjectsToFile(const std::string& filePath) {
 		jsonObj.AddMember("Name", stringVar, allocator);
 		stringVar.SetString(gameObject->gameObjectType.c_str(), allocator);
 		jsonObj.AddMember("Type", stringVar, allocator);
-		stringVar.SetString(StateToString(gameObject->gameObjectState).c_str(), allocator);
-		jsonObj.AddMember("State", stringVar, allocator);
-
 
 		// Components object
 		rapidjson::Value components(rapidjson::kObjectType);

@@ -10,15 +10,37 @@
 #ifndef UI_H
 #define UI_H
 
+#include "ObjectFactory.h"
 #include "ISystem.h"
+#include "Collision.h"
+#include "Editor.h"
+#include "Input.h"
+#include <array>
+#include <iostream>
+
+#define GET_COMPONENT(GameObject, Component, ComponentType) (GameObject->GetComponentType<Component>(ComponentType))
 
 class UIManager : public ISystem {
 public:
 	UIManager();
 	void Initialize();
 	virtual void Update(float dt);
-
+	bool test;
 	~UIManager();
+
+
+	enum class WindowOriginPoint {
+		TOP_LEFT = 0,
+		BOTTOM_LEFT,
+		CENTER
+	};
+
+	std::pair<int, int> ConvertCoordsWindowToWindow(
+		std::pair<int, int> inputCoords, 
+		std::pair<int, int> sourceWindowSize,
+		std::pair<int, int> targetWindowOrigin,
+		std::pair<int, int> targetWindowSize, 
+		WindowOriginPoint targetWindowOP);
 
 private:
 

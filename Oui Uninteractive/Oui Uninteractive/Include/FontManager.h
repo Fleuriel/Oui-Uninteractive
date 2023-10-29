@@ -26,11 +26,9 @@ public:
 	FontManager();
 	void Initialize();
 	virtual void Update(float dt);
-	void LoadFonts();
 	~FontManager();
 	
-	// File paths to the respetive fonts
-	std::filesystem::path fontPath{ "../fonts/" };
+	
 	// To store FreeType result codes
 	int result; 
 	// Container for fonts
@@ -45,11 +43,15 @@ public:
 	};
 	// Container for characters
 	std::map<char, Character> charactersMap;
-	
-	void RenderText(std::string text, float xPos, float yPos, float scale, float rot); // Function to render text
+
+	//void RenderText(std::string text, float xPos, float yPos, float scale, float rot); // Function to render text
+
+	void RenderText(std::string text, float xPos, float yPos, float scale, glm::vec3 color); // Function to render text
+
+	FT_Library ft;
 
 private:
-	FT_Library ft;
+	
 
 };
 extern FontManager* fontManager;
