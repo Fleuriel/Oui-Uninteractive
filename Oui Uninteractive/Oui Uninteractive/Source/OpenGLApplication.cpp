@@ -252,7 +252,7 @@ void OpenGLApplication::OpenGLUpdate() {
 	// Start time profiling for grpahics system
 	//TimeProfiler profiler(Editor::timeRecorder.graphicsTime);
 	// End the Game.
-	if (keyStates[GLFW_KEY_ESCAPE]) {
+	if (inputSystem.GetKeyState(GLFW_KEY_ESCAPE)) {
 		// set the window to CLOSE.
 		glfwSetWindowShouldClose(windowNew, GLFW_TRUE);
 		// Set game state to quit to exit the while loop
@@ -284,7 +284,7 @@ void OpenGLApplication::OpenGLUpdate() {
 #endif
 
 	//set WireFrame Mode to TRUE/FALSE:
-	if (keyStates[GLFW_KEY_P] == 1) {
+	if (inputSystem.GetKeyState(GLFW_KEY_P) == 1) {
 		togglePolygonMode = !togglePolygonMode;
 	}
 	// If True, set to line else FILL it with color.
@@ -297,7 +297,7 @@ void OpenGLApplication::OpenGLUpdate() {
 
 
 	// Create Object using SPACE. with tag ID of 2.
-	if (keyStates[GLFW_KEY_SPACE] == 1) {
+	if (inputSystem.GetKeyState(GLFW_KEY_SPACE) == 1) {
 		// Create Object Tag ID , 2
 		OpenGLObject newObject(2);
 
@@ -312,7 +312,7 @@ void OpenGLApplication::OpenGLUpdate() {
 
 	}
 	// Create Object using R-SHIFT, with tag ID of 1.
-	if (keyStates[GLFW_KEY_RIGHT_SHIFT] == 1) {
+	if (inputSystem.GetKeyState(GLFW_KEY_RIGHT_SHIFT) == 1) {
 		OpenGLObject newObject1(1);
 #ifdef _DEBUG
 		std::cout << "Tag ID: " << newObject1.TagID << '\n';
@@ -329,16 +329,16 @@ void OpenGLApplication::OpenGLUpdate() {
 
 
 	// Moves Object left. can add positionY to change as well.
-	if (keyStates[GLFW_KEY_KP_4] == 2) {
+	if (inputSystem.GetKeyState(GLFW_KEY_KP_4) == 2) {
 		positionX-= 5;
 	}
-	if (keyStates[GLFW_KEY_KP_6] == 2) {
+	if (inputSystem.GetKeyState(GLFW_KEY_KP_6) == 2) {
 		positionX+= 5;
 	}
-	if (keyStates[GLFW_KEY_KP_8] == 2) {
+	if (inputSystem.GetKeyState(GLFW_KEY_KP_8) == 2) {
 		positionY+= 5;
 	}
-	if (keyStates[GLFW_KEY_KP_2] == 2) {
+	if (inputSystem.GetKeyState(GLFW_KEY_KP_2) == 2) {
 		positionY-= 5;
 	}
 
@@ -347,12 +347,12 @@ void OpenGLApplication::OpenGLUpdate() {
 
 	// This allows changing of game states.
 #ifdef _DEBUG
-	if (keyStates[GLFW_KEY_1] == 1)
+	if (inputSystem.GetKeyState(GLFW_KEY_1) == 1)
 		CurrentGameState = STATE_LEVEL_TEST;
 #endif
 
-	bool ctrlKeyPressed = (keyStates[GLFW_KEY_RIGHT_CONTROL] || keyStates[GLFW_KEY_LEFT_CONTROL]);
-	bool shiftKeyPressed = (keyStates[GLFW_KEY_RIGHT_SHIFT] || keyStates[GLFW_KEY_LEFT_SHIFT]);
+	bool ctrlKeyPressed = (inputSystem.GetKeyState(GLFW_KEY_RIGHT_CONTROL) || inputSystem.GetKeyState(GLFW_KEY_LEFT_CONTROL));
+	bool shiftKeyPressed = (inputSystem.GetKeyState(GLFW_KEY_RIGHT_SHIFT) || inputSystem.GetKeyState(GLFW_KEY_LEFT_SHIFT));
 
 	if (ctrlKeyPressed) {
 #ifdef _DEBUG
@@ -366,10 +366,9 @@ void OpenGLApplication::OpenGLUpdate() {
 #endif
 	}
 
-	if (keyStates[GLFW_KEY_CAPS_LOCK]) {
-		if (keyStates[GLFW_KEY_CAPS_LOCK] == 1) {
-			capsLockOn = !capsLockOn;
-		}
+	
+	if (inputSystem.GetKeyState(GLFW_KEY_CAPS_LOCK) == 1) {
+		capsLockOn = !capsLockOn;
 	}
 
 	if (capsLockOn) {
@@ -387,7 +386,7 @@ void OpenGLApplication::OpenGLUpdate() {
 
 
 	// Create new Particle of Size 15000,15000 to test if it spawns.
-	if (keyStates[GLFW_KEY_H] == 1) {
+	if (inputSystem.GetKeyState(GLFW_KEY_H) == 1) {
 		Particle newparticle(0, 0, 100, 100, 0, 0);
 		particleSystem.particles.push_back(newparticle);
 
@@ -396,38 +395,38 @@ void OpenGLApplication::OpenGLUpdate() {
 		//std::cout << "R : " << newparticle.object.color.r << "\nG : " << newparticle.object.color.g << "\nB : " << newparticle.object.color.b << "\n";
 	}
 
-	if (keyStates[GLFW_KEY_L] == 1) {
+	if (inputSystem.GetKeyState(GLFW_KEY_L) == 1) {
 		//Grid(3, 3);
 		Animation_Top_Left_To_Bottom_Right(3, 3, 3);
 		//particleSystem.EmptyParticleSystem();
 	}
 
-	if (mouseButtonStates[GLFW_MOUSE_BUTTON_LEFT]) {
+	if (inputSystem.GetMouseState(GLFW_MOUSE_BUTTON_LEFT)) {
 		assetManager.ReloadAll();
 #ifdef _DEBUG
 		std::cout << "LCLICK\n";
 #endif
 	}
-	if (mouseButtonStates[GLFW_MOUSE_BUTTON_RIGHT]) {
+	if (inputSystem.GetMouseState(GLFW_MOUSE_BUTTON_RIGHT)) {
 #ifdef _DEBUG
 		std::cout << "RCLICK\n";
 #endif
 	}
 
-	if (mouseScrollState == 1) {
+	if (inputSystem.GetScrollState() == 1) {
 #ifdef _DEBUG
 		std::cout << "SCROLL UP\n";
 		std::cout << "Total Scroll Y Offset:" << mouse_scroll_total_Y_offset << "\n";
 #endif
 	}
-	if (mouseScrollState == -1) {
+	if (inputSystem.GetScrollState() == -1) {
 #ifdef _DEBUG
 		std::cout << "SCROLL DOWN\n";
 		std::cout << "Total Scroll Y Offset:" << mouse_scroll_total_Y_offset << "\n";
 #endif
 	}
 	//keyStates[GLFW_KEY_RIGHT_SHIFT] == 1
-	if (keyStates[GLFW_KEY_O] == 1)
+	if (inputSystem.GetKeyState(GLFW_KEY_O) == 1)
 	{
 		OpenGLObject newObject1(3);
 #ifdef _DEBUG
@@ -441,7 +440,7 @@ void OpenGLApplication::OpenGLUpdate() {
 
 	}
 
-	UpdateStatesForNextFrame();
+	inputSystem.UpdateStatesForNextFrame();
 
 
 

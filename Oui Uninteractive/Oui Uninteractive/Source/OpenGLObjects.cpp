@@ -738,13 +738,13 @@ void OpenGLObject::Camera2D::Update(GLFWwindow* camWindow, int positionX, int po
 	using glm::radians;
 
 	// ZOOM in
-	if (mouseScrollState == 1)
+	if (inputSystem.GetScrollState() == 1)
 	{
 		height /= 1.5f;
 	}
 
 	// ZOOM OUT
-	if (mouseScrollState == -1)
+	if (inputSystem.GetScrollState() == -1)
 	{
 		height *= 1.5f;
 	}

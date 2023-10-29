@@ -19,19 +19,52 @@
 #include <vector>
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
+#include <array>
 
 
 
-// Define an array to keep track of key states
-extern std::array<int, GLFW_KEY_LAST + 1> keyStates;
+class InputSystem
+{
+public:
+	InputSystem();
+	~InputSystem();
+	int GetKeyState(int);
+	void SetKeyState(int, int);
+	bool GetMouseState(int);
+	void SetMouseState(int, int);
+	int GetScrollState();
+	void SetScrollState(int);
 
-// Define an array to keep track of mouse button states
-extern std::array<bool, GLFW_MOUSE_BUTTON_LAST + 1> mouseButtonStates;
 
-// 1 for scrolling up, 0 for not scrolling, -1 for scrolling down
-extern int mouseScrollState;
+	/**************************************************************************
+	 * @brief Updates the states of keyboard keys and mouse scroll for the next frame.
+	 *
+	 * This function is typically called once per frame to update the state of keyboard
+	 * keys and reset the mouse scroll state for the next frame.
+	 *
+	 * @note It assumes that the `keyStates` array has been previously initialized to store
+	 *       the state of each keyboard key, and `mouseScrollState` has been initialized
+	 *       to store the state of the mouse scroll wheel.
+	 *************************************************************************/
+	void UpdateStatesForNextFrame();
 
-bool GetKeyInput(int glfw_key);
+
+private:
+	// Define an array to keep track of key states
+	std::array<int, GLFW_KEY_LAST + 1> keyStates{};
+
+	// Define an array to keep track of mouse button states
+	std::array<bool, GLFW_MOUSE_BUTTON_LAST + 1> mouseButtonStates{};
+
+	// 1 for scrolling up, 0 for not scrolling, -1 for scrolling down
+	int mouseScrollState{ 0 };
+};
+
+
+
+extern InputSystem inputSystem;
+
+
 /**************************************************************************
  * @brief Callback function for handling keyboard input in a GLFW window.
  *
@@ -104,18 +137,6 @@ void MouseCallBack(GLFWwindow* window, int button, int action, int mod);
  * @see glfwSetScrollCallback() - Function to register this callback with GLFW.
  *************************************************************************/
 void ScrollCallBack(GLFWwindow* window, double xOffset, double yOffset);
-
-/**************************************************************************
- * @brief Updates the states of keyboard keys and mouse scroll for the next frame.
- *
- * This function is typically called once per frame to update the state of keyboard
- * keys and reset the mouse scroll state for the next frame.
- *
- * @note It assumes that the `keyStates` array has been previously initialized to store
- *       the state of each keyboard key, and `mouseScrollState` has been initialized
- *       to store the state of the mouse scroll wheel.
- *************************************************************************/
-void UpdateStatesForNextFrame();
 
 /**************************************************************************
  * @brief Callback function for handling the window close event in a GLFW window.

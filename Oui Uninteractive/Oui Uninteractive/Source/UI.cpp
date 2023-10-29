@@ -46,7 +46,7 @@ void UIManager::Update(float dt) {
 	// Start time profiling for sound system
 	//TimeProfiler profiler(Editor::timeRecorder.soundTime);
 	
-	if (mouseButtonStates[GLFW_MOUSE_BUTTON_LEFT]) {
+	if (inputSystem.GetMouseState(GLFW_MOUSE_BUTTON_LEFT)) {
 		std::pair<double, double> convertedMousePos;
 		double mouseX, mouseY;
 		glfwGetCursorPos(windowNew, &mouseX, &mouseY);

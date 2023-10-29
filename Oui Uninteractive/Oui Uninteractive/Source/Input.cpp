@@ -26,14 +26,7 @@
 #include <ParticleSystem.h>
 
 
-// Define an array to keep track of key states
-std::array<int, GLFW_KEY_LAST + 1> keyStates;
-
-// Define an array to keep track of mouse button states
-std::array<bool, GLFW_MOUSE_BUTTON_LAST + 1> mouseButtonStates;
-
-// 1 for scrolling up, 0 for not scrolling, -1 for scrolling down
-int mouseScrollState{ 0 };
+InputSystem inputSystem;
 
 // true for on, false for off
 bool capsLockReleased{ true };
@@ -45,18 +38,42 @@ std::map<std::string, std::function<void()>> shortcuts;
 //shortcuts["Ctrl+S"] = SaveFunction;
 //shortcuts["Ctrl+Z"] = UndoFunction;
 
-extern ParticleSystem particleSystem;
 
+InputSystem::InputSystem()
+{
 
-#define UNREFERENCED_PARAMETER(P)(P)
-bool GetKeyInput(int glfwKey) {
-	if (keyStates[glfwKey]) {
-		return true;
-	}
-	else {
-		return false;
-	}
 }
+
+InputSystem::~InputSystem()
+{
+	
+}
+
+int InputSystem::GetKeyState(int index) {
+	return keyStates[index];
+}
+
+void InputSystem::SetKeyState(int index, int value) {
+	keyStates[index] = value;
+}
+
+bool InputSystem::GetMouseState(int index) {
+	return mouseButtonStates[index];
+}
+
+void InputSystem::SetMouseState(int index, int value) {
+	mouseButtonStates[index] = value;
+}
+
+int InputSystem::GetScrollState() {
+	return mouseScrollState;
+}
+
+void InputSystem::SetScrollState(int value) {
+	mouseScrollState = value;
+}
+
+
 /**************************************************************************
  * @brief Callback function for handling keyboard input in a GLFW window.
  * 
@@ -92,9 +109,6 @@ void KeyCallBack(GLFWwindow* window3, int key, int scancode, int action, int mod
 	// Return if unknown key pressed (e.g. multimedia keys)
 	if (key == GLFW_KEY_UNKNOWN)
 		return;
-
-	// Suppress unused parameter warnings
-	UNREFERENCED_PARAMETER(scancode);
 	
 	/* 
 	Update the state of the pressed key
@@ -103,7 +117,7 @@ void KeyCallBack(GLFWwindow* window3, int key, int scancode, int action, int mod
 	 - If the key is released (action == GLFW_RELEASE), set its state to 0 (not pressed).
 	 - If the key is held down (action == GLFW_REPEAT), set its state to 2 (held down).
 	*/ 
-	keyStates[key] = (action == GLFW_PRESS && keyStates[key] == 0) ? 1 : (action == GLFW_RELEASE) ? 0 : 2;
+	inputSystem.SetKeyState(key, (action == GLFW_PRESS && inputSystem.GetKeyState(key) == 0) ? 1 : (action == GLFW_RELEASE) ? 0 : 2);
 	//std::cout << "keyval : " << keyStates[key] << std::endl;
 
 	#ifdef _DEBUG
@@ -143,7 +157,7 @@ void MouseCallBack(GLFWwindow* window4, int button, int action, int mod) {
 	//UNREFERENCED_PARAMETER(window);
 	//UNREFERENCED_PARAMETER(mod);
 
-	mouseButtonStates[button] = (action == GLFW_PRESS) ? 1 : 0;
+	inputSystem.SetMouseState(button, (action == GLFW_PRESS) ? 1 : 0);
 
 }
 
@@ -183,7 +197,7 @@ void ScrollCallBack(GLFWwindow* window5, double xOffset, double yOffset ) {
 	mouse_scroll_total_Y_offset += static_cast<float>(yOffset);
 
 	//Change the scroll states based on y offset value
-	mouseScrollState = (yOffset > 0) ? 1 : (yOffset == 0) ? 0 : -1;
+	inputSystem.SetScrollState((yOffset > 0) ? 1 : (yOffset == 0) ? 0 : -1);
 }
 
 
@@ -197,7 +211,7 @@ void ScrollCallBack(GLFWwindow* window5, double xOffset, double yOffset ) {
  *       the state of each keyboard key, and `mouseScrollState` has been initialized
  *       to store the state of the mouse scroll wheel.
  *************************************************************************/
-void UpdateStatesForNextFrame() {
+void InputSystem::UpdateStatesForNextFrame() {
 
 	// Loop through all keyboard keys (represented by indices)
 	for (size_t i = 0; i < GLFW_KEY_LAST + 1; ++i) {

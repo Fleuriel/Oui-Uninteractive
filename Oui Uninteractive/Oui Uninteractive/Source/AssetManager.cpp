@@ -254,12 +254,10 @@ bool AssetManager::LoadFonts() {
 
     if (fs::is_directory(fontPath)) {
         for (const auto& entry : fs::directory_iterator(fontPath)) {
-            // std::cout << "font file path : " << entry.path().string() << std::endl;
             FT_Face newFace;
             fontManager->result = FT_New_Face(fontManager->ft, entry.path().string().c_str(), 0, &newFace);
-            if (!fontManager->result) {
+            if (!fontManager->result)
                 std::cout << "Successfully loaded font: " << entry.path().filename().string() << std::endl;
-            }
             fonts.push_back(newFace);
         }
     }
@@ -316,6 +314,14 @@ bool AssetManager::LoadFonts() {
     FT_Done_FreeType(fontManager->ft);
 
     return result;
+}
+
+bool FreeFonts() {
+    return true;
+}
+
+bool ReloadFonts() {
+    return true;
 }
 
 FT_Face AssetManager::GetFont(int index) {
