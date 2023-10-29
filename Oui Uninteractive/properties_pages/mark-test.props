@@ -17,7 +17,8 @@
       <Command>copy "$(SolutionDir)lib\glfw-3.3.8.bin.WIN64\lib-vc2022\glfw3.dll" "$(TargetDir)glfw3.dll" /Y
 copy "$(SolutionDir)lib\glew-2.2.0\bin\Release\x64\glew32.dll" "$(TargetDir)glew32.dll" /Y
 copy "$(SolutionDir)lib\fmod\fmod.dll" "$(TargetDir)fmod.dll" /Y
-copy "$(SolutionDir)lib\freetype-2.13.2\objs\freetype.dll" "$(TargetDir)freetype.dll" /Y</Command>
+copy "$(SolutionDir)lib\freetype-2.13.2\objs\freetype.dll" "$(TargetDir)freetype.dll" /Y
+xcopy "$(SolutionDir)assets\*" "$(TargetDir)assets\" /s /r /y /q</Command>
     </PostBuildEvent>
     <ClCompile>
       <PreprocessorDefinitions>GLFW_DLL;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>

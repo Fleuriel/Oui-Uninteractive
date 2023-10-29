@@ -58,7 +58,7 @@ void Background::Init() {
 	// Define file names for vertex and fragment shaders
 	VectorPairStrStr fileName{
 		std::make_pair<std::string, std::string>
-		("../shaders/Oui_Uninteractive_models.vert", "../shaders/Oui_Uninteractive_models.frag")
+		("assets/shaders/Oui_Uninteractive_models.vert", "assets/shaders/Oui_Uninteractive_models.frag")
 	};
 
 	// Initialize shader programs using the provided file names

@@ -84,7 +84,7 @@ std::vector<Node*> BFS(int startX, int startY, int goalX, int goalY) {
 // BFS TO BE MOVED TO ANOTHER FILE
 
 void EnemyRoam::Update(size_t gameObjectID) {
-	std::cout << "Does this work on " << objectFactory->GetGameObjectByID(gameObjectID)->GetName() << std::endl;
+	//std::cout << "Does this work on " << objectFactory->GetGameObjectByID(gameObjectID)->GetName() << std::endl;
 
 	// Pathfinding
     /*std::cout << "Start\n";
@@ -102,5 +102,5 @@ void EnemyRoam::Update(size_t gameObjectID) {
 }
 
 void EnemyAttack::Update(size_t gameObjectID) {
-	std::cout << "TRANSITIONED TO ATTACK STATE LMAO\n" << std::endl;
+	//std::cout << "TRANSITIONED TO ATTACK STATE LMAO\n" << std::endl;
 }

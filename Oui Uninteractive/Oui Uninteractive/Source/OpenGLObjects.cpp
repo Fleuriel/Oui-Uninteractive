@@ -27,6 +27,7 @@
 #include <RandomUtilities.h>
 #include <GameStateManager.h>
 #include <stb_image.h>
+#include "Editor.h"
 
 
 unsigned int OpenGLObject::mdl_ref = 0; // Define and initialize mdl_ref
@@ -72,18 +73,18 @@ void OpenGLObject::Initialize(){
 	// Create file name
 	VectorPairStrStr MODELSSHADER{
 		std::make_pair<std::string, std::string>
-		("../shaders/Oui_Uninteractive_models.vert", "../shaders/Oui_Uninteractive_models.frag")
+		("assets/shaders/Oui_Uninteractive_models.vert", "assets/shaders/Oui_Uninteractive_models.frag")
 	};
 
 	VectorPairStrStr FONTSHADER{
 		std::make_pair<std::string, std::string>
-		("../shaders/Oui_Uninteractive_font.vert", "../shaders/Oui_Uninteractive_font.frag")
+		("assets/shaders/Oui_Uninteractive_font.vert", "assets/shaders/Oui_Uninteractive_font.frag")
 	};
 
 
 	VectorPairStrStr CAMERASHADER{
 		std::make_pair<std::string, std::string>
-		("../shaders/Oui_Uninteractive_camera.vert", "../shaders/Oui_Uninteractive_camera.frag")
+		("assets/shaders/Oui_Uninteractive_camera.vert", "assets/shaders/Oui_Uninteractive_camera.frag")
 	};
 
 	// Initialize the Shader Program for Models
@@ -737,16 +738,25 @@ void OpenGLObject::Camera2D::Update(GLFWwindow* camWindow, int positionX, int po
 
 	using glm::radians;
 
+	std::pair<double, double> convertedMousePos;
+	double mouseX = 0, mouseY = 0;
+	float gameWindowMouseX = mouseX - Editor::gameWindowOrigin.first;
+	float gameWindowMouseY = mouseY - Editor::gameWindowOrigin.second;
+	convertedMousePos.first = gameWindowMouseX - Editor::gameWindowSize.first * 0.5f;
+	convertedMousePos.second = (Editor::gameWindowSize.second * 0.5f) - gameWindowMouseY;
+
 	// ZOOM in
-	if (mouseScrollState == 1)
+	//if (inputSystem.GetScrollState() == 1) 
+	if (inputSystem.GetKeyState(GLFW_KEY_UP))
 	{
-		height /= 1.5f;
+		height /= 1.1f;
 	}
 
 	// ZOOM OUT
-	if (mouseScrollState == -1)
+	//if (inputSystem.GetScrollState() == -1)
+	if (inputSystem.GetKeyState(GLFW_KEY_DOWN))
 	{
-		height *= 1.5f;
+		height *= 1.1f;
 	}
 
 
@@ -770,7 +780,7 @@ void OpenGLObject::Camera2D::Update(GLFWwindow* camWindow, int positionX, int po
 	};
 
 
-	std::cout << height << '\n';
+	//std::cout << height << '\n';
 
 	World_to_NDC_xform = CameraWindow_to_NDC_xform * view_xform;
 

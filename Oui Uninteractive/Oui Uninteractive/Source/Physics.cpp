@@ -291,8 +291,8 @@ void Physics::CapVelocity(Vec2 originalVelocity, Vec2& bodyVelocity) {
 }
 
 void Physics::CollisionResponse(CollisionMessage* msg) {
-	std::cout << "Collision detected between " << msg->GetFirstCollider()->GetOwner()->GetName() << " (x,y): "<< msg->GetFirstCollider()->boundingbox->center.x << ", " << msg->GetFirstCollider()->boundingbox->center.y;
-	std::cout << " and " << msg->GetSecondCollider()->GetOwner()->GetName() << "(x, y): " << msg->GetSecondCollider()->boundingbox->center.x << ", " << msg->GetSecondCollider()->boundingbox->center.y << std::endl;
+	//std::cout << "Collision detected between " << msg->GetFirstCollider()->GetOwner()->GetName() << " (x,y): "<< msg->GetFirstCollider()->boundingbox->center.x << ", " << msg->GetFirstCollider()->boundingbox->center.y;
+	//std::cout << " and " << msg->GetSecondCollider()->GetOwner()->GetName() << "(x, y): " << msg->GetSecondCollider()->boundingbox->center.x << ", " << msg->GetSecondCollider()->boundingbox->center.y << std::endl;
 
 	float halfDepth = msg->GetDepth() / 2;
 	Vec2 dir = msg->GetSecondCollider()->boundingbox->center - msg->GetFirstCollider()->boundingbox->center;
