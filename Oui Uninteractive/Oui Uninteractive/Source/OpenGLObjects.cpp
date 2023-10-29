@@ -320,7 +320,7 @@ void OpenGLObject::Update(float newX, float newY, float scaleX, float scaleY, fl
 
 }
 
-void OpenGLObject::Update(int posX, int posY) {
+void OpenGLObject::CameraUpdate(int posX, int posY) {
 	//std::cout << "Object Update\n";
 	// Compute the angular displacement in radians
 
@@ -774,5 +774,5 @@ void OpenGLObject::Camera2D::Update(GLFWwindow* camWindow, int positionX, int po
 
 	World_to_NDC_xform = CameraWindow_to_NDC_xform * view_xform;
 
-	Cam->Update(positionX, positionY);
+	Cam->CameraUpdate(positionX, positionY);
 }

@@ -143,6 +143,9 @@ public:
 	// Camera Structure
 	struct Camera2D {
 
+		Camera2D() : up(0, 0), right(0,0), view_xform(0), CameraWindow_to_NDC_xform(0), World_to_NDC_xform(0),
+ 		aspectRatio (0){}
+
 		OpenGLObject *Cam;
 
 		glm::vec2 up, right;
@@ -197,9 +200,6 @@ public:
 	*************************************************************************/
 	void Update(float newX, float newY, float scaleX, float scaleY, float newAngle, bool enRot);
 
-	void Update(int, int);
-
-
 	/**************************************************************************
 	* @brief		Draws a Debug Collision Box (AABB)
 	*
@@ -240,6 +240,14 @@ public:
 	* @return void
 	*************************************************************************/
 	static void Cleanup();
+
+
+	/**************************************************************************
+	* @brief		 Camera Update
+	* @param  none
+	* @return void
+	*************************************************************************/
+	void CameraUpdate(int, int);
 
 	// 
 	using VectorPairStrStr = std::vector <std::pair<std::string, std::string>>;
