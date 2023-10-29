@@ -28,6 +28,8 @@ public:
 	Transform* tx;
 	AABB* boundingbox;
 	float contactTime;
-	std::pair<int, int> implicitGridPos;
+	Vec2 contactNormal;
+	
+
 };
 #endif

@@ -22,6 +22,8 @@ void Collider::Serialize(rapidjson::Value::ConstMemberIterator& itr) {
 }
 Collider* Collider::Clone() const{
 	Collider* newCollider = new Collider();
+	newCollider->contactTime = contactTime;
+	newCollider->contactNormal = contactNormal;
 	newCollider->boundingbox->min = boundingbox->min;
 	newCollider->boundingbox->max = boundingbox->max;
 	newCollider->boundingbox->center = boundingbox->center;
@@ -41,6 +43,8 @@ Collider::Collider() {
 	boundingbox->center = Vec2(0, 0);
 	boundingbox->min = Vec2(0, 0);
 	boundingbox->max = Vec2(0, 0);
+	contactTime = 0;
+	contactNormal = Vec2(0, 0);
 
 	tx = new Transform();
 

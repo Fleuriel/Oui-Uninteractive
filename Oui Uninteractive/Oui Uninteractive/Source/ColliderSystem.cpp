@@ -73,6 +73,7 @@ void ColliderSystem::Update(float dt) {
 	for (std::map<size_t, Collider*>::iterator it = colliderMap.begin(); it != colliderMap.end(); it++) {
 		Collider* collider = it->second;
 		collider->contactTime = 1.0f;
+		collider->contactNormal = Vec2(1, 1);
 
 		collider->tx->position = GET_COMPONENT(collider->GetOwner(), Transform, ComponentType::TRANSFORM)->position;
 		collider->boundingbox->center = collider->tx->position;
@@ -89,7 +90,7 @@ void ColliderSystem::Update(float dt) {
 				PhysicsBody* pBody2 = GET_COMPONENT(body2->GetOwner(), PhysicsBody, ComponentType::PHYSICS_BODY);
 				float contactTime = 0;
 				bool collided = false;
-				if (Vector2DLength(pBody1->velocity) > 0 && Vector2DLength(pBody2->velocity) > 0) {
+				//if (Vector2DLength(pBody1->velocity) > 0 && Vector2DLength(pBody2->velocity) > 0) {
 					Vec2 normal = Vec2(0, 0);
 					Vec2 contactPt = Vec2(0, 0);
 					collided = CollisionMovingRectRect(*(collider->boundingbox), *(body2->boundingbox), pBody1->velocity, pBody2->velocity, contactTime, normal, contactPt, GetDT());
@@ -99,16 +100,20 @@ void ColliderSystem::Update(float dt) {
 						//pBody1->forceManager.ApplyToForce(normal * Vec2(abs(pBody1->velocity.x), abs(pBody1->velocity.y)), (1 - contactTime), 0.25f,FORCE_INDEX::EXTERNAL);
 						//pBody1->txPtr->position = contactPt;/*normal * Vec2(abs(relVelocity.x), abs(relVelocity.y)) * GetDT() * (1 - contactTime);*/
 						/*w += normal * Vec2(abs(pBody1->velocity.x), abs(pBody1->velocity.y)) * (1 - contactTime);*/
-						pBody1->forceManager.DeactivateForce(0);
+					/*	if (contactTime < 0) {
+							contactTime = -0.1f;
+						}*/
+					/*	pBody1->forceManager.DeactivateForce(0);
 						pBody1->forceManager.DeactivateForce(1);
+						pBody1->forceManager.ApplyToForce(normal * Vec2(abs(pBody1->velocity.x), abs(pBody1->velocity.y)), contactTime, 0.25f, FORCE_INDEX::EXTERNAL);
+						pBody1->forceManager.SetActive(true, FORCE_INDEX::EXTERNAL);*/
+
 						collider->contactTime = contactTime;
-						std::cout << contactTime << "\n";
-						std::cout << normal.x << "|" << normal.y << "\n";
-					
+						collider->contactNormal = normal;
 					}
 					
-				}
-				else {
+				//}
+				/*else {
 					collided = CollisionStaticDynamicRectRect(*(collider->boundingbox), *(body2->boundingbox));
 					
 					if (collided) {
@@ -120,7 +125,7 @@ void ColliderSystem::Update(float dt) {
 						ProcessMessage(&collisionMessage);
 					}
 					
-				}
+				}*/
 				
 
 				//bool staticCollided = CollisionStaticDynamicRectRect(*(collider->boundingbox), *(body2->boundingbox));

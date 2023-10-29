@@ -85,18 +85,26 @@ void Physics::Update(float dt) {
 			Collider* collider = GET_COMPONENT(body->GetOwner(), Collider, ComponentType::COLLIDER);
 			//Position	
 			body->txPtr->previousPosition = body->txPtr->position;
-			if (collider != nullptr) {
-				body->txPtr->position = body->txPtr->position + body->velocity * collider->contactTime * GetDT();//* sysManager->fixedDeltaTime;
-			}
-			else {
+			//if (collider != nullptr) {
+			//	if (collider->contactNormal.x == 1 && collider->contactNormal.y == 1) {
+			//		body->txPtr->position.x = body->txPtr->position.x + body->velocity.x * GetDT();//* sysManager->fixedDeltaTime;
+			//		body->txPtr->position.y = body->txPtr->position.y + body->velocity.y * GetDT();
+			//	}
+			//	else if (collider->contactNormal.x != 0) {
+			//		body->txPtr->position.x = body->txPtr->position.x + body->velocity.x * GetDT() * collider->contactTime;//* sysManager->fixedDeltaTime;
+			//		body->txPtr->position.y = body->txPtr->position.y + body->velocity.y * GetDT();
+			//	}
+
+			//	else if (collider->contactNormal.y != 0) {
+			//		body->txPtr->position.x = body->txPtr->position.x + body->velocity.x * GetDT() ;//* sysManager->fixedDeltaTime;
+			//		body->txPtr->position.y = body->txPtr->position.y + body->velocity.y * GetDT() * collider->contactTime;
+			//	}
+			//}
+			//else {
 				body->txPtr->position = body->txPtr->position + body->velocity * GetDT();//* sysManager->fixedDeltaTime;
-			}
+			//}
 			
 
-			//Just spins all other objects
-			/*if (body->GetOwner()->GetGameObjectID() != 0) {
-				body->currentRotationSpeed = body->rotationSpeed;
-			}*/
 			//Rotation
 			body->txPtr->rotation = body->txPtr->rotation + body->currentRotationSpeed * dt;
 			if (body->txPtr->rotation >= 360.0f || body->txPtr->rotation <= -360.0f)
