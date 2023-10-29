@@ -13,13 +13,12 @@
 #include <map>
 #include <string>
 #include "IScript.h"
-#include "Logic.h"
 #include "IState.h"
 #include "EnemyStates.h"
-
+#include "Logic.h"
 #include "ObjectFactory.h"
 
-class FSM : public IScript {
+class EnemyFSM : public IScript {
 private:
 	std::map<std::string, IState*> statesMap;
 	IState* currentState;
@@ -34,21 +33,24 @@ public:
 		currentState = statesMap["EnemyRoam"];
 	};
 
-	/*void AddState(std::string name, IState* state) {
-		statesMap[name] = state;
-	}*/
-
-	/*void TransitionTo(std::string name) {
-		currentState = statesMap[name];
-	}*/
-
 	void Update(size_t gameObjectID) {
 		currentState->Update(gameObjectID);
+
+		// If within range of player, enter attack state
+		Vec2 playerPos{GET_COMPONENT(objectFactory->GetGameObjectByName("JSONPlayer"), Transform, ComponentType::TRANSFORM)->position};
+		Vec2 enemyPos{GET_COMPONENT(objectFactory->GetGameObjectByID(gameObjectID), Transform, ComponentType::TRANSFORM)->position};
+
+		if (Vector2DDistance(playerPos, enemyPos) < 300.0f) {
+			currentState = statesMap["EnemyAttack"];
+		}
+		else {
+			currentState = statesMap["EnemyRoam"];
+		}
 	}
 
 	void End() {}
 
-	~FSM() {
+	~EnemyFSM() {
 		// Clear statesMap
 		for (auto& state : statesMap) {
 			delete state.second;

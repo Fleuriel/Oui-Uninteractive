@@ -228,7 +228,7 @@ void OpenGLApplication::OpenGLInit() {
 	TestScript2* testScript2 = new TestScript2();
 	testScript2->Initialize();
 
-	FSM* enemyFSMScript = new FSM();
+	EnemyFSM* enemyFSMScript = new EnemyFSM();
 	enemyFSMScript->Initialize();
 
 	
