@@ -282,43 +282,4 @@ void Background::init_shdrpgms_cont(VectorPairStrStr const& vpss) {
 	}
 }
 
-/**************************************************************************
- * @brief Set up an OpenGL texture object from an image file.
- *
- * This function loads an image from the specified file, creates an OpenGL texture object,
- * and configures it with the image data.
- *
- * @param filePath The file path to the image file.
- * @return The OpenGL texture object handler, or 0 if the texture setup failed.
- *************************************************************************/
-int Background::Setup_TextureObject(std::string filePath) {
-	GLuint textureObj_Handler; // OpenGL texture object handler
-
-	int width, height, channels;
-
-	// Load the image from the file using stb_image
-	unsigned char* image = stbi_load(filePath.c_str(), &width, &height, &channels, STBI_rgb_alpha);
-
-	if (!image) {
-		// If the image loading fails, print an error message and return 0 (failure)
-		std::cout << "Failed to load texture: " << filePath << std::endl;
-		return 0; // Return 0 to indicate failure
-	}
-
-	// Create an OpenGL texture object
-	glCreateTextures(GL_TEXTURE_2D, 1, &textureObj_Handler);
-
-	// Allocate storage for the texture with RGBA8 format
-	glTextureStorage2D(textureObj_Handler, 1, GL_RGBA8, width, height);
-
-	// Upload the image data to the texture object
-	glTextureSubImage2D(textureObj_Handler, 0, 0, 0, width, height, GL_RGBA, GL_UNSIGNED_BYTE, image);
-
-	// Free the image data after it's uploaded to OpenGL
-	stbi_image_free(image);
-
-	// Return the OpenGL texture object handler
-	return textureObj_Handler;
-}
-
 
