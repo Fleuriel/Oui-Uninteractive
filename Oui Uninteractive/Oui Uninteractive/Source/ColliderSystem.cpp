@@ -69,7 +69,7 @@ void ColliderSystem::Update(float dt) {
 	for (std::map<size_t, Collider*>::iterator it = colliderMap.begin(); it != colliderMap.end(); it++) {
 		Collider* collider = it->second;
 		collider->contactTime = 1.0f;
-		collider->contactNormal = Vec2(1, 1);
+		
 
 		collider->tx->position = GET_COMPONENT(collider->GetOwner(), Transform, ComponentType::TRANSFORM)->position;
 		collider->boundingbox->center = collider->tx->position;
@@ -91,8 +91,11 @@ void ColliderSystem::Update(float dt) {
 				Vec2 cnPt = Vec2(0, 0);
 				float ctTime = 0.f;
 				float depth = 0.f;
-				collided = CollisionMovingRectRect(*(collider->boundingbox), *(body2->boundingbox), pBody1->velocity, pBody2->velocity, contactTime, normal, cnPt, GetDT(), depth);
+				Vec2 nextCycleVel = pBody1->velocity + pBody1->forceManager.CalculateResultantForce() * pBody1->mass * GetDT();
+				collided = CollisionMovingRectRect(*(collider->boundingbox), *(body2->boundingbox), nextCycleVel, contactTime, normal, GetDT(), depth, collider->wasColliding, collider->contactNormal);
 				if (collided) {
+					collider->wasColliding = true;
+					body2->wasColliding = true;
 					if (!pBody2->isStatic) {
 
 						
@@ -106,18 +109,19 @@ void ColliderSystem::Update(float dt) {
 					else {
 					
 
-						Collider expanded_target;
+					/*	Collider expanded_target;
 						expanded_target.boundingbox->center = body2->boundingbox->center;
 						expanded_target.boundingbox->max = Vec2(body2->boundingbox->max.x + collider->tx->scale / 2, body2->boundingbox->max.y + collider->tx->scale / 2);
-						expanded_target.boundingbox->min = Vec2(body2->boundingbox->min.x - collider->tx->scale / 2, body2->boundingbox->min.y - collider->tx->scale / 2);
+						expanded_target.boundingbox->min = Vec2(body2->boundingbox->min.x - collider->tx->scale / 2, body2->boundingbox->min.y - collider->tx->scale / 2);*/
 
-						float depth = CalculateEntryTimeAndNormal(collider->boundingbox, expanded_target.boundingbox, pBody1->velocity, normal.x, normal.y);
+						//float depth = CalculateEntryTimeAndNormal(collider->boundingbox, expanded_target.boundingbox, pBody1->velocity, normal.x, normal.y);
+						
 						float halfDepth = depth / 2;
 						Vec2 dir = body2->boundingbox->center - collider->boundingbox->center;
-						if (Vector2DDotProduct(dir, normal) < 0.f) {
+						/*if (Vector2DDotProduct(dir, normal) < 0.f) {
 								normal = -normal;
 							
-						}
+						}*/
 						Vector2DNormalize(normal, normal);
 						//coll response
 
@@ -127,12 +131,20 @@ void ColliderSystem::Update(float dt) {
 
 						if (pBody2->isStatic) {
 							//pBody1->txPtr->position += normal * depth;
-							std::cout << contactTime << "\n";
-							pBody1->velocity = normal * depth;// * msg->GetFirstCollider()->contactTime;
+							std::cout << "Contact time: " << contactTime << "\n";
+							std::cout << "Normal" << normal.x << "|" << normal.y << "\n";
+							//pBody1->velocity = normal * depth;// * msg->GetFirstCollider()->contactTime;
 							Vec2 normalizedVel;
 							Vector2DNormalize(normalizedVel, pBody1->velocity);
-							Vec2 nextStep = pBody1->forceManager.CalculateResultantForce() - (pBody1->frictionForce * normalizedVel) * pBody1->mass;
-							pBody1->velocity += -(nextStep * GetDT())+(nextStep * contactTime * GetDT());
+							
+							pBody1->forceManager.DeactivateForce(0);
+							pBody1->forceManager.DeactivateForce(1);
+							if (contactTime < 0.f) {
+								contactTime = 0.f;
+							}
+							collider->contactTime = contactTime;
+							collider->contactNormal = normal;
+							//pBody1->velocity = (pBody1->velocity * GetDT() * contactTime);
 						}
 						//else if (pBody1->isStatic) {
 						//	pBody2->txPtr->position += (-normal) * depth;
@@ -141,10 +153,10 @@ void ColliderSystem::Update(float dt) {
 					}
 				}
 				
-				
-
-				
 			}
+
+			collider->wasColliding = false;
+
 		
 	}
 

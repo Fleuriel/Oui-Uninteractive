@@ -62,7 +62,7 @@ void Physics::Update(float dt) {
 				continue;
 			}
 			Vector2DNormalize(body->direction, body->direction + AngleToVec(body->txPtr->rotation * (static_cast<float>(M_PI) / 180.0f)));
-			body->forceManager.Update(dt);
+			
 			//Check update
 
 			//calculate physics
@@ -70,7 +70,7 @@ void Physics::Update(float dt) {
 			Vec2 normalizedVel = Vec2(0, 0);
 			Vector2DNormalize(normalizedVel, body->velocity);
 			Vec2 summedForce = body->forceManager.CalculateResultantForce();
-			body->acceleration = (summedForce - (body->frictionForce * normalizedVel)) * body->mass;
+			body->acceleration = (summedForce) * body->mass;
 			/*
 			if (body->GetOwner()->GetGameObjectID() == 0) {
 				std::cout << "Acceleration: " << body->acceleration.x << " : " << body->acceleration.y << "\n";
@@ -80,20 +80,27 @@ void Physics::Update(float dt) {
 			Collider* collider = GET_COMPONENT(body->GetOwner(), Collider, ComponentType::COLLIDER);
 			//body->velocity = body->velocity + body->acceleration * GetDT() * collider->contactTime;//* sysManager->fixedDeltaTime;
 			Vec2 previousVelocity = body->velocity;
+			if (collider != nullptr) {
 
-			body->velocity = body->velocity + body->acceleration * GetDT();//* sysManager->fixedDeltaTime;
+				body->velocity = body->velocity * (collider->contactTime) + body->acceleration * GetDT();//* sysManager->fixedDeltaTime;
+			}
+			else {
+				body->velocity = body->velocity + body->acceleration * GetDT();
+			}
+			
 			
 			CapVelocity(originalVelocity, body->velocity);
 			
 			//Position	
 			body->txPtr->previousPosition = body->txPtr->position;
-			body->txPtr->position = body->txPtr->position + body->velocity * GetDT();//* sysManager->fixedDeltaTime;
+
+			body->txPtr->position = body->txPtr->position + (body->velocity * GetDT());//* sysManager->fixedDeltaTime;
 			
 			//Rotation
 			body->txPtr->rotation = body->txPtr->rotation + body->currentRotationSpeed * dt;
 			if (body->txPtr->rotation >= 360.0f || body->txPtr->rotation <= -360.0f)
 				body->txPtr->rotation = 0.0f;
-
+			body->forceManager.Update(dt);
 		
 		}
 	//}
