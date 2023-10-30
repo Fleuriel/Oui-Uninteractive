@@ -27,7 +27,7 @@
                     ]
                 },
                 "Collider": {
-                    "ColliderSize": 205.0,
+                    "ColliderSize": 200.0,
                     "ColliderRotation": 0.0
                 }
             }

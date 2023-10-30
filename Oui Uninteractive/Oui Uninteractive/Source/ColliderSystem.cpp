@@ -104,14 +104,21 @@ void ColliderSystem::Update(float dt) {
 
 					}
 					else {
-						float depth = CalculateEntryTimeAndNormal(collider->boundingbox, body2->boundingbox, pBody1->velocity, normal.x, normal.y);
+					
+
+						Collider expanded_target;
+						expanded_target.boundingbox->center = body2->boundingbox->center;
+						expanded_target.boundingbox->max = Vec2(body2->boundingbox->max.x + collider->tx->scale / 2, body2->boundingbox->max.y + collider->tx->scale / 2);
+						expanded_target.boundingbox->min = Vec2(body2->boundingbox->min.x - collider->tx->scale / 2, body2->boundingbox->min.y - collider->tx->scale / 2);
+
+						float depth = CalculateEntryTimeAndNormal(collider->boundingbox, expanded_target.boundingbox, pBody1->velocity, normal.x, normal.y);
 						float halfDepth = depth / 2;
 						Vec2 dir = body2->boundingbox->center - collider->boundingbox->center;
 						if (Vector2DDotProduct(dir, normal) < 0.f) {
 								normal = -normal;
 							
 						}
-
+						Vector2DNormalize(normal, normal);
 						//coll response
 
 						//	PhysicsBody* pBody2 = GET_COMPONENT(body2->GetOwner(), PhysicsBody, ComponentType::PHYSICS_BODY);
@@ -119,13 +126,18 @@ void ColliderSystem::Update(float dt) {
 						PhysicsBody* pBody2 = physicsSys->bodyList[body2->GetOwner()->GetGameObjectID()];
 
 						if (pBody2->isStatic) {
-							pBody1->txPtr->position += normal * depth;
-							pBody1->velocity += normal * depth;// * msg->GetFirstCollider()->contactTime;
+							//pBody1->txPtr->position += normal * depth;
+							std::cout << contactTime << "\n";
+							pBody1->velocity = normal * depth;// * msg->GetFirstCollider()->contactTime;
+							Vec2 normalizedVel;
+							Vector2DNormalize(normalizedVel, pBody1->velocity);
+							Vec2 nextStep = pBody1->forceManager.CalculateResultantForce() - (pBody1->frictionForce * normalizedVel) * pBody1->mass;
+							pBody1->velocity += -(nextStep * GetDT())+(nextStep * contactTime * GetDT());
 						}
-						else if (pBody1->isStatic) {
-							pBody2->txPtr->position += (-normal) * depth;
-							pBody2->velocity += normal * depth;//* msg->GetFirstCollider()->contactTime;
-						}
+						//else if (pBody1->isStatic) {
+						//	pBody2->txPtr->position += (-normal) * depth;
+						//	pBody2->velocity += normal * depth;//* msg->GetFirstCollider()->contactTime;
+						//}
 					}
 				}
 				
