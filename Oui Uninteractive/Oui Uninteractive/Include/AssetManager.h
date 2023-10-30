@@ -19,47 +19,50 @@ class AssetManager
 {
 public:
 	// General functions
-	AssetManager();
-	~AssetManager();
-	void LoadAll();
-	void FreeAll();
-	void ReloadAll();
+	AssetManager();									//Constructor for AssetManager class
+	~AssetManager();								//Destructor for AssetManager class
+
+	void LoadAll();									//Function to load all assets
+	void FreeAll();									//Function to free all assets
+	void ReloadAll();								//Function to reload all assets
 
 	// Texture functions
-	bool LoadTextures();
-	int SetUpTexture(std::string filePath);
-	bool FreeTextures();
-	bool ReloadTextures();
+	bool LoadTextures();							//Function to load textures
+	int SetUpTexture(std::string filePath);			//Function to set up textures
+	bool FreeTextures();							//Function to free textures
+	bool ReloadTextures();							//Function to reload textures
 	
 
 	// Sounds
-	bool LoadSounds();
-	bool LoadBGM();
-	bool LoadSFX();
-	bool FreeSounds();
-	bool FreeBGM();
-	bool FreeSFX();
-	bool ReloadSounds();
+	bool LoadSounds();								//Function to load sounds (BGM + SFX)
+	bool LoadBGM();									//Function to load BGM sounds
+	bool LoadSFX();									//Function to load SFX sounds
+	bool FreeSounds();								//Function to free sounds (BGM + SFX)
+	bool FreeBGM();									//Function to free BGM sounds
+	bool FreeSFX();									//Function to free SFX sounds
+	bool ReloadSounds();							//Function to reload sounds (BGM + SFX)
+	bool ReloadBGM();								//Function to reload BGM sounds
+	bool ReloadSFX();								//Function to reload SFX sounds
 	
 
 	// Fonts
-	bool LoadFonts();
-	bool FreeFonts();
-	bool ReloadFonts();
+	bool LoadFonts();								//Function to load fonts
+	bool FreeFonts();								//Function to free fonts
+	bool ReloadFonts();								//Function to reload fonts
 
 
 	// Access Assets
-	int GetTexture(std::string);
-	FMOD::Sound* GetBGM(int);
-	FMOD::Sound* GetSFX(int);
-	FT_Face GetFont(int);
+	int GetTexture(std::string);					//Function to access textures
+	FMOD::Sound* GetBGM(int);						//Function to access BGM sounds
+	FMOD::Sound* GetSFX(int);						//Function to access SFX Sounds
+	FT_Face GetFont(int);							//Function to access fonts
 
 private:
 	//Containers
-	std::map<std::string, int> textures{};
-	std::vector<FMOD::Sound*> bgmSounds{};
-	std::vector<FMOD::Sound*> sfxSounds{};
-	std::vector<FT_Face> fonts{};
+	std::map<std::string, int> textures{};			//Container for textures
+	std::vector<FMOD::Sound*> bgmSounds{};			//Container for BGM sounds
+	std::vector<FMOD::Sound*> sfxSounds{};			//Container for SFX sounds
+	std::vector<FT_Face> fonts{};					//Container for fonts
 };
 
 extern AssetManager assetManager;

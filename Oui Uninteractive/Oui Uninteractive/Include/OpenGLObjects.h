@@ -38,7 +38,6 @@ enum class SHADER_ORDER {
 
 // External Texture Color
 extern int importTexture, secondTexture, thirdTexture;
-extern GLuint texture_id;
 
 class OpenGLObject{
 public:
@@ -87,7 +86,7 @@ public:
 	static GLuint FrameTexture;
 
 
-
+	
 
 	// encapsulates state required to render a geometrical model
 	struct OpenGLModel {
@@ -151,8 +150,9 @@ public:
 		glm::vec2 up, right;
 		glm::mat3 view_xform, CameraWindow_to_NDC_xform, World_to_NDC_xform;
 		
-		GLint height{ 1000 }; // Current Height of the depth i.e. Zoom
-		GLint min_Height{ 0 }, max_height{ 8000 };
+		GLfloat height{ 1000 }; // Current Height of the depth i.e. Zoom
+		GLfloat min_height{ 1 };
+		GLfloat max_height{ 2000 };
 
 
 		GLfloat aspectRatio;
@@ -267,6 +267,11 @@ public:
 
 	//Shaders
 	static std::vector<OpenGLShader>shdrpgms;
+
+	static void InitShaders();
+
+	static void InitFont();
+	//static void 
 
 
 private:

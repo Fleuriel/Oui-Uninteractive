@@ -50,17 +50,16 @@ GLuint OpenGLObject::FBO = 0;
 GLuint OpenGLObject::RBO = 0;
 GLuint OpenGLObject::FrameTexture = 0;
 
-// Global Variable to set it, and then use it eventually.
-int firstTexture, secondTexture, thirdTexture, camTex;
 
-GLuint texture_id; // the texture id we'll need later to create a texture 
+
+
 
 
 /**************************************************************************
-* @brief		Initialize OpenGLObject that does Model Creation for future
-*				Drawing Capabilities and Shader Emplacement.
+* @brief  Initialize OpenGLObject that does Model Creation for future
+*		  Drawing Capabilities and Shader Emplacement.
 * 
-* @WARNING _DEBUG debug draws a model of square.
+*
 * 
 * @param  none
 * @return void
@@ -70,55 +69,16 @@ void OpenGLObject::Initialize(){
 	std::cout << "OpenGLObject::Init()\n\n";
 #endif // _DEBUG
 
-	// Create file name
-	VectorPairStrStr MODELSSHADER{
-		std::make_pair<std::string, std::string>
-		("assets/shaders/Oui_Uninteractive_models.vert", "assets/shaders/Oui_Uninteractive_models.frag")
-	};
-
-	VectorPairStrStr FONTSHADER{
-		std::make_pair<std::string, std::string>
-		("assets/shaders/Oui_Uninteractive_font.vert", "assets/shaders/Oui_Uninteractive_font.frag")
-	};
-
-
-	VectorPairStrStr CAMERASHADER{
-		std::make_pair<std::string, std::string>
-		("assets/shaders/Oui_Uninteractive_camera.vert", "assets/shaders/Oui_Uninteractive_camera.frag")
-	};
-
-	// Initialize the Shader Program for Models
-	init_shdrpgms_cont(MODELSSHADER);
-
-	// Initialize the Shader Program for Fonts
-	init_shdrpgms_cont(FONTSHADER);
-
-	// Initialize the Shader Program for Fonts
-	init_shdrpgms_cont(CAMERASHADER);
-
+	// Initialize Shaders for game.
+	InitShaders();
 	// Fonts
-	// Initialize the Projection matrix for the fonts to render into the screen
-	glm::mat4 projection = glm::ortho(0.0f, static_cast<float>(windowSize.first), 0.0f, static_cast<float>(windowSize.second));
-	// Use the shader
-	shdrpgms[static_cast<int>(SHADER_ORDER::FONT)].Use();
-	glUniformMatrix4fv(glGetUniformLocation(shdrpgms[1].GetHandle(), "projection"), 1, GL_FALSE, glm::value_ptr(projection));
-
-	// For FONTS VAO and VBOs
-	glGenVertexArrays(1, &VAO);
-	glGenBuffers(1, &VBO);
-	glBindVertexArray(VAO);
-	glBindBuffer(GL_ARRAY_BUFFER, VBO);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 6 * 4, NULL, GL_DYNAMIC_DRAW);
-	glEnableVertexAttribArray(0);
-	glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 4 * sizeof(float), 0);
-	glBindBuffer(GL_ARRAY_BUFFER, 0);
-	glBindVertexArray(0);
+	InitFont();
 
 
-	firstTexture = assetManager.GetTexture("flower");
-	secondTexture = assetManager.GetTexture("bag");
-	thirdTexture = assetManager.GetTexture("mosquito");
-	camTex = assetManager.GetTexture("camera");
+	// firstTexture = assetManager.GetTexture("flower");
+	//secondTexture = assetManager.GetTexture("bag");
+	//thirdTexture = assetManager.GetTexture("mosquito");
+	//camTex = assetManager.GetTexture("camera");
 
 	// Emplace model to the model vector
 	models.emplace_back(OpenGLObject::Box_Model(color));
@@ -176,9 +136,9 @@ void OpenGLObject::Initialize(){
 
 
 /**************************************************************************************
-* @brief				Creates an OpenGLObject based on parameters set on this Box_Model
+* @brief  Creates an OpenGLObject based on parameters set on this Box_Model
 *
-* @param color			Color <R,G,B>
+* @param  color	  Color <R,G,B>
 * @return OpenGLObject  
 ***************************************************************************************/
 OpenGLObject::OpenGLModel OpenGLObject::Box_Model(glm::vec3 color){
@@ -249,14 +209,14 @@ OpenGLObject::OpenGLModel OpenGLObject::Box_Model(glm::vec3 color){
 
 
 /**************************************************************************
-* @brief		Updates each OpenGLObject with Movement, Scale rotation.
-*				Option for rotation has been added.
+* @brief  Updates each OpenGLObject with Movement, Scale rotation.
+*		  Option for rotation has been added.
 * 
-* @param float  Acceleration of x-Axis
-* @param float  Acceleration of y-Axis
-* @param float  Scale on both X and Y axes. (Might need to change)
-* @param float  Angle Rotation Speed
-* @param bool   Boolean for Rotation Enable or Disable
+* @param  float  Acceleration of x-Axis
+* @param  float  Acceleration of y-Axis
+* @param  float  Scale on both X and Y axes. (Might need to change)
+* @param  float  Angle Rotation Speed
+* @param  bool   Boolean for Rotation Enable or Disable
 * @return void
 *************************************************************************/
 void OpenGLObject::Update(float newX, float newY, float scaleX, float scaleY, float newAngle, bool enRot){
@@ -375,7 +335,7 @@ void OpenGLObject::CameraUpdate(int posX, int posY) {
 
 }
 /**************************************************************************
-* @brief		Draws the OpenGLObject.
+* @brief  Draws the OpenGLObject.
 *				
 * @param  none
 * @return void
@@ -450,34 +410,12 @@ void OpenGLObject::Cleanup(){
 
 }
 
-/**************************************************************************
-* @brief		Initialize the Shaders for Graphics Pipeline for Object to
-*				Render and/or Translate their objects.
-*
-* @param  VPSS  std::vector <std::pair<std::string, std::string>>
-* @return void
-*************************************************************************/
-void OpenGLObject::init_shdrpgms_cont(VectorPairStrStr const& vpss) {
 
-	for (auto const& x : vpss) {
-		// Create Vector for pair of Enum and String
-		std::vector<std::pair<GLenum, std::string>> shdr_files;
-		// Emplace back into the shdr_files vector
-		shdr_files.emplace_back(std::make_pair(GL_VERTEX_SHADER, x.first));
-		shdr_files.emplace_back(std::make_pair(GL_FRAGMENT_SHADER, x.second));
-		// Create Shader
-		OpenGLShader shdr_pgm;
-		// Validate the shader program (shdr_Files).
-		shdr_pgm.CompileLinkValidate(shdr_files);
-		// insert shader program into container
-		shdrpgms.emplace_back(shdr_pgm);
-	}
-}
 
 
 /**************************************************************************
-* @brief		Initialize the Shaders for Graphics Pipeline for Object to
-*				Render and/or Translate their objects.
+* @brief  Initialize the Shaders for Graphics Pipeline for Object to
+*		  Render and/or Translate their objects.
 *
 * @param  float User Input X coordinate
 * @param  float User Input Y Coordinate
@@ -551,7 +489,7 @@ void OpenGLObject::InitObjects(float userInput_x, float userInput_y, float userI
 
 
 /**************************************************************************
-* @brief		Draws a Debug Collision Box (AABB)
+* @brief  Draws a Debug Collision Box (AABB)
 *
 * @param  Vector2D	Minimum Coordinates of AABB
 * @param  Vector2D  Maximum Coordinates of AABB
@@ -654,7 +592,7 @@ int OpenGLObject::Setup_TextureObject(std::string filePath) {
 }
 
 /**************************************************************************
-* @brief		set Texture Positon, Color
+* @brief  set Texture Positon, Color
 *
 * @param  float x axis of texture
 * @param  float y axis of texture
@@ -677,7 +615,7 @@ void OpenGLObject::OpenGLModel::VAO_Object::setTextureValue(float x, float y, fl
 }
 
 /**************************************************************************
-* @brief		set Texture Positon, Color
+* @brief  set Texture Positon, Color
 *
 * @param  float s axis of texture
 * @param  float t axis of texture
@@ -698,15 +636,31 @@ void OpenGLObject::OpenGLModel::VAO_Object::setTexture(float s, float t){
 /*=======================================================================================================================*/
 /*=======================================================================================================================*/
 
-
+/**************************************************************************
+* @brief  Initialize Camera
+*
+* @param  GLFWwindow* pointer to the window
+* @param  OpenGLObject* pointer to another object to contain 
+		  position coordinates
+*
+* @return void
+*************************************************************************/
 void OpenGLObject::Camera2D::Init(GLFWwindow* camWindow, OpenGLObject* ptr) {
 
+	// Set a OpenGLObject to the pointer that is inputted, i.e. another OpenGLObject
 	Cam = ptr;
 
 
+	/* 
+					< Initialize for initial creation >	
+	Create the Frame Buffer Width and Height(This must be here as the 
+	FBuffer will update	 Every single time, it is zoom in/out /move		*/
+																	
 	GLsizei fb_width, fb_height;
+	// Get Frame buffer
 	glfwGetFramebufferSize(camWindow, &fb_width, &fb_height);
-	aspectRatio = static_cast<GLfloat>(fb_width) / fb_height;
+	// Calculate Frame buffer
+	aspectRatio = static_cast<GLfloat>(fb_width) / static_cast<GLfloat>(fb_height);
 
 
 	// compute camera's up and right vectors ...
@@ -729,15 +683,26 @@ void OpenGLObject::Camera2D::Init(GLFWwindow* camWindow, OpenGLObject* ptr) {
 		0.0f         , 2.0f / fb_height , 0.0f,
 		0.0f         , 0.0f          , 1.0f };
 
+
 	// World to NDC transform
+	// Set the World to NDC transform for the camera
 	World_to_NDC_xform = CameraWindow_to_NDC_xform * view_xform;
 
 }
-
+/**************************************************************************
+* @brief  Update Camera
+*
+* @param  GlfwWindow*  Pointer to the camera window (window to move)
+* @param  int x axis of the camera to move
+* @param  int y axis of the camera to move
+*
+* @return void
+*************************************************************************/
 void OpenGLObject::Camera2D::Update(GLFWwindow* camWindow, int positionX, int positionY) {
 
 	using glm::radians;
 
+	
 	std::pair<double, double> convertedMousePos;
 	double mouseX = 0, mouseY = 0;
 	float gameWindowMouseX = mouseX - Editor::gameWindowOrigin.first;
@@ -749,6 +714,7 @@ void OpenGLObject::Camera2D::Update(GLFWwindow* camWindow, int positionX, int po
 	//if (inputSystem.GetScrollState() == 1) 
 	if (inputSystem.GetKeyState(GLFW_KEY_UP))
 	{
+		// Height Decrement by 1.1f
 		height /= 1.1f;
 	}
 
@@ -756,33 +722,152 @@ void OpenGLObject::Camera2D::Update(GLFWwindow* camWindow, int positionX, int po
 	//if (inputSystem.GetScrollState() == -1)
 	if (inputSystem.GetKeyState(GLFW_KEY_DOWN))
 	{
+		// Height Increment by 1.1f
 		height *= 1.1f;
+	}
+	
+	// Set minimum parameter of height < Depth >
+	if (height <= min_height)
+	{
+		height = min_height;
+	}
+
+	// Set maximum parameter of height < Depth >
+	if (height >= max_height)
+	{
+		height = max_height;
 	}
 
 
-	// Compute camera window's aspect ratio
+	/*
+					< Initialize for initial creation >
+	Create the Frame Buffer Width and Height(This must be here as the
+	FBuffer will update	 Every single time, it is zoom in/out /move		*/
 	GLsizei fb_width, fb_height;
-	glfwGetFramebufferSize(windowNew, &fb_width, &fb_height);
-	aspectRatio = static_cast<GLfloat>(fb_width) / fb_height;
+	// Get Frame buffer
+	glfwGetFramebufferSize(camWindow, &fb_width, &fb_height);
+	// Calculate Frame buffer
+	aspectRatio = static_cast<GLfloat>(fb_width) / static_cast<GLfloat>(fb_height);
 
-	view_xform =
-		glm::mat3
+
+	// View Transform 
+	view_xform = glm::mat3
 	{
 		right.x, up.x, 0,
 		right.y, up.y, 0,
 		glm::dot(-right, Cam->position), glm::dot(-up, Cam->position), 1
 	};
 
+	// Camera to NDC
 	CameraWindow_to_NDC_xform = glm::mat3{
 		2.f / (height * aspectRatio), 0, 0,
 		0, 2.f / height , 0,
 		0, 0, 1
 	};
 
-
-	//std::cout << height << '\n';
-
+	// World to NDC transform
+	// Set the World to NDC transform for the camera
 	World_to_NDC_xform = CameraWindow_to_NDC_xform * view_xform;
 
-	Cam->CameraUpdate(positionX, positionY);
+	// Update the camera position using the Cam pointer
+	Cam->Update(positionX, positionY);
+}
+
+
+/*=======================================================================================================================*/
+/*=======================================================================================================================*/
+/*==================================================GRAPHIC SHADERS======================================================*/
+/*=======================================================================================================================*/
+/*=======================================================================================================================*/
+/*=======================================================================================================================*/
+
+
+/**************************************************************************
+* @brief  Initialize Shaders
+*
+* @param  no param
+*
+* @return void
+*************************************************************************/
+void OpenGLObject::InitShaders()
+{
+	// Create file name
+	VectorPairStrStr MODELSSHADER{
+		std::make_pair<std::string, std::string>
+		("assets/shaders/Oui_Uninteractive_models.vert", "assets/shaders/Oui_Uninteractive_models.frag")
+	};
+
+	VectorPairStrStr FONTSHADER{
+		std::make_pair<std::string, std::string>
+		("assets/shaders/Oui_Uninteractive_font.vert", "assets/shaders/Oui_Uninteractive_font.frag")
+	};
+
+
+	VectorPairStrStr CAMERASHADER{
+		std::make_pair<std::string, std::string>
+		("assets/shaders/Oui_Uninteractive_camera.vert", "assets/shaders/Oui_Uninteractive_camera.frag")
+	};
+
+	// Initialize the Shader Program for Models
+	init_shdrpgms_cont(MODELSSHADER);
+
+	// Initialize the Shader Program for Fonts
+	init_shdrpgms_cont(FONTSHADER);
+
+	// Initialize the Shader Program for Fonts
+	init_shdrpgms_cont(CAMERASHADER);
+}
+
+
+/**************************************************************************
+* @brief  Initialize the Shaders for Graphics Pipeline for Object to
+*		  Render and/or Translate their objects.
+*
+* @param  VPSS  std::vector <std::pair<std::string, std::string>>
+* @return void
+*************************************************************************/
+void OpenGLObject::init_shdrpgms_cont(VectorPairStrStr const& vpss) {
+
+	for (auto const& x : vpss) {
+		// Create Vector for pair of Enum and String
+		std::vector<std::pair<GLenum, std::string>> shdr_files;
+		// Emplace back into the shdr_files vector
+		shdr_files.emplace_back(std::make_pair(GL_VERTEX_SHADER, x.first));
+		shdr_files.emplace_back(std::make_pair(GL_FRAGMENT_SHADER, x.second));
+		// Create Shader
+		OpenGLShader shdr_pgm;
+		// Validate the shader program (shdr_Files).
+		shdr_pgm.CompileLinkValidate(shdr_files);
+		// insert shader program into container
+		shdrpgms.emplace_back(shdr_pgm);
+	}
+}
+
+/*=======================================================================================================================*/
+/*=======================================================================================================================*/
+/*====================================================OPENGL FONTS=======================================================*/
+/*=======================================================================================================================*/
+/*=======================================================================================================================*/
+/*=======================================================================================================================*/
+
+void OpenGLObject::InitFont()
+{
+	// Initialize the Projection matrix for the fonts to render into the screen
+	glm::mat4 projection = glm::ortho(0.0f, static_cast<float>(windowSize.first), 0.0f, static_cast<float>(windowSize.second));
+	// Use the shader
+	shdrpgms[static_cast<int>(SHADER_ORDER::FONT)].Use();
+	glUniformMatrix4fv(glGetUniformLocation(shdrpgms[1].GetHandle(), "projection"), 1, GL_FALSE, glm::value_ptr(projection));
+
+	// For FONTS VAO and VBOs
+	glGenVertexArrays(1, &VAO);
+	glGenBuffers(1, &VBO);
+	glBindVertexArray(VAO);
+	glBindBuffer(GL_ARRAY_BUFFER, VBO);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 6 * 4, NULL, GL_DYNAMIC_DRAW);
+	glEnableVertexAttribArray(0);
+	glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 4 * sizeof(float), 0);
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+	glBindVertexArray(0);
+
+
 }
