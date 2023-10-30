@@ -5,7 +5,10 @@
  * @par Course: CSD 2401
  * @par Software Engineering Project 3
  * @date 09-05-2023
- * @brief This source file contains the definition of the AssetManager class used to handle asset management
+ * @brief This source file contains the implementation of the AssetManager 
+ *        class, which is responsible for handling asset management. It 
+ *        includes functionality to load, free, and reload various types of 
+ *        assets, such as textures, sounds, and fonts, for use in the project.
  *************************************************************************/
 
 #include <GL/glew.h>
@@ -24,16 +27,30 @@
 namespace fs = std::filesystem;
 
 
-
+/**************************************************************************
+ * @brief Constructor for the AssetManager class.
+ * @param None.
+ * @return None.
+ *************************************************************************/
 AssetManager::AssetManager()
 {
 }
 
+/**************************************************************************
+ * @brief Destructor for the AssetManager class.
+ * @param None.
+ * @return None.
+ *************************************************************************/
 AssetManager::~AssetManager()
 {
     assetManager.FreeAll();
 }
 
+/**************************************************************************
+ * @brief Loads all assets, including textures, sounds, and fonts.
+ * @param None.
+ * @return None.
+ *************************************************************************/
 void AssetManager::LoadAll() {
     std::cout 
     << ((AssetManager::LoadTextures()) ? "Textures loaded successfully" : "Failed to load textures") << std::endl
@@ -41,6 +58,11 @@ void AssetManager::LoadAll() {
     << ((AssetManager::LoadFonts()) ? "Fonts loaded successfully" : "Failed to load fonts") << std::endl;
 }
 
+/**************************************************************************
+ * @brief Frees all loaded assets, including textures and sounds.
+ * @param None.
+ * @return None.
+ *************************************************************************/
 void AssetManager::FreeAll() {
     std::cout 
     << ((AssetManager::FreeTextures()) ? "Textures cleared successfully" : "Failed to clear textures") << std::endl
@@ -48,12 +70,23 @@ void AssetManager::FreeAll() {
 
 }
 
+/**************************************************************************
+ * @brief Reloads all assets, including textures and sounds.
+ * @param None.
+ * @return None.
+ *************************************************************************/
 void AssetManager::ReloadAll() {
     std::cout 
     << ((AssetManager::ReloadTextures()) ? "Textures reloaded successfully" : "Failed to reload textures") << std::endl
     << ((AssetManager::ReloadSounds()) ? "Sounds reloaded successfully" : "Failed to reload sounds") << std::endl;
 }
 
+/**************************************************************************
+ * @brief Loads textures from the specified directory.
+ * @param None.
+ * @return bool - true if textures are loaded successfully, 
+                  false if there is an error.
+ *************************************************************************/
 bool AssetManager::LoadTextures() {
 
     std::string directoryPath = "assets/texture"; // Change this to the directory of texture folder
@@ -85,11 +118,10 @@ bool AssetManager::LoadTextures() {
 }
 
 /**************************************************************************
-* @brief		Setup Texture Object into the parameters (int)
-*
-* @param  std::string filePath of the Texture.
-* @return int	Texture Handler
-*************************************************************************/
+ * @brief Sets up a texture and returns its handler.
+ * @param std::string filePath of the Texture.
+ * @return int Texture Handler.
+ *************************************************************************/
 int AssetManager::SetUpTexture(std::string filePath) {
     GLuint textureObj_Handler; // OpenGL texture object handler
 
@@ -120,24 +152,43 @@ int AssetManager::SetUpTexture(std::string filePath) {
     return textureObj_Handler;
 }
 
+/**************************************************************************
+ * @brief Get a texture by its name.
+ * @param std::string name - the name of the texture to retrieve.
+ * @return int Texture handler.
+ *************************************************************************/
 int AssetManager::GetTexture(std::string name) {
     return textures[name];
 }
 
+/**************************************************************************
+ * @brief Frees all loaded textures.
+ * @param None.
+ * @return bool - true if textures are freed successfully, 
+                  false if there is an error.
+ *************************************************************************/
 bool AssetManager::FreeTextures() {
     textures.clear();
     // Return true if the container size is 0, false otherwise.
     return textures.empty();
 }
 
+/**************************************************************************
+ * @brief Reloads all textures.
+ * @param None.
+ * @return bool - true if textures are reloaded successfully, 
+                  false if there is an error.
+ *************************************************************************/
 bool AssetManager::ReloadTextures() {
     // Return true if free and load successfully
     return (AssetManager::FreeTextures() && AssetManager::LoadTextures());
 }
 
 /**************************************************************************
-* @brief This function loads the sounds from the file directories
-* @return No return
+ * @brief Loads sounds, both background music (BGM) and sound effects (SFX).
+ * @param None.
+ * @return bool - true if both BGM and SFX are loaded successfully, 
+                  false if there is an error.
 *************************************************************************/
 bool AssetManager::LoadSounds() {
     bool bgmResult = AssetManager::LoadBGM();
@@ -147,6 +198,12 @@ bool AssetManager::LoadSounds() {
     return (bgmResult && sfxResult);
 }
 
+/**************************************************************************
+ * @brief Loads background music (BGM) from the specified directory.
+ * @param None.
+ * @return bool - true if BGM is loaded successfully, 
+                  false if there is an error.
+ *************************************************************************/
 bool AssetManager::LoadBGM() {
 
     // BGM file path
@@ -169,6 +226,12 @@ bool AssetManager::LoadBGM() {
     }
 }
 
+/**************************************************************************
+ * @brief Loads sound effects (SFX) from the specified directory.
+ * @param None.
+ * @return bool - true if SFX are loaded successfully, 
+                  false if there is an error.
+ *************************************************************************/
 bool AssetManager::LoadSFX() {
 
     // SFX file path
@@ -191,16 +254,32 @@ bool AssetManager::LoadSFX() {
     }
 }
 
+/**************************************************************************
+ * @brief Get a background music (BGM) by its index.
+ * @param int index - the index of the BGM to retrieve.
+ * @return FMOD::Sound* - a pointer to the BGM.
+ *************************************************************************/
 FMOD::Sound* AssetManager::GetBGM(int index) {
     // Return BGM
     return bgmSounds[index];
 }
 
+/**************************************************************************
+ * @brief Get a sound effect (SFX) by its index.
+ * @param int index - the index of the SFX to retrieve.
+ * @return FMOD::Sound* - a pointer to the SFX.
+ *************************************************************************/
 FMOD::Sound* AssetManager::GetSFX(int index) {
     // Return SFX
     return sfxSounds[index];
 }
 
+/**************************************************************************
+ * @brief Frees all loaded sounds, including both BGM and SFX.
+ * @param None.
+ * @return bool - true if both BGM and SFX are freed successfully, 
+                  false if there is an error.
+ *************************************************************************/
 bool AssetManager::FreeSounds() {
     // Free BGM & SFX
     bool bgmFreeResult{ AssetManager::FreeBGM() }, sfxFreeResult{ AssetManager::FreeSFX() };
@@ -211,6 +290,12 @@ bool AssetManager::FreeSounds() {
     return (bgmFreeResult && sfxFreeResult);
 }
 
+/**************************************************************************
+ * @brief Frees all loaded background music (BGM).
+ * @param None.
+ * @return bool - true if BGM is freed successfully, 
+                  false if there is an error.
+ *************************************************************************/
 bool AssetManager::FreeBGM() {
     // Free individual BGM sounds
     for (const auto& i : bgmSounds)
@@ -223,6 +308,12 @@ bool AssetManager::FreeBGM() {
     return bgmSounds.empty();
 }
 
+/**************************************************************************
+ * @brief Frees all loaded sound effects (SFX).
+ * @param None.
+ * @return bool - true if SFX are freed successfully, 
+                  false if there is an error.
+ *************************************************************************/
 bool AssetManager::FreeSFX() {
     // Free individual SFX sounds
     for (const auto& i : sfxSounds)
@@ -235,15 +326,51 @@ bool AssetManager::FreeSFX() {
     return sfxSounds.empty();
 }
 
+/**************************************************************************
+ * @brief Reloads all background music (BGM).
+ * @param None.
+ * @return bool - true if BGM is reloaded successfully, 
+                  false if there is an error.
+ *************************************************************************/
+bool AssetManager::ReloadBGM() {
+    return (AssetManager::FreeBGM() && AssetManager::LoadBGM());
+}
+
+/**************************************************************************
+ * @brief Reloads all sound effects (SFX).
+ * @param None.
+ * @return bool - true if SFX are reloaded successfully, 
+                  false if there is an error.
+ *************************************************************************/
+bool AssetManager::ReloadSFX() {
+    return (AssetManager::FreeSFX() && AssetManager::LoadSFX());
+}
+
+/**************************************************************************
+ * @brief Reloads all sounds, both BGM and SFX.
+ * @param None.
+ * @return bool - true if both BGM and SFX are reloaded successfully, 
+                  false if there is an error.
+ *************************************************************************/
 bool AssetManager::ReloadSounds() {
     // Return true if free and load successfully
     return (AssetManager::FreeSounds() && AssetManager::LoadSounds());
+
+    // Reload BGM & SFX
+    bool bgmReloadResult{ AssetManager::ReloadBGM() }, sfxReloadResult{ AssetManager::ReloadSFX() };
+    // Print results
+    std::cout << ((bgmReloadResult) ? "BGM reloaded successfully" : "Failed to reload BGM") << std::endl;
+    std::cout << ((sfxReloadResult) ? "SFX reloaded successfully" : "Failed to reload SFX") << std::endl;
+    // Return overall results
+    return (bgmReloadResult && sfxReloadResult);
 }
 
 
 /**************************************************************************
-* @brief This function loads the fonts from the file directories
-* @return No return
+ * @brief Loads fonts from the specified directory.
+ * @param None.
+ * @return bool - true if fonts are loaded successfully, 
+                  false if there is an error.
 *************************************************************************/
 bool AssetManager::LoadFonts() {
 
@@ -316,14 +443,31 @@ bool AssetManager::LoadFonts() {
     return result;
 }
 
-bool FreeFonts() {
-    return true;
-}
-
-bool ReloadFonts() {
-    return true;
-}
-
+/**************************************************************************
+ * @brief Get a font by its index.
+ * @param int index - the index of the font to retrieve.
+ * @return FT_Face - a pointer to the font.
+ *************************************************************************/
 FT_Face AssetManager::GetFont(int index) {
     return fonts[index];
+}
+
+/**************************************************************************
+ * @brief Frees loaded fonts.
+ * @param None.
+ * @return bool - true if fonts are freed successfully, 
+                  false if there is an error.
+ *************************************************************************/
+bool AssetManager::FreeFonts() {
+    return true;
+}
+
+/**************************************************************************
+ * @brief Reloads fonts.
+ * @param None.
+ * @return bool - true if fonts are reloaded successfully, 
+                  false if there is an error.
+ *************************************************************************/
+bool AssetManager::ReloadFonts() {
+    return true;
 }
