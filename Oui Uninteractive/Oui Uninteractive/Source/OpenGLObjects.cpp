@@ -770,7 +770,7 @@ void OpenGLObject::Camera2D::Update(GLFWwindow* camWindow, int positionX, int po
 	World_to_NDC_xform = CameraWindow_to_NDC_xform * view_xform;
 
 	// Update the camera position using the Cam pointer
-	Cam->Update(positionX, positionY);
+	Cam->CameraUpdate(positionX, positionY);
 }
 
 
