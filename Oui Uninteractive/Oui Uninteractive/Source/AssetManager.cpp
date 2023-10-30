@@ -445,14 +445,7 @@ bool AssetManager::LoadFonts() {
     return result;
 }
 
-/**************************************************************************
- * @brief Get a font by its index.
- * @param int index - the index of the font to retrieve.
- * @return FT_Face - a pointer to the font.
- *************************************************************************/
-FT_Face AssetManager::GetFont(int index) {
-    return fonts[index];
-}
+
 
 /**************************************************************************
  * @brief Frees loaded fonts.

@@ -55,10 +55,6 @@ public:
 	int GetTexture(std::string);					//Function to access textures
 	FMOD::Sound* GetBGM(int);						//Function to access BGM sounds
 	FMOD::Sound* GetSFX(int);						//Function to access SFX Sounds
-	FT_Face GetFont(int);							//Function to access fonts
-	int GetTexture(std::string);
-	FMOD::Sound* GetBGM(int);
-	FMOD::Sound* GetSFX(int);
 
 public:
 	//Containers
