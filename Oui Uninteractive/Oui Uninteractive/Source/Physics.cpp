@@ -81,10 +81,10 @@ void Physics::Update(float dt) {
 			Vec2 previousVelocity = body->velocity;
 			if (collider != nullptr) {
 
-				body->velocity = body->velocity * (collider->contactTime) + body->acceleration * sysManager->fixedDeltaTime;//GetDT();//* sysManager->fixedDeltaTime;
+				body->velocity = body->velocity * (collider->contactTime) + body->acceleration * static_cast<float>(sysManager->fixedDeltaTime);//GetDT();//* sysManager->fixedDeltaTime;
 			}
 			else {
-				body->velocity = body->velocity + body->acceleration * sysManager->fixedDeltaTime;
+				body->velocity = body->velocity + body->acceleration * static_cast<float>(sysManager->fixedDeltaTime);
 			}
 			
 			
@@ -93,13 +93,13 @@ void Physics::Update(float dt) {
 			//Position	
 			body->txPtr->previousPosition = body->txPtr->position;
 
-			body->txPtr->position = body->txPtr->position + (body->velocity * sysManager->fixedDeltaTime);//* sysManager->fixedDeltaTime;
+			body->txPtr->position = body->txPtr->position + (body->velocity * static_cast<float>(sysManager->fixedDeltaTime));//* sysManager->fixedDeltaTime;
 			
 			//Rotation
 			body->txPtr->rotation = body->txPtr->rotation + body->currentRotationSpeed * dt;
 			if (body->txPtr->rotation >= 360.0f || body->txPtr->rotation <= -360.0f)
 				body->txPtr->rotation = 0.0f;
-			body->forceManager.Update(sysManager->fixedDeltaTime);
+			body->forceManager.Update(static_cast<float>(sysManager->fixedDeltaTime));
 		
 		}
 	}

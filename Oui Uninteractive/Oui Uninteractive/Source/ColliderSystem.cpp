@@ -89,8 +89,8 @@ void ColliderSystem::Update(float dt) {
 				bool collided = false;
 				Vec2 normal = Vec2(0, 0);
 				float depth = 0.f;
-				Vec2 nextCycleVel = pBody1->velocity + pBody1->forceManager.CalculateResultantForce() * pBody1->mass * sysManager->fixedDeltaTime;
-				collided = CollisionMovingRectRect(*(collider->boundingbox), *(body2->boundingbox), nextCycleVel, contactTime, normal, sysManager->fixedDeltaTime, depth, collider->wasColliding, collider->contactNormal);
+				Vec2 nextCycleVel = pBody1->velocity + pBody1->forceManager.CalculateResultantForce() * pBody1->mass * static_cast<float>(sysManager->fixedDeltaTime);
+				collided = CollisionMovingRectRect(*(collider->boundingbox), *(body2->boundingbox), nextCycleVel, contactTime, normal, static_cast<float>(sysManager->fixedDeltaTime), depth, collider->wasColliding, collider->contactNormal);
 				if (collided) {
 					collider->wasColliding = true;
 					body2->wasColliding = true;
@@ -104,8 +104,6 @@ void ColliderSystem::Update(float dt) {
 
 						//coll response
 
-						PhysicsBody* pBody1 = physicsSys->bodyList[collider->GetOwner()->GetGameObjectID()];
-						PhysicsBody* pBody2 = physicsSys->bodyList[body2->GetOwner()->GetGameObjectID()];
 
 						if (pBody2->isStatic) {
 
