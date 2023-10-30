@@ -45,7 +45,7 @@ Collider::Collider() {
 	boundingbox->max = Vec2(0, 0);
 	contactTime = 0;
 	contactNormal = Vec2(0, 0);
-
+	wasColliding = false;
 	tx = new Transform();
 
 	boundingbox->txPtr = tx;

@@ -206,7 +206,7 @@ float CalculateEntryTimeAndNormal(Collider::AABB* Rect1, Collider::AABB* Rect2, 
 	
 	
 }
-bool MovingPointRectCollision(Vec2 origin, Vec2 direction, Collider::AABB target, Vec2& contactPoint, Vec2& contactNormal, float& contactTime, float& depth) {
+bool MovingPointRectCollision(Vec2 origin, Vec2 direction, Collider::AABB target, Vec2& contactNormal, float& contactTime, float& depth) {
 	float tNearX = (target.min.x - origin.x) / direction.x;
 	float tFarX = (target.max.x - origin.x) / direction.x;
 	
@@ -262,7 +262,7 @@ bool MovingPointRectCollision(Vec2 origin, Vec2 direction, Collider::AABB target
 		return false;
 	}
 
-	contactPoint = origin + (direction * contactTime);
+	//contactPoint = origin + (direction * contactTime);
 
 	if (tNearX > tNearY) {
 		if (direction.x > 0) {
@@ -286,21 +286,54 @@ bool MovingPointRectCollision(Vec2 origin, Vec2 direction, Collider::AABB target
 	}
 	return true;
 }
-bool CollisionMovingRectRect(Collider::AABB A, Collider::AABB B, Vec2 AVel, Vec2 BVel, float& contactTime, Vec2& normal, Vec2& contactPoint, float dt, float& depth) {
-		
-	if (AVel.x == 0 && AVel.y == 0) {
+bool CollisionMovingRectRect(Collider::AABB A, Collider::AABB B, Vec2 AVel, float& contactTime, Vec2& normal, float dt, float& depth, bool AWasColliding, Vec2 prevContactNormal) {
+	if ((AVel.x == 0 && AVel.y == 0)) {
 		return false;
 	}
+	Vec2 test3 ;
+	Vec2 test2;
+
+	//Vector2DNormalize(test3, B.center - A.center);
+	//Vector2DNormalize(test2, AVel);
+	//float dotProduct = Vector2DDotProduct(test3, test2);
+	
 	Collider expanded_target;
 	expanded_target.boundingbox->center = B.center;
 	expanded_target.boundingbox->max = Vec2(B.max.x + A.txPtr->scale / 2, B.max.y + A.txPtr->scale / 2);
 	expanded_target.boundingbox->min = Vec2(B.min.x - A.txPtr->scale / 2, B.min.y - A.txPtr->scale / 2);
-	float test = 0.f;
+	float newDepth = 0.f;
 
-	if (MovingPointRectCollision(A.center, AVel * dt, *(expanded_target.boundingbox), contactPoint, normal, contactTime, test)) {
+	if (MovingPointRectCollision(A.center, AVel * dt, *(expanded_target.boundingbox), normal, contactTime, newDepth)) {
+		
 		
 		if (contactTime <= 1.0f) {
-			depth = test;
+
+			if (prevContactNormal.x != 0) {
+				if (prevContactNormal.x > 0) {
+					if (AVel.x > 0) {
+						return false;
+					}
+				}
+				if (prevContactNormal.x < 0) {
+					if (AVel.x < 0) {
+						return false;
+					}
+				}
+			}
+			if (prevContactNormal.y != 0) {
+				if (prevContactNormal.y > 0) {
+					if (AVel.y > 0) {
+						return false;
+					}
+				}
+				if (prevContactNormal.y < 0) {
+					if (AVel.y < 0) {
+						return false;
+					}
+				}
+			}
+			
+			depth = newDepth;
 			return true;
 		}
 	}
