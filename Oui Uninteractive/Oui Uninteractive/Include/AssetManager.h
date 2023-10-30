@@ -61,7 +61,7 @@ public:
 	std::map<std::string, int> textures{};
 	std::vector<FMOD::Sound*> bgmSounds{};
 	std::vector<FMOD::Sound*> sfxSounds{};
-	std::map<std::string, std::map<char, FontManager::Character>> fontCharsMap; // This map stores all characters for all fonts
+	std::map<std::string, std::map<char, FontManager::Character>> fontCharsMap; // This map stores all glyphs for all fonts
 };
 
 extern AssetManager assetManager;
