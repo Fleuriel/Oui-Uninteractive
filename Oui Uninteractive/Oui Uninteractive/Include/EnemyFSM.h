@@ -47,7 +47,7 @@ public:
 				playerPos = playerTx->position;
 			}
 
-			Transform* enemyTx = GET_COMPONENT(objectFactory->GetGameObjectByName("JSONPlayer"), Transform, ComponentType::TRANSFORM);
+			Transform* enemyTx = GET_COMPONENT(objectFactory->GetGameObjectByName("JSONEnemy1"), Transform, ComponentType::TRANSFORM);
 			
 			if (enemyTx != nullptr) {
 				enemyPos = enemyTx->position;

@@ -99,7 +99,6 @@ void ColliderSystem::Update(float dt) {
 						Vector2DNormalize(normal, normal);
 						CollisionMessage collisionMessage(collider, body2, depth, normal);
 						ProcessMessage(&collisionMessage);
-
 					}
 					else {
 

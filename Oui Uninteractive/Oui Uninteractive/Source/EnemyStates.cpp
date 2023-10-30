@@ -24,25 +24,28 @@ const int mapHeight = 10;
 int gameMap[mapWidth][mapHeight];
 
 struct Node {
-    int x, y;       // Position on the map.
-    Node* parent;   // Parent node in the path.
+    // Position of node
+    float x, y;
+    
+    // Parent node of path
+    Node* parent;
 
-    Node(int _x, int _y) : x(_x), y(_y), parent(nullptr) {}
+    Node(int x_, int y_) : x(x_), y(y_), parent(nullptr) {}
 };
 
-std::vector<Node*> BFS(int startX, int startY, int goalX, int goalY) {
+std::vector<Node*> BFS(int startX, int startY, int targetX, int targetY) {
     std::queue<Node*> openSet;
     std::vector<Node*> path;
 
-    Node* startNode = new Node(startX, startY);
-    Node* goalNode = new Node(goalX, goalY);
+    Node* startNode{ new Node(startX, startY) };
+    Node* goalNode{ new Node(targetX, targetY) };
 
     openSet.push(startNode);
 
     while (!openSet.empty()) {
         Node* currentNode = openSet.front();
         openSet.pop();
-        std::cout << "HERE??\n";
+
         if (currentNode->x == goalNode->x && currentNode->y == goalNode->y) {
             // Goal reached, reconstruct the path.
             Node* current = currentNode;
@@ -61,6 +64,9 @@ std::vector<Node*> BFS(int startX, int startY, int goalX, int goalY) {
 
                 int newX = currentNode->x + dx;
                 int newY = currentNode->y + dy;
+
+
+                // For neighbour check, if top/bot/left/right is a wall, cannot traverse to that side's corners
 
                 if (newX < 0 || newX >= mapWidth || newY < 0 || newY >= mapHeight) continue;
                 if (gameMap[newX][newY] == 1) continue;  // Obstacle check.
@@ -81,6 +87,10 @@ std::vector<Node*> BFS(int startX, int startY, int goalX, int goalY) {
 
     return path;
 }
+
+void followPath() {
+
+}
 // BFS TO BE MOVED TO ANOTHER FILE
 
 void EnemyRoam::Update(size_t gameObjectID) {
@@ -99,6 +109,7 @@ void EnemyRoam::Update(size_t gameObjectID) {
     for (Node* node : path) {
         delete node;
     }*/
+    
 }
 
 void EnemyAttack::Update(size_t gameObjectID) {
