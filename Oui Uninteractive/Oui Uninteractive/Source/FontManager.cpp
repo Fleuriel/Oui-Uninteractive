@@ -68,9 +68,13 @@ void FontManager::RenderText(std::string text, float xPos, float yPos, float sca
 	// < TAKE NOTE THAT THIS IS BOTTOM LEFT RENDERING >
 	
 	// Loop through entire string
+	// Use Font shader
 	OpenGLObject::shdrpgms[static_cast<int>(SHADER_ORDER::FONT)].Use();
+	// Set font Shadering
 	OpenGLObject::shdrpgms[static_cast<int>(SHADER_ORDER::FONT)].SetUniform("textColor", color.x, color.y, color.z);
+	// Bind active texture to Texture0 
 	glActiveTexture(GL_TEXTURE0);
+	// Bind Vertex Array to The OpenGLObject's VAO
 	glBindVertexArray(OpenGLObject::VAO);
 	
 	for (std::string::const_iterator it = text.begin(); it != text.end(); it++) {
@@ -96,24 +100,32 @@ void FontManager::RenderText(std::string text, float xPos, float yPos, float sca
 			{ renderX + renderWidth,	renderY,					1.0f, 1.0f },
 			{ renderX + renderWidth,	renderY + renderHeight,		1.0f, 0.0f }
 		};
-	
-		// render glyph texture over quad
+
+		//			< For Each Font >
+
+
+		// Bind the texture to the glyph texture ID.
 		glBindTexture(GL_TEXTURE_2D, ch.glyphTexID);
-		// update content of VBO memory
+		// Bind the Buffer to GL Array Buffer, set to OpenGLObject's VBO.
 		glBindBuffer(GL_ARRAY_BUFFER, OpenGLObject::VBO);
-		glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(vertices), vertices);        
+		// Set BufferSubData
+		glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(vertices), vertices);
+
+		// Unbind Buffer as it has been used already.
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
-		// render quad
+		// Render using glDrawArrays OR glDrawElements
 		glDrawArrays(GL_TRIANGLES, 0, 6);
-		// now advance cursors for next glyph (note that advance is number of 1/64 pixels)
 	
 		// Move cursor to next glyph
 		xPos += (ch.advance >> 6) * scale;
 	}
 	
+	// Unbind the Vertex Array
 	glBindVertexArray(0);
+	// Unbind the Texture.
 	glBindTexture(GL_TEXTURE_2D, 0);
 	
+	// Unuse the font shader.
 	OpenGLObject::shdrpgms[static_cast<int>(SHADER_ORDER::FONT)].UnUse();
 }
 
