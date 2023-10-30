@@ -39,6 +39,8 @@ public:
 	bool FreeSounds();
 	bool FreeBGM();
 	bool FreeSFX();
+	bool ReloadBGM();
+	bool ReloadSFX();
 	bool ReloadSounds();
 	
 

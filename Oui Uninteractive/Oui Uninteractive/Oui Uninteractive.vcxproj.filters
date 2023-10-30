@@ -256,6 +256,9 @@
     <ClCompile Include="Source\UI.cpp">
       <Filter>Systems\UI</Filter>
     </ClCompile>
+    <ClCompile Include="Source\EnemyStates.cpp">
+      <Filter>States\EnemyStates</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Include\Matrix3x3.h">
@@ -387,7 +390,13 @@
     <ClInclude Include="Include\Collider.h">
       <Filter>Component\Collider</Filter>
     </ClInclude>
-    <ClInclude Include="EnemyAIScript.h">
+    <ClInclude Include="Include\EnemyAIScript.h">
+      <Filter>Scripts</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\EnemyFSM.h">
+      <Filter>Scripts</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\PlayerShooting.h">
       <Filter>Scripts</Filter>
     </ClInclude>
     <ClInclude Include="Include\EnemyStates.h">

@@ -67,7 +67,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\lib\stb-master\stb_image.h" />
-    <ClInclude Include="EnemyAIScript.h" />
     <ClInclude Include="Include\AI.h" />
     <ClInclude Include="Include\Animation.h" />
     <ClInclude Include="Include\AssetManager.h" />
@@ -79,6 +78,7 @@
     <ClInclude Include="Include\ComponentType.h" />
     <ClInclude Include="Include\CoordinateSystem.h" />
     <ClInclude Include="Include\Editor.h" />
+    <ClInclude Include="Include\EnemyAIScript.h" />
     <ClInclude Include="Include\EnemyFSM.h" />
     <ClInclude Include="Include\EnemyStates.h" />
     <ClInclude Include="Include\FontManager.h" />
