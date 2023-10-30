@@ -100,7 +100,7 @@ void ForceManager::Update(float dt) {
 	int currIndex = 0;
 	for (LinearForce* force : forceVec) {
 		if (force->isActive) {
-			force->age += GetDT();
+			force->age += dt;
 			if (force->age >= force->lifetime) {
 				DeactivateForce(currIndex);
 			}

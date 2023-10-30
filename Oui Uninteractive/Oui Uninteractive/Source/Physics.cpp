@@ -51,10 +51,9 @@ void Physics::Initialize() {
 void Physics::Update(float dt) {
 	// Start time profiling for physics system
 	TimeProfiler profiler(Editor::timeRecorder.physicsTime);
-	//for (int step = 0; step < sysManager->currentNumberOfSteps; step++) {
+	for (int step = 0; step < sysManager->currentNumberOfSteps; step++) {
 	
-	std::map<size_t, PhysicsBody*>::iterator it = bodyList.begin();
-	std::map<size_t, PhysicsBody*>::iterator it2 = bodyList.begin();
+		std::map<size_t, PhysicsBody*>::iterator it = bodyList.begin();
 		for (; it != bodyList.end(); it++) {
 			
 			PhysicsBody* body = it->second;
@@ -82,10 +81,10 @@ void Physics::Update(float dt) {
 			Vec2 previousVelocity = body->velocity;
 			if (collider != nullptr) {
 
-				body->velocity = body->velocity * (collider->contactTime) + body->acceleration * GetDT();//* sysManager->fixedDeltaTime;
+				body->velocity = body->velocity * (collider->contactTime) + body->acceleration * sysManager->fixedDeltaTime;//GetDT();//* sysManager->fixedDeltaTime;
 			}
 			else {
-				body->velocity = body->velocity + body->acceleration * GetDT();
+				body->velocity = body->velocity + body->acceleration * sysManager->fixedDeltaTime;
 			}
 			
 			
@@ -94,16 +93,16 @@ void Physics::Update(float dt) {
 			//Position	
 			body->txPtr->previousPosition = body->txPtr->position;
 
-			body->txPtr->position = body->txPtr->position + (body->velocity * GetDT());//* sysManager->fixedDeltaTime;
+			body->txPtr->position = body->txPtr->position + (body->velocity * sysManager->fixedDeltaTime);//* sysManager->fixedDeltaTime;
 			
 			//Rotation
 			body->txPtr->rotation = body->txPtr->rotation + body->currentRotationSpeed * dt;
 			if (body->txPtr->rotation >= 360.0f || body->txPtr->rotation <= -360.0f)
 				body->txPtr->rotation = 0.0f;
-			body->forceManager.Update(dt);
+			body->forceManager.Update(sysManager->fixedDeltaTime);
 		
 		}
-	//}
+	}
 	
 
 }
