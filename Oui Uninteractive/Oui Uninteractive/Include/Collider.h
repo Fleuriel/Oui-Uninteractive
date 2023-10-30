@@ -29,6 +29,8 @@ public:
 	AABB* boundingbox;
 	float contactTime;
 	Vec2 contactNormal;
+
+	bool wasColliding;
 	
 
 };
