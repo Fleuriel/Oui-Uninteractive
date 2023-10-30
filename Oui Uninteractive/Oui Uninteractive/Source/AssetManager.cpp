@@ -373,19 +373,66 @@ bool AssetManager::ReloadSounds() {
                   false if there is an error.
 *************************************************************************/
 bool AssetManager::LoadFonts() {
-
     // File paths to the respetive fonts
     std::filesystem::path fontPath{ "assets/fonts/" };
-
     bool result{ true };
-
     if (fs::is_directory(fontPath)) {
         for (const auto& entry : fs::directory_iterator(fontPath)) {
+            // Temp map to store currently loaded font glyphs            
+            std::map<char, FontManager::Character> tempMap;
+
+            // Load font typefaces
             FT_Face newFace;
             fontManager->result = FT_New_Face(fontManager->ft, entry.path().string().c_str(), 0, &newFace);
             if (!fontManager->result)
                 std::cout << "Successfully loaded font: " << entry.path().filename().string() << std::endl;
-            fonts.push_back(newFace);
+
+            // Set font sizes for current font
+            FT_Set_Pixel_Sizes(newFace, 0, 48);
+            // Disable byte alignment restriction
+            glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+            // Load 128 chars of ASCII
+            for (unsigned char ch = 0; ch < 128; ch++) {
+                // Load the glyphs for current font
+                if (FT_Load_Char(newFace, ch, FT_LOAD_RENDER)) { // Returns non 0 if fail
+                    std::cout << "Character load failure: '" << ch << "'" << std::endl;
+                    continue;
+                }
+                // Generate individual textures
+                GLuint tex;
+                glGenTextures(1, &tex);
+                glBindTexture(GL_TEXTURE_2D, tex);
+                glTexImage2D(
+                    GL_TEXTURE_2D,
+                    0,
+                    GL_RED,
+                    newFace->glyph->bitmap.width,
+                    newFace->glyph->bitmap.rows,
+                    0,
+                    GL_RED,
+                    GL_UNSIGNED_BYTE,
+                    newFace->glyph->bitmap.buffer
+                );
+                // Texture settings
+                glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+                glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+                glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+                glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+                // Store character
+                FontManager::Character character = {
+                    tex,
+                    glm::vec2(newFace->glyph->bitmap.width, newFace->glyph->bitmap.rows),
+                    glm::vec2(newFace->glyph->bitmap_left, newFace->glyph->bitmap_top),
+                    newFace->glyph->advance.x
+                };
+                // Insert chars of font into char map
+                tempMap.insert(std::pair<char, FontManager::Character>(ch, character));
+                // Insert entire map into master font container                
+            }
+            fontCharsMap.insert(std::make_pair(entry.path().filename().string(), tempMap));
+            std::cout << entry.path().filename().string() << ", characters successfully loaded" << std::endl;
+            // Free up faces
+            FT_Done_Face(newFace);
         }
     }
     else {
@@ -393,53 +440,8 @@ bool AssetManager::LoadFonts() {
         std::cout << "The specified font path is not a directory." << std::endl;
         result = false;
     }
-
-    // Set font sizes
-    FT_Set_Pixel_Sizes(assetManager.GetFont(0), 0, 48);
-    // Disable byte alignment restriction
-    glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
-    // Load 128 chars of ASCII
-    for (unsigned char ch = 0; ch < 128; ch++) {
-        // Load the glyphs
-        if (FT_Load_Char(assetManager.GetFont(0), ch, FT_LOAD_RENDER)) { // Returns non 0 if fail
-            std::cout << "Character load failure: '" << ch << "'" << std::endl;
-            continue;
-        }
-        // Generate individual textures
-        GLuint tex;
-        glGenTextures(1, &tex);
-        glBindTexture(GL_TEXTURE_2D, tex);
-        glTexImage2D(
-            GL_TEXTURE_2D,
-            0,
-            GL_RED,
-            assetManager.GetFont(0)->glyph->bitmap.width,
-            assetManager.GetFont(0)->glyph->bitmap.rows,
-            0,
-            GL_RED,
-            GL_UNSIGNED_BYTE,
-            assetManager.GetFont(0)->glyph->bitmap.buffer
-        );
-        // Texture settings
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-        // Store character
-        FontManager::Character character = {
-            tex,
-            glm::vec2(assetManager.GetFont(0)->glyph->bitmap.width, assetManager.GetFont(0)->glyph->bitmap.rows),
-            glm::vec2(assetManager.GetFont(0)->glyph->bitmap_left, assetManager.GetFont(0)->glyph->bitmap_top),
-            assetManager.GetFont(0)->glyph->advance.x
-        };
-        fontManager->charactersMap.insert(std::pair<char, FontManager::Character>(ch, character));
-    }
-    std::cout << "Characters successfully loaded" << std::endl;
-    // Free up faces
-    FT_Done_Face(assetManager.GetFont(0));
     // Free FreeType
     FT_Done_FreeType(fontManager->ft);
-
     return result;
 }
 
@@ -459,15 +461,5 @@ FT_Face AssetManager::GetFont(int index) {
                   false if there is an error.
  *************************************************************************/
 bool AssetManager::FreeFonts() {
-    return true;
-}
-
-/**************************************************************************
- * @brief Reloads fonts.
- * @param None.
- * @return bool - true if fonts are reloaded successfully, 
-                  false if there is an error.
- *************************************************************************/
-bool AssetManager::ReloadFonts() {
     return true;
 }

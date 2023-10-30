@@ -56,13 +56,16 @@ public:
 	FMOD::Sound* GetBGM(int);						//Function to access BGM sounds
 	FMOD::Sound* GetSFX(int);						//Function to access SFX Sounds
 	FT_Face GetFont(int);							//Function to access fonts
+	int GetTexture(std::string);
+	FMOD::Sound* GetBGM(int);
+	FMOD::Sound* GetSFX(int);
 
-private:
+public:
 	//Containers
-	std::map<std::string, int> textures{};			//Container for textures
-	std::vector<FMOD::Sound*> bgmSounds{};			//Container for BGM sounds
-	std::vector<FMOD::Sound*> sfxSounds{};			//Container for SFX sounds
-	std::vector<FT_Face> fonts{};					//Container for fonts
+	std::map<std::string, int> textures{};
+	std::vector<FMOD::Sound*> bgmSounds{};
+	std::vector<FMOD::Sound*> sfxSounds{};
+	std::map<std::string, std::map<char, FontManager::Character>> fontCharsMap; // This map stores all characters for all fonts
 };
 
 extern AssetManager assetManager;

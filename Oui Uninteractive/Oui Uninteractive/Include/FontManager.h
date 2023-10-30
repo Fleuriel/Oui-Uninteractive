@@ -42,11 +42,11 @@ public:
 		GLuint advance; // Horizontal offset to next glyph
 	};
 	// Container for characters
-	std::map<char, Character> charactersMap;
+	std::map<char, Character> individualCharMap;
 
 	//void RenderText(std::string text, float xPos, float yPos, float scale, float rot); // Function to render text
 
-	void RenderText(std::string text, float xPos, float yPos, float scale, glm::vec3 color); // Function to render text
+	void RenderText(std::string fontName, std::string text, float xPos, float yPos, float scale, glm::vec3 color); // Function to render text
 
 	FT_Library ft;
 
