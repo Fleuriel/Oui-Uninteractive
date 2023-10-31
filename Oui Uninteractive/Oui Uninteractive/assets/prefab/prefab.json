@@ -3,7 +3,7 @@
   "Objects": [
     {
       "Name": "Player",
-      "Components": ["PhysicsBody", "Transform"]
+      "Components": ["PhysicsBody", "Transform", "Collider", "LogicComponent"]
     },
     {
       "Name": "Enemy",
