@@ -221,7 +221,7 @@ void Editor::CreatePrefabPanel() {
 
 	{
 		ImGui::BeginChild("left pane", ImVec2(150, 0), true);
-		ImGui::Selectable("");
+		ImGui::Selectable("temp");
 
 		ImGui::EndChild();
 	}
