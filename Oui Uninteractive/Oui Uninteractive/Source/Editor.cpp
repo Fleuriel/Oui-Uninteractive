@@ -575,7 +575,21 @@ void Editor::CreateObjectList() {
 *************************************************************************/
 void Editor::CreateAssetBrowser() {
 	ImGui::Begin("Asset Browser");
-	ImGui::Text("Teest");
+	if (ImGui::Button("Refresh")) {
+
+	}
+	ImGui::BeginChild("LeftPane", ImVec2(200, 0), true);  // Use 200 width first, can change later. Dynamically size height for now
+	RenderDirectory("assets"); 
+	ImGui::EndChild();
+
+	ImGui::SameLine();
+
+	// Right Pane
+	{
+		ImGui::Text("Teest2");
+
+	}
+	
 	ImGui::End();
 }
 
@@ -685,4 +699,21 @@ void Editor::CreateDebugPanel() {
 	ImGui::End();
 }
 	
-	
+// Recursive helper function to render the file directory for the asset browser	
+void Editor::RenderDirectory(const std::string& filePath) {
+	// Render folder directories
+	for (auto& entry : std::filesystem::directory_iterator(filePath)) {
+		if (entry.is_directory()) {
+			if (ImGui::TreeNode(entry.path().filename().string().c_str())) {
+				RenderDirectory(entry.path().string());
+				ImGui::TreePop();
+			}
+		}
+	}
+	// Render individual files
+	for (auto& entry : std::filesystem::directory_iterator(filePath)) {
+		if (!entry.is_directory()) {
+			ImGui::Selectable(entry.path().filename().string().c_str());
+		}
+	}
+}

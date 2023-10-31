@@ -71,6 +71,8 @@ public:
 	static void CreateDebugPanel();
 	static void CreateAssetBrowser();
 
+	static void RenderDirectory(const std::string& path); // Helper function to render asset browser directory
+
 public:
 	bool soundPanel;
 	static std::pair<int, int> gameWindowOrigin;
