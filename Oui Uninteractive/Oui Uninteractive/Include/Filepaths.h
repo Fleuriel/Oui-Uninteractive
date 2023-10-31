@@ -12,30 +12,30 @@
 #define FILEPATHS_H
 
 // MASTER ASSETS FOLDER //
-#define FILEPATH_MASTER				std::string("assets")
+#define FILEPATH_MASTER						std::string("assets")
 
 // WINDOW //
-#define FILEPATH_WINDOWDATA			std::string("assets/window-data/window-data.JSON")
+#define FILEPATH_WINDOWDATA					std::string("assets/window-data/window-data.JSON")
 
 // EDITOR //
-#define FILEPATH_IMGUI				"assets/imgui.ini"
+#define FILEPATH_IMGUI						"assets/imgui.ini"
 
 // FONTS //
-#define FILEPATH_FONTS				std::string("assets/fonts")
+#define FILEPATH_FONTS						std::string("assets/fonts")
 
 // TEXTURES //
-#define FILEPATH_TEXTURES			std::string("assets/texture")
+#define FILEPATH_TEXTURES					std::string("assets/texture")
 
 // SOUNDS // 
-#define FILEPATH_SOUNDS_BGM			std::string("assets/sounds/bgm")
-#define FILEPATH_SOUNDS_SFX			std::string("assets/sounds/sfx")
+#define FILEPATH_SOUNDS_BGM					std::string("assets/sounds/bgm")
+#define FILEPATH_SOUNDS_SFX					std::string("assets/sounds/sfx")
 
 // SCENES //
-#define FILEPATH_SCENES_TESTWALLS	std::string("assets/scenes/TestWalls.JSON")
-#define FILEPATH_SCENES_TESTSCENEREADING std::string("assets/scenes/TestsceneReading.JSON")
-#define FILEPATH_SCENES_TESTSCENEWRITING std::string("assets/scenes/TestsceneWriting.JSON")
+#define FILEPATH_SCENES_TESTWALLS			std::string("assets/scenes/TestWalls.JSON")
+#define FILEPATH_SCENES_TESTSCENEREADING	std::string("assets/scenes/TestsceneReading.JSON")
+#define FILEPATH_SCENES_TESTSCENEWRITING	std::string("assets/scenes/TestsceneWriting.JSON")
 
 // PREFABS //
-#define FILEPATH_PREFAB				std::string("assets/prefab/Prefab.JSON")
+#define FILEPATH_PREFAB						std::string("assets/prefab/Prefab.JSON")
 
 #endif
