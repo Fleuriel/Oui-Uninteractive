@@ -4,8 +4,8 @@
  * @par DP email: l.wangchunmark@digipen.edu
  * @par Course: CSD 2401
  * @par Software Engineering Project 3
- * @date 13-09-2023
- * @brief This header file contains all the filepaths to assets
+ * @date 1-11-2023
+ * @brief This header file contains all the filepaths to the respective assets
  *************************************************************************/
 
 #ifndef FILEPATHS_H
