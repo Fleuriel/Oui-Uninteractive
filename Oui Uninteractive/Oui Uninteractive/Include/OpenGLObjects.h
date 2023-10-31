@@ -147,6 +147,8 @@ public:
 
 		OpenGLObject *Cam;
 
+		GLfloat posX, posY;
+
 		glm::vec2 up, right;
 		glm::mat3 view_xform, CameraWindow_to_NDC_xform, World_to_NDC_xform;
 		
@@ -171,7 +173,7 @@ public:
 		void Update(GLFWwindow*, int, int);
 
 	};
-
+	static glm::mat4 projection;
 	static OpenGLObject cameraTranslator;
 	static Camera2D cameraObject;
 
@@ -272,7 +274,7 @@ public:
 
 	static void InitFont();
 	//static void 
-
+	static void FrameBufferMouseCoords(GLFWwindow*, double *x, double *y, Camera2D);
 
 private:
 

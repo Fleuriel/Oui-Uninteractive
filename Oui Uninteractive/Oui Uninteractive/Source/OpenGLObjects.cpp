@@ -35,7 +35,7 @@ unsigned int OpenGLObject::shd_ref = 0; // Define and initialize shd_ref
 
 OpenGLObject OpenGLObject::cameraTranslator(9); 
 OpenGLObject::Camera2D OpenGLObject::cameraObject;
-
+glm::mat4 OpenGLObject::projection;
 
 // Vector for shdrpgms
 std::vector<OpenGLShader> OpenGLObject::shdrpgms;
@@ -291,7 +291,8 @@ void OpenGLObject::CameraUpdate(int posX, int posY) {
 
 	position = glm::vec2(posX, posY);
 
-
+	cameraObject.posX = posX;
+	cameraObject.posY = posY;
 
 	// in case user does not set, angleDisplacement will be in the range of
 	// 0 ~ 360 || -360 ~ 0
@@ -712,7 +713,7 @@ void OpenGLObject::Camera2D::Update(GLFWwindow* camWindow, int positionX, int po
 
 	// ZOOM in
 	//if (inputSystem.GetScrollState() == 1) 
-	if (inputSystem.GetKeyState(GLFW_KEY_UP))
+	if (inputSystem.GetKeyState(GLFW_KEY_UP) == 2)
 	{
 		// Height Decrement by 1.1f
 		height /= 1.1f;
@@ -720,7 +721,7 @@ void OpenGLObject::Camera2D::Update(GLFWwindow* camWindow, int positionX, int po
 
 	// ZOOM OUT
 	//if (inputSystem.GetScrollState() == -1)
-	if (inputSystem.GetKeyState(GLFW_KEY_DOWN))
+	if (inputSystem.GetKeyState(GLFW_KEY_DOWN) == 2)
 	{
 		// Height Increment by 1.1f
 		height *= 1.1f;
@@ -768,6 +769,7 @@ void OpenGLObject::Camera2D::Update(GLFWwindow* camWindow, int positionX, int po
 	// World to NDC transform
 	// Set the World to NDC transform for the camera
 	World_to_NDC_xform = CameraWindow_to_NDC_xform * view_xform;
+	
 
 	// Update the camera position using the Cam pointer
 	Cam->CameraUpdate(positionX, positionY);
@@ -853,7 +855,7 @@ void OpenGLObject::init_shdrpgms_cont(VectorPairStrStr const& vpss) {
 void OpenGLObject::InitFont()
 {
 	// Initialize the Projection matrix for the fonts to render into the screen
-	glm::mat4 projection = glm::ortho(0.0f, static_cast<float>(windowSize.first), 0.0f, static_cast<float>(windowSize.second));
+	projection = glm::ortho(0.0f, static_cast<float>(windowSize.first), 0.0f, static_cast<float>(windowSize.second));
 	// Use the shader
 	shdrpgms[static_cast<int>(SHADER_ORDER::FONT)].Use();
 	glUniformMatrix4fv(glGetUniformLocation(shdrpgms[1].GetHandle(), "projection"), 1, GL_FALSE, glm::value_ptr(projection));
@@ -870,4 +872,147 @@ void OpenGLObject::InitFont()
 	glBindVertexArray(0);
 
 
+}
+
+
+/*=======================================================================================================================*/
+/*=======================================================================================================================*/
+/*=======================================================OTHERS==========================================================*/
+/*=======================================================================================================================*/
+/*=======================================================================================================================*/
+/*=======================================================================================================================*/
+
+
+void OpenGLObject::FrameBufferMouseCoords(GLFWwindow* originalWindow, double  *x, double *y, OpenGLObject::Camera2D camera)
+{
+
+
+	
+//	int fbWidth, fbHeight;
+//	glfwGetFramebufferSize(originalWindow, &fbWidth, &fbHeight);
+//	
+//	//std::cout << "Original Window Size X :" << windowSize.first << " , Y: " << windowSize.second << '\n';
+//	//std::cout << "Minused. : " << windowSize.first - Editor::gameWindowSize.first << " , Y: " << windowSize.second - Editor::gameWindowSize.second << '\n';
+//	//std::cout << "Editor : " << Editor::gameWindowSize.first << '\t' << Editor::gameWindowSize.second << '\n';
+//	
+//	
+//	double minUseX = windowSize.first - Editor::gameWindowSize.first;
+//	double minUseY = windowSize.second - Editor::gameWindowSize.second;
+//	
+//	
+//	double centerX = minUseX + Editor::gameWindowSize.first / 2.0f;
+//	double centerY = minUseY + Editor::gameWindowSize.second / 2.0f;
+//	
+//	
+//	// Calculate the corrected coordinates
+//	double correctedX = (*x - centerX) + camera.posX * (camera.height)/ camera.max_height;
+//	double correctedY = centerY - *y + camera.posY;  // Note the y-coordinate inversion
+//	std::cout << camera.height << '\t' << correctedX << '\t' << correctedY << '\n';
+//
+//	*x = correctedX;
+//	*y = correctedY;
+//	// Calculate the initial coordinates relative to the frame buffer's center.
+//	// Calculate the initial coordinates relative to the frame buffer's center.
+//	// Calculate the initial coordinates relative to the frame buffer's center.
+//  // Calculate the initial coordinates relative to the frame buffer's center.
+//	//double centerX = Editor::gameWindowSize.first / 2.0;
+//	//double centerY = Editor::gameWindowSize.second / 2.0;
+//	//
+//	//// Calculate the aspect ratio of the frame buffer.
+//	//double aspectRatio = static_cast<double>(Editor::gameWindowSize.first) / static_cast<double>(Editor::gameWindowSize.second);
+//	//
+//	//// Calculate the left, right, bottom, and top based on camera height and aspect ratio.
+//	//double halfHeight = camera.height / 2.0;
+//	//double halfWidth = halfHeight * aspectRatio;
+//	//
+//	//// Calculate the projection matrix.
+//	////glm::mat4 projection = glm::ortho(centerX - halfWidth, centerX + halfWidth, centerY - halfHeight, centerY + halfHeight, -1.0f, 1.0f);
+//	//
+//	//// Apply the projection matrix to the coordinates.
+//	//glm::vec4 clipCoords((*x - centerX), (centerY - *y), 0.0f, 1.0f);
+//	//glm::vec4 worldCoords = glm::inverse(projection) * clipCoords;
+//	//
+//	//*x = worldCoords.x;
+//	//*y = worldCoords.y;
+//	//
+//	//// Adjust for the camera's position in the world.
+//	//*x += camera.posX;
+//	//*y += camera.posY;
+//
+//	//std::cout << *x << '\t' << *y  << '\n';
+
+
+
+
+
+	double minUseX = windowSize.first - Editor::gameWindowSize.first;
+	double minUseY = windowSize.second - Editor::gameWindowSize.second;
+
+	double centerX = minUseX + Editor::gameWindowSize.first / 2.0;
+	double centerY = minUseY + Editor::gameWindowSize.second / 2.0;
+
+	// Calculate corrected coordinates relative to the camera's position.
+	double correctedX = (*x - centerX) + camera.posX;
+	double correctedY = centerY - *y + camera.posY;  // Note the y-coordinate inversion
+
+	// Adjust for the projection matrix and inverse it.
+	projection = glm::ortho(-camera.height * camera.aspectRatio, camera.height * camera.aspectRatio, -camera.height, camera.height, -1.0f, 1.0f);
+	glm::mat4 inverseProjection = glm::inverse(projection);
+
+	// Calculate inverse height factor (1/height).
+	double invHeight = 1.0 / camera.height;
+
+	// Adjust corrected coordinates by the inverse height.
+	//correctedX *= invHeight;
+	//correctedY *= invHeight;
+
+	// Update *x and *y with the adjusted values.
+	*x = correctedX;
+	*y = correctedY;
+
+	// Create screen coordinates vector.
+	glm::vec4 screenCoords(*x, *y, 0.0f, 1.0f);
+
+	std::cout << "x: " << *x << "\t y: " << *y << '\t';
+
+	// Calculate world coordinates using the inverse projection matrix.
+	glm::vec4 worldCoords = (inverseProjection * screenCoords);
+
+	// Update *x and *y with the world coordinates.
+	*x = worldCoords.x * 1 / camera.height;
+	*y = worldCoords.y / camera.height;
+
+	//std::cout << "AFTER\n";
+	std::cout << "x: " << *x  << "\t y: " << *y << '\n';
+
+
+
+	//int fbWidth, fbHeight;
+	//glfwGetFramebufferSize(originalWindow, &fbWidth, &fbHeight);
+	//
+	//float NDC_x = (2.0f * *x) / fbWidth - 1.0f;
+	//float NDC_y = 1.0f - (2.0f * *y) / fbHeight;
+	//
+	//
+	//glm::mat4 inverseProjection = glm::inverse(projection);
+	//glm::vec4 clipCoordsA(NDC_x, NDC_y, 0.0f, 1.0f);
+	//glm::vec4 clipCoords = inverseProjection * clipCoordsA;
+	//
+	//
+	//clipCoords.x /= camera.height; // Adjust for zoom (scaling) in x
+	//clipCoords.y /= camera.height; // Adjust for zoom (scaling) in y
+	//clipCoords.z = 0;
+	////clipCoords.z /= camera.depth;  // Adjust for depth (z-axis)
+	//glm::mat3 viewTransform = glm::mat3{
+	//1.0f, 0.0f, 0.0f,
+	//0.0f, 1.0f, 0.0f,
+	//-camera.posX, -camera.posY, 1.0f
+	//};
+	//
+	//glm::vec3 worldCoords = viewTransform * glm::vec3(clipCoords);
+	//
+	//*x = worldCoords.x;
+	//*y = worldCoords.y;
+	//
+	//std::cout << *x << '\t' << *y << '\n';
 }
