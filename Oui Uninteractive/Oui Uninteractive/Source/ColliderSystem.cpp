@@ -98,15 +98,8 @@ void ColliderSystem::Update(float dt) {
 			
 					if (!pBody2->isStatic) {
 
-						/*Vector2DNormalize(normal, normal);
-						CollisionMessage collisionMessage(collider, body2, depth, normal);
-						ProcessMessage(&collisionMessage);*/
-
 						pBody1->forceManager.DeactivateForce(0);
 						pBody1->forceManager.DeactivateForce(1);
-					/*	if (contactTime < 0.f) {
-							contactTime = 0.f;
-						}*/
 						collider->contactTime = contactTime;
 						collider->contactNormal = normal;
 						body2->contactTime = 0.f;
@@ -114,24 +107,14 @@ void ColliderSystem::Update(float dt) {
 
 					}
 					else {
-
 						//coll response
-
-
 						if (pBody2->isStatic) {
-
 							pBody1->forceManager.DeactivateForce(0);
 							pBody1->forceManager.DeactivateForce(1);
-							/*if (contactTime < 0.f) {
-								contactTime = 0.f;
-							}*/
 							collider->contactTime = contactTime;
 							collider->contactNormal = normal;
 						}
-						//else if (pBody1->isStatic) {
-						//	pBody2->txPtr->position += (-normal) * depth;
-						//	pBody2->velocity += normal * depth;//* msg->GetFirstCollider()->contactTime;
-						//}
+						
 					}
 				}
 
