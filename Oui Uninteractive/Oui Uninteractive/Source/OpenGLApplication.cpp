@@ -405,7 +405,7 @@ void OpenGLApplication::OpenGLUpdate() {
 	}
 
 	if (inputSystem.GetMouseState(GLFW_MOUSE_BUTTON_LEFT)) {
-		assetManager.ReloadAll();
+		//assetManager.ReloadAll();
 #ifdef _DEBUG
 		std::cout << "LCLICK\n";
 #endif
