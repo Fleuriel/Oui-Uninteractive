@@ -175,7 +175,7 @@ void OpenGLApplication::OpenGLWindowCleanup() {
 		serializer.WriteJSONFile(filePath, windowDoc);
 	};
 
-
+	assetManager.FreeAll();
 	myImGui.Exit();
 	glfwTerminate();
 }
