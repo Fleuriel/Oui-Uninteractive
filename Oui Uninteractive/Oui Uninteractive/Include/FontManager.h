@@ -31,8 +31,6 @@ public:
 	
 	// To store FreeType result codes
 	int result; 
-	// Container for fonts
-	std::vector<FT_Face> fontVec{};
 
 	// Struct to store character data
 	struct Character {
@@ -43,8 +41,6 @@ public:
 	};
 	// Container for characters
 	std::map<char, Character> individualCharMap;
-
-	//void RenderText(std::string text, float xPos, float yPos, float scale, float rot); // Function to render text
 
 	void RenderText(std::string fontName, std::string text, float xPos, float yPos, float scale, glm::vec3 color); // Function to render text
 

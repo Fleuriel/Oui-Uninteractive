@@ -43,6 +43,8 @@ AssetManager::AssetManager()
  *************************************************************************/
 AssetManager::~AssetManager()
 {
+    // Free FreeType
+    FT_Done_FreeType(fontManager->ft);
     assetManager.FreeAll();
 }
 
@@ -439,9 +441,7 @@ bool AssetManager::LoadFonts() {
         // Print error
         std::cout << "The specified font path is not a directory." << std::endl;
         result = false;
-    }
-    // Free FreeType
-    FT_Done_FreeType(fontManager->ft);
+    }  
     return result;
 }
 
@@ -454,5 +454,6 @@ bool AssetManager::LoadFonts() {
                   false if there is an error.
  *************************************************************************/
 bool AssetManager::FreeFonts() {
+    fontManager->individualCharMap.clear();
     return true;
 }

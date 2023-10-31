@@ -47,7 +47,7 @@ public:
 
 	// Fonts
 	bool LoadFonts();								//Function to load fonts
-	bool FreeFonts();								//Function to free fonts
+	bool FreeFonts();						//Function to free fonts
 	bool ReloadFonts();								//Function to reload fonts
 
 
