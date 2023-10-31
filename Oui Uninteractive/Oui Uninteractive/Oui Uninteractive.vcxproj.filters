@@ -196,9 +196,6 @@
     <ClCompile Include="Source\main.cpp">
       <Filter>Engine</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Mapping.cpp">
-      <Filter>Engine\Mapping</Filter>
-    </ClCompile>
     <ClCompile Include="Source\CoordinateSystem.cpp">
       <Filter>Engine\CoordinateSystem</Filter>
     </ClCompile>
@@ -232,9 +229,6 @@
     <ClCompile Include="Source\Scene2.cpp">
       <Filter>Scenes</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Animation.cpp">
-      <Filter>Graphics</Filter>
-    </ClCompile>
     <ClCompile Include="Source\ParticleSystem.cpp">
       <Filter>ParticleSystem</Filter>
     </ClCompile>
@@ -258,6 +252,9 @@
     </ClCompile>
     <ClCompile Include="Source\EnemyStates.cpp">
       <Filter>States\EnemyStates</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Transition.cpp">
+      <Filter>Graphics</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -330,9 +327,6 @@
     <ClInclude Include="Include\GameObject.h">
       <Filter>Composition</Filter>
     </ClInclude>
-    <ClInclude Include="Include\Mapping.h">
-      <Filter>Engine\Mapping</Filter>
-    </ClInclude>
     <ClInclude Include="Include\CoordinateSystem.h">
       <Filter>Engine\CoordinateSystem</Filter>
     </ClInclude>
@@ -375,9 +369,6 @@
     <ClInclude Include="Include\IMessage.h">
       <Filter>Message</Filter>
     </ClInclude>
-    <ClInclude Include="Include\Animation.h">
-      <Filter>Graphics</Filter>
-    </ClInclude>
     <ClInclude Include="Include\ParticleSystem.h">
       <Filter>ParticleSystem</Filter>
     </ClInclude>
@@ -413,6 +404,9 @@
     </ClInclude>
     <ClInclude Include="Include\UI.h">
       <Filter>Systems\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\Transition.h">
+      <Filter>Graphics</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

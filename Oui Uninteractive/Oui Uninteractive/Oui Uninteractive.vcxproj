@@ -28,7 +28,6 @@
     <ClCompile Include="..\lib\imgui-docking\implot.cpp" />
     <ClCompile Include="..\lib\imgui-docking\implot_items.cpp" />
     <ClCompile Include="Source\AI.cpp" />
-    <ClCompile Include="Source\Animation.cpp" />
     <ClCompile Include="Source\AssetManager.cpp" />
     <ClCompile Include="Source\Background.cpp" />
     <ClCompile Include="Source\Collider.cpp" />
@@ -62,13 +61,13 @@
     <ClCompile Include="Source\SystemManager.cpp" />
     <ClCompile Include="Source\Transform.cpp" />
     <ClCompile Include="Source\TransformSystem.cpp" />
+    <ClCompile Include="Source\Transition.cpp" />
     <ClCompile Include="Source\UI.cpp" />
     <ClCompile Include="Source\Vector2D.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\lib\stb-master\stb_image.h" />
     <ClInclude Include="Include\AI.h" />
-    <ClInclude Include="Include\Animation.h" />
     <ClInclude Include="Include\AssetManager.h" />
     <ClInclude Include="Include\Background.h" />
     <ClInclude Include="Include\Collider.h" />
@@ -114,6 +113,7 @@
     <ClInclude Include="Include\TestScript.h" />
     <ClInclude Include="Include\Transform.h" />
     <ClInclude Include="Include\TransformSystem.h" />
+    <ClInclude Include="Include\Transition.h" />
     <ClInclude Include="Include\UI.h" />
     <ClInclude Include="Include\Vector2D.h" />
   </ItemGroup>
