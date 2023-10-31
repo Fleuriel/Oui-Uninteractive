@@ -10,6 +10,7 @@
 #ifndef EDITOR_H
 #define EDITOR_H
 
+#include <filesystem>
 #include <vector>
 #include <fstream>
 #include <chrono>
@@ -64,6 +65,7 @@ public:
 	void Update();
 	static void CreateRenderWindow();
 	static void CreateMasterPanel();
+	static void CreatePrefabPanel();
 	static void CreateSoundPanel();
 	static void CreateObjectList();
 	static void CreateDebugPanel();
@@ -100,12 +102,13 @@ struct SystemTime {
 static SystemTime timeRecorder;
 
 private:
-
+	static std::vector<std::string> prefabList;
 };
 
 // Store panel selection
 struct Panels {
 	bool gamePanel{ true };
+	bool prefabPanel{ true };
 	bool soundPanel;
 	bool objectPanel;
 	bool debugPanel;

@@ -16,6 +16,7 @@ Editor::SystemTime Editor::timeRecorder;
 std::vector<float> Editor::fpsData;
 std::pair<int, int> Editor::gameWindowOrigin;
 std::pair<int, int> Editor::gameWindowSize;
+std::vector<std::string> prefabList;
 
 
 /**************************************************************************
@@ -91,6 +92,9 @@ void UsingImGui::Draw() {
 	if (panelList.gamePanel) {
 		Editor::CreateRenderWindow();
 	}
+	if (panelList.prefabPanel) {
+		Editor::CreatePrefabPanel();
+	}
 	if (panelList.soundPanel) {
 		Editor::CreateSoundPanel();
 	}
@@ -157,12 +161,14 @@ void Editor::CreateMasterPanel() {
 	ImGui::Begin("Master Control Panel");
 	ImGui::Text("Show panels:");
 	ImGui::Checkbox("Game Window", &panelList.gamePanel); // Checkbox for sound panel
+	ImGui::Checkbox("Prefab Editor", &panelList.prefabPanel); // Checkbox for prefab editor panel
 	ImGui::Checkbox("Sound Panel", &panelList.soundPanel); // Checkbox for sound panel
-	ImGui::Checkbox("Objects Panel", &panelList.objectPanel); // Checkbox for sound panel
+	ImGui::Checkbox("Objects Panel", &panelList.objectPanel); // Checkbox for object manager panel
 	ImGui::Checkbox("Debug Panel", &panelList.debugPanel); // Checkbox for debug panel
 	// The "do smth" button. Interchangable quick access button used for quick testing of features
 	if (ImGui::Button("Do Something")) {
-		std::cout << "fk u";
+		objectFactory->DestroyAllObjects();
+		objectFactory->BuildObjectFromFile("assets/scenes/TestWalls.JSON");
 	}
 	ImGui::End();
 }
@@ -186,6 +192,53 @@ void Editor::CreateRenderWindow() {
 		//ImGui::Image(reinterpret_cast<ImTextureID>(0), wsize, ImVec2(0, 1), ImVec2(1, 0));
 		ImGui::Image(reinterpret_cast<ImTextureID>(OpenGLObject::FrameTexture), wsize, ImVec2(0.0f, 1.0f), ImVec2(1.0f, 0.0f)); // Replace thirdTexture with handle to FBO when graphics done rendering to FBO
 		ImGui::EndChild();
+	}
+	ImGui::End();
+}
+
+
+
+/**************************************************************************
+* @brief This function creates the prefab editor window
+* @return void
+*************************************************************************/
+void Editor::CreatePrefabPanel() {
+	ImGui::Begin("Prefab Editor");
+
+	// Refresh list of prefabs from file directory
+	if (ImGui::Button("Refresh List")) {
+		std::filesystem::path prefabPath{ "assets/prefab" };
+		if (std::filesystem::is_directory(prefabPath)) {
+			for (const auto& entry : std::filesystem::directory_iterator(prefabPath)) {
+				
+			}
+		}
+	}
+	ImGui::SameLine();
+	ImGui::Button("Save");
+	
+	// Left Plane
+
+	{
+		ImGui::BeginChild("left pane", ImVec2(150, 0), true);
+		ImGui::Selectable("");
+
+		ImGui::EndChild();
+	}
+	ImGui::SameLine();
+
+
+	// Right Plane
+	{
+		ImGui::BeginGroup();
+		ImGui::BeginChild("item view", ImVec2(0, -ImGui::GetFrameHeightWithSpacing())); // Leave room for 1 line below
+	
+		ImGui::Button("Test");
+
+
+		ImGui::EndChild();
+
+		ImGui::EndGroup();
 	}
 	ImGui::End();
 }
@@ -299,7 +352,7 @@ void Editor::CreateObjectList() {
 	// Right Plane
 	{
 		ImGui::BeginGroup();
-		ImGui::BeginChild("item view", ImVec2(0, -ImGui::GetFrameHeightWithSpacing())); // Leave room for 1 line below us
+		ImGui::BeginChild("item view", ImVec2(0, -ImGui::GetFrameHeightWithSpacing())); // Leave room for 1 line below
 		// Detail Tab
 		if (ImGui::CollapsingHeader("Details")) {
 			static float xPos = 0, yPos = 0, scale = 0, speed = 0, angle = 0, rotSpeed = 0;
