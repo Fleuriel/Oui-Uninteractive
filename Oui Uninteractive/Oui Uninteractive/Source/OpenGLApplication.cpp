@@ -98,10 +98,10 @@ AssetManager assetManager;
 *************************************************************************/
 void OpenGLApplication::OpenGLWindowInit() {
 	// Read window size from JSON
-	std::string filePath = "assets/window-data/window-data.JSON";
+	//std::string filePath = "assets/window-data/window-data.JSON";
 	rapidjson::Document windowDoc;
 	// Initialize window dimensions from JSON
-	if (serializer.ReadJSONFile(filePath, windowDoc)) {
+	if (serializer.ReadJSONFile(FILEPATH_WINDOWDATA, windowDoc)) {
 		windowSize.first = windowDoc["windowX"].GetInt();
 		windowSize.second = windowDoc["windowY"].GetInt();
 	}
@@ -167,12 +167,12 @@ void OpenGLApplication::OpenGLWindowInit() {
 *************************************************************************/
 void OpenGLApplication::OpenGLWindowCleanup() {
 	// Save window size
-	std::string filePath = "assets/window-data/window-data.JSON";
+	//std::string filePath = "assets/window-data/window-data.JSON";
 	rapidjson::Document windowDoc;
-	if (serializer.ReadJSONFile(filePath, windowDoc) && windowSize.first != 0 && windowSize.second != 0) {
+	if (serializer.ReadJSONFile(FILEPATH_WINDOWDATA, windowDoc) && windowSize.first != 0 && windowSize.second != 0) {
 		windowDoc["windowX"] = windowSize.first;
 		windowDoc["windowY"] = windowSize.second;
-		serializer.WriteJSONFile(filePath, windowDoc);
+		serializer.WriteJSONFile(FILEPATH_WINDOWDATA, windowDoc);
 	};
 
 	assetManager.FreeAll();

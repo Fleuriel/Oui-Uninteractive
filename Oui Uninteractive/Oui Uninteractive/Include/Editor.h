@@ -31,6 +31,7 @@
 #include "Input.h"
 #include "OpenGLObjects.h"
 #include "FontManager.h"
+#include "Filepaths.h"
 
 #define GET_COMPONENT(GameObject, Component, ComponentType) (GameObject->GetComponentType<Component>(ComponentType))
 

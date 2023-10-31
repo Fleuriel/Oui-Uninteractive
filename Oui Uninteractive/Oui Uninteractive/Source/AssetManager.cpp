@@ -22,6 +22,7 @@
 #include "AssetManager.h"
 #include "Sound.h"
 #include "FontManager.h"
+#include "Filepaths.h"
 
 
 namespace fs = std::filesystem;
@@ -91,11 +92,11 @@ void AssetManager::ReloadAll() {
  *************************************************************************/
 bool AssetManager::LoadTextures() {
 
-    std::string directoryPath = "assets/texture"; // Change this to the directory of texture folder
+    //std::string directoryPath = "assets/texture"; // Change this to the directory of texture folder
 
-    if (fs::is_directory(directoryPath)) {
-        for (const auto& entry : fs::directory_iterator(directoryPath)) {
-            std::string texFilePath = directoryPath + "/" + entry.path().filename().string();
+    if (fs::is_directory(FILEPATH_TEXTURES)) {
+        for (const auto& entry : fs::directory_iterator(FILEPATH_TEXTURES)) {
+            std::string texFilePath = FILEPATH_TEXTURES + "/" + entry.path().filename().string();
             //std::cout << "Texture file " << texFilePath << " Found." << std::endl;
             
             size_t pos = entry.path().filename().string().find_last_of('.');
@@ -209,10 +210,10 @@ bool AssetManager::LoadSounds() {
 bool AssetManager::LoadBGM() {
 
     // BGM file path
-    std::filesystem::path bgmPath{ "assets/sounds/bgm" };
+    //std::filesystem::path bgmPath{ "assets/sounds/bgm" };
 
-    if (fs::is_directory(bgmPath)) {
-        for (const auto& entry : fs::directory_iterator(bgmPath)) {
+    if (fs::is_directory(FILEPATH_SOUNDS_BGM)) {
+        for (const auto& entry : fs::directory_iterator(FILEPATH_SOUNDS_BGM)) {
             FMOD::Sound* newSound;
             soundManager->result = soundManager->system->createSound(entry.path().string().c_str(), FMOD_DEFAULT, 0, &newSound);
             if (soundManager->result != FMOD_OK)
@@ -237,10 +238,10 @@ bool AssetManager::LoadBGM() {
 bool AssetManager::LoadSFX() {
 
     // SFX file path
-    std::filesystem::path sfxPath{ "assets/sounds/sfx" };
+    //std::filesystem::path sfxPath{ "assets/sounds/sfx" };
 
-    if (fs::is_directory(sfxPath)) {
-        for (const auto& entry : fs::directory_iterator(sfxPath)) {
+    if (fs::is_directory(FILEPATH_SOUNDS_SFX)) {
+        for (const auto& entry : fs::directory_iterator(FILEPATH_SOUNDS_SFX)) {
             FMOD::Sound* newSound;
             soundManager->result = soundManager->system->createSound(entry.path().string().c_str(), FMOD_DEFAULT, 0, &newSound);
             if (soundManager->result != FMOD_OK)
@@ -376,10 +377,10 @@ bool AssetManager::ReloadSounds() {
 *************************************************************************/
 bool AssetManager::LoadFonts() {
     // File paths to the respetive fonts
-    std::filesystem::path fontPath{ "assets/fonts/" };
+    //std::filesystem::path fontPath{ "assets/fonts/" };
     bool result{ true };
-    if (fs::is_directory(fontPath)) {
-        for (const auto& entry : fs::directory_iterator(fontPath)) {
+    if (fs::is_directory(FILEPATH_FONTS)) {
+        for (const auto& entry : fs::directory_iterator(FILEPATH_FONTS)) {
             // Temp map to store currently loaded font glyphs            
             std::map<char, FontManager::Character> tempMap;
 

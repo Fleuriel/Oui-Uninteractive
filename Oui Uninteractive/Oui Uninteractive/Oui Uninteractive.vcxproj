@@ -80,6 +80,7 @@
     <ClInclude Include="Include\EnemyAIScript.h" />
     <ClInclude Include="Include\EnemyFSM.h" />
     <ClInclude Include="Include\EnemyStates.h" />
+    <ClInclude Include="Include\Filepaths.h" />
     <ClInclude Include="Include\FontManager.h" />
     <ClInclude Include="Include\GameObject.h" />
     <ClInclude Include="Include\GameStateManager.h" />
