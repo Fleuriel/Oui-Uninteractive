@@ -6,8 +6,8 @@
             "Type": "Player",
             "Components": {
                 "PhysicsBody": {
-                    "VelocityX": 0.0,
-                    "VelocityY": 0.0,
+                    "VelocityX": 6.878220858673666e-21,
+                    "VelocityY": 8.024593829063428e-21,
                     "RotationSpeed": 200.0,
                     "Speed": 50.0,
                     "Mass": 10.0,
@@ -15,8 +15,8 @@
                     "FrictionForce": 20.0
                 },
                 "Transform": {
-                    "PositionX": -250.0,
-                    "PositionY": 200.0,
+                    "PositionX": 332.4920349121094,
+                    "PositionY": -110.0017318725586,
                     "Rotation": 0.0,
                     "Scale": 200.0
                 },
@@ -38,7 +38,7 @@
             "Components": {
                 "PhysicsBody": {
                     "VelocityX": 0.0,
-                    "VelocityY": 0.0,
+                    "VelocityY": -481.9726867675781,
                     "RotationSpeed": 20.0,
                     "Speed": 120.0,
                     "Mass": 10.0,
@@ -47,7 +47,7 @@
                 },
                 "Transform": {
                     "PositionX": 50.0,
-                    "PositionY": -200.0,
+                    "PositionY": -86011.3203125,
                     "Rotation": 0.0,
                     "Scale": 130.0
                 },
@@ -77,7 +77,7 @@
                     "FrictionForce": 20.0
                 },
                 "Transform": {
-                    "PositionX": 200.0,
+                    "PositionX": -344.45001220703125,
                     "PositionY": 100.0,
                     "Rotation": 30.0,
                     "Scale": 220.0
@@ -131,13 +131,6 @@
                     "PositionY": 50.0,
                     "Rotation": 0.0,
                     "Scale": 100.0
-                },
-                "Collider": {
-                    "ColliderSize": 100.0,
-                    "ColliderRotation": 0.0
-                },
-                "LogicComponent": {
-                    "ScriptID": []
                 }
             }
         },
@@ -147,7 +140,7 @@
             "Components": {
                 "PhysicsBody": {
                     "VelocityX": 0.0,
-                    "VelocityY": 0.0,
+                    "VelocityY": -30.124176025390625,
                     "RotationSpeed": 20.0,
                     "Speed": 120.0,
                     "Mass": 10.0,
@@ -156,7 +149,7 @@
                 },
                 "Transform": {
                     "PositionX": 50.0,
-                    "PositionY": -200.0,
+                    "PositionY": -5690.5595703125,
                     "Rotation": 0.0,
                     "Scale": 130.0
                 },

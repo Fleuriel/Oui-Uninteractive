@@ -306,32 +306,7 @@ bool CollisionMovingRectRect(Collider::AABB A, Collider::AABB B, Vec2 AVel, floa
 	if (MovingPointRectCollision(A.center, AVel * dt, *(expanded_target.boundingbox), normal, contactTime, newDepth)) {
 		
 		
-		if (contactTime <= 1.0f) {
-
-			if (prevContactNormal.x != 0) {
-				if (prevContactNormal.x > 0) {
-					if (AVel.x > 0) {
-						return false;
-					}
-				}
-				if (prevContactNormal.x < 0) {
-					if (AVel.x < 0) {
-						return false;
-					}
-				}
-			}
-			if (prevContactNormal.y != 0) {
-				if (prevContactNormal.y > 0) {
-					if (AVel.y > 0) {
-						return false;
-					}
-				}
-				if (prevContactNormal.y < 0) {
-					if (AVel.y < 0) {
-						return false;
-					}
-				}
-			}
+		if (contactTime <= 1.0f && contactTime >= 0.f) {
 			
 			depth = newDepth;
 			return true;
