@@ -164,6 +164,7 @@ void Editor::CreateMasterPanel() {
 	ImGui::Checkbox("Prefab Editor", &panelList.prefabPanel); // Checkbox for prefab editor panel
 	ImGui::Checkbox("Sound Panel", &panelList.soundPanel); // Checkbox for sound panel
 	ImGui::Checkbox("Objects Panel", &panelList.objectPanel); // Checkbox for object manager panel
+	ImGui::Checkbox("Asset Browser", & panelList.assetBrowserPanel); // Checkbox for asset browser
 	ImGui::Checkbox("Debug Panel", &panelList.debugPanel); // Checkbox for debug panel
 	// The "do smth" button. Interchangable quick access button used for quick testing of features
 	if (ImGui::Button("Do Something")) {
@@ -565,7 +566,16 @@ void Editor::CreateObjectList() {
 }
 
 
-/**************************************************************************
+/*************************************************************************
+* @brief This function creates the asset browser panel used to peruse content
+* @return void
+*************************************************************************/
+void Editor::CreateAssetBrowser() {
+	
+}
+
+
+/*************************************************************************
 * @brief This function creates debug panel used to troubleshoot issues
 * @return void
 *************************************************************************/

@@ -43,9 +43,7 @@ AssetManager::AssetManager()
  *************************************************************************/
 AssetManager::~AssetManager()
 {
-    // Free FreeType
-    FT_Done_FreeType(fontManager->ft);
-    assetManager.FreeAll();
+    //assetManager.FreeAll();
 }
 
 /**************************************************************************

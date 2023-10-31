@@ -69,6 +69,7 @@ public:
 	static void CreateSoundPanel();
 	static void CreateObjectList();
 	static void CreateDebugPanel();
+	static void CreateAssetBrowser();
 
 public:
 	bool soundPanel;
@@ -111,6 +112,7 @@ struct Panels {
 	bool prefabPanel{ true };
 	bool soundPanel;
 	bool objectPanel;
+	bool assetBrowserPanel;
 	bool debugPanel;
 };
 static Panels panelList;
