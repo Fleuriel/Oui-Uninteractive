@@ -43,7 +43,7 @@ AssetManager::AssetManager()
  *************************************************************************/
 AssetManager::~AssetManager()
 {
-    assetManager.FreeAll();
+    //assetManager.FreeAll();
 }
 
 /**************************************************************************
@@ -66,7 +66,8 @@ void AssetManager::LoadAll() {
 void AssetManager::FreeAll() {
     std::cout 
     << ((AssetManager::FreeTextures()) ? "Textures cleared successfully" : "Failed to clear textures") << std::endl
-    << ((AssetManager::FreeSounds()) ? "Sounds freed successfully" : "Failed to free sounds") << std::endl;
+    << ((AssetManager::FreeSounds()) ? "Sounds freed successfully" : "Failed to free sounds") << std::endl
+    << ((AssetManager::FreeFonts()) ? "Fonts freed successfully" : "Failed to free fonts") << std::endl;
 
 }
 
@@ -76,9 +77,10 @@ void AssetManager::FreeAll() {
  * @return None.
  *************************************************************************/
 void AssetManager::ReloadAll() {
-    std::cout 
-    << ((AssetManager::ReloadTextures()) ? "Textures reloaded successfully" : "Failed to reload textures") << std::endl
-    << ((AssetManager::ReloadSounds()) ? "Sounds reloaded successfully" : "Failed to reload sounds") << std::endl;
+    std::cout
+        << ((AssetManager::ReloadTextures()) ? "Textures reloaded successfully" : "Failed to reload textures") << std::endl
+        << ((AssetManager::ReloadSounds()) ? "Sounds reloaded successfully" : "Failed to reload sounds") << std::endl
+        << ((AssetManager::ReloadFonts()) ? "Fonts reloaded successfully" : "Failed to reload fonts") << std::endl;
 }
 
 /**************************************************************************
@@ -439,9 +441,7 @@ bool AssetManager::LoadFonts() {
         // Print error
         std::cout << "The specified font path is not a directory." << std::endl;
         result = false;
-    }
-    // Free FreeType
-    FT_Done_FreeType(fontManager->ft);
+    }  
     return result;
 }
 
@@ -454,5 +454,10 @@ bool AssetManager::LoadFonts() {
                   false if there is an error.
  *************************************************************************/
 bool AssetManager::FreeFonts() {
-    return true;
+    fontManager->individualCharMap.clear();
+    return fontManager->individualCharMap.empty();
+}
+
+bool AssetManager::ReloadFonts() {
+    return AssetManager::FreeFonts() && AssetManager::LoadFonts();
 }

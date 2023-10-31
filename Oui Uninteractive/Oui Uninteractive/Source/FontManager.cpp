@@ -136,6 +136,7 @@ void FontManager::RenderText(std::string fontName, std::string text, float xPos,
 * @return No return
 *************************************************************************/
 FontManager::~FontManager() {
-
+	// Free freetype
+	FT_Done_FreeType(fontManager->ft);
 }
 

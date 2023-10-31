@@ -290,13 +290,7 @@ bool CollisionMovingRectRect(Collider::AABB A, Collider::AABB B, Vec2 AVel, floa
 	if ((AVel.x == 0 && AVel.y == 0)) {
 		return false;
 	}
-	Vec2 test3 ;
-	Vec2 test2;
 
-	//Vector2DNormalize(test3, B.center - A.center);
-	//Vector2DNormalize(test2, AVel);
-	//float dotProduct = Vector2DDotProduct(test3, test2);
-	
 	Collider expanded_target;
 	expanded_target.boundingbox->center = B.center;
 	expanded_target.boundingbox->max = Vec2(B.max.x + A.txPtr->scale / 2, B.max.y + A.txPtr->scale / 2);
@@ -304,35 +298,7 @@ bool CollisionMovingRectRect(Collider::AABB A, Collider::AABB B, Vec2 AVel, floa
 	float newDepth = 0.f;
 
 	if (MovingPointRectCollision(A.center, AVel * dt, *(expanded_target.boundingbox), normal, contactTime, newDepth)) {
-		
-		
-		if (contactTime <= 1.0f) {
-
-			if (prevContactNormal.x != 0) {
-				if (prevContactNormal.x > 0) {
-					if (AVel.x > 0) {
-						return false;
-					}
-				}
-				if (prevContactNormal.x < 0) {
-					if (AVel.x < 0) {
-						return false;
-					}
-				}
-			}
-			if (prevContactNormal.y != 0) {
-				if (prevContactNormal.y > 0) {
-					if (AVel.y > 0) {
-						return false;
-					}
-				}
-				if (prevContactNormal.y < 0) {
-					if (AVel.y < 0) {
-						return false;
-					}
-				}
-			}
-			
+		if (contactTime <= 1.0f && contactTime >= 0.f) {
 			depth = newDepth;
 			return true;
 		}

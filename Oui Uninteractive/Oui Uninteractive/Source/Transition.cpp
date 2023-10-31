@@ -1,4 +1,4 @@
-#include <Animation.h>
+#include <Transition.h>
 //#include <OpenGLApplication.h>
 #include <ParticleSystem.h>
 #include "GameStateManager.h"

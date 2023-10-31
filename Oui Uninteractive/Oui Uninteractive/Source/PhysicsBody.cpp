@@ -48,6 +48,7 @@ void PhysicsBody::Initialize() {
 	if (GetOwner()->Has(ComponentType::TRANSFORM) != -1) {
 		txPtr = GetOwner()->GetComponentType<Transform>(ComponentType::TRANSFORM);
 	}
+	forceManager.forceVec[FORCE_INDEX::FRICTION]->magnitude = mass;
 	physicsSys->bodyList.insert(std::pair<size_t, PhysicsBody*>(GetOwner()->GetGameObjectID(), this));
 
 }
@@ -91,6 +92,7 @@ PhysicsBody* PhysicsBody::Clone() const{
 ForceManager::ForceManager() {
 	forceVec.push_back(new LinearForce(0.5, false, 50));
 	forceVec.push_back(new LinearForce(0.5, false, 50));
+	forceVec.push_back(new LinearForce(0.1, true, 50));
 }
 void ForceManager::SetMagnitude(float new_mag, FORCE_INDEX index) {
 
@@ -99,7 +101,7 @@ void ForceManager::SetMagnitude(float new_mag, FORCE_INDEX index) {
 void ForceManager::Update(float dt) {
 	int currIndex = 0;
 	for (LinearForce* force : forceVec) {
-		if (force->isActive) {
+		if (force->isActive && currIndex != FORCE_INDEX::FRICTION) {
 			force->age += dt;
 			if (force->age >= force->lifetime) {
 				DeactivateForce(currIndex);

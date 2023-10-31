@@ -23,7 +23,8 @@
 class PhysicsBody;
 enum FORCE_INDEX {
 	INTERNAL = 0,
-	EXTERNAL = 1
+	EXTERNAL = 1,
+	FRICTION = 2
 };
 class LinearForce {
 public:
@@ -33,13 +34,6 @@ public:
 	bool isActive;
 	Vec2 direction;
 	float magnitude;
-};
-class RotationalForce  {
-	public:
-		float lifetime;
-		float age;
-		bool isActive;
-		float torque;
 };
 class ForceManager {
 public:

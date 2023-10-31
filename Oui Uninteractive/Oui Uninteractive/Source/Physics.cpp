@@ -66,8 +66,7 @@ void Physics::Update(float dt) {
 
 			//calculate physics
 			//Direction
-			Vec2 normalizedVel = Vec2(0, 0);
-			Vector2DNormalize(normalizedVel, body->velocity);
+			
 			Vec2 summedForce = body->forceManager.CalculateResultantForce();
 			body->acceleration = (summedForce) * body->mass;
 			/*
@@ -99,6 +98,9 @@ void Physics::Update(float dt) {
 			body->txPtr->rotation = body->txPtr->rotation + body->currentRotationSpeed * dt;
 			if (body->txPtr->rotation >= 360.0f || body->txPtr->rotation <= -360.0f)
 				body->txPtr->rotation = 0.0f;
+			Vec2 normalizedVel = Vec2(0, 0);
+			Vector2DNormalize(normalizedVel, body->velocity);
+			body->forceManager.forceVec[FORCE_INDEX::FRICTION]->direction = -normalizedVel;
 			body->forceManager.Update(static_cast<float>(sysManager->fixedDeltaTime));
 		
 		}

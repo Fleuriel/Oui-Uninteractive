@@ -36,7 +36,7 @@
 #include "TestScript.h"
 #include "EnemyFSM.h"
 #include "PlayerShooting.h"
-#include <Animation.h>
+#include <Transition.h>
 #include "ColliderSystem.h"
 #include "AssetManager.h"
 
@@ -175,7 +175,7 @@ void OpenGLApplication::OpenGLWindowCleanup() {
 		serializer.WriteJSONFile(filePath, windowDoc);
 	};
 
-
+	assetManager.FreeAll();
 	myImGui.Exit();
 	glfwTerminate();
 }

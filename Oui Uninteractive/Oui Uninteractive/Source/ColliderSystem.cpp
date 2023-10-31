@@ -90,43 +90,35 @@ void ColliderSystem::Update(float dt) {
 				Vec2 normal = Vec2(0, 0);
 				float depth = 0.f;
 				Vec2 nextCycleVel = pBody1->velocity + pBody1->forceManager.CalculateResultantForce() * pBody1->mass * static_cast<float>(sysManager->fixedDeltaTime);
-				collided = CollisionMovingRectRect(*(collider->boundingbox), *(body2->boundingbox), nextCycleVel, contactTime, normal, static_cast<float>(sysManager->fixedDeltaTime), depth, collider->wasColliding, collider->contactNormal);
+				Vec2 nextCycleVel2 = pBody2->velocity + pBody2->forceManager.CalculateResultantForce() * pBody2->mass * static_cast<float>(sysManager->fixedDeltaTime);
+
+				Vec2 relVel = nextCycleVel - nextCycleVel2;
+				collided = CollisionMovingRectRect(*(collider->boundingbox), *(body2->boundingbox), relVel, contactTime, normal, static_cast<float>(sysManager->fixedDeltaTime), depth, collider->wasColliding, collider->contactNormal);
 				if (collided) {
-					collider->wasColliding = true;
-					body2->wasColliding = true;
+			
 					if (!pBody2->isStatic) {
 
-						Vector2DNormalize(normal, normal);
-						CollisionMessage collisionMessage(collider, body2, depth, normal);
-						ProcessMessage(&collisionMessage);
+						pBody1->forceManager.DeactivateForce(0);
+						pBody1->forceManager.DeactivateForce(1);
+						collider->contactTime = contactTime;
+						collider->contactNormal = normal;
+						body2->contactTime = 0.f;
+						body2->contactNormal = -normal;
+
 					}
 					else {
-
 						//coll response
-
-
 						if (pBody2->isStatic) {
-
 							pBody1->forceManager.DeactivateForce(0);
 							pBody1->forceManager.DeactivateForce(1);
-							if (contactTime < 0.f) {
-								contactTime = 0.f;
-							}
 							collider->contactTime = contactTime;
 							collider->contactNormal = normal;
 						}
-						//else if (pBody1->isStatic) {
-						//	pBody2->txPtr->position += (-normal) * depth;
-						//	pBody2->velocity += normal * depth;//* msg->GetFirstCollider()->contactTime;
-						//}
+						
 					}
 				}
 
 			}
-
-			collider->wasColliding = false;
-
-
 		}
 	}
 	
