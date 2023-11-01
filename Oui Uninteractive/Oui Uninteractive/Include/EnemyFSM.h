@@ -68,13 +68,13 @@ public:
 	~EnemyFSM() {
 		// Clear statesMap
 		for (auto& state : statesMap) {
-			state.second = nullptr;
+
 			delete state.second;
 		}
 		statesMap.clear();
 
-		currentState = nullptr;
-		delete currentState;
+		//currentState = nullptr;
+		//delete currentState;
 	}
 };
 
