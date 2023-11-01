@@ -3,7 +3,19 @@
 void Collider::Initialize() {
 	colliderSys->colliderMap.insert(std::pair<size_t, Collider*>(GetOwner()->GetGameObjectID(), this));
 	Transform* gameObjTX = GET_COMPONENT(GetOwner(), Transform, ComponentType::TRANSFORM);
-	tx->position = gameObjTX->position;
+	if (gameObjTX != nullptr) {
+		tx->position = gameObjTX->position;
+		boundingbox->center = tx->position;
+		boundingbox->min = Vec2((-0.5f) * tx->scale + tx->position.x, (-0.5f) * tx->scale + tx->position.y);
+		boundingbox->max = Vec2((0.5f) * tx->scale + tx->position.x, (0.5f) * tx->scale + tx->position.y);
+	}
+	else {
+
+#ifndef _DEBUG
+		std::cout << "Game object has no transform.\n";
+#endif
+
+	}
 	/*
 	
 	if (gameObjTX != nullptr) {
@@ -56,6 +68,4 @@ Collider::~Collider() {
 	if (GetOwner() != nullptr) {
 		colliderSys->colliderMap.erase(GetOwner()->GetGameObjectID());
 	}
-	
-	
 }
