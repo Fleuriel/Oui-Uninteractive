@@ -34,12 +34,6 @@ public:
 	~Prefab();
 
 	/**************************************************************************
-	* @brief Initialize components in prefabComponentList
-	* @return void
-	*************************************************************************/
-	void Initialize();
-
-	/**************************************************************************
 	* @brief Add component to prefabComponentList
 	* @param c - component pointer
 	* @param t - component type

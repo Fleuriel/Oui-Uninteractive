@@ -23,6 +23,8 @@ private:
 	std::vector<Node> pathToTake;
 	bool pathFound;
 	bool printTest;
+	bool wallPrinted;
+	int index;
 
 public:
 	//void Initialize() override;

@@ -14,20 +14,12 @@
 #include <map>
 #include <vector>
 
-enum class MessageType
-{
-	MSG_NONE = 0,
-	MSG_QUIT,
-	MSG_COLLISION
-};
-
 class IMessage {
 private:
 	//MessageType messageID;
 	std::string messageID;
 
 public:
-	//IMessage(MessageType message) : messageID(message) {}
 	IMessage(const std::string& message) : messageID(message) {}
 	virtual ~IMessage() {}
 
@@ -68,23 +60,17 @@ public:
 class IBroadcaster {
 private:
 	std::string messageID;
-	//std::map<IObserver* , std::string> observerMap;
 	std::multimap<std::string, IObserver*> observerMap;
 
 public:
 	IBroadcaster() {}
 	~IBroadcaster() {}
 
-	/*void RegisterObserver(IObserver* observer, const std::string& message) { 
-		observerMap.emplace(observer, message); 
-	}*/
-
 	// Broadcaster to register observer
 	void RegisterObserver(const std::string& message, IObserver* observer) {
 		observerMap.emplace(message, observer);
 	}
 
-	//void UnregisterObserver(IObserver* observer) { observerMap.erase(observer); }
 	// Broadcaster to unregister observer
 	void UnregisterObserver(std::string message, IObserver* observer) {
 		typedef std::multimap<std::string, IObserver*>::iterator iterator;
@@ -112,11 +98,6 @@ public:
 			it->second->GetMessageHandler(msg->GetMessageID())(msg);
 		}
 	}
-
-	/*virtual void RegisterObserver(const std::string& message, IObserver* observer) = 0;
-	virtual void UnregisterObserver(std::string message, IObserver* observer) = 0;
-	virtual void SendToObservers(IMessage* msg) = 0;
-	virtual void ProcessMessage(IMessage* msg) = 0;*/
 };
 
 #endif

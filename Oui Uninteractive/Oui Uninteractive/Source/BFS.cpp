@@ -10,6 +10,7 @@
  *************************************************************************/
 #include "BFS.h"
 #include "ObjectFactory.h"
+#include "PhysicsBody.h"
 #include "Transform.h"
 
 Node::Node(int x_, int y_, Node* parent_ = nullptr) : x(x_), y(y_), parent(parent_) {}
@@ -28,16 +29,19 @@ void BFS::CreateGrid() {
 
     for (int i{}; i < rows; ++i) {
         for (int j{}; j < cols; ++j) {
-            // Create walls
-            GameObject* wall = objectFactory->BuildObjectRunTime("Wall", "Wall");
-            objectFactory->AddComponent(ComponentType::TRANSFORM, wall);
+            if (i == 0 && j == 0) {
+                // Create walls
+                GameObject* wall = objectFactory->BuildObjectRunTime("Wall", "Wall");
+                objectFactory->AddComponent(ComponentType::TRANSFORM, wall);
 
-            wall->Initialize();
+                wall->Initialize();
 
-            // Set position of wall
-            GET_COMPONENT(wall, Transform, ComponentType::TRANSFORM)->scale = scaleTemp;
-            GET_COMPONENT(wall, Transform, ComponentType::TRANSFORM)->position.x = j * scaleTemp + scaleTemp / 2 - windowWidth / 2;
-            GET_COMPONENT(wall, Transform, ComponentType::TRANSFORM)->position.y = i * scaleTemp + scaleTemp / 2 - windowHeight / 2;
+                // Set position of wall
+                GET_COMPONENT(wall, Transform, ComponentType::TRANSFORM)->scale = scaleTemp;
+                GET_COMPONENT(wall, Transform, ComponentType::TRANSFORM)->position.x = (j * scaleTemp) + (scaleTemp - windowWidth) / 2;
+                GET_COMPONENT(wall, Transform, ComponentType::TRANSFORM)->position.y = (i * scaleTemp) + (scaleTemp - windowHeight) / 2;
+            }
+            
         }
     }
 
@@ -169,10 +173,43 @@ std::vector<Node> BFS::FindPath(int startX, int startY, int targetX, int targetY
     return path;
 }
 
-void BFS::FollowPath(std::vector<Node> p) {
+void BFS::FollowPath(std::vector<Node> p, size_t gameObjectID) {
     //for (Node pathNode : p) {
     //    // Set target to pathNode
     //}
+    /*// TEMPORARY VARIABLES
+    float windowWidth = 1920.f;
+    float windowHeight = 1017.f;
+    float scaleTemp = windowHeight / 3.f;
+
+    // Enemy to traverse along path to take
+    for (const Node& node : p) {
+        // While not within range of node, move towards node
+        Vec2 currentEnemyPos = Vec2(0, 0);
+        Vec2 nodePos;
+        nodePos.x = (node.x * scaleTemp) + (scaleTemp - windowWidth) / 2;
+        nodePos.y = (node.y * scaleTemp) + (scaleTemp - windowWidth) / 2;
+
+        GameObject* currentEnemy = objectFactory->GetGameObjectByID(gameObjectID);
+        if (currentEnemy != nullptr) {
+            Transform* currentEnemyTx = GET_COMPONENT(currentEnemy, Transform, ComponentType::TRANSFORM);
+            if (currentEnemyTx != nullptr) {
+                currentEnemyPos = currentEnemyTx->position;
+            }
+        }
+
+        if (Vector2DDistance(currentEnemyPos, nodePos) > 50) {
+            Vec2 direction = Vec2(nodePos.x - currentEnemyPos.x, nodePos.y - currentEnemyPos.y);
+            Vector2DNormalize(direction, direction);
+            GET_COMPONENT(currentEnemy, PhysicsBody, ComponentType::PHYSICS_BODY)->velocity = direction * 200;
+        }
+
+        // continue if within range of next node
+        if (Vector2DDistance(currentEnemyPos, nodePos) <= 50) {
+            continue;
+        }
+    }
+    std::cout << "PATHFINDING END" << std::endl;*/
 }
 
 BFS::~BFS() {

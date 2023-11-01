@@ -16,6 +16,7 @@
 #include "EnemyStates.h"
 #include "ObjectFactory.h"
 #include "Transform.h"
+#include "PhysicsBody.h"
 
 // FOR TESTING OF BFS //
 /*#include <vector>
@@ -144,21 +145,28 @@ std::vector<Node*> BFS(int startX, int startY, int targetX, int targetY) {
 // FOR TESTING OF BFS //
 
 
-EnemyRoam::EnemyRoam() : bfs(new BFS(3, 5)), pathFound(false), printTest(false) {}
+EnemyRoam::EnemyRoam() : bfs(new BFS(3, 5)), pathFound(false), printTest(false) {
+    wallPrinted = false;
+    index = 0;
+}
 //EnemyRoam::EnemyRoam() : pathFound(false), printTest(false) {}
 
 void EnemyRoam::Update(size_t gameObjectID) {
 	//std::cout << "Does this work on " << objectFactory->GetGameObjectByID(gameObjectID)->GetName() << std::endl;
+
+    // Temporary variables
+	int startX = 1, startY = 1, targetX = 2, targetY = 0;
     
     // If grid not created, create grid
     if (!bfs->gridCreated) {
-        //bfs->CreateGrid();
+        bfs->CreateGrid();
     }
 
 
     if (!pathFound) {
         // Find path
-        pathToTake = bfs->FindPath(1, 1, 2, 0);
+        //pathToTake = bfs->FindPath(1, 1, 2, 0);
+		pathToTake = bfs->FindPath(startX, startY, targetX, targetY);
 
         if (pathToTake.size() > 0) {
             pathFound = true;
@@ -180,8 +188,60 @@ void EnemyRoam::Update(size_t gameObjectID) {
             /*for (Node* node : pathToTake) {
                 delete node;
             }*/
-            pathToTake.clear();
+            //pathToTake.clear();
         }
+
+        //bfs->FollowPath(pathToTake, gameObjectID);
+
+		if (index < pathToTake.size()) {
+            // TEMPORARY VARIABLES
+            float windowWidth = 1920.f;
+            float windowHeight = 1017.f;
+            float scaleTemp = windowHeight / 3.f;
+
+            // Enemy to traverse along path to take
+            // While not within range of node, move towards node
+            Vec2 currentEnemyPos = Vec2(0, 0);
+            Vec2 nodePos;
+			Node currentNode = pathToTake[index];
+            nodePos.x = (currentNode.x * scaleTemp) + (scaleTemp - windowWidth) / 2;
+            nodePos.y = (currentNode.y * scaleTemp) + (scaleTemp - windowHeight) / 2;
+
+            /*if (!wallPrinted) {
+                // Create wall
+                GameObject* wall = objectFactory->BuildObjectRunTime("Wall", "Wall");
+                objectFactory->AddComponent(ComponentType::TRANSFORM, wall);
+
+                wall->Initialize();
+
+                // Set position of wall
+                GET_COMPONENT(wall, Transform, ComponentType::TRANSFORM)->scale = scaleTemp;
+                GET_COMPONENT(wall, Transform, ComponentType::TRANSFORM)->position.x = (currentNode.x * scaleTemp) + (scaleTemp - windowWidth) / 2;
+                GET_COMPONENT(wall, Transform, ComponentType::TRANSFORM)->position.y = (currentNode.y * scaleTemp) + (scaleTemp - windowHeight) / 2;
+            }*/
+
+            GameObject* currentEnemy = objectFactory->GetGameObjectByID(gameObjectID);
+            if (currentEnemy != nullptr) {
+                Transform* currentEnemyTx = GET_COMPONENT(currentEnemy, Transform, ComponentType::TRANSFORM);
+                if (currentEnemyTx != nullptr) {
+                    currentEnemyPos = currentEnemyTx->position;
+                }
+            }
+
+            if (Vector2DDistance(currentEnemyPos, nodePos) > 100) {
+                Vec2 direction = Vec2(nodePos.x - currentEnemyPos.x, nodePos.y - currentEnemyPos.y);
+                Vector2DNormalize(direction, direction);
+                GET_COMPONENT(currentEnemy, PhysicsBody, ComponentType::PHYSICS_BODY)->velocity = direction * 200;
+            }
+
+            // continue if within range of next node
+            else if (Vector2DDistance(currentEnemyPos, nodePos) <= 100) {
+                GET_COMPONENT(currentEnemy, PhysicsBody, ComponentType::PHYSICS_BODY)->velocity = Vec2(0, 0);
+                ++index;
+                std::cout << "PATHFINDING END" << std::endl;
+            }
+            
+		}
     }
     
 

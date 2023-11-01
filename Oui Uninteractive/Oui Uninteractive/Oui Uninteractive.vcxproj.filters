@@ -339,9 +339,6 @@
     <ClInclude Include="Include\Editor.h">
       <Filter>Engine\Editor</Filter>
     </ClInclude>
-    <ClInclude Include="Include\GameObject.h">
-      <Filter>Composition</Filter>
-    </ClInclude>
     <ClInclude Include="Include\CoordinateSystem.h">
       <Filter>Engine\CoordinateSystem</Filter>
     </ClInclude>
@@ -431,6 +428,10 @@
     </ClInclude>
     <ClInclude Include="Include\Prefab.h">
       <Filter>Composition\Prefab</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\Filepaths.h" />
+    <ClInclude Include="Include\GameObject.h">
+      <Filter>Composition\GameObject</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

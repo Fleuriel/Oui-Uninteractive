@@ -19,10 +19,6 @@ Prefab::~Prefab() {
 		delete prefabComponentList[i];
 }
 
-void Prefab::Initialize() {
-
-}
-
 void Prefab::AddComponent(IComponent* c, ComponentType t) {
 	c->componentType = t;
 	prefabComponentList.push_back(c);
