@@ -97,11 +97,6 @@ ObjectFactory::ObjectFactory() : gameObjectCurrentID{} {
 * @brief Object Factory Destructor
 *************************************************************************/
 ObjectFactory::~ObjectFactory() {
-	for (auto& it : prefabMap) {
-		delete it.second;
-	}
-	prefabMap.clear();
-
 	for (auto& it : componentFactoryMap) {
 		delete it.second;
 	}
@@ -110,7 +105,10 @@ ObjectFactory::~ObjectFactory() {
 	gameObjectIDMap.clear();
 	gameObjectDestroyList.clear();
 
-	
+	for (auto& it : prefabMap) {
+		delete it.second;
+	}
+	prefabMap.clear();
 }
 
 /**************************************************************************
@@ -193,8 +191,9 @@ GameObject* ObjectFactory::BuildObjectFromPrefab(const std::string& name, const 
 		GameObject* gameObject{ new GameObject(name, type) };
 		
 		// Copy component list from prefab to newly-created game object
-		std::copy(prefabMap[type]->prefabComponentList.begin(), prefabMap[type]->prefabComponentList.end(), std::back_inserter(gameObject->componentList));
-		//gameObject->componentList = prefabMap[type]->prefabComponentList;
+		for (size_t i{}; i < prefabMap[type]->prefabComponentList.size(); ++i) {
+			gameObject->AddComponent(prefabMap[type]->prefabComponentList[i]->Clone(), prefabMap[type]->prefabComponentList[i]->componentType);
+		}
 
 		// Assign an ID to the game object
 		AssignObjectID(gameObject);
