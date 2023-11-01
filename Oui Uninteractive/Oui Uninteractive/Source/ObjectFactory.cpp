@@ -506,3 +506,6 @@ bool ObjectFactory::AddComponent(componentType componentName, GameObject* gameOb
 
 	return true;
 }
+std::map<std::string, Prefab*> ObjectFactory::GetPrefabMap() {
+	return prefabMap;
+}

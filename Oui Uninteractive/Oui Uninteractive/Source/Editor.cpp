@@ -226,7 +226,13 @@ void Editor::CreatePrefabPanel() {
 
 	{
 		ImGui::BeginChild("left pane", ImVec2(150, 0), true);
-		ImGui::Selectable("temp");
+		
+		std::map<std::string, Prefab*> copy = objectFactory->GetPrefabMap();
+		std::map<std::string, Prefab*>::iterator it = copy.begin();
+		for (; it != copy.end(); it++) {
+			const char* label = it->first.c_str();
+			ImGui::Selectable(label);
+		}
 
 		ImGui::EndChild();
 	}

@@ -170,6 +170,7 @@ public:
 	* @return std::map<size_t, GameObject*>
 	*************************************************************************/
 	std::map<size_t, GameObject*> GetGameObjectIDMap();
+	std::map<std::string, Prefab*> GetPrefabMap();
 
 	/**************************************************************************
 	* @brief Add component factory to map
