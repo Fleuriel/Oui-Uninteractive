@@ -26,6 +26,9 @@
 // TEXTURES //
 #define FILEPATH_TEXTURES					std::string("assets/texture")
 
+// SPRITES //
+#define FILEPATH_SPRITES					std::string("assets/sprites")
+
 // SOUNDS // 
 #define FILEPATH_SOUNDS_BGM					std::string("assets/sounds/bgm")
 #define FILEPATH_SOUNDS_SFX					std::string("assets/sounds/sfx")

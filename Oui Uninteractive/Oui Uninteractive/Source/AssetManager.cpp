@@ -187,6 +187,105 @@ bool AssetManager::ReloadTextures() {
     return (AssetManager::FreeTextures() && AssetManager::LoadTextures());
 }
 
+Sprite::Sprite() {
+
+}
+
+Sprite::~Sprite() {
+
+}
+
+bool Sprite::SetTexture(int tex) {
+    texture = tex;
+    return !texture;
+}
+
+int Sprite::GetTexture() {
+    return texture;
+}
+
+bool Sprite::SetRowsAndColumns(int a, int b) {
+    rows = a;
+    columns = b;
+    return (rows && columns);
+}
+
+bool Sprite::SetWidthAndHeight(int a, int b) {
+    width = a;
+    height = b;
+    return (width && height);
+}
+
+bool Sprite::AddCoordinates(int a, int b) {
+    size_t size = coordinates.size();
+    coordinates.push_back(std::pair<int, int>(a, b));
+    return (coordinates.size() > size);
+}
+
+bool AssetManager::LoadSprites() {
+
+    if (fs::is_directory(FILEPATH_SPRITES)) {
+        for (const auto& entry : fs::directory_iterator(FILEPATH_SPRITES)) {
+            std::string spriteFilePath = FILEPATH_SPRITES + "/" + entry.path().filename().string();
+            //std::cout << "Sprite file " << spriteFilePath << " Found." << std::endl;
+
+            size_t extensionPos = entry.path().filename().string().find_last_of('.');
+            if (extensionPos != std::string::npos) {
+
+                Sprite newsprite;
+                
+                size_t lBracketPos = entry.path().filename().string().find_last_of('(');
+
+                newsprite.SetTexture(AssetManager::SetUpTexture(spriteFilePath));
+                //std::cout << textures[nameWithoutExtension] << " success!\n";
+
+                std::string spriteRowsAndColumns = entry.path().filename().string().substr(lBracketPos + 1, extensionPos - lBracketPos - 2);
+                //std::cout << spriteRowsAndColumns<<std::endl;
+
+                size_t xPos = spriteRowsAndColumns.find_last_of('x');
+                int rows = std::stoi(spriteRowsAndColumns.substr(0, xPos));
+                //std::cout << rows << std::endl;
+                int columns = std::stoi(spriteRowsAndColumns.substr(xPos + 1));
+                //std::cout << columns << std::endl;
+
+                newsprite.SetRowsAndColumns(rows, columns);
+
+
+                std::string nameWithoutExtension = entry.path().filename().string().substr(0, lBracketPos);
+                //std::cout << nameWithoutExtension << std::endl;
+
+                sprites[nameWithoutExtension] = newsprite;
+            }
+            else
+                std::cout << "File " << entry.path().filename().string() << " is missing file extension.\n";
+
+        }
+        return true;
+    }
+    else {
+        // Print error
+        std::cout << "The specified path is not a directory." << std::endl;
+        return false;
+    }
+
+}
+
+int AssetManager::GetSprite(std::string name) {
+    return sprites[name].GetTexture();
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
 /**************************************************************************
  * @brief Loads sounds, both background music (BGM) and sound effects (SFX).
  * @param None.
