@@ -17,7 +17,10 @@
 class IState
 {
 public:
+	//virtual void Initialize() = 0;
+	IState() {}
 	virtual void Update(size_t gameObjectID) = 0;
+	virtual ~IState() {}
 };
 
 #endif

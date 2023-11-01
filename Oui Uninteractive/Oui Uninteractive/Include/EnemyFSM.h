@@ -54,12 +54,13 @@ public:
 			}
 		}
 
-		if (Vector2DDistance(playerPos, enemyPos) < 300.0f) {
+		/*if (Vector2DDistance(playerPos, enemyPos) < 300.0f) {
 			currentState = statesMap["EnemyAttack"];
 		}
 		else {
 			currentState = statesMap["EnemyRoam"];
-		}
+		}*/
+		currentState = statesMap["EnemyAttack"];
 	}
 
 	void End() {}
@@ -67,9 +68,13 @@ public:
 	~EnemyFSM() {
 		// Clear statesMap
 		for (auto& state : statesMap) {
+			state.second = nullptr;
 			delete state.second;
 		}
 		statesMap.clear();
+
+		currentState = nullptr;
+		delete currentState;
 	}
 };
 

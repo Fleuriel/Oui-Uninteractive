@@ -3,7 +3,9 @@
 #include <algorithm>
 //Logic Components Index denotes which Script u want it to run
 LogicComponent::~LogicComponent() {
-	logicSystem->logicComponentMap.erase(GetOwner()->GetGameObjectID());
+	if (GetOwner() != nullptr) {
+		logicSystem->logicComponentMap.erase(GetOwner()->GetGameObjectID());
+	}
 }
 void LogicComponent::Initialize() {
 	//logicSystem->logicComponentVec.push_back(this);

@@ -9,46 +9,61 @@
  *		  The enemy states consists of:
  *		  - Roam
  *		  - Attack
+ *        This file should only contain the behaviour of enemies during
+ *        its respective states.
  *************************************************************************/
 #include <iostream>
 #include "EnemyStates.h"
 
-
-// BFS TO BE MOVED TO ANOTHER FILE
-#include <vector>
+// FOR TESTING OF BFS //
+/*#include <vector>
 #include <queue>
 #include <algorithm>
+#include <iostream>
 
-const int mapWidth = 10;
-const int mapHeight = 10;
-int gameMap[mapWidth][mapHeight];
+int rows{ 10 };
+int cols{ 10 };
+std::vector<std::vector<int>> gameMap(rows, std::vector<int>(cols, 0));
+bool pathFound{ false };
 
 struct Node {
-    // Position of node
     float x, y;
-    
-    // Parent node of path
     Node* parent;
 
+    // Node constructor
     Node(int x_, int y_) : x(x_), y(y_), parent(nullptr) {}
 };
 
 std::vector<Node*> BFS(int startX, int startY, int targetX, int targetY) {
-    std::queue<Node*> openSet;
+    // Test walls
+    //gameMap[0][3] = 1;
+    //gameMap[1][2] = 1;
+    //gameMap[1][3] = 1;
+    //gameMap[2][3] = 1;
+    //gameMap[3][1] = 1;
+    //gameMap[3][2] = 1;
+    //gameMap[3][3] = 1;
+
+    // Queue of nodes to determine path
+    std::queue<Node*> nodeQueue;
+
+    // Path of nodes to follow
     std::vector<Node*> path;
 
+    // Start/end nodes
     Node* startNode{ new Node(startX, startY) };
-    Node* goalNode{ new Node(targetX, targetY) };
+    Node* endNode{ new Node(targetX, targetY) };
 
-    openSet.push(startNode);
+    nodeQueue.push(startNode);
 
-    while (!openSet.empty()) {
-        Node* currentNode = openSet.front();
-        openSet.pop();
+    while (!nodeQueue.empty()) {
+        Node* currentNode = nodeQueue.front();
+        nodeQueue.pop();
 
-        if (currentNode->x == goalNode->x && currentNode->y == goalNode->y) {
-            // Goal reached, reconstruct the path.
-            Node* current = currentNode;
+        // If the current node is the end node
+        if (currentNode->x == endNode->x && currentNode->y == endNode->y) {
+            // Trace parent nodes to get the path
+            Node* current{ currentNode };
             while (current != nullptr) {
                 path.push_back(current);
                 current = current->parent;
@@ -57,61 +72,145 @@ std::vector<Node*> BFS(int startX, int startY, int targetX, int targetY) {
             break;
         }
 
-        // Generate neighboring nodes.
-        for (int dx = -1; dx <= 1; dx++) {
-            for (int dy = -1; dy <= 1; dy++) {
-                if (dx == 0 && dy == 0) continue;
+        // Check neighbouring nodes
+        for (int neighbourY{ -1 }; neighbourY <= 1; ++neighbourY) {
+            for (int neighbourX{ -1 }; neighbourX <= 1; ++neighbourX) {
+                // Ignore if on the current node
+                if (neighbourX == 0 && neighbourY == 0)
+                    continue;
 
-                int newX = currentNode->x + dx;
-                int newY = currentNode->y + dy;
+                // Set variables for position of node to check
+                int checkX = currentNode->x + neighbourX;
+                int checkY = currentNode->y + neighbourY;
 
+                // Ignore if neighbour check goes out of range
+                if (checkX < 0 || checkX >= cols || checkY < 0 || checkY >= rows)
+                    continue;
 
-                // For neighbour check, if top/bot/left/right is a wall, cannot traverse to that side's corners
+                // Ignore if neighbour is an obstacle (e.g. wall)
+                if (gameMap[checkX][checkY] == 1)
+                    continue;
 
-                if (newX < 0 || newX >= mapWidth || newY < 0 || newY >= mapHeight) continue;
-                if (gameMap[newX][newY] == 1) continue;  // Obstacle check.
+                //---CORNER CHECKS---//
+                // Top-left corner
+                if (neighbourX == -1 && neighbourY == -1) {
+                    // Edge on the right/bottom is an obstacle
+                    if (gameMap[checkX + 1][checkY] == 1 || gameMap[checkX][checkY + 1] == 1)
+                        continue;
+                }
 
-                Node* neighbor = new Node(newX, newY);
-                neighbor->parent = currentNode;
+                // Top-right corner
+                if (neighbourX == 1 && neighbourY == -1) {
+                    // Edge on the left/bottom is an obstacle
+                    if (gameMap[checkX - 1][checkY] == 1 || gameMap[checkX][checkY + 1] == 1)
+                        continue;
+                }
 
-                openSet.push(neighbor);
+                // Bottom-left corner
+                if (neighbourX == -1 && neighbourY == 1) {
+                    // Edge on the top/right is an obstacle
+                    if (gameMap[checkX][checkY - 1] == 1 || gameMap[checkX + 1][checkY] == 1)
+                        continue;
+                }
+
+                // Bottom-right corner
+                if (neighbourX == 1 && neighbourY == 1) {
+                    // Edge on the top/left is an obstacle
+                    if (gameMap[checkX][checkY - 1] == 1 || gameMap[checkX - 1][checkY] == 1)
+                        continue;
+                }
+                //---CORNER CHECKS---//
+
+                // Initialize neighbour node
+                Node* neighbour = new Node(checkX, checkY);
+                neighbour->parent = currentNode;
+
+                // Add to node queue for further checking
+                nodeQueue.push(neighbour);
             }
         }
     }
 
     // Clean up memory for nodes.
-    while (!openSet.empty()) {
-        delete openSet.front();
-        openSet.pop();
+    while (!nodeQueue.empty()) {
+        delete nodeQueue.front();
+        nodeQueue.pop();
     }
 
     return path;
-}
+}*/
+// FOR TESTING OF BFS //
 
-void followPath() {
 
-}
-// BFS TO BE MOVED TO ANOTHER FILE
+//EnemyRoam::EnemyRoam() : bfs(new BFS(10, 10)), pathFound(false), printTest(false) {}
+EnemyRoam::EnemyRoam() : pathFound(false), printTest(false) {}
 
 void EnemyRoam::Update(size_t gameObjectID) {
 	//std::cout << "Does this work on " << objectFactory->GetGameObjectByID(gameObjectID)->GetName() << std::endl;
+    
+    //if (!pathFound) {
+    //    // Find path
+    //    pathToTake = bfs->FindPath(1, 1, 2, 0);
 
-	// Pathfinding
-    /*std::cout << "Start\n";
-    std::vector<Node*> path = BFS(0, 0, 1, 3);
-    // Print the path.
-    for (Node* node : path) {
-        std::cout << "(" << node->x << ", " << node->y << ") -> ";
-    }
-    std::cout << "End" << std::endl;
+    //    if (pathToTake.size() > 0) {
+    //        pathFound = true;
+    //    }
+    //}
+    //else {
+    //    if (!printTest) {
+    //        // Start traversing path
+    //        std::cout << "Start\n";
+    //        
+    //        // Print the path
+    //        for (const Node& node : pathToTake) {
+    //            std::cout << "(" << node.x << ", " << node.y << ") -> ";
+    //        }
+    //        std::cout << "End" << std::endl;
 
-    // Clean up memory.
-    for (Node* node : path) {
+    //        printTest = true;
+
+    //        /*for (Node* node : pathToTake) {
+    //            delete node;
+    //        }*/
+    //        pathToTake.clear();
+    //    }
+    //}
+    
+
+    /*if (!pathFound) {
+        std::cout << "Start\n";
+        std::vector<Node*> path = BFS(0, 0, 6, 7);
+        // Print the path.
+        for (Node* node : path) {
+            std::cout << "(" << node->x << ", " << node->y << ") -> ";
+        }
+        std::cout << "End" << std::endl;
+
+        // Clean up memory.
+        for (Node* node : path) {
+            delete node;
+        }
+        pathFound = true;
+    }*/
+}
+
+EnemyRoam::~EnemyRoam() {
+    // Erase path vector
+    /*for (Node* node : pathToTake) {
         delete node;
     }*/
-    
+
+    //pathToTake.clear();
+
+    // Delete bfs pointer
+	//delete bfs;
 }
+
+EnemyAttack::EnemyAttack() {}
 
 void EnemyAttack::Update(size_t gameObjectID) {
 	//std::cout << "TRANSITIONED TO ATTACK STATE LMAO\n" << std::endl;
+}
+
+EnemyAttack::~EnemyAttack() {
 }

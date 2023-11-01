@@ -5,7 +5,7 @@
  * @par Course:	CSD 2401
  * @par Software Engineering Project 3
  * @date 29-10-2023
- * @brief
+ * @brief This file contains the script for player shooting.
  *************************************************************************/
 #ifndef PLAYER_SHOOTING_H
 #define PLAYER_SHOOTING_H
