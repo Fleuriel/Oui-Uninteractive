@@ -97,9 +97,14 @@ void ColliderSystem::Update(float dt) {
 				if (collided) {
 			
 					if (!pBody2->isStatic) {
+						float secondNorm = 0.f;
+						float dp = Vector2DDotProduct(nextCycleVel, nextCycleVel2);
+						if (dp > 0) {
+							secondNorm = 1.f;
+						}
 						pBody1->forceManager.DeactivateForce(0);
 						pBody1->forceManager.DeactivateForce(1);
-						CollisionMessage collisionMessage(collider, body2, contactTime, normal, 0.f, -normal);
+						CollisionMessage collisionMessage(collider, body2, contactTime, normal, secondNorm, -normal);
 						ProcessMessage(&collisionMessage); 
 						
 						/*collider->contactTime = contactTime;
