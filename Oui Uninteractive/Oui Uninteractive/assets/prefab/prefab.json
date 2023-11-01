@@ -18,7 +18,7 @@
                 "PositionX": 0.0,
                 "PositionY": 0.0,
                 "Rotation": 0.0,
-                "Scale": 0.0
+                "Scale": 75.0
             },
             "LogicComponent": {
                 "ScriptID":[0]
@@ -46,7 +46,7 @@
                   "PositionX": 0.0,
                   "PositionY": 0.0,
                   "Rotation": 0.0,
-                  "Scale": 0.0
+                  "Scale": 75.0
               },
               "LogicComponent": {
                   "ScriptID":[0]

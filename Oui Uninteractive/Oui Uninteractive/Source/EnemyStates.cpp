@@ -14,6 +14,8 @@
  *************************************************************************/
 #include <iostream>
 #include "EnemyStates.h"
+#include "ObjectFactory.h"
+#include "Transform.h"
 
 // FOR TESTING OF BFS //
 /*#include <vector>
@@ -142,39 +144,45 @@ std::vector<Node*> BFS(int startX, int startY, int targetX, int targetY) {
 // FOR TESTING OF BFS //
 
 
-//EnemyRoam::EnemyRoam() : bfs(new BFS(10, 10)), pathFound(false), printTest(false) {}
-EnemyRoam::EnemyRoam() : pathFound(false), printTest(false) {}
+EnemyRoam::EnemyRoam() : bfs(new BFS(3, 5)), pathFound(false), printTest(false) {}
+//EnemyRoam::EnemyRoam() : pathFound(false), printTest(false) {}
 
 void EnemyRoam::Update(size_t gameObjectID) {
 	//std::cout << "Does this work on " << objectFactory->GetGameObjectByID(gameObjectID)->GetName() << std::endl;
     
-    //if (!pathFound) {
-    //    // Find path
-    //    pathToTake = bfs->FindPath(1, 1, 2, 0);
+    // If grid not created, create grid
+    if (!bfs->gridCreated) {
+        //bfs->CreateGrid();
+    }
 
-    //    if (pathToTake.size() > 0) {
-    //        pathFound = true;
-    //    }
-    //}
-    //else {
-    //    if (!printTest) {
-    //        // Start traversing path
-    //        std::cout << "Start\n";
-    //        
-    //        // Print the path
-    //        for (const Node& node : pathToTake) {
-    //            std::cout << "(" << node.x << ", " << node.y << ") -> ";
-    //        }
-    //        std::cout << "End" << std::endl;
 
-    //        printTest = true;
+    if (!pathFound) {
+        // Find path
+        pathToTake = bfs->FindPath(1, 1, 2, 0);
 
-    //        /*for (Node* node : pathToTake) {
-    //            delete node;
-    //        }*/
-    //        pathToTake.clear();
-    //    }
-    //}
+        if (pathToTake.size() > 0) {
+            pathFound = true;
+        }
+    }
+    else {
+        if (!printTest) {
+            // Start traversing path
+            std::cout << "Start\n";
+            
+            // Print the path
+            for (const Node& node : pathToTake) {
+                std::cout << "(" << node.x << ", " << node.y << ") -> ";
+            }
+            std::cout << "End" << std::endl;
+
+            printTest = true;
+
+            /*for (Node* node : pathToTake) {
+                delete node;
+            }*/
+            pathToTake.clear();
+        }
+    }
     
 
     /*if (!pathFound) {
@@ -199,11 +207,10 @@ EnemyRoam::~EnemyRoam() {
     /*for (Node* node : pathToTake) {
         delete node;
     }*/
-
     //pathToTake.clear();
 
     // Delete bfs pointer
-	//delete bfs;
+	delete bfs;
 }
 
 EnemyAttack::EnemyAttack() {}

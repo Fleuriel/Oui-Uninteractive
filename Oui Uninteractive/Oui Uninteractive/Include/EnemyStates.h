@@ -14,13 +14,13 @@
 #define ENEMYSTATES_H
 
 #include "IState.h"
-//#include "BFS.h"
+#include "BFS.h"
 
 class EnemyRoam : public IState {
 private:
-	//BFS* bfs;
+	BFS* bfs;
 	//std::vector<Node*> pathToTake;
-	//std::vector<Node> pathToTake;
+	std::vector<Node> pathToTake;
 	bool pathFound;
 	bool printTest;
 

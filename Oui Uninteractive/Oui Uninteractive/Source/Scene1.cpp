@@ -37,7 +37,6 @@ void Scene1::Initialize() {
 		//AI OBJECT
 
 		objectFactory->CloneObject(1);
-		GET_COMPONENT(objectFactory->GetGameObjectByID(4), Transform, ComponentType::TRANSFORM)->position.y = 50;
 
 	#ifdef _DEBUG	
 		std::cout << "Cloning object with ID 4... completed." << std::endl;
