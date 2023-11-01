@@ -32,18 +32,27 @@ private:
 	//CollisionMessage
 	Collider* firstCollider;
 	Collider* secondCollider;
-	float depth;
+	float contactTime;
 	Vec2 contactNormal;
+	float secondContactTime;
+	Vec2 secondContactNormal;
 
 public:
-	CollisionMessage(Collider* first, Collider* second, float newDepth, Vec2 newContactNormal) : IMessage("MSG_COLLISION"), firstCollider(first), secondCollider(second) , depth(newDepth), contactNormal(newContactNormal)
+	CollisionMessage(Collider* first, Collider* second, float newContTime, Vec2 newContactNorm, float newContTime2, Vec2 newContNorm2) : IMessage("MSG_COLLISION"), firstCollider(first), secondCollider(second),
+		contactTime(newContTime), contactNormal(newContactNorm), secondContactTime(newContTime2), secondContactNormal(newContNorm2)
 	{ }
 	~CollisionMessage() {}
 
 	Collider* GetFirstCollider() { return firstCollider; }
 	Collider* GetSecondCollider() { return secondCollider; }
-	float GetDepth() {
-		return depth;
+	float GetSecondContactTime() {
+		return secondContactTime;
+	}
+	Vec2 GetSecondContactNormal() {
+		return secondContactNormal;
+	}
+	float GetFirstContactTime() {
+		return contactTime;
 	}
 	Vec2 GetContactNormal() {
 		return contactNormal;

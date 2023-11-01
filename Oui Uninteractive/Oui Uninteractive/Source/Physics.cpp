@@ -66,8 +66,7 @@ void Physics::Update(float dt) {
 
 			//calculate physics
 			//Direction
-			Vec2 normalizedVel = Vec2(0, 0);
-			Vector2DNormalize(normalizedVel, body->velocity);
+			
 			Vec2 summedForce = body->forceManager.CalculateResultantForce();
 			body->acceleration = (summedForce) * body->mass;
 			/*
@@ -82,6 +81,7 @@ void Physics::Update(float dt) {
 			if (collider != nullptr) {
 
 				body->velocity = body->velocity * (collider->contactTime) + body->acceleration * static_cast<float>(sysManager->fixedDeltaTime);//GetDT();//* sysManager->fixedDeltaTime;
+				collider->contactTime = 1.0f;
 			}
 			else {
 				body->velocity = body->velocity + body->acceleration * static_cast<float>(sysManager->fixedDeltaTime);
@@ -99,6 +99,9 @@ void Physics::Update(float dt) {
 			body->txPtr->rotation = body->txPtr->rotation + body->currentRotationSpeed * dt;
 			if (body->txPtr->rotation >= 360.0f || body->txPtr->rotation <= -360.0f)
 				body->txPtr->rotation = 0.0f;
+			Vec2 normalizedVel = Vec2(0, 0);
+			Vector2DNormalize(normalizedVel, body->velocity);
+			body->forceManager.forceVec[FORCE_INDEX::FRICTION]->direction = -normalizedVel;
 			body->forceManager.Update(static_cast<float>(sysManager->fixedDeltaTime));
 		
 		}
@@ -297,40 +300,10 @@ void Physics::CapVelocity(Vec2 originalVelocity, Vec2& bodyVelocity) {
 }
 
 void Physics::CollisionResponse(CollisionMessage* msg) {
-	//std::cout << "Collision detected between " << msg->GetFirstCollider()->GetOwner()->GetName() << " (x,y): "<< msg->GetFirstCollider()->boundingbox->center.x << ", " << msg->GetFirstCollider()->boundingbox->center.y;
-	//std::cout << " and " << msg->GetSecondCollider()->GetOwner()->GetName() << "(x, y): " << msg->GetSecondCollider()->boundingbox->center.x << ", " << msg->GetSecondCollider()->boundingbox->center.y << std::endl;
-
-	float halfDepth = msg->GetDepth() / 2;
-	Vec2 dir = msg->GetSecondCollider()->boundingbox->center - msg->GetFirstCollider()->boundingbox->center;
-	if (Vector2DDotProduct(dir, msg->GetContactNormal()) < 0.f) {
-	//	normal = -normal;
-		msg->SetContactNormal(-msg->GetContactNormal());
-	}
-
-	//coll response
-	Vec2 penetration = msg->GetContactNormal() * halfDepth;
-
-//	PhysicsBody* pBody2 = GET_COMPONENT(body2->GetOwner(), PhysicsBody, ComponentType::PHYSICS_BODY);
-	PhysicsBody* pBody1 = physicsSys->bodyList[msg->GetFirstCollider()->GetOwner()->GetGameObjectID()];
-	PhysicsBody* pBody2 = physicsSys->bodyList[msg->GetSecondCollider()->GetOwner()->GetGameObjectID()];
-
-	if (pBody2->isStatic) {
-		//pBody1->txPtr->position += msg->GetContactNormal() * msg->GetDepth();
-		pBody1->velocity += msg->GetContactNormal() * msg->GetDepth();// * msg->GetFirstCollider()->contactTime;
-	}
-	else if (pBody1->isStatic) {
-		//pBody2->txPtr->position += (-msg->GetContactNormal()) * msg->GetDepth();
-		pBody2->velocity += msg->GetContactNormal() * msg->GetDepth();//* msg->GetFirstCollider()->contactTime;
-	
-	}
-	else {
-		pBody1->velocity += msg->GetContactNormal() * msg->GetDepth() / 2;// *msg->GetFirstCollider()->contactTime;
-		pBody2->velocity -= msg->GetContactNormal() * msg->GetDepth() / 2; // *msg->GetFirstCollider()->contactTime;
-		//pBody1->forceManager.ApplyToForce(normal, depth / 2, 0.05f, FORCE_INDEX::EXTERNAL);
-		//pBody1->txPtr->position += msg->GetContactNormal() * (msg->GetDepth() / 2);
-		//pBody2->forceManager.ApplyToForce(-normal, depth / 2, 0.05f, FORCE_INDEX::EXTERNAL);
-		//pBody2->txPtr->position += (-msg->GetContactNormal() * (msg->GetDepth() / 2));
-	}
+	msg->GetFirstCollider()->contactTime = msg->GetFirstContactTime();
+	msg->GetFirstCollider()->contactNormal = msg->GetContactNormal();
+	msg->GetSecondCollider()->contactTime = msg->GetSecondContactTime();
+	msg->GetSecondCollider()->contactNormal = msg->GetSecondContactNormal();
 
 
 

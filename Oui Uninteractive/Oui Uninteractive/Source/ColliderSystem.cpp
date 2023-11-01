@@ -69,7 +69,7 @@ void ColliderSystem::Update(float dt) {
 	for (int step = 0; step < sysManager->currentNumberOfSteps; step++) {
 		for (std::map<size_t, Collider*>::iterator it = colliderMap.begin(); it != colliderMap.end(); it++) {
 			Collider* collider = it->second;
-			collider->contactTime = 1.0f;
+			
 
 
 			collider->tx->position = GET_COMPONENT(collider->GetOwner(), Transform, ComponentType::TRANSFORM)->position;
@@ -90,43 +90,47 @@ void ColliderSystem::Update(float dt) {
 				Vec2 normal = Vec2(0, 0);
 				float depth = 0.f;
 				Vec2 nextCycleVel = pBody1->velocity + pBody1->forceManager.CalculateResultantForce() * pBody1->mass * static_cast<float>(sysManager->fixedDeltaTime);
-				collided = CollisionMovingRectRect(*(collider->boundingbox), *(body2->boundingbox), nextCycleVel, contactTime, normal, static_cast<float>(sysManager->fixedDeltaTime), depth, collider->wasColliding, collider->contactNormal);
-				if (collided) {
-					collider->wasColliding = true;
-					body2->wasColliding = true;
-					if (!pBody2->isStatic) {
+				Vec2 nextCycleVel2 = pBody2->velocity + pBody2->forceManager.CalculateResultantForce() * pBody2->mass * static_cast<float>(sysManager->fixedDeltaTime);
 
-						Vector2DNormalize(normal, normal);
-						CollisionMessage collisionMessage(collider, body2, depth, normal);
-						ProcessMessage(&collisionMessage);
+				Vec2 relVel = nextCycleVel - nextCycleVel2;
+				collided = CollisionMovingRectRect(*(collider->boundingbox), *(body2->boundingbox), relVel, contactTime, normal, static_cast<float>(sysManager->fixedDeltaTime), depth, collider->wasColliding, collider->contactNormal);
+				if (collided) {
+			
+					if (!pBody2->isStatic) {
+						float secondNorm = 0.f;
+						float dp = Vector2DDotProduct(nextCycleVel, nextCycleVel2);
+						if (dp > 0) {
+							secondNorm = 1.f;
+						}
+						pBody1->forceManager.DeactivateForce(0);
+						pBody1->forceManager.DeactivateForce(1);
+						CollisionMessage collisionMessage(collider, body2, contactTime, normal, secondNorm, -normal);
+						ProcessMessage(&collisionMessage); 
+						
+						/*collider->contactTime = contactTime;
+						collider->contactNormal = normal;
+						body2->contactTime = 0.f;
+						body2->contactNormal = -normal;*/
+
+
 					}
 					else {
-
 						//coll response
-
-
 						if (pBody2->isStatic) {
-
 							pBody1->forceManager.DeactivateForce(0);
 							pBody1->forceManager.DeactivateForce(1);
-							if (contactTime < 0.f) {
-								contactTime = 0.f;
-							}
+							CollisionMessage collisionMessage(collider, body2, contactTime, normal, 1.f, normal);
+							ProcessMessage(&collisionMessage);
+						/*	pBody1->forceManager.DeactivateForce(0);
+							pBody1->forceManager.DeactivateForce(1);
 							collider->contactTime = contactTime;
-							collider->contactNormal = normal;
+							collider->contactNormal = normal;*/
 						}
-						//else if (pBody1->isStatic) {
-						//	pBody2->txPtr->position += (-normal) * depth;
-						//	pBody2->velocity += normal * depth;//* msg->GetFirstCollider()->contactTime;
-						//}
+						
 					}
 				}
 
 			}
-
-			collider->wasColliding = false;
-
-
 		}
 	}
 	

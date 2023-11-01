@@ -16,6 +16,7 @@ Editor::SystemTime Editor::timeRecorder;
 std::vector<float> Editor::fpsData;
 std::pair<int, int> Editor::gameWindowOrigin;
 std::pair<int, int> Editor::gameWindowSize;
+std::vector<std::string> prefabList;
 
 
 /**************************************************************************
@@ -45,7 +46,8 @@ void UsingImGui::Init(GLFWwindow* glfwWindow, const char* glsl_vers) {
 	ImGui::CreateContext();
 	ImPlot::CreateContext();
 	ImGuiIO& io = ImGui::GetIO();
-	io.IniFilename = "assets/imgui.ini";
+
+	io.IniFilename = FILEPATH_IMGUI;
 
 	// Config Flags
 	io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
@@ -91,11 +93,17 @@ void UsingImGui::Draw() {
 	if (panelList.gamePanel) {
 		Editor::CreateRenderWindow();
 	}
+	if (panelList.prefabPanel) {
+		Editor::CreatePrefabPanel();
+	}
 	if (panelList.soundPanel) {
 		Editor::CreateSoundPanel();
 	}
 	if (panelList.objectPanel) {
 		Editor::CreateObjectList();
+	}
+	if (panelList.assetBrowserPanel) {
+		Editor::CreateAssetBrowser();
 	}
 	if (panelList.debugPanel) {
 		Editor::CreateDebugPanel();
@@ -157,12 +165,15 @@ void Editor::CreateMasterPanel() {
 	ImGui::Begin("Master Control Panel");
 	ImGui::Text("Show panels:");
 	ImGui::Checkbox("Game Window", &panelList.gamePanel); // Checkbox for sound panel
+	ImGui::Checkbox("Prefab Editor", &panelList.prefabPanel); // Checkbox for prefab editor panel
 	ImGui::Checkbox("Sound Panel", &panelList.soundPanel); // Checkbox for sound panel
-	ImGui::Checkbox("Objects Panel", &panelList.objectPanel); // Checkbox for sound panel
+	ImGui::Checkbox("Objects Panel", &panelList.objectPanel); // Checkbox for object manager panel
+	ImGui::Checkbox("Asset Browser", & panelList.assetBrowserPanel); // Checkbox for asset browser
 	ImGui::Checkbox("Debug Panel", &panelList.debugPanel); // Checkbox for debug panel
 	// The "do smth" button. Interchangable quick access button used for quick testing of features
 	if (ImGui::Button("Do Something")) {
-		std::cout << "fk u";
+		objectFactory->DestroyAllObjects();
+		objectFactory->BuildObjectFromFile(FILEPATH_SCENES_TESTWALLS);
 	}
 	ImGui::End();
 }
@@ -184,8 +195,55 @@ void Editor::CreateRenderWindow() {
 		ImVec2 wsize = ImGui::GetWindowSize();
 		// Invert V from openGL
 		//ImGui::Image(reinterpret_cast<ImTextureID>(0), wsize, ImVec2(0, 1), ImVec2(1, 0));
-		ImGui::Image(reinterpret_cast<ImTextureID>(OpenGLObject::FrameTexture), wsize, ImVec2(0.0f, 1.0f), ImVec2(1.0f, 0.0f)); // Replace thirdTexture with handle to FBO when graphics done rendering to FBO
+		ImGui::Image(reinterpret_cast<ImTextureID>(OpenGLObject::FrameTexture), wsize, ImVec2(0.0f, 1.0f), ImVec2(1.0f, 0.0f)); // Replace thirdTexture with handle to FBO when graphics done rendering to FBO	
+	}
+	ImGui::EndChild();
+	ImGui::End();
+}
+
+
+
+/**************************************************************************
+* @brief This function creates the prefab editor window
+* @return void
+*************************************************************************/
+void Editor::CreatePrefabPanel() {
+	ImGui::Begin("Prefab Editor");
+
+	// Refresh list of prefabs from file directory
+	if (ImGui::Button("Refresh List")) {
+		std::filesystem::path prefabPath{ FILEPATH_PREFAB };
+		if (std::filesystem::is_directory(prefabPath)) {
+			for (const auto& entry : std::filesystem::directory_iterator(prefabPath)) {
+				
+			}
+		}
+	}
+	ImGui::SameLine();
+	ImGui::Button("Save");
+	
+	// Left Plane
+
+	{
+		ImGui::BeginChild("left pane", ImVec2(150, 0), true);
+		ImGui::Selectable("temp");
+
 		ImGui::EndChild();
+	}
+	ImGui::SameLine();
+
+
+	// Right Plane
+	{
+		ImGui::BeginGroup();
+		ImGui::BeginChild("item view", ImVec2(0, -ImGui::GetFrameHeightWithSpacing())); // Leave room for 1 line below
+	
+		ImGui::Button("Test");
+
+
+		ImGui::EndChild();
+
+		ImGui::EndGroup();
 	}
 	ImGui::End();
 }
@@ -299,7 +357,7 @@ void Editor::CreateObjectList() {
 	// Right Plane
 	{
 		ImGui::BeginGroup();
-		ImGui::BeginChild("item view", ImVec2(0, -ImGui::GetFrameHeightWithSpacing())); // Leave room for 1 line below us
+		ImGui::BeginChild("item view", ImVec2(0, -ImGui::GetFrameHeightWithSpacing())); // Leave room for 1 line below
 		// Detail Tab
 		if (ImGui::CollapsingHeader("Details")) {
 			static float xPos = 0, yPos = 0, scale = 0, speed = 0, angle = 0, rotSpeed = 0;
@@ -512,7 +570,32 @@ void Editor::CreateObjectList() {
 }
 
 
-/**************************************************************************
+/*************************************************************************
+* @brief This function creates the asset browser panel used to peruse content
+* @return void
+*************************************************************************/
+void Editor::CreateAssetBrowser() {
+	ImGui::Begin("Asset Browser");
+	if (ImGui::Button("Refresh")) {
+
+	}
+	ImGui::BeginChild("LeftPane", ImVec2(200, 0), true);  // Use 200 width first, can change later. Dynamically size height for now
+	RenderDirectory(FILEPATH_MASTER);
+	ImGui::EndChild();
+
+	ImGui::SameLine();
+
+	// Right Pane
+	{
+		ImGui::Text("Teest2");
+
+	}
+	
+	ImGui::End();
+}
+
+
+/*************************************************************************
 * @brief This function creates debug panel used to troubleshoot issues
 * @return void
 *************************************************************************/
@@ -617,4 +700,21 @@ void Editor::CreateDebugPanel() {
 	ImGui::End();
 }
 	
-	
+// Recursive helper function to render the file directory for the asset browser	
+void Editor::RenderDirectory(const std::string& filePath) {
+	// Render folder directories
+	for (auto& entry : std::filesystem::directory_iterator(filePath)) {
+		if (entry.is_directory()) {
+			if (ImGui::TreeNode(entry.path().filename().string().c_str())) {
+				RenderDirectory(entry.path().string());
+				ImGui::TreePop();
+			}
+		}
+	}
+	// Render individual files
+	for (auto& entry : std::filesystem::directory_iterator(filePath)) {
+		if (!entry.is_directory()) {
+			ImGui::Selectable(entry.path().filename().string().c_str());
+		}
+	}
+}
