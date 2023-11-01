@@ -13,18 +13,24 @@ void TransformSystem::Update(float dt) {
 	
 	std::map<size_t, Collider*> copyColliderMap = colliderSys->colliderMap;
 	std::map<size_t, Collider*>::iterator it2 = copyColliderMap.begin();
-	if (OpenGLObject::renderBoundingBox) {
+	
+	
 		for (; it2 != copyColliderMap.end(); it2++) {
+			Collider* collider = it2->second;
+			collider->contactTime = 1.0f;
+			if (OpenGLObject::renderBoundingBox) {
+				Transform* tx = it2->second->tx;
 
-			Transform* tx = it2->second->tx;
-			if (tx != nullptr) {
-				tx->shape->Update(tx->position.x, tx->position.y, tx->scale, tx->scale, tx->rotation, true);
-			}
-			else {
-				continue;
+
+				if (tx != nullptr) {
+					tx->shape->Update(tx->position.x, tx->position.y, tx->scale, tx->scale, tx->rotation, true);
+				}
+				else {
+					continue;
+				}
 			}
 		}
-	}
+	
 	
 	
 	for (; it != copyMap.end(); it++) {

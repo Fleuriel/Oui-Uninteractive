@@ -95,7 +95,10 @@ void ColliderSystem::Update(float dt) {
 				Vec2 relVel = nextCycleVel - nextCycleVel2;
 				collided = CollisionMovingRectRect(*(collider->boundingbox), *(body2->boundingbox), relVel, contactTime, normal, static_cast<float>(sysManager->fixedDeltaTime), depth, collider->wasColliding, collider->contactNormal);
 				if (collided) {
-			
+					if (pBody1->GetOwner()->GetGameObjectID() == 5 && pBody2->GetOwner()->GetGameObjectID() == 1) {
+						std::cout << contactTime;
+						std::cout << "test\n";
+					}
 					if (!pBody2->isStatic) {
 						float secondNorm = 0.f;
 						float dp = Vector2DDotProduct(nextCycleVel, nextCycleVel2);
@@ -104,6 +107,8 @@ void ColliderSystem::Update(float dt) {
 						}
 						pBody1->forceManager.DeactivateForce(0);
 						pBody1->forceManager.DeactivateForce(1);
+						pBody2->forceManager.DeactivateForce(0);
+						pBody2->forceManager.DeactivateForce(1);
 						CollisionMessage collisionMessage(collider, body2, contactTime, normal, secondNorm, -normal);
 						ProcessMessage(&collisionMessage); 
 						

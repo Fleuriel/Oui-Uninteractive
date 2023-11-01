@@ -81,7 +81,7 @@ void Physics::Update(float dt) {
 			if (collider != nullptr) {
 
 				body->velocity = body->velocity * (collider->contactTime) + body->acceleration * static_cast<float>(sysManager->fixedDeltaTime);//GetDT();//* sysManager->fixedDeltaTime;
-				collider->contactTime = 1.0f;
+				
 			}
 			else {
 				body->velocity = body->velocity + body->acceleration * static_cast<float>(sysManager->fixedDeltaTime);
@@ -300,11 +300,15 @@ void Physics::CapVelocity(Vec2 originalVelocity, Vec2& bodyVelocity) {
 }
 
 void Physics::CollisionResponse(CollisionMessage* msg) {
+	PhysicsBody* pBody1 = GET_COMPONENT(msg->GetFirstCollider()->GetOwner(), PhysicsBody, ComponentType::PHYSICS_BODY);
+	PhysicsBody* pBody2 = GET_COMPONENT(msg->GetSecondCollider()->GetOwner(), PhysicsBody, ComponentType::PHYSICS_BODY);
 	msg->GetFirstCollider()->contactTime = msg->GetFirstContactTime();
 	msg->GetFirstCollider()->contactNormal = msg->GetContactNormal();
 	msg->GetSecondCollider()->contactTime = msg->GetSecondContactTime();
 	msg->GetSecondCollider()->contactNormal = msg->GetSecondContactNormal();
 
+	pBody1->velocity = pBody1->velocity * (msg->GetFirstCollider()->contactTime) + (pBody1->forceManager.CalculateResultantForce() * pBody1->mass) * static_cast<float>(sysManager->fixedDeltaTime);
+	pBody2->velocity = pBody2->velocity * (msg->GetSecondCollider()->contactTime) + (pBody2->forceManager.CalculateResultantForce() * pBody2->mass) * static_cast<float>(sysManager->fixedDeltaTime);
 
 
 }
