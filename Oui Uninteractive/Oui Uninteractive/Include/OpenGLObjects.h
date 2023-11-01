@@ -153,7 +153,7 @@ public:
 		glm::mat3 view_xform, CameraWindow_to_NDC_xform, World_to_NDC_xform;
 		
 		GLfloat height{ 1000 }; // Current Height of the depth i.e. Zoom
-		GLfloat min_height{ 1 };
+		GLfloat min_height{ 0 };
 		GLfloat max_height{ 2000 };
 
 

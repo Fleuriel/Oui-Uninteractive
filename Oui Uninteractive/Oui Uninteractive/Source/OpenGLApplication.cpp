@@ -278,11 +278,11 @@ void OpenGLApplication::OpenGLUpdate() {
 	double xpos, ypos{};
 	glfwGetCursorPos(windowNew, &xpos, &ypos);
 	
-	//std::cout << "BEFORE: " << "X: " << xpos << "  , Y: " << ypos << '\n';
+	std::cout << "BEFORE: " << "X: " << xpos << "  , Y: " << ypos << '\n';
 	OpenGLObject::FrameBufferMouseCoords(windowNew, &xpos, &ypos, OpenGLObject::cameraObject);
 
-	//std::cout << "After: " << "X: " << xpos << "  , Y: " << ypos << '\n';
-
+	std::cout << "After: " << "X: " << xpos << "  , Y: " << ypos << '\n';
+	
 
 
 
