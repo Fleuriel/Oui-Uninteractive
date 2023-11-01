@@ -265,24 +265,40 @@ bool MovingPointRectCollision(Vec2 origin, Vec2 direction, Collider::AABB target
 	//contactPoint = origin + (direction * contactTime);
 
 	if (tNearX > tNearY) {
-		if (direction.x > 0) {
+
+		if ((target.min.x - origin.x) < (target.max.x - origin.x)) {
+			contactNormal = Vec2(-1, 0);
+		}
+		else {
+			contactNormal = Vec2(1, 0);
+		}
+	/*	if (direction.x > 0) {
 			depth = target.min.x - origin.x;
 			contactNormal = Vec2(-1, 0);
 		}
 		else {
 			depth = origin.x - target.max.x;
 			contactNormal = Vec2(1, 0);
-		}
+		}*/
 	}
 	else if (tNearY > tNearX) {
-		if (direction.y > 0) {
+		if ((target.min.y - origin.y) < (target.max.y - origin.y)) {
+			contactNormal = Vec2(1, 0);
+		}
+		else {
+			contactNormal = Vec2(-1, 0);
+		}
+		/*if (direction.y > 0) {
 			depth = origin.y - target.max.y;
 			contactNormal = Vec2(0, -1);
 		}
 		else {
 			depth = target.min.y - origin.y;
 			contactNormal = Vec2(0, 1);
-		}
+		}*/
+	}
+	if (contactTime < 0) {
+		std::cout << "test\n";
 	}
 	return true;
 }
@@ -298,6 +314,11 @@ bool CollisionMovingRectRect(Collider::AABB A, Collider::AABB B, Vec2 AVel, floa
 	float newDepth = 0.f;
 
 	if (MovingPointRectCollision(A.center, AVel * dt, *(expanded_target.boundingbox), normal, contactTime, newDepth)) {
+		if (contactTime < 0.f) {
+			if (Vector2DDotProduct(AVel, normal) < 0) {
+				return true;
+			}
+		}
 		if (contactTime <= 1.0f && contactTime >= 0.f) {
 			depth = newDepth;
 			return true;

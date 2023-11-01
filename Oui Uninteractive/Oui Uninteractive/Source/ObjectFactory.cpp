@@ -101,8 +101,13 @@ ObjectFactory::~ObjectFactory() {
 		delete it.second;
 	}
 	componentFactoryMap.clear();
+
 	gameObjectIDMap.clear();
 	gameObjectDestroyList.clear();
+
+	for (auto& it : prefabMap) {
+		delete it.second;
+	}
 	prefabMap.clear();
 }
 
@@ -120,7 +125,6 @@ void ObjectFactory::BuildObjectFromFile(const std::string& filePath) {
 	if (serializer.ReadJSONFile(filePath, objDoc)) {
 		// For each object in Objects array (in JSON file)
 		for (auto& obj : objDoc["Objects"].GetArray()) {
-			//GameObject* gameObject{ new GameObject(obj["Name"].GetString(), obj["Type"].GetString(), StringToState(obj["State"].GetString())) };
 			GameObject* gameObject{ new GameObject(obj["Name"].GetString(), obj["Type"].GetString()) };
 
 			// Get each component(s) in current object
@@ -156,7 +160,7 @@ void ObjectFactory::BuildObjectFromFile(const std::string& filePath) {
 		}		
 	}
 	else {
-		std::cerr << "Failed to serialize object." << std::endl;
+		std::cerr << "Failed to de-serialize object." << std::endl;
 	}
 }
 
@@ -184,33 +188,17 @@ GameObject* ObjectFactory::BuildObjectFromPrefab(const std::string& name, const 
 		return nullptr;
 	}
 	else {
-		//GameObject* gameObject{ new GameObject(name, type, state) };
 		GameObject* gameObject{ new GameObject(name, type) };
-	
-		std::string componentName;
-
-		for (size_t i{}; i < prefabMap[type].size(); ++i) {
-			componentName = prefabMap[type][i];
-			ComponentType componentType{ StringToEnum(componentName) };
-
-			if (componentFactoryMap.find(componentType) == componentFactoryMap.end()) {
-				std::cerr << "Component name not found." << std::endl;
-			}
-			else {
-				// Set componentFactory to create the component itself
-				ComponentFactoryBase* componentFactory = componentFactoryMap[componentType];
-
-				// Create the component
-				IComponent* component = componentFactory->CreateComponent();
-
-				// Add the component to the game object
-				gameObject->AddComponent(component, componentFactory->type);
-			}
+		
+		// Copy component list from prefab to newly-created game object
+		for (size_t i{}; i < prefabMap[type]->prefabComponentList.size(); ++i) {
+			gameObject->AddComponent(prefabMap[type]->prefabComponentList[i]->Clone(), prefabMap[type]->prefabComponentList[i]->componentType);
 		}
+
 		// Assign an ID to the game object
 		AssignObjectID(gameObject);
 
-		// Initialize the components in the current object
+		// Initialize the components in the newly-created game object
 		gameObject->Initialize();
 
 		return gameObject;
@@ -232,20 +220,40 @@ void ObjectFactory::LoadPrefab(const std::string& filePath) {
 	if (serializer.ReadJSONFile(filePath, objDoc)) {
 		// For each object in Objects array (in JSON file)
 		for (auto& obj : objDoc["Objects"].GetArray()) {
-			std::string prefabName{ obj["Name"].GetString() };
-			std::vector<std::string> prefabComponents{};
+			
+			Prefab* prefab{ new Prefab(obj["Name"].GetString(), obj["Type"].GetString()) };
 
-			// Get each component(s) in current prefab object
-			for (auto& cmp : obj["Components"].GetArray()) {
-				prefabComponents.push_back(cmp.GetString());
+			// Get each component(s) in current prefab
+			const rapidjson::Value& components{ obj["Components"] };
+
+			for (rapidjson::Value::ConstMemberIterator itr{ components.MemberBegin() }; itr != components.MemberEnd(); ++itr) {
+				componentName = itr->name.GetString();
+				ComponentType type = StringToEnum(componentName);
+
+				if (!componentFactoryMap.contains(type)) {
+					std::cerr << "Component name not found." << std::endl;
+				}
+				else {
+					// Set componentFactory to create the component itself
+					ComponentFactoryBase* componentFactory = componentFactoryMap[type];
+
+					// Create the component
+					IComponent* component = componentFactory->CreateComponent();
+
+					// Serialize to store component data
+					component->Serialize(itr);
+
+					// Add the component to the game object
+					prefab->AddComponent(component, componentFactory->type);
+				}
 			}
 
-			// Add the prefab to the prefab map
-			prefabMap[prefabName] = prefabComponents;
+			// Add prefab to prefab map
+			prefabMap[prefab->GetType()] = prefab;
 		}
 	}
 	else {
-		std::cerr << "Failed to load prefabs." << std::endl;
+		std::cerr << "Failed to de-serialize prefab." << std::endl;
 	}
 }
 
@@ -497,4 +505,7 @@ bool ObjectFactory::AddComponent(componentType componentName, GameObject* gameOb
 	}
 
 	return true;
+}
+std::map<std::string, Prefab*> ObjectFactory::GetPrefabMap() {
+	return prefabMap;
 }

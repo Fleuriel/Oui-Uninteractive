@@ -5,6 +5,7 @@
 #include "Transform.h"
 #include "SceneManager.h"
 #include <Input.h>
+#include "Filepaths.h"
 #ifndef SCENE1_H
 #define SCENE1_H
 class Scene1 : public IScene {

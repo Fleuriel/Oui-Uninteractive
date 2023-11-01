@@ -22,6 +22,7 @@
 #include "AssetManager.h"
 #include "Sound.h"
 #include "FontManager.h"
+#include "Filepaths.h"
 
 
 namespace fs = std::filesystem;
@@ -91,11 +92,11 @@ void AssetManager::ReloadAll() {
  *************************************************************************/
 bool AssetManager::LoadTextures() {
 
-    std::string directoryPath = "assets/texture"; // Change this to the directory of texture folder
+    //std::string directoryPath = "assets/texture"; // Change this to the directory of texture folder
 
-    if (fs::is_directory(directoryPath)) {
-        for (const auto& entry : fs::directory_iterator(directoryPath)) {
-            std::string texFilePath = directoryPath + "/" + entry.path().filename().string();
+    if (fs::is_directory(FILEPATH_TEXTURES)) {
+        for (const auto& entry : fs::directory_iterator(FILEPATH_TEXTURES)) {
+            std::string texFilePath = FILEPATH_TEXTURES + "/" + entry.path().filename().string();
             //std::cout << "Texture file " << texFilePath << " Found." << std::endl;
             
             size_t pos = entry.path().filename().string().find_last_of('.');
@@ -186,6 +187,105 @@ bool AssetManager::ReloadTextures() {
     return (AssetManager::FreeTextures() && AssetManager::LoadTextures());
 }
 
+Sprite::Sprite() {
+
+}
+
+Sprite::~Sprite() {
+
+}
+
+bool Sprite::SetTexture(int tex) {
+    texture = tex;
+    return !texture;
+}
+
+int Sprite::GetTexture() {
+    return texture;
+}
+
+bool Sprite::SetRowsAndColumns(int a, int b) {
+    rows = a;
+    columns = b;
+    return (rows && columns);
+}
+
+bool Sprite::SetWidthAndHeight(int a, int b) {
+    width = a;
+    height = b;
+    return (width && height);
+}
+
+bool Sprite::AddCoordinates(int a, int b) {
+    size_t size = coordinates.size();
+    coordinates.push_back(std::pair<int, int>(a, b));
+    return (coordinates.size() > size);
+}
+
+bool AssetManager::LoadSprites() {
+
+    if (fs::is_directory(FILEPATH_SPRITES)) {
+        for (const auto& entry : fs::directory_iterator(FILEPATH_SPRITES)) {
+            std::string spriteFilePath = FILEPATH_SPRITES + "/" + entry.path().filename().string();
+            //std::cout << "Sprite file " << spriteFilePath << " Found." << std::endl;
+
+            size_t extensionPos = entry.path().filename().string().find_last_of('.');
+            if (extensionPos != std::string::npos) {
+
+                Sprite newsprite;
+                
+                size_t lBracketPos = entry.path().filename().string().find_last_of('(');
+
+                newsprite.SetTexture(AssetManager::SetUpTexture(spriteFilePath));
+                //std::cout << textures[nameWithoutExtension] << " success!\n";
+
+                std::string spriteRowsAndColumns = entry.path().filename().string().substr(lBracketPos + 1, extensionPos - lBracketPos - 2);
+                //std::cout << spriteRowsAndColumns<<std::endl;
+
+                size_t xPos = spriteRowsAndColumns.find_last_of('x');
+                int rows = std::stoi(spriteRowsAndColumns.substr(0, xPos));
+                //std::cout << rows << std::endl;
+                int columns = std::stoi(spriteRowsAndColumns.substr(xPos + 1));
+                //std::cout << columns << std::endl;
+
+                newsprite.SetRowsAndColumns(rows, columns);
+
+
+                std::string nameWithoutExtension = entry.path().filename().string().substr(0, lBracketPos);
+                //std::cout << nameWithoutExtension << std::endl;
+
+                sprites[nameWithoutExtension] = newsprite;
+            }
+            else
+                std::cout << "File " << entry.path().filename().string() << " is missing file extension.\n";
+
+        }
+        return true;
+    }
+    else {
+        // Print error
+        std::cout << "The specified path is not a directory." << std::endl;
+        return false;
+    }
+
+}
+
+int AssetManager::GetSprite(std::string name) {
+    return sprites[name].GetTexture();
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
 /**************************************************************************
  * @brief Loads sounds, both background music (BGM) and sound effects (SFX).
  * @param None.
@@ -209,10 +309,10 @@ bool AssetManager::LoadSounds() {
 bool AssetManager::LoadBGM() {
 
     // BGM file path
-    std::filesystem::path bgmPath{ "assets/sounds/bgm" };
+    //std::filesystem::path bgmPath{ "assets/sounds/bgm" };
 
-    if (fs::is_directory(bgmPath)) {
-        for (const auto& entry : fs::directory_iterator(bgmPath)) {
+    if (fs::is_directory(FILEPATH_SOUNDS_BGM)) {
+        for (const auto& entry : fs::directory_iterator(FILEPATH_SOUNDS_BGM)) {
             FMOD::Sound* newSound;
             soundManager->result = soundManager->system->createSound(entry.path().string().c_str(), FMOD_DEFAULT, 0, &newSound);
             if (soundManager->result != FMOD_OK)
@@ -237,10 +337,10 @@ bool AssetManager::LoadBGM() {
 bool AssetManager::LoadSFX() {
 
     // SFX file path
-    std::filesystem::path sfxPath{ "assets/sounds/sfx" };
+    //std::filesystem::path sfxPath{ "assets/sounds/sfx" };
 
-    if (fs::is_directory(sfxPath)) {
-        for (const auto& entry : fs::directory_iterator(sfxPath)) {
+    if (fs::is_directory(FILEPATH_SOUNDS_SFX)) {
+        for (const auto& entry : fs::directory_iterator(FILEPATH_SOUNDS_SFX)) {
             FMOD::Sound* newSound;
             soundManager->result = soundManager->system->createSound(entry.path().string().c_str(), FMOD_DEFAULT, 0, &newSound);
             if (soundManager->result != FMOD_OK)
@@ -376,10 +476,10 @@ bool AssetManager::ReloadSounds() {
 *************************************************************************/
 bool AssetManager::LoadFonts() {
     // File paths to the respetive fonts
-    std::filesystem::path fontPath{ "assets/fonts/" };
+    //std::filesystem::path fontPath{ "assets/fonts/" };
     bool result{ true };
-    if (fs::is_directory(fontPath)) {
-        for (const auto& entry : fs::directory_iterator(fontPath)) {
+    if (fs::is_directory(FILEPATH_FONTS)) {
+        for (const auto& entry : fs::directory_iterator(FILEPATH_FONTS)) {
             // Temp map to store currently loaded font glyphs            
             std::map<char, FontManager::Character> tempMap;
 

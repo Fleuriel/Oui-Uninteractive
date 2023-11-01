@@ -119,6 +119,15 @@
     <Filter Include="Systems\UI">
       <UniqueIdentifier>{fb570f6a-b544-4a0d-8583-86bb7c02a324}</UniqueIdentifier>
     </Filter>
+    <Filter Include="BFS">
+      <UniqueIdentifier>{f9c102b7-01ac-44e4-93eb-aeca7c7cb084}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Composition\GameObject">
+      <UniqueIdentifier>{3fad7688-b809-4998-aa15-b231a68df4cf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Composition\Prefab">
+      <UniqueIdentifier>{242d2270-95de-4f50-823d-cac51a880b56}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\GameStateManager.cpp">
@@ -190,9 +199,6 @@
     <ClCompile Include="Source\Editor.cpp">
       <Filter>Engine\Editor</Filter>
     </ClCompile>
-    <ClCompile Include="Source\GameObject.cpp">
-      <Filter>Composition</Filter>
-    </ClCompile>
     <ClCompile Include="Source\main.cpp">
       <Filter>Engine</Filter>
     </ClCompile>
@@ -255,6 +261,15 @@
     </ClCompile>
     <ClCompile Include="Source\Transition.cpp">
       <Filter>Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\BFS.cpp">
+      <Filter>BFS</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\GameObject.cpp">
+      <Filter>Composition\GameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Prefab.cpp">
+      <Filter>Composition\Prefab</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -323,9 +338,6 @@
     </ClInclude>
     <ClInclude Include="Include\Editor.h">
       <Filter>Engine\Editor</Filter>
-    </ClInclude>
-    <ClInclude Include="Include\GameObject.h">
-      <Filter>Composition</Filter>
     </ClInclude>
     <ClInclude Include="Include\CoordinateSystem.h">
       <Filter>Engine\CoordinateSystem</Filter>
@@ -407,6 +419,19 @@
     </ClInclude>
     <ClInclude Include="Include\Transition.h">
       <Filter>Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\BFS.h">
+      <Filter>BFS</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\GameObject.h">
+      <Filter>Composition\GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\Prefab.h">
+      <Filter>Composition\Prefab</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\Filepaths.h" />
+    <ClInclude Include="Include\GameObject.h">
+      <Filter>Composition\GameObject</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -15,16 +15,40 @@
 #include "FontManager.h"
 #include <Sound.h>
 
+class Sprite
+{
+public:
+	Sprite();
+	~Sprite();
+	bool SetTexture(int);
+	int GetTexture();
+	bool SetRowsAndColumns(int, int);
+	bool SetWidthAndHeight(int, int);
+	bool AddCoordinates(int, int);
+
+private:
+	int texture{};
+	int rows{};
+	int columns{};
+	int width{};
+	int height{};
+	std::vector<std::pair<int, int>> coordinates{};
+};
+
+
 class AssetManager
 {
 public:
+
 	// General functions
 	AssetManager();									//Constructor for AssetManager class
 	~AssetManager();								//Destructor for AssetManager class
 
+
 	void LoadAll();									//Function to load all assets
 	void FreeAll();									//Function to free all assets
 	void ReloadAll();								//Function to reload all assets
+
 
 	// Texture functions
 	bool LoadTextures();							//Function to load textures
@@ -32,8 +56,11 @@ public:
 	bool FreeTextures();							//Function to free textures
 	bool ReloadTextures();							//Function to reload textures
 	
+	// Sprite functions
+	bool LoadSprites();
 
-	// Sounds
+
+	// Sound functions
 	bool LoadSounds();								//Function to load sounds (BGM + SFX)
 	bool LoadBGM();									//Function to load BGM sounds
 	bool LoadSFX();									//Function to load SFX sounds
@@ -45,20 +72,22 @@ public:
 	bool ReloadSFX();								//Function to reload SFX sounds
 	
 
-	// Fonts
+	// Font functions
 	bool LoadFonts();								//Function to load fonts
 	bool FreeFonts();								//Function to free fonts
 	bool ReloadFonts();								//Function to reload fonts
 
 
-	// Access Assets
+	// Access Asset functions
 	int GetTexture(std::string);					//Function to access textures
+	int GetSprite(std::string);
 	FMOD::Sound* GetBGM(int);						//Function to access BGM sounds
 	FMOD::Sound* GetSFX(int);						//Function to access SFX Sounds
 
 public:
 	//Containers
 	std::map<std::string, int> textures{};
+	std::map<std::string, Sprite> sprites{};
 	std::vector<FMOD::Sound*> bgmSounds{};
 	std::vector<FMOD::Sound*> sfxSounds{};
 	std::map<std::string, std::map<char, FontManager::Character>> fontCharsMap; // This map stores all glyphs for all fonts

@@ -30,6 +30,7 @@
     <ClCompile Include="Source\AI.cpp" />
     <ClCompile Include="Source\AssetManager.cpp" />
     <ClCompile Include="Source\Background.cpp" />
+    <ClCompile Include="Source\BFS.cpp" />
     <ClCompile Include="Source\Collider.cpp" />
     <ClCompile Include="Source\ColliderSystem.cpp" />
     <ClCompile Include="Source\Collision.cpp" />
@@ -53,6 +54,7 @@
     <ClCompile Include="Source\ParticleSystem.cpp" />
     <ClCompile Include="Source\Physics.cpp" />
     <ClCompile Include="Source\PhysicsBody.cpp" />
+    <ClCompile Include="Source\Prefab.cpp" />
     <ClCompile Include="Source\RandomUtilities.cpp" />
     <ClCompile Include="Source\Scene1.cpp" />
     <ClCompile Include="Source\Scene2.cpp" />
@@ -70,6 +72,7 @@
     <ClInclude Include="Include\AI.h" />
     <ClInclude Include="Include\AssetManager.h" />
     <ClInclude Include="Include\Background.h" />
+    <ClInclude Include="Include\BFS.h" />
     <ClInclude Include="Include\Collider.h" />
     <ClInclude Include="Include\ColliderSystem.h" />
     <ClInclude Include="Include\Collision.h" />
@@ -80,6 +83,7 @@
     <ClInclude Include="Include\EnemyAIScript.h" />
     <ClInclude Include="Include\EnemyFSM.h" />
     <ClInclude Include="Include\EnemyStates.h" />
+    <ClInclude Include="Include\Filepaths.h" />
     <ClInclude Include="Include\FontManager.h" />
     <ClInclude Include="Include\GameObject.h" />
     <ClInclude Include="Include\GameStateManager.h" />
@@ -104,6 +108,7 @@
     <ClInclude Include="Include\PhysicsBody.h" />
     <ClInclude Include="Include\PhysicsHeaders.h" />
     <ClInclude Include="Include\PlayerShooting.h" />
+    <ClInclude Include="Include\Prefab.h" />
     <ClInclude Include="Include\RandomUtilities.h" />
     <ClInclude Include="Include\Scene1.h" />
     <ClInclude Include="Include\Scene2.h" />

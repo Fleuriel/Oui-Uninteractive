@@ -348,7 +348,7 @@ void OpenGLObject::Draw(int shaderNumber) const{
 	{
 		switch (TagID) {
 		case 0:
-			tex = assetManager.GetTexture("flower");
+			tex = assetManager.GetSprite("BaldManIdle");
 			break;
 		case 1:
 			tex = assetManager.GetTexture("bag");

@@ -47,7 +47,7 @@ void GameObject::Initialize() {
 		componentList[i]->base = this;
 		componentList[i]->Initialize();
 	}
-	std::cout << "Initialized " << gameObjectName << std::endl;  // Debugging
+	std::cout << "Initialized " << gameObjectName << std::endl;
 }
 
 /**************************************************************************

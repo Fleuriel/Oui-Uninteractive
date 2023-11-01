@@ -29,7 +29,6 @@ void SceneManager::Initialize() {
 	nextSceneID = currSceneID;
 	prevSceneID = currSceneID;
 
-	currScene->Load();
 }
 SceneManager::~SceneManager() {
 	std::map<size_t, IScene*>::iterator it = sceneMap.begin();

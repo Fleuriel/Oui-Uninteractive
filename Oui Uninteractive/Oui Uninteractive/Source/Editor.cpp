@@ -46,7 +46,8 @@ void UsingImGui::Init(GLFWwindow* glfwWindow, const char* glsl_vers) {
 	ImGui::CreateContext();
 	ImPlot::CreateContext();
 	ImGuiIO& io = ImGui::GetIO();
-	io.IniFilename = "assets/imgui.ini";
+
+	io.IniFilename = FILEPATH_IMGUI;
 
 	// Config Flags
 	io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
@@ -172,7 +173,7 @@ void Editor::CreateMasterPanel() {
 	// The "do smth" button. Interchangable quick access button used for quick testing of features
 	if (ImGui::Button("Do Something")) {
 		objectFactory->DestroyAllObjects();
-		objectFactory->BuildObjectFromFile("assets/scenes/TestWalls.JSON");
+		objectFactory->BuildObjectFromFile(FILEPATH_SCENES_TESTWALLS);
 	}
 	ImGui::End();
 }
@@ -211,7 +212,7 @@ void Editor::CreatePrefabPanel() {
 
 	// Refresh list of prefabs from file directory
 	if (ImGui::Button("Refresh List")) {
-		std::filesystem::path prefabPath{ "assets/prefab" };
+		std::filesystem::path prefabPath{ FILEPATH_PREFAB };
 		if (std::filesystem::is_directory(prefabPath)) {
 			for (const auto& entry : std::filesystem::directory_iterator(prefabPath)) {
 				
@@ -225,7 +226,13 @@ void Editor::CreatePrefabPanel() {
 
 	{
 		ImGui::BeginChild("left pane", ImVec2(150, 0), true);
-		ImGui::Selectable("temp");
+		
+		std::map<std::string, Prefab*> copy = objectFactory->GetPrefabMap();
+		std::map<std::string, Prefab*>::iterator it = copy.begin();
+		for (; it != copy.end(); it++) {
+			const char* label = it->first.c_str();
+			ImGui::Selectable(label);
+		}
 
 		ImGui::EndChild();
 	}
@@ -579,7 +586,7 @@ void Editor::CreateAssetBrowser() {
 
 	}
 	ImGui::BeginChild("LeftPane", ImVec2(200, 0), true);  // Use 200 width first, can change later. Dynamically size height for now
-	RenderDirectory("assets"); 
+	RenderDirectory(FILEPATH_MASTER);
 	ImGui::EndChild();
 
 	ImGui::SameLine();
