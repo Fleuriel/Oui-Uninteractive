@@ -95,7 +95,7 @@ void ColliderSystem::Update(float dt) {
 				Vec2 relVel = nextCycleVel - nextCycleVel2;
 				collided = CollisionMovingRectRect(*(collider->boundingbox), *(body2->boundingbox), relVel, contactTime, normal, static_cast<float>(sysManager->fixedDeltaTime), depth, collider->wasColliding, collider->contactNormal);
 				if (collided) {
-					if (pBody1->GetOwner()->GetGameObjectID() == 5 && pBody2->GetOwner()->GetGameObjectID() == 1) {
+					if (pBody1->GetOwner()->GetGameObjectID() == 0) {
 						std::cout << contactTime;
 						std::cout << "test\n";
 					}
