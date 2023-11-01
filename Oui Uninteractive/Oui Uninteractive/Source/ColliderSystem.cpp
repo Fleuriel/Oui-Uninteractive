@@ -69,7 +69,7 @@ void ColliderSystem::Update(float dt) {
 	for (int step = 0; step < sysManager->currentNumberOfSteps; step++) {
 		for (std::map<size_t, Collider*>::iterator it = colliderMap.begin(); it != colliderMap.end(); it++) {
 			Collider* collider = it->second;
-			collider->contactTime = 1.0f;
+			
 
 
 			collider->tx->position = GET_COMPONENT(collider->GetOwner(), Transform, ComponentType::TRANSFORM)->position;
@@ -97,13 +97,16 @@ void ColliderSystem::Update(float dt) {
 				if (collided) {
 			
 					if (!pBody2->isStatic) {
-
 						pBody1->forceManager.DeactivateForce(0);
 						pBody1->forceManager.DeactivateForce(1);
-						collider->contactTime = contactTime;
+						CollisionMessage collisionMessage(collider, body2, contactTime, normal, 0.f, -normal);
+						ProcessMessage(&collisionMessage); 
+						
+						/*collider->contactTime = contactTime;
 						collider->contactNormal = normal;
 						body2->contactTime = 0.f;
-						body2->contactNormal = -normal;
+						body2->contactNormal = -normal;*/
+
 
 					}
 					else {
@@ -111,8 +114,12 @@ void ColliderSystem::Update(float dt) {
 						if (pBody2->isStatic) {
 							pBody1->forceManager.DeactivateForce(0);
 							pBody1->forceManager.DeactivateForce(1);
+							CollisionMessage collisionMessage(collider, body2, contactTime, normal, 1.f, normal);
+							ProcessMessage(&collisionMessage);
+						/*	pBody1->forceManager.DeactivateForce(0);
+							pBody1->forceManager.DeactivateForce(1);
 							collider->contactTime = contactTime;
-							collider->contactNormal = normal;
+							collider->contactNormal = normal;*/
 						}
 						
 					}
