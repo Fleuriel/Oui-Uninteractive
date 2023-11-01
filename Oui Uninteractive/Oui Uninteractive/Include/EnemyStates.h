@@ -14,20 +14,31 @@
 #define ENEMYSTATES_H
 
 #include "IState.h"
+#include "BFS.h"
 
 class EnemyRoam : public IState {
 private:
-	
+	BFS* bfs;
+	//std::vector<Node*> pathToTake;
+	std::vector<Node> pathToTake;
+	bool pathFound;
+	bool printTest;
 
 public:
+	//void Initialize() override;
+	EnemyRoam();
 	void Update(size_t gameObjectID) override;
+	~EnemyRoam() override;
 };
 
 class EnemyAttack : public IState {
 private:
 
 public:
+	//void Initialize() override;
+	EnemyAttack();
 	void Update(size_t gameObjectID) override;
+	~EnemyAttack() override;
 };
 
 #endif

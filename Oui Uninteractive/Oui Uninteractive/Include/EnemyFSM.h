@@ -60,6 +60,7 @@ public:
 		else {
 			currentState = statesMap["EnemyRoam"];
 		}
+		//currentState = statesMap["EnemyAttack"];
 	}
 
 	void End() {}

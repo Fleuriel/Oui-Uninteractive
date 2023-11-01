@@ -17,6 +17,8 @@
                 "Transform": {
                     "PositionX": -310.1926574707031,
                     "PositionY": -162.000244140625,
+                    "PositionX": -250.0,
+                    "PositionY": 200.0,
                     "Rotation": 0.0,
                     "Scale": 200.0
                 },
@@ -121,16 +123,25 @@
                     "VelocityX": 0.0,
                     "VelocityY": 0.0,
                     "RotationSpeed": 0.0,
-                    "Speed": 50.0,
-                    "Mass": 50.0,
+                    "Speed": 0.0,
+                    "Mass": 0.0,
                     "IsStatic": false,
                     "FrictionForce": 20.0
                 },
                 "Transform": {
-                    "PositionX": -250.0,
-                    "PositionY": 50.0,
+                    "PositionX": 0.0,
+                    "PositionY": 0.0,
                     "Rotation": 0.0,
-                    "Scale": 100.0
+                    "Scale": 75.0
+                },
+                "LogicComponent": {
+                    "ScriptID": [
+                        0
+                    ]
+                },
+                "Collider": {
+                    "ColliderSize": 0.0,
+                    "ColliderRotation": 0.0
                 }
             }
         },

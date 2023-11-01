@@ -35,6 +35,7 @@
 #include <set>
 #include "ISystem.h"
 #include "GameObject.h"
+#include "Prefab.h"
 
 #define GET_COMPONENT(GameObject, Component, ComponentType) (GameObject->GetComponentType<Component>(ComponentType))
 
@@ -55,7 +56,8 @@ private:
 	std::map<componentType, ComponentFactoryBase*> componentFactoryMap;
 
 	// Map to store prefabs
-	std::map<std::string, std::vector<std::string>> prefabMap;
+	//std::map<std::string, std::vector<std::string>> prefabMap;
+	std::map<std::string, Prefab*> prefabMap;
 
 public:
 	/**************************************************************************
@@ -168,8 +170,6 @@ public:
 	* @return std::map<size_t, GameObject*>
 	*************************************************************************/
 	std::map<size_t, GameObject*> GetGameObjectIDMap();
-
-	// messaging...
 
 	/**************************************************************************
 	* @brief Add component factory to map
