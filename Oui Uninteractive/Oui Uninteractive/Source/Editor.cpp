@@ -221,34 +221,44 @@ void Editor::CreatePrefabPanel() {
 	}
 	ImGui::SameLine();
 	ImGui::Button("Save");
+
+	std::map<std::string, Prefab*> copy = objectFactory->GetPrefabMap();
+	std::map<std::string, Prefab*>::iterator it = copy.begin();
+	static std::string selectedName = it->first;
 	
 	// Left Plane
-
-	{
+	{	
 		ImGui::BeginChild("left pane", ImVec2(150, 0), true);
-		
-		std::map<std::string, Prefab*> copy = objectFactory->GetPrefabMap();
-		std::map<std::string, Prefab*>::iterator it = copy.begin();
+
 		for (; it != copy.end(); it++) {
-			const char* label = it->first.c_str();
-			ImGui::Selectable(label);
+			std::string prefabName = it->first;
+			
+			if (ImGui::Selectable(prefabName.c_str(), prefabName == selectedName)) {
+				selectedName = prefabName;
+			}
 		}
 
 		ImGui::EndChild();
 	}
 	ImGui::SameLine();
 
-
 	// Right Plane
 	{
 		ImGui::BeginGroup();
 		ImGui::BeginChild("item view", ImVec2(0, -ImGui::GetFrameHeightWithSpacing())); // Leave room for 1 line below
 	
-		ImGui::Button("Test");
-
+		ImGui::SeparatorText("Components List");
+		// If selected prefab has no components
+		if (copy[selectedName]->GetprefabComponentList().empty()) {
+			ImGui::Text("Selected Prefab has no components");
+		}
+		else {
+			for (auto& x : copy[selectedName]->GetprefabComponentList()) {
+				
+			}
+		}
 
 		ImGui::EndChild();
-
 		ImGui::EndGroup();
 	}
 	ImGui::End();
@@ -282,7 +292,7 @@ void Editor::CreateSoundPanel() {
 
 		// Check pause status for bgmch2
 		soundManager->bgmChannels[1]->getPaused(&pauseStatus2);
-		if (pauseStatus2) { // replace with your function to check if playing
+		if (pauseStatus2) { 
 			ImGui::PushStyleColor(ImGuiCol_Text, redColour); // Red if not playing
 		}
 		else {

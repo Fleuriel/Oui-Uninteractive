@@ -249,7 +249,7 @@ void ObjectFactory::LoadPrefab(const std::string& filePath) {
 			}
 
 			// Add prefab to prefab map
-			prefabMap[prefab->GetType()] = prefab;
+			prefabMap[prefab->GetName()] = prefab;
 		}
 	}
 	else {

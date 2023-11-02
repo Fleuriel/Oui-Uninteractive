@@ -80,6 +80,13 @@ public:
 	* @return T* - component type
 	*************************************************************************/
 	template <typename T> T* GetComponentType(ComponentType typeID);
+
+	/**************************************************************************
+	* @brief Return the list of components type
+	* @param typeID - component type
+	* @return std::vector - container of components
+	*************************************************************************/
+	std::vector<IComponent*> GetprefabComponentList();
 };
 
 /**************************************************************************

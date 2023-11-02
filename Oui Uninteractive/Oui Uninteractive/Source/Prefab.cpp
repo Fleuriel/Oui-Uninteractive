@@ -50,6 +50,10 @@ std::string Prefab::GetType() {
 	return prefabType;
 }
 
+std::vector<IComponent*> Prefab::GetprefabComponentList() {
+	return prefabComponentList;
+}
+
 IComponent* Prefab::GetComponent(ComponentType typeID) {
 	int index = Has(typeID);
 	if (index >= 0) {
