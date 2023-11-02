@@ -57,7 +57,9 @@ void AssetManager::LoadAll() {
     << ((AssetManager::LoadTextures()) ? "Textures loaded successfully" : "Failed to load textures") << std::endl
     << ((AssetManager::LoadSounds()) ? "Sounds loaded successfully" : "Failed to load sounds") << std::endl
     << ((AssetManager::LoadFonts()) ? "Fonts loaded successfully" : "Failed to load fonts") << std::endl
-    << ((AssetManager::LoadScenes()) ? "Scenes loaded successfully" : "Failed to load scenes") << std::endl;
+    << ((AssetManager::LoadScenes()) ? "Scenes loaded successfully" : "Failed to load scenes") << std::endl
+    << ((AssetManager::LoadFonts()) ? "Fonts loaded successfully" : "Failed to load fonts") << std::endl;
+    LoadSprites();
 }
 
 /**************************************************************************
