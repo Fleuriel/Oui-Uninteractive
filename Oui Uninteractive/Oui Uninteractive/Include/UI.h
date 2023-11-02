@@ -10,6 +10,7 @@
 #ifndef UI_H
 #define UI_H
 
+#include "OpenGLObjects.h"
 #include "ObjectFactory.h"
 #include "ISystem.h"
 #include "Collision.h"

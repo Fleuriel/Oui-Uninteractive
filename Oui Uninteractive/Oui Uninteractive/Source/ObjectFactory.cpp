@@ -55,7 +55,7 @@ ComponentType ObjectFactory::StringToEnum(std::string str) {
 		return ComponentType::COLLIDER;
 	}
 	else {
-		return ComponentType::NONE;
+		return ComponentType::COUNT;
 	}
 }
 

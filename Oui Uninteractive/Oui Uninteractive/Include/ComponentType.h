@@ -11,11 +11,11 @@
 #define COMPONENT_TYPE_H
 
 typedef enum class ComponentType {
-	NONE = 0,
-	PHYSICS_BODY,
+	PHYSICS_BODY = 0,
 	TRANSFORM,
 	LOGICCOMPONENT,
-	COLLIDER
+	COLLIDER,
+	COUNT
 } componentType;
 
 #endif

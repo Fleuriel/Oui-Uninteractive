@@ -229,7 +229,6 @@ void Editor::CreatePrefabPanel() {
 	// Left Plane
 	{	
 		ImGui::BeginChild("left pane", ImVec2(150, 0), true);
-
 		for (; it != copy.end(); it++) {
 			std::string prefabName = it->first;
 			
@@ -246,7 +245,8 @@ void Editor::CreatePrefabPanel() {
 	{
 		ImGui::BeginGroup();
 		ImGui::BeginChild("item view", ImVec2(0, -ImGui::GetFrameHeightWithSpacing())); // Leave room for 1 line below
-	
+		ImGui::SeparatorText("Details");
+		ImGui::Text("Prefab Type: %s", copy[selectedName]->GetType());
 		ImGui::SeparatorText("Components List");
 		// If selected prefab has no components
 		if (copy[selectedName]->GetprefabComponentList().empty()) {
@@ -254,7 +254,8 @@ void Editor::CreatePrefabPanel() {
 		}
 		else {
 			for (auto& x : copy[selectedName]->GetprefabComponentList()) {
-				
+				ImGui::CollapsingHeader(objectFactory->EnumToString(x->componentType).c_str());
+				//std::cout << objectFactory->EnumToString(x->componentType) << std::endl;
 			}
 		}
 
