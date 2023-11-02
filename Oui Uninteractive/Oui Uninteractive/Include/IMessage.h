@@ -16,7 +16,6 @@
 
 class IMessage {
 private:
-	//MessageType messageID;
 	std::string messageID;
 
 public:
@@ -85,9 +84,7 @@ public:
 		}
 	}
 
-	//void SendToObservers(IMessage* msg) { msg = nullptr; }
-
-	void ProcessMessage(IMessage* msg) {
+	void SendToObservers(IMessage* msg) {
 		// Send message to observers who subscribed to specified message
 		typedef std::multimap<std::string, IObserver*>::iterator iterator;
 		std::pair<iterator, iterator> itPair = observerMap.equal_range(msg->GetMessageID());

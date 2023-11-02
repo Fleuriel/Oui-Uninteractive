@@ -101,7 +101,6 @@ void EnemyRoam::ExitState() {
     pathIndex = 0;
 
     pathToTake.clear();
-    //delete bfs;
 }
 
 EnemyRoam::~EnemyRoam() {

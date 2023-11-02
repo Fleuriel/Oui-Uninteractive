@@ -49,7 +49,6 @@ void BFS::CreateGrid() {
     float windowWidth = 1920.f;
     float windowHeight = 1017.f;
 	float scaleTemp = windowHeight / static_cast<float>(rows);
-    //float scaleTemp = 300.f;
 
     for (int i{}; i < rows; ++i) {
         for (int j{}; j < cols; ++j) {
@@ -126,7 +125,6 @@ std::vector<Node> BFS::FindPath(int startX, int startY, int targetX, int targetY
                 // Top-left corner
                 if (neighbourX == -1 && neighbourY == -1) {
                     // Edge on the right/bottom is an obstacle
-                    //if (gameMap[checkX + 1][checkY] == 1 || gameMap[checkX][checkY + 1] == 1)
                     if (gameMap[checkY][checkX + 1] == 1 || gameMap[checkY + 1][checkX] == 1)
                         continue;
                 }
@@ -134,7 +132,6 @@ std::vector<Node> BFS::FindPath(int startX, int startY, int targetX, int targetY
                 // Top-right corner
                 if (neighbourX == 1 && neighbourY == -1) {
                     // Edge on the left/bottom is an obstacle
-                    //if (gameMap[checkX - 1][checkY] == 1 || gameMap[checkX][checkY + 1] == 1)
                     if (gameMap[checkY][checkX - 1] == 1 || gameMap[checkY + 1][checkX] == 1)
                         continue;
                 }
@@ -142,7 +139,6 @@ std::vector<Node> BFS::FindPath(int startX, int startY, int targetX, int targetY
                 // Bottom-left corner
                 if (neighbourX == -1 && neighbourY == 1) {
                     // Edge on the top/right is an obstacle
-                    //if (gameMap[checkX][checkY - 1] == 1 || gameMap[checkX + 1][checkY] == 1)
                     if (gameMap[checkY - 1][checkX] == 1 || gameMap[checkY][checkX + 1] == 1)
                         continue;
                 }
@@ -150,7 +146,6 @@ std::vector<Node> BFS::FindPath(int startX, int startY, int targetX, int targetY
                 // Bottom-right corner
                 if (neighbourX == 1 && neighbourY == 1) {
                     // Edge on the top/left is an obstacle
-                    //if (gameMap[checkX][checkY - 1] == 1 || gameMap[checkX - 1][checkY] == 1)
                     if (gameMap[checkY - 1][checkX] == 1 || gameMap[checkY][checkX - 1] == 1)
                         continue;
                 }
@@ -173,45 +168,6 @@ std::vector<Node> BFS::FindPath(int startX, int startY, int targetX, int targetY
     }
 
     return path;
-}
-
-void BFS::FollowPath(std::vector<Node> p, size_t gameObjectID) {
-    //for (Node pathNode : p) {
-    //    // Set target to pathNode
-    //}
-    /*// TEMPORARY VARIABLES
-    float windowWidth = 1920.f;
-    float windowHeight = 1017.f;
-    float scaleTemp = windowHeight / 3.f;
-
-    // Enemy to traverse along path to take
-    for (const Node& node : p) {
-        // While not within range of node, move towards node
-        Vec2 currentEnemyPos = Vec2(0, 0);
-        Vec2 nodePos;
-        nodePos.x = (node.x * scaleTemp) + (scaleTemp - windowWidth) / 2;
-        nodePos.y = (node.y * scaleTemp) + (scaleTemp - windowWidth) / 2;
-
-        GameObject* currentEnemy = objectFactory->GetGameObjectByID(gameObjectID);
-        if (currentEnemy != nullptr) {
-            Transform* currentEnemyTx = GET_COMPONENT(currentEnemy, Transform, ComponentType::TRANSFORM);
-            if (currentEnemyTx != nullptr) {
-                currentEnemyPos = currentEnemyTx->position;
-            }
-        }
-
-        if (Vector2DDistance(currentEnemyPos, nodePos) > 50) {
-            Vec2 direction = Vec2(nodePos.x - currentEnemyPos.x, nodePos.y - currentEnemyPos.y);
-            Vector2DNormalize(direction, direction);
-            GET_COMPONENT(currentEnemy, PhysicsBody, ComponentType::PHYSICS_BODY)->velocity = direction * 200;
-        }
-
-        // continue if within range of next node
-        if (Vector2DDistance(currentEnemyPos, nodePos) <= 50) {
-            continue;
-        }
-    }
-    std::cout << "PATHFINDING END" << std::endl;*/
 }
 
 int BFS::GetRows() {
