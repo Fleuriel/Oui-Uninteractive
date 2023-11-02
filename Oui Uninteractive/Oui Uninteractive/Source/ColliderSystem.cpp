@@ -77,9 +77,7 @@ void ColliderSystem::Update(float dt) {
 				collided = CollisionMovingRectRect(*(collider->boundingbox), *(body2->boundingbox), relVel, contactTime, normal, static_cast<float>(sysManager->fixedDeltaTime), depth, nextCycleVel);
 				if (collided) {
 					didCollide = true;
-					if (pBody1->GetOwner()->GetGameObjectID() == 0) {
-						std::cout << contactTime;
-					}
+					
 					if (!pBody2->isStatic) {
 						//both objects can move
 						float secondNorm = 0.f;

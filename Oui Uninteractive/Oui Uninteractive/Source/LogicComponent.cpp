@@ -10,11 +10,7 @@ LogicComponent::~LogicComponent() {
 void LogicComponent::Initialize() {
 	//logicSystem->logicComponentVec.push_back(this);
 	logicSystem->logicComponentMap.insert(std::pair<size_t, LogicComponent*>(GetOwner()->GetGameObjectID(), this));
-	logicIndex = 0;
 	
-}
-void LogicComponent::SetLogicIndex(const unsigned int& newLogicIndex) {
-	logicIndex = newLogicIndex;
 }
 
 void LogicComponent::Serialize(rapidjson::Value::ConstMemberIterator& itr) {
@@ -50,7 +46,4 @@ LogicComponent* LogicComponent::Clone() const {
 
 	return newLogic;
 }
-//which script do u want to run (can make it a range in the future)
-unsigned int LogicComponent::GetLogicIndex() {
-	return logicIndex;
-}
+
