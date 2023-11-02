@@ -25,7 +25,7 @@ void TransformSystem::Initialize() {
 * @param dt - delta time
 * @return void
 *************************************************************************/
-void TransformSystem::Update(float dt) {
+void TransformSystem::Update(float) {
 	TimeProfiler profiler(Editor::timeRecorder.transformTime);
 	std::map<size_t, GameObject*> copyMap = objectFactory->GetGameObjectIDMap();
 	std::map<size_t, GameObject*>::iterator it = copyMap.begin();
