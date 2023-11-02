@@ -134,7 +134,6 @@ void UsingImGui::Exit() {
 void Editor::Init() {
 	// Set max data points
 	maxFPSdata = 2000;
-
 }
 
 
@@ -209,7 +208,8 @@ void Editor::CreateRenderWindow() {
 *************************************************************************/
 void Editor::CreatePrefabPanel() {
 	ImGui::Begin("Prefab Editor");
-	static bool physics, transform, logic, collider;
+	
+	static bool physicsFlag, transformFlag, logicFlag, colliderFlag, saveFlag, loadedFlag = false;
 	// Refresh list of prefabs from file directory
 	if (ImGui::Button("Refresh")) {
 		std::filesystem::path prefabPath{ FILEPATH_PREFAB };
@@ -219,10 +219,15 @@ void Editor::CreatePrefabPanel() {
 			}
 		}
 	}
-	ImGui::SameLine();
-	if (ImGui::Button("Save")) {
-		objectFactory->SavePrefabsToFile(FILEPATH_PREFAB);
+	
+	if (saveFlag) {
+		ImGui::SameLine();
+		if (ImGui::Button("Save")) {
+			//objectFactory->SavePrefabsToFile(FILEPATH_PREFAB);
+			saveFlag = false;
+		}
 	}
+	
 
 	std::map<std::string, Prefab*> copy = objectFactory->GetPrefabMap();
 	std::map<std::string, Prefab*>::iterator it = copy.begin();
@@ -232,13 +237,17 @@ void Editor::CreatePrefabPanel() {
 	{	
 		ImGui::BeginChild("left pane", ImVec2(150, 0), true);
 		for (; it != copy.end(); it++) {
-			std::string prefabName = it->first;
-			
-			if (ImGui::Selectable(prefabName.c_str(), prefabName == selectedName)) {
+			std::string prefabName = it->first;		
+			if (ImGui::Selectable(prefabName.c_str(), prefabName == selectedName) || !loadedFlag) {
 				selectedName = prefabName;
+				// Update states
+				physicsFlag = (copy[selectedName]->Has(ComponentType::PHYSICS_BODY) != -1);
+				transformFlag = (copy[selectedName]->Has(ComponentType::TRANSFORM) != -1);
+				logicFlag = (copy[selectedName]->Has(ComponentType::LOGICCOMPONENT) != -1);
+				colliderFlag = (copy[selectedName]->Has(ComponentType::COLLIDER) != -1);
+				loadedFlag = true;
 			}
 		}
-
 		ImGui::EndChild();
 	}
 	ImGui::SameLine();
@@ -261,25 +270,54 @@ void Editor::CreatePrefabPanel() {
 		}
 		ImGui::SeparatorText("Components List");
 
-		// Render all the components
-		ImGui::Checkbox("##Physics", &physics); ImGui::SameLine();		
-		if (ImGui::CollapsingHeader("Physics Body")) {
-		/*	if (ImGui::SliderFloat()) {
-				
-			}*/
-			
+		// Render Physics
+		if (ImGui::Checkbox("##Physics", &physicsFlag)) {
+			saveFlag = true;
 		}
-		ImGui::Checkbox("##Transform", &transform); ImGui::SameLine();
+		ImGui::SameLine();		
+		if (ImGui::CollapsingHeader("Physics Body") ) {
+			static float rotSpeed, speed, mass, friction;
+			static bool isStatic;
+			ImGui::Indent();
+			ImGui::SliderFloat("Rotation Speed", &rotSpeed, 0.0f, 1000.0f);
+			ImGui::SliderFloat("Speed", &speed, 0.0f, 1000.0f);
+			ImGui::SliderFloat("Mass", &mass, 0.0f, 1000.0f);
+			ImGui::SliderFloat("Friction", &friction, 0.0f, 100.0f);
+			ImGui::Checkbox("Is Static", &isStatic);
+			ImGui::Unindent();
+		}
+		// Render Transform
+		if (ImGui::Checkbox("##Transform", &transformFlag)) {
+			saveFlag = true;
+		}
+		ImGui::SameLine();
 		if (ImGui::CollapsingHeader("Transform")) {
-
+			static float xPos, yPos, scale;
+			ImGui::Indent();
+			ImGui::InputFloat("X-Position", &xPos);
+			ImGui::InputFloat("Y-Position", &yPos);
+			ImGui::InputFloat("Scale", &scale);
+			ImGui::Unindent();
 		}
-		ImGui::Checkbox("##Logic", &logic); ImGui::SameLine();
+		// Render Logic
+		if (ImGui::Checkbox("##Logic", &logicFlag)) {
+			saveFlag = true;
+		}
+		ImGui::SameLine();
 		if (ImGui::CollapsingHeader("Logic")) {
 
 		}
-		ImGui::Checkbox("##Collider", &collider); ImGui::SameLine();
+		// Render Collider
+		if (ImGui::Checkbox("##Collider", &colliderFlag)) {
+			saveFlag = true;
+		}
+		ImGui::SameLine();
 		if (ImGui::CollapsingHeader("Collider")) {
-
+			static float scale, rot;
+			ImGui::Indent();
+			ImGui::InputFloat("Scale", &scale);
+			ImGui::InputFloat("Rotation", &rot);
+			ImGui::Unindent();
 		}
 		
 
