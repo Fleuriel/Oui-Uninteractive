@@ -8,7 +8,7 @@ void Scene2::Load() {
 #ifdef _DEBUG 
 	std::cout << "\nLoading prefabs from JSON file..." << std::endl;
 #endif
-	objectFactory->LoadPrefab("assets/prefab/Prefab.JSON");
+	//objectFactory->LoadPrefab("assets/prefab/Prefab.JSON");
 }
 void Scene2::Initialize() {
 
