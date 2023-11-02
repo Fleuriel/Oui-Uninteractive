@@ -185,8 +185,6 @@ float CalculateEntryTimeAndNormal(Collider::AABB* Rect1, Collider::AABB* Rect2, 
 			normalX = -1;
 			return -distanceXEntry;
 		}
-		std::cout << "X AXIS\n";
-		
 	}
 	else {
 		//negative from bottom
@@ -199,9 +197,6 @@ float CalculateEntryTimeAndNormal(Collider::AABB* Rect1, Collider::AABB* Rect2, 
 			normalY = -1;
 			return -distanceYEntry;
 		}
-
- 		std::cout << " Y AXIS";
-		
 	}
 	
 	
@@ -251,7 +246,6 @@ bool MovingPointRectCollision(Vec2 origin, Vec2 direction, Collider::AABB target
 		}
 	}
 
-	
 	if (tNearY > tFarY) {
 		std::swap(tNearY, tFarY);
 	}
@@ -262,7 +256,6 @@ bool MovingPointRectCollision(Vec2 origin, Vec2 direction, Collider::AABB target
 		return false;
 	}
 
-	//contactPoint = origin + (direction * contactTime);
 
 	if (tNearX > tNearY) {
 
@@ -272,14 +265,6 @@ bool MovingPointRectCollision(Vec2 origin, Vec2 direction, Collider::AABB target
 		else {
 			contactNormal = Vec2(1, 0);
 		}
-	/*	if (direction.x > 0) {
-			depth = target.min.x - origin.x;
-			contactNormal = Vec2(-1, 0);
-		}
-		else {
-			depth = origin.x - target.max.x;
-			contactNormal = Vec2(1, 0);
-		}*/
 	}
 	else if (tNearY > tNearX) {
 		if (abs(target.min.y - origin.y) < abs(target.max.y - origin.y)) {
@@ -288,14 +273,6 @@ bool MovingPointRectCollision(Vec2 origin, Vec2 direction, Collider::AABB target
 		else {
 			contactNormal = Vec2(0, 1);
 		}
-		/*if (direction.y > 0) {
-			depth = origin.y - target.max.y;
-			contactNormal = Vec2(0, -1);
-		}
-		else {
-			depth = target.min.y - origin.y;
-			contactNormal = Vec2(0, 1);
-		}*/
 	}
 	if (contactTime < 0) {
 		std::cout << "test\n";
