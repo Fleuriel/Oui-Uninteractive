@@ -28,6 +28,9 @@ enum FORCE_INDEX {
 };
 class LinearForce {
 public:
+	/**************************************************************************
+	* @brief Constructor for LinearForce
+	*************************************************************************/
 	LinearForce(float lifetime, bool isActive, float magnitude);
 	float lifetime;
 	float age;
@@ -37,18 +40,76 @@ public:
 };
 class ForceManager {
 public:
+	/**************************************************************************
+	* @brief Constructor for ForceManager
+	*************************************************************************/
 	ForceManager();
 	std::vector<LinearForce*> forceVec;
+	/**************************************************************************
+	* @brief Add a Force Object to ForceManager
+	* @param LinearForce* force - force object to add
+	* @return void
+	*************************************************************************/
 	void AddForce(LinearForce* newForce);
+	/**************************************************************************
+	* @brief Applies another Vector to a Force in the Force Vectpr
+	* @param Vec2 dir - direction of new force
+	* @param float magnitude - magnitude of the force
+	* @param float lifetime - lifetime of the new force
+	* @param FORCE_INDEX index - index of force to apply new force to
+	* @return void
+	*************************************************************************/
 	void ApplyToForce(Vec2 direction, float magnitude, float lifetime, FORCE_INDEX index);
+	/**************************************************************************
+	* @brief Deactivate force if active
+	* @param FORCE_INDEX index - index of force to deactivate
+	* @return void
+	*************************************************************************/
 	void DeactivateForce(FORCE_INDEX index);
+	/**************************************************************************
+	* @brief Deactivate force if active
+	* @param int index - index of force to deactivate
+	* @return void
+	*************************************************************************/
 	void DeactivateForce(int index);
+	/**************************************************************************
+	* @brief Setter for isActive flag
+	* @param bool activeFlag - the flag to set to
+	* @param FORCE_INDEX index - index of force to change
+	* @return void
+	*************************************************************************/
 	void SetActive(bool activeFlag, FORCE_INDEX index);
+	/**************************************************************************
+	* @brief Setter for Direction
+	* @param Vec2 dir - direction to set to
+	* @param FORCE_INDEX index - index of force to change
+	* @return void
+	*************************************************************************/
 	void SetDirection(Vec2 newDir, FORCE_INDEX index);
+	/**************************************************************************
+	* @brief Setter for Magnitude variable
+	* @param FORCE_INDEX index - index of force to set
+	* @param float new_mag - value to set to
+	* @return void
+	*************************************************************************/
 	void SetMagnitude(float new_magnitude, FORCE_INDEX index);
+	/**************************************************************************
+	* @brief Update function for forceManager
+	* @param float dt - delta time
+	* @return void
+	*************************************************************************/
 	void Update(float dt);
+	/**************************************************************************
+	* @brief Setter for Lifetime
+	* @param float lf - lifetime to set to
+	* @param FORCE_INDEX index - index of force to change
+	* @return void
+	*************************************************************************/
 	void SetLifetime(float lifetime, FORCE_INDEX index);
-
+	/**************************************************************************
+	* @brief Calculate the resultant force of all the current active Forces
+	* @return Vec2
+	*************************************************************************/
 	Vec2 CalculateResultantForce();
 };
 
