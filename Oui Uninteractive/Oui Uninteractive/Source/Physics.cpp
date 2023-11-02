@@ -80,7 +80,7 @@ void Physics::Update(float dt) {
 			Vec2 previousVelocity = body->velocity;
 			if (collider != nullptr) {
 
-				body->velocity = body->velocity * (collider->contactTime) + body->acceleration * static_cast<float>(sysManager->fixedDeltaTime);//GetDT();//* sysManager->fixedDeltaTime;
+				body->velocity = (body->velocity * (collider->contactTime) + body->acceleration * static_cast<float>(sysManager->fixedDeltaTime));//GetDT();//* sysManager->fixedDeltaTime;
 				
 			}
 			else {

@@ -77,7 +77,7 @@ void ColliderSystem::Update(float dt) {
 			collider->boundingbox->min = Vec2((-0.5f) * collider->tx->scale + collider->tx->position.x, (-0.5f) * collider->tx->scale + collider->tx->position.y);
 			collider->boundingbox->max = Vec2((0.5f) * collider->tx->scale + collider->tx->position.x, (0.5f) * collider->tx->scale + collider->tx->position.y);
 
-
+			bool didCollide = false;
 			for (std::map<size_t, Collider*>::iterator it2 = colliderMap.begin(); it2 != colliderMap.end(); it2++) {
 				Collider* body2 = it2->second;
 				if (body2->GetOwner()->GetGameObjectID() == collider->GetOwner()->GetGameObjectID()) {
@@ -93,8 +93,10 @@ void ColliderSystem::Update(float dt) {
 				Vec2 nextCycleVel2 = pBody2->velocity + pBody2->forceManager.CalculateResultantForce() * pBody2->mass * static_cast<float>(sysManager->fixedDeltaTime);
 
 				Vec2 relVel = nextCycleVel - nextCycleVel2;
-				collided = CollisionMovingRectRect(*(collider->boundingbox), *(body2->boundingbox), relVel, contactTime, normal, static_cast<float>(sysManager->fixedDeltaTime), depth, collider->wasColliding, collider->contactNormal);
+				
+				collided = CollisionMovingRectRect(*(collider->boundingbox), *(body2->boundingbox), relVel, contactTime, normal, static_cast<float>(sysManager->fixedDeltaTime), depth, nextCycleVel);
 				if (collided) {
+					didCollide = true;
 					if (pBody1->GetOwner()->GetGameObjectID() == 0) {
 						std::cout << contactTime;
 						std::cout << "test\n";
@@ -135,6 +137,10 @@ void ColliderSystem::Update(float dt) {
 					}
 				}
 
+			}
+			if (didCollide == false) {
+				collider->contactTime = 1.f;
+				collider->contactNormal = Vec2(0,0);
 			}
 		}
 	}

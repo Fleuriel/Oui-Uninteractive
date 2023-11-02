@@ -266,7 +266,7 @@ bool MovingPointRectCollision(Vec2 origin, Vec2 direction, Collider::AABB target
 
 	if (tNearX > tNearY) {
 
-		if ((target.min.x - origin.x) < (target.max.x - origin.x)) {
+		if (abs(target.min.x - origin.x) < abs(target.max.x - origin.x)) {
 			contactNormal = Vec2(-1, 0);
 		}
 		else {
@@ -282,7 +282,7 @@ bool MovingPointRectCollision(Vec2 origin, Vec2 direction, Collider::AABB target
 		}*/
 	}
 	else if (tNearY > tNearX) {
-		if ((target.min.y - origin.y) < (target.max.y - origin.y)) {
+		if (abs(target.min.y - origin.y) < abs(target.max.y - origin.y)) {
 			contactNormal = Vec2(1, 0);
 		}
 		else {
@@ -302,8 +302,8 @@ bool MovingPointRectCollision(Vec2 origin, Vec2 direction, Collider::AABB target
 	}
 	return true;
 }
-bool CollisionMovingRectRect(Collider::AABB A, Collider::AABB B, Vec2 AVel, float& contactTime, Vec2& normal, float dt, float& depth, bool AWasColliding, Vec2 prevContactNormal) {
-	if ((AVel.x == 0 && AVel.y == 0)) {
+bool CollisionMovingRectRect(Collider::AABB A, Collider::AABB B, Vec2 relativeVel, float& contactTime, Vec2& normal, float dt, float& depth, Vec2 AVel) {
+	if ((relativeVel.x == 0 && relativeVel.y == 0)) {
 		return false;
 	}
 
@@ -313,9 +313,10 @@ bool CollisionMovingRectRect(Collider::AABB A, Collider::AABB B, Vec2 AVel, floa
 	expanded_target.boundingbox->min = Vec2(B.min.x - A.txPtr->scale / 2, B.min.y - A.txPtr->scale / 2);
 	float newDepth = 0.f;
 
-	if (MovingPointRectCollision(A.center, AVel * dt, *(expanded_target.boundingbox), normal, contactTime, newDepth)) {
+	if (MovingPointRectCollision(A.center, relativeVel * dt, *(expanded_target.boundingbox), normal, contactTime, newDepth)) {
 		if (contactTime < 0.f) {
 			if (Vector2DDotProduct(AVel, normal) < 0) {
+				contactTime = 0.f;
 				return true;
 			}
 		}
