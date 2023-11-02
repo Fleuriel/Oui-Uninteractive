@@ -19,61 +19,67 @@ public:
 	IObserver observer;
 
 public:
-	// Constructor
+	/**************************************************************************
+	* @brief Constructor
+	*************************************************************************/
 	ISystem() : broadcaster{}, observer{} {};
 
-	// Initialize the system
+	/**************************************************************************
+	* @brief Initialize the current system (virtual, to be overridden)
+	* @return void
+	*************************************************************************/
 	virtual void Initialize() {};
 
-	// Update the system
+	/**************************************************************************
+	* @brief Update the current system (virtual, to be overridden)
+	* @param dt - delta-time
+	* @return void
+	*************************************************************************/
 	virtual void Update(float dt) = 0;
 
-	// Terminate the system
+	/**************************************************************************
+	* @brief Destructor, terminate the current system (virtual, to be overridden)
+	*************************************************************************/
 	virtual ~ISystem() {};
 
-	/*----------TESTING MESSAGING SYSTEM----------*/
-	/*virtual void RegisterObserver(IObserver* observer) = 0;
-	virtual void UnregisterObserver(IObserver* observer) = 0;
-	virtual void NotifyObservers(IMessage* msg) = 0;*/
-
-	/*void RegisterObserver(const std::string& message, IObserver* observer) override {
-
-	}
-
-	virtual void UnregisterObserver(std::string message, IObserver* observer) override {
-
-	}
-
-	virtual void SendToObservers(IMessage* msg) override {
-
-	}
-
-	virtual void ProcessMessage(IMessage* msg) override {
-
-	}*/
-	
-
+	/**************************************************************************
+	* @brief Register an observer to the current system
+	* @param msg - name of message
+	* @param ob - observer
+	* @return void
+	*************************************************************************/
 	void RegisterObserver(const std::string& msg, IObserver* ob) {
 		broadcaster.RegisterObserver(msg, ob);
 	}
 
+	/**************************************************************************
+	* @brief Unregister an observer from the current system
+	* @param msg - name of message
+	* @param ob - observer
+	* @return void
+	*************************************************************************/
 	void UnregisterObserver(const std::string& msg, IObserver* ob) {
 		broadcaster.UnregisterObserver(msg, ob);
 	}
 
-	/*void SendToObservers(IMessage* msg) {
-		broadcaster.SendToObservers(msg);
-	}*/
-
+	/**************************************************************************
+	* @brief Send a message to the current system's observers
+	* @param msg - pointer to IMessage object
+	* @return void
+	*************************************************************************/
 	void SendToObservers(IMessage* msg) {
 		broadcaster.SendToObservers(msg);
 	}
 
+	/**************************************************************************
+	* @brief Add a message handler to the current system
+	* @param msg - name of message
+	* @param mh - message handler
+	* @return void
+	*************************************************************************/
 	void AddMessageHandler(const std::string& msg, MessageHandler mh) {
 		observer.AddMessageHandler(msg, mh);
 	}
-
-	/*----------TESTING MESSAGING SYSTEM----------*/
 };
 
 #endif

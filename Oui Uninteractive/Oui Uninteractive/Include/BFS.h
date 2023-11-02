@@ -17,10 +17,17 @@
 #include <iostream>
 
 struct Node {
+	// Coordinates of Node and its parent
     int x, y;
     int parentX, parentY;
 
-    // Node constructor
+    /**************************************************************************
+    * @brief Constructor for Node
+    * @param x_ - x-index of Node
+    * @param y_ - y-index of Node
+    * @param parentX_ - x-index of Node's parent
+    * @param parentY_ - y-index of Node's parent
+    *************************************************************************/
     Node(int x_, int y_, int parentX_, int parentY_);
 };
 
@@ -40,15 +47,47 @@ private:
     std::vector<std::vector<Node>> parent;
 
 public:
+    /**************************************************************************
+    * @brief Constructor
+    * @param r - rows of grid
+    * @param c - columns of grid
+    *************************************************************************/
     BFS(int r, int c);
+
+    /**************************************************************************
+    * @brief Destructor
+    *************************************************************************/
 	~BFS();
 
+	// Check if the grid has been created
     bool gridCreated;
 
+    /**************************************************************************
+    * @brief Create the grid
+    * @return void
+    *************************************************************************/
     void CreateGrid();
+
+    /**************************************************************************
+    * @brief Find the path using Breadth-First Search algorithm
+	* @param startX - x-index of start node
+	* @param startY - y-index of start node
+	* @param targetX - x-index of target node
+	* @param targetY - y-index of target node
+	* @return std::vector<Node> - vector of nodes in the path
+    *************************************************************************/
     std::vector<Node> FindPath(int startX, int startY, int targetX, int targetY);
 
+    /**************************************************************************
+	* @brief Get rows of grid
+	* @return int - rows of grid
+    *************************************************************************/
     int GetRows();
+    
+    /**************************************************************************
+	* @brief Get columns of grid
+	* @return int - columns of grid
+    *************************************************************************/
     int GetCols();
 };
 

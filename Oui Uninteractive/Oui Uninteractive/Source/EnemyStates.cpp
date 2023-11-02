@@ -18,8 +18,15 @@
 #include "Transform.h"
 #include "PhysicsBody.h"
 
+/**************************************************************************
+* @brief Constructor for EnemyRoam
+*************************************************************************/
 EnemyRoam::EnemyRoam() : bfs(new BFS(5, 5)), transitioned(false), pathFound(false), pathPrinted(false), pathIndex(0) {}
 
+/**************************************************************************
+* @brief Update the EnemyRoam state
+* @return void
+*************************************************************************/
 void EnemyRoam::Update(size_t gameObjectID) {
 	if (!transitioned) {
 		std::cout << "\nTRANSITIONED TO ROAM STATE" << std::endl;
@@ -78,13 +85,13 @@ void EnemyRoam::Update(size_t gameObjectID) {
                 }
             }
 
+			// If within range of node, move towards node
             if (Vector2DDistance(currentEnemyPos, nodePos) > 5) {
                 Vec2 direction = Vec2(nodePos.x - currentEnemyPos.x, nodePos.y - currentEnemyPos.y);
                 Vector2DNormalize(direction, direction);
                 GET_COMPONENT(currentEnemy, PhysicsBody, ComponentType::PHYSICS_BODY)->velocity = direction * 300;
             }
-
-            // continue if within range of next node
+			// Increase index if within range, moving towards next node
             else if (Vector2DDistance(currentEnemyPos, nodePos) <= 5) {
                 GET_COMPONENT(currentEnemy, PhysicsBody, ComponentType::PHYSICS_BODY)->velocity = Vec2(0, 0);
                 ++pathIndex;
@@ -94,6 +101,10 @@ void EnemyRoam::Update(size_t gameObjectID) {
     }
 }
 
+/**************************************************************************
+* @brief Exit the EnemyRoam state
+* @return void
+*************************************************************************/
 void EnemyRoam::ExitState() {
     transitioned = false; 
     pathFound = false;
@@ -103,14 +114,23 @@ void EnemyRoam::ExitState() {
     pathToTake.clear();
 }
 
+/**************************************************************************
+* @brief Destructor for EnemyRoam
+*************************************************************************/
 EnemyRoam::~EnemyRoam() {
-    // Cleanup
     pathToTake.clear();
 	delete bfs;
 }
 
+/**************************************************************************
+* @brief Constructor for EnemyAttack
+*************************************************************************/
 EnemyAttack::EnemyAttack() : transitioned(false) {}
 
+/**************************************************************************
+* @brief Update the EnemyAttack state
+* @return void
+*************************************************************************/
 void EnemyAttack::Update(size_t gameObjectID) {
     if (!transitioned) {
         std::cout << "\nTRANSITIONED TO ATTACK STATE\n" << std::endl;
@@ -118,9 +138,16 @@ void EnemyAttack::Update(size_t gameObjectID) {
     }
 }
 
+/**************************************************************************
+* @brief Exit the EnemyAttack state
+* @return void
+*************************************************************************/
 void EnemyAttack::ExitState() {
 	transitioned = false;
 }
 
+/**************************************************************************
+* @brief Destructor for EnemyAttack
+*************************************************************************/
 EnemyAttack::~EnemyAttack() {
 }

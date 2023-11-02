@@ -13,8 +13,20 @@
 #include "PhysicsBody.h"
 #include "Transform.h"
 
+/**************************************************************************
+* @brief Constructor for Node
+* @param x_ - x-index of Node
+* @param y_ - y-index of Node
+* @param parentX_ - x-index of Node's parent
+* @param parentY_ - y-index of Node's parent
+*************************************************************************/
 Node::Node(int x_, int y_, int parentX_ = -1, int parentY_ = -1) : x(x_), y(y_), parentX(parentX_), parentY(parentY_) {}
 
+/**************************************************************************
+* @brief Constructor
+* @param r - rows of grid
+* @param c - columns of grid
+*************************************************************************/
 BFS::BFS(int r, int c) : rows(r), cols(c) {
     // Initialize containers
 	for (int i{}; i < rows; ++i) {
@@ -44,8 +56,23 @@ BFS::BFS(int r, int c) : rows(r), cols(c) {
     gameMap[3][3] = 1;
 }
 
+/**************************************************************************
+* @brief Destructor
+*************************************************************************/
+BFS::~BFS() {
+    // Clear containers
+    for (size_t i{}; i < gameMap.size(); ++i) {
+        gameMap[i].clear();
+    }
+    gameMap.clear();
+}
+
+/**************************************************************************
+* @brief Create the grid
+* @return void
+*************************************************************************/
 void BFS::CreateGrid() {
-    // grid
+    // Temp vars
     float windowWidth = 1920.f;
     float windowHeight = 1017.f;
 	float scaleTemp = windowHeight / static_cast<float>(rows);
@@ -70,6 +97,14 @@ void BFS::CreateGrid() {
     gridCreated = true;
 }
 
+/**************************************************************************
+* @brief Find the path using Breadth-First Search algorithm
+* @param startX - x-index of start node
+* @param startY - y-index of start node
+* @param targetX - x-index of target node
+* @param targetY - y-index of target node
+* @return std::vector<Node> - vector of nodes in the path
+*************************************************************************/
 std::vector<Node> BFS::FindPath(int startX, int startY, int targetX, int targetY) {
     // Queue of nodes to determine path
     std::queue<Node> nodeQueue;
@@ -170,18 +205,18 @@ std::vector<Node> BFS::FindPath(int startX, int startY, int targetX, int targetY
     return path;
 }
 
+/**************************************************************************
+* @brief Get rows of grid
+* @return int - rows of grid
+*************************************************************************/
 int BFS::GetRows() {
     return rows;
 }
 
+/**************************************************************************
+* @brief Get columns of grid
+* @return int - columns of grid
+*************************************************************************/
 int BFS::GetCols() {
     return cols;
-}
-
-BFS::~BFS() {
-	// Clear containers
-    for (size_t i{}; i < gameMap.size(); ++i) {
-        gameMap[i].clear();
-    }
-	gameMap.clear();
 }
