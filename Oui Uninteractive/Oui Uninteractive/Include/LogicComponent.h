@@ -1,3 +1,16 @@
+/**************************************************************************
+ * @file LogicComponent.h
+ * @author CHEAH Tristan Tze Hong
+ * @par DP email: t.cheah@digipen.edu
+ * @par Course: CSD 2401
+ * @par Software Engineering Project 3
+ * @date 27-09-2023
+ * @brief This file contains the declaration of the LogicComponent Class,
+ *		  which is a IComponent to be contained in GameObject. It holds
+ *		  all data pertaining to creating different behaviours for different
+ *		  Game Objects
+ *************************************************************************/
+
 #pragma once
 #include "IComponent.h"
 #include <set>

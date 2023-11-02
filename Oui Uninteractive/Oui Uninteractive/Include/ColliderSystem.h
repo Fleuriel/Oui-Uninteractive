@@ -34,7 +34,7 @@ public:
 	*************************************************************************/
 	virtual void Initialize();
 	/**************************************************************************
-	* @brief Initialize function for ColliderSystem
+	* @brief Update function for ColliderSystem
 	* @param dt - delta time
 	* @return void
 	*************************************************************************/

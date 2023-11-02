@@ -1,3 +1,15 @@
+/**************************************************************************
+ * @file Logic.h
+ * @author CHEAH Tristan Tze Hong
+ * @par DP email: t.cheah@digipen.edu
+ * @par Course: CSD 2401
+ * @par Software Engineering Project 3
+ * @date 02-11-2023
+ * @brief This file contains the declaration of the Logic System.
+ *		  This system is responsible for running the different scripts
+ *		  attached to a logic component
+ *************************************************************************/
+
 #pragma once
 #include "ISystem.h"
 #include "IScript.h"
@@ -12,17 +24,35 @@ enum LOGIC_ENUM {
 };
 class LogicSystem : public ISystem {
 public:
+	/**************************************************************************
+	* @brief Constructor for Logic System
+	*************************************************************************/
 	LogicSystem();
+	/**************************************************************************
+	* @brief Initialize function for Logic
+	* @return void
+	*************************************************************************/
 	void Initialize();
+	/**************************************************************************
+	* @brief Update function for Logic System
+	* @param dt - delta time
+	* @return void
+	*************************************************************************/
 	void Update(float dt);
+	/**************************************************************************
+	* @brief Add Script to Logic System's script container
+	* @param IScript - new Script Object to be Added
+	* @return void
+	*************************************************************************/
 	void AddLogicScript(IScript* newScript);
+	/**************************************************************************
+	* @brief Destructor for Collider System
+	*************************************************************************/
 	~LogicSystem();
 
 	//insert script container
 	std::vector<IScript*> scriptVec;
-	std::map<std::string, IScript*> scriptMap;
 	//insert logic component container
 	std::map<size_t, LogicComponent*> logicComponentMap;
-	//std::vector<LogicComponent*> logicComponentVec;
 };
 extern LogicSystem* logicSystem;
