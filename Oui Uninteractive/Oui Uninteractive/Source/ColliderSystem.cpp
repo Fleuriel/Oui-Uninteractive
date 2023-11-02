@@ -2,8 +2,6 @@
 #include <bit>
 ColliderSystem* colliderSys = nullptr;
 ColliderSystem::ColliderSystem() {
-	cellHeight = 0;
-	cellWidth = 0;
 	if (colliderSys != nullptr) {
 		//instantiate collider sys
 		return;
@@ -16,51 +14,9 @@ ColliderSystem::ColliderSystem() {
 void ColliderSystem::Initialize() {
 	ComponentFactory<Collider>* testPtr = new ComponentFactory<Collider>(ComponentType::COLLIDER);
 	objectFactory->AddComponentFactory(ComponentType::COLLIDER, testPtr);
-	cellWidth = windowSize.first / WIDTH;
-	cellHeight = windowSize.second / HEIGHT;
 
 	// Register physics system as an observer
 	RegisterObserver("MSG_COLLISION", &physicsSys->observer);
-}
-void ColliderSystem::BroadPhase() {
-	std::map<size_t, Collider*>::iterator it = colliderMap.begin();
-	std::map<size_t, Collider*>::iterator it2 = colliderMap.begin();
-	collisionData.clear();
-	
-	bitArray result;
-	
-	for (int i = 0; i < WIDTH; i++) {
-		if (rowsBitArray[i].count() == 0) {
-			continue;
-		}
-		for (int j = 0; j < HEIGHT; j++) {
-			if (colBitArray[i].count() == 0) {
-				continue;
-			}
-			result = rowsBitArray[i] & colBitArray[j];
-			if (result.count() > 1) {
-				int nextSetBit = 0;
-				std::set<int> collisionResult;
-				while (result.count() != 0) {
-					int count = 0;
-					for (; nextSetBit < MAX_COLLIDABLE_ENTITIES; nextSetBit++) {
-						if (result.test(nextSetBit) == 1) {
-							count = nextSetBit;
-							result.reset(count);
-							collisionResult.insert(count);
-						}
-					}
-								
-				}
-				collisionData.push_back(collisionResult);
-				
-			}
-			else {
-				continue;
-			}
-			
-		}
-	}
 }
 
 
