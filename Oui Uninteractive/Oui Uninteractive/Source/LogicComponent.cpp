@@ -1,18 +1,28 @@
 #include "LogicComponent.h"
 #include "Logic.h"
 #include <algorithm>
-//Logic Components Index denotes which Script u want it to run
+
+/**************************************************************************
+* @brief Destructor for Logic component
+*************************************************************************/
 LogicComponent::~LogicComponent() {
 	if (GetOwner() != nullptr) {
 		logicSystem->logicComponentMap.erase(GetOwner()->GetGameObjectID());
 	}
 }
+/**************************************************************************
+* @brief Initialize function for Logic Component
+* @return void
+*************************************************************************/
 void LogicComponent::Initialize() {
-	//logicSystem->logicComponentVec.push_back(this);
 	logicSystem->logicComponentMap.insert(std::pair<size_t, LogicComponent*>(GetOwner()->GetGameObjectID(), this));
 	
 }
-
+/**************************************************************************
+* @brief Serialize function for logic component
+* @param itr - iterator through json object
+* @return void
+*************************************************************************/
 void LogicComponent::Serialize(rapidjson::Value::ConstMemberIterator& itr) {
 	const rapidjson::Value& components{ itr->value };
 	
@@ -38,7 +48,10 @@ void LogicComponent::Serialize(rapidjson::Value::ConstMemberIterator& itr) {
 		}
 	}
 }
-
+/**************************************************************************
+* @brief Function to Clone a Logic Component Component
+* @return LogicComponent* - the cloned Logic Component
+*************************************************************************/
 LogicComponent* LogicComponent::Clone() const {
 	LogicComponent* newLogic = new LogicComponent();
 	
