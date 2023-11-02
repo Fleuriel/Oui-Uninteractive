@@ -175,6 +175,7 @@ EnemyAttack::EnemyAttack() : transitioned(false) {}
 * @return void
 *************************************************************************/
 void EnemyAttack::Update(size_t gameObjectID) {
+    (void)gameObjectID;
     if (!transitioned) {
         std::cout << "\nTRANSITIONED TO ATTACK STATE" << std::endl;
         transitioned = true;
