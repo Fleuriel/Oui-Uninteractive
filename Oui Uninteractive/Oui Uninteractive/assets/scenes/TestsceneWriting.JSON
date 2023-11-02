@@ -1,5 +1,5 @@
 {
-    "ObjectCount": 7,
+    "ObjectCount": 2,
     "Objects": [
         {
             "Name": "JSONPlayer",
@@ -15,8 +15,8 @@
                     "FrictionForce": 20.0
                 },
                 "Transform": {
-                    "PositionX": -250.0,
-                    "PositionY": -206.500244140625,
+                    "PositionX": -18.77094841003418,
+                    "PositionY": 400.7831726074219,
                     "Rotation": 0.0,
                     "Scale": 200.0
                 },
@@ -46,8 +46,8 @@
                     "FrictionForce": 20.0
                 },
                 "Transform": {
-                    "PositionX": -79.92463684082031,
-                    "PositionY": -274.5898742675781,
+                    "PositionX": -37.918121337890625,
+                    "PositionY": 214.20799255371094,
                     "Rotation": 0.0,
                     "Scale": 130.0
                 },
@@ -60,129 +60,6 @@
                 "Collider": {
                     "ColliderSize": 140.0,
                     "ColliderRotation": 0.0
-                }
-            }
-        },
-        {
-            "Name": "JSONEnemy2",
-            "Type": "Enemy",
-            "Components": {
-                "PhysicsBody": {
-                    "VelocityX": 0.0,
-                    "VelocityY": 0.0,
-                    "RotationSpeed": 20.0,
-                    "Speed": 500.0,
-                    "Mass": 80.0,
-                    "IsStatic": true,
-                    "FrictionForce": 20.0
-                },
-                "Transform": {
-                    "PositionX": 685.6599731445313,
-                    "PositionY": 100.0,
-                    "Rotation": 30.0,
-                    "Scale": 220.0
-                },
-                "Collider": {
-                    "ColliderSize": 220.0,
-                    "ColliderRotation": 0.0
-                }
-            }
-        },
-        {
-            "Name": "Exit",
-            "Type": "Button",
-            "Components": {
-                "Transform": {
-                    "PositionX": 200.0,
-                    "PositionY": 100.0,
-                    "Rotation": 30.0,
-                    "Scale": 220.0
-                },
-                "Collider": {
-                    "ColliderSize": 220.0,
-                    "ColliderRotation": 0.0
-                },
-                "PhysicsBody": {
-                    "VelocityX": 0.0,
-                    "VelocityY": 0.0,
-                    "RotationSpeed": 20.0,
-                    "Speed": 500.0,
-                    "Mass": 80.0,
-                    "IsStatic": true,
-                    "FrictionForce": 20.0
-                }
-            }
-        },
-        {
-            "Name": "PlayerObjFromPrefab",
-            "Type": "Player",
-            "Components": {
-                "PhysicsBody": {
-                    "VelocityX": 0.0,
-                    "VelocityY": 0.0,
-                    "RotationSpeed": 0.0,
-                    "Speed": 0.0,
-                    "Mass": 0.0,
-                    "IsStatic": false,
-                    "FrictionForce": 20.0
-                },
-                "Transform": {
-                    "PositionX": 0.0,
-                    "PositionY": 0.0,
-                    "Rotation": 0.0,
-                    "Scale": 75.0
-                },
-                "LogicComponent": {
-                    "ScriptID": [
-                        0
-                    ]
-                },
-                "Collider": {
-                    "ColliderSize": 0.0,
-                    "ColliderRotation": 0.0
-                }
-            }
-        },
-        {
-            "Name": "Object6",
-            "Type": "Enemy",
-            "Components": {
-                "PhysicsBody": {
-                    "VelocityX": 0.0,
-                    "VelocityY": 0.0,
-                    "RotationSpeed": 20.0,
-                    "Speed": 120.0,
-                    "Mass": 10.0,
-                    "IsStatic": false,
-                    "FrictionForce": 20.0
-                },
-                "Transform": {
-                    "PositionX": 62.518978118896484,
-                    "PositionY": -200.0,
-                    "Rotation": 0.0,
-                    "Scale": 130.0
-                },
-                "LogicComponent": {
-                    "ScriptID": [
-                        0,
-                        2
-                    ]
-                },
-                "Collider": {
-                    "ColliderSize": 140.0,
-                    "ColliderRotation": 0.0
-                }
-            }
-        },
-        {
-            "Name": "Wall",
-            "Type": "Wall",
-            "Components": {
-                "Transform": {
-                    "PositionX": -790.5,
-                    "PositionY": -339.0,
-                    "Rotation": 0.0,
-                    "Scale": 339.0
                 }
             }
         }

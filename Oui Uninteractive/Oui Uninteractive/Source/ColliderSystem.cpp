@@ -99,7 +99,6 @@ void ColliderSystem::Update(float dt) {
 					didCollide = true;
 					if (pBody1->GetOwner()->GetGameObjectID() == 0) {
 						std::cout << contactTime;
-						std::cout << "test\n";
 					}
 					if (!pBody2->isStatic) {
 						float secondNorm = 0.f;

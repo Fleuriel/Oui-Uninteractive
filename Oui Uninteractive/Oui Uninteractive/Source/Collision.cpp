@@ -283,10 +283,10 @@ bool MovingPointRectCollision(Vec2 origin, Vec2 direction, Collider::AABB target
 	}
 	else if (tNearY > tNearX) {
 		if (abs(target.min.y - origin.y) < abs(target.max.y - origin.y)) {
-			contactNormal = Vec2(1, 0);
+			contactNormal = Vec2(0, -1);
 		}
 		else {
-			contactNormal = Vec2(-1, 0);
+			contactNormal = Vec2(0, 1);
 		}
 		/*if (direction.y > 0) {
 			depth = origin.y - target.max.y;
