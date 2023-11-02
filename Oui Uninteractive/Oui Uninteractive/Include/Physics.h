@@ -142,6 +142,12 @@ public:
 	* @return double
 	*************************************************************************/
 	Vec2 AngleToVec(float angle);
+	/**************************************************************************
+	* @brief Calculate direction vector from angle of rotation
+	* @param Vec2 originalVelocity - velocity from previous frame
+	* @param Vec2 bodyVelocity - velocity in current frame
+	* @return void
+	*************************************************************************/
 	void CapVelocity(Vec2 originalVelocity, Vec2& bodyVelocity);
 
 	// Collision Response Possibly
@@ -149,7 +155,6 @@ public:
 	
 	//insert linked list of all physics body components
 	std::map<size_t, PhysicsBody*> bodyList;
-
 	float maxVelocity = 1000.f;
 
 	
