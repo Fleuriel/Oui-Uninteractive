@@ -366,6 +366,7 @@ int AssetManager::GetSprite(std::string name) {
 
 
 
+
 /**************************************************************************
  * @brief Loads sounds, both background music (BGM) and sound effects (SFX).
  * @param None.
@@ -625,7 +626,9 @@ bool AssetManager::LoadFonts() {
     return result;
 }
 
-
+std::map<std::string, std::map<char, FontManager::Character>>::iterator AssetManager::GetFont(std::string fontname) {
+    return fontCharsMap.find(fontname);
+}
 
 /**************************************************************************
  * @brief Frees loaded fonts.
@@ -640,4 +643,8 @@ bool AssetManager::FreeFonts() {
 
 bool AssetManager::ReloadFonts() {
     return AssetManager::FreeFonts() && AssetManager::LoadFonts();
+}
+
+bool AssetManager::FontFound(std::map<std::string, std::map<char, FontManager::Character>>::iterator fontIter) {
+    return fontIter != fontCharsMap.end();
 }

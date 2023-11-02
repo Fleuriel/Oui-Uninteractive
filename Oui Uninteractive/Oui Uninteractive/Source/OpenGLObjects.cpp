@@ -558,39 +558,7 @@ void OpenGLObject::DrawCollisionBox(Vector2D min, Vector2D max){
 /*=======================================================================================================================*/
 /*=======================================================================================================================*/
 
-int OpenGLObject::Setup_TextureObject(std::string filePath) {
-    // Create a int variable for texture Object
-    GLuint textureObj_Handler;
 
-    // width, height and channels for the image
-    int width, height, channels;
-    // Load the image into *image
-    unsigned char* image = stbi_load(filePath.c_str(), &width, &height, &channels, STBI_rgb_alpha);
-
-    // If no image is generated, failed.
-    if (!image)
-    {
-        std::cout << "Failed to load texture: " << filePath << std::endl;
-        return 0; // Return 0 to indicate failure
-    }
-
-    // Create Texture into Texture2D, reference to TextureObjHandler
-    glCreateTextures(GL_TEXTURE_2D, 1, &textureObj_Handler);
-
-
-    // Store the data into Storage2D
-    glTextureStorage2D(textureObj_Handler, 1, GL_RGBA8, width, height);
-
-
-    // Store the sub data into the sub Image
-    glTextureSubImage2D(textureObj_Handler, 0, 0, 0, width, height, GL_RGBA, GL_UNSIGNED_BYTE, image);
-
-    // Free the image data after it's uploaded to OpenGL
-    stbi_image_free(image);
-
-    // Return int value of a texture.
-    return textureObj_Handler;
-}
 
 /**************************************************************************
 * @brief  set Texture Positon, Color
@@ -604,6 +572,7 @@ int OpenGLObject::Setup_TextureObject(std::string filePath) {
 * @return void
 *************************************************************************/
 void OpenGLObject::OpenGLModel::VAO_Object::setTextureValue(float x, float y, float r, float g, float b){
+
 	// Set Position X and Y
 	position.x = x;
 	position.y = y;
@@ -799,25 +768,37 @@ void OpenGLObject::InitShaders()
 		("assets/shaders/Oui_Uninteractive_models.vert", "assets/shaders/Oui_Uninteractive_models.frag")
 	};
 
+	/*VectorPairStrStr SPRITESHADER{
+		std::make_pair<std::string, std::string>
+		("assets/shaders/Oui_Uninteractive_models_sprites.vert", "assets/shaders/Oui_Uninteractive_models.frag")
+	};*/
+
 	VectorPairStrStr FONTSHADER{
 		std::make_pair<std::string, std::string>
 		("assets/shaders/Oui_Uninteractive_font.vert", "assets/shaders/Oui_Uninteractive_font.frag")
 	};
-
 
 	VectorPairStrStr CAMERASHADER{
 		std::make_pair<std::string, std::string>
 		("assets/shaders/Oui_Uninteractive_camera.vert", "assets/shaders/Oui_Uninteractive_camera.frag")
 	};
 
+
+
+
 	// Initialize the Shader Program for Models
 	init_shdrpgms_cont(MODELSSHADER);
+
+	// Initialize the Shader Program for Sprites
+	//init_shdrpgms_cont(SPRITESHADER);
 
 	// Initialize the Shader Program for Fonts
 	init_shdrpgms_cont(FONTSHADER);
 
-	// Initialize the Shader Program for Fonts
+	// Initialize the Shader Program for Camera
 	init_shdrpgms_cont(CAMERASHADER);
+
+	
 }
 
 

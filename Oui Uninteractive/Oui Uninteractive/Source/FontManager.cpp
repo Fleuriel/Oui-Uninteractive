@@ -74,8 +74,8 @@ void FontManager::RenderText(std::string fontName, std::string text, float xPos,
 	glBindVertexArray(OpenGLObject::VAO);
 	
 	// Search for corresponding character map
-	auto fontMapIt = assetManager.fontCharsMap.find(fontName);
-	if (fontMapIt != assetManager.fontCharsMap.end()) {
+	std::map<std::string, std::map<char, FontManager::Character>>::iterator fontMapIt = assetManager.GetFont(fontName);
+	if (assetManager.FontFound(fontMapIt)) {
 		// Loop through entire string
 		for (std::string::const_iterator it = text.begin(); it != text.end(); it++) {
 			// Find char key within char map
