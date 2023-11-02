@@ -74,6 +74,8 @@ OpenGLObject::OpenGLModel mdl;
 float positionX = 0, positionY = 0;
 float angle;
 
+float triggerEveryQuarterSecond;
+
 bool togglePolygonMode = false;
 // For Input
 extern bool capsLockReleased;
@@ -253,6 +255,13 @@ void OpenGLApplication::OpenGLInit() {
 * @return void
 *************************************************************************/
 void OpenGLApplication::OpenGLUpdate() {
+
+	triggerEveryQuarterSecond += GetDT();
+	if (triggerEveryQuarterSecond >= 0.25) {
+		spriteframe++;
+		triggerEveryQuarterSecond = 0;
+	}
+
 	// Start time profiling for grpahics system
 	//TimeProfiler profiler(Editor::timeRecorder.graphicsTime);
 	// End the Game.
