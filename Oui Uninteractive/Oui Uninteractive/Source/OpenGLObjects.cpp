@@ -35,7 +35,7 @@ unsigned int OpenGLObject::shd_ref = 0; // Define and initialize shd_ref
 
 OpenGLObject OpenGLObject::cameraTranslator(9); 
 OpenGLObject::Camera2D OpenGLObject::cameraObject;
-
+glm::mat4 OpenGLObject::projection;
 
 // Vector for shdrpgms
 std::vector<OpenGLShader> OpenGLObject::shdrpgms;
@@ -291,7 +291,8 @@ void OpenGLObject::CameraUpdate(int posX, int posY) {
 
 	position = glm::vec2(posX, posY);
 
-
+	cameraObject.posX = posX;
+	cameraObject.posY = posY;
 
 	// in case user does not set, angleDisplacement will be in the range of
 	// 0 ~ 360 || -360 ~ 0
@@ -712,18 +713,18 @@ void OpenGLObject::Camera2D::Update(GLFWwindow* camWindow, int positionX, int po
 
 	// ZOOM in
 	//if (inputSystem.GetScrollState() == 1) 
-	if (inputSystem.GetKeyState(GLFW_KEY_UP))
+	if (inputSystem.GetKeyState(GLFW_KEY_UP) == 2)
 	{
 		// Height Decrement by 1.1f
-		height /= 1.1f;
+		height -= 100.0f;
 	}
 
 	// ZOOM OUT
 	//if (inputSystem.GetScrollState() == -1)
-	if (inputSystem.GetKeyState(GLFW_KEY_DOWN))
+	if (inputSystem.GetKeyState(GLFW_KEY_DOWN) == 2)
 	{
 		// Height Increment by 1.1f
-		height *= 1.1f;
+		height += 100.0f;
 	}
 	
 	// Set minimum parameter of height < Depth >
@@ -768,6 +769,7 @@ void OpenGLObject::Camera2D::Update(GLFWwindow* camWindow, int positionX, int po
 	// World to NDC transform
 	// Set the World to NDC transform for the camera
 	World_to_NDC_xform = CameraWindow_to_NDC_xform * view_xform;
+	
 
 	// Update the camera position using the Cam pointer
 	Cam->CameraUpdate(positionX, positionY);
@@ -853,7 +855,7 @@ void OpenGLObject::init_shdrpgms_cont(VectorPairStrStr const& vpss) {
 void OpenGLObject::InitFont()
 {
 	// Initialize the Projection matrix for the fonts to render into the screen
-	glm::mat4 projection = glm::ortho(0.0f, static_cast<float>(windowSize.first), 0.0f, static_cast<float>(windowSize.second));
+	projection = glm::ortho(0.0f, static_cast<float>(windowSize.first), 0.0f, static_cast<float>(windowSize.second));
 	// Use the shader
 	shdrpgms[static_cast<int>(SHADER_ORDER::FONT)].Use();
 	glUniformMatrix4fv(glGetUniformLocation(shdrpgms[1].GetHandle(), "projection"), 1, GL_FALSE, glm::value_ptr(projection));
@@ -870,4 +872,38 @@ void OpenGLObject::InitFont()
 	glBindVertexArray(0);
 
 
+}
+
+
+/*=======================================================================================================================*/
+/*=======================================================================================================================*/
+/*=======================================================OTHERS==========================================================*/
+/*=======================================================================================================================*/
+/*=======================================================================================================================*/
+/*=======================================================================================================================*/
+
+
+void OpenGLObject::FrameBufferMouseCoords(GLFWwindow* originalWindow, double  *x, double *y, OpenGLObject::Camera2D camera)
+{
+	// get the center coordinates of the frame buffer window.
+	int centerX = Editor::gameWindowSize.first / 2.0;
+	int centerY = Editor::gameWindowSize.second / 2.0;
+
+
+	// Calculate corrected coordinates relative to the camera's position.
+	double correctedX = (*x - centerX) + camera.posX;
+	double correctedY = centerY - *y + camera.posY;  // Note the y-coordinate inversion
+
+
+	// set value of X and Y, (valueX, valueY) to the respective y values,
+	// Y no change as no difference. X, on the other hand needs to be multiplied with the multiplier of height.,
+	float valueX = correctedX / 1000;
+	float valueY = correctedY;
+
+	// set valueX to multiply by camera height.
+	valueX *= camera.height;
+
+	// set values of *x and *y.
+	*x = valueX;
+	*y = valueY;
 }

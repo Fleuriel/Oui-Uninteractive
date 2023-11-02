@@ -272,10 +272,18 @@ void OpenGLApplication::OpenGLUpdate() {
 	myImGui.CreateFrame();
 	myEditor.Update();
 	myImGui.Update();
-	
+
+	OpenGLObject::cameraObject.Update(windowNew, positionX, positionY);
 	// Create x and y pos variables to collect data from the mouse position.
 	double xpos, ypos{};
 	glfwGetCursorPos(windowNew, &xpos, &ypos);
+	
+	std::cout << "BEFORE: " << "X: " << xpos << "  , Y: " << ypos << '\n';
+	OpenGLObject::FrameBufferMouseCoords(windowNew, &xpos, &ypos, OpenGLObject::cameraObject);
+
+	std::cout << "After: " << "X: " << xpos << "  , Y: " << ypos << '\n';
+	
+
 
 
 		// Clear the FBO and render.
@@ -328,7 +336,6 @@ void OpenGLApplication::OpenGLUpdate() {
 	}
 
 
-	OpenGLObject::cameraObject.Update(windowNew, positionX, positionY);
 
 
 	// Moves Object left. can add positionY to change as well.
@@ -473,7 +480,7 @@ void OpenGLApplication::OpenGLUpdate() {
 	// Draws the Background
 	background.Draw();
 
-
+//	std::cout << "Position: " << positionX << '\t';
 
 
 	for (OpenGLObject& obj : objects) {
@@ -482,7 +489,7 @@ void OpenGLApplication::OpenGLUpdate() {
 
 		// Tag ID 2
 		if (obj.TagID == 2) {
-			obj.Update(300, 400, 50, 50, angle, false);
+			obj.Update(0, 0, 10, 10, angle, false);
 		}
 
 		if (obj.TagID == 9)
