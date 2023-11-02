@@ -130,75 +130,7 @@ bool CollisionStaticDynamicRectRect(Collider::AABB Rect1, Collider::AABB Rect2) 
  * @param s1, s2  Width of first and second rectangle respectively
  *************************************************************************/
 
-float CalculateEntryTimeAndNormal(Collider::AABB* Rect1, Collider::AABB* Rect2, Vec2 Rect1Vel, float& normalX, float& normalY) {
-	float distanceXEntry = 0;
-	float distanceYEntry = 0;
 
-	bool Xinitialized = false;
-	bool Yinitialized = false;
-
-	if (Rect1Vel.x < 0) {
-		Xinitialized = true;
-		distanceXEntry = Rect2->max.x - Rect1->min.x;
-	}
-	else if (Rect1Vel.x > 0) {
-		Xinitialized = true;
-		distanceXEntry = Rect2->min.x - Rect1->max.x;
-	}
-	
-	if (Rect1Vel.y < 0) {
-		Yinitialized = true;
-		distanceYEntry = Rect2->max.y - Rect1->min.y;
-	}
-	else if (Rect1Vel.y > 0){
-		Yinitialized = true;
-		distanceYEntry = Rect2->min.y - Rect1->max.y;
-	}
-	if (Xinitialized == false){
-		if (distanceYEntry < 0) {
-			normalY = 1;
-			return distanceYEntry;
-		}
-		else {
-			normalY = -1;
-			return -distanceYEntry;
-		}
-	}
-	if (Yinitialized == false) {
-		if (distanceXEntry < 0) {
-			normalX = 1;
-			return distanceXEntry;
-		}
-		else {
-			normalX = -1;
-			return -distanceXEntry;
-		}
-	}
-	if (abs(distanceXEntry) < abs(distanceYEntry)) {
-		//if distance is negative, i am coming from the left
-		// else coming from the right
-		if (distanceXEntry < 0) {
-			normalX = 1;
-			return distanceXEntry;
-		}
-		else {
-			normalX = -1;
-			return -distanceXEntry;
-		}
-	}
-	else {
-		//negative from bottom
-		//positive from top
-		if (distanceYEntry < 0) {
-			normalY = 1;
-			return distanceYEntry;
-		}
-		else {
-			normalY = -1;
-			return -distanceYEntry;
-		}
-	}
-}
 bool MovingPointRectCollision(Vec2 origin, Vec2 direction, Collider::AABB target, Vec2& contactNormal, float& contactTime) {
 	float tNearX = (target.min.x - origin.x) / direction.x;
 	float tFarX = (target.max.x - origin.x) / direction.x;
