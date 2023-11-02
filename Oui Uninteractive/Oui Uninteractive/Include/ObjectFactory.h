@@ -173,6 +173,13 @@ public:
 	GameObject* GetGameObjectByName(const std::string& name);
 
 	/**************************************************************************
+	* @brief Get a prefab by name
+	* @param name - name of Prefab
+	* @return Prefab*
+	*************************************************************************/
+	Prefab* GetPrefabByName(const std::string& name);
+
+	/**************************************************************************
 	* @brief Get all game objects
 	* @return std::map<size_t, GameObject*>
 	*************************************************************************/

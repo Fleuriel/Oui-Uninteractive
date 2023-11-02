@@ -557,6 +557,26 @@ GameObject* ObjectFactory::GetGameObjectByName(const std::string& name) {
 
 	return nullptr;
 }
+
+/**************************************************************************
+* @brief Get a prefab by name
+* @param name - name of Prefab
+* @return Prefab*
+*************************************************************************/
+Prefab* ObjectFactory::GetPrefabByName(const std::string& name) {
+	std::map<std::string, Prefab*>::iterator it{ prefabMap.begin() };
+
+	while (it != prefabMap.end()) {
+		if (it->second->prefabName == name) {
+			return it->second;
+		}
+
+		++it;
+	}
+
+	return nullptr;
+}
+
 /**************************************************************************
 * @brief Get all game objects
 * @return std::map<size_t, GameObject*>
