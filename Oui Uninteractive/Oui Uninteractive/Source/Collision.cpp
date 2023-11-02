@@ -12,16 +12,15 @@
 
 #include "Collision.h"
 
-
-
-
 /**************************************************************************
  * @brief Check for collision for mouse and rectangle
  *
  * This function returns true or false depending on whether collision is
  * detected or not
  *
- * @param AABB Rect1 The Coordinates (x,y) of the rectangle
+ * @param Rect1  The Coordinates (x,y) of the rectangle
+ * @param mouseX Coordinate X value of mouse
+ * @param mouseY Coordinate Y value of mouse
  *************************************************************************/
 bool CollisionMouseRect(Collider::AABB Rect1, int mouseX, int mouseY) {
 
@@ -44,9 +43,8 @@ bool CollisionMouseRect(Collider::AABB Rect1, int mouseX, int mouseY) {
  * This function returns true or false depending on whether collision is
  * detected or not
  *
- * @param Vector2DDistance The distance between two the two coordinates
- * @param Coords1 The coordinates of the shape
- * @param r1 The size of the shape
+ * @param Coords1 The coordinates (x,y) of the shape
+ * @param r1	  The size of the shape
  *************************************************************************/
 bool CollisionMouseCircle(Coordinates Coords1, float r1 = 2) {
 
@@ -65,8 +63,8 @@ bool CollisionMouseCircle(Coordinates Coords1, float r1 = 2) {
  *
  * @param Coords1 Coordinates(x,y) of first circle
  * @param Coords2 Coordinates(x,y) of second circle
- * @param r1 Radius of the first circle
- * @param r2 Radius of the second circle
+ * @param r1	  Radius of the first circle
+ * @param r2	  Radius of the second circle
  *************************************************************************/
 bool CollisionStaticCircleCircle(Coordinates Coords1, Coordinates Coords2, float r1=2, float r2=2) {
 	float RadiusTotal = r1 + r2;
@@ -79,36 +77,15 @@ bool CollisionStaticCircleCircle(Coordinates Coords1, Coordinates Coords2, float
  * This function returns true or false depending on whether collision is
  * detected or not
  *
- * @param Rect1 Coordinates of the first rectangle
- * @param Rect2 Coordinates of the second rectangle
+ * @param Rect1 Coordinates(x,y) of the first rectangle
+ * @param Rect2 Coordinates(x,y) of the second rectangle
  *************************************************************************/
 bool CollisionStaticDynamicRectRect(Collider::AABB Rect1, Collider::AABB Rect2) {
 		if ((Rect1.max.x > Rect2.min.x  && 
 			 Rect1.max.y > Rect2.min.y) &&
 			(Rect2.max.x > Rect1.min.x  &&
 			 Rect2.max.y > Rect1.min.y)) {
-		//std::cout << "Collision detected\n";
-		//std::cout << "X " << physicsSys->bodyList[0]->txPtr->position.x << "Y " << physicsSys->bodyList[0]->txPtr->position.y << " \n";
-		//std::cout << Rect1.max.x << " " << Rect1.center.x;
-		//Vector2D direction;
-		//direction = Rect2.center - Rect1.center;
-		////std::cout << "Direction X: " << direction.x << "Direction Y: " << direction.y << "\n";
-		////std::cout << "Direction: " << direction.center.x << " " << direction.center.y;
-		//
-		//Vector2D Rect1norm;
 
-		//Vector2DNormalize(Rect1norm, direction);
-
-		//if (Vector2DDotProduct(direction, Rect1norm) < 0.f) {
-		//	Rect1norm = -Rect1norm;
-		//	physicsSys->bodyList[0]->velocity = Rect1norm;
-		//}
-		//
-		
-		//physicsSys->bodyList[0]->velocity.x = -20;
-		//physicsSys->bodyList[0]->velocity.y = -20;
-		
-		
 		return true;
 		}
 		else {
@@ -116,21 +93,19 @@ bool CollisionStaticDynamicRectRect(Collider::AABB Rect1, Collider::AABB Rect2) 
 		}
 }
 
-
 /**************************************************************************
- * @brief Check for collision between moving rectangles
+ * @brief Whether a point moving in a specified direction will collide with
+		  a rectangle (represented by an Axis-Aligned Bounding Box (AABB)).
  *
  * This function returns true or false depending on whether collision is
  * detected or not
  *
- * @param r1x, r2x X-coordinates of first and second rectangle respectively
- * @param r1y, r2y Y-coordinates of first and second rectangle respectively
- * @param r1velocityX, r1velocityY, r2velocityX, r2velocityY 
-		  velocities of each coordinate points
- * @param s1, s2  Width of first and second rectangle respectively
+ * @param origin		The starting point of the line coordinates(x,y)
+ * @param direction		A vector to represent direction
+ * @param target		The destination point of the line coordinates(x,y)
+ * @param contactNormal The normal of a vector on the point of collision
+ * @param contactTime	The time on the point of collision
  *************************************************************************/
-
-
 bool MovingPointRectCollision(Vec2 origin, Vec2 direction, Collider::AABB target, Vec2& contactNormal, float& contactTime) {
 	float tNearX = (target.min.x - origin.x) / direction.x;
 	float tFarX = (target.max.x - origin.x) / direction.x;
@@ -196,6 +171,19 @@ bool MovingPointRectCollision(Vec2 origin, Vec2 direction, Collider::AABB target
 	}
 	return true;
 }
+
+/**************************************************************************
+ * @brief  Collision detection function that checks for collisions between 
+		   two rectangles (A and B) with relative motion
+ *
+ * @param A			  Coordinates(x,y) of the first object
+ * @param B			  Coordinates(x,y) of the second object
+ * @param relativeVel The velocity of an object with respect to another
+ * @param contactTime The time on the point of collision
+ * @param normal	  Normal of a vector
+ * @param dt		  Delta time
+ * @param AVel		  Velocity of the first object
+ *************************************************************************/
 bool CollisionMovingRectRect(Collider::AABB A, Collider::AABB B, Vec2 relativeVel, float& contactTime, Vec2& normal, float dt, Vec2 AVel) {
 	if ((relativeVel.x == 0 && relativeVel.y == 0)) {
 		return false;
@@ -216,6 +204,4 @@ bool CollisionMovingRectRect(Collider::AABB A, Collider::AABB B, Vec2 relativeVe
 		}
 	}
 	return false;
-		
-
 }
