@@ -23,6 +23,7 @@ private:
 	std::map<std::string, IState*> statesMap;
 	IState* currentState{ nullptr };
 	IState* nextState{ nullptr };
+	float aggroRange{ 250.f };
 
 public:
 	void Initialize() {
@@ -58,7 +59,7 @@ public:
 			}
 		}
 
-		if (Vector2DDistance(playerPos, enemyPos) < 250.0f) {
+		if (Vector2DDistance(playerPos, enemyPos) < aggroRange) {
 			nextState = statesMap["EnemyAttack"];
 		}
 		else {
@@ -69,7 +70,6 @@ public:
 			currentState->ExitState();
 			currentState = nextState;
 		}
-		//currentState = statesMap["EnemyAttack"];
 	}
 
 	void End() {}

@@ -38,6 +38,7 @@
 #include "Prefab.h"
 
 #define GET_COMPONENT(GameObject, Component, ComponentType) (GameObject->GetComponentType<Component>(ComponentType))
+#define GET_PREFAB_COMPONENT(Prefab, Component, ComponentType) (Prefab->GetComponentType<Component>(ComponentType))
 
 class ComponentFactoryBase;
 
@@ -56,7 +57,6 @@ private:
 	std::map<componentType, ComponentFactoryBase*> componentFactoryMap;
 
 	// Map to store prefabs
-	//std::map<std::string, std::vector<std::string>> prefabMap;
 	std::map<std::string, Prefab*> prefabMap;
 
 public:
@@ -177,6 +177,11 @@ public:
 	* @return std::map<size_t, GameObject*>
 	*************************************************************************/
 	std::map<size_t, GameObject*> GetGameObjectIDMap();
+	
+	/**************************************************************************
+	* @brief Get all prefabs
+	* @return std::map<size_t, Prefab*>
+	*************************************************************************/
 	std::map<std::string, Prefab*> GetPrefabMap();
 
 	/**************************************************************************

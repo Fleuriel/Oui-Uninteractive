@@ -30,7 +30,6 @@ public:
 			GameObject* bullet = objectFactory->BuildObjectRunTime("Bullet", "Bullet");
 			objectFactory->AddComponent(ComponentType::PHYSICS_BODY, bullet);
 			objectFactory->AddComponent(ComponentType::TRANSFORM, bullet);
-			//objectFactory->AddComponent(ComponentType::COLLIDER, bullet);
 
 			bullet->Initialize();
 

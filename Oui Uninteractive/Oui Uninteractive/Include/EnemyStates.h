@@ -26,7 +26,6 @@ private:
 	int pathIndex;
 
 public:
-	//void Initialize() override;
 	EnemyRoam();
 	void Update(size_t gameObjectID) override;
 	void ExitState() override;
@@ -38,7 +37,6 @@ private:
 	bool transitioned;
 
 public:
-	//void Initialize() override;
 	EnemyAttack();
 	void Update(size_t gameObjectID) override;
 	void ExitState() override;
