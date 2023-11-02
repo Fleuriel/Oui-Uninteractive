@@ -20,8 +20,6 @@ void Collider::Initialize() {
 	if (gameObjTX != nullptr) {
 		tx->position = gameObjTX->position;
 	}
-	
-	
 }
 /**************************************************************************
 * @brief Serialize function for Collider component
@@ -82,6 +80,4 @@ Collider::~Collider() {
 	if (GetOwner() != nullptr) {
 		colliderSys->colliderMap.erase(GetOwner()->GetGameObjectID());
 	}
-	
-	
 }

@@ -54,6 +54,7 @@ void Scene1::Initialize() {
 	#endif
 }
 void Scene1::Update(float dt) {
+	dt;
 	if (inputSystem.GetKeyState(GLFW_KEY_1)) {
 		sceneManager->nextSceneID = GameStateList::STATE_LEVEL_TEST;
 	}

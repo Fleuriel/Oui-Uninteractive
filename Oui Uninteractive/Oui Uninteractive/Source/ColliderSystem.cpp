@@ -45,6 +45,7 @@ void ColliderSystem::Initialize() {
 * @return void
 *************************************************************************/
 void ColliderSystem::Update(float dt) {
+	dt;
 	TimeProfiler profiler(Editor::timeRecorder.colliderTime);
 	for (int step = 0; step < sysManager->currentNumberOfSteps; step++) {
 		for (std::map<size_t, Collider*>::iterator it = colliderMap.begin(); it != colliderMap.end(); it++) {
@@ -61,13 +62,12 @@ void ColliderSystem::Update(float dt) {
 				float contactTime = 0;
 				bool collided = false;
 				Vec2 normal = Vec2(0, 0);
-				float depth = 0.f;
 				Vec2 nextCycleVel = pBody1->velocity + pBody1->forceManager.CalculateResultantForce() * pBody1->mass * static_cast<float>(sysManager->fixedDeltaTime);
 				Vec2 nextCycleVel2 = pBody2->velocity + pBody2->forceManager.CalculateResultantForce() * pBody2->mass * static_cast<float>(sysManager->fixedDeltaTime);
 
 				Vec2 relVel = nextCycleVel - nextCycleVel2;
 				
-				collided = CollisionMovingRectRect(*(collider->boundingbox), *(body2->boundingbox), relVel, contactTime, normal, static_cast<float>(sysManager->fixedDeltaTime), depth, nextCycleVel);
+				collided = CollisionMovingRectRect(*(collider->boundingbox), *(body2->boundingbox), relVel, contactTime, normal, static_cast<float>(sysManager->fixedDeltaTime), nextCycleVel);
 				if (collided) {
 					didCollide = true;
 					

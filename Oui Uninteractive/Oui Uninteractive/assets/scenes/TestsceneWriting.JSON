@@ -37,8 +37,8 @@
             "Type": "Enemy",
             "Components": {
                 "PhysicsBody": {
-                    "VelocityX": 0.0,
-                    "VelocityY": 0.0,
+                    "VelocityX": -279.8710632324219,
+                    "VelocityY": -82.10726928710938,
                     "RotationSpeed": 20.0,
                     "Speed": 120.0,
                     "Mass": 10.0,
@@ -46,8 +46,8 @@
                     "FrictionForce": 20.0
                 },
                 "Transform": {
-                    "PositionX": -44.61957931518555,
-                    "PositionY": 507.0,
+                    "PositionX": -269.4261474609375,
+                    "PositionY": -293.71148681640625,
                     "Rotation": 0.0,
                     "Scale": 130.0
                 },

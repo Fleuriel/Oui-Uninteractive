@@ -56,6 +56,7 @@ void Scene2::Initialize() {
 #endif
 }
 void Scene2::Update(float dt) {
+	dt;
 	if (inputSystem.GetKeyState(GLFW_KEY_0)) {
 		sceneManager->nextSceneID = GameStateList::STATE_GRAPHICS_TEST;
 	}

@@ -90,9 +90,9 @@ PhysicsBody* PhysicsBody::Clone() const{
 }
 
 ForceManager::ForceManager() {
-	forceVec.push_back(new LinearForce(0.5, false, 50));
-	forceVec.push_back(new LinearForce(0.5, false, 50));
-	forceVec.push_back(new LinearForce(0.1, true, 50));
+	forceVec.push_back(new LinearForce(0.5f, false, 50));
+	forceVec.push_back(new LinearForce(0.5f, false, 50));
+	forceVec.push_back(new LinearForce(0.1f, true, 50));
 }
 void ForceManager::SetMagnitude(float new_mag, FORCE_INDEX index) {
 
