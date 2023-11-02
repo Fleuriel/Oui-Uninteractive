@@ -80,8 +80,8 @@ void UIManager::Update(float dt) {
 
 					//std::cout << collider->boundingbox->min.x << ", " << collider->boundingbox->min.y <<'\t' << collider->boundingbox->max.x << ", " << collider->boundingbox->max.y << '\n';
 
-					if (CollisionMouseRect(*(collider->boundingbox), convertedMousePos.first, convertedMousePos.second)) {
-						std::cout << "YESSS\n";
+					if (CollisionMouseRect(*(collider->boundingbox), static_cast<int>(convertedMousePos.first), static_cast<int>(convertedMousePos.second))) {
+						std::cout << "YESSS";
 					}
 				}
 			}

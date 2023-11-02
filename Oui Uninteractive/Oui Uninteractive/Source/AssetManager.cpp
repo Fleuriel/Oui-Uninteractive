@@ -56,7 +56,10 @@ void AssetManager::LoadAll() {
     std::cout 
     << ((AssetManager::LoadTextures()) ? "Textures loaded successfully" : "Failed to load textures") << std::endl
     << ((AssetManager::LoadSounds()) ? "Sounds loaded successfully" : "Failed to load sounds") << std::endl
+    << ((AssetManager::LoadFonts()) ? "Fonts loaded successfully" : "Failed to load fonts") << std::endl
+    << ((AssetManager::LoadScenes()) ? "Scenes loaded successfully" : "Failed to load scenes") << std::endl
     << ((AssetManager::LoadFonts()) ? "Fonts loaded successfully" : "Failed to load fonts") << std::endl;
+    LoadSprites();
 }
 
 /**************************************************************************
@@ -365,7 +368,12 @@ bool AssetManager::ReloadSprites() {
 
 
 
-
+bool AssetManager::LoadScenes() {
+    for (const auto& entry : fs::directory_iterator(FILEPATH_SCENES)) {
+        scenes.push_back(entry.path().filename().string());
+    }
+    return true;
+}
 
 
 
@@ -609,11 +617,12 @@ bool AssetManager::LoadFonts() {
                 glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
                 glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
                 // Store character
+                GLuint advance = static_cast<GLuint>(static_cast<int>(newFace->glyph->advance.x));
                 FontManager::Character character = {
                     tex,
                     glm::vec2(newFace->glyph->bitmap.width, newFace->glyph->bitmap.rows),
                     glm::vec2(newFace->glyph->bitmap_left, newFace->glyph->bitmap_top),
-                    newFace->glyph->advance.x
+                    advance
                 };
                 // Insert chars of font into char map
                 tempMap.insert(std::pair<char, FontManager::Character>(ch, character));

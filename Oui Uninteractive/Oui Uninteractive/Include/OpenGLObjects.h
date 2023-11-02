@@ -85,7 +85,7 @@ public:
 
 	static GLuint FrameTexture;
 
-	bool spritecheck{ true };
+	bool spritecheck;
 	
 	
 
@@ -218,7 +218,7 @@ public:
 	* @param  none
 	* @return void
 	*************************************************************************/
-	void Draw(int shaderNumber = 0) const;
+	void Draw(int shaderNumber) const;
 
 	/**************************************************************************
 	* @brief		Initialize the Shaders for Graphics Pipeline for Object to

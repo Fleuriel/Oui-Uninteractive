@@ -169,6 +169,34 @@ void Editor::CreateMasterPanel() {
 	ImGui::Checkbox("Objects Panel", &panelList.objectPanel); // Checkbox for object manager panel
 	ImGui::Checkbox("Asset Browser", & panelList.assetBrowserPanel); // Checkbox for asset browser
 	ImGui::Checkbox("Debug Panel", &panelList.debugPanel); // Checkbox for debug panel
+	static int selectedScene = 0;
+	static std::string sceneFileName;
+	
+	// Render drop menu for scene file selector
+	if (ImGui::BeginCombo("Scene File", assetManager.scenes[selectedScene].c_str())) {
+		for (int i = 0; i < assetManager.scenes.size(); i++) {
+			bool isSelected = (i == selectedScene);
+			if (ImGui::Selectable(assetManager.scenes[i].c_str(), isSelected)) {
+				selectedScene = i;
+				sceneFileName = "assets/scenes/" + assetManager.scenes[i];
+			}
+			if (isSelected) {
+				ImGui::SetItemDefaultFocus();
+			}
+		}
+		ImGui::EndCombo();
+	}
+	//std::cout << sceneFileName << std::endl;
+	// Save level to file
+	if (ImGui::Button("Save scene")) {
+		objectFactory->SaveObjectsToFile(sceneFileName);
+	}
+	ImGui::SameLine();
+	// Load level from file
+	if (ImGui::Button("Load scene")) {
+		objectFactory->DestroyAllObjects();
+		objectFactory->BuildObjectFromFile(sceneFileName);
+	}
 	// The "do smth" button. Interchangable quick access button used for quick testing of features
 	if (ImGui::Button("Do Something")) {
 		objectFactory->DestroyAllObjects();
@@ -186,15 +214,15 @@ void Editor::CreateRenderWindow() {
 	ImGui::Begin("Game Window");
 	
 	if (ImGui::BeginChild("GameWindow")) {
-		gameWindowOrigin.first = ImGui::GetWindowPos().x;
-		gameWindowOrigin.second = ImGui::GetWindowPos().y;
-		gameWindowSize.first = ImGui::GetWindowSize().x;
-		gameWindowSize.second = ImGui::GetWindowSize().y;
+		gameWindowOrigin.first = static_cast<int>(ImGui::GetWindowPos().x);
+		gameWindowOrigin.second = static_cast<int>(ImGui::GetWindowPos().y);
+		gameWindowSize.first = static_cast<int>(ImGui::GetWindowSize().x);
+		gameWindowSize.second = static_cast<int>(ImGui::GetWindowSize().y);
 		// Get draw size of window
 		ImVec2 wsize = ImGui::GetWindowSize();
 		// Invert V from openGL
 		//ImGui::Image(reinterpret_cast<ImTextureID>(0), wsize, ImVec2(0, 1), ImVec2(1, 0));
-		ImGui::Image(reinterpret_cast<ImTextureID>(OpenGLObject::FrameTexture), wsize, ImVec2(0.0f, 1.0f), ImVec2(1.0f, 0.0f)); // Replace thirdTexture with handle to FBO when graphics done rendering to FBO	
+		ImGui::Image(reinterpret_cast<ImTextureID>(static_cast<uintptr_t>(OpenGLObject::FrameTexture)), wsize, ImVec2(0.0f, 1.0f), ImVec2(1.0f, 0.0f)); // Replace thirdTexture with handle to FBO when graphics done rendering to FBO	
 	}
 	ImGui::EndChild();
 	ImGui::End();
@@ -216,17 +244,17 @@ void Editor::CreatePrefabPanel() {
 	static std::string selectedName = it->first;
 
 	// Refresh list of prefabs from file directory
-	if (ImGui::Button("Refresh")) {
-		std::filesystem::path prefabPath{ FILEPATH_PREFAB };
-		if (std::filesystem::is_directory(prefabPath)) {
-			for (const auto& entry : std::filesystem::directory_iterator(prefabPath)) {
-				
-			}
-		}
-	}
+	//if (ImGui::Button("Refresh")) {
+	//	std::filesystem::path prefabPath{ FILEPATH_PREFAB };
+	//	if (std::filesystem::is_directory(prefabPath)) {
+	//		for (const auto& entry : std::filesystem::directory_iterator(prefabPath)) {
+	//			
+	//		}
+	//	}
+	//}
 	
 	if (saveFlag) {
-		ImGui::SameLine();
+		//ImGui::SameLine();
 		if (ImGui::Button("Save")) {
 
 			// Handle saving/deleteion for physics body component
@@ -321,7 +349,7 @@ void Editor::CreatePrefabPanel() {
 		ImGui::BeginGroup();
 		ImGui::BeginChild("item view", ImVec2(0, -ImGui::GetFrameHeightWithSpacing())); // Leave room for 1 line below
 		ImGui::SeparatorText("Details");
-		ImGui::Text("Prefab Type: %s", copy[selectedName]->GetType());
+		ImGui::Text("Prefab Type: %s", copy[selectedName]->GetType().c_str());
 		ImGui::Text("Active Components:");
 		// If selected prefab has no components
 		if (copy[selectedName]->GetPrefabComponentList().empty()) {

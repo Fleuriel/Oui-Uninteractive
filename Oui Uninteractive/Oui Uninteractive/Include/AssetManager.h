@@ -71,7 +71,10 @@ public:
 	int SetUpTexture(std::string filePath);			//Function to set up textures
 	bool FreeTextures();							//Function to free textures
 	bool ReloadTextures();							//Function to reload textures
-	
+
+	// Scene functions
+	bool LoadScenes();
+
 	// Sprite functions
 	bool LoadSprites();
 	bool FreeSprites();
@@ -104,9 +107,9 @@ public:
 	FMOD::Sound* GetSFX(int);						//Function to access SFX Sounds
 	std::map<std::string, std::map<char, FontManager::Character>>::iterator GetFont(std::string);
 
-
+	std::vector<std::string> scenes{};
 private:
-	//Containers
+	//Containers	
 	std::map<std::string, int> textures{};
 	std::map<std::string, Sprite> sprites{};
 	std::vector<FMOD::Sound*> bgmSounds{};

@@ -47,6 +47,9 @@ private:
     std::vector<std::vector<Node>> parent;
 
 public:
+    // Check if the grid has been created
+    bool gridCreated;
+
     /**************************************************************************
     * @brief Constructor
     * @param r - rows of grid
@@ -58,9 +61,6 @@ public:
     * @brief Destructor
     *************************************************************************/
 	~BFS();
-
-	// Check if the grid has been created
-    bool gridCreated;
 
     /**************************************************************************
     * @brief Create the grid
@@ -89,6 +89,18 @@ public:
 	* @return int - columns of grid
     *************************************************************************/
     int GetCols();
+
+    /**************************************************************************
+    * @brief Get game map
+    * @return std::vector<std::vector<int>>
+    *************************************************************************/
+    std::vector<std::vector<int>> GetGameMap();
+
+    /**************************************************************************
+    * @brief Reset the gameMap, visited and parent containers
+    * @return void
+    *************************************************************************/
+    void Reset();
 };
 
 #endif
