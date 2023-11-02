@@ -86,7 +86,8 @@ static bool imguiInitialized = false;
 
 AssetManager assetManager;
 
-
+//temporary variable for changing sprite
+int spriteframe;
 
 /**************************************************************************
 * @brief		Set the parameters for the window, and then Initialize the
@@ -340,8 +341,10 @@ void OpenGLApplication::OpenGLUpdate() {
 		objects.emplace_back(newObject1);
 	}
 
-
-
+	if (inputSystem.GetKeyState(GLFW_KEY_KP_1) == 1) {
+		spriteframe+=1;
+		std::cout << spriteframe;
+	}
 
 	// Moves Object left. can add positionY to change as well.
 	if (inputSystem.GetKeyState(GLFW_KEY_KP_4) == 2) {
@@ -416,8 +419,8 @@ void OpenGLApplication::OpenGLUpdate() {
 		//particleSystem.EmptyParticleSystem();
 	}
 
+	
 	if (inputSystem.GetMouseState(GLFW_MOUSE_BUTTON_LEFT)) {
-		assetManager.LoadSprites() ;
 		
 #ifdef _DEBUG
 		std::cout << "LCLICK\n";
@@ -508,7 +511,10 @@ void OpenGLApplication::OpenGLUpdate() {
 	// Updates the Game Object
 	for (std::pair<size_t, GameObject*> gObj : objectFactory->GetGameObjectIDMap()) {
 		if (gObj.second->Has(ComponentType::TRANSFORM) != -1) {
-			GET_COMPONENT(gObj.second, Transform, ComponentType::TRANSFORM)->shape->Draw();
+			if (GET_COMPONENT(gObj.second, Transform, ComponentType::TRANSFORM)->shape->spritecheck)
+			GET_COMPONENT(gObj.second, Transform, ComponentType::TRANSFORM)->shape->Draw(3);
+			else
+			GET_COMPONENT(gObj.second, Transform, ComponentType::TRANSFORM)->shape->Draw(0);
 		}
 	}
 
@@ -591,11 +597,12 @@ void OpenGLApplication::Draw() {
 #endif
 	// Iterate through all the objects and draw the textures assosiated with Tag ID
 	for (auto const& obj : objects) {
-		if (obj.spritecheck)
+		//if (obj.spritecheck==true)
 			obj.Draw(3);
-		else
-		// Draw the Object with Texture.
-		obj.Draw();
+		//else {
+		//	// Draw the Object with Texture.
+		//	obj.Draw();
+		//}
 	}
 
 	// Update the Title and Others EVERY SECOND.

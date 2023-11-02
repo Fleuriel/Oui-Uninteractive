@@ -51,7 +51,7 @@ GLuint OpenGLObject::RBO = 0;
 GLuint OpenGLObject::FrameTexture = 0;
 
 
-
+extern int spriteframe;
 
 
 
@@ -362,8 +362,8 @@ void OpenGLObject::Draw(int shaderNumber) const{
 			break;
 		}
 	}
-	else if (shaderNumber == static_cast<int>(SHADER_ORDER::SPRITES)) {
-		tex = assetManager.GetSprite("BaldManIdle");
+	if (shaderNumber == static_cast<int>(SHADER_ORDER::SPRITES)) {
+		tex = assetManager.GetSprite("BaldManLeftWalk");
 	}
 
 	// Bind Texture to 6.
@@ -380,10 +380,9 @@ void OpenGLObject::Draw(int shaderNumber) const{
 
 	if (shaderNumber == static_cast<int>(SHADER_ORDER::SPRITES)) {
 		shdrpgms[static_cast<int>(SHADER_ORDER::SPRITES)].SetUniform("uTex2d", 6);
-
-		shdrpgms[static_cast<int>(SHADER_ORDER::SPRITES)].SetUniform("fr", 7);
-		shdrpgms[static_cast<int>(SHADER_ORDER::SPRITES)].SetUniform("r", 8);
-		shdrpgms[static_cast<int>(SHADER_ORDER::SPRITES)].SetUniform("c", 9);
+		shdrpgms[static_cast<int>(SHADER_ORDER::SPRITES)].SetUniform("fr", spriteframe);
+		shdrpgms[static_cast<int>(SHADER_ORDER::SPRITES)].SetUniform("r", 1);
+		shdrpgms[static_cast<int>(SHADER_ORDER::SPRITES)].SetUniform("c", 6);
 	}
 
 	

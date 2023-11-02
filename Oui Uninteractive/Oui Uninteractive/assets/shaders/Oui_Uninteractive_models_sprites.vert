@@ -8,11 +8,11 @@ layout (location=2) in vec2 aVertexTexture;
 layout (location=0) out vec3 vColor;
 layout (location=1) out vec2 vTex;
 
-uniform mat3 uModel_to_NDC;
-
 uniform int fr;
 uniform int r;
 uniform int c;
+
+uniform mat3 uModel_to_NDC;
 
 void main(void){
 
@@ -21,7 +21,15 @@ void main(void){
 	//set the color
 	vColor = aVertexColor;
 
-    vTex = vec2(aVertexTexture.x,0);
+	float width = aVertexTexture.x / c;
+	float height = aVertexTexture.y / r;
+
+	float heightoffset = (fr/c)*height;
+
+	vTex = vec2(width , height) + vec2(float(fr)/float(r*c),0);
+
+	vColor = vec3(fr,r,c);
+
 
 	// Set the texture to the 'bytes'
 	//vTex = aVertexTexture;

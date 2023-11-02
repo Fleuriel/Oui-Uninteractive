@@ -11,8 +11,6 @@ layout (location=1) out vec2 vTex;
 
 uniform mat3 uModel_to_NDC;
 
-uniform int fr;
-
 void main(void){
 
 	//set the position
