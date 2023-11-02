@@ -18,10 +18,10 @@
 
 struct Node {
     int x, y;
-    Node* parent;
+    int parentX, parentY;
 
     // Node constructor
-    Node(int x_, int y_, Node* parent_);
+    Node(int x_, int y_, int parentX_, int parentY_);
 };
 
 class BFS {
@@ -29,16 +29,15 @@ private:
 	// Rows and columns of grid
     int rows;
     int cols;
-    
 
-	// Grid of nodes
+	// Grid of ints
     std::vector<std::vector<int>> gameMap;
 
-    // Queue of nodes to determine path
-    //std::queue<Node*> nodeQueue;
+    // Vector of bool to represent nodes that have been visited
+    std::vector<std::vector<bool>> visited;
 
-    // Path of nodes to follow
-    //std::vector<Node*> path;
+    // Vector of parent nodes
+    std::vector<std::vector<Node>> parent;
 
 public:
     BFS(int r, int c);
@@ -49,6 +48,9 @@ public:
     void CreateGrid();
     std::vector<Node> FindPath(int startX, int startY, int targetX, int targetY);
     void FollowPath(std::vector<Node> p, size_t gameObjectID);
+
+    int GetRows();
+    int GetCols();
 };
 
 #endif

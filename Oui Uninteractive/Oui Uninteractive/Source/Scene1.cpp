@@ -21,7 +21,7 @@ void Scene1::Initialize() {
 		std::cout << "De-serializing objects from JSON file... completed." << std::endl;
 	#endif
 
-	#ifdef _DEBUG
+	/*#ifdef _DEBUG
 		std::cout << "\nBuilding an object from player prefab..." << std::endl;
 	#endif
 
@@ -29,9 +29,9 @@ void Scene1::Initialize() {
 
 	#ifdef _DEBUG	
 		std::cout << "Building an object from player prefab... completed." << std::endl;
-	#endif
+	#endif*/
 
-	#ifdef _DEBUG	
+	/*#ifdef _DEBUG	
 		std::cout << "\nCloning object with ID 4..." << std::endl;
 	#endif
 		//AI OBJECT
@@ -40,7 +40,7 @@ void Scene1::Initialize() {
 
 	#ifdef _DEBUG	
 		std::cout << "Cloning object with ID 4... completed." << std::endl;
-	#endif
+	#endif*/
 
 		// Modifying value of JSONEnemy2
 

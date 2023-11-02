@@ -13,11 +13,35 @@
 #include "PhysicsBody.h"
 #include "Transform.h"
 
-Node::Node(int x_, int y_, Node* parent_ = nullptr) : x(x_), y(y_), parent(parent_) {}
+Node::Node(int x_, int y_, int parentX_ = -1, int parentY_ = -1) : x(x_), y(y_), parentX(parentX_), parentY(parentY_) {}
 
 BFS::BFS(int r, int c) : rows(r), cols(c) {
-    gameMap = std::vector<std::vector<int>>(rows, std::vector<int>(cols, 0));
+    // Initialize containers
+	for (int i{}; i < rows; ++i) {
+        std::vector<int> gameMapVector;
+        std::vector<bool> visitedVector;
+        std::vector<Node> parentVector;
+		
+        for (int j{}; j < cols; ++j) {
+			gameMapVector.push_back(0);
+			visitedVector.push_back(false);
+            parentVector.push_back(Node(-1, -1));
+		}
+
+		gameMap.push_back(gameMapVector);
+		visited.push_back(visitedVector);
+		parent.push_back(parentVector);
+	}
+
     gridCreated = false;
+
+    // Test walls
+    gameMap[3][0] = 1;
+    gameMap[1][1] = 1;
+    gameMap[3][1] = 1;
+    gameMap[0][2] = 1;
+    gameMap[3][2] = 1;
+    gameMap[3][3] = 1;
 }
 
 void BFS::CreateGrid() {
@@ -29,7 +53,7 @@ void BFS::CreateGrid() {
 
     for (int i{}; i < rows; ++i) {
         for (int j{}; j < cols; ++j) {
-            if (i == 0 && j == 0) {
+            if (gameMap[i][j] == 1) {
                 // Create walls
                 GameObject* wall = objectFactory->BuildObjectRunTime("Wall", "Wall");
                 objectFactory->AddComponent(ComponentType::TRANSFORM, wall);
@@ -41,7 +65,6 @@ void BFS::CreateGrid() {
                 GET_COMPONENT(wall, Transform, ComponentType::TRANSFORM)->position.x = (j * scaleTemp) + (scaleTemp - windowWidth) / 2;
                 GET_COMPONENT(wall, Transform, ComponentType::TRANSFORM)->position.y = (i * scaleTemp) + (scaleTemp - windowHeight) / 2;
             }
-            
         }
     }
 
@@ -49,52 +72,28 @@ void BFS::CreateGrid() {
 }
 
 std::vector<Node> BFS::FindPath(int startX, int startY, int targetX, int targetY) {
-    // Test walls
-    /*gameMap[0][3] = 1;
-    gameMap[1][2] = 1;
-    gameMap[1][3] = 1;
-    gameMap[2][3] = 1;
-    gameMap[3][1] = 1;
-    gameMap[3][2] = 1;
-    gameMap[3][3] = 1;*/
-
     // Queue of nodes to determine path
-    //std::queue<Node> nodeQueue;
     std::queue<Node> nodeQueue;
 
     // Path of nodes to follow
-    //std::vector<Node*> path;
     std::vector<Node> path;
 
-    // Start/end nodes
+    // Add start node to queue
     Node startNode(startX, startY);
-
-    std::vector<std::vector<int>> parentIndices(rows, std::vector<int>(cols, -1));
-
-
     nodeQueue.push(startNode);
 
     while (!nodeQueue.empty()) {
-        Node currentNode{ nodeQueue.front() };
+        Node currentNode(nodeQueue.front().x, nodeQueue.front().y, nodeQueue.front().parentX, nodeQueue.front().parentY);
         nodeQueue.pop();
 
         // If the current node is the end node
         if (currentNode.x == targetX && currentNode.y == targetY) {
             // Trace parent nodes to get the path
-
-            int currentIdx = currentNode.y * cols + currentNode.x;
-            while (currentIdx != -1) {
-                int parentX = currentIdx % cols;
-                int parentY = currentIdx / cols;
-                path.push_back(Node(parentX, parentY));
-                currentIdx = parentIndices[parentY][parentX];
-            }
-
-            /*Node current = currentNode;
-            while (current.parent != nullptr) {
+            while (!(currentNode.x == startNode.x && currentNode.y == startNode.y)) {
                 path.push_back(currentNode);
-                currentNode = *currentNode.parent;
-            }*/
+                currentNode = parent[currentNode.y][currentNode.x];
+            }
+            path.push_back(startNode);
 
             std::reverse(path.begin(), path.end());
             break;
@@ -116,57 +115,60 @@ std::vector<Node> BFS::FindPath(int startX, int startY, int targetX, int targetY
                     continue;
 
                 // Ignore if neighbour is an obstacle (e.g. wall)
-                if (gameMap[checkX][checkY] == 1)
+                if (gameMap[checkY][checkX] == 1)
+                    continue;
+
+                // Ignore if node has been visited
+                if (visited[checkY][checkX])
                     continue;
 
                 //---CORNER CHECKS---//
                 // Top-left corner
                 if (neighbourX == -1 && neighbourY == -1) {
                     // Edge on the right/bottom is an obstacle
-                    if (gameMap[checkX + 1][checkY] == 1 || gameMap[checkX][checkY + 1] == 1)
+                    //if (gameMap[checkX + 1][checkY] == 1 || gameMap[checkX][checkY + 1] == 1)
+                    if (gameMap[checkY][checkX + 1] == 1 || gameMap[checkY + 1][checkX] == 1)
                         continue;
                 }
 
                 // Top-right corner
                 if (neighbourX == 1 && neighbourY == -1) {
                     // Edge on the left/bottom is an obstacle
-                    if (gameMap[checkX - 1][checkY] == 1 || gameMap[checkX][checkY + 1] == 1)
+                    //if (gameMap[checkX - 1][checkY] == 1 || gameMap[checkX][checkY + 1] == 1)
+                    if (gameMap[checkY][checkX - 1] == 1 || gameMap[checkY + 1][checkX] == 1)
                         continue;
                 }
 
                 // Bottom-left corner
                 if (neighbourX == -1 && neighbourY == 1) {
                     // Edge on the top/right is an obstacle
-                    if (gameMap[checkX][checkY - 1] == 1 || gameMap[checkX + 1][checkY] == 1)
+                    //if (gameMap[checkX][checkY - 1] == 1 || gameMap[checkX + 1][checkY] == 1)
+                    if (gameMap[checkY - 1][checkX] == 1 || gameMap[checkY][checkX + 1] == 1)
                         continue;
                 }
 
                 // Bottom-right corner
                 if (neighbourX == 1 && neighbourY == 1) {
                     // Edge on the top/left is an obstacle
-                    if (gameMap[checkX][checkY - 1] == 1 || gameMap[checkX - 1][checkY] == 1)
+                    //if (gameMap[checkX][checkY - 1] == 1 || gameMap[checkX - 1][checkY] == 1)
+                    if (gameMap[checkY - 1][checkX] == 1 || gameMap[checkY][checkX - 1] == 1)
                         continue;
                 }
                 //---CORNER CHECKS---//
 
-                // Initialize neighbour node
-                //Node n(currentNode->x, currentNode->y, currentNode->parent);
-				//Node neighbourNode(checkX, checkY, &currentNode);
-                
-                Node neighbourNode(checkX, checkY);
-				neighbourNode.parent = &currentNode;
+                // Neighbour node has been visited and parent node is currennt node
+				visited[checkY][checkX] = true;
+				parent[checkY][checkX] = currentNode;
 
-                /*Node* neighbourNode{ new Node(checkX, checkY) };
-                neighbourNode->parent = currentNode;*/
-
-                // Add to node queue for further checking
+                // Add neighbouring node to node queue for further checking
+                Node neighbourNode(checkX, checkY, currentNode.x, currentNode.y);
                 nodeQueue.push(neighbourNode);
             }
         }
     }
 
+    // Clear containers
     while (!nodeQueue.empty()) {
-        //delete nodeQueue.front();
         nodeQueue.pop();
     }
 
@@ -212,28 +214,18 @@ void BFS::FollowPath(std::vector<Node> p, size_t gameObjectID) {
     std::cout << "PATHFINDING END" << std::endl;*/
 }
 
+int BFS::GetRows() {
+    return rows;
+}
+
+int BFS::GetCols() {
+    return cols;
+}
+
 BFS::~BFS() {
-	// Clear gameMap
+	// Clear containers
     for (size_t i{}; i < gameMap.size(); ++i) {
         gameMap[i].clear();
     }
 	gameMap.clear();
-
-    // Erase nodes in nodeQueue
-
-
-    // Erase nodes in path
-	/*for (auto node : path) {
-		delete node;
-	}*/
-    //for (int i{ (int)path.size() - 1 }; i >= 0; --i) {
-    //    path[i]->next = nullptr;
-    //    delete path[i];
-    ////	//delete path[i];
-    //}
-
-    // DONT PUSH, MEMORY LEAKS
- //   for (size_t i{}; i < path.size(); ++i) {
-	//	//delete path[i];
-	//}
 }

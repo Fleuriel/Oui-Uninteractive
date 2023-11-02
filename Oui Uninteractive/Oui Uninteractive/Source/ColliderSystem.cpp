@@ -49,14 +49,7 @@ void ColliderSystem::Update(float dt) {
 	for (int step = 0; step < sysManager->currentNumberOfSteps; step++) {
 		for (std::map<size_t, Collider*>::iterator it = colliderMap.begin(); it != colliderMap.end(); it++) {
 			Collider* collider = it->second;
-			
-
-
-			collider->tx->position = GET_COMPONENT(collider->GetOwner(), Transform, ComponentType::TRANSFORM)->position;
-			collider->boundingbox->center = collider->tx->position;
-			collider->boundingbox->min = Vec2((-0.5f) * collider->tx->scale + collider->tx->position.x, (-0.5f) * collider->tx->scale + collider->tx->position.y);
-			collider->boundingbox->max = Vec2((0.5f) * collider->tx->scale + collider->tx->position.x, (0.5f) * collider->tx->scale + collider->tx->position.y);
-
+		
 			bool didCollide = false;
 			for (std::map<size_t, Collider*>::iterator it2 = colliderMap.begin(); it2 != colliderMap.end(); it2++) {
 				Collider* body2 = it2->second;

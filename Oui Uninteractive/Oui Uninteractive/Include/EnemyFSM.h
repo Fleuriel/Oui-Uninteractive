@@ -21,7 +21,8 @@
 class EnemyFSM : public IScript {
 private:
 	std::map<std::string, IState*> statesMap;
-	IState* currentState;
+	IState* currentState{ nullptr };
+	IState* nextState{ nullptr };
 
 public:
 	void Initialize() {
@@ -40,6 +41,7 @@ public:
 		Vec2 playerPos = Vec2(0, 0);
 		Vec2 enemyPos = Vec2(0, 0);
 		GameObject* player = objectFactory->GetGameObjectByName("JSONPlayer");
+
 		if (player != nullptr) {
 
 			Transform* playerTx = GET_COMPONENT(objectFactory->GetGameObjectByName("JSONPlayer"), Transform, ComponentType::TRANSFORM);
@@ -54,11 +56,16 @@ public:
 			}
 		}
 
-		if (Vector2DDistance(playerPos, enemyPos) < 300.0f) {
-			currentState = statesMap["EnemyAttack"];
+		if (Vector2DDistance(playerPos, enemyPos) < 250.0f) {
+			nextState = statesMap["EnemyAttack"];
 		}
 		else {
-			currentState = statesMap["EnemyRoam"];
+			nextState = statesMap["EnemyRoam"];
+		}
+
+		if (nextState != currentState) {
+			currentState->ExitState();
+			currentState = nextState;
 		}
 		//currentState = statesMap["EnemyAttack"];
 	}
