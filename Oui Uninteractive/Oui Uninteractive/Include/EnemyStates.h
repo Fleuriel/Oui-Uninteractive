@@ -25,6 +25,11 @@ private:
 	bool pathPrinted;
 	int pathIndex;
 
+	// TEMPORARY VARIABLES
+	float windowWidth;
+	float windowHeight;
+	float scaleTemp;
+
 public:
 	/**************************************************************************
 	* @brief Constructor

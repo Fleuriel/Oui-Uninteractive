@@ -1,5 +1,5 @@
 {
-    "ObjectCount": 10,
+    "ObjectCount": 4,
     "Objects": [
         {
             "Name": "JSONPlayer",
@@ -110,78 +110,6 @@
                     "Mass": 80.0,
                     "IsStatic": true,
                     "FrictionForce": 20.0
-                }
-            }
-        },
-        {
-            "Name": "Wall",
-            "Type": "Wall",
-            "Components": {
-                "Transform": {
-                    "PositionX": -451.5,
-                    "PositionY": -406.79998779296875,
-                    "Rotation": 0.0,
-                    "Scale": 203.39999389648438
-                }
-            }
-        },
-        {
-            "Name": "Wall",
-            "Type": "Wall",
-            "Components": {
-                "Transform": {
-                    "PositionX": -654.9000244140625,
-                    "PositionY": -203.39999389648438,
-                    "Rotation": 0.0,
-                    "Scale": 203.39999389648438
-                }
-            }
-        },
-        {
-            "Name": "Wall",
-            "Type": "Wall",
-            "Components": {
-                "Transform": {
-                    "PositionX": -858.2999877929688,
-                    "PositionY": 203.39996337890625,
-                    "Rotation": 0.0,
-                    "Scale": 203.39999389648438
-                }
-            }
-        },
-        {
-            "Name": "Wall",
-            "Type": "Wall",
-            "Components": {
-                "Transform": {
-                    "PositionX": -654.9000244140625,
-                    "PositionY": 203.39996337890625,
-                    "Rotation": 0.0,
-                    "Scale": 203.39999389648438
-                }
-            }
-        },
-        {
-            "Name": "Wall",
-            "Type": "Wall",
-            "Components": {
-                "Transform": {
-                    "PositionX": -451.5,
-                    "PositionY": 203.39996337890625,
-                    "Rotation": 0.0,
-                    "Scale": 203.39999389648438
-                }
-            }
-        },
-        {
-            "Name": "Wall",
-            "Type": "Wall",
-            "Components": {
-                "Transform": {
-                    "PositionX": -248.10003662109375,
-                    "PositionY": 203.39996337890625,
-                    "Rotation": 0.0,
-                    "Scale": 203.39999389648438
                 }
             }
         }

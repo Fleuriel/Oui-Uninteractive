@@ -29,21 +29,9 @@ Node::Node(int x_, int y_, int parentX_ = -1, int parentY_ = -1) : x(x_), y(y_),
 *************************************************************************/
 BFS::BFS(int r, int c) : rows(r), cols(c) {
     // Initialize containers
-	for (int i{}; i < rows; ++i) {
-        std::vector<int> gameMapVector;
-        std::vector<bool> visitedVector;
-        std::vector<Node> parentVector;
-		
-        for (int j{}; j < cols; ++j) {
-			gameMapVector.push_back(0);
-			visitedVector.push_back(false);
-            parentVector.push_back(Node(-1, -1));
-		}
-
-		gameMap.push_back(gameMapVector);
-		visited.push_back(visitedVector);
-		parent.push_back(parentVector);
-	}
+    gameMap = std::vector<std::vector<int>>(rows, std::vector<int>(cols, 0));
+    visited = std::vector<std::vector<bool>>(rows, std::vector<bool>(cols, false));
+    parent = std::vector<std::vector<Node>>(rows, std::vector<Node>(cols, Node(-1, -1)));
 
     gridCreated = false;
 
@@ -219,4 +207,33 @@ int BFS::GetRows() {
 *************************************************************************/
 int BFS::GetCols() {
     return cols;
+}
+
+/**************************************************************************
+* @brief Get game map
+* @return int - columns of grid
+*************************************************************************/
+std::vector<std::vector<int>> BFS::GetGameMap() {
+    return gameMap;
+}
+
+/**************************************************************************
+* @brief Reset the gameMap, visited and parent containers
+* @return void
+*************************************************************************/
+void BFS::Reset() {
+    // Reset visited and parent containers
+	for (int i{}; i < visited.size(); ++i) {
+		visited[i].clear();
+	}
+	visited.clear();
+
+	for (int i{}; i < parent.size(); ++i) {
+		parent[i].clear();
+	}
+	parent.clear();
+
+    // Initialize containers
+    visited = std::vector<std::vector<bool>>(rows, std::vector<bool>(cols, false));
+    parent = std::vector<std::vector<Node>>(rows, std::vector<Node>(cols, Node(-1, -1)));
 }
