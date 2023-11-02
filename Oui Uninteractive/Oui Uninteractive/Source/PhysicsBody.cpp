@@ -25,7 +25,6 @@ PhysicsBody::PhysicsBody() {
 	direction = Vec2(0, 0);
 	speed = 50;
 	frictionForce = 20;
-	restitution = 10;
 }
 /**************************************************************************
 * @brief Destructor for PhysicsBody component

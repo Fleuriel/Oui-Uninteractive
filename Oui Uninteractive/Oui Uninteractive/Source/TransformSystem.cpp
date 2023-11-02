@@ -35,6 +35,7 @@ void TransformSystem::Update(float dt) {
 	
 	for (; it2 != copyColliderMap.end(); it2++) {
 		Collider* collider = it2->second;
+		//Update bounding box position
 		collider->tx->position = GET_COMPONENT(collider->GetOwner(), Transform, ComponentType::TRANSFORM)->position;
 		collider->boundingbox->center = collider->tx->position;
 		collider->boundingbox->min = Vec2((-0.5f) * collider->tx->scale + collider->tx->position.x, (-0.5f) * collider->tx->scale + collider->tx->position.y);
