@@ -47,7 +47,6 @@ public:
 
     void CreateGrid();
     std::vector<Node> FindPath(int startX, int startY, int targetX, int targetY);
-    void FollowPath(std::vector<Node> p, size_t gameObjectID);
 
     int GetRows();
     int GetCols();

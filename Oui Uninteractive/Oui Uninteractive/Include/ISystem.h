@@ -65,8 +65,8 @@ public:
 		broadcaster.SendToObservers(msg);
 	}*/
 
-	void ProcessMessage(IMessage* msg) {
-		broadcaster.ProcessMessage(msg);
+	void SendToObservers(IMessage* msg) {
+		broadcaster.SendToObservers(msg);
 	}
 
 	void AddMessageHandler(const std::string& msg, MessageHandler mh) {
