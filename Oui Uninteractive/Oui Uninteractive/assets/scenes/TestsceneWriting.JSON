@@ -6,8 +6,8 @@
             "Type": "Player",
             "Components": {
                 "PhysicsBody": {
-                    "VelocityX": 0.0,
-                    "VelocityY": 0.0,
+                    "VelocityX": -286.1104736328125,
+                    "VelocityY": 179.74217224121094,
                     "RotationSpeed": 200.0,
                     "Speed": 120.0,
                     "Mass": 10.0,
@@ -15,8 +15,8 @@
                     "FrictionForce": 20.0
                 },
                 "Transform": {
-                    "PositionX": 520.4734497070313,
-                    "PositionY": -73.39070892333984,
+                    "PositionX": -558.5687866210938,
+                    "PositionY": 48.13420867919922,
                     "Rotation": 0.0,
                     "Scale": 200.0
                 },
@@ -46,8 +46,8 @@
                     "FrictionForce": 20.0
                 },
                 "Transform": {
-                    "PositionX": 603.1738891601563,
-                    "PositionY": -379.6981506347656,
+                    "PositionX": -37.918121337890625,
+                    "PositionY": -275.2038269042969,
                     "Rotation": 0.0,
                     "Scale": 130.0
                 },
@@ -127,8 +127,8 @@
                     "FrictionForce": 20.0
                 },
                 "Transform": {
-                    "PositionX": 636.1079711914063,
-                    "PositionY": -243.56777954101563,
+                    "PositionX": -37.87590408325195,
+                    "PositionY": -275.167724609375,
                     "Rotation": 0.0,
                     "Scale": 130.0
                 },

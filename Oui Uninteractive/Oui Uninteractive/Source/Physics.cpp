@@ -213,46 +213,6 @@ void Physics::SetDirection(Vec2 dir, size_t ID) {
 	}
 }
 /**************************************************************************
-* @brief Helper function to move an object backwards
-* @param ID - ID of object to move
-* @return void
-*************************************************************************/
-void Physics::MoveBackwards(size_t ID) {
-	if (bodyList.find(ID) != bodyList.end()) {
-		bodyList.at(ID)->velocity = bodyList.at(ID)->speed * Vec2(-bodyList.at(ID)->direction.x, -bodyList.at(ID)->direction.y);
-	}
-}
-/**************************************************************************
-* @brief Helper function to move an object forward
-* @param ID - ID of object to move
-* @return void
-*************************************************************************/
-void Physics::MoveForward(size_t ID) {
-	if (bodyList.find(ID) != bodyList.end()) {
-		bodyList.at(ID)->velocity = bodyList.at(ID)->speed * Vec2(bodyList.at(ID)->direction.x, bodyList.at(ID)->direction.y);
-	}
-}
-/**************************************************************************
-* @brief Helper function to move an object left
-* @param ID - ID of object to move
-* @return void
-*************************************************************************/
-void Physics::MoveLeft(size_t ID) {
-	if (bodyList.find(ID) != bodyList.end()) {
-		bodyList.at(ID)->velocity = bodyList.at(ID)->speed * Vec2(-bodyList.at(ID)->direction.x, bodyList.at(ID)->direction.y);
-	}
-}
-/**************************************************************************
-* @brief Helper function to move an object right
-* @param ID - ID of object to move
-* @return void
-*************************************************************************/
-void Physics::MoveRight(size_t ID) {
-	if (bodyList.find(ID) != bodyList.end()) {
-		bodyList.at(ID)->velocity = bodyList.at(ID)->speed * Vec2(bodyList.at(ID)->direction.x, bodyList.at(ID)->direction.y);
-	}
-}
-/**************************************************************************
 * @brief Calculate direction vector from angle of rotation
 * @param angle - angle to convert to vector (in radians)
 * @return double 
