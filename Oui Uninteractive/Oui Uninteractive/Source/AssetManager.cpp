@@ -615,11 +615,12 @@ bool AssetManager::LoadFonts() {
                 glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
                 glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
                 // Store character
+                GLuint advance = static_cast<GLuint>(static_cast<int>(newFace->glyph->advance.x));
                 FontManager::Character character = {
                     tex,
                     glm::vec2(newFace->glyph->bitmap.width, newFace->glyph->bitmap.rows),
                     glm::vec2(newFace->glyph->bitmap_left, newFace->glyph->bitmap_top),
-                    newFace->glyph->advance.x
+                    advance
                 };
                 // Insert chars of font into char map
                 tempMap.insert(std::pair<char, FontManager::Character>(ch, character));
