@@ -28,7 +28,6 @@ LogicComponent::~LogicComponent() {
 *************************************************************************/
 void LogicComponent::Initialize() {
 	logicSystem->logicComponentMap.insert(std::pair<size_t, LogicComponent*>(GetOwner()->GetGameObjectID(), this));
-	
 }
 /**************************************************************************
 * @brief Serialize function for logic component

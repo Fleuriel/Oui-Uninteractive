@@ -13,6 +13,8 @@
  *			- enumToString
  *			- BuildObjectFromFile
  *			- BuildObjectRunTime
+			- BuildObjectFromPrefab
+			- LoadPrefab
  *			- CloneObjects
  *			- SaveObjectsToFile
  *			- Update
@@ -21,7 +23,9 @@
  *			- DestroyAllObjects
  *			- GetGameObjectByID
  *			- GetGameObjectByName
+			- GetPrefabByName
  *			- GetGameObjectIDMap
+			- GetPrefabMap
  *			- AddComponentFactory
  *			- AddComponent
  *************************************************************************/
@@ -557,6 +561,26 @@ GameObject* ObjectFactory::GetGameObjectByName(const std::string& name) {
 
 	return nullptr;
 }
+
+/**************************************************************************
+* @brief Get a prefab by name
+* @param name - name of Prefab
+* @return Prefab*
+*************************************************************************/
+Prefab* ObjectFactory::GetPrefabByName(const std::string& name) {
+	std::map<std::string, Prefab*>::iterator it{ prefabMap.begin() };
+
+	while (it != prefabMap.end()) {
+		if (it->second->prefabName == name) {
+			return it->second;
+		}
+
+		++it;
+	}
+
+	return nullptr;
+}
+
 /**************************************************************************
 * @brief Get all game objects
 * @return std::map<size_t, GameObject*>
@@ -564,6 +588,15 @@ GameObject* ObjectFactory::GetGameObjectByName(const std::string& name) {
 std::map<size_t, GameObject*> ObjectFactory::GetGameObjectIDMap() {
 	return gameObjectIDMap;
 }
+
+/**************************************************************************
+* @brief Get all prefabs
+* @return std::map<size_t, Prefab*>
+*************************************************************************/
+std::map<std::string, Prefab*> ObjectFactory::GetPrefabMap() {
+	return prefabMap;
+}
+
 /**************************************************************************
 * @brief Add component factory to map
 * @param componentName - name of component type
@@ -572,6 +605,7 @@ std::map<size_t, GameObject*> ObjectFactory::GetGameObjectIDMap() {
 void ObjectFactory::AddComponentFactory(componentType componentName, ComponentFactoryBase* componentFactory) {
 	componentFactoryMap.insert(std::pair(componentName, componentFactory));
 }
+
 /**************************************************************************
 * @brief Add component with a specified component name to game object
 * @param componentName - name of component type
@@ -595,7 +629,4 @@ bool ObjectFactory::AddComponent(componentType componentName, GameObject* gameOb
 	}
 
 	return true;
-}
-std::map<std::string, Prefab*> ObjectFactory::GetPrefabMap() {
-	return prefabMap;
 }

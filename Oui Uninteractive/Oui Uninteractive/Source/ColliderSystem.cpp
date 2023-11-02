@@ -83,7 +83,7 @@ void ColliderSystem::Update(float dt) {
 						pBody2->forceManager.DeactivateForce(0);
 						pBody2->forceManager.DeactivateForce(1);
 						CollisionMessage collisionMessage(collider, body2, contactTime, normal, secondNorm, -normal);
-						ProcessMessage(&collisionMessage); 
+						SendToObservers(&collisionMessage);
 
 					}
 					else {
@@ -92,12 +92,11 @@ void ColliderSystem::Update(float dt) {
 							pBody1->forceManager.DeactivateForce(0);
 							pBody1->forceManager.DeactivateForce(1);
 							CollisionMessage collisionMessage(collider, body2, contactTime, normal, 1.f, normal);
-							ProcessMessage(&collisionMessage);
+							SendToObservers(&collisionMessage);
 						}
 						
 					}
 				}
-
 			}
 			//reset collision data if no collision detected with anything
 			if (didCollide == false) {
@@ -106,5 +105,4 @@ void ColliderSystem::Update(float dt) {
 			}
 		}
 	}
-	
 	}

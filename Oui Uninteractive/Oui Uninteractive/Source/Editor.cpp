@@ -134,7 +134,6 @@ void UsingImGui::Exit() {
 void Editor::Init() {
 	// Set max data points
 	maxFPSdata = 2000;
-
 }
 
 
@@ -209,7 +208,13 @@ void Editor::CreateRenderWindow() {
 *************************************************************************/
 void Editor::CreatePrefabPanel() {
 	ImGui::Begin("Prefab Editor");
-	static bool physics, transform, logic, collider;
+	static float phyRotSpeed, phySpeed, phyMass, phyFriction, transXpos, transYpos, transRot, transScale, colScale, colRot;
+	static bool phyIsStatic, physicsFlag, transformFlag, logicFlag, colliderFlag, saveFlag, loadedFlag = false;
+
+	std::map<std::string, Prefab*> copy = objectFactory->GetPrefabMap();
+	std::map<std::string, Prefab*>::iterator it = copy.begin();
+	static std::string selectedName = it->first;
+
 	// Refresh list of prefabs from file directory
 	if (ImGui::Button("Refresh")) {
 		std::filesystem::path prefabPath{ FILEPATH_PREFAB };
@@ -219,26 +224,94 @@ void Editor::CreatePrefabPanel() {
 			}
 		}
 	}
-	ImGui::SameLine();
-	if (ImGui::Button("Save")) {
-		objectFactory->SavePrefabsToFile(FILEPATH_PREFAB);
-	}
+	
+	if (saveFlag) {
+		ImGui::SameLine();
+		if (ImGui::Button("Save")) {
 
-	std::map<std::string, Prefab*> copy = objectFactory->GetPrefabMap();
-	std::map<std::string, Prefab*>::iterator it = copy.begin();
-	static std::string selectedName = it->first;
+			// Handle saving/deleteion for physics body component
+			if (physicsFlag && objectFactory->GetPrefabByName(selectedName)->Has(ComponentType::PHYSICS_BODY) == -1) {
+				objectFactory->GetPrefabByName(selectedName)->AddComponent(new PhysicsBody(), ComponentType::PHYSICS_BODY);
+			}
+			if (objectFactory->GetPrefabByName(selectedName)->Has(ComponentType::PHYSICS_BODY) != -1) {
+				GET_PREFAB_COMPONENT(objectFactory->GetPrefabByName(selectedName), PhysicsBody, ComponentType::PHYSICS_BODY)->rotationSpeed = phyRotSpeed;
+				GET_PREFAB_COMPONENT(objectFactory->GetPrefabByName(selectedName), PhysicsBody, ComponentType::PHYSICS_BODY)->speed = phySpeed;
+				GET_PREFAB_COMPONENT(objectFactory->GetPrefabByName(selectedName), PhysicsBody, ComponentType::PHYSICS_BODY)->mass = phyMass;
+				GET_PREFAB_COMPONENT(objectFactory->GetPrefabByName(selectedName), PhysicsBody, ComponentType::PHYSICS_BODY)->frictionForce = phyFriction;
+				GET_PREFAB_COMPONENT(objectFactory->GetPrefabByName(selectedName), PhysicsBody, ComponentType::PHYSICS_BODY)->isStatic = phyIsStatic;
+			}		
+			if (!physicsFlag && objectFactory->GetPrefabByName(selectedName)->Has(ComponentType::PHYSICS_BODY) != -1) {
+				objectFactory->GetPrefabByName(selectedName)->RemoveComponent(GET_PREFAB_COMPONENT(objectFactory->GetPrefabByName(selectedName), PhysicsBody, ComponentType::PHYSICS_BODY));
+			}
+
+			// Handle saving for transform component
+			if (transformFlag && objectFactory->GetPrefabByName(selectedName)->Has(ComponentType::TRANSFORM) == -1) {
+				objectFactory->GetPrefabByName(selectedName)->AddComponent(new Transform(), ComponentType::TRANSFORM);
+			}
+			if (objectFactory->GetPrefabByName(selectedName)->Has(ComponentType::TRANSFORM) != -1) {
+				GET_PREFAB_COMPONENT(objectFactory->GetPrefabByName(selectedName), Transform, ComponentType::TRANSFORM)->position.x = transXpos;
+				GET_PREFAB_COMPONENT(objectFactory->GetPrefabByName(selectedName), Transform, ComponentType::TRANSFORM)->position.y = transYpos;
+				GET_PREFAB_COMPONENT(objectFactory->GetPrefabByName(selectedName), Transform, ComponentType::TRANSFORM)->rotation = transRot;
+				GET_PREFAB_COMPONENT(objectFactory->GetPrefabByName(selectedName), Transform, ComponentType::TRANSFORM)->scale = transScale;
+			}
+			if (!transformFlag && objectFactory->GetPrefabByName(selectedName)->Has(ComponentType::TRANSFORM) != -1) {
+				objectFactory->GetPrefabByName(selectedName)->RemoveComponent(GET_PREFAB_COMPONENT(objectFactory->GetPrefabByName(selectedName), Transform, ComponentType::TRANSFORM));
+			}
+
+			// Handle saving/deletion for collider component
+			if (colliderFlag && objectFactory->GetPrefabByName(selectedName)->Has(ComponentType::COLLIDER) == -1) {
+				objectFactory->GetPrefabByName(selectedName)->AddComponent(new Collider(), ComponentType::COLLIDER);
+			}
+			if (objectFactory->GetPrefabByName(selectedName)->Has(ComponentType::COLLIDER) != -1) {
+				GET_PREFAB_COMPONENT(objectFactory->GetPrefabByName(selectedName), Collider, ComponentType::COLLIDER)->tx->rotation = colRot;
+				GET_PREFAB_COMPONENT(objectFactory->GetPrefabByName(selectedName), Collider, ComponentType::COLLIDER)->tx->scale = colScale;
+			}
+			if (!colliderFlag && objectFactory->GetPrefabByName(selectedName)->Has(ComponentType::COLLIDER) != -1) {
+				objectFactory->GetPrefabByName(selectedName)->RemoveComponent(GET_PREFAB_COMPONENT(objectFactory->GetPrefabByName(selectedName), Collider, ComponentType::COLLIDER));
+			}
+
+			// Save and serialize prefabs
+			objectFactory->SavePrefabsToFile(FILEPATH_PREFAB);
+			saveFlag = false;
+		}
+	}
+	
+
+	
 	
 	// Left Plane
 	{	
 		ImGui::BeginChild("left pane", ImVec2(150, 0), true);
 		for (; it != copy.end(); it++) {
-			std::string prefabName = it->first;
-			
-			if (ImGui::Selectable(prefabName.c_str(), prefabName == selectedName)) {
+			std::string prefabName = it->first;		
+			if (ImGui::Selectable(prefabName.c_str(), prefabName == selectedName) || !loadedFlag) {
 				selectedName = prefabName;
+				// Update states
+				physicsFlag = (copy[selectedName]->Has(ComponentType::PHYSICS_BODY) != -1);
+				transformFlag = (copy[selectedName]->Has(ComponentType::TRANSFORM) != -1);
+				logicFlag = (copy[selectedName]->Has(ComponentType::LOGICCOMPONENT) != -1);
+				colliderFlag = (copy[selectedName]->Has(ComponentType::COLLIDER) != -1);
+				loadedFlag = true;
+				
+				if (copy[selectedName]->Has(ComponentType::PHYSICS_BODY) != -1) {
+					phyRotSpeed = GET_PREFAB_COMPONENT(objectFactory->GetPrefabByName(selectedName), PhysicsBody, ComponentType::PHYSICS_BODY)->rotationSpeed;
+					phySpeed = GET_PREFAB_COMPONENT(objectFactory->GetPrefabByName(selectedName), PhysicsBody, ComponentType::PHYSICS_BODY)->speed;
+					phyMass = GET_PREFAB_COMPONENT(objectFactory->GetPrefabByName(selectedName), PhysicsBody, ComponentType::PHYSICS_BODY)->mass;
+					phyFriction = GET_PREFAB_COMPONENT(objectFactory->GetPrefabByName(selectedName), PhysicsBody, ComponentType::PHYSICS_BODY)->frictionForce;
+					phyIsStatic = GET_PREFAB_COMPONENT(objectFactory->GetPrefabByName(selectedName), PhysicsBody, ComponentType::PHYSICS_BODY)->isStatic;
+				}	
+				if (copy[selectedName]->Has(ComponentType::TRANSFORM) != -1) {
+					transXpos = GET_PREFAB_COMPONENT(objectFactory->GetPrefabByName(selectedName), Transform, ComponentType::TRANSFORM)->position.x;
+					transYpos = GET_PREFAB_COMPONENT(objectFactory->GetPrefabByName(selectedName), Transform, ComponentType::TRANSFORM)->position.y;
+					transRot = GET_PREFAB_COMPONENT(objectFactory->GetPrefabByName(selectedName), Transform, ComponentType::TRANSFORM)->rotation;
+					transScale = GET_PREFAB_COMPONENT(objectFactory->GetPrefabByName(selectedName), Transform, ComponentType::TRANSFORM)->scale;
+				}
+				if (copy[selectedName]->Has(ComponentType::COLLIDER) != -1) {
+					colRot = GET_PREFAB_COMPONENT(objectFactory->GetPrefabByName(selectedName), Collider, ComponentType::COLLIDER)->tx->rotation;
+					colScale = GET_PREFAB_COMPONENT(objectFactory->GetPrefabByName(selectedName), Collider, ComponentType::COLLIDER)->tx->scale;
+				}
 			}
 		}
-
 		ImGui::EndChild();
 	}
 	ImGui::SameLine();
@@ -261,25 +334,51 @@ void Editor::CreatePrefabPanel() {
 		}
 		ImGui::SeparatorText("Components List");
 
-		// Render all the components
-		ImGui::Checkbox("##Physics", &physics); ImGui::SameLine();		
-		if (ImGui::CollapsingHeader("Physics Body")) {
-		/*	if (ImGui::SliderFloat()) {
-				
-			}*/
-			
+		// Render Physics
+		if (ImGui::Checkbox("##Physics", &physicsFlag)) {
+			saveFlag = true;
 		}
-		ImGui::Checkbox("##Transform", &transform); ImGui::SameLine();
+		ImGui::SameLine();		
+		if (ImGui::CollapsingHeader("Physics Body") ) {
+			ImGui::Indent();
+			if (ImGui::SliderFloat("Rotation Speed", &phyRotSpeed, 0.0f, 1000.0f)) saveFlag = true;
+			if (ImGui::SliderFloat("Speed", &phySpeed, 0.0f, 1000.0f)) saveFlag = true;
+			if (ImGui::SliderFloat("Mass", &phyMass, 0.0f, 1000.0f)) saveFlag = true;
+			if (ImGui::SliderFloat("Friction", &phyFriction, 0.0f, 100.0f)) saveFlag = true;
+			if (ImGui::Checkbox("Is Static", &phyIsStatic)) saveFlag = true;
+			ImGui::Unindent();
+		}
+		// Render Transform
+		if (ImGui::Checkbox("##Transform", &transformFlag)) {
+			saveFlag = true;
+		}
+		ImGui::SameLine();
 		if (ImGui::CollapsingHeader("Transform")) {
-
+			ImGui::Indent();
+			if (ImGui::InputFloat("X-Position", &transXpos)) saveFlag = true;
+			if (ImGui::InputFloat("Y-Position", &transYpos)) saveFlag = true;
+			if (ImGui::InputFloat("Rotation", &transRot)) saveFlag = true;
+			if (ImGui::InputFloat("Scale", &transScale)) saveFlag = true;
+			ImGui::Unindent();
 		}
-		ImGui::Checkbox("##Logic", &logic); ImGui::SameLine();
+		// Render Logic
+		if (ImGui::Checkbox("##Logic", &logicFlag)) {
+			saveFlag = true;
+		}
+		ImGui::SameLine();
 		if (ImGui::CollapsingHeader("Logic")) {
 
 		}
-		ImGui::Checkbox("##Collider", &collider); ImGui::SameLine();
+		// Render Collider
+		if (ImGui::Checkbox("##Collider", &colliderFlag)) {
+			saveFlag = true;
+		}
+		ImGui::SameLine();
 		if (ImGui::CollapsingHeader("Collider")) {
-
+			ImGui::Indent();
+			if (ImGui::InputFloat("Scale##", &colScale)) saveFlag = true;
+			if (ImGui::InputFloat("Rotation##", &colRot)) saveFlag = true;
+			ImGui::Unindent();
 		}
 		
 

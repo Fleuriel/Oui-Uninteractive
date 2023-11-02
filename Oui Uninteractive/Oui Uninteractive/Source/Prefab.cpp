@@ -9,21 +9,38 @@
  *************************************************************************/
 #include "Prefab.h"
 
+/**************************************************************************
+* @brief Constructor
+*************************************************************************/
 Prefab::Prefab(const std::string& name, const std::string& type) {
 	prefabName = name;
 	prefabType = type;
 }
 
+/**************************************************************************
+* @brief Destructor
+*************************************************************************/
 Prefab::~Prefab() {
 	for (int i{}; i < prefabComponentList.size(); ++i)
 		delete prefabComponentList[i];
 }
 
+/**************************************************************************
+* @brief Add component to prefabComponentList
+* @param c - component pointer
+* @param t - component type
+* @return void
+*************************************************************************/
 void Prefab::AddComponent(IComponent* c, ComponentType t) {
 	c->componentType = t;
 	prefabComponentList.push_back(c);
 }
 
+/**************************************************************************
+* @brief Remove component from prefabComponentList
+* @param c - component pointer
+* @return void
+*************************************************************************/
 void Prefab::RemoveComponent(IComponent* c) {
 	for (size_t i{}; i < prefabComponentList.size(); ++i) {
 		if (prefabComponentList[i] == c) {
@@ -33,6 +50,11 @@ void Prefab::RemoveComponent(IComponent* c) {
 	}
 }
 
+/**************************************************************************
+* @brief Check if component is in prefabComponentList
+* @param c - component pointer
+* @return int - position of component in prefabComponentList
+*************************************************************************/
 int Prefab::Has(ComponentType typeID) {
 	for (int i{}; i < prefabComponentList.size(); ++i) {
 		if (prefabComponentList[i]->componentType == typeID) {
@@ -42,18 +64,36 @@ int Prefab::Has(ComponentType typeID) {
 	return -1;
 }
 
+/**************************************************************************
+* @brief Get prefab name
+* @return std::string - prefab name
+*************************************************************************/
 std::string Prefab::GetName() {
 	return prefabName;
 }
 
+/**************************************************************************
+* @brief Get prefab type
+* @return std::string - prefab type
+*************************************************************************/
 std::string Prefab::GetType() {
 	return prefabType;
 }
 
+/**************************************************************************
+* @brief Get component with component type
+* @param typeID - component type
+* @return IComponent*
+*************************************************************************/
 std::vector<IComponent*> Prefab::GetPrefabComponentList() {
 	return prefabComponentList;
 }
 
+/**************************************************************************
+* @brief Get component with component type
+* @param typeID - component type
+* @return IComponent*
+*************************************************************************/
 IComponent* Prefab::GetComponent(ComponentType typeID) {
 	int index = Has(typeID);
 	if (index >= 0) {

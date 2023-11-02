@@ -20,17 +20,24 @@
 
 class PlayerShooting : public IScript {
 public:
+	/**************************************************************************
+	* @brief Initialize the PlayerShooting script
+	* @return void
+	*************************************************************************/
 	void Initialize() {
 		logicSystem->AddLogicScript(this);
 	};
 
+	/**************************************************************************
+	* @brief Update the PlayerShooting script
+	* @return void
+	*************************************************************************/
 	void Update(size_t gameObjectID) {
 		if (inputSystem.GetMouseState(GLFW_MOUSE_BUTTON_RIGHT)) {
-			// Create runtime object
+			// Create bullet object during runtime
 			GameObject* bullet = objectFactory->BuildObjectRunTime("Bullet", "Bullet");
 			objectFactory->AddComponent(ComponentType::PHYSICS_BODY, bullet);
 			objectFactory->AddComponent(ComponentType::TRANSFORM, bullet);
-			//objectFactory->AddComponent(ComponentType::COLLIDER, bullet);
 
 			bullet->Initialize();
 
@@ -41,8 +48,15 @@ public:
 		}
 	}
 
+	/**************************************************************************
+	* @brief End the PlayerShooting script
+	* @return void
+	*************************************************************************/
 	void End() {}
 
+	/**************************************************************************
+	* @brief Destructor
+	*************************************************************************/
 	~PlayerShooting() {}
 };
 

@@ -348,7 +348,7 @@ void OpenGLObject::Draw(int shaderNumber) const{
 	{
 		switch (TagID) {
 		case 0:
-			tex = assetManager.GetSprite("BaldManIdle");
+			tex = 0;
 			break;
 		case 1:
 			tex = assetManager.GetTexture("bag");
@@ -361,18 +361,31 @@ void OpenGLObject::Draw(int shaderNumber) const{
 		default:
 			break;
 		}
-
-		// Bind Texture to 6.
-		glBindTextureUnit(6, tex);
 	}
+	else if (shaderNumber == static_cast<int>(SHADER_ORDER::SPRITES)) {
+		tex = assetManager.GetSprite("BaldManIdle");
+	}
+
+	// Bind Texture to 6.
+	glBindTextureUnit(6, tex);
 
 	// Install the shader program
 	shdrpgms[shaderNumber].Use();
 
 	// In Shader Program [uTex2d] is the texture uniform position.
 	// set uniform uTex2d to #6.
-	if(shaderNumber == static_cast<int>(SHADER_ORDER::MODEL))
+	if (shaderNumber == static_cast<int>(SHADER_ORDER::MODEL)) {
 		shdrpgms[static_cast<int>(SHADER_ORDER::MODEL)].SetUniform("uTex2d", 6);
+	}
+
+	if (shaderNumber == static_cast<int>(SHADER_ORDER::SPRITES)) {
+		shdrpgms[static_cast<int>(SHADER_ORDER::SPRITES)].SetUniform("uTex2d", 6);
+
+		shdrpgms[static_cast<int>(SHADER_ORDER::SPRITES)].SetUniform("fr", 7);
+		shdrpgms[static_cast<int>(SHADER_ORDER::SPRITES)].SetUniform("r", 8);
+		shdrpgms[static_cast<int>(SHADER_ORDER::SPRITES)].SetUniform("c", 9);
+	}
+
 	
 	// Part 2: Bind object's VAO handle
 	glBindVertexArray(models[mdl_ref].vaoid); // Bind object's VAO handle
@@ -558,39 +571,7 @@ void OpenGLObject::DrawCollisionBox(Vector2D min, Vector2D max){
 /*=======================================================================================================================*/
 /*=======================================================================================================================*/
 
-int OpenGLObject::Setup_TextureObject(std::string filePath) {
-    // Create a int variable for texture Object
-    GLuint textureObj_Handler;
 
-    // width, height and channels for the image
-    int width, height, channels;
-    // Load the image into *image
-    unsigned char* image = stbi_load(filePath.c_str(), &width, &height, &channels, STBI_rgb_alpha);
-
-    // If no image is generated, failed.
-    if (!image)
-    {
-        std::cout << "Failed to load texture: " << filePath << std::endl;
-        return 0; // Return 0 to indicate failure
-    }
-
-    // Create Texture into Texture2D, reference to TextureObjHandler
-    glCreateTextures(GL_TEXTURE_2D, 1, &textureObj_Handler);
-
-
-    // Store the data into Storage2D
-    glTextureStorage2D(textureObj_Handler, 1, GL_RGBA8, width, height);
-
-
-    // Store the sub data into the sub Image
-    glTextureSubImage2D(textureObj_Handler, 0, 0, 0, width, height, GL_RGBA, GL_UNSIGNED_BYTE, image);
-
-    // Free the image data after it's uploaded to OpenGL
-    stbi_image_free(image);
-
-    // Return int value of a texture.
-    return textureObj_Handler;
-}
 
 /**************************************************************************
 * @brief  set Texture Positon, Color
@@ -604,6 +585,7 @@ int OpenGLObject::Setup_TextureObject(std::string filePath) {
 * @return void
 *************************************************************************/
 void OpenGLObject::OpenGLModel::VAO_Object::setTextureValue(float x, float y, float r, float g, float b){
+
 	// Set Position X and Y
 	position.x = x;
 	position.y = y;
@@ -804,20 +786,33 @@ void OpenGLObject::InitShaders()
 		("assets/shaders/Oui_Uninteractive_font.vert", "assets/shaders/Oui_Uninteractive_font.frag")
 	};
 
-
 	VectorPairStrStr CAMERASHADER{
 		std::make_pair<std::string, std::string>
 		("assets/shaders/Oui_Uninteractive_camera.vert", "assets/shaders/Oui_Uninteractive_camera.frag")
 	};
 
+	VectorPairStrStr SPRITESHADER{
+		std::make_pair<std::string, std::string>
+		("assets/shaders/Oui_Uninteractive_models_sprites.vert", "assets/shaders/Oui_Uninteractive_models_sprites.frag")
+	};
+
+
 	// Initialize the Shader Program for Models
+	std::cout << "Initializing model shader" << std::endl;
 	init_shdrpgms_cont(MODELSSHADER);
 
 	// Initialize the Shader Program for Fonts
+	std::cout << "Initializing font shader" << std::endl;
 	init_shdrpgms_cont(FONTSHADER);
 
-	// Initialize the Shader Program for Fonts
+	// Initialize the Shader Program for Camera
+	std::cout << "Initializing camera shader" << std::endl;
 	init_shdrpgms_cont(CAMERASHADER);
+
+	// Initialize the Shader Program for Sprites
+	std::cout << "Initializing sprite shader" << std::endl;
+	init_shdrpgms_cont(SPRITESHADER);
+	
 }
 
 

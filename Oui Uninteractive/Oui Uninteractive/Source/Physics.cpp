@@ -222,6 +222,12 @@ Vec2 Physics::AngleToVec(float angle) {
 	Vec2 dir = Vec2(-sinf(angle), cosf(angle));
 	return dir;
 }
+/**************************************************************************
+* @brief Calculate direction vector from angle of rotation
+* @param Vec2 originalVelocity - velocity from previous frame
+* @param Vec2 bodyVelocity - velocity in current frame
+* @return void
+*************************************************************************/
 void Physics::CapVelocity(Vec2 originalVelocity, Vec2& bodyVelocity) {
 	if (bodyVelocity.x > maxVelocity) {
 		bodyVelocity.x = maxVelocity;
@@ -258,7 +264,11 @@ void Physics::CapVelocity(Vec2 originalVelocity, Vec2& bodyVelocity) {
 		}
 	}
 }
-
+/**************************************************************************
+* @brief Collision Response Message
+* @param CollisionMessage* - ptr to message object
+* @return void
+*************************************************************************/
 void Physics::CollisionResponse(CollisionMessage* msg) {
 	PhysicsBody* pBody1 = GET_COMPONENT(msg->GetFirstCollider()->GetOwner(), PhysicsBody, ComponentType::PHYSICS_BODY);
 	PhysicsBody* pBody2 = GET_COMPONENT(msg->GetSecondCollider()->GetOwner(), PhysicsBody, ComponentType::PHYSICS_BODY);
@@ -269,8 +279,6 @@ void Physics::CollisionResponse(CollisionMessage* msg) {
 
 	pBody1->velocity = pBody1->velocity * (msg->GetFirstCollider()->contactTime) + (pBody1->forceManager.CalculateResultantForce() * pBody1->mass) * static_cast<float>(sysManager->fixedDeltaTime);
 	pBody2->velocity = pBody2->velocity * (msg->GetSecondCollider()->contactTime) + (pBody2->forceManager.CalculateResultantForce() * pBody2->mass) * static_cast<float>(sysManager->fixedDeltaTime);
-
-
 }
 
 

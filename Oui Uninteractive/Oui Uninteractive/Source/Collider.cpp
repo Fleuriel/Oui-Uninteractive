@@ -42,12 +42,10 @@ Collider* Collider::Clone() const{
 	newCollider->boundingbox->min = boundingbox->min;
 	newCollider->boundingbox->max = boundingbox->max;
 	newCollider->boundingbox->center = boundingbox->center;
-
 	newCollider->tx->position = tx->position;
 	newCollider->tx->rotation = tx->rotation;
 	newCollider->tx->scale = tx->scale;
 	newCollider->boundingbox->txPtr = newCollider->tx;
-
 	return newCollider;
 }
 /**************************************************************************
@@ -66,7 +64,6 @@ Collider::Collider() {
 	boundingbox->max = Vec2(0, 0);
 	contactTime = 0;
 	contactNormal = Vec2(0, 0);
-	wasColliding = false;
 	tx = new Transform();
 
 	boundingbox->txPtr = tx;

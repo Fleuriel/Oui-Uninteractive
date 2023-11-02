@@ -29,7 +29,6 @@
 
 class CollisionMessage : public IMessage {
 private:
-	//CollisionMessage
 	Collider* firstCollider;
 	Collider* secondCollider;
 	float contactTime;
@@ -38,25 +37,70 @@ private:
 	Vec2 secondContactNormal;
 
 public:
+	/**************************************************************************
+	* @brief Constructor
+	*************************************************************************/
 	CollisionMessage(Collider* first, Collider* second, float newContTime, Vec2 newContactNorm, float newContTime2, Vec2 newContNorm2) : IMessage("MSG_COLLISION"), firstCollider(first), secondCollider(second),
 		contactTime(newContTime), contactNormal(newContactNorm), secondContactTime(newContTime2), secondContactNormal(newContNorm2)
 	{ }
+
+	/**************************************************************************
+	* @brief Destructor
+	*************************************************************************/
 	~CollisionMessage() {}
 
-	Collider* GetFirstCollider() { return firstCollider; }
-	Collider* GetSecondCollider() { return secondCollider; }
+	/**************************************************************************
+	* @brief Get first collider
+	* @return Collider*
+	*************************************************************************/
+	Collider* GetFirstCollider() {
+		return firstCollider; 
+	}
+
+	/**************************************************************************
+	* @brief Get second collider
+	* @return Collider*
+	*************************************************************************/
+	Collider* GetSecondCollider() {
+		return secondCollider;
+	}
+
+	/**************************************************************************
+	* @brief Get second contact time
+	* @return float
+	*************************************************************************/
 	float GetSecondContactTime() {
 		return secondContactTime;
 	}
+
+	/**************************************************************************
+	* @brief Get second contact normal
+	* @return Vec2
+	*************************************************************************/
 	Vec2 GetSecondContactNormal() {
 		return secondContactNormal;
 	}
+
+	/**************************************************************************
+	* @brief Get first contact time
+	* @return float
+	*************************************************************************/
 	float GetFirstContactTime() {
 		return contactTime;
 	}
+
+	/**************************************************************************
+	* @brief Get first contact time
+	* @return Vec2
+	*************************************************************************/
 	Vec2 GetContactNormal() {
 		return contactNormal;
 	}
+
+	/**************************************************************************
+	* @brief Set first contact normal
+	* @return void
+	*************************************************************************/
 	void SetContactNormal(Vec2 newNorm) {
 		contactNormal = newNorm;
 	}
@@ -142,14 +186,23 @@ public:
 	* @return double
 	*************************************************************************/
 	Vec2 AngleToVec(float angle);
+	/**************************************************************************
+	* @brief Calculate direction vector from angle of rotation
+	* @param Vec2 originalVelocity - velocity from previous frame
+	* @param Vec2 bodyVelocity - velocity in current frame
+	* @return void
+	*************************************************************************/
 	void CapVelocity(Vec2 originalVelocity, Vec2& bodyVelocity);
 
-	// Collision Response Possibly
+	/**************************************************************************
+	* @brief Collision Response Message
+	* @param CollisionMessage* - ptr to message object
+	* @return void
+	*************************************************************************/
 	static void CollisionResponse(CollisionMessage* msg);
 	
 	//insert linked list of all physics body components
 	std::map<size_t, PhysicsBody*> bodyList;
-
 	float maxVelocity = 1000.f;
 
 	

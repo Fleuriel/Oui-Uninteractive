@@ -18,17 +18,14 @@ SceneManager::SceneManager() {
 	else {
 		sceneManager = this;
 	}
-
 }
 void SceneManager::Initialize() {
 	sceneMap.insert(std::pair<size_t, IScene*>(GameStateList::STATE_GRAPHICS_TEST, new Scene1(0)));
 	sceneMap.insert(std::pair<size_t, IScene*>(GameStateList::STATE_LEVEL_TEST, new Scene2(0)));
 	currScene = sceneMap[0];
-
 	currSceneID = currScene->sceneID;
 	nextSceneID = currSceneID;
 	prevSceneID = currSceneID;
-
 }
 SceneManager::~SceneManager() {
 	std::map<size_t, IScene*>::iterator it = sceneMap.begin();
@@ -36,7 +33,6 @@ SceneManager::~SceneManager() {
 		delete it->second;
 	}
 }
-
 void SceneManager::Load() {
 	if (currSceneID < sceneMap.size()) {
 		currScene = sceneMap[currSceneID];
@@ -49,13 +45,10 @@ void SceneManager::InitScene() {
 void SceneManager::Update(float dt) {
 	// Start time profiling for scenemanager
 	TimeProfiler profiler(Editor::timeRecorder.scenemanagerTime);
-
 	currScene->Update(dt);
-
 	// if quit, exit
 	if (currSceneID == STATE_QUIT)
 		return;
-
 	//  window is closed, exit
 	if (glfwWindowShouldClose(windowNew)) {
 		currSceneID = STATE_QUIT;
@@ -67,10 +60,8 @@ void SceneManager::Draw() {
 }
 void SceneManager::Free() {
 	currScene->Free();
-
 }
 void SceneManager::Unload() {
-
 }
 
 #endif

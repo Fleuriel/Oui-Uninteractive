@@ -63,9 +63,5 @@ public:
 	float contactTime;
 	//Contact Normal of Collider
 	Vec2 contactNormal;
-
-	bool wasColliding;
-	
-
 };
 #endif

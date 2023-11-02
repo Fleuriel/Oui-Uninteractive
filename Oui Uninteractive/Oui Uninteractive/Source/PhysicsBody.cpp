@@ -25,7 +25,6 @@ PhysicsBody::PhysicsBody() {
 	direction = Vec2(0, 0);
 	speed = 50;
 	frictionForce = 20;
-	restitution = 10;
 }
 /**************************************************************************
 * @brief Destructor for PhysicsBody component
@@ -80,7 +79,6 @@ PhysicsBody* PhysicsBody::Clone() const{
 	newBody->rotationSpeed = rotationSpeed;
 	newBody->mass = mass;
 
-	//NOTE TO SELF 4 FORCEs BUG HERE
 	for (int i = 0; i < forceManager.forceVec.size(); i++) {
 		LinearForce* newForce = new LinearForce(*forceManager.forceVec[i]);
 		newBody->forceManager.forceVec.push_back(newForce);
@@ -88,16 +86,29 @@ PhysicsBody* PhysicsBody::Clone() const{
 
 	return newBody;
 }
-
+/**************************************************************************
+* @brief Constructor for ForceManager
+*************************************************************************/
 ForceManager::ForceManager() {
 	forceVec.push_back(new LinearForce(0.5f, false, 50));
 	forceVec.push_back(new LinearForce(0.5f, false, 50));
 	forceVec.push_back(new LinearForce(0.1f, true, 50));
 }
+/**************************************************************************
+* @brief Setter for Magnitude variable
+* @param FORCE_INDEX index - index of force to set
+* @param float new_mag - value to set to
+* @return void
+*************************************************************************/
 void ForceManager::SetMagnitude(float new_mag, FORCE_INDEX index) {
 
 	forceVec[index]->magnitude = new_mag;
 }
+/**************************************************************************
+* @brief Update function for forceManager
+* @param float dt - delta time
+* @return void
+*************************************************************************/
 void ForceManager::Update(float dt) {
 	int currIndex = 0;
 	for (LinearForce* force : forceVec) {
@@ -111,31 +122,71 @@ void ForceManager::Update(float dt) {
 	}
 }
 
+/**************************************************************************
+* @brief Add a Force Object to ForceManager
+* @param LinearForce* force - force object to add
+* @return void
+*************************************************************************/
 void ForceManager::AddForce(LinearForce* force) {
 	forceVec.push_back(force);
 }
+/**************************************************************************
+* @brief Deactivate force if active
+* @param int index - index of force to deactivate
+* @return void
+*************************************************************************/
 void ForceManager::DeactivateForce(int index) {
 	forceVec[index]->age = 0.0f;
 	forceVec[index]->isActive = false;
 	forceVec[index]->direction = Vec2(0, 0);
 	forceVec[index]->magnitude = 0;
 }
+/**************************************************************************
+* @brief Deactivate force if active
+* @param FORCE_INDEX index - index of force to deactivate
+* @return void
+*************************************************************************/
 void ForceManager::DeactivateForce(FORCE_INDEX index) {
 	forceVec[index]->age = 0.0f;
 	forceVec[index]->isActive = false;
 	forceVec[index]->direction = Vec2(0, 0);
 	forceVec[index]->magnitude = 0;
 }
+/**************************************************************************
+* @brief Setter for isActive flag
+* @param bool activeFlag - the flag to set to
+* @param FORCE_INDEX index - index of force to change
+* @return void
+*************************************************************************/
 void ForceManager::SetActive(bool activeFlag, FORCE_INDEX index) {
 	forceVec[index]->isActive = activeFlag;
 }
+/**************************************************************************
+* @brief Setter for Direction 
+* @param Vec2 dir - direction to set to
+* @param FORCE_INDEX index - index of force to change
+* @return void
+*************************************************************************/
 void ForceManager::SetDirection(Vec2 dir, FORCE_INDEX index) {
 	forceVec[index]->direction = dir;
 }
-
+/**************************************************************************
+* @brief Setter for Lifetime
+* @param float lf - lifetime to set to
+* @param FORCE_INDEX index - index of force to change
+* @return void
+*************************************************************************/
 void ForceManager::SetLifetime(float lf, FORCE_INDEX index) {
 	forceVec[index]->lifetime = lf;
 }
+/**************************************************************************
+* @brief Applies another Vector to a Force in the Force Vectpr
+* @param Vec2 dir - direction of new force 
+* @param float magnitude - magnitude of the force
+* @param float lifetime - lifetime of the new force
+* @param FORCE_INDEX index - index of force to apply new force to
+* @return void
+*************************************************************************/
 void ForceManager::ApplyToForce(Vec2 direction, float magnitude, float lifetime, FORCE_INDEX index) {
 	if (index < forceVec.size()) {
 		Vec2 combinedForce = (forceVec[index]->direction * forceVec[index]->magnitude) + (direction * magnitude);
@@ -145,6 +196,10 @@ void ForceManager::ApplyToForce(Vec2 direction, float magnitude, float lifetime,
 		forceVec[index]->isActive = true;
 	}
 }
+/**************************************************************************
+* @brief Calculate the resultant force of all the current active Forces
+* @return Vec2
+*************************************************************************/
 Vec2 ForceManager::CalculateResultantForce() {
 	Vec2 summedForce = Vec2(0.0f, 0.0f);
 	for (LinearForce* force : forceVec) {
@@ -154,6 +209,9 @@ Vec2 ForceManager::CalculateResultantForce() {
 	}
 	return summedForce;
 }
+/**************************************************************************
+* @brief Constructor for LinearForce
+*************************************************************************/
 LinearForce::LinearForce(float newLifetime, bool activeFlag, float newMagnitude) {
 	lifetime = newLifetime;
 	age = 0.0f;

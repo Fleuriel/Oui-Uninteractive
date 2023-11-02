@@ -18,16 +18,21 @@
 class Sprite
 {
 public:
+
 	Sprite();
 	~Sprite();
+
 	bool SetTexture(int);
 	int GetTexture();
+
 	bool SetRowsAndColumns(int, int);
 	int GetRows();
 	int GetColumns();
+
 	bool SetWidthAndHeight(int, int);
 	int GetWidth();
 	int GetHeight();
+
 	bool SetTextureWidthAndHeight(int, int);
 	int GetTextureWidth();
 	int GetTextureHeight();
@@ -38,11 +43,12 @@ private:
 	int texture{};
 	int rows{};
 	int columns{};
+	int frameNum{};
 	int width{};
 	int height{};
 	int texWidth{};
 	int texHeight{};
-	std::vector<std::pair<int, int>> coordinates{};
+	std::vector<std::pair<int, int>> coordinates{}; //store bottom left coordinates
 };
 
 
@@ -68,6 +74,8 @@ public:
 	
 	// Sprite functions
 	bool LoadSprites();
+	bool FreeSprites();
+	bool ReloadSprites();
 
 
 	// Sound functions
@@ -86,6 +94,7 @@ public:
 	bool LoadFonts();								//Function to load fonts
 	bool FreeFonts();								//Function to free fonts
 	bool ReloadFonts();								//Function to reload fonts
+	bool FontFound(std::map<std::string, std::map<char, FontManager::Character>>::iterator);
 
 
 	// Access Asset functions
@@ -93,8 +102,10 @@ public:
 	int GetSprite(std::string);
 	FMOD::Sound* GetBGM(int);						//Function to access BGM sounds
 	FMOD::Sound* GetSFX(int);						//Function to access SFX Sounds
+	std::map<std::string, std::map<char, FontManager::Character>>::iterator GetFont(std::string);
 
-public:
+
+private:
 	//Containers
 	std::map<std::string, int> textures{};
 	std::map<std::string, Sprite> sprites{};

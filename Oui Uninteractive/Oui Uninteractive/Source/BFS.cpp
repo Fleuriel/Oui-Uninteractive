@@ -13,8 +13,20 @@
 #include "PhysicsBody.h"
 #include "Transform.h"
 
+/**************************************************************************
+* @brief Constructor for Node
+* @param x_ - x-index of Node
+* @param y_ - y-index of Node
+* @param parentX_ - x-index of Node's parent
+* @param parentY_ - y-index of Node's parent
+*************************************************************************/
 Node::Node(int x_, int y_, int parentX_ = -1, int parentY_ = -1) : x(x_), y(y_), parentX(parentX_), parentY(parentY_) {}
 
+/**************************************************************************
+* @brief Constructor
+* @param r - rows of grid
+* @param c - columns of grid
+*************************************************************************/
 BFS::BFS(int r, int c) : rows(r), cols(c) {
     // Initialize containers
 	for (int i{}; i < rows; ++i) {
@@ -44,12 +56,26 @@ BFS::BFS(int r, int c) : rows(r), cols(c) {
     gameMap[3][3] = 1;
 }
 
+/**************************************************************************
+* @brief Destructor
+*************************************************************************/
+BFS::~BFS() {
+    // Clear containers
+    for (size_t i{}; i < gameMap.size(); ++i) {
+        gameMap[i].clear();
+    }
+    gameMap.clear();
+}
+
+/**************************************************************************
+* @brief Create the grid
+* @return void
+*************************************************************************/
 void BFS::CreateGrid() {
-    // grid
+    // Temp vars
     float windowWidth = 1920.f;
     float windowHeight = 1017.f;
 	float scaleTemp = windowHeight / static_cast<float>(rows);
-    //float scaleTemp = 300.f;
 
     for (int i{}; i < rows; ++i) {
         for (int j{}; j < cols; ++j) {
@@ -71,6 +97,14 @@ void BFS::CreateGrid() {
     gridCreated = true;
 }
 
+/**************************************************************************
+* @brief Find the path using Breadth-First Search algorithm
+* @param startX - x-index of start node
+* @param startY - y-index of start node
+* @param targetX - x-index of target node
+* @param targetY - y-index of target node
+* @return std::vector<Node> - vector of nodes in the path
+*************************************************************************/
 std::vector<Node> BFS::FindPath(int startX, int startY, int targetX, int targetY) {
     // Queue of nodes to determine path
     std::queue<Node> nodeQueue;
@@ -126,7 +160,6 @@ std::vector<Node> BFS::FindPath(int startX, int startY, int targetX, int targetY
                 // Top-left corner
                 if (neighbourX == -1 && neighbourY == -1) {
                     // Edge on the right/bottom is an obstacle
-                    //if (gameMap[checkX + 1][checkY] == 1 || gameMap[checkX][checkY + 1] == 1)
                     if (gameMap[checkY][checkX + 1] == 1 || gameMap[checkY + 1][checkX] == 1)
                         continue;
                 }
@@ -134,7 +167,6 @@ std::vector<Node> BFS::FindPath(int startX, int startY, int targetX, int targetY
                 // Top-right corner
                 if (neighbourX == 1 && neighbourY == -1) {
                     // Edge on the left/bottom is an obstacle
-                    //if (gameMap[checkX - 1][checkY] == 1 || gameMap[checkX][checkY + 1] == 1)
                     if (gameMap[checkY][checkX - 1] == 1 || gameMap[checkY + 1][checkX] == 1)
                         continue;
                 }
@@ -142,7 +174,6 @@ std::vector<Node> BFS::FindPath(int startX, int startY, int targetX, int targetY
                 // Bottom-left corner
                 if (neighbourX == -1 && neighbourY == 1) {
                     // Edge on the top/right is an obstacle
-                    //if (gameMap[checkX][checkY - 1] == 1 || gameMap[checkX + 1][checkY] == 1)
                     if (gameMap[checkY - 1][checkX] == 1 || gameMap[checkY][checkX + 1] == 1)
                         continue;
                 }
@@ -150,7 +181,6 @@ std::vector<Node> BFS::FindPath(int startX, int startY, int targetX, int targetY
                 // Bottom-right corner
                 if (neighbourX == 1 && neighbourY == 1) {
                     // Edge on the top/left is an obstacle
-                    //if (gameMap[checkX][checkY - 1] == 1 || gameMap[checkX - 1][checkY] == 1)
                     if (gameMap[checkY - 1][checkX] == 1 || gameMap[checkY][checkX - 1] == 1)
                         continue;
                 }
@@ -175,57 +205,18 @@ std::vector<Node> BFS::FindPath(int startX, int startY, int targetX, int targetY
     return path;
 }
 
-void BFS::FollowPath(std::vector<Node> p, size_t gameObjectID) {
-    //for (Node pathNode : p) {
-    //    // Set target to pathNode
-    //}
-    /*// TEMPORARY VARIABLES
-    float windowWidth = 1920.f;
-    float windowHeight = 1017.f;
-    float scaleTemp = windowHeight / 3.f;
-
-    // Enemy to traverse along path to take
-    for (const Node& node : p) {
-        // While not within range of node, move towards node
-        Vec2 currentEnemyPos = Vec2(0, 0);
-        Vec2 nodePos;
-        nodePos.x = (node.x * scaleTemp) + (scaleTemp - windowWidth) / 2;
-        nodePos.y = (node.y * scaleTemp) + (scaleTemp - windowWidth) / 2;
-
-        GameObject* currentEnemy = objectFactory->GetGameObjectByID(gameObjectID);
-        if (currentEnemy != nullptr) {
-            Transform* currentEnemyTx = GET_COMPONENT(currentEnemy, Transform, ComponentType::TRANSFORM);
-            if (currentEnemyTx != nullptr) {
-                currentEnemyPos = currentEnemyTx->position;
-            }
-        }
-
-        if (Vector2DDistance(currentEnemyPos, nodePos) > 50) {
-            Vec2 direction = Vec2(nodePos.x - currentEnemyPos.x, nodePos.y - currentEnemyPos.y);
-            Vector2DNormalize(direction, direction);
-            GET_COMPONENT(currentEnemy, PhysicsBody, ComponentType::PHYSICS_BODY)->velocity = direction * 200;
-        }
-
-        // continue if within range of next node
-        if (Vector2DDistance(currentEnemyPos, nodePos) <= 50) {
-            continue;
-        }
-    }
-    std::cout << "PATHFINDING END" << std::endl;*/
-}
-
+/**************************************************************************
+* @brief Get rows of grid
+* @return int - rows of grid
+*************************************************************************/
 int BFS::GetRows() {
     return rows;
 }
 
+/**************************************************************************
+* @brief Get columns of grid
+* @return int - columns of grid
+*************************************************************************/
 int BFS::GetCols() {
     return cols;
-}
-
-BFS::~BFS() {
-	// Clear containers
-    for (size_t i{}; i < gameMap.size(); ++i) {
-        gameMap[i].clear();
-    }
-	gameMap.clear();
 }

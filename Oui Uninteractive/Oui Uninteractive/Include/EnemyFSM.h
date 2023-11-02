@@ -5,7 +5,7 @@
  * @par Course:	CSD 2401
  * @par Software Engineering Project 3
  * @date 27-10-2023
- * @brief
+ * @brief This file contains the EnemyFSM script.
  *************************************************************************/
 #ifndef ENEMYFSM_H
 #define ENEMYFSM_H
@@ -23,8 +23,13 @@ private:
 	std::map<std::string, IState*> statesMap;
 	IState* currentState{ nullptr };
 	IState* nextState{ nullptr };
+	float aggroRange{ 250.f };
 
 public:
+	/**************************************************************************
+	* @brief Initialize the EnemyFSM script
+	* @return void
+	*************************************************************************/
 	void Initialize() {
  		logicSystem->AddLogicScript(this);
 
@@ -34,6 +39,10 @@ public:
 		currentState = statesMap["EnemyRoam"];
 	};
 
+	/**************************************************************************
+	* @brief Update the EnemyFSM script
+	* @return void
+	*************************************************************************/
 	void Update(size_t gameObjectID) {
 		currentState->Update(gameObjectID);
 
@@ -58,7 +67,7 @@ public:
 			}
 		}
 
-		if (Vector2DDistance(playerPos, enemyPos) < 250.0f) {
+		if (Vector2DDistance(playerPos, enemyPos) < aggroRange) {
 			nextState = statesMap["EnemyAttack"];
 		}
 		else {
@@ -69,11 +78,17 @@ public:
 			currentState->ExitState();
 			currentState = nextState;
 		}
-		//currentState = statesMap["EnemyAttack"];
 	}
 
+	/**************************************************************************
+	* @brief End the EnemyFSM script
+	* @return void
+	*************************************************************************/
 	void End() {}
 
+	/**************************************************************************
+	* @brief Destructor
+	*************************************************************************/
 	~EnemyFSM() {
 		// Clear statesMap
 		for (auto& state : statesMap) {

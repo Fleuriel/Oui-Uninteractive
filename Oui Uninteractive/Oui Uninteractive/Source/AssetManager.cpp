@@ -354,6 +354,14 @@ int AssetManager::GetSprite(std::string name) {
     return sprites[name].GetTexture();
 }
 
+bool AssetManager::FreeSprites() {
+    sprites.clear();
+    return sprites.empty();
+}
+
+bool AssetManager::ReloadSprites() {
+    return (AssetManager::FreeSprites() && AssetManager::LoadSprites());
+}
 
 
 
@@ -625,7 +633,9 @@ bool AssetManager::LoadFonts() {
     return result;
 }
 
-
+std::map<std::string, std::map<char, FontManager::Character>>::iterator AssetManager::GetFont(std::string fontname) {
+    return fontCharsMap.find(fontname);
+}
 
 /**************************************************************************
  * @brief Frees loaded fonts.
@@ -640,4 +650,8 @@ bool AssetManager::FreeFonts() {
 
 bool AssetManager::ReloadFonts() {
     return AssetManager::FreeFonts() && AssetManager::LoadFonts();
+}
+
+bool AssetManager::FontFound(std::map<std::string, std::map<char, FontManager::Character>>::iterator fontIter) {
+    return fontIter != fontCharsMap.end();
 }

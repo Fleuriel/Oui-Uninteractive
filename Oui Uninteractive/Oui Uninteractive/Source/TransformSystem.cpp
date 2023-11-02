@@ -25,7 +25,7 @@ void TransformSystem::Initialize() {
 * @param dt - delta time
 * @return void
 *************************************************************************/
-void TransformSystem::Update(float dt) {
+void TransformSystem::Update(float) {
 	TimeProfiler profiler(Editor::timeRecorder.transformTime);
 	std::map<size_t, GameObject*> copyMap = objectFactory->GetGameObjectIDMap();
 	std::map<size_t, GameObject*>::iterator it = copyMap.begin();
@@ -35,6 +35,7 @@ void TransformSystem::Update(float dt) {
 	
 	for (; it2 != copyColliderMap.end(); it2++) {
 		Collider* collider = it2->second;
+		//Update bounding box position
 		collider->tx->position = GET_COMPONENT(collider->GetOwner(), Transform, ComponentType::TRANSFORM)->position;
 		//collider->tx->scale = (100, 100);
 		collider->boundingbox->center.x = collider->tx->position.x - Editor::gameWindowSize.first;

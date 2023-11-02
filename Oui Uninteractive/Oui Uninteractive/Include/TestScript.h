@@ -41,26 +41,20 @@ public:
 						playerBody->forceManager.DeactivateForce(FORCE_INDEX::INTERNAL);
 					}
 					if (inputSystem.GetKeyState(GLFW_KEY_H)) {
-						//playerBody->currentRotationSpeed = playerBody->rotationSpeed;
 						playerBody->forceManager.SetActive(true, FORCE_INDEX::INTERNAL);
 						playerBody->forceManager.SetDirection(Vec2(-playerBody->direction.y, playerBody->direction.x), FORCE_INDEX::INTERNAL);
 						playerBody->forceManager.SetMagnitude(playerBody->speed, FORCE_INDEX::INTERNAL);
 						playerBody->forceManager.SetLifetime(0.2f, FORCE_INDEX::INTERNAL);
-						//physicsSys->SetCurrentRotationSpeed(GET_COMPONENT(objectFactory->GetGameObjectByID(0), PhysicsBody, ComponentType::PHYSICS_BODY)->rotationSpeed, 0);
 					}
 					if (inputSystem.GetKeyState(GLFW_KEY_K)) {
-						//playerBody->currentRotationSpeed = -playerBody->rotationSpeed;
 						playerBody->forceManager.SetActive(true, FORCE_INDEX::INTERNAL);
-						//playerBody->forceManager.SetDirection(Vec2(1,0), FORCE_INDEX::INTERNAL);
 						playerBody->forceManager.SetDirection(-Vec2(-playerBody->direction.y, playerBody->direction.x), FORCE_INDEX::INTERNAL);
 						playerBody->forceManager.SetMagnitude(playerBody->speed, FORCE_INDEX::INTERNAL);
 						playerBody->forceManager.SetLifetime(0.2f, FORCE_INDEX::INTERNAL);
-						//physicsSys->SetCurrentRotationSpeed(-(GET_COMPONENT(objectFactory->GetGameObjectByID(0), PhysicsBody, ComponentType::PHYSICS_BODY)->rotationSpeed), 0);
 					}
 
 					if ((inputSystem.GetKeyState(GLFW_KEY_A) && inputSystem.GetKeyState(GLFW_KEY_D)) || (!inputSystem.GetKeyState(GLFW_KEY_A) && !inputSystem.GetKeyState(GLFW_KEY_D))) {
 						playerBody->currentRotationSpeed = 0;
-						//physicsSys->SetCurrentRotationSpeed(0, 0);
 					}
 				}
 			}
