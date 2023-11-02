@@ -150,7 +150,11 @@ public:
 	*************************************************************************/
 	void CapVelocity(Vec2 originalVelocity, Vec2& bodyVelocity);
 
-	// Collision Response Possibly
+	/**************************************************************************
+	* @brief Collision Response Message
+	* @param CollisionMessage* - ptr to message object
+	* @return void
+	*************************************************************************/
 	static void CollisionResponse(CollisionMessage* msg);
 	
 	//insert linked list of all physics body components

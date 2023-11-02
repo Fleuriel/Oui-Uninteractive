@@ -264,7 +264,11 @@ void Physics::CapVelocity(Vec2 originalVelocity, Vec2& bodyVelocity) {
 		}
 	}
 }
-
+/**************************************************************************
+* @brief Collision Response Message
+* @param CollisionMessage* - ptr to message object
+* @return void
+*************************************************************************/
 void Physics::CollisionResponse(CollisionMessage* msg) {
 	PhysicsBody* pBody1 = GET_COMPONENT(msg->GetFirstCollider()->GetOwner(), PhysicsBody, ComponentType::PHYSICS_BODY);
 	PhysicsBody* pBody2 = GET_COMPONENT(msg->GetSecondCollider()->GetOwner(), PhysicsBody, ComponentType::PHYSICS_BODY);
