@@ -1,6 +1,22 @@
+/**************************************************************************
+ * @file ColliderSystem.cpp
+ * @author CHEAH Tristan Tze Hong
+ * @par DP email: t.cheah@digipen.edu
+ * @par Course: CSD 2401
+ * @par Software Engineering Project 3
+ * @date 02-11-2023
+ * @brief This file contains the definition of the Collider System.
+ *		  This system is responsible for collision detection and sending the
+ *		  collision response message to the Physics System.
+ *************************************************************************/
+
+
 #include "ColliderSystem.h"
-#include <bit>
+
 ColliderSystem* colliderSys = nullptr;
+/**************************************************************************
+* @brief Constructor for Collider System
+*************************************************************************/
 ColliderSystem::ColliderSystem() {
 	if (colliderSys != nullptr) {
 		//instantiate collider sys
@@ -11,6 +27,10 @@ ColliderSystem::ColliderSystem() {
 		colliderSys = this;
 	}
 }
+/**************************************************************************
+* @brief Initialize function for ColliderSystem
+* @return void
+*************************************************************************/
 void ColliderSystem::Initialize() {
 	ComponentFactory<Collider>* testPtr = new ComponentFactory<Collider>(ComponentType::COLLIDER);
 	objectFactory->AddComponentFactory(ComponentType::COLLIDER, testPtr);
@@ -19,7 +39,11 @@ void ColliderSystem::Initialize() {
 	RegisterObserver("MSG_COLLISION", &physicsSys->observer);
 }
 
-
+/**************************************************************************
+* @brief Initialize function for ColliderSystem
+* @param dt - delta time
+* @return void
+*************************************************************************/
 void ColliderSystem::Update(float dt) {
 	TimeProfiler profiler(Editor::timeRecorder.colliderTime);
 	for (int step = 0; step < sysManager->currentNumberOfSteps; step++) {
@@ -57,6 +81,7 @@ void ColliderSystem::Update(float dt) {
 						std::cout << contactTime;
 					}
 					if (!pBody2->isStatic) {
+						//both objects can move
 						float secondNorm = 0.f;
 						float dp = Vector2DDotProduct(nextCycleVel, nextCycleVel2);
 						if (dp > 0) {
@@ -83,6 +108,7 @@ void ColliderSystem::Update(float dt) {
 				}
 
 			}
+			//reset collision data if no collision detected with anything
 			if (didCollide == false) {
 				collider->contactTime = 1.f;
 				collider->contactNormal = Vec2(0,0);
