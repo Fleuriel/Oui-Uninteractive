@@ -1,5 +1,5 @@
 {
-    "ObjectCount": 64,
+    "ObjectCount": 70,
     "Objects": [
         {
             "Name": "JSONPlayer",
@@ -37,8 +37,8 @@
             "Type": "Enemy",
             "Components": {
                 "PhysicsBody": {
-                    "VelocityX": 209.1847381591797,
-                    "VelocityY": 208.00657653808594,
+                    "VelocityX": 210.95509338378906,
+                    "VelocityY": 210.95196533203125,
                     "RotationSpeed": 20.0,
                     "Speed": 120.0,
                     "Mass": 10.0,
@@ -46,8 +46,8 @@
                     "FrictionForce": 20.0
                 },
                 "Transform": {
-                    "PositionX": -17.171655654907227,
-                    "PositionY": -29.007356643676758,
+                    "PositionX": -161.28164672851563,
+                    "PositionY": -173.27906799316406,
                     "Rotation": 0.0,
                     "Scale": 130.0
                 },
@@ -68,8 +68,8 @@
             "Type": "Enemy",
             "Components": {
                 "PhysicsBody": {
-                    "VelocityX": 209.1847381591797,
-                    "VelocityY": 208.00657653808594,
+                    "VelocityX": 210.9537353515625,
+                    "VelocityY": 210.9533233642578,
                     "RotationSpeed": 20.0,
                     "Speed": 120.0,
                     "Mass": 10.0,
@@ -77,8 +77,8 @@
                     "FrictionForce": 20.0
                 },
                 "Transform": {
-                    "PositionX": -17.171655654907227,
-                    "PositionY": -29.007356643676758,
+                    "PositionX": -164.73753356933594,
+                    "PositionY": -176.73719787597656,
                     "Rotation": 0.0,
                     "Scale": 130.0
                 },
@@ -332,6 +332,78 @@
                     "Mass": 80.0,
                     "IsStatic": true,
                     "FrictionForce": 20.0
+                }
+            }
+        },
+        {
+            "Name": "Wall",
+            "Type": "Wall",
+            "Components": {
+                "Transform": {
+                    "PositionX": -451.5,
+                    "PositionY": -406.79998779296875,
+                    "Rotation": 0.0,
+                    "Scale": 203.39999389648438
+                }
+            }
+        },
+        {
+            "Name": "Wall",
+            "Type": "Wall",
+            "Components": {
+                "Transform": {
+                    "PositionX": -654.9000244140625,
+                    "PositionY": -203.39999389648438,
+                    "Rotation": 0.0,
+                    "Scale": 203.39999389648438
+                }
+            }
+        },
+        {
+            "Name": "Wall",
+            "Type": "Wall",
+            "Components": {
+                "Transform": {
+                    "PositionX": -858.2999877929688,
+                    "PositionY": 203.39996337890625,
+                    "Rotation": 0.0,
+                    "Scale": 203.39999389648438
+                }
+            }
+        },
+        {
+            "Name": "Wall",
+            "Type": "Wall",
+            "Components": {
+                "Transform": {
+                    "PositionX": -654.9000244140625,
+                    "PositionY": 203.39996337890625,
+                    "Rotation": 0.0,
+                    "Scale": 203.39999389648438
+                }
+            }
+        },
+        {
+            "Name": "Wall",
+            "Type": "Wall",
+            "Components": {
+                "Transform": {
+                    "PositionX": -451.5,
+                    "PositionY": 203.39996337890625,
+                    "Rotation": 0.0,
+                    "Scale": 203.39999389648438
+                }
+            }
+        },
+        {
+            "Name": "Wall",
+            "Type": "Wall",
+            "Components": {
+                "Transform": {
+                    "PositionX": -248.10003662109375,
+                    "PositionY": 203.39996337890625,
+                    "Rotation": 0.0,
+                    "Scale": 203.39999389648438
                 }
             }
         },
