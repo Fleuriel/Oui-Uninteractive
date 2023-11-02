@@ -169,6 +169,34 @@ void Editor::CreateMasterPanel() {
 	ImGui::Checkbox("Objects Panel", &panelList.objectPanel); // Checkbox for object manager panel
 	ImGui::Checkbox("Asset Browser", & panelList.assetBrowserPanel); // Checkbox for asset browser
 	ImGui::Checkbox("Debug Panel", &panelList.debugPanel); // Checkbox for debug panel
+	static int selectedScene = 0;
+	static std::string sceneFileName;
+	
+	// Render drop menu for scene file selector
+	if (ImGui::BeginCombo("Scene File", assetManager.scenes[selectedScene].c_str())) {
+		for (int i = 0; i < assetManager.scenes.size(); i++) {
+			bool isSelected = (i == selectedScene);
+			if (ImGui::Selectable(assetManager.scenes[i].c_str(), isSelected)) {
+				selectedScene = i;
+				sceneFileName = "assets/scenes/" + assetManager.scenes[i];
+			}
+			if (isSelected) {
+				ImGui::SetItemDefaultFocus();
+			}
+		}
+		ImGui::EndCombo();
+	}
+	//std::cout << sceneFileName << std::endl;
+	// Save level to file
+	if (ImGui::Button("Save scene")) {
+		objectFactory->SaveObjectsToFile(sceneFileName);
+	}
+	ImGui::SameLine();
+	// Load level from file
+	if (ImGui::Button("Load scene")) {
+		objectFactory->DestroyAllObjects();
+		objectFactory->BuildObjectFromFile(sceneFileName);
+	}
 	// The "do smth" button. Interchangable quick access button used for quick testing of features
 	if (ImGui::Button("Do Something")) {
 		objectFactory->DestroyAllObjects();

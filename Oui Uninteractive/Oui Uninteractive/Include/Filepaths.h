@@ -34,8 +34,9 @@
 #define FILEPATH_SOUNDS_SFX					std::string("assets/sounds/sfx")
 
 // SCENES //
+#define FILEPATH_SCENES						std::string("assets/scenes")
 #define FILEPATH_SCENES_TESTWALLS			std::string("assets/scenes/TestWalls.JSON")
-#define FILEPATH_SCENES_TESTSCENEREADING	std::string("assets/scenes/TestsceneReading.JSON")
+#define FILEPATH_SCENES_TESTSCENEREADING	std::string("assets/scenes/TestsceneWriting.JSON")
 #define FILEPATH_SCENES_TESTSCENEWRITING	std::string("assets/scenes/TestsceneWriting.JSON")
 
 // PREFABS //

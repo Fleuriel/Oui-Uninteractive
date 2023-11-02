@@ -56,7 +56,8 @@ void AssetManager::LoadAll() {
     std::cout 
     << ((AssetManager::LoadTextures()) ? "Textures loaded successfully" : "Failed to load textures") << std::endl
     << ((AssetManager::LoadSounds()) ? "Sounds loaded successfully" : "Failed to load sounds") << std::endl
-    << ((AssetManager::LoadFonts()) ? "Fonts loaded successfully" : "Failed to load fonts") << std::endl;
+    << ((AssetManager::LoadFonts()) ? "Fonts loaded successfully" : "Failed to load fonts") << std::endl
+    << ((AssetManager::LoadScenes()) ? "Scenes loaded successfully" : "Failed to load scenes") << std::endl;
 }
 
 /**************************************************************************
@@ -365,7 +366,12 @@ bool AssetManager::ReloadSprites() {
 
 
 
-
+bool AssetManager::LoadScenes() {
+    for (const auto& entry : fs::directory_iterator(FILEPATH_SCENES)) {
+        scenes.push_back(entry.path().filename().string());
+    }
+    return true;
+}
 
 
 
