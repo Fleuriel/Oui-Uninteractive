@@ -24,6 +24,13 @@
  *************************************************************************/
 bool CollisionMouseRect(Collider::AABB Rect1, int mouseX, int mouseY) {
 
+	//std::cout << "MOUSE: " << mouseX << '\t' << mouseY << '\t';
+//	std::cout << Rect1.center.x << Rect1.center.y << '\n';
+
+	//std::cout << "THE STUPID BOX: " << Rect1.min.x << '\t' << Rect1.min.y << "BIG\t" << Rect1.max.x << '\t' << Rect1.max.y << '\n';
+	//std::cout <<" Center: " << Rect1.center.x << '\t' << Rect1.center.y << '\n';
+
+
 	if ((Rect1.max.x > mouseX &&
 		Rect1.max.y > mouseY) &&
 		(mouseX > Rect1.min.x &&

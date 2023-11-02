@@ -53,7 +53,11 @@ void UIManager::Update(float dt) {
 		convertedMousePos.first = mouseX;
 		convertedMousePos.second = mouseY;
 
-		
+		// Put here or else wont get correct coords.
+		OpenGLObject::FrameBufferMouseCoords(windowNew, &convertedMousePos.first, &convertedMousePos.second, OpenGLObject::cameraObject);
+
+		std::cout << "Current Coords: " << convertedMousePos.first << ", " << convertedMousePos.second << '\n';
+
 
 		//float gameWindowMouseX = mouseX - Editor::gameWindowOrigin.first;
 		//float gameWindowMouseY = mouseY - Editor::gameWindowOrigin.second;
@@ -74,9 +78,7 @@ void UIManager::Update(float dt) {
 					//std::cout << it->second->GetName();
 					Collider* collider = GET_COMPONENT(it->second, Collider, ComponentType::COLLIDER);
 
-					OpenGLObject::FrameBufferMouseCoords(windowNew, &convertedMousePos.first, &convertedMousePos.second, OpenGLObject::cameraObject);
-					std::cout << "Current Coords: " << convertedMousePos.first << ", " << convertedMousePos.second << '\t';
-					std::cout << collider->boundingbox->min.x << ", " << collider->boundingbox->min.y <<'\t' << collider->boundingbox->max.x << ", " << collider->boundingbox->max.y << '\n';
+					//std::cout << collider->boundingbox->min.x << ", " << collider->boundingbox->min.y <<'\t' << collider->boundingbox->max.x << ", " << collider->boundingbox->max.y << '\n';
 
 					if (CollisionMouseRect(*(collider->boundingbox), convertedMousePos.first, convertedMousePos.second)) {
 						std::cout << "YESSS\n";

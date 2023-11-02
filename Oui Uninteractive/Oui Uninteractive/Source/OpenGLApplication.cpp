@@ -273,9 +273,6 @@ void OpenGLApplication::OpenGLUpdate() {
 	myEditor.Update();
 	myImGui.Update();
 
-	//std::cout << GET_COMPONENT(objectFactory->GetGameObjectByName("Exit"), Transform, ComponentType::TRANSFORM)->position.x << '\t' <<
-
-	//	GET_COMPONENT(objectFactory->GetGameObjectByName("Exit"), Transform, ComponentType::TRANSFORM)->position.y << '\n';
 
 	OpenGLObject::cameraObject.Update(windowNew, positionX, positionY);
 	// Create x and y pos variables to collect data from the mouse position.
@@ -490,11 +487,11 @@ void OpenGLApplication::OpenGLUpdate() {
 
 	for (OpenGLObject& obj : objects) {
 		if (obj.TagID == 1)
-			obj.Update(positionX, 300, 100, 100, angle, true);
+			obj.Update(350, 300, 100, 100, angle, true);
 
 		// Tag ID 2
 		if (obj.TagID == 2) {
-			obj.Update(0, 0, 10, 10, angle, false);
+			obj.Update(0, 0, 100, 100, angle, false);
 		}
 
 		if (obj.TagID == 9)
@@ -644,4 +641,6 @@ void OpenGLApplication::OpenGLWindowResizeCallback(GLFWwindow* window2, int widt
 	glViewport(0, 0, width, height);
 	Editor::gameWindowSize.first = width;
 	Editor::gameWindowSize.second = height;
+
+	std::cout << width << '\t' << height << '\n';
 }
