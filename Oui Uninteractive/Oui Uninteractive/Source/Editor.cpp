@@ -249,11 +249,11 @@ void Editor::CreatePrefabPanel() {
 		ImGui::Text("Prefab Type: %s", copy[selectedName]->GetType());
 		ImGui::Text("Active Components:");
 		// If selected prefab has no components
-		if (copy[selectedName]->GetprefabComponentList().empty()) {
+		if (copy[selectedName]->GetPrefabComponentList().empty()) {
 			ImGui::Text("Selected Prefab has no components");
 		}
 		else {
-			for (auto& x : copy[selectedName]->GetprefabComponentList()) {
+			for (auto& x : copy[selectedName]->GetPrefabComponentList()) {
 				ImGui::Text(objectFactory->EnumToString(x->componentType).c_str());
 			}
 		}
