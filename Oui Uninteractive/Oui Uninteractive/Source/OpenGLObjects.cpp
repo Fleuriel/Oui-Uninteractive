@@ -906,4 +906,7 @@ void OpenGLObject::FrameBufferMouseCoords(GLFWwindow* originalWindow, double  *x
 	// set values of *x and *y.
 	*x = valueX;
 	*y = valueY;
+
+	//std::cout << *x<< '\t' << *y << '\n';
+
 }

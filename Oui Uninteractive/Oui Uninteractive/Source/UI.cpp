@@ -50,7 +50,8 @@ void UIManager::Update(float dt) {
 		std::pair<double, double> convertedMousePos;
 		double mouseX, mouseY;
 		glfwGetCursorPos(windowNew, &mouseX, &mouseY);
-
+		convertedMousePos.first = mouseX;
+		convertedMousePos.second = mouseY;
 
 		//float gameWindowMouseX = mouseX - Editor::gameWindowOrigin.first;
 		//float gameWindowMouseY = mouseY - Editor::gameWindowOrigin.second;
@@ -70,9 +71,9 @@ void UIManager::Update(float dt) {
 				if (it->second->GetName() == "Exit") {
 					//std::cout << it->second->GetName();
 					Collider* collider = GET_COMPONENT(it->second, Collider, ComponentType::COLLIDER);
-					
+
 					OpenGLObject::FrameBufferMouseCoords(windowNew, &convertedMousePos.first, &convertedMousePos.second, OpenGLObject::cameraObject);
-					std::cout << convertedMousePos.first << ", " << convertedMousePos.second << std::endl;
+					//std::cout << "Current Coords: " << convertedMousePos.first << ", " << convertedMousePos.second << std::endl;
 					if (CollisionMouseRect(*(collider->boundingbox), convertedMousePos.first, convertedMousePos.second)) {
 						std::cout << "YESSS";
 					}
