@@ -23,7 +23,15 @@ public:
 	bool SetTexture(int);
 	int GetTexture();
 	bool SetRowsAndColumns(int, int);
+	int GetRows();
+	int GetColumns();
 	bool SetWidthAndHeight(int, int);
+	int GetWidth();
+	int GetHeight();
+	bool SetTextureWidthAndHeight(int, int);
+	int GetTextureWidth();
+	int GetTextureHeight();
+
 	bool AddCoordinates(int, int);
 
 private:
@@ -32,6 +40,8 @@ private:
 	int columns{};
 	int width{};
 	int height{};
+	int texWidth{};
+	int texHeight{};
 	std::vector<std::pair<int, int>> coordinates{};
 };
 

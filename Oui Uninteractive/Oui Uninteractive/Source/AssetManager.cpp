@@ -196,64 +196,144 @@ Sprite::~Sprite() {
 }
 
 bool Sprite::SetTexture(int tex) {
+    // Set the texture
     texture = tex;
+    // Returns true if texture is not empty
     return !texture;
 }
 
 int Sprite::GetTexture() {
+    // Returns the texture
     return texture;
 }
 
 bool Sprite::SetRowsAndColumns(int a, int b) {
+    // Set the rows
     rows = a;
+    // Set the columns
     columns = b;
+    // Returns true if both rows and columns are non-zero
     return (rows && columns);
 }
 
+int Sprite::GetRows(){
+    return rows;
+}
+
+int Sprite::GetColumns(){
+    return columns;
+}
+
 bool Sprite::SetWidthAndHeight(int a, int b) {
+    // Set the width
     width = a;
+    // Set the height
     height = b;
+    // Returns true if both width and height are non-zero
     return (width && height);
 }
 
+int Sprite::GetWidth() {
+    return width;
+}
+
+int Sprite::GetHeight() {
+    return height;
+}
+
+bool Sprite::SetTextureWidthAndHeight(int a, int b) {
+    // Set the width
+    texWidth = a;
+    // Set the height
+    texHeight = b;
+    // Returns true if both width and height are non-zero
+    return (texWidth && texHeight);
+}
+
+int Sprite::GetTextureWidth() {
+    return texWidth;
+}
+
+int Sprite::GetTextureHeight() {
+    return texHeight;
+}
+
 bool Sprite::AddCoordinates(int a, int b) {
+    // Get the original size of the coordinates container
     size_t size = coordinates.size();
+    // Store the new coordinates into the coordinates container
     coordinates.push_back(std::pair<int, int>(a, b));
+    // Returns true if the coordinates container size increased (new coordinates sucessfully stored)
     return (coordinates.size() > size);
 }
 
 bool AssetManager::LoadSprites() {
 
+    // if file path for sprites exist
     if (fs::is_directory(FILEPATH_SPRITES)) {
+        // for every sprite in the file path
         for (const auto& entry : fs::directory_iterator(FILEPATH_SPRITES)) {
+            // get the file path for the sprite
             std::string spriteFilePath = FILEPATH_SPRITES + "/" + entry.path().filename().string();
             //std::cout << "Sprite file " << spriteFilePath << " Found." << std::endl;
 
+            // find the file extension 
             size_t extensionPos = entry.path().filename().string().find_last_of('.');
+            // if file extension found
             if (extensionPos != std::string::npos) {
 
+                // create new sprite class
                 Sprite newsprite;
                 
-                size_t lBracketPos = entry.path().filename().string().find_last_of('(');
-
+                // set the texture
                 newsprite.SetTexture(AssetManager::SetUpTexture(spriteFilePath));
                 //std::cout << textures[nameWithoutExtension] << " success!\n";
 
+                // find '(' in the name
+                size_t lBracketPos = entry.path().filename().string().find_last_of('(');
+
+                // get the string containing rows and columns from the name
                 std::string spriteRowsAndColumns = entry.path().filename().string().substr(lBracketPos + 1, extensionPos - lBracketPos - 2);
                 //std::cout << spriteRowsAndColumns<<std::endl;
 
+                // find the 'x' in the string that separates the rows and columns
                 size_t xPos = spriteRowsAndColumns.find_last_of('x');
+
+                // get the rows
                 int rows = std::stoi(spriteRowsAndColumns.substr(0, xPos));
                 //std::cout << rows << std::endl;
+                
+                // get the columns
                 int columns = std::stoi(spriteRowsAndColumns.substr(xPos + 1));
                 //std::cout << columns << std::endl;
 
+                // set the rows and columns of the sprite
                 newsprite.SetRowsAndColumns(rows, columns);
 
+                // Bind the texture
+                glBindTexture(GL_TEXTURE_2D, newsprite.GetTexture());
 
+                // Get the width and height of the texture
+                int texWidth, texHeight;
+                glGetTexLevelParameteriv(GL_TEXTURE_2D, 0, GL_TEXTURE_WIDTH, &texWidth);
+                glGetTexLevelParameteriv(GL_TEXTURE_2D, 0, GL_TEXTURE_HEIGHT, &texHeight);
+
+                // Unbind the texture
+                glBindTexture(GL_TEXTURE_2D, 0);
+
+                // Store width and height of texture
+                newsprite.SetTextureWidthAndHeight(texWidth, texHeight);
+                //std::cout << "Texture Width : " << texWidth << std::endl << "Texture Height : " << texHeight << std::endl;
+
+                // Store width and height of each "image" in texture
+                newsprite.SetWidthAndHeight(newsprite.GetTextureWidth() / newsprite.GetColumns(), newsprite.GetTextureHeight() / newsprite.GetRows());
+                //std::cout << "Width : " << newsprite.GetWidth() << std::endl << " Height : " << newsprite.GetHeight() << std::endl;
+
+                // get the name of the sprite sheet
                 std::string nameWithoutExtension = entry.path().filename().string().substr(0, lBracketPos);
                 //std::cout << nameWithoutExtension << std::endl;
 
+                // store the sprite in the sprite container
                 sprites[nameWithoutExtension] = newsprite;
             }
             else
