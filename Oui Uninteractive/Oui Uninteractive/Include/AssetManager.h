@@ -43,11 +43,12 @@ private:
 	int texture{};
 	int rows{};
 	int columns{};
+	int frameNum{};
 	int width{};
 	int height{};
 	int texWidth{};
 	int texHeight{};
-	std::vector<std::pair<int, int>> coordinates{};
+	std::vector<std::pair<int, int>> coordinates{}; //store bottom left coordinates
 };
 
 
@@ -73,6 +74,8 @@ public:
 	
 	// Sprite functions
 	bool LoadSprites();
+	bool FreeSprites();
+	bool ReloadSprites();
 
 
 	// Sound functions

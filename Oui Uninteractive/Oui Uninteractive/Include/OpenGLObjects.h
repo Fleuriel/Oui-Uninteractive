@@ -32,7 +32,7 @@ enum class SHADER_ORDER {
 	MODEL = 0,
 	FONT = 1,
 	CAMERA = 2,
-
+	SPRITES = 3
 };
 
 
@@ -48,14 +48,14 @@ public:
 	OpenGLObject(int id = 0) : 
 		scaleModel(0.5, 0.5) , orientation(0.0, 0.0f), position(0, 0), 
 		model_To_NDC_xform(glm::mat3(1.0f)), color(0.0f, 0.0f, 1.0f), interactable(true),
-		angleDisplacment(0.0f), angleSpeed(0.0f), TagID(id)
+		angleDisplacment(0.0f), angleSpeed(0.0f), TagID(id), spritecheck(true)
 	{};
 
 	// Constructor for Particles
 	OpenGLObject(glm::vec3 particlecolor) : 
 		scaleModel(1, 1), orientation(0.0, 0.0f), position(0, 0), 
 		model_To_NDC_xform(glm::mat3(1.0f)), color(particlecolor), interactable(true),
-		angleDisplacment(0.0f), angleSpeed(0.0f), TagID(0){
+		angleDisplacment(0.0f), angleSpeed(0.0f), TagID(0), spritecheck(true) {
 		std::cout << "R : " << color.r << "\nG : " << color.g << "\nB : " << color.b << "\n";
 	};
 	
@@ -85,7 +85,8 @@ public:
 
 	static GLuint FrameTexture;
 
-
+	bool spritecheck{ true };
+	
 	
 
 	// encapsulates state required to render a geometrical model

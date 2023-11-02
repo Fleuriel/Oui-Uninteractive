@@ -348,7 +348,7 @@ void OpenGLObject::Draw(int shaderNumber) const{
 	{
 		switch (TagID) {
 		case 0:
-			tex = assetManager.GetSprite("BaldManIdle");
+			tex = 0;
 			break;
 		case 1:
 			tex = assetManager.GetTexture("bag");
@@ -361,18 +361,31 @@ void OpenGLObject::Draw(int shaderNumber) const{
 		default:
 			break;
 		}
-
-		// Bind Texture to 6.
-		glBindTextureUnit(6, tex);
 	}
+	else if (shaderNumber == static_cast<int>(SHADER_ORDER::SPRITES)) {
+		tex = assetManager.GetSprite("BaldManIdle");
+	}
+
+	// Bind Texture to 6.
+	glBindTextureUnit(6, tex);
 
 	// Install the shader program
 	shdrpgms[shaderNumber].Use();
 
 	// In Shader Program [uTex2d] is the texture uniform position.
 	// set uniform uTex2d to #6.
-	if(shaderNumber == static_cast<int>(SHADER_ORDER::MODEL))
+	if (shaderNumber == static_cast<int>(SHADER_ORDER::MODEL)) {
 		shdrpgms[static_cast<int>(SHADER_ORDER::MODEL)].SetUniform("uTex2d", 6);
+	}
+
+	if (shaderNumber == static_cast<int>(SHADER_ORDER::SPRITES)) {
+		shdrpgms[static_cast<int>(SHADER_ORDER::SPRITES)].SetUniform("uTex2d", 6);
+
+		shdrpgms[static_cast<int>(SHADER_ORDER::SPRITES)].SetUniform("fr", 7);
+		shdrpgms[static_cast<int>(SHADER_ORDER::SPRITES)].SetUniform("r", 8);
+		shdrpgms[static_cast<int>(SHADER_ORDER::SPRITES)].SetUniform("c", 9);
+	}
+
 	
 	// Part 2: Bind object's VAO handle
 	glBindVertexArray(models[mdl_ref].vaoid); // Bind object's VAO handle
@@ -768,11 +781,6 @@ void OpenGLObject::InitShaders()
 		("assets/shaders/Oui_Uninteractive_models.vert", "assets/shaders/Oui_Uninteractive_models.frag")
 	};
 
-	/*VectorPairStrStr SPRITESHADER{
-		std::make_pair<std::string, std::string>
-		("assets/shaders/Oui_Uninteractive_models_sprites.vert", "assets/shaders/Oui_Uninteractive_models.frag")
-	};*/
-
 	VectorPairStrStr FONTSHADER{
 		std::make_pair<std::string, std::string>
 		("assets/shaders/Oui_Uninteractive_font.vert", "assets/shaders/Oui_Uninteractive_font.frag")
@@ -783,21 +791,27 @@ void OpenGLObject::InitShaders()
 		("assets/shaders/Oui_Uninteractive_camera.vert", "assets/shaders/Oui_Uninteractive_camera.frag")
 	};
 
-
+	VectorPairStrStr SPRITESHADER{
+		std::make_pair<std::string, std::string>
+		("assets/shaders/Oui_Uninteractive_models_sprites.vert", "assets/shaders/Oui_Uninteractive_models_sprites.frag")
+	};
 
 
 	// Initialize the Shader Program for Models
+	std::cout << "Initializing model shader" << std::endl;
 	init_shdrpgms_cont(MODELSSHADER);
 
-	// Initialize the Shader Program for Sprites
-	//init_shdrpgms_cont(SPRITESHADER);
-
 	// Initialize the Shader Program for Fonts
+	std::cout << "Initializing font shader" << std::endl;
 	init_shdrpgms_cont(FONTSHADER);
 
 	// Initialize the Shader Program for Camera
+	std::cout << "Initializing camera shader" << std::endl;
 	init_shdrpgms_cont(CAMERASHADER);
 
+	// Initialize the Shader Program for Sprites
+	std::cout << "Initializing sprite shader" << std::endl;
+	init_shdrpgms_cont(SPRITESHADER);
 	
 }
 

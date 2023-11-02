@@ -354,7 +354,14 @@ int AssetManager::GetSprite(std::string name) {
     return sprites[name].GetTexture();
 }
 
+bool AssetManager::FreeSprites() {
+    sprites.clear();
+    return sprites.empty();
+}
 
+bool AssetManager::ReloadSprites() {
+    return (AssetManager::FreeSprites() && AssetManager::LoadSprites());
+}
 
 
 

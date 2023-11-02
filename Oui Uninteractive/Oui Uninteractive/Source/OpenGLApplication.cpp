@@ -591,6 +591,9 @@ void OpenGLApplication::Draw() {
 #endif
 	// Iterate through all the objects and draw the textures assosiated with Tag ID
 	for (auto const& obj : objects) {
+		if (obj.spritecheck)
+			obj.Draw(3);
+		else
 		// Draw the Object with Texture.
 		obj.Draw();
 	}
