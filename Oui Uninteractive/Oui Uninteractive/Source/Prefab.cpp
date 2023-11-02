@@ -50,7 +50,7 @@ std::string Prefab::GetType() {
 	return prefabType;
 }
 
-std::vector<IComponent*> Prefab::GetprefabComponentList() {
+std::vector<IComponent*> Prefab::GetPrefabComponentList() {
 	return prefabComponentList;
 }
 

@@ -125,6 +125,13 @@ public:
 	void SaveObjectsToFile(const std::string& filePath);
 
 	/**************************************************************************
+	* @brief Save prefab data to JSON file
+	* @param filePath - directory of JSON file
+	* @return void
+	*************************************************************************/
+	void SavePrefabsToFile(const std::string& filePath);
+
+	/**************************************************************************
 	* @brief Update each game object in object factory
 	* @param dt - delta time
 	* @return void

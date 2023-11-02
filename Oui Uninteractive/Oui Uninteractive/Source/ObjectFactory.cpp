@@ -374,6 +374,96 @@ void ObjectFactory::SaveObjectsToFile(const std::string& filePath) {
 }
 
 /**************************************************************************
+* @brief Save prefabs to JSON file
+* @param filePath - directory of JSON file
+* @return void
+*************************************************************************/
+void ObjectFactory::SavePrefabsToFile(const std::string& filePath) {
+	rapidjson::Document objDoc;
+	rapidjson::Document::AllocatorType& allocator = objDoc.GetAllocator();
+	JsonSerializer serializer;
+	serializer.ReadJSONFile(filePath, objDoc);
+
+	// Setting object for output JSON
+	objDoc.SetObject();
+
+	// Adding object count
+	objDoc.AddMember("ObjectCount", prefabMap.size(), allocator);
+
+	// Add objects to Objects array
+	rapidjson::Value writeObjects(rapidjson::kArrayType);
+	for (const auto& it : prefabMap) {
+		const Prefab* prefab = it.second;
+		rapidjson::Value jsonObj(rapidjson::kObjectType);	// Create JSON object
+		rapidjson::Value stringVar;
+
+		// Add name and type members to JSON object
+		stringVar.SetString(prefab->prefabName.c_str(), allocator);
+		jsonObj.AddMember("Name", stringVar, allocator);
+		stringVar.SetString(prefab->prefabName.c_str(), allocator);
+		jsonObj.AddMember("Type", stringVar, allocator);
+
+		// Components object
+		rapidjson::Value components(rapidjson::kObjectType);
+
+		for (const auto& cmp : prefab->prefabComponentList) {
+			// Create individual component
+			rapidjson::Value individualComponent(rapidjson::kObjectType);
+			std::string componentName{ EnumToString(cmp->componentType) };
+
+			// Add component data
+			if (componentName == "PhysicsBody") {
+				individualComponent.AddMember("VelocityX", GET_COMPONENT(it.second, PhysicsBody, ComponentType::PHYSICS_BODY)->velocity.x, allocator);
+				individualComponent.AddMember("VelocityY", GET_COMPONENT(it.second, PhysicsBody, ComponentType::PHYSICS_BODY)->velocity.y, allocator);
+				individualComponent.AddMember("RotationSpeed", GET_COMPONENT(it.second, PhysicsBody, ComponentType::PHYSICS_BODY)->rotationSpeed, allocator);
+				individualComponent.AddMember("Speed", GET_COMPONENT(it.second, PhysicsBody, ComponentType::PHYSICS_BODY)->speed, allocator);
+				individualComponent.AddMember("Mass", GET_COMPONENT(it.second, PhysicsBody, ComponentType::PHYSICS_BODY)->mass, allocator);
+				individualComponent.AddMember("IsStatic", GET_COMPONENT(it.second, PhysicsBody, ComponentType::PHYSICS_BODY)->isStatic, allocator);
+				individualComponent.AddMember("FrictionForce", GET_COMPONENT(it.second, PhysicsBody, ComponentType::PHYSICS_BODY)->frictionForce, allocator);
+			}
+			else if (componentName == "Transform") {
+				individualComponent.AddMember("PositionX", GET_COMPONENT(it.second, Transform, ComponentType::TRANSFORM)->position.x, allocator);
+				individualComponent.AddMember("PositionY", GET_COMPONENT(it.second, Transform, ComponentType::TRANSFORM)->position.y, allocator);
+				individualComponent.AddMember("Rotation", GET_COMPONENT(it.second, Transform, ComponentType::TRANSFORM)->rotation, allocator);
+				individualComponent.AddMember("Scale", GET_COMPONENT(it.second, Transform, ComponentType::TRANSFORM)->scale, allocator);
+			}
+			else if (componentName == "LogicComponent") {
+				// Save ScriptID in an array
+				rapidjson::Value scriptIDArray(rapidjson::kArrayType);
+				for (auto& scriptID : GET_COMPONENT(it.second, LogicComponent, ComponentType::LOGICCOMPONENT)->scriptIndexSet) {
+					scriptIDArray.PushBack(scriptID, allocator);
+				}
+
+				// Add array to individual component
+				individualComponent.AddMember("ScriptID", scriptIDArray, allocator);
+			}
+			else if (componentName == "Collider") {
+				individualComponent.AddMember("ColliderSize", GET_COMPONENT(it.second, Collider, ComponentType::COLLIDER)->tx->scale, allocator);
+				individualComponent.AddMember("ColliderRotation", GET_COMPONENT(it.second, Collider, ComponentType::COLLIDER)->tx->rotation, allocator);
+			}
+
+			// Add individual component to components object
+			rapidjson::Value componentNameJson;
+			componentNameJson.SetString(componentName.c_str(), allocator);
+			components.AddMember(componentNameJson, individualComponent, allocator);
+		}
+
+		// Add components members to JSON object
+		jsonObj.AddMember("Components", components, allocator);
+
+		// Add JSON object to Objects array
+		writeObjects.PushBack(jsonObj, allocator);
+	}
+
+	// Add object array to output JSON
+	objDoc.AddMember("Objects", writeObjects, allocator);
+
+	if (serializer.WriteJSONFile(filePath, objDoc)) {
+		std::cout << "Successfully saved objects to file." << std::endl;
+	}
+}
+
+/**************************************************************************
 * @brief Update each game object in object factory
 * @param dt - delta time
 * @return void
