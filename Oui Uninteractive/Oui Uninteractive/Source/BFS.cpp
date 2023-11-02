@@ -60,29 +60,31 @@ BFS::~BFS() {
 * @return void
 *************************************************************************/
 void BFS::CreateGrid() {
-    // Temp vars
-    float windowWidth = 1920.f;
-    float windowHeight = 1017.f;
-	float scaleTemp = windowHeight / static_cast<float>(rows);
+    if (!gridCreated || objectFactory->GetGameObjectByName("Wall") == nullptr) {
+        // Temp vars
+        float windowWidth = 1920.f;
+        float windowHeight = 1017.f;
+        float scaleTemp = windowHeight / static_cast<float>(rows);
 
-    for (int i{}; i < rows; ++i) {
-        for (int j{}; j < cols; ++j) {
-            if (gameMap[i][j] == 1) {
-                // Create walls
-                GameObject* wall = objectFactory->BuildObjectRunTime("Wall", "Wall");
-                objectFactory->AddComponent(ComponentType::TRANSFORM, wall);
+        for (int i{}; i < rows; ++i) {
+            for (int j{}; j < cols; ++j) {
+                if (gameMap[i][j] == 1) {
+                    // Create walls
+                    GameObject* wall = objectFactory->BuildObjectRunTime("Wall", "Wall");
+                    objectFactory->AddComponent(ComponentType::TRANSFORM, wall);
 
-                wall->Initialize();
+                    wall->Initialize();
 
-                // Set position of wall
-                GET_COMPONENT(wall, Transform, ComponentType::TRANSFORM)->scale = scaleTemp;
-                GET_COMPONENT(wall, Transform, ComponentType::TRANSFORM)->position.x = (j * scaleTemp) + (scaleTemp - windowWidth) / 2;
-                GET_COMPONENT(wall, Transform, ComponentType::TRANSFORM)->position.y = (i * scaleTemp) + (scaleTemp - windowHeight) / 2;
+                    // Set position of wall
+                    GET_COMPONENT(wall, Transform, ComponentType::TRANSFORM)->scale = scaleTemp;
+                    GET_COMPONENT(wall, Transform, ComponentType::TRANSFORM)->position.x = (j * scaleTemp) + (scaleTemp - windowWidth) / 2;
+                    GET_COMPONENT(wall, Transform, ComponentType::TRANSFORM)->position.y = (i * scaleTemp) + (scaleTemp - windowHeight) / 2;
+                }
             }
         }
-    }
 
-    gridCreated = true;
+        gridCreated = true;
+    }
 }
 
 /**************************************************************************

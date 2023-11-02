@@ -84,9 +84,12 @@ void EnemyRoam::Update(size_t gameObjectID) {
     }
     
     // If grid not created, create grid
-    if (!bfs->gridCreated) {
+    /*if (!bfs->gridCreated) {
         bfs->CreateGrid();
-    }
+    }*/
+
+    // Create grid
+    bfs->CreateGrid();
 
     if (!pathFound) {
         // Find path
