@@ -209,9 +209,9 @@ void Editor::CreateRenderWindow() {
 *************************************************************************/
 void Editor::CreatePrefabPanel() {
 	ImGui::Begin("Prefab Editor");
-
+	static bool physics, transform, logic, collider;
 	// Refresh list of prefabs from file directory
-	if (ImGui::Button("Refresh List")) {
+	if (ImGui::Button("Refresh")) {
 		std::filesystem::path prefabPath{ FILEPATH_PREFAB };
 		if (std::filesystem::is_directory(prefabPath)) {
 			for (const auto& entry : std::filesystem::directory_iterator(prefabPath)) {
@@ -220,7 +220,9 @@ void Editor::CreatePrefabPanel() {
 		}
 	}
 	ImGui::SameLine();
-	ImGui::Button("Save");
+	if (ImGui::Button("Save")) {
+		objectFactory->SavePrefabsToFile(FILEPATH_PREFAB);
+	}
 
 	std::map<std::string, Prefab*> copy = objectFactory->GetPrefabMap();
 	std::map<std::string, Prefab*>::iterator it = copy.begin();
@@ -247,17 +249,39 @@ void Editor::CreatePrefabPanel() {
 		ImGui::BeginChild("item view", ImVec2(0, -ImGui::GetFrameHeightWithSpacing())); // Leave room for 1 line below
 		ImGui::SeparatorText("Details");
 		ImGui::Text("Prefab Type: %s", copy[selectedName]->GetType());
-		ImGui::SeparatorText("Components List");
+		ImGui::Text("Active Components:");
 		// If selected prefab has no components
-		if (copy[selectedName]->GetprefabComponentList().empty()) {
+		if (copy[selectedName]->GetPrefabComponentList().empty()) {
 			ImGui::Text("Selected Prefab has no components");
 		}
 		else {
-			for (auto& x : copy[selectedName]->GetprefabComponentList()) {
-				ImGui::CollapsingHeader(objectFactory->EnumToString(x->componentType).c_str());
-				//std::cout << objectFactory->EnumToString(x->componentType) << std::endl;
+			for (auto& x : copy[selectedName]->GetPrefabComponentList()) {
+				ImGui::Text(objectFactory->EnumToString(x->componentType).c_str());
 			}
 		}
+		ImGui::SeparatorText("Components List");
+
+		// Render all the components
+		ImGui::Checkbox("##Physics", &physics); ImGui::SameLine();		
+		if (ImGui::CollapsingHeader("Physics Body")) {
+		/*	if (ImGui::SliderFloat()) {
+				
+			}*/
+			
+		}
+		ImGui::Checkbox("##Transform", &transform); ImGui::SameLine();
+		if (ImGui::CollapsingHeader("Transform")) {
+
+		}
+		ImGui::Checkbox("##Logic", &logic); ImGui::SameLine();
+		if (ImGui::CollapsingHeader("Logic")) {
+
+		}
+		ImGui::Checkbox("##Collider", &collider); ImGui::SameLine();
+		if (ImGui::CollapsingHeader("Collider")) {
+
+		}
+		
 
 		ImGui::EndChild();
 		ImGui::EndGroup();

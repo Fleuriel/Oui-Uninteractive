@@ -86,7 +86,7 @@ public:
 	* @param typeID - component type
 	* @return std::vector - container of components
 	*************************************************************************/
-	std::vector<IComponent*> GetprefabComponentList();
+	std::vector<IComponent*> GetPrefabComponentList();
 };
 
 /**************************************************************************
