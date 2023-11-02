@@ -80,7 +80,6 @@ PhysicsBody* PhysicsBody::Clone() const{
 	newBody->rotationSpeed = rotationSpeed;
 	newBody->mass = mass;
 
-	//NOTE TO SELF 4 FORCEs BUG HERE
 	for (int i = 0; i < forceManager.forceVec.size(); i++) {
 		LinearForce* newForce = new LinearForce(*forceManager.forceVec[i]);
 		newBody->forceManager.forceVec.push_back(newForce);
@@ -88,12 +87,20 @@ PhysicsBody* PhysicsBody::Clone() const{
 
 	return newBody;
 }
-
+/**************************************************************************
+* @brief Constructor for ForceManager
+*************************************************************************/
 ForceManager::ForceManager() {
 	forceVec.push_back(new LinearForce(0.5f, false, 50));
 	forceVec.push_back(new LinearForce(0.5f, false, 50));
 	forceVec.push_back(new LinearForce(0.1f, true, 50));
 }
+/**************************************************************************
+* @brief Setter 
+* @param filePath - file path to read from
+* @param itr - iterator through json object
+* @return void
+*************************************************************************/
 void ForceManager::SetMagnitude(float new_mag, FORCE_INDEX index) {
 
 	forceVec[index]->magnitude = new_mag;
