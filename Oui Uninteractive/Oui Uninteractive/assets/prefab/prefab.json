@@ -8,11 +8,11 @@
                 "PhysicsBody": {
                     "VelocityX": 0.0,
                     "VelocityY": 0.0,
-                    "RotationSpeed": 0.0,
-                    "Speed": 0.0,
-                    "Mass": 0.0,
-                    "IsStatic": false,
-                    "FrictionForce": 0.0
+                    "RotationSpeed": 40.0,
+                    "Speed": 20.0,
+                    "Mass": 10.0,
+                    "IsStatic": true,
+                    "FrictionForce": 1.0
                 },
                 "Transform": {
                     "PositionX": 0.0,
@@ -64,29 +64,30 @@
         {
             "Name": "TestPrefab",
             "Type": "TestPrefab",
-            "Components": {
-                "PhysicsBody": {
-                    "VelocityX": 0.0,
-                    "VelocityY": 0.0,
-                    "RotationSpeed": 0.0,
-                    "Speed": 0.0,
-                    "Mass": 0.0,
-                    "IsStatic": false,
-                    "FrictionForce": 0.0
-                },
-                "Collider": {
-                    "ColliderSize": 0.0,
-                    "ColliderRotation": 0.0
-                }
-            }
+            "Components": {}
         },
         {
             "Name": "TestPrefab2",
             "Type": "TestPrefab2",
             "Components": {
                 "Collider": {
-                    "ColliderSize": 0.0,
-                    "ColliderRotation": 0.0
+                    "ColliderSize": 435.0,
+                    "ColliderRotation": 3453.0
+                },
+                "PhysicsBody": {
+                    "VelocityX": 0.0,
+                    "VelocityY": 0.0,
+                    "RotationSpeed": 40.0,
+                    "Speed": 20.0,
+                    "Mass": 10.0,
+                    "IsStatic": true,
+                    "FrictionForce": 1.0
+                },
+                "Transform": {
+                    "PositionX": 888.0,
+                    "PositionY": 457.0,
+                    "Rotation": 53467.0,
+                    "Scale": 234.0
                 }
             }
         }
