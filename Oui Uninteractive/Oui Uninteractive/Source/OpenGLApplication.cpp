@@ -272,6 +272,9 @@ void OpenGLApplication::OpenGLUpdate() {
 	myImGui.CreateFrame();
 	myEditor.Update();
 	myImGui.Update();
+	myEditor.gameWindowSize.first = ImGui::GetWindowSize().x;
+	myEditor.gameWindowSize.second = ImGui::GetWindowSize().y;
+
 
 	OpenGLObject::cameraObject.Update(windowNew, positionX, positionY);
 	// Create x and y pos variables to collect data from the mouse position.
@@ -280,6 +283,8 @@ void OpenGLApplication::OpenGLUpdate() {
 	
 	//std::cout << "BEFORE: " << "X: " << xpos << "  , Y: " << ypos << '\n';
 	OpenGLObject::FrameBufferMouseCoords(windowNew, &xpos, &ypos, OpenGLObject::cameraObject);
+
+//	std::cout << xpos << '\t' << ypos << '\n';
 
 	//std::cout << "After: " << "X: " << xpos << "  , Y: " << ypos << '\n';
 	
@@ -634,6 +639,6 @@ void OpenGLApplication::OpenGLWindowResizeCallback(GLFWwindow* window2, int widt
 	// Update the window dimensions once changed
 	// set callback for the window size
 	glViewport(0, 0, width, height);
-	windowSize.first = width;
-	windowSize.second = height;
+	Editor::gameWindowSize.first = width;
+	Editor::gameWindowSize.second = height;
 }

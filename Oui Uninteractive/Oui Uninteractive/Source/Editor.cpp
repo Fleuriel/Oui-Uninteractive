@@ -76,7 +76,7 @@ void UsingImGui::CreateFrame() {
 * @return void
 *************************************************************************/
 void UsingImGui::Update() {
-	
+
 
 }
 
