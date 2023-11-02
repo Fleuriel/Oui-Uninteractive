@@ -1,5 +1,5 @@
 {
-    "ObjectCount": 3,
+    "ObjectCount": 6,
     "Objects": [
         {
             "Name": "JSONPlayer",
@@ -15,8 +15,8 @@
                     "FrictionForce": 20.0
                 },
                 "Transform": {
-                    "PositionX": -250.0,
-                    "PositionY": 200.0,
+                    "PositionX": -453.62994384765625,
+                    "PositionY": -290.4915771484375,
                     "Rotation": 0.0,
                     "Scale": 200.0
                 },
@@ -46,7 +46,7 @@
                     "FrictionForce": 20.0
                 },
                 "Transform": {
-                    "PositionX": -37.918121337890625,
+                    "PositionX": -143.30496215820313,
                     "PositionY": -275.2038269042969,
                     "Rotation": 0.0,
                     "Scale": 130.0
@@ -64,12 +64,62 @@
             }
         },
         {
-            "Name": "Object3",
+            "Name": "JSONEnemy2",
             "Type": "Enemy",
             "Components": {
                 "PhysicsBody": {
-                    "VelocityX": -73.87934875488281,
-                    "VelocityY": -176.85577392578125,
+                    "VelocityX": 0.0,
+                    "VelocityY": 0.0,
+                    "RotationSpeed": 20.0,
+                    "Speed": 500.0,
+                    "Mass": 80.0,
+                    "IsStatic": true,
+                    "FrictionForce": 20.0
+                },
+                "Transform": {
+                    "PositionX": 200.0,
+                    "PositionY": 100.0,
+                    "Rotation": 30.0,
+                    "Scale": 220.0
+                },
+                "Collider": {
+                    "ColliderSize": 220.0,
+                    "ColliderRotation": 0.0
+                }
+            }
+        },
+        {
+            "Name": "Exit",
+            "Type": "Button",
+            "Components": {
+                "Transform": {
+                    "PositionX": 200.0,
+                    "PositionY": 100.0,
+                    "Rotation": 30.0,
+                    "Scale": 220.0
+                },
+                "Collider": {
+                    "ColliderSize": 220.0,
+                    "ColliderRotation": 0.0
+                },
+                "PhysicsBody": {
+                    "VelocityX": 0.0,
+                    "VelocityY": 0.0,
+                    "RotationSpeed": 20.0,
+                    "Speed": 500.0,
+                    "Mass": 80.0,
+                    "IsStatic": true,
+                    "FrictionForce": 20.0
+                }
+            }
+        },
+        {
+            "Name": "Object5",
+            "Type": "Enemy",
+            "Components": {
+                "PhysicsBody": {
+                    "VelocityX": 0.0,
+                    "VelocityY": 0.0,
                     "RotationSpeed": 20.0,
                     "Speed": 120.0,
                     "Mass": 10.0,
@@ -77,8 +127,8 @@
                     "FrictionForce": 20.0
                 },
                 "Transform": {
-                    "PositionX": 0.4044797420501709,
-                    "PositionY": -68.72404479980469,
+                    "PositionX": -283.6180725097656,
+                    "PositionY": -275.2038269042969,
                     "Rotation": 0.0,
                     "Scale": 130.0
                 },
@@ -91,6 +141,18 @@
                 "Collider": {
                     "ColliderSize": 140.0,
                     "ColliderRotation": 0.0
+                }
+            }
+        },
+        {
+            "Name": "Wall",
+            "Type": "Wall",
+            "Components": {
+                "Transform": {
+                    "PositionX": -790.5,
+                    "PositionY": -339.0,
+                    "Rotation": 0.0,
+                    "Scale": 339.0
                 }
             }
         }
