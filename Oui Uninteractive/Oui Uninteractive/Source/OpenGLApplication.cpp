@@ -272,19 +272,19 @@ void OpenGLApplication::OpenGLUpdate() {
 	myImGui.CreateFrame();
 	myEditor.Update();
 	myImGui.Update();
-	myEditor.gameWindowSize.first = ImGui::GetWindowSize().x;
-	myEditor.gameWindowSize.second = ImGui::GetWindowSize().y;
 
+	//std::cout << GET_COMPONENT(objectFactory->GetGameObjectByName("Exit"), Transform, ComponentType::TRANSFORM)->position.x << '\t' <<
+
+	//	GET_COMPONENT(objectFactory->GetGameObjectByName("Exit"), Transform, ComponentType::TRANSFORM)->position.y << '\n';
 
 	OpenGLObject::cameraObject.Update(windowNew, positionX, positionY);
 	// Create x and y pos variables to collect data from the mouse position.
 	double xpos, ypos{};
 	glfwGetCursorPos(windowNew, &xpos, &ypos);
 	
-	//std::cout << "BEFORE: " << "X: " << xpos << "  , Y: " << ypos << '\n';
 	OpenGLObject::FrameBufferMouseCoords(windowNew, &xpos, &ypos, OpenGLObject::cameraObject);
 
-//	std::cout << xpos << '\t' << ypos << '\n';
+	//std::cout << "AFTER " << xpos << '\t' << ypos << '\n';
 
 	//std::cout << "After: " << "X: " << xpos << "  , Y: " << ypos << '\n';
 	
@@ -470,7 +470,7 @@ void OpenGLApplication::OpenGLUpdate() {
 	/*-----------------------------------
 	|       ImGui Stuff Testing         |
 	-----------------------------------*/
-	myEditor.Update();
+//	myEditor.Update();
 
 	particleSystem.Update();
 
@@ -481,7 +481,7 @@ void OpenGLApplication::OpenGLUpdate() {
 	// Clear the Color Buffer Bit to enable 'reloading'
 	
 
-	background.Update(0,0,windowSize.first,windowSize.second);
+	background.Update(0, 0, windowSize.first, windowSize.second);
 	// Draws the Background
 	background.Draw();
 

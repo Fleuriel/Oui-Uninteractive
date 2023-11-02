@@ -885,16 +885,23 @@ void OpenGLObject::InitFont()
 
 void OpenGLObject::FrameBufferMouseCoords(GLFWwindow* originalWindow, double  *x, double *y, OpenGLObject::Camera2D camera)
 {
+	double originalX = *x - Editor::gameWindowOrigin.first;
+	double originalY = *y - Editor::gameWindowOrigin.second;
+
+	//std::cout << "IF: " << originalX << " " << originalY << '\t';
+	
+
 	// get the center coordinates of the frame buffer window.
 	int centerX = Editor::gameWindowSize.first / 2.0;
 	int centerY = Editor::gameWindowSize.second / 2.0;
 
+	//std::cout << "Cx : " << centerX << " Cy : " << centerY << '\t';
 
 	// Calculate corrected coordinates relative to the camera's position.
-	double correctedX = (*x - centerX) + camera.posX;
-	double correctedY = centerY - *y + camera.posY;  // Note the y-coordinate inversion
+	double correctedX = (originalX - centerX) + camera.posX;
+	double correctedY = centerY - originalY + camera.posY;  // Note the y-coordinate inversion
 
-
+	//std::cout << "Cox : " << correctedX << " Coy : " << correctedY << '\t';
 	// set value of X and Y, (valueX, valueY) to the respective y values,
 	// Y no change as no difference. X, on the other hand needs to be multiplied with the multiplier of height.,
 	float valueX = correctedX / 1000;

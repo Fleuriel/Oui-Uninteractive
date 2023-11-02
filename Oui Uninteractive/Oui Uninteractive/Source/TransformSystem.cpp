@@ -36,14 +36,16 @@ void TransformSystem::Update(float dt) {
 	for (; it2 != copyColliderMap.end(); it2++) {
 		Collider* collider = it2->second;
 		collider->tx->position = GET_COMPONENT(collider->GetOwner(), Transform, ComponentType::TRANSFORM)->position;
-		collider->boundingbox->center = collider->tx->position;
+		//collider->tx->scale = (100, 100);
+		collider->boundingbox->center.x = collider->tx->position.x - Editor::gameWindowSize.first;
+		collider->boundingbox->center.y = collider->tx->position.y - Editor::gameWindowSize.second;
 		collider->boundingbox->min = Vec2((-0.5f) * collider->tx->scale + collider->tx->position.x, (-0.5f) * collider->tx->scale + collider->tx->position.y);
 		collider->boundingbox->max = Vec2((0.5f) * collider->tx->scale + collider->tx->position.x, (0.5f) * collider->tx->scale + collider->tx->position.y);
 		collider->contactTime = 1.0f;
 		if (OpenGLObject::renderBoundingBox) {
 			Transform* tx = it2->second->tx;
 			if (tx != nullptr) {
-				tx->shape->Update(tx->position.x, tx->position.y, tx->scale, tx->scale, tx->rotation, true);
+				tx->shape->Update(tx->position.x, tx->position.y, tx->scale, tx->scale, tx->rotation, false);
 			}
 			else {
 				continue;
@@ -53,7 +55,7 @@ void TransformSystem::Update(float dt) {
 	for (; it != copyMap.end(); it++) {
 		Transform* tx = GET_COMPONENT(it->second, Transform, ComponentType::TRANSFORM);
 		if (tx != nullptr) {
-			tx->shape->Update(tx->position.x, tx->position.y, tx->scale, tx->scale, tx->rotation, true);
+			tx->shape->Update(tx->position.x, tx->position.y, tx->scale, tx->scale, tx->rotation, false);
 		}
 		else {
 			continue;
