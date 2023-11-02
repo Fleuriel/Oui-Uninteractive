@@ -8,7 +8,7 @@
 #ifndef SCENEMANAGER_H
 #define SCENEMANAGER
 // Game State List Enumeration
-enum GameStateList
+enu	m GameStateList
 {
 	STATE_GRAPHICS_TEST = 0,
 	STATE_LEVEL_TEST,

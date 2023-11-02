@@ -134,7 +134,6 @@ bool CollisionStaticDynamicRectRect(Collider::AABB Rect1, Collider::AABB Rect2) 
 bool MovingPointRectCollision(Vec2 origin, Vec2 direction, Collider::AABB target, Vec2& contactNormal, float& contactTime) {
 	float tNearX = (target.min.x - origin.x) / direction.x;
 	float tFarX = (target.max.x - origin.x) / direction.x;
-	
 	if (direction.x == 0) {
 		if ((target.min.x - origin.x) >= 0) {
 			tNearX = std::numeric_limits<float>::infinity();
@@ -151,13 +150,11 @@ bool MovingPointRectCollision(Vec2 origin, Vec2 direction, Collider::AABB target
 			tFarX = -std::numeric_limits<float>::infinity();
 		}
 	}
-
 	if (tNearX > tFarX) {
 		std::swap(tNearX, tFarX);
 	}
 	float tNearY = (target.min.y - origin.y) / direction.y;
 	float tFarY = (target.max.y - origin.y) / direction.y;
-
 	if (direction.y == 0) {
 		if ((target.min.y - origin.y) >= 0) {
 			tNearY = std::numeric_limits<float>::infinity();
@@ -175,14 +172,11 @@ bool MovingPointRectCollision(Vec2 origin, Vec2 direction, Collider::AABB target
 	if (tNearY > tFarY) {
 		std::swap(tNearY, tFarY);
 	}
-	
 	contactTime = std::max(tNearX, tNearY);
 	float tFarthest = std::min(tFarX, tFarY);
 	if (tFarthest < 0) {
 		return false;
 	}
-
-
 	if (tNearX > tNearY) {
 
 		if (abs(target.min.x - origin.x) < abs(target.max.x - origin.x)) {

@@ -269,8 +269,6 @@ void Physics::CollisionResponse(CollisionMessage* msg) {
 
 	pBody1->velocity = pBody1->velocity * (msg->GetFirstCollider()->contactTime) + (pBody1->forceManager.CalculateResultantForce() * pBody1->mass) * static_cast<float>(sysManager->fixedDeltaTime);
 	pBody2->velocity = pBody2->velocity * (msg->GetSecondCollider()->contactTime) + (pBody2->forceManager.CalculateResultantForce() * pBody2->mass) * static_cast<float>(sysManager->fixedDeltaTime);
-
-
 }
 
 

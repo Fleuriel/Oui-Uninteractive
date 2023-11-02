@@ -11,7 +11,6 @@ void Scene1::Load(){
 	objectFactory->LoadPrefab(FILEPATH_PREFAB);
 }
 void Scene1::Initialize() {
-
 	#ifdef _DEBUG
 		std::cout << "\nDe-serializing objects from JSON file..." << std::endl;
 	#endif
@@ -20,30 +19,6 @@ void Scene1::Initialize() {
 	#ifdef _DEBUG
 		std::cout << "De-serializing objects from JSON file... completed." << std::endl;
 	#endif
-
-	/*#ifdef _DEBUG
-		std::cout << "\nBuilding an object from player prefab..." << std::endl;
-	#endif
-
-		objectFactory->BuildObjectFromPrefab("PlayerObjFromPrefab", "Player");
-
-	#ifdef _DEBUG	
-		std::cout << "Building an object from player prefab... completed." << std::endl;
-	#endif*/
-
-	/*#ifdef _DEBUG	
-		std::cout << "\nCloning object with ID 4..." << std::endl;
-	#endif
-		//AI OBJECT
-
-		objectFactory->CloneObject(1);
-
-	#ifdef _DEBUG	
-		std::cout << "Cloning object with ID 4... completed." << std::endl;
-	#endif*/
-
-		// Modifying value of JSONEnemy2
-
 	#ifdef _DEBUG	
 		std::cout << "\nUpdating JSONEnemy2 during initialization..." << std::endl;
 	#endif
@@ -77,5 +52,4 @@ void Scene1::Unload() {
 	//unload objects
 }
 Scene1::~Scene1() {
-
 }

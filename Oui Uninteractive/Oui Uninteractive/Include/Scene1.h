@@ -17,7 +17,6 @@ public:
 	virtual void Draw() ;
 	virtual void Free() ;
 	virtual void Unload() ;
-
 	~Scene1();
 };
 #endif 

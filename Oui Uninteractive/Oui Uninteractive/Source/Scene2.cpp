@@ -43,7 +43,6 @@ void Scene2::Initialize() {
 #ifdef _DEBUG	
 	std::cout << "Cloning object with ID 0... completed." << std::endl;
 #endif
-
 	// Modifying value of JSONEnemy2
 
 #ifdef _DEBUG	
@@ -78,5 +77,4 @@ void Scene2::Unload() {
 	//unload objects
 }
 Scene2::~Scene2() {
-
 }

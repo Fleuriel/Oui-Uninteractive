@@ -97,7 +97,6 @@ void ColliderSystem::Update(float dt) {
 						
 					}
 				}
-
 			}
 			//reset collision data if no collision detected with anything
 			if (didCollide == false) {
@@ -106,5 +105,4 @@ void ColliderSystem::Update(float dt) {
 			}
 		}
 	}
-	
 	}
