@@ -220,7 +220,9 @@ void Editor::CreatePrefabPanel() {
 		}
 	}
 	ImGui::SameLine();
-	ImGui::Button("Save");
+	if (ImGui::Button("Save")) {
+		objectFactory->SavePrefabsToFile(FILEPATH_PREFAB);
+	}
 
 	std::map<std::string, Prefab*> copy = objectFactory->GetPrefabMap();
 	std::map<std::string, Prefab*>::iterator it = copy.begin();
