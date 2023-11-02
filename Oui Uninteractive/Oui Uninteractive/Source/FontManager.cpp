@@ -51,7 +51,7 @@ void FontManager::Initialize() {
 * @return No return
 *************************************************************************/
 void FontManager::Update(float dt) {
-
+	(void)dt;
 }
 
 

@@ -214,10 +214,10 @@ void Editor::CreateRenderWindow() {
 	ImGui::Begin("Game Window");
 	
 	if (ImGui::BeginChild("GameWindow")) {
-		gameWindowOrigin.first = ImGui::GetWindowPos().x;
-		gameWindowOrigin.second = ImGui::GetWindowPos().y;
-		gameWindowSize.first = ImGui::GetWindowSize().x;
-		gameWindowSize.second = ImGui::GetWindowSize().y;
+		gameWindowOrigin.first = static_cast<int>(ImGui::GetWindowPos().x);
+		gameWindowOrigin.second = static_cast<int>(ImGui::GetWindowPos().y);
+		gameWindowSize.first = static_cast<int>(ImGui::GetWindowSize().x);
+		gameWindowSize.second = static_cast<int>(ImGui::GetWindowSize().y);
 		// Get draw size of window
 		ImVec2 wsize = ImGui::GetWindowSize();
 		// Invert V from openGL
@@ -244,17 +244,17 @@ void Editor::CreatePrefabPanel() {
 	static std::string selectedName = it->first;
 
 	// Refresh list of prefabs from file directory
-	if (ImGui::Button("Refresh")) {
-		std::filesystem::path prefabPath{ FILEPATH_PREFAB };
-		if (std::filesystem::is_directory(prefabPath)) {
-			for (const auto& entry : std::filesystem::directory_iterator(prefabPath)) {
-				
-			}
-		}
-	}
+	//if (ImGui::Button("Refresh")) {
+	//	std::filesystem::path prefabPath{ FILEPATH_PREFAB };
+	//	if (std::filesystem::is_directory(prefabPath)) {
+	//		for (const auto& entry : std::filesystem::directory_iterator(prefabPath)) {
+	//			
+	//		}
+	//	}
+	//}
 	
 	if (saveFlag) {
-		ImGui::SameLine();
+		//ImGui::SameLine();
 		if (ImGui::Button("Save")) {
 
 			// Handle saving/deleteion for physics body component
@@ -349,7 +349,7 @@ void Editor::CreatePrefabPanel() {
 		ImGui::BeginGroup();
 		ImGui::BeginChild("item view", ImVec2(0, -ImGui::GetFrameHeightWithSpacing())); // Leave room for 1 line below
 		ImGui::SeparatorText("Details");
-		ImGui::Text("Prefab Type: %s", copy[selectedName]->GetType());
+		ImGui::Text("Prefab Type: %s", copy[selectedName]->GetType().c_str());
 		ImGui::Text("Active Components:");
 		// If selected prefab has no components
 		if (copy[selectedName]->GetPrefabComponentList().empty()) {

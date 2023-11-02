@@ -78,7 +78,7 @@ void UIManager::Update(float dt) {
 					std::cout << "Current Coords: " << convertedMousePos.first << ", " << convertedMousePos.second << '\t';
 					std::cout << collider->boundingbox->min.x << ", " << collider->boundingbox->min.y <<'\t' << collider->boundingbox->max.x << ", " << collider->boundingbox->max.y << '\n';
 
-					if (CollisionMouseRect(*(collider->boundingbox), convertedMousePos.first, convertedMousePos.second)) {
+					if (CollisionMouseRect(*(collider->boundingbox), static_cast<int>(convertedMousePos.first), static_cast<int>(convertedMousePos.second))) {
 						std::cout << "YESSS";
 					}
 				}
