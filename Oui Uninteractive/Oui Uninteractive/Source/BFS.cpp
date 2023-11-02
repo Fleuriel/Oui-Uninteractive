@@ -70,7 +70,8 @@ void BFS::CreateGrid() {
             for (int j{}; j < cols; ++j) {
                 if (gameMap[i][j] == 1) {
                     // Create walls
-                    GameObject* wall = objectFactory->BuildObjectRunTime("Wall", "Wall");
+                    std::string wallName = "Wall" + std::to_string((rows * i) + j) ;
+                    GameObject* wall = objectFactory->BuildObjectRunTime(wallName, "Wall");
                     objectFactory->AddComponent(ComponentType::TRANSFORM, wall);
 
                     wall->Initialize();

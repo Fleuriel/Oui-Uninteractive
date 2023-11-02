@@ -169,9 +169,9 @@ void Editor::CreateMasterPanel() {
 	ImGui::Checkbox("Objects Panel", &panelList.objectPanel); // Checkbox for object manager panel
 	ImGui::Checkbox("Asset Browser", & panelList.assetBrowserPanel); // Checkbox for asset browser
 	ImGui::Checkbox("Debug Panel", &panelList.debugPanel); // Checkbox for debug panel
+	ImGui::SeparatorText("Scene controls");
 	static int selectedScene = 0;
 	static std::string sceneFileName;
-	
 	// Render drop menu for scene file selector
 	if (ImGui::BeginCombo("Scene File", assetManager.scenes[selectedScene].c_str())) {
 		for (int i = 0; i < assetManager.scenes.size(); i++) {
@@ -350,7 +350,9 @@ void Editor::CreatePrefabPanel() {
 		ImGui::BeginChild("item view", ImVec2(0, -ImGui::GetFrameHeightWithSpacing())); // Leave room for 1 line below
 		ImGui::SeparatorText("Details");
 		ImGui::Text("Prefab Type: %s", copy[selectedName]->GetType().c_str());
+		ImGui::PushStyleColor(ImGuiCol_Text, greenColour);
 		ImGui::Text("Active Components:");
+		ImGui::PopStyleColor();
 		// If selected prefab has no components
 		if (copy[selectedName]->GetPrefabComponentList().empty()) {
 			ImGui::Text("Selected Prefab has no components");

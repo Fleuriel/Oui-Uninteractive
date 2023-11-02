@@ -114,7 +114,7 @@ private:
 // Store panel selection
 struct Panels {
 	bool gamePanel{ true };
-	bool prefabPanel{ true };
+	bool prefabPanel;
 	bool soundPanel;
 	bool objectPanel;
 	bool assetBrowserPanel;
