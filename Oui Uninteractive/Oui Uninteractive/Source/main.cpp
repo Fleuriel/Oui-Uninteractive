@@ -106,7 +106,7 @@ int main(){
 	//	GameCleanup();
 		sceneManager->Free();
 		// QUIT [ After cleanup ]
-		if (CurrentGameState == STATE_QUIT)
+		if (sceneManager->currSceneID == STATE_QUIT)
 			break;
 
 		std::cout << "State is NOT Quit\n";
