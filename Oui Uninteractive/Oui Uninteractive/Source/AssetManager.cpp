@@ -795,7 +795,7 @@ bool AssetManager::ReloadSFX() {
  *************************************************************************/
 bool AssetManager::ReloadSounds() {
     // Return true if free and load successfully
-    return (AssetManager::FreeSounds() && AssetManager::LoadSounds());
+    // return (AssetManager::FreeSounds() && AssetManager::LoadSounds());
 
     // Reload BGM & SFX
     bool bgmReloadResult{ AssetManager::ReloadBGM() }, sfxReloadResult{ AssetManager::ReloadSFX() };

@@ -74,7 +74,7 @@ OpenGLObject::OpenGLModel mdl;
 float positionX = 0, positionY = 0;
 float angle;
 
-float triggerEveryQuarterSecond;
+double triggerEveryQuarterSecond;
 
 bool togglePolygonMode = false;
 // For Input
@@ -482,7 +482,7 @@ void OpenGLApplication::OpenGLUpdate() {
 	// Clear the Color Buffer Bit to enable 'reloading'
 	
 
-	background.Update(0, 0, windowSize.first, windowSize.second);
+	background.Update(0, 0, static_cast<float>(windowSize.first), static_cast<float>(windowSize.second));
 	// Draws the Background
 	background.Draw();
 

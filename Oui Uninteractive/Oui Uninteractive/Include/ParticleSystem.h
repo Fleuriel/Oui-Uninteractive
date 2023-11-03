@@ -83,7 +83,7 @@ public:
     void Draw();
 
     OpenGLObject object;
-    int ID;
+    size_t ID;
     bool visibility;
 private:
     Vector2D velocity;  //stores the speed and direction of particle movement
