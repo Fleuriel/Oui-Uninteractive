@@ -173,12 +173,12 @@ void Editor::CreateMasterPanel() {
 	static int selectedScene = 0;
 	static std::string sceneFileName;
 	// Render drop menu for scene file selector
-	if (ImGui::BeginCombo("Scene File", assetManager.scenes[selectedScene].c_str())) {
-		for (int i = 0; i < assetManager.scenes.size(); i++) {
+	if (ImGui::BeginCombo("Scene File", assetManager.GetScene(selectedScene).c_str())) {
+		for (int i = 0; i < assetManager.GetNumberOfScenes(); i++) {
 			bool isSelected = (i == selectedScene);
-			if (ImGui::Selectable(assetManager.scenes[i].c_str(), isSelected)) {
+			if (ImGui::Selectable(assetManager.GetScene(i).c_str(), isSelected)) {
 				selectedScene = i;
-				sceneFileName = "assets/scenes/" + assetManager.scenes[i];
+				sceneFileName = "assets/scenes/" + assetManager.GetScene(i);
 			}
 			if (isSelected) {
 				ImGui::SetItemDefaultFocus();

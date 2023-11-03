@@ -53,13 +53,12 @@ AssetManager::~AssetManager()
  * @return None.
  *************************************************************************/
 void AssetManager::LoadAll() {
-    std::cout 
-    << ((AssetManager::LoadTextures()) ? "Textures loaded successfully" : "Failed to load textures") << std::endl
-    << ((AssetManager::LoadSounds()) ? "Sounds loaded successfully" : "Failed to load sounds") << std::endl
-    << ((AssetManager::LoadFonts()) ? "Fonts loaded successfully" : "Failed to load fonts") << std::endl
-    << ((AssetManager::LoadScenes()) ? "Scenes loaded successfully" : "Failed to load scenes") << std::endl
-    << ((AssetManager::LoadFonts()) ? "Fonts loaded successfully" : "Failed to load fonts") << std::endl;
-    LoadSprites();
+    std::cout
+        << ((AssetManager::LoadTextures()) ? "Textures loaded successfully" : "Failed to load textures") << std::endl
+        << ((AssetManager::LoadSprites()) ? "Sprites loaded successfully" : "Failed to load sprites") << std::endl
+        << ((AssetManager::LoadSounds()) ? "Sounds loaded successfully" : "Failed to load sounds") << std::endl
+        << ((AssetManager::LoadFonts()) ? "Fonts loaded successfully" : "Failed to load fonts") << std::endl
+        << ((AssetManager::LoadScenes()) ? "Scenes loaded successfully" : "Failed to load scenes") << std::endl;
 }
 
 /**************************************************************************
@@ -68,10 +67,12 @@ void AssetManager::LoadAll() {
  * @return None.
  *************************************************************************/
 void AssetManager::FreeAll() {
-    std::cout 
-    << ((AssetManager::FreeTextures()) ? "Textures cleared successfully" : "Failed to clear textures") << std::endl
-    << ((AssetManager::FreeSounds()) ? "Sounds freed successfully" : "Failed to free sounds") << std::endl
-    << ((AssetManager::FreeFonts()) ? "Fonts freed successfully" : "Failed to free fonts") << std::endl;
+    std::cout
+        << ((AssetManager::FreeTextures()) ? "Textures freed successfully" : "Failed to free textures") << std::endl
+        << ((AssetManager::FreeSprites()) ? "Sprites freed successfully" : "Failed to free sprites") << std::endl
+        << ((AssetManager::FreeSounds()) ? "Sounds freed successfully" : "Failed to free sounds") << std::endl
+        << ((AssetManager::FreeFonts()) ? "Fonts freed successfully" : "Failed to free fonts") << std::endl
+        << ((AssetManager::FreeScenes()) ? "Scenes freed successfully" : "Failed to free scenes") << std::endl;
 
 }
 
@@ -83,8 +84,10 @@ void AssetManager::FreeAll() {
 void AssetManager::ReloadAll() {
     std::cout
         << ((AssetManager::ReloadTextures()) ? "Textures reloaded successfully" : "Failed to reload textures") << std::endl
+        << ((AssetManager::ReloadSprites()) ? "Sprites reloaded successfully" : "Failed to reload Sprites") << std::endl
         << ((AssetManager::ReloadSounds()) ? "Sounds reloaded successfully" : "Failed to reload sounds") << std::endl
-        << ((AssetManager::ReloadFonts()) ? "Fonts reloaded successfully" : "Failed to reload fonts") << std::endl;
+        << ((AssetManager::ReloadFonts()) ? "Fonts reloaded successfully" : "Failed to reload fonts") << std::endl
+        << ((AssetManager::ReloadScenes()) ? "Scenes reloaded successfully" : "Failed to reload scenes") << std::endl;
 }
 
 /**************************************************************************
@@ -365,20 +368,6 @@ bool AssetManager::FreeSprites() {
 bool AssetManager::ReloadSprites() {
     return (AssetManager::FreeSprites() && AssetManager::LoadSprites());
 }
-
-
-
-bool AssetManager::LoadScenes() {
-    for (const auto& entry : fs::directory_iterator(FILEPATH_SCENES)) {
-        scenes.push_back(entry.path().filename().string());
-    }
-    return true;
-}
-
-
-
-
-
 
 
 
@@ -663,4 +652,36 @@ bool AssetManager::ReloadFonts() {
 
 bool AssetManager::FontFound(std::map<std::string, std::map<char, FontManager::Character>>::iterator fontIter) {
     return fontIter != fontCharsMap.end();
+}
+
+bool AssetManager::LoadScenes() {
+    bool result{true};
+    if (fs::is_directory(FILEPATH_SCENES)) {
+        for (const auto& entry : fs::directory_iterator(FILEPATH_SCENES)) {
+            scenes.push_back(entry.path().filename().string());
+        }
+    }
+    else {
+        // Print error
+        std::cout << "The specified scenes path is not a directory." << std::endl;
+        result = false;
+    }
+    return result;
+}
+
+std::string AssetManager::GetScene(int index) {
+    return scenes[index];
+}
+
+bool AssetManager::FreeScenes() {
+    scenes.clear();
+    return scenes.empty();
+}
+
+bool AssetManager::ReloadScenes() {
+    return (AssetManager::FreeScenes() && AssetManager::LoadScenes());
+}
+
+int AssetManager::GetNumberOfScenes() {
+    return scenes.size();
 }

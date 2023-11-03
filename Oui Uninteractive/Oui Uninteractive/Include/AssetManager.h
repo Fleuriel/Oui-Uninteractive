@@ -72,8 +72,6 @@ public:
 	bool FreeTextures();							//Function to free textures
 	bool ReloadTextures();							//Function to reload textures
 
-	// Scene functions
-	bool LoadScenes();
 
 	// Sprite functions
 	bool LoadSprites();
@@ -97,17 +95,23 @@ public:
 	bool LoadFonts();								//Function to load fonts
 	bool FreeFonts();								//Function to free fonts
 	bool ReloadFonts();								//Function to reload fonts
-	bool FontFound(std::map<std::string, std::map<char, FontManager::Character>>::iterator);
+	bool FontFound(std::map<std::string, std::map<char, FontManager::Character>>::iterator); //Function to search if font exists
 
+
+	// Scene functions
+	bool LoadScenes();								//Function to load scenes
+	bool FreeScenes();								//Function to free scenes
+	bool ReloadScenes();							//Function to reload scenes
 
 	// Access Asset functions
 	int GetTexture(std::string);					//Function to access textures
-	int GetSprite(std::string);
+	int GetSprite(std::string);						//Function to access sprite's texture
 	FMOD::Sound* GetBGM(int);						//Function to access BGM sounds
 	FMOD::Sound* GetSFX(int);						//Function to access SFX Sounds
 	std::map<std::string, std::map<char, FontManager::Character>>::iterator GetFont(std::string);
-
-	std::vector<std::string> scenes{};
+	std::string GetScene(int);
+	int GetNumberOfScenes();
+	
 private:
 	//Containers	
 	std::map<std::string, int> textures{};
@@ -115,6 +119,7 @@ private:
 	std::vector<FMOD::Sound*> bgmSounds{};
 	std::vector<FMOD::Sound*> sfxSounds{};
 	std::map<std::string, std::map<char, FontManager::Character>> fontCharsMap; // This map stores all glyphs for all fonts
+	std::vector<std::string> scenes{};
 };
 
 extern AssetManager assetManager;

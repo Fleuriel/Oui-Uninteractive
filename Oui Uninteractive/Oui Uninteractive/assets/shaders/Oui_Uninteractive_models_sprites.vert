@@ -22,9 +22,9 @@ void main(void){
 	vColor = aVertexColor;
 
 	float width = aVertexTexture.x / c;
-	float height = aVertexTexture.y / r;
+	float height = float(aVertexTexture.y) / float(r);
 
-	float heightoffset = (fr/c)*height;
+
 
 	vTex = vec2(width , height) + vec2(float(fr)/float(r*c),0);
 
