@@ -119,7 +119,7 @@ void Particle::Update() {
     //std::cout << "XA : " << object.position.x << std::endl;
     //std::cout << "YA : " << object.position.y << std::endl;
 
-    if ((lifespan -= GetDT())<0)
+    if ((lifespan -= static_cast<float>(GetDT()))<0)
         RemoveParticle();
     //std::cout << lifespan;
 }
