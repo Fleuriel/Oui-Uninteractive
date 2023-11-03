@@ -1018,5 +1018,5 @@ bool AssetManager::ReloadScenes() {
  * @return The number of available scenes.
  *************************************************************************/
 int AssetManager::GetNumberOfScenes() {
-    return scenes.size();
+    return static_cast<int>(scenes.size());
 }

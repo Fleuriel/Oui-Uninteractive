@@ -35,8 +35,6 @@ BFS::BFS(int r, int c) : rows(r), cols(c) {
     visited = std::vector<std::vector<bool>>(rows, std::vector<bool>(cols, false));
     parent = std::vector<std::vector<Node>>(rows, std::vector<Node>(cols, Node(-1, -1)));
 
-    gridCreated = false;
-
     // Test walls
     gameMap[3][0] = 1;
     gameMap[1][1] = 1;
@@ -111,7 +109,7 @@ bool BFS::CreateGrid() {
         }
     }
 
-    gridCreated = true;
+    return true;
 }
 
 /**************************************************************************

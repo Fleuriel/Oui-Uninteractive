@@ -47,9 +47,6 @@ private:
     std::vector<std::vector<Node>> parent;
 
 public:
-    // Check if the grid has been created
-    bool gridCreated;
-
     /**************************************************************************
     * @brief Constructor
     * @param r - rows of grid
