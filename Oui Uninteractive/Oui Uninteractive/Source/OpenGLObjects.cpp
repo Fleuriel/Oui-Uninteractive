@@ -570,7 +570,7 @@ void OpenGLObject::DrawCollisionBox(Vector2D min, Vector2D max){
 	//	0.0f, 0.0f, 1.0f
 	//);
 
-	model_To_NDC_xform = ScaleToWorldToNDC; /** Translate*/;
+	model_To_NDC_xform = cameraObject.World_to_NDC_xform; /** Translate*/;
 
 	// Define the vertices of the collision box in local coordinates (before transformation)
 	glm::vec2 localVertices[4] = {
