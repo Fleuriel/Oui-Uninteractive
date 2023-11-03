@@ -54,9 +54,7 @@ void Scene2::Update(float dt) {
 	if (inputSystem.GetKeyState(GLFW_KEY_0)) {
 		sceneManager->nextSceneID = GameStateList::STATE_GRAPHICS_TEST;
 	}
-	if (GET_COMPONENT(objectFactory->GetGameObjectByID(0), Transform, ComponentType::TRANSFORM)->position.x > 1000) {
-		sceneManager->nextSceneID = GameStateList::STATE_GRAPHICS_TEST;
-	}
+	
 	//scene transitions
 }
 void Scene2::Draw() {
@@ -64,7 +62,7 @@ void Scene2::Draw() {
 }
 void Scene2::Free() {
 	// Save onjects to JSON
-	objectFactory->SaveObjectsToFile(FILEPATH_SCENES_TESTSCENEREADING);
+	objectFactory->SaveObjectsToFile(FILEPATH_SCENES_TESTSCENEREADING2);
 	//free object memory
 	objectFactory->DestroyAllObjects();
 }
