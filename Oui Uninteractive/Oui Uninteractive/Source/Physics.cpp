@@ -63,20 +63,15 @@ void Physics::Update(float dt) {
 			Vector2DNormalize(body->direction, body->direction + AngleToVec(body->txPtr->rotation * (static_cast<float>(M_PI) / 180.0f)));
 			
 			//Check update
-
 			//calculate physics
 			//Direction
 			
 			Vec2 summedForce = body->forceManager.CalculateResultantForce();
-			body->acceleration = (summedForce) * body->mass;
-			/*
-			if (body->GetOwner()->GetGameObjectID() == 0) {
-				std::cout << "Acceleration: " << body->acceleration.x << " : " << body->acceleration.y << "\n";
-			}*/
+			body->acceleration = (summedForce)*body->mass;
+
 			//Velocity
 			Vec2 originalVelocity = body->velocity;
 			Collider* collider = GET_COMPONENT(body->GetOwner(), Collider, ComponentType::COLLIDER);
-			//body->velocity = body->velocity + body->acceleration * GetDT() * collider->contactTime;//* sysManager->fixedDeltaTime;
 			Vec2 previousVelocity = body->velocity;
 			if (collider != nullptr) {
 
