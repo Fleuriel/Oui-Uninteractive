@@ -1,3 +1,13 @@
+/**************************************************************************
+ * @file Transition.cpp
+ * @author Aaron Chan Jun Xiang
+ * @par DP email: aaronjunxiang.chan@digipen.edu
+ * @par Course: CSD 2401
+ * @par Software Engineering Project 3
+ * @date 09-05-2023
+ * @brief Implementation of transition-related functions and animations.
+ *************************************************************************/
+
 #include <Transition.h>
 //#include <OpenGLApplication.h>
 #include <ParticleSystem.h>
@@ -10,8 +20,24 @@ std::vector<double>timers(numberOfElements);
 std::vector<std::pair<double, double>> gridInfoContainer[numberOfElements];
 std::vector<int> IDContainer;
 
+int particleNumber{};
+double Animationduration;
+
 extern ParticleSystem particleSystem;
 
+
+/**************************************************************************
+ * @brief Generate a grid of coordinates.
+ *
+ * This function generates a grid of coordinates for a specified number of
+ * rows and columns. The grid is positioned at the center of the screen
+ * and evenly distributes the coordinates within the window size.
+ *
+ * @param rows The number of rows in the grid.
+ * @param columns The number of columns in the grid.
+ *
+ * @return A vector of coordinate pairs representing the grid.
+ *************************************************************************/
 std::vector<std::pair<double, double>> Grid(int rows, int columns) {
 
 	double width{ static_cast<double>(windowSize.first / columns) }, height{ static_cast<double>(windowSize.second / rows) };
@@ -40,6 +66,13 @@ std::vector<std::pair<double, double>> Grid(int rows, int columns) {
 	return gridInfo;
 }
 
+/**************************************************************************
+ * @brief Update animation timers.
+ *
+ * This function updates animation timers for a set of elements. It checks
+ * if the timer switch is active for each element and increments the timers
+ * accordingly.
+ *************************************************************************/
 void UpdateAnimationTimers() {
 	for (int i = 0; i < numberOfElements; ++i) {
 		if (timerSwitches[i]) {
@@ -47,8 +80,16 @@ void UpdateAnimationTimers() {
 		}
 	}
 }
-int particleNumber{};
-double Animationduration;
+
+/**************************************************************************
+ * @brief Update animation based on timers and particle visibility.
+ *
+ * This function updates the animation for particles based on timers and
+ * their visibility. It checks the timer switch for the 'animationTopLeftToBottomRight'
+ * animation and increments the particleNumber when a certain time threshold is reached.
+ * The function also handles resetting the animation when all particles have been shown
+ * or when the animation duration is exceeded.
+ *************************************************************************/
 void UpdateAnimation() {
 	if (timerSwitches[animationTopLeftToBottomRight] == true) {
 		
@@ -75,6 +116,18 @@ void UpdateAnimation() {
 	}
 }
 
+/**************************************************************************
+ * @brief Start the 'animationTopLeftToBottomRight' animation.
+ *
+ * This function initiates the animation with the specified number of rows, columns, and duration.
+ * It sets the timer switch for the 'animationTopLeftToBottomRight' animation, generates the grid
+ * information, and creates particles with the given dimensions and animation duration. The animation
+ * will run for the specified duration and then keep the particles visible for an additional 'postAnimationDuration'.
+ *
+ * @param rows The number of rows in the grid.
+ * @param columns The number of columns in the grid.
+ * @param duration The duration of the animation.
+ *************************************************************************/
 void Animation_Top_Left_To_Bottom_Right(int rows, int columns , double duration) {
 	if (timerSwitches[animationTopLeftToBottomRight] == false) {
 		timerSwitches[animationTopLeftToBottomRight] = true;
@@ -91,6 +144,4 @@ void Animation_Top_Left_To_Bottom_Right(int rows, int columns , double duration)
 	}
 }
 
-void Animation_Spiral_From_Top_Left(int rows, int columns, double duration) {
-	
-}
+//void Animation_Spiral_From_Top_Left(int rows, int columns, double duration) {}
