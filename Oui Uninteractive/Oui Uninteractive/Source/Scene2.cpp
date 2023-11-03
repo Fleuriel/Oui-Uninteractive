@@ -8,7 +8,6 @@ void Scene2::Load() {
 #ifdef _DEBUG 
 	std::cout << "\nLoading prefabs from JSON file..." << std::endl;
 #endif
-	//objectFactory->LoadPrefab("assets/prefab/Prefab.JSON");
 }
 void Scene2::Initialize() {
 
@@ -16,7 +15,7 @@ void Scene2::Initialize() {
 	std::cout << "\nDe-serializing objects from JSON file..." << std::endl;
 #endif
 	//PLAYER OBJECT
-	objectFactory->BuildObjectFromFile("assets/scenes/TestsceneReading2.JSON");
+	objectFactory->BuildObjectFromFile(FILEPATH_SCENES_TESTSCENEREADING2);
 #ifdef _DEBUG
 	std::cout << "De-serializing objects from JSON file... completed." << std::endl;
 #endif
@@ -36,10 +35,6 @@ void Scene2::Initialize() {
 #endif
 	//AI OBJECT
 
-	objectFactory->CloneObject(1);
-
-	GET_COMPONENT(objectFactory->GetGameObjectByID(objectFactory->GetGameObjectIDMap().size() - 1), Transform, ComponentType::TRANSFORM)->position.y = 50;
-
 #ifdef _DEBUG	
 	std::cout << "Cloning object with ID 0... completed." << std::endl;
 #endif
@@ -48,7 +43,7 @@ void Scene2::Initialize() {
 #ifdef _DEBUG	
 	std::cout << "\nUpdating JSONEnemy2 during initialization..." << std::endl;
 #endif
-	objectFactory->SaveObjectsToFile("assets/scenes/TestsceneWriting.JSON");
+	objectFactory->SaveObjectsToFile(FILEPATH_SCENES_TESTSCENEREADING2);
 
 #ifdef _DEBUG	
 	std::cout << "Updating JSONEnemy2 during initialization... completed." << std::endl;
@@ -69,7 +64,7 @@ void Scene2::Draw() {
 }
 void Scene2::Free() {
 	// Save onjects to JSON
-	objectFactory->SaveObjectsToFile("assets/scenes/TestsceneWriting.JSON");
+	objectFactory->SaveObjectsToFile(FILEPATH_SCENES_TESTSCENEREADING);
 	//free object memory
 	objectFactory->DestroyAllObjects();
 }

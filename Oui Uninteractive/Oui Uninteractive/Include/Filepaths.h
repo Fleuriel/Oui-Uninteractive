@@ -37,6 +37,7 @@
 #define FILEPATH_SCENES						std::string("assets/scenes")
 #define FILEPATH_SCENES_TESTWALLS			std::string("assets/scenes/TestWalls.JSON")
 #define FILEPATH_SCENES_TESTSCENEREADING	std::string("assets/scenes/TestsceneWriting.JSON")
+#define FILEPATH_SCENES_TESTSCENEREADING2	std::string("assets/scenes/TestsceneReading2.JSON")
 #define FILEPATH_SCENES_TESTSCENEWRITING	std::string("assets/scenes/TestsceneWriting.JSON")
 
 // PREFABS //
