@@ -433,13 +433,13 @@ void OpenGLApplication::OpenGLUpdate() {
 	if (inputSystem.GetScrollState() == 1) {
 #ifdef _DEBUG
 		std::cout << "SCROLL UP\n";
-		std::cout << "Total Scroll Y Offset:" << mouse_scroll_total_Y_offset << "\n";
+		std::cout << "Total Scroll Y Offset:" << inputSystem.GetScrollTotalYOffset() << "\n";
 #endif
 	}
 	if (inputSystem.GetScrollState() == -1) {
 #ifdef _DEBUG
 		std::cout << "SCROLL DOWN\n";
-		std::cout << "Total Scroll Y Offset:" << mouse_scroll_total_Y_offset << "\n";
+		std::cout << "Total Scroll Y Offset:" << inputSystem.GetScrollTotalYOffset() << "\n";
 #endif
 	}
 	//keyStates[GLFW_KEY_RIGHT_SHIFT] == 1
