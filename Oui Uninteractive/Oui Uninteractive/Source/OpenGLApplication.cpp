@@ -259,6 +259,8 @@ void OpenGLApplication::OpenGLUpdate() {
 	triggerEveryQuarterSecond += GetDT();
 	if (triggerEveryQuarterSecond >= 0.25) {
 		spriteframe++;
+		if (spriteframe >= 6)
+			spriteframe = 0;
 		triggerEveryQuarterSecond = 0;
 	}
 
