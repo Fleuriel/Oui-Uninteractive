@@ -64,6 +64,7 @@ public:
 	static bool renderBoundingBox;
 
 
+
 	int TagID;						// Id for the Model to Texture
 
 	glm::vec2 scaleModel;			// Scale for the Model
