@@ -33,12 +33,12 @@
             }
         },
         {
-            "Name": "JSONEnemy1",
-            "Type": "Enemy",
+            "Name": "Exit Button",
+            "Type": "Button",
             "Components": {
                 "PhysicsBody": {
-                    "VelocityX": -1.297938346862793,
-                    "VelocityY": -291.6637268066406,
+                    "VelocityX": -0.002570402342826128,
+                    "VelocityY": 290.00006103515625,
                     "RotationSpeed": 20.0,
                     "Speed": 120.0,
                     "Mass": 10.0,

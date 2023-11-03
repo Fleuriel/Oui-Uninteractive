@@ -293,14 +293,9 @@ void OpenGLApplication::OpenGLUpdate() {
 	
 	OpenGLObject::FrameBufferMouseCoords(windowNew, &xpos, &ypos, OpenGLObject::cameraObject);
 
-	//std::cout << "AFTER " << xpos << '\t' << ypos << '\n';
-
-	//std::cout << "After: " << "X: " << xpos << "  , Y: " << ypos << '\n';
-	
 
 
-
-		// Clear the FBO and render.
+	// Clear the FBO and render.
 	glClear(GL_COLOR_BUFFER_BIT);
 
 #ifdef _DEBUG
@@ -655,5 +650,4 @@ void OpenGLApplication::OpenGLWindowResizeCallback(GLFWwindow* window2, int widt
 	Editor::gameWindowSize.first = width;
 	Editor::gameWindowSize.second = height;
 
-	std::cout << width << '\t' << height << '\n';
 }

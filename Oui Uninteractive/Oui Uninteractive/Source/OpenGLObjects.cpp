@@ -580,10 +580,10 @@ void OpenGLObject::DrawCollisionBox(Vector2D min, Vector2D max){
 	//std::cout << Editor::gameWindowOrigin.first << '\t' << Editor::gameWindowOrigin.second << "\tWin Size\t" << Editor::gameWindowSize.first << '\t' << Editor::gameWindowSize.second << '\n';
 
 
-	//MinimumX += Editor::gameWindowOrigin.first ;
-	//MaximumX += Editor::gameWindowOrigin.first ;
-	//MinimumY += Editor::gameWindowOrigin.second;
-	//MaximumY += Editor::gameWindowOrigin.second;
+//	MinimumX += Editor::gameWindowOrigin.first ;
+//	MaximumX += Editor::gameWindowOrigin.first ;
+	//MinimumY = Editor::gameWindowOrigin.second;
+	//MaximumY = Editor::gameWindowOrigin.second;
 
 
 
@@ -796,7 +796,6 @@ void OpenGLObject::Camera2D::Update(GLFWwindow* camWindow, int positionX, int po
 		height = max_height;
 	}
 
-
 	/*
 					< Initialize for initial creation >
 	Create the Frame Buffer Width and Height(This must be here as the
@@ -820,23 +819,13 @@ void OpenGLObject::Camera2D::Update(GLFWwindow* camWindow, int positionX, int po
 	//std::cout << aspectRatio << '\t' << static_cast<float>(Editor::gameWindowSize.first) / static_cast<float>(Editor::gameWindowSize.second) << '\n';
 
 
-	// Camera to NDC
-	//CameraWindow_to_NDC_xform = glm::mat3{
-	//	2.f / (fb_width), 0, 0,
-	//	0, 2.f / fb_height , 0,
-	//	0, 0, 1
-	//};
+	// Set the Camer Window to NDC xform
 	CameraWindow_to_NDC_xform = glm::mat3{
 		2.f / (height * aspectRatio), 0, 0,
 		0, 2.f / height , 0,
 		0, 0, 1
 	};
 
-	//glm::mat3 ScaleToWorldToNDC = glm::mat3(
-	//	2.0f / (Editor::gameWindowSize.first), 0.0f, 0.0f,
-	//	0.0f, 2.0f / (Editor::gameWindowSize.second), 0.0f,
-	//	0.0f, 0.0f, 1.0f
-	//);
 
 	// World to NDC transform
 	// Set the World to NDC transform for the camera
@@ -1003,7 +992,7 @@ void OpenGLObject::FrameBufferMouseCoords(GLFWwindow* originalWindow, double  *x
 
 	// set values of *x and *y.
 	*x = (valueX - Editor::gameWindowOrigin.first);
-	*y = (valueY- Editor::gameWindowOrigin.second);
+	*y = (valueY - Editor::gameWindowOrigin.second);
 	//std::cout << '\n';
 	//std::cout << *x<< '\t' << *y << '\n';
 
