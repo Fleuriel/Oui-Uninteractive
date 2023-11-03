@@ -1,11 +1,12 @@
 /**************************************************************************
  * @file AssetManager.h
- * @author Mark Low
- * @par DP email: l.wangchunmark@digipen.edu
+ * @author Aaron Chan Jun Xiang
+ * @par DP email: aaronjunxiang.chan@digipen.edu
  * @par Course: CSD 2401
  * @par Software Engineering Project 3
  * @date 09-05-2023
- * @brief This source file contains the decleration of the AssetManager class used to handle asset management
+ * @brief This source file contains the declaration of the Sprite and 
+		  AssetManager class used to handle asset management
  *************************************************************************/
 #ifndef ASSET_MANAGER_H
 #define ASSET_MANAGER_H
@@ -19,36 +20,36 @@ class Sprite
 {
 public:
 
-	Sprite();
-	~Sprite();
+	Sprite();										//constructor for sprite class
+	~Sprite();										//destructor for sprite class
 
-	bool SetTexture(int);
-	int GetTexture();
+	bool SetTexture(int);							//sets the texture to be used
+	int GetTexture();								//retrieves the texture to be used
 
-	bool SetRowsAndColumns(int, int);
-	int GetRows();
-	int GetColumns();
+	bool SetRowsAndColumns(int, int);				//sets the number of rows and columns
+	int GetRows();									//retrieves the number of rows
+	int GetColumns();								//retrieves the number of columns
 
-	bool SetWidthAndHeight(int, int);
-	int GetWidth();
-	int GetHeight();
+	bool SetWidthAndHeight(int, int);				//sets the frame width and height
+	int GetWidth();									//retrieves the frame width
+	int GetHeight();								//retrieves the frame height
+	
+	bool SetTextureWidthAndHeight(int, int);		//sets the texture width and height
+	int GetTextureWidth();							//retrieves the texture width
+	int GetTextureHeight();							//retrieves the texture height
 
-	bool SetTextureWidthAndHeight(int, int);
-	int GetTextureWidth();
-	int GetTextureHeight();
-
-	bool AddCoordinates(int, int);
+	bool AddCoordinates(int, int);					//stores coordinates into the coordinate container
 
 private:
-	int texture{};
-	int rows{};
-	int columns{};
-	int frameNum{};
-	int width{};
-	int height{};
-	int texWidth{};
-	int texHeight{};
-	std::vector<std::pair<int, int>> coordinates{}; //store bottom left coordinates
+	int texture{};									//stores the texture to be used
+	int rows{};										//stores number of rows
+	int columns{};									//stores number of columns
+	int frameNum{};									//stores frame index
+	int width{};									//stores frame width
+	int height{};									//stores frame height
+	int texWidth{};									//stores texture width
+	int texHeight{};								//stores texture height
+	std::vector<std::pair<int, int>> coordinates{}; //stores bottom left coordinates
 };
 
 
@@ -74,9 +75,9 @@ public:
 
 
 	// Sprite functions
-	bool LoadSprites();
-	bool FreeSprites();
-	bool ReloadSprites();
+	bool LoadSprites();								//Function to load sprites
+	bool FreeSprites();								//Function to free sprites
+	bool ReloadSprites();							//Function to reload sprites
 
 
 	// Sound functions
@@ -92,34 +93,35 @@ public:
 	
 
 	// Font functions
-	bool LoadFonts();								//Function to load fonts
-	bool FreeFonts();								//Function to free fonts
-	bool ReloadFonts();								//Function to reload fonts
-	bool FontFound(std::map<std::string, std::map<char, FontManager::Character>>::iterator); //Function to search if font exists
+	bool LoadFonts();																			//Function to load fonts
+	bool FreeFonts();																			//Function to free fonts
+	bool ReloadFonts();																			//Function to reload fonts
+	bool FontFound(std::map<std::string, std::map<char, FontManager::Character>>::iterator);	//Function to search if font exists
 
 
 	// Scene functions
 	bool LoadScenes();								//Function to load scenes
 	bool FreeScenes();								//Function to free scenes
 	bool ReloadScenes();							//Function to reload scenes
+	int GetNumberOfScenes();						//Retrieves number of scenes
 
 	// Access Asset functions
-	int GetTexture(std::string);					//Function to access textures
-	int GetSprite(std::string);						//Function to access sprite's texture
-	FMOD::Sound* GetBGM(int);						//Function to access BGM sounds
-	FMOD::Sound* GetSFX(int);						//Function to access SFX Sounds
-	std::map<std::string, std::map<char, FontManager::Character>>::iterator GetFont(std::string);
-	std::string GetScene(int);
-	int GetNumberOfScenes();
+	int GetTexture(std::string);																	//Function to access textures
+	int GetSprite(std::string);																		//Function to access sprite's texture
+	FMOD::Sound* GetBGM(int);																		//Function to access BGM sounds
+	FMOD::Sound* GetSFX(int);																		//Function to access SFX Sounds
+	std::map<std::string, std::map<char, FontManager::Character>>::iterator GetFont(std::string);	//Function to access fonts
+	std::string GetScene(int);																		//Function to access scenes
+	
 	
 private:
 	//Containers	
-	std::map<std::string, int> textures{};
-	std::map<std::string, Sprite> sprites{};
-	std::vector<FMOD::Sound*> bgmSounds{};
-	std::vector<FMOD::Sound*> sfxSounds{};
-	std::map<std::string, std::map<char, FontManager::Character>> fontCharsMap; // This map stores all glyphs for all fonts
-	std::vector<std::string> scenes{};
+	std::map<std::string, int> textures{};										//Container for textures
+	std::map<std::string, Sprite> sprites{};									//Container for sprites
+	std::vector<FMOD::Sound*> bgmSounds{};										//Container for bgm sounds
+	std::vector<FMOD::Sound*> sfxSounds{};										//Container for sfx sounds
+	std::map<std::string, std::map<char, FontManager::Character>> fontCharsMap; //Container for all glyphs for all fonts
+	std::vector<std::string> scenes{};											//Container for scenes
 };
 
 extern AssetManager assetManager;
