@@ -5,13 +5,8 @@
  * @par Course: CSD 2401
  * @par Software Engineering Project 3
  * @date 09-05-2023
- * @brief This file does Input Handling and Callback Functions.
- *		  The functions include:
- *			- KeyCallBack
- * 			- MouseCallBack
- * 			- ScrollCallBack
- * 			- UpdateStatesForNextFrame
- * 			- WindowCloseCallback
+ * @brief This file contains the implementation of the InputKeys class, which
+ *		  provides functions to manage keyboard and mouse input states.
  *************************************************************************/
 #ifndef INPUTKEYS_H
 #define INPUTKEYS_H
@@ -26,14 +21,73 @@
 class InputSystem
 {
 public:
+
+	/**************************************************************************
+	 * @brief Constructor for the InputSystem class.
+	 * @param None
+	 * @return None
+	 *************************************************************************/
 	InputSystem();
+
+	/**************************************************************************
+	 * @brief Destructor for the InputSystem class.
+	 * @param None
+	 * @return None
+	 *************************************************************************/
 	~InputSystem();
+
+	/**************************************************************************
+	 * @brief Retrieves the state of a specific keyboard key.
+	 * @param index The index of the keyboard key to check.
+	 * @return An integer representing the state of the key: 0 for released, 1 for pressed, 2 for held.
+	 *************************************************************************/
 	int GetKeyState(int);
+
+	/**************************************************************************
+	 * @brief Sets the state of a specific keyboard key.
+	 * @param index The index of the keyboard key to set the state for.
+	 * @param value An integer representing the state to set: 0 for released, 1 for pressed, 2 for held.
+	 * @return None
+	 *************************************************************************/
 	void SetKeyState(int, int);
+
+	/**************************************************************************
+	 * @brief Retrieves the state of a specific mouse button.
+	 * @param index The index of the mouse button to check.
+	 * @return A boolean indicating the state of the mouse button: true for pressed, false for released.
+	 *************************************************************************/
 	bool GetMouseState(int);
+
+	/**************************************************************************
+	 * @brief Sets the state of a specific mouse button.
+	 * @param index The index of the mouse button to set.
+	 * @param value The new state to assign: 1 for pressed, 0 for released.
+	 *************************************************************************/
 	void SetMouseState(int, int);
+
+	/**************************************************************************
+	 * @brief Retrieves the state of the mouse scroll wheel.
+	 * @return An integer representing the scroll state: 1 for scrolling up, 0 for no scrolling, -1 for scrolling down.
+	 *************************************************************************/
 	int GetScrollState();
+
+	/**************************************************************************
+	 * @brief Sets the state of the mouse scroll wheel.
+	 * @param value An integer representing the scroll state: 1 for scrolling up, 0 for no scrolling, -1 for scrolling down.
+	 *************************************************************************/
 	void SetScrollState(int);
+
+	/**************************************************************************
+	 * @brief Updates the total Y offset of the mouse scroll wheel.
+	 * @param val The value to add to the total Y offset.
+	 *************************************************************************/
+	void UpdateScrollTotalYOffset(float);
+
+	/**************************************************************************
+	 * @brief Retrieves the total Y offset of the mouse scroll wheel.
+	 * @return The total Y offset value.
+	 *************************************************************************/
+	float GetScrollTotalYOffset();
 
 
 	/**************************************************************************
@@ -58,6 +112,10 @@ private:
 
 	// 1 for scrolling up, 0 for not scrolling, -1 for scrolling down
 	int mouseScrollState{ 0 };
+
+	// keeps track of total vertical scrolling
+	float mouse_scroll_total_Y_offset;	
+
 };
 
 

@@ -5,13 +5,8 @@
  * @par Course: CSD 2401
  * @par Software Engineering Project 3
  * @date 09-05-2023
- * @brief This file does Input Handling and Callback Functions.
- *		  The functions include:
- *			- KeyCallBack
- * 			- MouseCallBack
- * 			- ScrollCallBack
- * 			- UpdateStatesForNextFrame
- * 			- WindowCloseCallback
+ * @brief This file contains the implementation of the InputKeys class, which
+ *		  provides functions to manage keyboard and mouse input states.
  *************************************************************************/
 
 #include <gl/glew.h>
@@ -33,44 +28,98 @@ bool capsLockReleased{ true };
 bool capsLockOn{ false };
 
 // Container to store commands (not implemented yet)
-std::map<std::string, std::function<void()>> shortcuts;
+//std::map<std::string, std::function<void()>> shortcuts;
 
 //shortcuts["Ctrl+S"] = SaveFunction;
 //shortcuts["Ctrl+Z"] = UndoFunction;
 
 
+/**************************************************************************
+ * @brief Constructor for the InputSystem class.
+ * @param None
+ * @return None
+ *************************************************************************/
 InputSystem::InputSystem()
 {
 
 }
 
+/**************************************************************************
+ * @brief Destructor for the InputSystem class.
+ * @param None
+ * @return None
+ *************************************************************************/
 InputSystem::~InputSystem()
 {
 	
 }
 
+/**************************************************************************
+ * @brief Retrieves the state of a specific keyboard key.
+ * @param index The index of the keyboard key to check.
+ * @return An integer representing the state of the key: 0 for released, 1 for pressed, 2 for held.
+ *************************************************************************/
 int InputSystem::GetKeyState(int index) {
 	return keyStates[index];
 }
 
+/**************************************************************************
+ * @brief Sets the state of a specific keyboard key.
+ * @param index The index of the keyboard key to set the state for.
+ * @param value An integer representing the state to set: 0 for released, 1 for pressed, 2 for held.
+ * @return None
+ *************************************************************************/
 void InputSystem::SetKeyState(int index, int value) {
 	keyStates[index] = value;
 }
 
+/**************************************************************************
+ * @brief Retrieves the state of a specific mouse button.
+ * @param index The index of the mouse button to check.
+ * @return A boolean indicating the state of the mouse button: true for pressed, false for released.
+ *************************************************************************/
 bool InputSystem::GetMouseState(int index) {
 	return mouseButtonStates[index];
 }
 
+/**************************************************************************
+ * @brief Sets the state of a specific mouse button.
+ * @param index The index of the mouse button to set.
+ * @param value The new state to assign: 1 for pressed, 0 for released.
+ *************************************************************************/
 void InputSystem::SetMouseState(int index, int value) {
 	mouseButtonStates[index] = value;
 }
-
+/**************************************************************************
+ * @brief Retrieves the state of the mouse scroll wheel.
+ * @return An integer representing the scroll state: 1 for scrolling up, 0 for no scrolling, -1 for scrolling down.
+ *************************************************************************/
 int InputSystem::GetScrollState() {
 	return mouseScrollState;
 }
 
+/**************************************************************************
+ * @brief Sets the state of the mouse scroll wheel.
+ * @param value An integer representing the scroll state: 1 for scrolling up, 0 for no scrolling, -1 for scrolling down.
+ *************************************************************************/
 void InputSystem::SetScrollState(int value) {
 	mouseScrollState = value;
+}
+
+/**************************************************************************
+ * @brief Updates the total Y offset of the mouse scroll wheel.
+ * @param val The value to add to the total Y offset.
+ *************************************************************************/
+void InputSystem::UpdateScrollTotalYOffset(float val) {
+	mouse_scroll_total_Y_offset += val;
+}
+
+/**************************************************************************
+ * @brief Retrieves the total Y offset of the mouse scroll wheel.
+ * @return The total Y offset value.
+ *************************************************************************/
+float InputSystem::GetScrollTotalYOffset() {
+	return mouse_scroll_total_Y_offset;
 }
 
 
@@ -161,7 +210,6 @@ void MouseCallBack(GLFWwindow* window4, int button, int action, int mod) {
 
 }
 
-float mouse_scroll_total_Y_offset;	// KEEPS TRACK OF TOTAL VERTICAL SCROLLING
 
 /**************************************************************************
  * @brief Callback function for handling mouse scroll wheel input in a GLFW window.
@@ -194,7 +242,7 @@ void ScrollCallBack(GLFWwindow* window5, double xOffset, double yOffset ) {
 	//UNREFERENCED_PARAMETER(xOffset);
 
 	//Update variable to track total vertical scrolling
-	mouse_scroll_total_Y_offset += static_cast<float>(yOffset);
+	inputSystem.UpdateScrollTotalYOffset(static_cast<float>(yOffset));
 
 	//Change the scroll states based on y offset value
 	inputSystem.SetScrollState((yOffset > 0) ? 1 : (yOffset == 0) ? 0 : -1);
