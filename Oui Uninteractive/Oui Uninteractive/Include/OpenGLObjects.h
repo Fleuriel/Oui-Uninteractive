@@ -154,9 +154,9 @@ public:
 		glm::vec2 up, right;
 		glm::mat3 view_xform, CameraWindow_to_NDC_xform, World_to_NDC_xform;
 		
-		GLfloat height{ 1000 }; // Current Height of the depth i.e. Zoom
+		GLfloat height{ 1300 }; // Current Height of the depth i.e. Zoom
 		GLfloat min_height{ 0 };
-		GLfloat max_height{ 2000 };
+		GLfloat max_height{ 5000 };
 
 
 		GLfloat aspectRatio;
