@@ -62,15 +62,18 @@ void ColliderSystem::Update(float dt) {
 				float contactTime = 0;
 				bool collided = false;
 				Vec2 normal = Vec2(0, 0);
-				Vec2 nextCycleVel = pBody1->velocity + pBody1->forceManager.CalculateResultantForce() * pBody1->mass * static_cast<float>(sysManager->fixedDeltaTime);
+
+				if (pBody1 != nullptr && pBody2 != nullptr) {
+
+					Vec2 nextCycleVel = pBody1->velocity + pBody1->forceManager.CalculateResultantForce() * pBody1->mass * static_cast<float>(sysManager->fixedDeltaTime);
 				Vec2 nextCycleVel2 = pBody2->velocity + pBody2->forceManager.CalculateResultantForce() * pBody2->mass * static_cast<float>(sysManager->fixedDeltaTime);
 
 				Vec2 relVel = nextCycleVel - nextCycleVel2;
-				
+
 				collided = CollisionMovingRectRect(*(collider->boundingbox), *(body2->boundingbox), relVel, contactTime, normal, static_cast<float>(sysManager->fixedDeltaTime), nextCycleVel);
 				if (collided) {
 					didCollide = true;
-					
+
 					if (!pBody2->isStatic) {
 						//both objects can move
 						float secondNorm = 0.f;
@@ -94,9 +97,10 @@ void ColliderSystem::Update(float dt) {
 							CollisionMessage collisionMessage(collider, body2, contactTime, normal, 1.f, normal);
 							SendToObservers(&collisionMessage);
 						}
-						
+
 					}
 				}
+			}
 			}
 			//reset collision data if no collision detected with anything
 			if (didCollide == false) {
