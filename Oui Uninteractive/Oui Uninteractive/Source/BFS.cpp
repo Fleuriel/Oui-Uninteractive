@@ -27,7 +27,7 @@ Node::Node(int x_, int y_, int parentX_ = -1, int parentY_ = -1) : x(x_), y(y_),
 * @param r - rows of grid
 * @param c - columns of grid
 *************************************************************************/
-BFS::BFS(int r, int c) : rows(r), cols(c) {
+BFS::BFS(int r, int c) : rows(r), cols(c), wallID(0) {
     // Initialize containers
     gameMap = std::vector<std::vector<int>>(rows, std::vector<int>(cols, 0));
     visited = std::vector<std::vector<bool>>(rows, std::vector<bool>(cols, false));
@@ -70,10 +70,11 @@ void BFS::CreateGrid() {
             for (int j{}; j < cols; ++j) {
                 if (gameMap[i][j] == 1) {
                     // Create walls
-                    std::string wallName = "Wall" + std::to_string((rows * i) + j) ;
+                    std::string wallName = "Wall" + std::to_string(wallID) ;
                     GameObject* wall = objectFactory->BuildObjectRunTime(wallName, "Wall");
                     objectFactory->AddComponent(ComponentType::TRANSFORM, wall);
 
+                    ++wallID;
                     wall->Initialize();
 
                     // Set position of wall

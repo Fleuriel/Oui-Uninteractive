@@ -37,6 +37,9 @@ private:
     int rows;
     int cols;
 
+    // Wall ID
+    int wallID;
+
 	// Grid of ints
     std::vector<std::vector<int>> gameMap;
 

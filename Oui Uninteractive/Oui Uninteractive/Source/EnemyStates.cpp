@@ -53,6 +53,15 @@ void EnemyRoam::Update(size_t gameObjectID) {
             startX = static_cast<int>((currentEnemyPos.x - (scaleTemp - windowWidth) / 2) / scaleTemp);
             startY = static_cast<int>((currentEnemyPos.y - (scaleTemp - windowHeight) / 2) / scaleTemp);
 
+            if (startX < 0)
+                startX = 0;
+            else if (startX >= bfs->GetCols())
+                startX = 0;
+            if (startY < 0)
+                startY = 0;
+            else if (startY >= bfs->GetRows())
+                startY = 0;
+
             // If startX and startY is on an obstacle
             if (bfs->GetGameMap()[startY][startX] == 1) {
 				// If startX + 1 is not on an obstacle
