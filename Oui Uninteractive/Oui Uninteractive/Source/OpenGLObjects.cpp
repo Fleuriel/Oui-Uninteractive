@@ -284,7 +284,7 @@ void OpenGLObject::Update(float newX, float newY, float scaleX, float scaleY, fl
 
 
 	// Compute the model-to-world-to-NDC transformation matrix
-	model_To_NDC_xform = ScaleToWorldToNDC * Translation * Rotation * Scale;
+	model_To_NDC_xform = cameraObject.World_to_NDC_xform * Translation * Rotation * Scale;
 
 }
 
