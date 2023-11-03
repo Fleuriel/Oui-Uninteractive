@@ -347,11 +347,6 @@ void OpenGLApplication::OpenGLUpdate() {
 		objects.emplace_back(newObject1);
 	}
 
-	if (inputSystem.GetKeyState(GLFW_KEY_KP_1) == 1) {
-		spriteframe+=1;
-		std::cout << spriteframe;
-	}
-
 	// Moves Object left. can add positionY to change as well.
 	if (inputSystem.GetKeyState(GLFW_KEY_KP_4) == 2) {
 		positionX-= 5;
