@@ -37,9 +37,6 @@ private:
     int rows;
     int cols;
 
-    // Wall ID
-    int wallID;
-
 	// Grid of ints
     std::vector<std::vector<int>> gameMap;
 
@@ -67,9 +64,9 @@ public:
 
     /**************************************************************************
     * @brief Create the grid
-    * @return void
+    * @return bool - true if grid is created, false otherwise
     *************************************************************************/
-    void CreateGrid();
+    bool CreateGrid();
 
     /**************************************************************************
     * @brief Find the path using Breadth-First Search algorithm

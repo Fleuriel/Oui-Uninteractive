@@ -11,7 +11,7 @@ void Scene1::Load(){
 	objectFactory->LoadPrefab(FILEPATH_PREFAB);
 }
 void Scene1::Initialize() {
-	#ifdef _DEBUG
+	/*#ifdef _DEBUG
 		std::cout << "\nDe-serializing objects from JSON file..." << std::endl;
 	#endif
 		//PLAYER OBJECT
@@ -26,7 +26,7 @@ void Scene1::Initialize() {
 
 	#ifdef _DEBUG	
 		std::cout << "Updating JSONEnemy2 during initialization... completed." << std::endl;
-	#endif
+	#endif*/
 }
 void Scene1::Update(float dt) {
 	dt;
@@ -36,7 +36,7 @@ void Scene1::Draw() {
 }
 void Scene1::Free() {
 	// Save objects to JSON
-	objectFactory->SaveObjectsToFile(FILEPATH_SCENES_TESTSCENEWRITING);
+	//objectFactory->SaveObjectsToFile(FILEPATH_SCENES_TESTSCENEWRITING);
 	//free object memory
 	objectFactory->DestroyAllObjects();
 }

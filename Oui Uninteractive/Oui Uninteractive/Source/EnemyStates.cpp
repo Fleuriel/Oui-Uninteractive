@@ -50,17 +50,17 @@ void EnemyRoam::Update(size_t gameObjectID) {
         Transform* currentEnemyTx = GET_COMPONENT(currentEnemy, Transform, ComponentType::TRANSFORM);
         if (currentEnemyTx != nullptr) {
             currentEnemyPos = currentEnemyTx->position;
-            startX = static_cast<int>((currentEnemyPos.x - (scaleTemp - windowWidth) / 2) / scaleTemp);
-            startY = static_cast<int>((currentEnemyPos.y - (scaleTemp - windowHeight) / 2) / scaleTemp);
+            startX = std::round((currentEnemyPos.x - (scaleTemp - windowWidth) / 2) / scaleTemp);
+            startY = std::round((currentEnemyPos.y - (scaleTemp - windowHeight) / 2) / scaleTemp);
 
             if (startX < 0)
                 startX = 0;
             else if (startX >= bfs->GetCols())
-                startX = 0;
+                startX = bfs->GetCols() - 1;
             if (startY < 0)
                 startY = 0;
             else if (startY >= bfs->GetRows())
-                startY = 0;
+                startY = bfs->GetRows() - 1;
 
             // If startX and startY is on an obstacle
             if (bfs->GetGameMap()[startY][startX] == 1) {
@@ -97,8 +97,13 @@ void EnemyRoam::Update(size_t gameObjectID) {
         bfs->CreateGrid();
     }*/
 
-    // Create grid
-    bfs->CreateGrid();
+	// If grid created, find path
+    if (bfs->CreateGrid()) {
+		pathFound = false;
+        pathPrinted = false;
+        pathIndex = 0;
+        pathToTake.clear();
+    }
 
     if (!pathFound) {
         // Find path
@@ -144,8 +149,8 @@ void EnemyRoam::Update(size_t gameObjectID) {
             }
 		}
         else {
-            pathPrinted = false;
             pathFound = false;
+            pathPrinted = false;
             pathIndex = 0;
             bfs->Reset();
         }

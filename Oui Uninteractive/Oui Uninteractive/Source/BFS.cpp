@@ -12,6 +12,8 @@
 #include "ObjectFactory.h"
 #include "PhysicsBody.h"
 #include "Transform.h"
+#include "Collider.h"
+#include "PhysicsBody.h"
 
 /**************************************************************************
 * @brief Constructor for Node
@@ -27,7 +29,7 @@ Node::Node(int x_, int y_, int parentX_ = -1, int parentY_ = -1) : x(x_), y(y_),
 * @param r - rows of grid
 * @param c - columns of grid
 *************************************************************************/
-BFS::BFS(int r, int c) : rows(r), cols(c), wallID(0) {
+BFS::BFS(int r, int c) : rows(r), cols(c) {
     // Initialize containers
     gameMap = std::vector<std::vector<int>>(rows, std::vector<int>(cols, 0));
     visited = std::vector<std::vector<bool>>(rows, std::vector<bool>(cols, false));
@@ -57,36 +59,59 @@ BFS::~BFS() {
 
 /**************************************************************************
 * @brief Create the grid
-* @return void
+* @return bool - true if grid is created, false otherwise
 *************************************************************************/
-void BFS::CreateGrid() {
-    if (!gridCreated && objectFactory->GetGameObjectByName("Wall") == nullptr) {
-        // Temp vars
-        float windowWidth = 1920.f;
-        float windowHeight = 1017.f;
-        float scaleTemp = windowHeight / static_cast<float>(rows);
+bool BFS::CreateGrid() {
+    // Check if a wall object already exists
+	std::map<size_t, GameObject*> objFacMap{ objectFactory->GetGameObjectIDMap() };
+    std::map<size_t, GameObject*>::iterator it{ objFacMap.begin()};
 
-        for (int i{}; i < rows; ++i) {
-            for (int j{}; j < cols; ++j) {
-                if (gameMap[i][j] == 1) {
-                    // Create walls
-                    std::string wallName = "Wall" + std::to_string(wallID) ;
-                    GameObject* wall = objectFactory->BuildObjectRunTime(wallName, "Wall");
-                    objectFactory->AddComponent(ComponentType::TRANSFORM, wall);
+    bool wallFound{ false };
+    while (it != objFacMap.end()) {
+        if (it->second->GetName().find("Wall") != std::string::npos) {
+            wallFound = true;
+            break;
+        }
+        ++it;
+    }
 
-                    ++wallID;
-                    wall->Initialize();
+	// Do not create grid if wall object already exists
+    if (wallFound)
+        return false;
 
-                    // Set position of wall
-                    GET_COMPONENT(wall, Transform, ComponentType::TRANSFORM)->scale = scaleTemp;
-                    GET_COMPONENT(wall, Transform, ComponentType::TRANSFORM)->position.x = (j * scaleTemp) + (scaleTemp - windowWidth) / 2;
-                    GET_COMPONENT(wall, Transform, ComponentType::TRANSFORM)->position.y = (i * scaleTemp) + (scaleTemp - windowHeight) / 2;
-                }
+    // Temp vars
+    float windowWidth = 1920.f;
+    float windowHeight = 1017.f;
+    float scaleTemp = windowHeight / static_cast<float>(rows);
+
+    // Wall ID
+    int wallID{};
+
+    // Instantiate walls
+    for (int i{}; i < rows; ++i) {
+        for (int j{}; j < cols; ++j) {
+            if (gameMap[i][j] == 1) {
+                // Create walls
+                std::string wallName = "Wall" + std::to_string(wallID);
+                GameObject* wall = objectFactory->BuildObjectRunTime(wallName, "Wall");
+                objectFactory->AddComponent(ComponentType::TRANSFORM, wall);
+                objectFactory->AddComponent(ComponentType::COLLIDER, wall);
+                objectFactory->AddComponent(ComponentType::PHYSICS_BODY, wall);
+
+                ++wallID;
+                wall->Initialize();
+
+                // Set position and collider size of wall
+                GET_COMPONENT(wall, PhysicsBody, ComponentType::PHYSICS_BODY)->isStatic = true;
+                GET_COMPONENT(wall, Collider, ComponentType::COLLIDER)->boundingbox->txPtr->scale = scaleTemp;
+                GET_COMPONENT(wall, Transform, ComponentType::TRANSFORM)->scale = scaleTemp;
+                GET_COMPONENT(wall, Transform, ComponentType::TRANSFORM)->position.x = (j * scaleTemp) + (scaleTemp - windowWidth) / 2;
+                GET_COMPONENT(wall, Transform, ComponentType::TRANSFORM)->position.y = (i * scaleTemp) + (scaleTemp - windowHeight) / 2;
             }
         }
-
-        gridCreated = true;
     }
+
+    gridCreated = true;
 }
 
 /**************************************************************************

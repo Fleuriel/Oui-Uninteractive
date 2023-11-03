@@ -15,8 +15,8 @@
                     "FrictionForce": 20.0
                 },
                 "Transform": {
-                    "PositionX": 129.55587768554688,
-                    "PositionY": 147.18356323242188,
+                    "PositionX": 400.0,
+                    "PositionY": 150.0,
                     "Rotation": 0.0,
                     "Scale": 200.0
                 },
@@ -46,10 +46,10 @@
                     "FrictionForce": 20.0
                 },
                 "Transform": {
-                    "PositionX": -11.407567977905273,
-                    "PositionY": -23.14358139038086,
+                    "PositionX": -700.0,
+                    "PositionY": -420.0,
                     "Rotation": 0.0,
-                    "Scale": 130.0
+                    "Scale": 100.0
                 },
                 "LogicComponent": {
                     "ScriptID": [
@@ -58,7 +58,7 @@
                     ]
                 },
                 "Collider": {
-                    "ColliderSize": 140.0,
+                    "ColliderSize": 100.0,
                     "ColliderRotation": 0.0
                 }
             }
