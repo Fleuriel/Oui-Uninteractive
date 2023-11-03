@@ -40,6 +40,7 @@ void LogicSystem::Initialize() {
 * @return void
 *************************************************************************/
 void LogicSystem::Update(float dt) {
+	(void)dt;
 	for (auto& iter : logicComponentMap) {
 		for (unsigned int index : iter.second->scriptIndexSet) {
 			scriptVec[index]->Update(iter.second->GetOwner()->GetGameObjectID());

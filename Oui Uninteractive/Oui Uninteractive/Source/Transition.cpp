@@ -18,7 +18,7 @@
 std::vector<bool>timerSwitches(numberOfElements);
 std::vector<double>timers(numberOfElements);
 std::vector<std::pair<double, double>> gridInfoContainer[numberOfElements];
-std::vector<int> IDContainer;
+std::vector<size_t> IDContainer;
 
 int particleNumber{};
 double Animationduration;
@@ -47,13 +47,13 @@ std::vector<std::pair<double, double>> Grid(int rows, int columns) {
 	std::pair<double, double> boxDimensions{ width,height };
 	gridInfo.emplace_back(boxDimensions);
 
-	double topLeftxCoord{ (width / 2) - (windowSize.first / 2) }, topLeftyCoord{ (windowSize.second / 2) - (height / 2) };
+	double topLeftxCoord{ (width / 2) - (static_cast<double>(windowSize.first) / 2) }, topLeftyCoord{ (static_cast<double>(windowSize.second) / 2) - (height / 2) };
 
 	double xCoord = topLeftxCoord;
 	double yCoord = topLeftyCoord;
 	for (int i = 0; i < rows; ++i) {
 		xCoord = topLeftxCoord;
-		for (int i = 0; i < columns; ++i) {
+		for (int j = 0; j < columns; ++j) {
 			std::pair<double, double> coords{ xCoord, yCoord };
 			gridInfo.emplace_back(coords);
 			//Particle newparticle(xCoord, yCoord, width, height, 0, 0);
@@ -95,6 +95,7 @@ void UpdateAnimation() {
 		
 
 		if ( timers[animationTopLeftToBottomRight] > static_cast<double> (particleNumber) * Animationduration / static_cast<double>(gridInfoContainer[animationTopLeftToBottomRight].size() - 1)) {
+
 			particleSystem.particles[IDContainer[particleNumber]-1].visibility = true;
 			//std::cout << "PARTICLE NUMBER : " << particleNumber;
 			++particleNumber;
@@ -136,8 +137,8 @@ void Animation_Top_Left_To_Bottom_Right(int rows, int columns , double duration)
 		double postAnimationDuration = 5;
 		std::pair<double, double> dimensions = gridInfoContainer[animationTopLeftToBottomRight][0];
 		for (int c = 1; c <= gridInfoContainer[0].size() - 1; c++) {
-			Particle newparticle(gridInfoContainer[animationTopLeftToBottomRight][c].first, gridInfoContainer[animationTopLeftToBottomRight][c].second,
-				dimensions.first, dimensions.second, 0, 0, Animationduration + postAnimationDuration, false);
+			Particle newparticle(static_cast<int>(gridInfoContainer[animationTopLeftToBottomRight][c].first), static_cast<int>(gridInfoContainer[animationTopLeftToBottomRight][c].second),
+				static_cast<float>(dimensions.first), static_cast<float>(dimensions.second), 0, 0, static_cast<float>(Animationduration + postAnimationDuration), false);
 			IDContainer.push_back(newparticle.ID);
 			particleSystem.particles.push_back(newparticle);
 		}

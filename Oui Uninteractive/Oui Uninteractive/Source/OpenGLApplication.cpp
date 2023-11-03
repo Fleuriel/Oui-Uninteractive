@@ -74,7 +74,7 @@ OpenGLObject::OpenGLModel mdl;
 float positionX = 0, positionY = 0;
 float angle;
 
-float triggerEveryQuarterSecond;
+double triggerEveryQuarterSecond;
 
 bool togglePolygonMode = false;
 // For Input
