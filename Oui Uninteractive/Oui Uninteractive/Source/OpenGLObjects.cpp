@@ -959,27 +959,21 @@ void OpenGLObject::InitFont()
 
 void OpenGLObject::FrameBufferMouseCoords(GLFWwindow* originalWindow, double  *x, double *y, OpenGLObject::Camera2D camera)
 {
+	// set a variable original X and Y
 	double originalX = *x - Editor::gameWindowOrigin.first;
 	double originalY = *y - Editor::gameWindowOrigin.second;
-
-	//std::cout << "IF: " << originalX << " " << originalY << '\t';
-	
-
-	//std::cout << Editor::gameWindowSize.first << " " << Editor::gameWindowSize.second << " " << Editor::gameWindowOrigin.first << " " << Editor::gameWindowOrigin.second << '\n';
 
 
 	// get the center coordinates of the frame buffer window.
 	int centerX = Editor::gameWindowSize.first / 2.0;
 	int centerY = Editor::gameWindowSize.second / 2.0;
 
-	//std::cout << "Cx : " << centerX << " Cy : " << centerY << '\t';
-
+	
 	// Calculate corrected coordinates relative to the camera's position.
 	double correctedX = (originalX - centerX) + camera.posX;
 	double correctedY = centerY - originalY + camera.posY;  // Note the y-coordinate inversion
 
 
-	//std::cout << "Cox : " << correctedX << " Coy : " << correctedY << '\t';
 	// set value of X and Y, (valueX, valueY) to the respective y values,
 	// Y no change as no difference. X, on the other hand needs to be multiplied with the multiplier of height.,
 	float valueX = correctedX / 1000;
@@ -988,12 +982,9 @@ void OpenGLObject::FrameBufferMouseCoords(GLFWwindow* originalWindow, double  *x
 	// set valueX to multiply by camera height.
 	valueX *= camera.height;
 
-//	std::cout << cameraObject.aspectRatio << '\n';
 
 	// set values of *x and *y.
 	*x = (valueX - Editor::gameWindowOrigin.first);
 	*y = (valueY - Editor::gameWindowOrigin.second);
-	//std::cout << '\n';
-	//std::cout << *x<< '\t' << *y << '\n';
 
 }
