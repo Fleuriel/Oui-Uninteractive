@@ -60,7 +60,7 @@ BFS::~BFS() {
 * @return void
 *************************************************************************/
 void BFS::CreateGrid() {
-    if (!gridCreated || objectFactory->GetGameObjectByName("Wall") == nullptr) {
+    if (!gridCreated && objectFactory->GetGameObjectByName("Wall") == nullptr) {
         // Temp vars
         float windowWidth = 1920.f;
         float windowHeight = 1017.f;
