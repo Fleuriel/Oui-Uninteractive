@@ -256,7 +256,7 @@ void OpenGLApplication::OpenGLInit() {
 *************************************************************************/
 void OpenGLApplication::OpenGLUpdate() {
 
-	triggerEveryQuarterSecond += GetDT();
+	triggerEveryQuarterSecond += static_cast<float>(GetDT());
 	if (triggerEveryQuarterSecond >= 0.25) {
 		spriteframe++;
 		if (spriteframe >= 6)
@@ -286,11 +286,12 @@ void OpenGLApplication::OpenGLUpdate() {
 	myImGui.Update();
 
 
-	OpenGLObject::cameraObject.Update(windowNew, positionX, positionY);
+	OpenGLObject::cameraObject.Update(windowNew, static_cast<int>(positionX), static_cast<int>(positionY));
 	// Create x and y pos variables to collect data from the mouse position.
 	double xpos, ypos{};
 	glfwGetCursorPos(windowNew, &xpos, &ypos);
 	
+	// Change the position of mouse coordinates to frame buffer coordinates.
 	OpenGLObject::FrameBufferMouseCoords(windowNew, &xpos, &ypos, OpenGLObject::cameraObject);
 
 
@@ -482,7 +483,7 @@ void OpenGLApplication::OpenGLUpdate() {
 	// Clear the Color Buffer Bit to enable 'reloading'
 	
 
-	background.Update(0, 0, windowSize.first, windowSize.second);
+	background.Update(0, 0, static_cast<float>(windowSize.first), static_cast<float>(windowSize.second));
 	// Draws the Background
 	background.Draw();
 

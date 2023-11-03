@@ -333,6 +333,15 @@ void OpenGLObject::Update(Matrix3x3 scale, Matrix3x3 rotate, Matrix3x3 translate
 
 }
 
+/**************************************************************************
+* @brief  Update camera position
+*
+* @param  int set coordinate [x]
+* @param  int set coordinate [y]
+
+
+* @return void
+*************************************************************************/
 void OpenGLObject::CameraUpdate(int posX, int posY) {
 	//std::cout << "Object Update\n";
 	// Compute the angular displacement in radians
@@ -348,8 +357,8 @@ void OpenGLObject::CameraUpdate(int posX, int posY) {
 
 	//cameraObject.posX = posX + Editor::gameWindowOrigin.first/2.0f;
 	//cameraObject.posY = posY + Editor::gameWindowOrigin.second/2.0f;
-	cameraObject.posX = posX + Editor::gameWindowOrigin.first;
-	cameraObject.posY = posY + Editor::gameWindowOrigin.second;
+	cameraObject.posX = static_cast<float>(posX + Editor::gameWindowOrigin.first);
+	cameraObject.posY = static_cast<float>(posY + Editor::gameWindowOrigin.second);
 
 	// in case user does not set, angleDisplacement will be in the range of
 	// 0 ~ 360 || -360 ~ 0
@@ -570,10 +579,10 @@ void OpenGLObject::InitObjects(float userInput_x, float userInput_y, float userI
 void OpenGLObject::DrawCollisionBox(Vector2D min, Vector2D max){
 	// get the points of the AABB
 
-	int MinimumX = min.x;
-	int MaximumX = max.x;
-	int MinimumY = min.y;
-	int MaximumY = max.y;
+	float MinimumX = min.x;
+	float MaximumX = max.x;
+	float MinimumY = min.y;
+	float MaximumY = max.y;
 
 
 
@@ -585,13 +594,11 @@ void OpenGLObject::DrawCollisionBox(Vector2D min, Vector2D max){
 	//MinimumY = Editor::gameWindowOrigin.second;
 	//MaximumY = Editor::gameWindowOrigin.second;
 
-
-
-
-	float sX = MinimumX;
-	float bX = MaximumX;
-	float sY = MinimumY;
-	float bY = MaximumY;
+	
+	float sX = static_cast<float>(MinimumX);
+	float bX = static_cast<float>(MaximumX);
+	float sY = static_cast<float>(MinimumY);
+	float bY = static_cast<float>(MaximumY);
 
 
 
@@ -712,6 +719,8 @@ void OpenGLObject::OpenGLModel::VAO_Object::setTexture(float s, float t){
 *************************************************************************/
 void OpenGLObject::Camera2D::Init(GLFWwindow* camWindow, OpenGLObject* ptr) {
 
+	(void)camWindow;
+
 	// Set a OpenGLObject to the pointer that is inputted, i.e. another OpenGLObject
 	Cam = ptr;
 
@@ -720,9 +729,7 @@ void OpenGLObject::Camera2D::Init(GLFWwindow* camWindow, OpenGLObject* ptr) {
 					< Initialize for initial creation >	
 	Create the Frame Buffer Width and Height(This must be here as the 
 	FBuffer will update	 Every single time, it is zoom in/out /move		*/
-							
-
-
+			
 	aspectRatio = static_cast<GLfloat>(Editor::gameWindowSize.first) / static_cast<GLfloat>(Editor::gameWindowSize.first);
 
 
@@ -731,8 +738,6 @@ void OpenGLObject::Camera2D::Init(GLFWwindow* camWindow, OpenGLObject* ptr) {
 
 	// compute camera's right vectors (U)
 	right = glm::vec2{ cosf(glm::radians(Cam->orientation.x)), sinf(glm::radians(Cam->orientation.x)) };
-
-
 
 
 	// view transform 
@@ -767,6 +772,7 @@ void OpenGLObject::Camera2D::Update(GLFWwindow* camWindow, int positionX, int po
 
 	using glm::radians;
 
+	(void)camWindow;
 
 	// ZOOM in
 	//if (inputSystem.GetScrollState() == 1) 
@@ -926,12 +932,21 @@ void OpenGLObject::init_shdrpgms_cont(VectorPairStrStr const& vpss) {
 /*=======================================================================================================================*/
 /*=======================================================================================================================*/
 
+/**************************************************************************
+* @brief  Initialize the Shaders for Graphics Pipeline for fonts.
+* 
+*
+* @param  NONE 
+* @return void
+*************************************************************************/
 void OpenGLObject::InitFont()
 {
 	// Initialize the Projection matrix for the fonts to render into the screen
 	projection = glm::ortho(0.0f, static_cast<float>(windowSize.first), 0.0f, static_cast<float>(windowSize.second));
 	// Use the shader
 	shdrpgms[static_cast<int>(SHADER_ORDER::FONT)].Use();
+
+	// Find the uniform location and create matrix4fv to it.
 	glUniformMatrix4fv(glGetUniformLocation(shdrpgms[1].GetHandle(), "projection"), 1, GL_FALSE, glm::value_ptr(projection));
 
 	// For FONTS VAO and VBOs
@@ -944,8 +959,6 @@ void OpenGLObject::InitFont()
 	glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 4 * sizeof(float), 0);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 	glBindVertexArray(0);
-
-
 }
 
 
@@ -956,31 +969,44 @@ void OpenGLObject::InitFont()
 /*=======================================================================================================================*/
 /*=======================================================================================================================*/
 
+/**************************************************************************
+* @brief  Change the mouse coordinates from getMousePosition to frame
+*		  buffer coordinates
+*
+* @param  GLFWwindow*	pointer to the window 
+* @param  double*		sets a value in return. [x]
+* @param  double*		sets a value in return. [y]
+* @param  Camera2D		camera object of original class: OpenGLObject.
 
+
+@return void
+*************************************************************************/
 void OpenGLObject::FrameBufferMouseCoords(GLFWwindow* originalWindow, double  *x, double *y, OpenGLObject::Camera2D camera)
 {
+
+	(void)originalWindow;
 	// set a variable original X and Y
-	double originalX = *x - Editor::gameWindowOrigin.first;
-	double originalY = *y - Editor::gameWindowOrigin.second;
+	double originalX = *x - static_cast<double>(Editor::gameWindowOrigin.first);
+	double originalY = *y - static_cast<double>(Editor::gameWindowOrigin.second);
 
 
 	// get the center coordinates of the frame buffer window.
-	int centerX = Editor::gameWindowSize.first / 2.0;
-	int centerY = Editor::gameWindowSize.second / 2.0;
+	double centerX = static_cast<double>(Editor::gameWindowSize.first) / 2.0;
+	double centerY = static_cast<double>(Editor::gameWindowSize.second) / 2.0;
 
 	
 	// Calculate corrected coordinates relative to the camera's position.
-	double correctedX = (originalX - centerX) + camera.posX;
+	double correctedX = (originalX - static_cast<double>(centerX)) + camera.posX;
 	double correctedY = centerY - originalY + camera.posY;  // Note the y-coordinate inversion
 
 
 	// set value of X and Y, (valueX, valueY) to the respective y values,
 	// Y no change as no difference. X, on the other hand needs to be multiplied with the multiplier of height.,
-	float valueX = correctedX / 1000;
-	float valueY = correctedY;
+	double valueX = correctedX / 1000;
+	double valueY = correctedY;
 
 	// set valueX to multiply by camera height.
-	valueX *= camera.height;
+	valueX *= static_cast<double>(camera.height);
 
 
 	// set values of *x and *y.

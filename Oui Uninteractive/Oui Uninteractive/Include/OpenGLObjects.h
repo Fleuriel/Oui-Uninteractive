@@ -146,7 +146,7 @@ public:
 	struct Camera2D {
 
 		Camera2D() : up(0, 0), right(0,0), view_xform(0), CameraWindow_to_NDC_xform(0), World_to_NDC_xform(0),
- 		aspectRatio (0){}
+ 		aspectRatio (0), posX(0), posY(0), Cam(nullptr){}
 
 		OpenGLObject *Cam;
 

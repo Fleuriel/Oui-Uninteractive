@@ -52,7 +52,7 @@ void TransformSystem::Update(float) {
 				Matrix3x3 scale = Matrix3x3(tx->scale, 0.f, 0.f,
 					0.f, tx->scale, 0.f,
 					0.f, 0.0f, 1.0f);
-				float radRot = tx->rotation * (PI / 180);
+				float radRot = tx->rotation * (static_cast<float>(PI) / 180.0f);
 				Matrix3x3 rotate = Matrix3x3(cosf(radRot), sinf(radRot), 0,
 					-sinf(radRot), cosf(radRot), 0.f,
 					0.f, 0.f, 1.0f);
@@ -73,7 +73,7 @@ void TransformSystem::Update(float) {
 			Matrix3x3 scale = Matrix3x3(tx->scale, 0.f, 0.f,
 				0.f, tx->scale, 0.f,
 				0.f, 0.0f, 1.0f);
-			float radRot = tx->rotation * (PI / 180);
+			float radRot = tx->rotation * (static_cast<float>(PI) / 180.0f);
 			Matrix3x3 rotate = Matrix3x3(cosf(radRot), sinf(radRot), 0,
 				-sinf(radRot), cosf(radRot), 0.f,
 				0.f, 0.f, 1.0f);

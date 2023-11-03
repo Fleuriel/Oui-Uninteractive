@@ -50,8 +50,8 @@ void EnemyRoam::Update(size_t gameObjectID) {
         Transform* currentEnemyTx = GET_COMPONENT(currentEnemy, Transform, ComponentType::TRANSFORM);
         if (currentEnemyTx != nullptr) {
             currentEnemyPos = currentEnemyTx->position;
-            startX = std::round((currentEnemyPos.x - (scaleTemp - windowWidth) / 2) / scaleTemp);
-            startY = std::round((currentEnemyPos.y - (scaleTemp - windowHeight) / 2) / scaleTemp);
+            startX = static_cast<int>(std::round((currentEnemyPos.x - (scaleTemp - windowWidth) / 2) / scaleTemp));
+            startY = static_cast<int>(std::round((currentEnemyPos.y - (scaleTemp - windowHeight) / 2) / scaleTemp));
 
             if (startX < 0)
                 startX = 0;
