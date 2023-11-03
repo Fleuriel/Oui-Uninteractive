@@ -38,8 +38,10 @@ void TransformSystem::Update(float) {
 		//Update bounding box position
 		collider->tx->position = GET_COMPONENT(collider->GetOwner(), Transform, ComponentType::TRANSFORM)->position;
 		//collider->tx->scale = (100, 100);
-		collider->boundingbox->center.x = collider->tx->position.x - Editor::gameWindowSize.first;
-		collider->boundingbox->center.y = collider->tx->position.y - Editor::gameWindowSize.second;
+		
+		/*collider->boundingbox->center.x = collider->tx->position.x - Editor::gameWindowSize.first;
+		collider->boundingbox->center.y = collider->tx->position.y - Editor::gameWindowSize.second;*/
+		collider->boundingbox->center = collider->tx->position;
 		collider->boundingbox->min = Vec2((-0.5f) * collider->tx->scale + collider->tx->position.x, (-0.5f) * collider->tx->scale + collider->tx->position.y);
 		collider->boundingbox->max = Vec2((0.5f) * collider->tx->scale + collider->tx->position.x, (0.5f) * collider->tx->scale + collider->tx->position.y);
 		collider->contactTime = 1.0f;
