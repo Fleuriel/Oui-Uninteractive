@@ -10,6 +10,7 @@
  *************************************************************************/
 
 #include "TransformSystem.h"
+#define PI 3.141592653589793
 
 
 /**************************************************************************
@@ -48,7 +49,18 @@ void TransformSystem::Update(float) {
 		if (OpenGLObject::renderBoundingBox) {
 			Transform* tx = it2->second->tx;
 			if (tx != nullptr) {
-				tx->shape->Update(tx->position.x, tx->position.y, tx->scale, tx->scale, tx->rotation, false);
+				Matrix3x3 scale = Matrix3x3(tx->scale, 0.f, 0.f,
+					0.f, tx->scale, 0.f,
+					0.f, 0.0f, 1.0f);
+				float radRot = tx->rotation * (PI / 180);
+				Matrix3x3 rotate = Matrix3x3(cosf(radRot), sinf(radRot), 0,
+					-sinf(radRot), cosf(radRot), 0.f,
+					0.f, 0.f, 1.0f);
+				Matrix3x3 translate = Matrix3x3(1.f, 0.f, 0.f,
+					0.f, 1.f, 0.f,
+					tx->position.x, tx->position.y, 1.0f);
+				tx->shape->Update(scale, rotate, translate);
+				//tx->shape->Update(tx->position.x, tx->position.y, tx->scale, tx->scale, tx->rotation, false);
 			}
 			else {
 				continue;
@@ -58,7 +70,18 @@ void TransformSystem::Update(float) {
 	for (; it != copyMap.end(); it++) {
 		Transform* tx = GET_COMPONENT(it->second, Transform, ComponentType::TRANSFORM);
 		if (tx != nullptr) {
-			tx->shape->Update(tx->position.x, tx->position.y, tx->scale, tx->scale, tx->rotation, false);
+			Matrix3x3 scale = Matrix3x3(tx->scale, 0.f, 0.f,
+				0.f, tx->scale, 0.f,
+				0.f, 0.0f, 1.0f);
+			float radRot = tx->rotation * (PI / 180);
+			Matrix3x3 rotate = Matrix3x3(cosf(radRot), sinf(radRot), 0,
+				-sinf(radRot), cosf(radRot), 0.f,
+				0.f, 0.f, 1.0f);
+			Matrix3x3 translate = Matrix3x3(1.f, 0.f, 0.f,
+				0.f, 1.f, 0.f,
+				tx->position.x, tx->position.y, 1.0f);
+			tx->shape->Update(scale, rotate, translate);
+			//tx->shape->Update(tx->position.x, tx->position.y, tx->scale, tx->scale, tx->rotation, false);
 		}
 		else {
 			continue;

@@ -71,6 +71,7 @@ void ColliderSystem::Update(float dt) {
 				Vec2 relVel = nextCycleVel - nextCycleVel2;
 
 				collided = CollisionMovingRectRect(*(collider->boundingbox), *(body2->boundingbox), relVel, contactTime, normal, static_cast<float>(sysManager->fixedDeltaTime), nextCycleVel);
+				//Collision Response
 				if (collided) {
 					didCollide = true;
 
@@ -99,7 +100,7 @@ void ColliderSystem::Update(float dt) {
 						}
 
 					}
-				}
+				}//Collision Response end		
 			}
 			}
 			//reset collision data if no collision detected with anything

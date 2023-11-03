@@ -26,6 +26,7 @@
 #include <Vector2D.h>
 #include <ISystem.h>
 #include <AssetManager.h>
+#include <Matrix3x3.h>
 #include <GLFW/glfw3.h>
 
 enum class SHADER_ORDER {
@@ -203,6 +204,7 @@ public:
 	* @return void
 	*************************************************************************/
 	void Update(float newX, float newY, float scaleX, float scaleY, float newAngle, bool enRot);
+	void Update(Matrix3x3, Matrix3x3,Matrix3x3);
 
 	/**************************************************************************
 	* @brief		Draws a Debug Collision Box (AABB)

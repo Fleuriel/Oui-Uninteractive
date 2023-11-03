@@ -233,8 +233,6 @@ void OpenGLObject::Update(float newX, float newY, float scaleX, float scaleY, fl
 	// of xAccel is 0, and position would not change.
 	position = glm::vec2(newX, newY);
 
-	
-
 	//position.x += Editor::gameWindowOrigin.first;
 	//position.y += Editor::gameWindowOrigin.second;
 	//position = glm::vec2(0, 0);
@@ -249,8 +247,6 @@ void OpenGLObject::Update(float newX, float newY, float scaleX, float scaleY, fl
 	// 0 ~ 360 || -360 ~ 0
 	if (angleDisplacment >= 360.0f || angleDisplacment <= -360.0f)
 		angleDisplacment = 0.0f;
-
-	
 
 	// Compute the scale matrix
 	glm::mat3 Scale = glm::mat3(
@@ -273,6 +269,55 @@ void OpenGLObject::Update(float newX, float newY, float scaleX, float scaleY, fl
 		position.x, position.y, 1.0f
 	);
 	
+
+	// Compute the scaling matrix to map from world coordinates to NDC coordinates
+	glm::mat3 ScaleToWorldToNDC = glm::mat3(
+		2.0f / (Editor::gameWindowSize.first), 0.0f, 0.0f,
+		0.0f, 2.0f / (Editor::gameWindowSize.second), 0.0f,
+		0.0f, 0.0f, 1.0f
+	);
+
+
+
+	// Compute the model-to-world-to-NDC transformation matrix
+	model_To_NDC_xform = cameraObject.World_to_NDC_xform * Translation * Rotation * Scale;
+
+}
+/**************************************************************************
+* @brief  Updates each OpenGLObject with Movement, Scale rotation.
+*		  Option for rotation has been added.
+*
+* @param  Matrix3x3  scale
+* @param  Matrix3x3  rotate
+* @param  Matrix3x3  translate
+* @return void
+*************************************************************************/
+void OpenGLObject::Update(Matrix3x3 scale, Matrix3x3 rotate, Matrix3x3 translate) {
+	// 0 ~ 360 || -360 ~ 0
+	if (angleDisplacment >= 360.0f || angleDisplacment <= -360.0f)
+		angleDisplacment = 0.0f;
+
+	// Compute the scale matrix
+	glm::mat3 Scale = glm::mat3(
+		scale.m00, 0.0f, 0.0f,
+		0.0f, scale.m11, 0.0f,
+		0.0f, 0.0f, 1.0f
+	);
+
+	// Compute the rotation matrix
+	glm::mat3 Rotation = glm::mat3(
+		rotate.m00, rotate.m01, 0.0f,
+		rotate.m10, rotate.m11, 0.0f,
+		0.0f, 0.0f, 1.0f
+	);
+
+	// Compute the translation matrix
+	glm::mat3 Translation = glm::mat3(
+		1.0f, 0.0f, 0.0f,
+		0.0f, 1.0f, 0.0f,
+		translate.m20, translate.m21, 1.0f
+	);
+
 
 	// Compute the scaling matrix to map from world coordinates to NDC coordinates
 	glm::mat3 ScaleToWorldToNDC = glm::mat3(
