@@ -12,6 +12,9 @@
 #include "Logic.h"
 #include "ComponentFactory.h"
 #include <iostream>
+#include "TestScript.h"
+#include "EnemyFSM.h"
+#include "PlayerShooting.h"
 
 LogicSystem* logicSystem = nullptr;
 /**************************************************************************
@@ -33,6 +36,19 @@ LogicSystem::LogicSystem() {
 void LogicSystem::Initialize() {
 	ComponentFactory<LogicComponent>* testPtr = new ComponentFactory<LogicComponent>(ComponentType::LOGICCOMPONENT);
 	objectFactory->AddComponentFactory(ComponentType::LOGICCOMPONENT, testPtr);
+	//SCRIPTS
+
+	TestScript* testScript = new TestScript();
+	testScript->Initialize();
+
+	TestScript2* testScript2 = new TestScript2();
+	testScript2->Initialize();
+
+	EnemyFSM* enemyFSMScript = new EnemyFSM();
+	enemyFSMScript->Initialize();
+
+	PlayerShooting* playerShootingScript = new PlayerShooting();
+	playerShootingScript->Initialize();
 }
 /**************************************************************************
 * @brief Update function for Logic System

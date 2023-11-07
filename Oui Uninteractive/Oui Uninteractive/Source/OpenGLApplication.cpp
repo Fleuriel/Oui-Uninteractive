@@ -33,9 +33,7 @@
 #include <glm/gtc/type_ptr.hpp>
 #include <iterator>
 #include <Background.h>
-#include "TestScript.h"
-#include "EnemyFSM.h"
-#include "PlayerShooting.h"
+
 #include <Transition.h>
 #include "ColliderSystem.h"
 #include "AssetManager.h"
@@ -223,20 +221,6 @@ void OpenGLApplication::OpenGLInit() {
 	
 	
 
-	//SCRIPTS
-
-	TestScript* testScript = new TestScript();
-	testScript->Initialize();
-	
-
-	TestScript2* testScript2 = new TestScript2();
-	testScript2->Initialize();
-
-	EnemyFSM* enemyFSMScript = new EnemyFSM();
-	enemyFSMScript->Initialize();
-	
-	PlayerShooting* playerShootingScript = new PlayerShooting();
-	playerShootingScript->Initialize();
 
 	
 	assetManager.LoadAll();
