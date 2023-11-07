@@ -252,7 +252,7 @@ void Editor::CreatePrefabPanel() {
 	//		}
 	//	}
 	//}
-	if (ImGui::Button("Add")) {
+	if (ImGui::Button("Spawn Objects")) {
 		size_t highestNumber = 0; // Initialize with the lowest possible ID
 
 		if (!objectFactory->GetGameObjectIDMap().empty()) {
