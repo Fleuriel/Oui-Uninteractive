@@ -26,6 +26,9 @@ private:
 	float aggroRange{ 250.f };
 
 public:
+	EnemyFSM(std::string newName) : IScript(newName) {
+
+	};
 	/**************************************************************************
 	* @brief Initialize the EnemyFSM script
 	* @return void

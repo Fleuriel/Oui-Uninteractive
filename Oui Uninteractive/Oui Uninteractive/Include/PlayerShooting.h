@@ -20,6 +20,9 @@
 
 class PlayerShooting : public IScript {
 public:
+	PlayerShooting(std::string newName) : IScript(newName) {
+
+	};
 	/**************************************************************************
 	* @brief Initialize the PlayerShooting script
 	* @return void
