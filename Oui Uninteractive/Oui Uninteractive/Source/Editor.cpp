@@ -252,9 +252,31 @@ void Editor::CreatePrefabPanel() {
 	//		}
 	//	}
 	//}
+	if (ImGui::Button("Add")) {
+		size_t highestNumber = 0; // Initialize with the lowest possible ID
+
+		if (!objectFactory->GetGameObjectIDMap().empty()) {
+			// Find the highest assigned ID in the existing objects
+			for (const auto& pair : objectFactory->GetGameObjectIDMap()) {
+				const std::string& objName = pair.second->GetName();
+				size_t pos = objName.find(selectedName);
+				if (pos != std::string::npos) {
+					size_t number = std::stoi(objName.substr(pos + selectedName.size())); // Extract and parse the number part
+					highestNumber = std::max(highestNumber, number);
+				}
+			}
+		}
+		Prefab* prefabObj = objectFactory->GetPrefabByName(selectedName);
+		std::string name = selectedName + std::to_string(highestNumber + 1);
+		GameObject* objFromPrefab = objectFactory->BuildObjectFromPrefab(prefabObj->GetName(), prefabObj->GetType());
+		objFromPrefab->SetName(name);
+
+	}
+
 	
+
 	if (saveFlag) {
-		//ImGui::SameLine();
+		ImGui::SameLine();
 		if (ImGui::Button("Save")) {
 
 			// Handle saving/deleteion for physics body component
@@ -538,10 +560,12 @@ void Editor::CreateObjectList() {
 				if (objectFactory->GetGameObjectByID(gameobjID) != nullptr) {
 					ImGui::Text("Object ID: %d", objectFactory->GetGameObjectByID(gameobjID)->GetGameObjectID());
 					if (objectFactory->GetGameObjectByID(gameobjID)->Has(ComponentType::TRANSFORM) != -1) {
-						xPos = GET_COMPONENT(objectFactory->GetGameObjectByID(gameobjID), Transform, ComponentType::TRANSFORM)->position.x;
-						yPos = GET_COMPONENT(objectFactory->GetGameObjectByID(gameobjID), Transform, ComponentType::TRANSFORM)->position.y;
-						scale = GET_COMPONENT(objectFactory->GetGameObjectByID(gameobjID), Transform, ComponentType::TRANSFORM)->scale;
-						angle = GET_COMPONENT(objectFactory->GetGameObjectByID(gameobjID), Transform, ComponentType::TRANSFORM)->rotation;
+						
+							xPos = GET_COMPONENT(objectFactory->GetGameObjectByID(gameobjID), Transform, ComponentType::TRANSFORM)->position.x;
+							yPos = GET_COMPONENT(objectFactory->GetGameObjectByID(gameobjID), Transform, ComponentType::TRANSFORM)->position.y;
+							scale = GET_COMPONENT(objectFactory->GetGameObjectByID(gameobjID), Transform, ComponentType::TRANSFORM)->scale;
+							angle = GET_COMPONENT(objectFactory->GetGameObjectByID(gameobjID), Transform, ComponentType::TRANSFORM)->rotation;
+						
 					}
 					else {
 						xPos = yPos = scale = angle = 0;
@@ -687,40 +711,48 @@ void Editor::CreateObjectList() {
 			else {
 				static float xPos2 = 0, yPos2 = 0, scale2 = 0, speed2 = 0, angle2 = 0, rotSpeed2 = 0;
 				if (objectFactory->GetGameObjectByID(gameobjID)->Has(ComponentType::TRANSFORM) != -1) {
-					xPos2 = GET_COMPONENT(objectFactory->GetGameObjectByID(gameobjID), Transform, ComponentType::TRANSFORM)->position.x;
-					if (ImGui::SliderFloat("X-Position", &xPos2, static_cast<float>(-(windowSize.first / 2)), static_cast<float>(windowSize.first / 2), "%.2f")) { // Slider for X-Position
-						GET_COMPONENT(objectFactory->GetGameObjectByID(gameobjID), Transform, ComponentType::TRANSFORM)->position.x = xPos2;
-					}
+					ImGui::Indent();
+					if (ImGui::CollapsingHeader("Transform")) {
+						xPos2 = GET_COMPONENT(objectFactory->GetGameObjectByID(gameobjID), Transform, ComponentType::TRANSFORM)->position.x;
+						if (ImGui::SliderFloat("X-Position", &xPos2, static_cast<float>(-(windowSize.first / 2)), static_cast<float>(windowSize.first / 2), "%.2f")) { // Slider for X-Position
+							GET_COMPONENT(objectFactory->GetGameObjectByID(gameobjID), Transform, ComponentType::TRANSFORM)->position.x = xPos2;
+						}
 
-					yPos2 = GET_COMPONENT(objectFactory->GetGameObjectByID(gameobjID), Transform, ComponentType::TRANSFORM)->position.y;
-					if (ImGui::SliderFloat("Y-Position", &yPos2, static_cast<float>(-(windowSize.second / 2)), static_cast<float>(windowSize.second / 2), "%.2f")) { // Slider for Y-Position
-						GET_COMPONENT(objectFactory->GetGameObjectByID(gameobjID), Transform, ComponentType::TRANSFORM)->position.y = yPos2;
-					}
+						yPos2 = GET_COMPONENT(objectFactory->GetGameObjectByID(gameobjID), Transform, ComponentType::TRANSFORM)->position.y;
+						if (ImGui::SliderFloat("Y-Position", &yPos2, static_cast<float>(-(windowSize.second / 2)), static_cast<float>(windowSize.second / 2), "%.2f")) { // Slider for Y-Position
+							GET_COMPONENT(objectFactory->GetGameObjectByID(gameobjID), Transform, ComponentType::TRANSFORM)->position.y = yPos2;
+						}
 
-					scale2 = GET_COMPONENT(objectFactory->GetGameObjectByID(gameobjID), Transform, ComponentType::TRANSFORM)->scale;
-					if (ImGui::SliderFloat("Scale %", &scale2, 0.0f, 500.0f, "%.2f")) { // Slider for Scale
-						GET_COMPONENT(objectFactory->GetGameObjectByID(gameobjID), Transform, ComponentType::TRANSFORM)->scale = scale2;
-					}
+						scale2 = GET_COMPONENT(objectFactory->GetGameObjectByID(gameobjID), Transform, ComponentType::TRANSFORM)->scale;
+						if (ImGui::SliderFloat("Scale %", &scale2, 0.0f, 500.0f, "%.2f")) { // Slider for Scale
+							GET_COMPONENT(objectFactory->GetGameObjectByID(gameobjID), Transform, ComponentType::TRANSFORM)->scale = scale2;
+						}
 
-					angle2 = GET_COMPONENT(objectFactory->GetGameObjectByID(gameobjID), Transform, ComponentType::TRANSFORM)->rotation;
-					if (ImGui::SliderFloat("Angle", &angle2, 0.0f, 360.0f, "%.2f")) { // Slider for true angle
-						GET_COMPONENT(objectFactory->GetGameObjectByID(gameobjID), Transform, ComponentType::TRANSFORM)->rotation = angle2;
+						angle2 = GET_COMPONENT(objectFactory->GetGameObjectByID(gameobjID), Transform, ComponentType::TRANSFORM)->rotation;
+						if (ImGui::SliderFloat("Angle", &angle2, 0.0f, 360.0f, "%.2f")) { // Slider for true angle
+							GET_COMPONENT(objectFactory->GetGameObjectByID(gameobjID), Transform, ComponentType::TRANSFORM)->rotation = angle2;
+						}
 					}
+					ImGui::Unindent();
 				}
 				else {
 					ImGui::Text("Selected Object has no TRANSFORM component");
 				}
 				if (objectFactory->GetGameObjectByID(gameobjID)->Has(ComponentType::PHYSICS_BODY) != -1) {
-					speed2 = GET_COMPONENT(objectFactory->GetGameObjectByID(gameobjID), PhysicsBody, ComponentType::PHYSICS_BODY)->speed;
-					if (ImGui::SliderFloat("Speed", &speed2, 0.0f, 100.0f, "%.2f")) { // Slider for Speed
-						GET_COMPONENT(objectFactory->GetGameObjectByID(gameobjID), PhysicsBody, ComponentType::PHYSICS_BODY)->speed = speed2;
-					}
+					ImGui::Indent();
+					if (ImGui::CollapsingHeader("Physics Body")) {
+						speed2 = GET_COMPONENT(objectFactory->GetGameObjectByID(gameobjID), PhysicsBody, ComponentType::PHYSICS_BODY)->speed;
+						if (ImGui::SliderFloat("Speed", &speed2, 0.0f, 100.0f, "%.2f")) { // Slider for Speed
+							GET_COMPONENT(objectFactory->GetGameObjectByID(gameobjID), PhysicsBody, ComponentType::PHYSICS_BODY)->speed = speed2;
+						}
 
 
-					rotSpeed2 = GET_COMPONENT(objectFactory->GetGameObjectByID(gameobjID), PhysicsBody, ComponentType::PHYSICS_BODY)->rotationSpeed;
-					if (ImGui::SliderFloat("Rotation Speed", &rotSpeed2, 0.0f, 500.0f, "%.2f")) {// Slider for rotation speed
-						GET_COMPONENT(objectFactory->GetGameObjectByID(gameobjID), PhysicsBody, ComponentType::PHYSICS_BODY)->rotationSpeed = rotSpeed2;
+						rotSpeed2 = GET_COMPONENT(objectFactory->GetGameObjectByID(gameobjID), PhysicsBody, ComponentType::PHYSICS_BODY)->rotationSpeed;
+						if (ImGui::SliderFloat("Rotation Speed", &rotSpeed2, 0.0f, 500.0f, "%.2f")) {// Slider for rotation speed
+							GET_COMPONENT(objectFactory->GetGameObjectByID(gameobjID), PhysicsBody, ComponentType::PHYSICS_BODY)->rotationSpeed = rotSpeed2;
+						}
 					}
+					ImGui::Unindent();
 				}
 				else {
 					ImGui::Text("Selected Object has no PHYSICSBODY component");

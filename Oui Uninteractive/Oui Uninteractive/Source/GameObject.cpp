@@ -102,7 +102,9 @@ size_t GameObject::GetGameObjectID() {
 std::string GameObject::GetName() {
 	return gameObjectName;
 }
-
+void GameObject::SetName(std::string newName) {
+	gameObjectName = newName;
+}
 /**************************************************************************
 * @brief Get game object type
 * @return std::string - game object type

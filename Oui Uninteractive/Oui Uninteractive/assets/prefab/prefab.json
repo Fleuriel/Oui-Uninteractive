@@ -13,6 +13,12 @@
                 "Collider": {
                     "ColliderSize": 75.0,
                     "ColliderRotation": 0.0
+                },
+                "Transform": {
+                    "PositionX": 0.0,
+                    "PositionY": 0.0,
+                    "Rotation": 0.0,
+                    "Scale": 0.0
                 }
             }
         },
