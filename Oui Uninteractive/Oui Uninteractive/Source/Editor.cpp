@@ -435,7 +435,7 @@ void Editor::CreatePrefabPanel() {
 			saveFlag = true;
 		}
 		ImGui::SameLine();
-		if (ImGui::CollapsingHeader("Logic")) {
+		if (ImGui::CollapsingHeader("Logic") && logicFlag) {
 			if (ImGui::BeginCombo("Scripts", currentScriptName.c_str())) {
 				for (int i = 0; i < logicSystem->scriptVec.size(); i++) {
 					bool isSelected = (i == currentScriptIndex);
