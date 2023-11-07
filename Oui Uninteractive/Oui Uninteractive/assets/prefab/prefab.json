@@ -26,9 +26,9 @@
                     "VelocityY": 0.0,
                     "RotationSpeed": 140.625,
                     "Speed": 140.8780059814453,
-                    "Mass": 142.39500427246094,
+                    "Mass": 174.7570037841797,
                     "IsStatic": false,
-                    "FrictionForce": 24.611000061035156
+                    "FrictionForce": 100.0
                 }
             }
         },
