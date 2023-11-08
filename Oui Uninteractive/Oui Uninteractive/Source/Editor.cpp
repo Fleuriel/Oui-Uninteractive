@@ -455,6 +455,10 @@ void Editor::CreatePrefabPanel() {
 				tempLogicSet.insert(currentScriptIndex);
 				saveFlag = true;
 			}
+			if (ImGui::Button("Delete Script")) {
+				tempLogicSet.erase(currentScriptIndex);
+				saveFlag = true;
+			}
 
 			ImGui::BeginChild("Script List");
 			LogicComponent* prefabLogic = GET_PREFAB_COMPONENT(copy[selectedName], LogicComponent, ComponentType::LOGICCOMPONENT);
