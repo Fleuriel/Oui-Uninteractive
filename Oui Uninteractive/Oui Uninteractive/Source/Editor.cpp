@@ -812,6 +812,49 @@ void Editor::CreateObjectList() {
 				else {
 					ImGui::Text("Selected Object has no PHYSICSBODY component");
 				}
+				if (objectFactory->GetGameObjectByID(gameobjID)->Has(ComponentType::LOGICCOMPONENT) != -1) {
+					static std::string currentScriptName;
+					static int currentScriptIndex;
+					ImGui::Indent();
+					if (ImGui::CollapsingHeader("Logic")) {
+						if (ImGui::BeginCombo("Scripts", currentScriptName.c_str())) {
+							for (int i = 0; i < logicSystem->scriptVec.size(); i++) {
+								bool isSelected = (i == currentScriptIndex);
+								if (ImGui::Selectable(logicSystem->scriptVec[i]->name.c_str(), isSelected)) {
+									currentScriptIndex = i;
+									currentScriptName = logicSystem->scriptVec[i]->name;
+								}
+
+								if (isSelected) {
+									ImGui::SetItemDefaultFocus();
+								}
+							}
+							ImGui::EndCombo();
+						}
+						ImGui::SameLine();
+						LogicComponent* prefabLogic = GET_COMPONENT(objectFactory->GetGameObjectByID(gameobjID), LogicComponent, ComponentType::LOGICCOMPONENT);
+						if (ImGui::Button("Add Script")) {
+							prefabLogic->scriptIndexSet.insert(currentScriptIndex);
+						}
+						if (ImGui::Button("Delete Script")) {
+							prefabLogic->scriptIndexSet.erase(currentScriptIndex);
+						}
+
+						ImGui::BeginChild("Script List");
+						
+						if (prefabLogic != nullptr) {
+							for (std::set<unsigned int>::iterator it = prefabLogic->scriptIndexSet.begin(); it != prefabLogic->scriptIndexSet.end(); it++) {
+								ImGui::Text(logicSystem->scriptVec[*it]->name.c_str());
+							}
+						}
+
+						ImGui::EndChild();
+					}
+					ImGui::Unindent();
+				}
+				else {
+					ImGui::Text("Selected Object has no LOGIC component");
+				}
 				
 			}
 			
