@@ -125,6 +125,12 @@
     <Filter Include="Composition\Prefab">
       <UniqueIdentifier>{242d2270-95de-4f50-823d-cac51a880b56}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Component\EnemyAI">
+      <UniqueIdentifier>{885fb760-87bf-4309-9ae9-0a78382a0610}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Systems\EnemyAI">
+      <UniqueIdentifier>{9cd2934e-9e00-4c49-a043-b66aa39fed72}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\GameStateManager.cpp">
@@ -265,6 +271,12 @@
     <ClCompile Include="Source\Prefab.cpp">
       <Filter>Composition\Prefab</Filter>
     </ClCompile>
+    <ClCompile Include="Source\EnemyAISystem.cpp">
+      <Filter>Systems\EnemyAI</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\EnemyFSM.cpp">
+      <Filter>Component\EnemyAI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Include\Matrix3x3.h">
@@ -384,9 +396,6 @@
     <ClInclude Include="Include\Collider.h">
       <Filter>Component\Collider</Filter>
     </ClInclude>
-    <ClInclude Include="Include\EnemyFSM.h">
-      <Filter>Scripts</Filter>
-    </ClInclude>
     <ClInclude Include="Include\PlayerShooting.h">
       <Filter>Scripts</Filter>
     </ClInclude>
@@ -420,6 +429,12 @@
     <ClInclude Include="Include\Filepaths.h" />
     <ClInclude Include="Include\GameObject.h">
       <Filter>Composition\GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\EnemyAISystem.h">
+      <Filter>Systems\EnemyAI</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\EnemyFSM.h">
+      <Filter>Component\EnemyAI</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

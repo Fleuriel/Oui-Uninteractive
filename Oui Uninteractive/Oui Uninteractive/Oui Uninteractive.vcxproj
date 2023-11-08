@@ -35,6 +35,8 @@
     <ClCompile Include="Source\Collision.cpp" />
     <ClCompile Include="Source\CoordinateSystem.cpp" />
     <ClCompile Include="Source\Editor.cpp" />
+    <ClCompile Include="Source\EnemyAISystem.cpp" />
+    <ClCompile Include="Source\EnemyFSM.cpp" />
     <ClCompile Include="Source\EnemyStates.cpp" />
     <ClCompile Include="Source\FontManager.cpp" />
     <ClCompile Include="Source\GameObject.cpp" />
@@ -78,6 +80,7 @@
     <ClInclude Include="Include\ComponentType.h" />
     <ClInclude Include="Include\CoordinateSystem.h" />
     <ClInclude Include="Include\Editor.h" />
+    <ClInclude Include="Include\EnemyAISystem.h" />
     <ClInclude Include="Include\EnemyFSM.h" />
     <ClInclude Include="Include\EnemyStates.h" />
     <ClInclude Include="Include\Filepaths.h" />

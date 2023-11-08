@@ -15,7 +15,8 @@ typedef enum class ComponentType {
 	TRANSFORM,
 	LOGICCOMPONENT,
 	COLLIDER,
-	COUNT
+	ENEMY_FSM
+	COUNT,
 } componentType;
 
 #endif

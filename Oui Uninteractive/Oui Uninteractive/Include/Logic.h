@@ -19,7 +19,6 @@
 enum LOGIC_ENUM {
 	TEST_SCRIPT1 = 0,
 	PLAYER_MOVEMENT,
-	ENEMY_FSM,
 	PLAYER_ATTACK
 };
 class LogicSystem : public ISystem {
@@ -46,7 +45,7 @@ public:
 	*************************************************************************/
 	void AddLogicScript(IScript* newScript);
 	/**************************************************************************
-	* @brief Destructor for Collider System
+	* @brief Destructor for Logic System
 	*************************************************************************/
 	~LogicSystem();
 

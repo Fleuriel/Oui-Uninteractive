@@ -43,9 +43,6 @@ void LogicSystem::Initialize() {
 	TestScript2* testScript2 = new TestScript2(std::string("testScript2"));
 	testScript2->Initialize();
 
-	EnemyFSM* enemyFSMScript = new EnemyFSM(std::string("EnemyFSM"));
-	enemyFSMScript->Initialize();
-
 	PlayerShooting* playerShootingScript = new PlayerShooting(std::string("PlayerShooting"));
 	playerShootingScript->Initialize();
 }

@@ -37,6 +37,7 @@
 #include "Transform.h"
 #include "LogicComponent.h"
 #include "Collider.h"
+#include "EnemyFSM.h"
 
 ObjectFactory* objectFactory = NULL;
 
@@ -57,6 +58,9 @@ ComponentType ObjectFactory::StringToEnum(std::string str) {
 	}
 	else if (str == "Collider") {
 		return ComponentType::COLLIDER;
+	}
+	else if (str == "EnemyFSM") {
+		return ComponentType::ENEMY_FSM;
 	}
 	else {
 		return ComponentType::COUNT;
@@ -80,6 +84,9 @@ std::string ObjectFactory::EnumToString(ComponentType ct) {
 	}
 	else if (ct == ComponentType::COLLIDER) {
 		return "Collider";
+	}
+	else if (ct == ComponentType::ENEMY_FSM) {
+		return "EnemyFSM";
 	}
 	else {
 		return "None";
@@ -354,6 +361,9 @@ void ObjectFactory::SaveObjectsToFile(const std::string& filePath) {
 			else if (componentName == "Collider") {
 				individualComponent.AddMember("ColliderSize", GET_COMPONENT(it.second, Collider, ComponentType::COLLIDER)->tx->scale, allocator);
 				individualComponent.AddMember("ColliderRotation", GET_COMPONENT(it.second, Collider, ComponentType::COLLIDER)->tx->rotation, allocator);
+			}
+			else if (componentName == "EnemyFSM") {
+				individualComponent.AddMember("AggroRange", GET_COMPONENT(it.second, EnemyFSM, ComponentType::ENEMY_FSM)->aggroRange, allocator);
 			}
 			
 			// Add individual component to components object

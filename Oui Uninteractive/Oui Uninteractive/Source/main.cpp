@@ -15,6 +15,7 @@
 #include "Physics.h"
 #include "SystemManager.h"
 #include "ObjectFactory.h"
+#include "EnemyAISystem.h"
 #include "Logic.h"
 #include "Sound.h"
 #include "TransformSystem.h"
@@ -46,6 +47,7 @@ int main(){
 	sysManager->AddSystem(new ObjectFactory());
 	sysManager->AddSystem(new ColliderSystem());
 	sysManager->AddSystem(new Physics());
+	sysManager->AddSystem(new EnemyAISystem());
 
 	sysManager->AddSystem(new TransformSystem());
 	sysManager->AddSystem(new SceneManager());

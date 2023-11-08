@@ -48,9 +48,6 @@ void LogicComponent::Serialize(rapidjson::Value::ConstMemberIterator& itr) {
 				scriptIndexSet.insert(LOGIC_ENUM::PLAYER_MOVEMENT);
 				break;
 			case 2:
-				scriptIndexSet.insert(LOGIC_ENUM::ENEMY_FSM);
-				break;
-			case 3:
 				scriptIndexSet.insert(LOGIC_ENUM::PLAYER_ATTACK);
 				break;
 			default:

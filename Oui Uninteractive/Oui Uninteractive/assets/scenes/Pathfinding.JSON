@@ -23,7 +23,7 @@
                 "LogicComponent": {
                     "ScriptID": [
                         1,
-                        3
+                        2
                     ]
                 },
                 "Collider": {
@@ -53,13 +53,15 @@
                 },
                 "LogicComponent": {
                     "ScriptID": [
-                        0,
-                        2
+                        0
                     ]
                 },
                 "Collider": {
                     "ColliderSize": 100.0,
                     "ColliderRotation": 0.0
+                },
+                "EnemyFSM": {
+                    "AggroRange": 250.0
                 }
             }
         }
