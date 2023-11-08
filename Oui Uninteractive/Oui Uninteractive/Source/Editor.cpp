@@ -859,18 +859,19 @@ void Editor::CreateObjectList() {
 							ImGui::EndCombo();
 						}
 						ImGui::SameLine();
-						LogicComponent* prefabLogic = GET_COMPONENT(objectFactory->GetGameObjectByID(gameobjID), LogicComponent, ComponentType::LOGICCOMPONENT);
+						LogicComponent* objectLogic = GET_COMPONENT(objectFactory->GetGameObjectByID(gameobjID), LogicComponent, ComponentType::LOGICCOMPONENT);
 						if (ImGui::Button("Add Script")) {
-							prefabLogic->scriptIndexSet.insert(currentScriptIndex);
+							objectLogic->scriptIndexSet.insert(currentScriptIndex);
 						}
+						ImGui::SameLine();
 						if (ImGui::Button("Delete Script")) {
-							prefabLogic->scriptIndexSet.erase(currentScriptIndex);
+							objectLogic->scriptIndexSet.erase(currentScriptIndex);
 						}
 
 						ImGui::BeginChild("Script List");
 						
-						if (prefabLogic != nullptr) {
-							for (std::set<unsigned int>::iterator it = prefabLogic->scriptIndexSet.begin(); it != prefabLogic->scriptIndexSet.end(); it++) {
+						if (objectLogic != nullptr) {
+							for (std::set<unsigned int>::iterator it = objectLogic->scriptIndexSet.begin(); it != objectLogic->scriptIndexSet.end(); it++) {
 								ImGui::Text(logicSystem->scriptVec[*it]->name.c_str());
 							}
 						}
