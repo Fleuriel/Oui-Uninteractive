@@ -47,7 +47,7 @@ void PhysicsBody::Initialize() {
 	if (GetOwner()->Has(ComponentType::TRANSFORM) != -1) {
 		txPtr = GetOwner()->GetComponentType<Transform>(ComponentType::TRANSFORM);
 	}
-	forceManager.forceVec[FORCE_INDEX::FRICTION]->magnitude = mass;
+	forceManager.forceVec[FORCE_INDEX::FRICTION]->magnitude = frictionForce;
 	physicsSys->bodyList.insert(std::pair<size_t, PhysicsBody*>(GetOwner()->GetGameObjectID(), this));
 
 }
@@ -79,10 +79,7 @@ PhysicsBody* PhysicsBody::Clone() const{
 	newBody->rotationSpeed = rotationSpeed;
 	newBody->mass = mass;
 
-	for (int i = 0; i < forceManager.forceVec.size(); i++) {
-		LinearForce* newForce = new LinearForce(*forceManager.forceVec[i]);
-		newBody->forceManager.forceVec.push_back(newForce);
-	}
+	
 
 	return newBody;
 }
@@ -90,8 +87,8 @@ PhysicsBody* PhysicsBody::Clone() const{
 * @brief Constructor for ForceManager
 *************************************************************************/
 ForceManager::ForceManager() {
-	forceVec.push_back(new LinearForce(0.5f, false, 50));
-	forceVec.push_back(new LinearForce(0.5f, false, 50));
+	forceVec.push_back(new LinearForce(0.5f, false, 0));
+	forceVec.push_back(new LinearForce(0.5f, false, 0));
 	forceVec.push_back(new LinearForce(0.1f, true, 50));
 }
 /**************************************************************************

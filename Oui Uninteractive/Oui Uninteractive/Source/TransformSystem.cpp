@@ -37,7 +37,10 @@ void TransformSystem::Update(float) {
 	for (; it2 != copyColliderMap.end(); it2++) {
 		Collider* collider = it2->second;
 		//Update bounding box position
-		collider->tx->position = GET_COMPONENT(collider->GetOwner(), Transform, ComponentType::TRANSFORM)->position;
+		if (GET_COMPONENT(collider->GetOwner(), Transform, ComponentType::TRANSFORM) != nullptr) {
+			collider->tx->position = GET_COMPONENT(collider->GetOwner(), Transform, ComponentType::TRANSFORM)->position;
+		}
+		
 		//collider->tx->scale = (100, 100);
 		
 		/*collider->boundingbox->center.x = collider->tx->position.x - Editor::gameWindowSize.first;

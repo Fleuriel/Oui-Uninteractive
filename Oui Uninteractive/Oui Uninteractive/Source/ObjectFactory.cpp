@@ -202,7 +202,7 @@ GameObject* ObjectFactory::BuildObjectFromPrefab(const std::string& name, const 
 		// Assign an ID to the game object
 		AssignObjectID(gameObject);
 
-		// Initialize the components in the newly-created game object
+		// Initialize the components in the newly-created game object	
 		gameObject->Initialize();
 
 		return gameObject;

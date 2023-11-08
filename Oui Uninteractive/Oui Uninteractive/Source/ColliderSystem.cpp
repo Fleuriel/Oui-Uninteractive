@@ -65,8 +65,8 @@ void ColliderSystem::Update(float dt) {
 
 				if (pBody1 != nullptr && pBody2 != nullptr) {
 
-					Vec2 nextCycleVel = pBody1->velocity + pBody1->forceManager.CalculateResultantForce() * pBody1->mass * static_cast<float>(sysManager->fixedDeltaTime);
-				Vec2 nextCycleVel2 = pBody2->velocity + pBody2->forceManager.CalculateResultantForce() * pBody2->mass * static_cast<float>(sysManager->fixedDeltaTime);
+					Vec2 nextCycleVel = pBody1->velocity + (pBody1->forceManager.CalculateResultantForce() * pBody1->mass) * static_cast<float>(sysManager->fixedDeltaTime);
+				Vec2 nextCycleVel2 = pBody2->velocity + (pBody2->forceManager.CalculateResultantForce() * pBody2->mass) * static_cast<float>(sysManager->fixedDeltaTime);
 
 				Vec2 relVel = nextCycleVel - nextCycleVel2;
 

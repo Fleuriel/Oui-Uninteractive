@@ -67,7 +67,7 @@ void Physics::Update(float dt) {
 			//Direction
 			
 			Vec2 summedForce = body->forceManager.CalculateResultantForce();
-			body->acceleration = (summedForce)*body->mass;
+			body->acceleration = (summedForce) * body->mass;
 
 			//Velocity
 			Vec2 originalVelocity = body->velocity;

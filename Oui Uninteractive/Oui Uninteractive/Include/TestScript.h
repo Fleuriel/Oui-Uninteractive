@@ -5,6 +5,9 @@
 
 class TestScript : public IScript {
 public:
+	TestScript(std::string newName) : IScript(newName) {
+		
+	};
 	void Initialize() {
 		logicSystem->AddLogicScript(this);
 	};
@@ -68,6 +71,9 @@ public:
 
 class TestScript2 : public IScript {
 public:
+	TestScript2(std::string newName) : IScript(newName) {
+
+	};
 	void Initialize() {
 		logicSystem->AddLogicScript(this);
 	};

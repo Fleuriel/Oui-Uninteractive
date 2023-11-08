@@ -239,6 +239,11 @@ void Editor::CreatePrefabPanel() {
 	static float phyRotSpeed, phySpeed, phyMass, phyFriction, transXpos, transYpos, transRot, transScale, colScale, colRot;
 	static bool phyIsStatic, physicsFlag, transformFlag, logicFlag, colliderFlag, saveFlag, loadedFlag = false;
 
+	static int currentScriptIndex;
+	static std::set<unsigned int> tempLogicSet;
+	static std::string currentScriptName;
+	static bool initialized = false;
+
 	std::map<std::string, Prefab*> copy = objectFactory->GetPrefabMap();
 	std::map<std::string, Prefab*>::iterator it = copy.begin();
 	static std::string selectedName = it->first;
@@ -307,6 +312,17 @@ void Editor::CreatePrefabPanel() {
 			if (!transformFlag && objectFactory->GetPrefabByName(selectedName)->Has(ComponentType::TRANSFORM) != -1) {
 				objectFactory->GetPrefabByName(selectedName)->RemoveComponent(GET_PREFAB_COMPONENT(objectFactory->GetPrefabByName(selectedName), Transform, ComponentType::TRANSFORM));
 			}
+			//Handle saving/deletion for logic component
+			if (logicFlag && objectFactory->GetPrefabByName(selectedName)->Has(ComponentType::LOGICCOMPONENT) == -1) {
+				objectFactory->GetPrefabByName(selectedName)->AddComponent(new LogicComponent(), ComponentType::LOGICCOMPONENT);
+			}
+			if (objectFactory->GetPrefabByName(selectedName)->Has(ComponentType::LOGICCOMPONENT) != -1) {
+				GET_PREFAB_COMPONENT(objectFactory->GetPrefabByName(selectedName), LogicComponent, ComponentType::LOGICCOMPONENT)->scriptIndexSet = tempLogicSet;
+			}
+			if (!logicFlag && objectFactory->GetPrefabByName(selectedName)->Has(ComponentType::LOGICCOMPONENT) == -1) {
+				objectFactory->GetPrefabByName(selectedName)->RemoveComponent
+				(GET_PREFAB_COMPONENT(objectFactory->GetPrefabByName(selectedName), LogicComponent, ComponentType::LOGICCOMPONENT));
+			}
 
 			// Handle saving/deletion for collider component
 			if (colliderFlag && objectFactory->GetPrefabByName(selectedName)->Has(ComponentType::COLLIDER) == -1) {
@@ -336,6 +352,7 @@ void Editor::CreatePrefabPanel() {
 			std::string prefabName = it->first;		
 			if (ImGui::Selectable(prefabName.c_str(), prefabName == selectedName) || !loadedFlag) {
 				selectedName = prefabName;
+				initialized = false;
 				// Update states
 				physicsFlag = (copy[selectedName]->Has(ComponentType::PHYSICS_BODY) != -1);
 				transformFlag = (copy[selectedName]->Has(ComponentType::TRANSFORM) != -1);
@@ -418,7 +435,41 @@ void Editor::CreatePrefabPanel() {
 			saveFlag = true;
 		}
 		ImGui::SameLine();
-		if (ImGui::CollapsingHeader("Logic")) {
+		if (ImGui::CollapsingHeader("Logic") && logicFlag) {
+			if (ImGui::BeginCombo("Scripts", currentScriptName.c_str())) {
+				for (int i = 0; i < logicSystem->scriptVec.size(); i++) {
+					bool isSelected = (i == currentScriptIndex);
+					if (ImGui::Selectable(logicSystem->scriptVec[i]->name.c_str(), isSelected)) {
+						currentScriptIndex = i;
+						currentScriptName = logicSystem->scriptVec[i]->name;
+					}
+					
+					if (isSelected) {
+						ImGui::SetItemDefaultFocus();
+					}
+				}
+				ImGui::EndCombo();
+			}
+			ImGui::SameLine();
+			if (ImGui::Button("Add Script")) {
+				tempLogicSet.insert(currentScriptIndex);
+				saveFlag = true;
+			}
+
+			ImGui::BeginChild("Script List");
+			LogicComponent* prefabLogic = GET_PREFAB_COMPONENT(copy[selectedName], LogicComponent, ComponentType::LOGICCOMPONENT);
+			if (prefabLogic != nullptr) {
+				if (initialized == false) {
+					tempLogicSet = prefabLogic->scriptIndexSet;
+					initialized = true;
+				}
+				
+				for (std::set<unsigned int>::iterator it = tempLogicSet.begin(); it != tempLogicSet.end(); it++) {
+					ImGui::Text(logicSystem->scriptVec[*it]->name.c_str());
+				}
+			}
+			
+			ImGui::EndChild();
 
 		}
 		// Render Collider

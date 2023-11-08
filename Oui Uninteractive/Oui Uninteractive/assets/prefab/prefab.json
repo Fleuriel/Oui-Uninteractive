@@ -7,7 +7,8 @@
             "Components": {
                 "LogicComponent": {
                     "ScriptID": [
-                        0
+                        1,
+                        3
                     ]
                 },
                 "Collider": {
@@ -18,7 +19,16 @@
                     "PositionX": 0.0,
                     "PositionY": 0.0,
                     "Rotation": 0.0,
-                    "Scale": 0.0
+                    "Scale": 100.0
+                },
+                "PhysicsBody": {
+                    "VelocityX": 0.0,
+                    "VelocityY": 0.0,
+                    "RotationSpeed": 140.625,
+                    "Speed": 140.8780059814453,
+                    "Mass": 174.7570037841797,
+                    "IsStatic": false,
+                    "FrictionForce": 100.0
                 }
             }
         },
@@ -28,7 +38,8 @@
             "Components": {
                 "LogicComponent": {
                     "ScriptID": [
-                        0
+                        0,
+                        3
                     ]
                 },
                 "Collider": {
@@ -39,7 +50,7 @@
                     "PositionX": 0.0,
                     "PositionY": 0.0,
                     "Rotation": 0.0,
-                    "Scale": 0.0
+                    "Scale": 100.0
                 },
                 "PhysicsBody": {
                     "VelocityX": 0.0,
@@ -59,6 +70,26 @@
                 "Collider": {
                     "ColliderSize": 75.0,
                     "ColliderRotation": 0.0
+                },
+                "Transform": {
+                    "PositionX": 0.0,
+                    "PositionY": 0.0,
+                    "Rotation": 0.0,
+                    "Scale": 100.0
+                },
+                "PhysicsBody": {
+                    "VelocityX": 0.0,
+                    "VelocityY": 0.0,
+                    "RotationSpeed": 525.0,
+                    "Speed": 428.125,
+                    "Mass": 387.5,
+                    "IsStatic": false,
+                    "FrictionForce": 35.9379997253418
+                },
+                "LogicComponent": {
+                    "ScriptID": [
+                        3
+                    ]
                 }
             }
         },
@@ -80,6 +111,11 @@
                     "Mass": 531.25,
                     "IsStatic": false,
                     "FrictionForce": 35.9379997253418
+                },
+                "LogicComponent": {
+                    "ScriptID": [
+                        3
+                    ]
                 }
             }
         }
