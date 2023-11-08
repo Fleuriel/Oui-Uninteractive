@@ -244,6 +244,8 @@ void Editor::CreatePrefabPanel() {
 	static std::string currentScriptName;
 	static bool initialized = false;
 
+	static std::string newPrefabName{}, newPrefabType{};
+
 	std::map<std::string, Prefab*> copy = objectFactory->GetPrefabMap();
 	std::map<std::string, Prefab*>::iterator it = copy.begin();
 	static std::string selectedName = it->first;
@@ -278,10 +280,25 @@ void Editor::CreatePrefabPanel() {
 
 	}
 
-	
 	if (ImGui::Button("Add Prefab")) {
-		Prefab* prefab{ new Prefab("temp", "temp")};
+		size_t highestNumber = 0; // Initialize with the lowest possible ID
+		std::string defaultPrefabName = "NewPrefab";
+		if (!objectFactory->GetPrefabMap().empty()) {
+			// Find the highest assigned ID in the existing objects
+			for (const auto& pair : objectFactory->GetPrefabMap()) {
+				const std::string& objName = pair.second->GetName();
+				size_t pos = objName.find(defaultPrefabName);
+				if (pos != std::string::npos) {
+					size_t number = std::stoi(objName.substr(pos + defaultPrefabName.size())); // Extract and parse the number part
+					highestNumber = std::max(highestNumber, number);
+				}
+				
+			}
+		}
+		std::string name = defaultPrefabName + std::to_string(highestNumber + 1);
+		Prefab* prefab{ new Prefab(name, "Temp")};
 		objectFactory->AddPrefabToMap(prefab, prefab->GetName());
+		saveFlag = true;
 	}
 	if (saveFlag) {
 		ImGui::SameLine();
@@ -1021,3 +1038,4 @@ void Editor::RenderDirectory(const std::string& filePath) {
 		}
 	}
 }
+
