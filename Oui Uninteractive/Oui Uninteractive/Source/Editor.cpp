@@ -279,7 +279,10 @@ void Editor::CreatePrefabPanel() {
 	}
 
 	
-
+	if (ImGui::Button("Add Prefab")) {
+		Prefab* prefab{ new Prefab("temp", "temp")};
+		objectFactory->AddPrefabToMap(prefab, prefab->GetName());
+	}
 	if (saveFlag) {
 		ImGui::SameLine();
 		if (ImGui::Button("Save")) {

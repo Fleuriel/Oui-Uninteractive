@@ -1,5 +1,5 @@
 {
-    "ObjectCount": 4,
+    "ObjectCount": 5,
     "Objects": [
         {
             "Name": "EnemyPrefab",
@@ -110,6 +110,32 @@
                     "Mass": 531.25,
                     "IsStatic": false,
                     "FrictionForce": 35.9379997253418
+                },
+                "LogicComponent": {
+                    "ScriptID": [
+                        3
+                    ]
+                }
+            }
+        },
+        {
+            "Name": "temp",
+            "Type": "temp",
+            "Components": {
+                "PhysicsBody": {
+                    "VelocityX": 0.0,
+                    "VelocityY": 0.0,
+                    "RotationSpeed": 140.625,
+                    "Speed": 53.499000549316406,
+                    "Mass": 197.41099548339844,
+                    "IsStatic": false,
+                    "FrictionForce": 50.1609992980957
+                },
+                "Transform": {
+                    "PositionX": 100.0,
+                    "PositionY": 0.0,
+                    "Rotation": 0.0,
+                    "Scale": 75.0
                 },
                 "LogicComponent": {
                     "ScriptID": [

@@ -205,6 +205,8 @@ public:
 	* @return bool
 	*************************************************************************/
 	bool AddComponent(componentType name, GameObject* object);
+
+	void AddPrefabToMap(Prefab* newPrefab, std::string name);
 };
 extern ObjectFactory* objectFactory;
 
