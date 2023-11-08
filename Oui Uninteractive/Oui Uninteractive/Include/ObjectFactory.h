@@ -207,6 +207,7 @@ public:
 	bool AddComponent(componentType name, GameObject* object);
 
 	void AddPrefabToMap(Prefab* newPrefab, std::string name);
+	void RemovePrefabFromMap(std::string name);
 };
 extern ObjectFactory* objectFactory;
 

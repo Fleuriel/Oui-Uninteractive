@@ -242,7 +242,8 @@ void Editor::CreatePrefabPanel() {
 	static int currentScriptIndex;
 	static std::set<unsigned int> tempLogicSet;
 	static std::string currentScriptName;
-	static bool initialized = false;
+	static bool initialized, deleteFlag = false;
+
 
 	static std::string newPrefabName{}, newPrefabType{};
 
@@ -300,10 +301,16 @@ void Editor::CreatePrefabPanel() {
 		objectFactory->AddPrefabToMap(prefab, prefab->GetName());
 		saveFlag = true;
 	}
+	ImGui::SameLine();
+	if (ImGui::Button("Delete Prefab")) {
+		objectFactory->RemovePrefabFromMap(selectedName);
+		selectedName = it->first;
+		saveFlag = true;
+		
+	}
 	if (saveFlag) {
 		ImGui::SameLine();
 		if (ImGui::Button("Save")) {
-
 			// Handle saving/deleteion for physics body component
 			if (physicsFlag && objectFactory->GetPrefabByName(selectedName)->Has(ComponentType::PHYSICS_BODY) == -1) {
 				objectFactory->GetPrefabByName(selectedName)->AddComponent(new PhysicsBody(), ComponentType::PHYSICS_BODY);

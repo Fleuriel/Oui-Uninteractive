@@ -634,3 +634,6 @@ bool ObjectFactory::AddComponent(componentType componentName, GameObject* gameOb
 void ObjectFactory::AddPrefabToMap(Prefab* newPrefab, std::string name) {
 	prefabMap.insert(std::pair<std::string, Prefab*>(name, newPrefab));
 }
+void ObjectFactory::RemovePrefabFromMap(std::string name) {
+	prefabMap.erase(name);
+}

@@ -1,40 +1,13 @@
 {
-    "ObjectCount": 6,
+    "ObjectCount": 4,
     "Objects": [
         {
             "Name": "EnemyPrefab",
             "Type": "EnemyPrefab",
             "Components": {
                 "LogicComponent": {
-                    "ScriptID": [
-                        1
-                    ]
+                    "ScriptID": []
                 },
-                "Collider": {
-                    "ColliderSize": 75.0,
-                    "ColliderRotation": 0.0
-                },
-                "Transform": {
-                    "PositionX": 0.0,
-                    "PositionY": 0.0,
-                    "Rotation": 0.0,
-                    "Scale": 100.0
-                },
-                "PhysicsBody": {
-                    "VelocityX": 0.0,
-                    "VelocityY": 0.0,
-                    "RotationSpeed": 140.625,
-                    "Speed": 140.8780059814453,
-                    "Mass": 174.7570037841797,
-                    "IsStatic": false,
-                    "FrictionForce": 100.0
-                }
-            }
-        },
-        {
-            "Name": "NewPrefab1",
-            "Type": "NewPrefab1",
-            "Components": {
                 "PhysicsBody": {
                     "VelocityX": 0.0,
                     "VelocityY": 0.0,
@@ -49,11 +22,6 @@
         {
             "Name": "NewPrefab2",
             "Type": "NewPrefab2",
-            "Components": {}
-        },
-        {
-            "Name": "NewPrefab3",
-            "Type": "NewPrefab3",
             "Components": {}
         },
         {
