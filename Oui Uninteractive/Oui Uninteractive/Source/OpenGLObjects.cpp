@@ -410,13 +410,21 @@ void OpenGLObject::Draw(std::string type) const{
 		shaderNumber = static_cast<int>(SHADER_ORDER::SPRITES);
 		if ((inputSystem.GetKeyState(GLFW_KEY_W) == 2) || (inputSystem.GetKeyState(GLFW_KEY_S) == 2)
 			|| (inputSystem.GetKeyState(GLFW_KEY_A) == 2) || (inputSystem.GetKeyState(GLFW_KEY_D) == 2))
-			tex = assetManager.GetSprite("BaldManLeftWalk");
+			tex = assetManager.GetSprite("BaldMan_Walk");
 		else
-			tex = assetManager.GetSprite("BaldManIdle");
+			tex = assetManager.GetSprite("BaldMan_Idle");
 	}
-	if (type == "Enemy") {
+	if (type == "CommonGuard") {
 		shaderNumber = static_cast<int>(SHADER_ORDER::SPRITES);
-		tex = assetManager.GetSprite("CommonGuardIdle");
+		tex = assetManager.GetSprite("CommonGuard_Idle");
+	}
+	if (type == "ArmouredGuard") {
+		shaderNumber = static_cast<int>(SHADER_ORDER::SPRITES);
+		tex = assetManager.GetSprite("ArmouredGuard_Idle");
+	}
+	if (type == "Target") {
+		shaderNumber = static_cast<int>(SHADER_ORDER::SPRITES);
+		tex = assetManager.GetSprite("Target_Idle");
 	}
 	if (type == "Weapon") {
 		shaderNumber = static_cast<int>(SHADER_ORDER::MODEL);
@@ -445,7 +453,6 @@ void OpenGLObject::Draw(std::string type) const{
 		shdrpgms[static_cast<int>(SHADER_ORDER::SPRITES)].SetUniform("cols", 6);
 		shdrpgms[static_cast<int>(SHADER_ORDER::SPRITES)].SetUniform("row_To_Draw", spriterow);
 	}
-
 	
 	// Part 2: Bind object's VAO handle
 	glBindVertexArray(models[mdl_ref].vaoid); // Bind object's VAO handle

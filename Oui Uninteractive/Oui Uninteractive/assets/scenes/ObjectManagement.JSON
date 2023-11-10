@@ -34,7 +34,7 @@
         },
         {
             "Name": "JSONEnemy1",
-            "Type": "Enemy",
+            "Type": "CommonGuard",
             "Components": {
                 "PhysicsBody": {
                     "VelocityX": 0.0,
@@ -64,7 +64,7 @@
         },
         {
             "Name": "JSONEnemy2",
-            "Type": "Enemy",
+            "Type": "CommonGuard",
             "Components": {
                 "PhysicsBody": {
                     "VelocityX": 0.0,
@@ -89,7 +89,7 @@
         },
         {
             "Name": "Object4",
-            "Type": "Enemy",
+            "Type": "ArmouredGuard",
             "Components": {
                 "PhysicsBody": {
                     "VelocityX": 0.0,
@@ -114,7 +114,7 @@
         },
         {
             "Name": "Object5",
-            "Type": "Enemy",
+            "Type": "ArmouredGuard",
             "Components": {
                 "PhysicsBody": {
                     "VelocityX": 0.0,
@@ -139,7 +139,7 @@
         },
         {
             "Name": "Object6",
-            "Type": "Enemy",
+            "Type": "Target",
             "Components": {
                 "PhysicsBody": {
                     "VelocityX": 0.0,
