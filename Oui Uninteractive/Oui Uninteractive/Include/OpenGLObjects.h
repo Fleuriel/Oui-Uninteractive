@@ -217,7 +217,7 @@ public:
 	* @param  none
 	* @return void
 	*************************************************************************/
-	void Draw(int shaderNumber, std::string) const;
+	void Draw(std::string) const;
 
 	/**************************************************************************
 	* @brief		Initialize the Shaders for Graphics Pipeline for Object to

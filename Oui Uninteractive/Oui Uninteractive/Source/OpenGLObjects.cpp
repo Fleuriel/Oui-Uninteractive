@@ -401,38 +401,28 @@ void OpenGLObject::CameraUpdate(int posX, int posY) {
 * @param  none
 * @return void
 *************************************************************************/
-void OpenGLObject::Draw(int shaderNumber, std::string type) const{
+void OpenGLObject::Draw(std::string type) const{
 	//texture object is to use texture image unit 6
 	int tex{};
-	if (shaderNumber == static_cast<int>(SHADER_ORDER::MODEL))
-	{
-		switch (TagID) {
-		case 0:
-			tex = 0;
-			break;
-		case 1:
-			tex = assetManager.GetTexture("bag");
-			break;
-		case 2:
-			tex = assetManager.GetTexture("mosquito");
-			break;
-		case 77:
-			tex = assetManager.GetTexture("camera");
-		default:
-			break;
-		}
-	}
-	else if (shaderNumber == static_cast<int>(SHADER_ORDER::SPRITES)) {
-		if(type == "Player")
+	int shaderNumber{ static_cast<int>(SHADER_ORDER::MODEL) };
+	
+	if (type == "Player") {
+		shaderNumber = static_cast<int>(SHADER_ORDER::SPRITES);
 		if ((inputSystem.GetKeyState(GLFW_KEY_W) == 2) || (inputSystem.GetKeyState(GLFW_KEY_S) == 2)
 			|| (inputSystem.GetKeyState(GLFW_KEY_A) == 2) || (inputSystem.GetKeyState(GLFW_KEY_D) == 2))
 			tex = assetManager.GetSprite("BaldManLeftWalk");
 		else
 			tex = assetManager.GetSprite("BaldManIdle");
-
-		if (type == "Enemy")
-			tex = assetManager.GetSprite("CommonGuardIdle");
-
+	}
+	if (type == "Enemy") {
+		shaderNumber = static_cast<int>(SHADER_ORDER::SPRITES);
+		tex = assetManager.GetSprite("CommonGuardIdle");
+	}
+	if (type == "Weapon") {
+		shaderNumber = static_cast<int>(SHADER_ORDER::MODEL);
+	}
+	if (type == "Camera") {
+		shaderNumber = static_cast<int>(SHADER_ORDER::CAMERA);
 	}
 
 	// Bind Texture to 6.
