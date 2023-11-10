@@ -255,12 +255,13 @@ void Editor::CreateMasterPanel() {
 			}
 			else {
 				MessageBox(hwnd, L"Error adding file to assest folder: Souce file does not exist!", L"Failure", MB_OK | MB_ICONERROR);
-			}
-		
+			}	
 		}
-
+		// Rset working directory to the project folder
+		std::filesystem::current_path(exePath);
 	}
-
+	std::string tester;
+	ImGui::InputText("test", &tester);
 
 	ImGui::SeparatorText("Scene controls");
 	static int selectedScene = 0;
@@ -993,15 +994,10 @@ void Editor::CreateObjectList() {
 *************************************************************************/
 void Editor::CreateAssetBrowser() {
 	ImGui::Begin("Asset Browser");
-	if (ImGui::Button("Refresh")) {
-
-	}
-	ImGui::BeginChild("LeftPane", ImVec2(200, 0), true);  // Use 200 width first, can change later. Dynamically size height for now
+	ImGui::BeginChild("LeftPane", ImVec2(200, 0), true);
 	RenderDirectory(FILEPATH_MASTER);
 	ImGui::EndChild();
-
 	ImGui::SameLine();
-
 	// Right Pane
 	{
 		ImGui::Text("Teest2");
@@ -1119,20 +1115,26 @@ void Editor::CreateDebugPanel() {
 	
 // Recursive helper function to render the file directory for the asset browser	
 void Editor::RenderDirectory(const std::string& filePath) {
-	// Render folder directories
-	for (auto& entry : std::filesystem::directory_iterator(filePath)) {
-		if (entry.is_directory()) {
-			if (ImGui::TreeNode(entry.path().filename().string().c_str())) {
-				RenderDirectory(entry.path().string());
-				ImGui::TreePop();
+	std::filesystem::path dirPath(filePath);
+	if (std::filesystem::exists(dirPath)) {
+		// Render folder directories
+		for (auto& entry : std::filesystem::directory_iterator(dirPath)) {
+			if (entry.is_directory()) {
+				if (ImGui::TreeNode(entry.path().filename().string().c_str())) {
+					RenderDirectory(entry.path().string());
+					ImGui::TreePop();
+				}
+			}
+		}
+		// Render individual files
+		for (auto& entry : std::filesystem::directory_iterator(filePath)) {
+			if (!entry.is_directory()) {
+				ImGui::Selectable(entry.path().filename().string().c_str());
 			}
 		}
 	}
-	// Render individual files
-	for (auto& entry : std::filesystem::directory_iterator(filePath)) {
-		if (!entry.is_directory()) {
-			ImGui::Selectable(entry.path().filename().string().c_str());
-		}
+	else {
+		std::cout << "File path does not exist. Maybe check the working directory" << std::endl;
 	}
 }
 
