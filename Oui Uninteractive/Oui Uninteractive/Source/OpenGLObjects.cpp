@@ -50,8 +50,8 @@ GLuint OpenGLObject::FBO = 0;
 GLuint OpenGLObject::RBO = 0;
 GLuint OpenGLObject::FrameTexture = 0;
 
-extern int spriteframe;
-
+extern int spritecol;
+extern int spriterow;
 
 
 
@@ -429,7 +429,11 @@ void OpenGLObject::Draw(int shaderNumber) const{
 		}
 	}
 	else if (shaderNumber == static_cast<int>(SHADER_ORDER::SPRITES)) {
-		tex = assetManager.GetSprite("BaldManLeftWalk");
+		if ((inputSystem.GetKeyState(GLFW_KEY_W) == 2) || (inputSystem.GetKeyState(GLFW_KEY_S) == 2)
+			|| (inputSystem.GetKeyState(GLFW_KEY_A) == 2) || (inputSystem.GetKeyState(GLFW_KEY_D) == 2))
+			tex = assetManager.GetSprite("BaldManLeftWalk");
+		else
+			tex = assetManager.GetSprite("BaldManIdle");
 	}
 
 	// Bind Texture to 6.
@@ -447,9 +451,10 @@ void OpenGLObject::Draw(int shaderNumber) const{
 	if (shaderNumber == static_cast<int>(SHADER_ORDER::SPRITES)) {
 		shdrpgms[static_cast<int>(SHADER_ORDER::SPRITES)].SetUniform("uTex2d", 6);
 
-		shdrpgms[static_cast<int>(SHADER_ORDER::SPRITES)].SetUniform("fr", spriteframe);
-		shdrpgms[static_cast<int>(SHADER_ORDER::SPRITES)].SetUniform("r", 1);
-		shdrpgms[static_cast<int>(SHADER_ORDER::SPRITES)].SetUniform("c", 6);
+		shdrpgms[static_cast<int>(SHADER_ORDER::SPRITES)].SetUniform("col_To_Draw", spritecol);
+		shdrpgms[static_cast<int>(SHADER_ORDER::SPRITES)].SetUniform("rows", 4);
+		shdrpgms[static_cast<int>(SHADER_ORDER::SPRITES)].SetUniform("cols", 6);
+		shdrpgms[static_cast<int>(SHADER_ORDER::SPRITES)].SetUniform("row_To_Draw", spriterow);
 	}
 
 	

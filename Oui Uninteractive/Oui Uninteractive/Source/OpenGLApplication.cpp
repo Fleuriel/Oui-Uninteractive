@@ -87,7 +87,8 @@ static bool imguiInitialized = false;
 AssetManager assetManager;
 
 //temporary variable for changing sprite
-int spriteframe;
+int spritecol;
+int spriterow;
 
 /**************************************************************************
 * @brief		Set the parameters for the window, and then Initialize the
@@ -242,9 +243,9 @@ void OpenGLApplication::OpenGLUpdate() {
 
 	triggerEveryQuarterSecond += static_cast<float>(GetDT());
 	if (triggerEveryQuarterSecond >= 0.25) {
-		spriteframe++;
-		if (spriteframe >= 6)
-			spriteframe = 0;
+		spritecol++;
+		if (spritecol >= 6)
+			spritecol = 0;
 		triggerEveryQuarterSecond = 0;
 	}
 
@@ -403,6 +404,8 @@ void OpenGLApplication::OpenGLUpdate() {
 	}
 
 	
+
+	
 	if (inputSystem.GetMouseState(GLFW_MOUSE_BUTTON_LEFT)) {
 		//assetManager.ReloadAll();
 #ifdef _DEBUG
@@ -444,7 +447,18 @@ void OpenGLApplication::OpenGLUpdate() {
 
 	inputSystem.UpdateStatesForNextFrame();
 
-
+	if (inputSystem.GetKeyState(GLFW_KEY_W)) {
+		spriterow = 1;
+	}
+	if (inputSystem.GetKeyState(GLFW_KEY_S)) {
+		spriterow = 0;
+	}
+	if (inputSystem.GetKeyState(GLFW_KEY_A)) {
+		spriterow = 3;
+	}
+	if (inputSystem.GetKeyState(GLFW_KEY_D)) {
+		spriterow = 2;
+	}
 
 
 	/*---------------------------------------------------------------------------*/
