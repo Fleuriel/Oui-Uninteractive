@@ -51,7 +51,7 @@ void UsingImGui::Init(GLFWwindow* glfwWindow, const char* glsl_vers) {
 	// Set filepath to imgui.ini file
 	io.IniFilename = FILEPATH_IMGUI;
 
-	// Setting editor font
+	// Load fonts for editor
 	LoadFonts();
 
 	io.FontDefault = io.Fonts->Fonts[0];
