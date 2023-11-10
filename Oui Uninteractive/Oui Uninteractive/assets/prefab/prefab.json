@@ -30,8 +30,7 @@
             "Components": {
                 "LogicComponent": {
                     "ScriptID": [
-                        0,
-                        3
+                        0
                     ]
                 },
                 "Collider": {
@@ -80,7 +79,7 @@
                 },
                 "LogicComponent": {
                     "ScriptID": [
-                        3
+                        0
                     ]
                 }
             }

@@ -7,6 +7,7 @@
  * @date 01-11-2023
  * @brief This file contains the declaration of the Prefab class.
  *************************************************************************/
+#include "ObjectFactory.h"
 #ifndef PREFAB_H
 #define PREFAB_H
 

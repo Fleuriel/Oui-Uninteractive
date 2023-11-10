@@ -34,6 +34,13 @@ Prefab::~Prefab() {
 void Prefab::AddComponent(IComponent* c, ComponentType t) {
 	c->componentType = t;
 	prefabComponentList.push_back(c);
+
+	std::map<size_t, GameObject*> copyMap = objectFactory->GetGameObjectIDMap();
+	for (std::map<size_t, GameObject*>::iterator it = copyMap.begin(); it != copyMap.end(); it++) {
+		if ((*it).second->GetType() == GetType()) {
+			objectFactory->AddComponent(t, objectFactory->GetGameObjectByID((*it).second->GetGameObjectID()));
+		}
+	}
 }
 
 /**************************************************************************
@@ -45,7 +52,13 @@ void Prefab::RemoveComponent(IComponent* c) {
 	for (size_t i{}; i < prefabComponentList.size(); ++i) {
 		if (prefabComponentList[i] == c) {
 			prefabComponentList.erase(prefabComponentList.begin() + i);
-			return;
+			break;
+		}
+	}
+	std::map<size_t, GameObject*> copyMap = objectFactory->GetGameObjectIDMap();
+	for (std::map<size_t, GameObject*>::iterator it = copyMap.begin(); it != copyMap.end(); it++) {
+		if ((*it).second->GetType() == GetType()) {
+			objectFactory->RemoveComponent(c->componentType, objectFactory->GetGameObjectByID((*it).second->GetGameObjectID()));
 		}
 	}
 }
