@@ -62,12 +62,11 @@ public:
 			OpenGLObject::FrameBufferMouseCoords(windowNew, &convertedMouseX, &convertedMouseY, OpenGLObject::cameraObject);
 
 			// Set bullet spawn point
-			//GET_COMPONENT(bullet, Transform, ComponentType::TRANSFORM)->position = GET_COMPONENT(player, Transform, ComponentType::TRANSFORM)->position;
 			bulletSpawnAngle = atan2(static_cast<float>(convertedMouseY) - GET_COMPONENT(player, Transform, ComponentType::TRANSFORM)->position.y,
 				static_cast<float>(convertedMouseX) - GET_COMPONENT(player, Transform, ComponentType::TRANSFORM)->position.x);
 			bulletSpawnOffset = GET_COMPONENT(player, Transform, ComponentType::TRANSFORM)->scale;
-			bulletSpawnPos.x = GET_COMPONENT(player, Transform, ComponentType::TRANSFORM)->position.x + bulletSpawnOffset * cos(bulletSpawnAngle * PI / 180.0f);
-			bulletSpawnPos.y = GET_COMPONENT(player, Transform, ComponentType::TRANSFORM)->position.y + bulletSpawnOffset * sin(bulletSpawnAngle * PI / 180.0f);
+			bulletSpawnPos.x = GET_COMPONENT(player, Transform, ComponentType::TRANSFORM)->position.x + bulletSpawnOffset * cos(PI / 180.0f * bulletSpawnAngle);
+			bulletSpawnPos.y = GET_COMPONENT(player, Transform, ComponentType::TRANSFORM)->position.y + bulletSpawnOffset * sin(PI / 180.0f * bulletSpawnAngle);
 			GET_COMPONENT(bullet, Transform, ComponentType::TRANSFORM)->position = bulletSpawnPos;
 			GET_COMPONENT(bullet, Transform, ComponentType::TRANSFORM)->rotation = bulletSpawnAngle;
 
@@ -78,10 +77,7 @@ public:
 			// Set bullet shooting direction
 			/*float shootingAngle = atan2(static_cast<float>(convertedMouseY) - GET_COMPONENT(player, Transform, ComponentType::TRANSFORM)->position.y,
 				static_cast<float>(convertedMouseX) - GET_COMPONENT(player, Transform, ComponentType::TRANSFORM)->position.x);*/
-			
-			//float shootingAngle = atan2(static_cast<float>(convertedMouseY) - bulletSpawnPos.y, static_cast<float>(convertedMouseX) - bulletSpawnPos.x);
 
-			//Vec2 shootingDirection(static_cast<float>(convertedMouseX) - bulletSpawnPos.x, static_cast<float>(convertedMouseY) - bulletSpawnPos.y);
 			Vec2 shootingDirection(static_cast<float>(convertedMouseX) - bulletSpawnPos.x, static_cast<float>(convertedMouseY) - bulletSpawnPos.y);
 			Vector2DNormalize(shootingDirection, shootingDirection);
 
