@@ -260,8 +260,7 @@ void Editor::CreateMasterPanel() {
 		// Rset working directory to the project folder
 		std::filesystem::current_path(exePath);
 	}
-	std::string tester;
-	ImGui::InputText("test", &tester);
+
 
 	ImGui::SeparatorText("Scene controls");
 	static int selectedScene = 0;
