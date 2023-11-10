@@ -48,10 +48,16 @@ void UsingImGui::Init(GLFWwindow* glfwWindow, const char* glsl_vers) {
 	ImPlot::CreateContext();
 	ImGuiIO& io = ImGui::GetIO();
 
+	// Set filepath to imgui.ini file
 	io.IniFilename = FILEPATH_IMGUI;
+
+	// Setting editor font
+	io.Fonts->AddFontFromFileTTF(R"(./assets/fonts/POKPIX1.ttf)", 20.0f);
+
 
 	// Config Flags
 	io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
+	
 	// Setup bindins
 	ImGui_ImplGlfw_InitForOpenGL(glfwWindow, true);
 	ImGui_ImplOpenGL3_Init(glsl_vers);
