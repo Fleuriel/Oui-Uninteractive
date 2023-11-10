@@ -135,7 +135,7 @@ void Particle::Update() {
 void Particle::Draw() {
     if (visibility)
     // Delegate the drawing task to the OpenGLObject associated with this Particle.
-	object.Draw(0);
+        object.Draw(0, {});
 }
 
 /*************************************************************************
