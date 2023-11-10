@@ -12,24 +12,33 @@
 
 #include <map>
 #include <string>
+#include <iostream>
 #include "IScript.h"
 #include "Logic.h"
 #include "ObjectFactory.h"
 #include "PhysicsBody.h"
-#include <iostream>
+
+#define PI 3.141592653589793
 
 class PlayerShooting : public IScript {
 public:
-	PlayerShooting(std::string newName) : IScript(newName) {
+	size_t bulletNumber;
+	Vec2 bulletSpawnPos;
+	float bulletSpawnAngle;
+	float bulletSpawnOffset;
 
-	};
+	/**************************************************************************
+	* @brief Constructor
+	*************************************************************************/
+	PlayerShooting(std::string newName) : IScript(newName), bulletNumber(0), bulletSpawnPos(Vec2()), bulletSpawnAngle(0.f), bulletSpawnOffset() {}
+
 	/**************************************************************************
 	* @brief Initialize the PlayerShooting script
 	* @return void
 	*************************************************************************/
 	void Initialize() {
 		logicSystem->AddLogicScript(this);
-	};
+	}
 
 	/**************************************************************************
 	* @brief Update the PlayerShooting script
@@ -37,17 +46,48 @@ public:
 	*************************************************************************/
 	void Update(size_t gameObjectID) {
 		if (inputSystem.GetMouseState(GLFW_MOUSE_BUTTON_RIGHT)) {
-			// Create bullet object during runtime
-			GameObject* bullet = objectFactory->BuildObjectRunTime("Bullet", "Bullet");
-			objectFactory->AddComponent(ComponentType::PHYSICS_BODY, bullet);
-			objectFactory->AddComponent(ComponentType::TRANSFORM, bullet);
+			// Create bullet object from prefab
+			std::string bulletName{ "Bullet" + std::to_string(bulletNumber) };
+			GameObject* bullet = objectFactory->BuildObjectFromPrefab(bulletName, "BulletPrefab");
+			++bulletNumber;
 
-			bullet->Initialize();
+			// Get player
+			GameObject* player{ objectFactory->GetGameObjectByID(gameObjectID) };
 
-			// Set velocity
-			GET_COMPONENT(bullet, Transform, ComponentType::TRANSFORM)->position = GET_COMPONENT(objectFactory->GetGameObjectByID(gameObjectID), Transform, ComponentType::TRANSFORM)->position;
-			GET_COMPONENT(bullet, Transform, ComponentType::TRANSFORM)->position.y += 200;
-			GET_COMPONENT(bullet, PhysicsBody, ComponentType::PHYSICS_BODY)->velocity = GET_COMPONENT(objectFactory->GetGameObjectByID(gameObjectID), PhysicsBody, ComponentType::PHYSICS_BODY)->direction * 1000;
+			// Get mouse coordinates
+			double mouseX, mouseY, convertedMouseX, convertedMouseY;
+			glfwGetCursorPos(windowNew, &mouseX, &mouseY);
+			convertedMouseX = mouseX;
+			convertedMouseY = mouseY;
+			OpenGLObject::FrameBufferMouseCoords(windowNew, &convertedMouseX, &convertedMouseY, OpenGLObject::cameraObject);
+
+			// Set bullet spawn point
+			//GET_COMPONENT(bullet, Transform, ComponentType::TRANSFORM)->position = GET_COMPONENT(player, Transform, ComponentType::TRANSFORM)->position;
+			bulletSpawnAngle = atan2(static_cast<float>(convertedMouseY) - GET_COMPONENT(player, Transform, ComponentType::TRANSFORM)->position.y,
+				static_cast<float>(convertedMouseX) - GET_COMPONENT(player, Transform, ComponentType::TRANSFORM)->position.x);
+			bulletSpawnOffset = GET_COMPONENT(player, Transform, ComponentType::TRANSFORM)->scale;
+			bulletSpawnPos.x = GET_COMPONENT(player, Transform, ComponentType::TRANSFORM)->position.x + bulletSpawnOffset * cos(bulletSpawnAngle * PI / 180.0f);
+			bulletSpawnPos.y = GET_COMPONENT(player, Transform, ComponentType::TRANSFORM)->position.y + bulletSpawnOffset * sin(bulletSpawnAngle * PI / 180.0f);
+			GET_COMPONENT(bullet, Transform, ComponentType::TRANSFORM)->position = bulletSpawnPos;
+			GET_COMPONENT(bullet, Transform, ComponentType::TRANSFORM)->rotation = bulletSpawnAngle;
+
+
+			//GET_COMPONENT(bullet, Transform, ComponentType::TRANSFORM)->position.y += 200;
+			//GET_COMPONENT(bullet, PhysicsBody, ComponentType::PHYSICS_BODY)->velocity = GET_COMPONENT(objectFactory->GetGameObjectByID(gameObjectID), PhysicsBody, ComponentType::PHYSICS_BODY)->direction * 1000;
+			
+			// Set bullet shooting direction
+			/*float shootingAngle = atan2(static_cast<float>(convertedMouseY) - GET_COMPONENT(player, Transform, ComponentType::TRANSFORM)->position.y,
+				static_cast<float>(convertedMouseX) - GET_COMPONENT(player, Transform, ComponentType::TRANSFORM)->position.x);*/
+			
+			//float shootingAngle = atan2(static_cast<float>(convertedMouseY) - bulletSpawnPos.y, static_cast<float>(convertedMouseX) - bulletSpawnPos.x);
+
+			//Vec2 shootingDirection(static_cast<float>(convertedMouseX) - bulletSpawnPos.x, static_cast<float>(convertedMouseY) - bulletSpawnPos.y);
+			Vec2 shootingDirection(static_cast<float>(convertedMouseX) - GET_COMPONENT(player, Transform, ComponentType::TRANSFORM)->position.x, 
+				static_cast<float>(convertedMouseY) - GET_COMPONENT(player, Transform, ComponentType::TRANSFORM)->position.y);
+			Vector2DNormalize(shootingDirection, shootingDirection);
+
+			// Set bullet velocity
+			GET_COMPONENT(bullet, PhysicsBody, ComponentType::PHYSICS_BODY)->velocity = shootingDirection * GET_COMPONENT(bullet, PhysicsBody, ComponentType::PHYSICS_BODY)->speed;
 		}
 	}
 
