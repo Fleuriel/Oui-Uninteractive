@@ -509,9 +509,9 @@ void OpenGLApplication::OpenGLUpdate() {
 	for (std::pair<size_t, GameObject*> gObj : objectFactory->GetGameObjectIDMap()) {
 		if (gObj.second->Has(ComponentType::TRANSFORM) != -1) {
 			if (GET_COMPONENT(gObj.second, Transform, ComponentType::TRANSFORM)->shape->spritecheck)
-			GET_COMPONENT(gObj.second, Transform, ComponentType::TRANSFORM)->shape->Draw(3, gObj.second->GetType());
+			GET_COMPONENT(gObj.second, Transform, ComponentType::TRANSFORM)->shape->Draw(gObj.second->GetType());
 			else
-				GET_COMPONENT(gObj.second, Transform, ComponentType::TRANSFORM)->shape->Draw(0, {});
+				GET_COMPONENT(gObj.second, Transform, ComponentType::TRANSFORM)->shape->Draw({});
 		}
 	}
 
@@ -595,7 +595,7 @@ void OpenGLApplication::Draw() {
 	// Iterate through all the objects and draw the textures assosiated with Tag ID
 	for (auto const& obj : objects) {
 		//if (obj.spritecheck==true)
-		obj.Draw(3, {});
+		obj.Draw({});
 		//else {
 		//	// Draw the Object with Texture.
 		//	obj.Draw();
@@ -613,7 +613,7 @@ void OpenGLApplication::Draw() {
 		// setting the text as the window title
 		glfwSetWindowTitle(windowNew, sStr.str().c_str());
 	}
-	OpenGLObject::cameraObject.Cam->Draw(static_cast<int>(SHADER_ORDER::CAMERA), {});
+	OpenGLObject::cameraObject.Cam->Draw("Camera");
 }
 
 /**************************************************************************

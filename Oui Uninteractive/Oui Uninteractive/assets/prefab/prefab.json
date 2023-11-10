@@ -30,7 +30,8 @@
             "Components": {
                 "LogicComponent": {
                     "ScriptID": [
-                        0
+                        0,
+                        2
                     ]
                 },
                 "Collider": {
@@ -51,6 +52,32 @@
                     "Mass": 387.5,
                     "IsStatic": false,
                     "FrictionForce": 35.9379997253418
+                }
+            }
+        },
+        {
+            "Name": "BulletPrefab",
+            "Type": "BulletPrefab",
+            "Components": {
+                "Transform": {
+                    "PositionX": 0.0,
+                    "PositionY": 0.0,
+                    "Rotation": 0.0,
+                    "Scale": 50.0
+                },
+                "PhysicsBody": {
+                    "VelocityX": 0.0,
+                    "VelocityY": 0.0,
+                    "RotationSpeed": 0.0,
+                    "Speed": 2500.0,
+                    "Mass": 0.0,
+                    "IsStatic": false,
+                    "FrictionForce": 0.0
+                },
+                "LogicComponent": {
+                    "ScriptID": [
+                        3
+                    ]
                 }
             }
         },

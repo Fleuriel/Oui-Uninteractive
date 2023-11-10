@@ -43,6 +43,7 @@
 class UsingImGui {
 public:
 	void Init(GLFWwindow* window, const char* glsl_vers);
+	void LoadFonts();
 	void CreateFrame();
 	virtual void Update();
 	void Draw();
@@ -68,6 +69,7 @@ class Editor {
 public:
 	void Init();
 	void Update();
+	static void CreateMenuBar();
 	static void CreateRenderWindow();
 	static void CreateMasterPanel();
 	static void CreatePrefabPanel();
