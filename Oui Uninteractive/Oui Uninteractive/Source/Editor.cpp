@@ -52,8 +52,9 @@ void UsingImGui::Init(GLFWwindow* glfwWindow, const char* glsl_vers) {
 	io.IniFilename = FILEPATH_IMGUI;
 
 	// Setting editor font
-	io.Fonts->AddFontFromFileTTF(R"(./assets/fonts/POKPIX1.ttf)", 20.0f);
+	LoadFonts();
 
+	io.FontDefault = io.Fonts->Fonts[0];
 
 	// Config Flags
 	io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
@@ -64,6 +65,13 @@ void UsingImGui::Init(GLFWwindow* glfwWindow, const char* glsl_vers) {
 	std::cout << "ImGui Successfully initialized" << std::endl;
 }
 
+
+void UsingImGui::LoadFonts() {
+	ImGuiIO& io = ImGui::GetIO();
+	for (const auto& entry : std::filesystem::directory_iterator(FILEPATH_FONTS)) {
+		io.Fonts->AddFontFromFileTTF(entry.path().string().c_str(), 20.0f);
+	}
+}
 
 /**************************************************************************
 * @brief Creates the ImGui frame
@@ -94,6 +102,10 @@ void UsingImGui::Update() {
 * @return void
 *************************************************************************/
 void UsingImGui::Draw() {
+
+	// Create the menu bar
+	Editor::CreateMenuBar();
+
 	// Create the master panel to control other panels
 	Editor::CreateMasterPanel();
 
@@ -162,6 +174,18 @@ void Editor::Update() {
 /* ============================================
 	CREATING INDIVIDUAL DOCKABLE IMGUI PANELS
    ============================================ */
+
+void Editor::CreateMenuBar() {
+	if (ImGui::BeginMainMenuBar()) {
+		if (ImGui::BeginMenu("File")) {
+			if (ImGui::MenuItem("Create")) {}		
+			if (ImGui::MenuItem("Save")) {}
+			ImGui::EndMenu();
+		}
+		ImGui::EndMainMenuBar();
+	}
+}
+
 
 /**************************************************************************
 * @brief This function creates the Master Panel used to control the other sub panels
