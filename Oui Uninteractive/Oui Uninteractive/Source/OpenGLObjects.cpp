@@ -74,12 +74,6 @@ void OpenGLObject::Initialize(){
 	// Fonts
 	InitFont();
 
-
-	// firstTexture = assetManager.GetTexture("flower");
-	//secondTexture = assetManager.GetTexture("bag");
-	//thirdTexture = assetManager.GetTexture("mosquito");
-	//camTex = assetManager.GetTexture("camera");
-
 	// Emplace model to the model vector
 	models.emplace_back(OpenGLObject::Box_Model(color));
 
@@ -407,7 +401,7 @@ void OpenGLObject::CameraUpdate(int posX, int posY) {
 * @param  none
 * @return void
 *************************************************************************/
-void OpenGLObject::Draw(int shaderNumber) const{
+void OpenGLObject::Draw(int shaderNumber, std::string type) const{
 	//texture object is to use texture image unit 6
 	int tex{};
 	if (shaderNumber == static_cast<int>(SHADER_ORDER::MODEL))
@@ -429,11 +423,16 @@ void OpenGLObject::Draw(int shaderNumber) const{
 		}
 	}
 	else if (shaderNumber == static_cast<int>(SHADER_ORDER::SPRITES)) {
+		if(type == "Player")
 		if ((inputSystem.GetKeyState(GLFW_KEY_W) == 2) || (inputSystem.GetKeyState(GLFW_KEY_S) == 2)
 			|| (inputSystem.GetKeyState(GLFW_KEY_A) == 2) || (inputSystem.GetKeyState(GLFW_KEY_D) == 2))
 			tex = assetManager.GetSprite("BaldManLeftWalk");
 		else
 			tex = assetManager.GetSprite("BaldManIdle");
+
+		if (type == "Enemy")
+			tex = assetManager.GetSprite("CommonGuardIdle");
+
 	}
 
 	// Bind Texture to 6.

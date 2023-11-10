@@ -36,10 +36,6 @@ enum class SHADER_ORDER {
 	SPRITES = 3
 };
 
-
-// External Texture Color
-extern int importTexture, secondTexture, thirdTexture;
-
 class OpenGLObject{
 public:
 	/**************************************************************************
@@ -221,7 +217,7 @@ public:
 	* @param  none
 	* @return void
 	*************************************************************************/
-	void Draw(int shaderNumber) const;
+	void Draw(int shaderNumber, std::string) const;
 
 	/**************************************************************************
 	* @brief		Initialize the Shaders for Graphics Pipeline for Object to
