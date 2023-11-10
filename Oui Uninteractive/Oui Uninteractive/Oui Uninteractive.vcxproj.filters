@@ -436,5 +436,8 @@
     <ClInclude Include="Include\EnemyFSM.h">
       <Filter>Component\EnemyAI</Filter>
     </ClInclude>
+    <ClInclude Include="Include\BulletLifetimeScript.h">
+      <Filter>Scripts</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

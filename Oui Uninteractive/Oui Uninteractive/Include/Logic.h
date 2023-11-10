@@ -19,7 +19,8 @@
 enum LOGIC_ENUM {
 	TEST_SCRIPT1 = 0,
 	PLAYER_MOVEMENT,
-	PLAYER_ATTACK
+	PLAYER_ATTACK,
+	BULLET_LIFETIME
 };
 class LogicSystem : public ISystem {
 public:

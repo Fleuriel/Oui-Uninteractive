@@ -73,6 +73,11 @@
                     "Mass": 0.0,
                     "IsStatic": false,
                     "FrictionForce": 0.0
+                },
+                "LogicComponent": {
+                    "ScriptID": [
+                        3
+                    ]
                 }
             }
         },
