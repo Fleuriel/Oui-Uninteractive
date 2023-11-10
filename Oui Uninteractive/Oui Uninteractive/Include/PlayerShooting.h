@@ -82,8 +82,7 @@ public:
 			//float shootingAngle = atan2(static_cast<float>(convertedMouseY) - bulletSpawnPos.y, static_cast<float>(convertedMouseX) - bulletSpawnPos.x);
 
 			//Vec2 shootingDirection(static_cast<float>(convertedMouseX) - bulletSpawnPos.x, static_cast<float>(convertedMouseY) - bulletSpawnPos.y);
-			Vec2 shootingDirection(static_cast<float>(convertedMouseX) - GET_COMPONENT(player, Transform, ComponentType::TRANSFORM)->position.x, 
-				static_cast<float>(convertedMouseY) - GET_COMPONENT(player, Transform, ComponentType::TRANSFORM)->position.y);
+			Vec2 shootingDirection(static_cast<float>(convertedMouseX) - bulletSpawnPos.x, static_cast<float>(convertedMouseY) - bulletSpawnPos.y);
 			Vector2DNormalize(shootingDirection, shootingDirection);
 
 			// Set bullet velocity
