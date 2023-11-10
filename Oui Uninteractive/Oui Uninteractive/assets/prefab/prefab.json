@@ -1,12 +1,41 @@
 {
-    "ObjectCount": 4,
+    "ObjectCount": 5,
     "Objects": [
+        {
+            "Name": "BulletPrefab",
+            "Type": "BulletPrefab",
+            "Components": {
+                "Transform": {
+                    "PositionX": 0.0,
+                    "PositionY": 0.0,
+                    "Rotation": 0.0,
+                    "Scale": 50.0
+                },
+                "PhysicsBody": {
+                    "VelocityX": 0.0,
+                    "VelocityY": 0.0,
+                    "RotationSpeed": 0.0,
+                    "Speed": 2500.0,
+                    "Mass": 0.0,
+                    "IsStatic": false,
+                    "FrictionForce": 0.0
+                },
+                "LogicComponent": {
+                    "ScriptID": [
+                        0,
+                        3
+                    ]
+                }
+            }
+        },
         {
             "Name": "EnemyPrefab",
             "Type": "EnemyPrefab",
             "Components": {
                 "LogicComponent": {
-                    "ScriptID": []
+                    "ScriptID": [
+                        1
+                    ]
                 },
                 "PhysicsBody": {
                     "VelocityX": 0.0,
@@ -15,7 +44,13 @@
                     "Speed": 140.8780059814453,
                     "Mass": 174.7570037841797,
                     "IsStatic": false,
-                    "FrictionForce": 100.0
+                    "FrictionForce": 44.98400115966797
+                },
+                "Transform": {
+                    "PositionX": 0.0,
+                    "PositionY": 0.0,
+                    "Rotation": 0.0,
+                    "Scale": 100.0
                 }
             }
         },
@@ -52,32 +87,6 @@
                     "Mass": 387.5,
                     "IsStatic": false,
                     "FrictionForce": 35.9379997253418
-                }
-            }
-        },
-        {
-            "Name": "BulletPrefab",
-            "Type": "BulletPrefab",
-            "Components": {
-                "Transform": {
-                    "PositionX": 0.0,
-                    "PositionY": 0.0,
-                    "Rotation": 0.0,
-                    "Scale": 50.0
-                },
-                "PhysicsBody": {
-                    "VelocityX": 0.0,
-                    "VelocityY": 0.0,
-                    "RotationSpeed": 0.0,
-                    "Speed": 2500.0,
-                    "Mass": 0.0,
-                    "IsStatic": false,
-                    "FrictionForce": 0.0
-                },
-                "LogicComponent": {
-                    "ScriptID": [
-                        3
-                    ]
                 }
             }
         },
