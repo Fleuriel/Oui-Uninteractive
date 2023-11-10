@@ -60,8 +60,9 @@ void Physics::Update(float dt) {
 			if (body->isStatic) {
 				continue;
 			}
-			Vector2DNormalize(body->direction, body->direction + AngleToVec(body->txPtr->rotation * (static_cast<float>(M_PI) / 180.0f)));
-			
+			if (body->txPtr != nullptr) {
+				Vector2DNormalize(body->direction, body->direction + AngleToVec(body->txPtr->rotation * (static_cast<float>(M_PI) / 180.0f)));
+			}
 			//Check update
 			//calculate physics
 			//Direction
@@ -84,16 +85,17 @@ void Physics::Update(float dt) {
 			
 			
 			CapVelocity(originalVelocity, body->velocity);
-			
-			//Position	
-			body->txPtr->previousPosition = body->txPtr->position;
+			if (body->txPtr != nullptr) {
+				//Position	
+				body->txPtr->previousPosition = body->txPtr->position;
 
-			body->txPtr->position = body->txPtr->position + (body->velocity * static_cast<float>(sysManager->fixedDeltaTime));//* sysManager->fixedDeltaTime;
-			
-			//Rotation
-			body->txPtr->rotation = body->txPtr->rotation + body->currentRotationSpeed * dt;
-			if (body->txPtr->rotation >= 360.0f || body->txPtr->rotation <= -360.0f)
-				body->txPtr->rotation = 0.0f;
+				body->txPtr->position = body->txPtr->position + (body->velocity * static_cast<float>(sysManager->fixedDeltaTime));//* sysManager->fixedDeltaTime;
+
+				//Rotation
+				body->txPtr->rotation = body->txPtr->rotation + body->currentRotationSpeed * dt;
+				if (body->txPtr->rotation >= 360.0f || body->txPtr->rotation <= -360.0f)
+					body->txPtr->rotation = 0.0f;
+			}
 			Vec2 normalizedVel = Vec2(0, 0);
 			Vector2DNormalize(normalizedVel, body->velocity);
 			body->forceManager.forceVec[FORCE_INDEX::FRICTION]->direction = -normalizedVel;

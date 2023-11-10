@@ -8,9 +8,10 @@ layout (location=2) in vec2 aVertexTexture;
 layout (location=0) out vec3 vColor;
 layout (location=1) out vec2 vTex;
 
-uniform int fr;
-uniform int r;
-uniform int c;
+uniform int col_To_Draw;
+uniform int rows;
+uniform int cols;
+uniform int row_To_Draw;
 
 uniform mat3 uModel_to_NDC;
 
@@ -21,14 +22,14 @@ void main(void){
 	//set the color
 	vColor = aVertexColor;
 
-	float width = aVertexTexture.x / c;
-	float height = float(aVertexTexture.y) / float(r);
+	float width = aVertexTexture.x / cols;
+	float height = aVertexTexture.y / rows;
 
 
 
-	vTex = vec2(width , height) + vec2(float(fr)/float(r*c),0);
+	vTex = vec2(width , height) + vec2(float(col_To_Draw)/float(cols),float(row_To_Draw)/float(rows));
 
-	vColor = vec3(fr,r,c);
+	//vColor = vec3(col_To_Draw,rows,cols);
 
 
 	// Set the texture to the 'bytes'
