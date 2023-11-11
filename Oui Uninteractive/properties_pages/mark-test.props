@@ -24,6 +24,7 @@ xcopy "$(ProjectDir)assets\*" "$(TargetDir)assets\" /s /r /y /q</Command>
       <PreprocessorDefinitions>GLFW_DLL;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <WarningLevel>EnableAllWarnings</WarningLevel>
       <TreatWarningAsError>false</TreatWarningAsError>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemGroup />
