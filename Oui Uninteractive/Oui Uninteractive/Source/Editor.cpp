@@ -950,7 +950,18 @@ void Editor::CreateObjectList() {
 			}
 			else {
 				static float xPos2 = 0, yPos2 = 0, scale2 = 0, speed2 = 0, angle2 = 0, rotSpeed2 = 0;
-				
+				if (objectFactory->GetGameObjectByID(gameobjID)->Has(ComponentType::TRANSFORM) != -1) {
+					transformFlag = true;
+				}
+				if (objectFactory->GetGameObjectByID(gameobjID)->Has(ComponentType::PHYSICS_BODY) != -1) {
+					physicsFlag = true;
+				}
+				if (objectFactory->GetGameObjectByID(gameobjID)->Has(ComponentType::LOGICCOMPONENT) != -1) {
+					logicFlag = true;
+				}
+				if (objectFactory->GetGameObjectByID(gameobjID)->Has(ComponentType::COLLIDER) != -1) {
+					colliderFlag = true;
+				}
 				ImGui::Indent();
 				if (ImGui::Checkbox("##Transform", &transformFlag)) {
 
@@ -1015,11 +1026,23 @@ void Editor::CreateObjectList() {
 					static int currentScriptIndex;
 					ImGui::Indent();
 					if (ImGui::Checkbox("##Logic", &logicFlag)) {
+						LogicComponent* objLogic = GET_COMPONENT(objectFactory->GetGameObjectByID(gameobjID), LogicComponent, ComponentType::LOGICCOMPONENT);
+						if (objLogic != nullptr) {
+							objectFactory->GetGameObjectByID(gameobjID)->RemoveComponent(objLogic);
+							logicFlag = false;
+						}
+						else {
+							objectFactory->GetGameObjectByID(gameobjID)->AddComponent(new LogicComponent(), ComponentType::LOGICCOMPONENT);
+							objectFactory->GetGameObjectByID(gameobjID)->Initialize();
+							logicFlag = true;
+						}
+						
 
 					}
 					ImGui::SameLine();
 					if (ImGui::CollapsingHeader("Logic")) {
 						if (objectFactory->GetGameObjectByID(gameobjID)->Has(ComponentType::LOGICCOMPONENT) != -1) {
+							logicFlag = true;
 							if (ImGui::BeginCombo("Scripts", currentScriptName.c_str())) {
 								for (int i = 0; i < logicSystem->scriptVec.size(); i++) {
 									bool isSelected = (i == currentScriptIndex);

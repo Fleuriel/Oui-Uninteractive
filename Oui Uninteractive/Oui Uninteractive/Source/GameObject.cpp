@@ -68,6 +68,7 @@ void GameObject::RemoveComponent(IComponent* c) {
 	for (size_t i{}; i < componentList.size(); ++i) {
 		if (componentList[i] == c) {
 			componentList.erase(componentList.begin() + i);
+			delete c;
 			return;
 		}
 	}
