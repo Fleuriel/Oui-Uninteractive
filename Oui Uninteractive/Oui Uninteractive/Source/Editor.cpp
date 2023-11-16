@@ -755,6 +755,7 @@ void Editor::CreateSoundPanel() {
 * @return void
 *************************************************************************/
 void Editor::CreateObjectList() {
+	static bool transformFlag, physicsFlag, logicFlag, colliderFlag;
 	ImGui::Begin("Pretty objects here");
 	static size_t gameobjID = 0;
 	
@@ -949,97 +950,125 @@ void Editor::CreateObjectList() {
 			}
 			else {
 				static float xPos2 = 0, yPos2 = 0, scale2 = 0, speed2 = 0, angle2 = 0, rotSpeed2 = 0;
-				if (objectFactory->GetGameObjectByID(gameobjID)->Has(ComponentType::TRANSFORM) != -1) {
-					ImGui::Indent();
+				
+				ImGui::Indent();
+				if (ImGui::Checkbox("##Transform", &transformFlag)) {
+
+				}
+				ImGui::SameLine();
 					if (ImGui::CollapsingHeader("Transform")) {
-						xPos2 = GET_COMPONENT(objectFactory->GetGameObjectByID(gameobjID), Transform, ComponentType::TRANSFORM)->position.x;
-						if (ImGui::SliderFloat("X-Position", &xPos2, static_cast<float>(-(windowSize.first / 2)), static_cast<float>(windowSize.first / 2), "%.2f")) { // Slider for X-Position
-							GET_COMPONENT(objectFactory->GetGameObjectByID(gameobjID), Transform, ComponentType::TRANSFORM)->position.x = xPos2;
-						}
+						if (objectFactory->GetGameObjectByID(gameobjID)->Has(ComponentType::TRANSFORM) != -1) {
+							xPos2 = GET_COMPONENT(objectFactory->GetGameObjectByID(gameobjID), Transform, ComponentType::TRANSFORM)->position.x;
+							if (ImGui::SliderFloat("X-Position", &xPos2, static_cast<float>(-(windowSize.first / 2)), static_cast<float>(windowSize.first / 2), "%.2f")) { // Slider for X-Position
+								GET_COMPONENT(objectFactory->GetGameObjectByID(gameobjID), Transform, ComponentType::TRANSFORM)->position.x = xPos2;
+							}
 
-						yPos2 = GET_COMPONENT(objectFactory->GetGameObjectByID(gameobjID), Transform, ComponentType::TRANSFORM)->position.y;
-						if (ImGui::SliderFloat("Y-Position", &yPos2, static_cast<float>(-(windowSize.second / 2)), static_cast<float>(windowSize.second / 2), "%.2f")) { // Slider for Y-Position
-							GET_COMPONENT(objectFactory->GetGameObjectByID(gameobjID), Transform, ComponentType::TRANSFORM)->position.y = yPos2;
-						}
+							yPos2 = GET_COMPONENT(objectFactory->GetGameObjectByID(gameobjID), Transform, ComponentType::TRANSFORM)->position.y;
+							if (ImGui::SliderFloat("Y-Position", &yPos2, static_cast<float>(-(windowSize.second / 2)), static_cast<float>(windowSize.second / 2), "%.2f")) { // Slider for Y-Position
+								GET_COMPONENT(objectFactory->GetGameObjectByID(gameobjID), Transform, ComponentType::TRANSFORM)->position.y = yPos2;
+							}
 
-						scale2 = GET_COMPONENT(objectFactory->GetGameObjectByID(gameobjID), Transform, ComponentType::TRANSFORM)->scale;
-						if (ImGui::SliderFloat("Scale %", &scale2, 0.0f, 500.0f, "%.2f")) { // Slider for Scale
-							GET_COMPONENT(objectFactory->GetGameObjectByID(gameobjID), Transform, ComponentType::TRANSFORM)->scale = scale2;
-						}
+							scale2 = GET_COMPONENT(objectFactory->GetGameObjectByID(gameobjID), Transform, ComponentType::TRANSFORM)->scale;
+							if (ImGui::SliderFloat("Scale %", &scale2, 0.0f, 500.0f, "%.2f")) { // Slider for Scale
+								GET_COMPONENT(objectFactory->GetGameObjectByID(gameobjID), Transform, ComponentType::TRANSFORM)->scale = scale2;
+							}
 
-						angle2 = GET_COMPONENT(objectFactory->GetGameObjectByID(gameobjID), Transform, ComponentType::TRANSFORM)->rotation;
-						if (ImGui::SliderFloat("Angle", &angle2, 0.0f, 360.0f, "%.2f")) { // Slider for true angle
-							GET_COMPONENT(objectFactory->GetGameObjectByID(gameobjID), Transform, ComponentType::TRANSFORM)->rotation = angle2;
+							angle2 = GET_COMPONENT(objectFactory->GetGameObjectByID(gameobjID), Transform, ComponentType::TRANSFORM)->rotation;
+							if (ImGui::SliderFloat("Angle", &angle2, 0.0f, 360.0f, "%.2f")) { // Slider for true angle
+								GET_COMPONENT(objectFactory->GetGameObjectByID(gameobjID), Transform, ComponentType::TRANSFORM)->rotation = angle2;
+							}
+						}
+						else {
+							ImGui::Text("Selected Object has no TRANSFORM component");
 						}
 					}
-					ImGui::Unindent();
-				}
-				else {
-					ImGui::Text("Selected Object has no TRANSFORM component");
-				}
-				if (objectFactory->GetGameObjectByID(gameobjID)->Has(ComponentType::PHYSICS_BODY) != -1) {
+				ImGui::Unindent();
+				
+				
+				
 					ImGui::Indent();
+					if (ImGui::Checkbox("##Physics", &physicsFlag)) {
+
+					}
+					ImGui::SameLine();
 					if (ImGui::CollapsingHeader("Physics Body")) {
-						speed2 = GET_COMPONENT(objectFactory->GetGameObjectByID(gameobjID), PhysicsBody, ComponentType::PHYSICS_BODY)->speed;
-						if (ImGui::SliderFloat("Speed", &speed2, 0.0f, 100.0f, "%.2f")) { // Slider for Speed
-							GET_COMPONENT(objectFactory->GetGameObjectByID(gameobjID), PhysicsBody, ComponentType::PHYSICS_BODY)->speed = speed2;
+						if (objectFactory->GetGameObjectByID(gameobjID)->Has(ComponentType::PHYSICS_BODY) != -1) {
+							speed2 = GET_COMPONENT(objectFactory->GetGameObjectByID(gameobjID), PhysicsBody, ComponentType::PHYSICS_BODY)->speed;
+							if (ImGui::SliderFloat("Speed", &speed2, 0.0f, 100.0f, "%.2f")) { // Slider for Speed
+								GET_COMPONENT(objectFactory->GetGameObjectByID(gameobjID), PhysicsBody, ComponentType::PHYSICS_BODY)->speed = speed2;
+							}
+
+
+							rotSpeed2 = GET_COMPONENT(objectFactory->GetGameObjectByID(gameobjID), PhysicsBody, ComponentType::PHYSICS_BODY)->rotationSpeed;
+							if (ImGui::SliderFloat("Rotation Speed", &rotSpeed2, 0.0f, 500.0f, "%.2f")) {// Slider for rotation speed
+								GET_COMPONENT(objectFactory->GetGameObjectByID(gameobjID), PhysicsBody, ComponentType::PHYSICS_BODY)->rotationSpeed = rotSpeed2;
+							}
 						}
-
-
-						rotSpeed2 = GET_COMPONENT(objectFactory->GetGameObjectByID(gameobjID), PhysicsBody, ComponentType::PHYSICS_BODY)->rotationSpeed;
-						if (ImGui::SliderFloat("Rotation Speed", &rotSpeed2, 0.0f, 500.0f, "%.2f")) {// Slider for rotation speed
-							GET_COMPONENT(objectFactory->GetGameObjectByID(gameobjID), PhysicsBody, ComponentType::PHYSICS_BODY)->rotationSpeed = rotSpeed2;
+						else {
+							ImGui::Text("Selected Object has no PHYSICSBODY component");
 						}
 					}
 					ImGui::Unindent();
-				}
-				else {
-					ImGui::Text("Selected Object has no PHYSICSBODY component");
-				}
-				if (objectFactory->GetGameObjectByID(gameobjID)->Has(ComponentType::LOGICCOMPONENT) != -1) {
+				
+				
 					static std::string currentScriptName;
 					static int currentScriptIndex;
 					ImGui::Indent();
+					if (ImGui::Checkbox("##Logic", &logicFlag)) {
+
+					}
+					ImGui::SameLine();
 					if (ImGui::CollapsingHeader("Logic")) {
-						if (ImGui::BeginCombo("Scripts", currentScriptName.c_str())) {
-							for (int i = 0; i < logicSystem->scriptVec.size(); i++) {
-								bool isSelected = (i == currentScriptIndex);
-								if (ImGui::Selectable(logicSystem->scriptVec[i]->name.c_str(), isSelected)) {
-									currentScriptIndex = i;
-									currentScriptName = logicSystem->scriptVec[i]->name;
-								}
+						if (objectFactory->GetGameObjectByID(gameobjID)->Has(ComponentType::LOGICCOMPONENT) != -1) {
+							if (ImGui::BeginCombo("Scripts", currentScriptName.c_str())) {
+								for (int i = 0; i < logicSystem->scriptVec.size(); i++) {
+									bool isSelected = (i == currentScriptIndex);
+									if (ImGui::Selectable(logicSystem->scriptVec[i]->name.c_str(), isSelected)) {
+										currentScriptIndex = i;
+										currentScriptName = logicSystem->scriptVec[i]->name;
+									}
 
-								if (isSelected) {
-									ImGui::SetItemDefaultFocus();
+									if (isSelected) {
+										ImGui::SetItemDefaultFocus();
+									}
 								}
+								ImGui::EndCombo();
 							}
-							ImGui::EndCombo();
-						}
-						ImGui::SameLine();
-						LogicComponent* objectLogic = GET_COMPONENT(objectFactory->GetGameObjectByID(gameobjID), LogicComponent, ComponentType::LOGICCOMPONENT);
-						if (ImGui::Button("Add Script")) {
-							objectLogic->scriptIndexSet.insert(currentScriptIndex);
-						}
-						ImGui::SameLine();
-						if (ImGui::Button("Delete Script")) {
-							objectLogic->scriptIndexSet.erase(currentScriptIndex);
-						}
-
-						ImGui::BeginChild("Script List");
+							ImGui::SameLine();
+							LogicComponent* objectLogic = GET_COMPONENT(objectFactory->GetGameObjectByID(gameobjID), LogicComponent, ComponentType::LOGICCOMPONENT);
+							if (ImGui::Button("Add Script")) {
+								objectLogic->scriptIndexSet.insert(currentScriptIndex);
+							}
+							ImGui::SameLine();
+							if (ImGui::Button("Delete Script")) {
+								objectLogic->scriptIndexSet.erase(currentScriptIndex);
+							}
 						
-						if (objectLogic != nullptr) {
-							for (std::set<unsigned int>::iterator it = objectLogic->scriptIndexSet.begin(); it != objectLogic->scriptIndexSet.end(); it++) {
-								ImGui::Text(logicSystem->scriptVec[*it]->name.c_str());
+							if (objectLogic != nullptr) {
+								for (std::set<unsigned int>::iterator it = objectLogic->scriptIndexSet.begin(); it != objectLogic->scriptIndexSet.end(); it++) {
+									ImGui::Text(logicSystem->scriptVec[*it]->name.c_str());
+								}
 							}
+							}
+						else {
+							ImGui::Text("Selected Object has no LOGIC component");
 						}
-
-						ImGui::EndChild();
 					}
 					ImGui::Unindent();
-				}
-				else {
-					ImGui::Text("Selected Object has no LOGIC component");
-				}
+				
+				
+					ImGui::Indent();
+					if (ImGui::Checkbox("##Collider", &colliderFlag)) {
+
+					}
+					ImGui::SameLine();
+					if (ImGui::CollapsingHeader("Collider")) {
+						if (objectFactory->GetGameObjectByID(gameobjID)->Has(ComponentType::COLLIDER) != -1) {
+						}
+						else {
+							ImGui::Text("Selected Object has no COLLIDER component");
+						}
+					}
 				
 			}
 			
