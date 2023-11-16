@@ -1133,6 +1133,7 @@ void Editor::CreateObjectList() {
 	ImGui::End();
 }
 
+static std::string inputFilePath = FILEPATH_MASTER;
 /*************************************************************************
 * @brief This function creates the asset browser panel used to peruse content
 * @return void
@@ -1141,7 +1142,7 @@ void Editor::CreateAssetBrowser() {
 	ImGui::Begin("Asset Browser");
 	ImVec2 panelSize = ImGui::GetContentRegionAvail();
 	static bool validPath = true;
-	static std::string inputFilePath = FILEPATH_MASTER;
+	
 	static std::string currFilePath = FILEPATH_MASTER;
 
 
@@ -1156,6 +1157,16 @@ void Editor::CreateAssetBrowser() {
 			std::cout << "invalid path" << std::endl;
 
 		}
+	}
+	ImGui::SameLine();
+	if (ImGui::Button("Back")) {
+
+	}
+	ImGui::SameLine();
+	if (ImGui::Button("Home")) {
+		inputFilePath = FILEPATH_MASTER;
+		currFilePath = inputFilePath;
+		validPath = true;
 	}
 			
 	ImGui::BeginChild("LeftPane", ImVec2(panelSize.x, 0), true);
@@ -1311,27 +1322,30 @@ void Editor::RenderDirectoryV2(const std::string& filePath) {
 		ImTextureID iconTexture = isDirectory ? reinterpret_cast<ImTextureID>(static_cast<uintptr_t>(assetManager.GetTexture(TEST1))) : reinterpret_cast<ImTextureID>(static_cast<uintptr_t>(assetManager.GetTexture(TEST2)));
 
 		if (ImGui::ImageButton(iconTexture, ImVec2(32, 32))) {
-			// Single-click behavior
+			// On single click
 			if (isDirectory) {
 				// Handle directory click
-				
+				inputFilePath = entry.path().string();
+				RenderDirectoryV2(inputFilePath);
 			}
 			else {
 				// Handle file click
+
 			}
 		}
 
 		ImGui::TextWrapped(entryName.c_str());
 		
 		if (ImGui::IsItemClicked(1) && ImGui::IsMouseDoubleClicked(0)) {
-			// Double-click behavior
+			// On Double-click
 			if (isDirectory) {
 				// Handle double-click on directory to go deeper
-				// Call RenderDirectoryV2 with the new directory path
-				RenderDirectoryV2(entry.path().string());
+				// Update RenderDirectoryV2 with new directory path
+				//inputFilePath = entry.path().string();
+				//RenderDirectoryV2(inputFilePath);
 			}
 			else {
-				// Handle double-click on file
+				// Handle double click on file
 			}
 		}
 	
