@@ -1160,7 +1160,7 @@ void Editor::CreateAssetBrowser() {
 	}
 	ImGui::SameLine();
 	if (ImGui::Button("Back")) {
-		
+		// Todo: Add error check for when back to assets folder 
 		std::filesystem::path test = currFilePath;
 		if (std::filesystem::exists(test)) {
 			inputFilePath = test.parent_path().string();
