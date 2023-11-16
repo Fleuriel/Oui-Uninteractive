@@ -6,7 +6,7 @@
  * @par Course: CSD 2401
  * @par Software Engineering Project 3
  * @date 29-09-2023
- * @brief 
+ * @brief
  * This file contains the headers for OpenGLObject.cpp which
  * compute the logic behind the box model and encapsulates the
  * shader programs into a vector to store it, and allows for usage of them
@@ -36,26 +36,26 @@ enum class SHADER_ORDER {
 	SPRITES = 3
 };
 
-class OpenGLObject{
+class OpenGLObject {
 public:
 	/**************************************************************************
 	* @brief Constructor and Destructor
 	**************************************************************************/
 	// Default Constructor
-	OpenGLObject(int id = 0) : 
-		scaleModel(0.5, 0.5) , orientation(0.0, 0.0f), position(0, 0), 
+	OpenGLObject(int id = 0) :
+		scaleModel(0.5, 0.5), orientation(0.0, 0.0f), position(0, 0),
 		model_To_NDC_xform(glm::mat3(1.0f)), color(0.0f, 0.0f, 1.0f), interactable(true),
 		angleDisplacment(0.0f), angleSpeed(0.0f), TagID(id), spritecheck(true)
 	{};
 
 	// Constructor for Particles
-	OpenGLObject(glm::vec3 particlecolor) : 
-		scaleModel(1, 1), orientation(0.0, 0.0f), position(0, 0), 
+	OpenGLObject(glm::vec3 particlecolor) :
+		scaleModel(1, 1), orientation(0.0, 0.0f), position(0, 0),
 		model_To_NDC_xform(glm::mat3(1.0f)), color(particlecolor), interactable(true),
 		angleDisplacment(0.0f), angleSpeed(0.0f), TagID(0), spritecheck(true) {
 		std::cout << "R : " << color.r << "\nG : " << color.g << "\nB : " << color.b << "\n";
 	};
-	
+
 	~OpenGLObject() {};
 
 	static bool renderBoundingBox;
@@ -76,7 +76,7 @@ public:
 	static GLuint mdl_ref, shd_ref; // Model and Shader Reference
 
 	static GLuint VAO, VBO;			// Object VAO VBO
-	
+
 	// Frame Buffers
 	static GLuint FBO;
 	static GLuint RBO;				// rendering buffer object
@@ -84,8 +84,8 @@ public:
 	static GLuint FrameTexture;
 
 	bool spritecheck;
-	
-	
+
+
 
 	// encapsulates state required to render a geometrical model
 	struct OpenGLModel {
@@ -94,9 +94,9 @@ public:
 		GLuint vaoid;				// Vaoid of the Model
 		GLsizei draw_cnt;			// Draw Count of the model
 		size_t idx_elem_cnt;		// Index Element Count of the Model
-		
 
-		OpenGLModel() : primitive_type(0), primitive_cnt(0), vaoid(0), draw_cnt(0), idx_elem_cnt(0)  {}
+
+		OpenGLModel() : primitive_type(0), primitive_cnt(0), vaoid(0), draw_cnt(0), idx_elem_cnt(0) {}
 
 		struct VAO_Object
 		{
@@ -141,17 +141,34 @@ public:
 	// Camera Structure
 	struct Camera2D {
 
-		Camera2D() : up(0, 0), right(0,0), view_xform(0), CameraWindow_to_NDC_xform(0), World_to_NDC_xform(0),
- 		aspectRatio (0), posX(0), posY(0), Cam(nullptr){}
+		Camera2D() : up(0, 0), right(0, 0), view_xform(0),
+			CameraWindow_to_NDC_xform(0), World_to_NDC_xform(0), aspectRatio(0), posX(0), posY(0), Cam(nullptr) {}
 
-		OpenGLObject *Cam;
+
+		OpenGLObject* Cam;
 
 		GLfloat posX, posY;
+		GLfloat FOV;
 
 		glm::vec2 up, right;
+
+		glm::vec2 frameBufferCoordinates;
+		glm::vec2 gameWindowFBCoords;
+
+		glm::vec3 cameraTarget;
+		glm::vec3 cameraUp;
+		glm::vec3 cameraPos;
+		glm::mat4 viewMatrix;
+		glm::mat4 viewProjectionMatrix;
+
+		float Left, Right, Top, Bottom;
+
+
+
+		glm::mat3 cameraProjection;
 		glm::mat3 view_xform, CameraWindow_to_NDC_xform, World_to_NDC_xform;
-		
-		GLfloat height{ 1300 }; // Current Height of the depth i.e. Zoom
+
+		GLfloat height{ 1500 }; // Current Height of the depth i.e. Zoom
 		GLfloat min_height{ 0 };
 		GLfloat max_height{ 5000 };
 
@@ -171,23 +188,34 @@ public:
 
 		void Update(GLFWwindow*, int, int);
 
+		void SetFrameBufferPosition(float x, float y);
+		void SetGameFBPos();
+
 	};
-	static glm::mat4 projection;
+	static glm::mat4 fontProjection;
 	static OpenGLObject cameraTranslator;
 	static Camera2D cameraObject;
 
 
+	struct Lighting {
 
-/**************************************************************************
-	* @brief		Initialize OpenGLObject that does Model Creation for future
-	*				Drawing Capabilities and Shader Emplacement.
-	*
-	* @WARNING _DEBUG debug draws a model of square.
-	*
-	* @param  none
-	* @return void
-	*************************************************************************/
-	void Initialize(); 
+		GLuint lightVAO;
+
+
+
+	};
+
+
+	/**************************************************************************
+		* @brief		Initialize OpenGLObject that does Model Creation for future
+		*				Drawing Capabilities and Shader Emplacement.
+		*
+		* @WARNING _DEBUG debug draws a model of square.
+		*
+		* @param  none
+		* @return void
+		*************************************************************************/
+	void Initialize();
 	/**************************************************************************
 	* @brief		Updates each OpenGLObject with Movement, Scale rotation.
 	*				Option for rotation has been added.
@@ -200,7 +228,7 @@ public:
 	* @return void
 	*************************************************************************/
 	void Update(float newX, float newY, float scaleX, float scaleY, float newAngle, bool enRot);
-	void Update(Matrix3x3, Matrix3x3,Matrix3x3);
+	void Update(Matrix3x3, Matrix3x3, Matrix3x3);
 
 	/**************************************************************************
 	* @brief		Draws a Debug Collision Box (AABB)
@@ -233,8 +261,8 @@ public:
 	* @return void
 	*************************************************************************/
 	void InitObjects(float userInput_x = 0.0f, float userInput_y = 0.0f, float userInput_sizeX = 0.0f,
-					float userInput_sizeY = 0.0f, float userInput_angleDisplacement = 0.0f,
-					float userInput_angleSpeed = 0.0f);
+		float userInput_sizeY = 0.0f, float userInput_angleDisplacement = 0.0f,
+		float userInput_angleSpeed = 0.0f);
 
 	/**************************************************************************
 	* @brief		 Cleanup the Object Creation.
@@ -274,7 +302,7 @@ public:
 
 	static void InitFont();
 	//static void 
-	static void FrameBufferMouseCoords(GLFWwindow*, double *x, double *y, Camera2D);
+	static void FrameBufferMouseCoords(GLFWwindow*, double* x, double* y, Camera2D);
 
 private:
 

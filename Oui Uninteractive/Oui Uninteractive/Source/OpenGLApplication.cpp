@@ -274,12 +274,14 @@ void OpenGLApplication::OpenGLUpdate() {
 	OpenGLObject::cameraObject.Update(windowNew, static_cast<int>(positionX), static_cast<int>(positionY));
 	// Create x and y pos variables to collect data from the mouse position.
 	double xpos, ypos{};
+	// Cursor is top left.
 	glfwGetCursorPos(windowNew, &xpos, &ypos);
+
 	
 	// Change the position of mouse coordinates to frame buffer coordinates.
 	OpenGLObject::FrameBufferMouseCoords(windowNew, &xpos, &ypos, OpenGLObject::cameraObject);
 
-
+	OpenGLObject::cameraObject.SetGameFBPos();
 
 	// Clear the FBO and render.
 	glClear(GL_COLOR_BUFFER_BIT);

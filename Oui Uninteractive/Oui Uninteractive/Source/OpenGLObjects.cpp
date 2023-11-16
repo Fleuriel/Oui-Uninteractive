@@ -6,11 +6,11 @@
  * @par Course: CSD 2401
  * @par Software Engineering Project 3
  * @date 29-09-2023
- * @brief 
+ * @brief
  * This file compute the logic behind the box model and encapsulates the
  * shader programs into a vector to store it, and allows for usage of them
  * for Translation, Scale, Rotation, and setting up textures.
- 
+
  *************************************************************************/
 
 #include <GL/glew.h> // for access to OpenGL API declarations  (PUT THIS ON TOP OR ELSE HAVE ERROR)
@@ -33,9 +33,9 @@
 unsigned int OpenGLObject::mdl_ref = 0; // Define and initialize mdl_ref
 unsigned int OpenGLObject::shd_ref = 0; // Define and initialize shd_ref
 
-OpenGLObject OpenGLObject::cameraTranslator(9); 
+OpenGLObject OpenGLObject::cameraTranslator(9);
 OpenGLObject::Camera2D OpenGLObject::cameraObject;
-glm::mat4 OpenGLObject::projection;
+glm::mat4 OpenGLObject::fontProjection;
 
 // Vector for shdrpgms
 std::vector<OpenGLShader> OpenGLObject::shdrpgms;
@@ -58,13 +58,13 @@ extern int spriterow;
 /**************************************************************************
 * @brief  Initialize OpenGLObject that does Model Creation for future
 *		  Drawing Capabilities and Shader Emplacement.
-* 
 *
-* 
+*
+*
 * @param  none
 * @return void
 *************************************************************************/
-void OpenGLObject::Initialize(){
+void OpenGLObject::Initialize() {
 #ifdef _DEBUG
 	std::cout << "OpenGLObject::Init()\n\n";
 #endif // _DEBUG
@@ -81,7 +81,7 @@ void OpenGLObject::Initialize(){
 	cameraTranslator.InitObjects();
 
 	OpenGLObject::cameraObject.Init(windowNew, &cameraTranslator);
-	
+
 
 
 
@@ -123,7 +123,7 @@ void OpenGLObject::Initialize(){
 	glBindTexture(GL_TEXTURE_2D, 0);
 	glBindRenderbuffer(GL_RENDERBUFFER, 0);
 
-	
+
 
 
 }
@@ -133,9 +133,9 @@ void OpenGLObject::Initialize(){
 * @brief  Creates an OpenGLObject based on parameters set on this Box_Model
 *
 * @param  color	  Color <R,G,B>
-* @return OpenGLObject  
+* @return OpenGLObject
 ***************************************************************************************/
-OpenGLObject::OpenGLModel OpenGLObject::Box_Model(glm::vec3 color){
+OpenGLObject::OpenGLModel OpenGLObject::Box_Model(glm::vec3 color) {
 	struct Vertex {
 		glm::vec2 position;        // Vertex position
 		glm::vec3 color;           // Vertex color
@@ -205,7 +205,7 @@ OpenGLObject::OpenGLModel OpenGLObject::Box_Model(glm::vec3 color){
 /**************************************************************************
 * @brief  Updates each OpenGLObject with Movement, Scale rotation.
 *		  Option for rotation has been added.
-* 
+*
 * @param  float  Acceleration of x-Axis
 * @param  float  Acceleration of y-Axis
 * @param  float  Scale on both X and Y axes. (Might need to change)
@@ -213,13 +213,13 @@ OpenGLObject::OpenGLModel OpenGLObject::Box_Model(glm::vec3 color){
 * @param  bool   Boolean for Rotation Enable or Disable
 * @return void
 *************************************************************************/
-void OpenGLObject::Update(float newX, float newY, float scaleX, float scaleY, float newAngle, bool enRot){
+void OpenGLObject::Update(float newX, float newY, float scaleX, float scaleY, float newAngle, bool enRot) {
 	//std::cout << "Object Update\n";
 	// Compute the angular displacement in radians
 
-	
+
 	//Scale the model based on float variable.
- 	scaleModel = glm::vec2(scaleX, scaleY);
+	scaleModel = glm::vec2(scaleX, scaleY);
 	//scaleModel = glm::vec2(100, 100);
 
 	// Increase the position based on the xSpeed of the user.
@@ -232,7 +232,7 @@ void OpenGLObject::Update(float newX, float newY, float scaleX, float scaleY, fl
 	//position = glm::vec2(0, 0);
 
 	// Boolean from the user to set if rotation is yes or no.
-	if (enRot == true)	{
+	if (enRot == true) {
 		angleDisplacment = newAngle;
 	}
 
@@ -251,7 +251,7 @@ void OpenGLObject::Update(float newX, float newY, float scaleX, float scaleY, fl
 
 	// Compute the rotation matrix
 	glm::mat3 Rotation = glm::mat3(
-		cosf(glm::radians(angleDisplacment)), sinf(glm::radians(angleDisplacment)) , 0.0f,
+		cosf(glm::radians(angleDisplacment)), sinf(glm::radians(angleDisplacment)), 0.0f,
 		-sinf(glm::radians(angleDisplacment)), cosf(glm::radians(angleDisplacment)), 0.0f,
 		0.0f, 0.0f, 1.0f
 	);
@@ -262,7 +262,7 @@ void OpenGLObject::Update(float newX, float newY, float scaleX, float scaleY, fl
 		0.0f, 1.0f, 0.0f,
 		position.x, position.y, 1.0f
 	);
-	
+
 
 	// Compute the scaling matrix to map from world coordinates to NDC coordinates
 	glm::mat3 ScaleToWorldToNDC = glm::mat3(
@@ -327,104 +327,29 @@ void OpenGLObject::Update(Matrix3x3 scale, Matrix3x3 rotate, Matrix3x3 translate
 
 }
 
-/**************************************************************************
-* @brief  Update camera position
-*
-* @param  int set coordinate [x]
-* @param  int set coordinate [y]
 
-
-* @return void
-*************************************************************************/
-void OpenGLObject::CameraUpdate(int posX, int posY) {
-	//std::cout << "Object Update\n";
-	// Compute the angular displacement in radians
-
-
-	//Scale the model based on float variable.
-	scaleModel = glm::vec2(0, 0);
-
-	position = glm::vec2(posX, posY);
-
-	//cameraObject.posX = posX;
-	//cameraObject.posY = posY;
-
-	//cameraObject.posX = posX + Editor::gameWindowOrigin.first/2.0f;
-	//cameraObject.posY = posY + Editor::gameWindowOrigin.second/2.0f;
-	cameraObject.posX = static_cast<float>(posX + Editor::gameWindowOrigin.first);
-	cameraObject.posY = static_cast<float>(posY + Editor::gameWindowOrigin.second);
-
-	// in case user does not set, angleDisplacement will be in the range of
-	// 0 ~ 360 || -360 ~ 0
-	if (angleDisplacment >= 360.0f || angleDisplacment <= -360.0f)
-		angleDisplacment = 0.0f;
-
-
-
-	// Compute the scale matrix
-	glm::mat3 Scale = glm::mat3(
-		scaleModel.x, 0.0f, 0.0f,
-		0.0f, scaleModel.y, 0.0f,
-		0.0f, 0.0f, 1.0f
-	);
-
-	// Compute the rotation matrix
-	glm::mat3 Rotation = glm::mat3(
-		cosf(glm::radians(angleDisplacment)), sinf(glm::radians(angleDisplacment)), 0.0f,
-		-sinf(glm::radians(angleDisplacment)), cosf(glm::radians(angleDisplacment)), 0.0f,
-		0.0f, 0.0f, 1.0f
-	);
-
-	// Compute the translation matrix
-	glm::mat3 Translation = glm::mat3(
-		1.0f, 0.0f, 0.0f,
-		0.0f, 1.0f, 0.0f,
-		position.x, position.y, 1.0f
-	);
-
-
-	// Compute the scaling matrix to map from world coordinates to NDC coordinates
-	glm::mat3 ScaleToWorldToNDC = glm::mat3(
-		2.0f / Editor::gameWindowSize.first, 0.0f, 0.0f,
-		0.0f, 2.0f / Editor::gameWindowSize.second, 0.0f,
-		0.0f, 0.0f, 1.0f
-	);
-
-
-	// Compute the model-to-world-to-NDC transformation matrix
-	model_To_NDC_xform = cameraObject.World_to_NDC_xform * Translation * Rotation *Scale;
-
-}
 /**************************************************************************
 * @brief  Draws the OpenGLObject.
-*				
+*
 * @param  none
 * @return void
 *************************************************************************/
-void OpenGLObject::Draw(std::string type) const{
+void OpenGLObject::Draw(std::string type) const {
 	//texture object is to use texture image unit 6
 	int tex{};
 	int shaderNumber{ static_cast<int>(SHADER_ORDER::MODEL) };
-	
+
 	if (type == "Player") {
 		shaderNumber = static_cast<int>(SHADER_ORDER::SPRITES);
 		if ((inputSystem.GetKeyState(GLFW_KEY_W) == 2) || (inputSystem.GetKeyState(GLFW_KEY_S) == 2)
 			|| (inputSystem.GetKeyState(GLFW_KEY_A) == 2) || (inputSystem.GetKeyState(GLFW_KEY_D) == 2))
-			tex = assetManager.GetSprite("BaldMan_Walk");
+			tex = assetManager.GetSprite("BaldManLeftWalk");
 		else
-			tex = assetManager.GetSprite("BaldMan_Idle");
+			tex = assetManager.GetSprite("BaldManIdle");
 	}
-	if (type == "CommonGuard") {
+	if (type == "Enemy") {
 		shaderNumber = static_cast<int>(SHADER_ORDER::SPRITES);
-		tex = assetManager.GetSprite("CommonGuard_Idle");
-	}
-	if (type == "ArmouredGuard") {
-		shaderNumber = static_cast<int>(SHADER_ORDER::SPRITES);
-		tex = assetManager.GetSprite("ArmouredGuard_Idle");
-	}
-	if (type == "Target") {
-		shaderNumber = static_cast<int>(SHADER_ORDER::SPRITES);
-		tex = assetManager.GetSprite("Target_Idle");
+		tex = assetManager.GetSprite("CommonGuardIdle");
 	}
 	if (type == "Weapon") {
 		shaderNumber = static_cast<int>(SHADER_ORDER::MODEL);
@@ -453,7 +378,8 @@ void OpenGLObject::Draw(std::string type) const{
 		shdrpgms[static_cast<int>(SHADER_ORDER::SPRITES)].SetUniform("cols", 6);
 		shdrpgms[static_cast<int>(SHADER_ORDER::SPRITES)].SetUniform("row_To_Draw", spriterow);
 	}
-	
+
+
 	// Part 2: Bind object's VAO handle
 	glBindVertexArray(models[mdl_ref].vaoid); // Bind object's VAO handle
 
@@ -484,7 +410,7 @@ void OpenGLObject::Draw(std::string type) const{
 * @param  none
 * @return void
 *************************************************************************/
-void OpenGLObject::Cleanup(){
+void OpenGLObject::Cleanup() {
 	// Cleanup the VAO, VBO and Shader Program
 	glDeleteVertexArrays(1, &VAO);
 	glDeleteBuffers(1, &VBO);
@@ -504,12 +430,12 @@ void OpenGLObject::Cleanup(){
 * @param  float User Input Size Y (Scale Y Axis)
 * @param  float User Input Angle Displacement (Anti Clockwise)
 * @param  float User Input Angle Speed (Speed of rotation)
-* 
+*
 * @return void
 *************************************************************************/
 void OpenGLObject::InitObjects(float userInput_x, float userInput_y, float userInput_sizeX,
-							   float userInput_sizeY, float userInput_angleDisplacement, 
-							   float userInput_angleSpeed){
+	float userInput_sizeY, float userInput_angleDisplacement,
+	float userInput_angleSpeed) {
 
 	// Initialize the object of model and shader reference to 0
 	mdl_ref = 0;
@@ -530,21 +456,21 @@ void OpenGLObject::InitObjects(float userInput_x, float userInput_y, float userI
 	angleSpeed = userInput_angleSpeed;
 
 	// matrix for translate
-	glm::mat3 Translate = glm::mat3	{
+	glm::mat3 Translate = glm::mat3{
 		1, 0, 0,
 		0, 1, 0,
 		 position.x,  position.y, 1
 	};
 
 	// matrix for rotation
-	glm::mat3 Rotation = glm::mat3	{
+	glm::mat3 Rotation = glm::mat3{
 		cosf(radians(angleDisplacment)), sinf(radians(angleDisplacment)) , 0,
 		-sinf(radians(angleDisplacment)),  cosf(radians(angleDisplacment)) , 0,
 		0, 0, 1
 	};
 
 	// matrix for scale
-	glm::mat3 Scale = glm::mat3	{
+	glm::mat3 Scale = glm::mat3{
 		scaleModel.x, 0, 0,
 		0, scaleModel.y, 0,
 		0, 0, 1
@@ -555,7 +481,7 @@ void OpenGLObject::InitObjects(float userInput_x, float userInput_y, float userI
 	float scaleY = 2.0f / windowSize.second;
 
 	// Scale To World NDC-coordinates matrix
-	glm::mat3 ScaleToWorldToNDC = glm::mat3	{
+	glm::mat3 ScaleToWorldToNDC = glm::mat3{
 		scaleX, 0, 0,
 		0, scaleY, 0,
 		0, 0, 1
@@ -577,7 +503,7 @@ void OpenGLObject::InitObjects(float userInput_x, float userInput_y, float userI
 *
 * @return void
 *************************************************************************/
-void OpenGLObject::DrawCollisionBox(Vector2D min, Vector2D max){
+void OpenGLObject::DrawCollisionBox(Vector2D min, Vector2D max) {
 	// get the points of the AABB
 
 	float MinimumX = min.x;
@@ -595,7 +521,7 @@ void OpenGLObject::DrawCollisionBox(Vector2D min, Vector2D max){
 	//MinimumY = Editor::gameWindowOrigin.second;
 	//MaximumY = Editor::gameWindowOrigin.second;
 
-	
+
 	float sX = static_cast<float>(MinimumX);
 	float bX = static_cast<float>(MaximumX);
 	float sY = static_cast<float>(MinimumY);
@@ -603,10 +529,10 @@ void OpenGLObject::DrawCollisionBox(Vector2D min, Vector2D max){
 
 
 
-//	std::cout << "Smol: " << sX- (Editor::gameWindowSize.first)/2 - Editor::gameWindowOrigin.first << ' ' << sY - Editor::gameWindowSize.second /2<< "\tBogg " << bX << ' ' << bY << '\n';
+	//	std::cout << "Smol: " << sX- (Editor::gameWindowSize.first)/2 - Editor::gameWindowOrigin.first << ' ' << sY - Editor::gameWindowSize.second /2<< "\tBogg " << bX << ' ' << bY << '\n';
 
 	using glm::radians;
-	
+
 	// set angle displacement to 0, as we do not need to rotate
 	angleDisplacment = 0;
 
@@ -671,10 +597,10 @@ void OpenGLObject::DrawCollisionBox(Vector2D min, Vector2D max){
 * @param  float r Red Color Value
 * @param  float g Green Color Value
 * @param  float b Blue Color Value
-* 
+*
 * @return void
 *************************************************************************/
-void OpenGLObject::OpenGLModel::VAO_Object::setTextureValue(float x, float y, float r, float g, float b){
+void OpenGLObject::OpenGLModel::VAO_Object::setTextureValue(float x, float y, float r, float g, float b) {
 
 	// Set Position X and Y
 	position.x = x;
@@ -695,7 +621,7 @@ void OpenGLObject::OpenGLModel::VAO_Object::setTextureValue(float x, float y, fl
 *
 * @return void
 *************************************************************************/
-void OpenGLObject::OpenGLModel::VAO_Object::setTexture(float s, float t){
+void OpenGLObject::OpenGLModel::VAO_Object::setTexture(float s, float t) {
 	// Set Texture S and T coordinates.
 	texture.s = s;
 	texture.t = t;
@@ -709,11 +635,13 @@ void OpenGLObject::OpenGLModel::VAO_Object::setTexture(float s, float t){
 /*=======================================================================================================================*/
 /*=======================================================================================================================*/
 
+
+
 /**************************************************************************
 * @brief  Initialize Camera
 *
 * @param  GLFWwindow* pointer to the window
-* @param  OpenGLObject* pointer to another object to contain 
+* @param  OpenGLObject* pointer to another object to contain
 		  position coordinates
 *
 * @return void
@@ -725,12 +653,22 @@ void OpenGLObject::Camera2D::Init(GLFWwindow* camWindow, OpenGLObject* ptr) {
 	// Set a OpenGLObject to the pointer that is inputted, i.e. another OpenGLObject
 	Cam = ptr;
 
+	Left   = -1.0f;
+	Right  = 1.0f;
+	Bottom = -1.0f;
+	Top	   = 1.0f;
 
-	/* 
-					< Initialize for initial creation >	
-	Create the Frame Buffer Width and Height(This must be here as the 
+	cameraProjection = glm::ortho(Left, Right, Bottom, Top, -1.0f, 1.0f);
+	cameraUp = glm::vec3(0.0f, 1.0f, 0.0f);
+	cameraTarget = glm::vec3(0.0f, 0.0f, 0.0f);
+	cameraPos = glm::vec3(0.0f, 0.0f, 3.0f);
+
+
+	/*
+					< Initialize for initial creation >
+	Create the Frame Buffer Width and Height(This must be here as the
 	FBuffer will update	 Every single time, it is zoom in/out /move		*/
-			
+
 	aspectRatio = static_cast<GLfloat>(Editor::gameWindowSize.first) / static_cast<GLfloat>(Editor::gameWindowSize.first);
 
 
@@ -739,6 +677,9 @@ void OpenGLObject::Camera2D::Init(GLFWwindow* camWindow, OpenGLObject* ptr) {
 
 	// compute camera's right vectors (U)
 	right = glm::vec2{ cosf(glm::radians(Cam->orientation.x)), sinf(glm::radians(Cam->orientation.x)) };
+
+
+
 
 
 	// view transform 
@@ -757,7 +698,8 @@ void OpenGLObject::Camera2D::Init(GLFWwindow* camWindow, OpenGLObject* ptr) {
 
 	// World to NDC transform
 	// Set the World to NDC transform for the camera
-	World_to_NDC_xform = CameraWindow_to_NDC_xform * view_xform;
+	//World_to_NDC_xform = CameraWindow_to_NDC_xform * view_xform;
+	World_to_NDC_xform = CameraWindow_to_NDC_xform * cameraProjection;
 
 }
 /**************************************************************************
@@ -775,21 +717,63 @@ void OpenGLObject::Camera2D::Update(GLFWwindow* camWindow, int positionX, int po
 
 	(void)camWindow;
 
+	viewMatrix = glm::lookAt(cameraPos, cameraTarget, cameraUp);
+
+
+
+
+
+	//glUniformMatrix4fv(glGetUniformLocation(shdrpgms[1].GetHandle(), "projection"), 1, GL_FALSE, glm::value_ptr(cameraProjection));
+
 	// ZOOM in
 	//if (inputSystem.GetScrollState() == 1) 
 	if (inputSystem.GetKeyState(GLFW_KEY_UP) == 2)
 	{
+		std::cout << height << '\n';
 		// Height Decrement by 1.1f
-		height -= 100.0f;
+		height -= heightChangeValue;
+
+
+		Left += 0.05f;
+		Right -= 0.05f;
+		Bottom += 0.05f;
+		Top -= 0.05f;
+
+		std::cout << Top << "\n";
+
 	}
 
 	// ZOOM OUT
 	//if (inputSystem.GetScrollState() == -1)
 	if (inputSystem.GetKeyState(GLFW_KEY_DOWN) == 2)
 	{
+		std::cout << height << '\n';
 		// Height Increment by 1.1f
-		height += 100.0f;
+		height += heightChangeValue;
+
+		
+		Left -= 0.05f;
+		Right += 0.05f;
+		Bottom -= 0.05f;
+		Top += 0.05f;
+
+		
+		std::cout << Left << "\t" << Right << "\t" << Bottom << "\t" << Top << "\n";
 	}
+
+	if (Left >= 0)
+		Left		= 0;
+
+	if (Right <= 0)
+		Right		= 0;
+
+	if (Top <= 0)
+		Top			= 0;
+
+	if (Bottom >= 0)
+		Bottom		= 0;
+
+
 
 	// Set minimum parameter of height < Depth >
 	if (height <= min_height)
@@ -807,7 +791,7 @@ void OpenGLObject::Camera2D::Update(GLFWwindow* camWindow, int positionX, int po
 					< Initialize for initial creation >
 	Create the Frame Buffer Width and Height(This must be here as the
 	FBuffer will update	 Every single time, it is zoom in/out /move		*/
-	
+
 	aspectRatio = static_cast<float>(Editor::gameWindowSize.first) / static_cast<float>(Editor::gameWindowSize.second);
 	// Calculate Frame buffer
 	//aspectRatio = static_cast<GLfloat>(Editor::gameWindowSize.first) / static_cast<GLfloat>(Editor::gameWindowSize.second);
@@ -834,16 +818,118 @@ void OpenGLObject::Camera2D::Update(GLFWwindow* camWindow, int positionX, int po
 	};
 
 
+	cameraProjection = glm::ortho(Left, Right, Bottom, Top, -1.0f, 1.0f);
+
 	// World to NDC transform
 	// Set the World to NDC transform for the camera
-	World_to_NDC_xform = CameraWindow_to_NDC_xform * view_xform ;
-	
+//	World_to_NDC_xform = CameraWindow_to_NDC_xform * view_xform ;
+
+
+	//cameraProjection = glm::ortho(newLeft, newRight, newBottom, newTop, -1.0f, 1.0f);
+	//	cameraProjection = glm::ortho(Left, Right, Bottom, Top, -1.0f, 1.0f);
+
+
+	World_to_NDC_xform = CameraWindow_to_NDC_xform * cameraProjection;
+
+	//World_to_NDC_xform = CameraWindow_to_NDC_xform * view_xform;
 
 	// Update the camera position using the Cam pointer
 	Cam->CameraUpdate(positionX, positionY);
 }
 
+/**************************************************************************
+* @brief  Update camera position
+*
+* @param  int set coordinate [x]
+* @param  int set coordinate [y]
 
+
+* @return void
+*************************************************************************/
+void OpenGLObject::CameraUpdate(int posX, int posY) {
+	//std::cout << "Object Update\n";
+	// Compute the angular displacement in radians
+
+
+	//Scale the model based on float variable.
+	scaleModel = glm::vec2(0, 0);
+
+	position = glm::vec2(posX, posY);
+
+	glm::vec3 camPos = glm::vec3(position.x, position.y, 0);
+
+
+	//cameraObject.posX = posX;
+	//cameraObject.posY = posY;
+
+	//cameraObject.posX = posX + Editor::gameWindowOrigin.first/2.0f;
+	//cameraObject.posY = posY + Editor::gameWindowOrigin.second/2.0f;
+	cameraObject.posX = static_cast<float>(posX + Editor::gameWindowOrigin.first);
+	cameraObject.posY = static_cast<float>(posY + Editor::gameWindowOrigin.second);
+
+	// in case user does not set, angleDisplacement will be in the range of
+	// 0 ~ 360 || -360 ~ 0
+	if (angleDisplacment >= 360.0f || angleDisplacment <= -360.0f)
+		angleDisplacment = 0.0f;
+
+
+
+	// Compute the scale matrix
+	glm::mat3 Scale = glm::mat3(
+		scaleModel.x, 0.0f, 0.0f,
+		0.0f, scaleModel.y, 0.0f,
+		0.0f, 0.0f, 1.0f
+	);
+
+	// Compute the rotation matrix
+	glm::mat3 Rotation = glm::mat3(
+		cosf(glm::radians(angleDisplacment)), sinf(glm::radians(angleDisplacment)), 0.0f,
+		-sinf(glm::radians(angleDisplacment)), cosf(glm::radians(angleDisplacment)), 0.0f,
+		0.0f, 0.0f, 1.0f
+	);
+
+	// Compute the translation matrix
+	glm::mat3 Translation = glm::mat3(
+		1.0f, 0.0f, 0.0f,
+		0.0f, 1.0f, 0.0f,
+		position.x, position.y, 1.0f
+	);
+
+
+	// Compute the scaling matrix to map from world coordinates to NDC coordinates
+	glm::mat3 ScaleToWorldToNDC = glm::mat3(
+		2.0f / Editor::gameWindowSize.first, 0.0f, 0.0f,
+		0.0f, 2.0f / Editor::gameWindowSize.second, 0.0f,
+		0.0f, 0.0f, 1.0f
+	);
+
+
+	// Compute the model-to-world-to-NDC transformation matrix
+	model_To_NDC_xform = cameraObject.World_to_NDC_xform * Translation * Rotation * Scale;
+
+}
+
+
+
+void OpenGLObject::Camera2D::SetFrameBufferPosition(float x, float y) {
+
+
+
+
+
+}
+
+void OpenGLObject::Camera2D::SetGameFBPos() {
+
+
+	gameWindowFBCoords.x = Editor::gameWindowSize.first;
+	gameWindowFBCoords.y = Editor::gameWindowSize.second;
+
+
+
+
+	//std::cout << Editor::gameWindowOrigin.first << '\t' << Editor::gameWindowOrigin.second <<'\n';
+}
 /*=======================================================================================================================*/
 /*=======================================================================================================================*/
 /*==================================================GRAPHIC SHADERS======================================================*/
@@ -898,7 +984,7 @@ void OpenGLObject::InitShaders()
 	// Initialize the Shader Program for Sprites
 	std::cout << "Initializing sprite shader" << std::endl;
 	init_shdrpgms_cont(SPRITESHADER);
-	
+
 }
 
 
@@ -935,20 +1021,20 @@ void OpenGLObject::init_shdrpgms_cont(VectorPairStrStr const& vpss) {
 
 /**************************************************************************
 * @brief  Initialize the Shaders for Graphics Pipeline for fonts.
-* 
 *
-* @param  NONE 
+*
+* @param  NONE
 * @return void
 *************************************************************************/
 void OpenGLObject::InitFont()
 {
 	// Initialize the Projection matrix for the fonts to render into the screen
-	projection = glm::ortho(0.0f, static_cast<float>(windowSize.first), 0.0f, static_cast<float>(windowSize.second));
+	fontProjection = glm::ortho(0.0f, static_cast<float>(windowSize.first), 0.0f, static_cast<float>(windowSize.second));
 	// Use the shader
 	shdrpgms[static_cast<int>(SHADER_ORDER::FONT)].Use();
 
 	// Find the uniform location and create matrix4fv to it.
-	glUniformMatrix4fv(glGetUniformLocation(shdrpgms[1].GetHandle(), "projection"), 1, GL_FALSE, glm::value_ptr(projection));
+	glUniformMatrix4fv(glGetUniformLocation(shdrpgms[1].GetHandle(), "projection"), 1, GL_FALSE, glm::value_ptr(fontProjection));
 
 	// For FONTS VAO and VBOs
 	glGenVertexArrays(1, &VAO);
@@ -962,6 +1048,16 @@ void OpenGLObject::InitFont()
 	glBindVertexArray(0);
 }
 
+/*=======================================================================================================================*/
+/*=======================================================================================================================*/
+/*======================================================LIGHTING=========================================================*/
+/*=======================================================================================================================*/
+/*=======================================================================================================================*/
+/*=======================================================================================================================*/
+
+
+
+
 
 /*=======================================================================================================================*/
 /*=======================================================================================================================*/
@@ -974,7 +1070,7 @@ void OpenGLObject::InitFont()
 * @brief  Change the mouse coordinates from getMousePosition to frame
 *		  buffer coordinates
 *
-* @param  GLFWwindow*	pointer to the window 
+* @param  GLFWwindow*	pointer to the window
 * @param  double*		sets a value in return. [x]
 * @param  double*		sets a value in return. [y]
 * @param  Camera2D		camera object of original class: OpenGLObject.
@@ -982,36 +1078,95 @@ void OpenGLObject::InitFont()
 
 @return void
 *************************************************************************/
-void OpenGLObject::FrameBufferMouseCoords(GLFWwindow* originalWindow, double  *x, double *y, OpenGLObject::Camera2D camera)
+void OpenGLObject::FrameBufferMouseCoords(GLFWwindow* originalWindow, double* x, double* y, OpenGLObject::Camera2D camera)
 {
 
 	(void)originalWindow;
 	// set a variable original X and Y
+
+	//std::cout << "pre: " << *x << ' ' << *y << ' ';
+
 	double originalX = *x - static_cast<double>(Editor::gameWindowOrigin.first);
 	double originalY = *y - static_cast<double>(Editor::gameWindowOrigin.second);
-
-
+	
 	// get the center coordinates of the frame buffer window.
 	double centerX = static_cast<double>(Editor::gameWindowSize.first) / 2.0;
 	double centerY = static_cast<double>(Editor::gameWindowSize.second) / 2.0;
+	
+	//std::cout << "Before: " << centerX << '\t' << centerY << "\t Ori X Y :" << *x << '\t' << *y;
+	
+	// Get Center X and Y's center coordinates.
+	centerX += Editor::gameWindowOrigin.first;
+	centerY += Editor::gameWindowOrigin.second;
 
+	// Coordinates currently is
+
+	/*
+	(0,0)
+	(x,y)----------------------------------------------->
+	  |
+	  |
+	  |
+	  |
+	  |
+	  |
+	  |
+	  v
+	*/
+
+	//std::cout << "After: " << centerX << '\t' << centerY << '\t';
+
+	centerX -= *x;
+	centerY -= *y;
+	
+	
+	//centerX = centerX + Editor::gameWindowOrigin.first + camera.posX;
+	//centerY = centerY + Editor::gameWindowOrigin.second + camera.posY;
+	
+	//std::cout <<"After: " << centerX << '\t' << centerY << '\t';
+	
+	// std::cout << camera.posX <<' ' << camera.posY << '\t';
+	
+	//std::cout << "center: " << centerX << " " << centerY << '\n';
 	
 	// Calculate corrected coordinates relative to the camera's position.
-	double correctedX = (originalX - static_cast<double>(centerX)) + camera.posX;
-	double correctedY = centerY - originalY + camera.posY;  // Note the y-coordinate inversion
-
-
+	//double correctedX = (originalX - static_cast<double>(centerX)) + camera.posX;
+	//double correctedY = centerY - originalY + camera.posY;  // Note the y-coordinate inversion
+	
+	//std::cout << correctedX << '\t' << correctedY << '\n';
+	
 	// set value of X and Y, (valueX, valueY) to the respective y values,
 	// Y no change as no difference. X, on the other hand needs to be multiplied with the multiplier of height.,
-	double valueX = correctedX / 1000;
-	double valueY = correctedY;
-
+	double valueX = centerX / 1000;
+	double valueY = centerY;
+	
 	// set valueX to multiply by camera height.
 	valueX *= static_cast<double>(camera.height);
+	
+	valueX = -valueX;
+	
+	
+	//std::cout << valueX << '\t' << valueY << '\n';
+	 
+	*x = valueX;
+	*y = valueY;
+
+	//glm::vec4 clipCoords = glm::vec4((float)(2.0 * *x / Editor::gameWindowSize.first - 1.0), (float)(1.0 - 2.0 * *y / Editor::gameWindowSize.second), -1.0, 1.0);
+	//
+	//
+	//glm::mat4 invProjection = glm::inverse(camera.cameraProjection);
+	//glm::vec4 cameraCoords = invProjection * clipCoords;
+	//cameraCoords /= cameraCoords.w; // Homogeneous divide
+
+	// Get mouse coordinates in world space
+	//glm::mat4 invView = glm::inverse(camera.GetViewMatrix());
+	//glm::vec4 worldCoords = invView * cameraCoords;
 
 
 	// set values of *x and *y.
-	*x = (valueX - Editor::gameWindowOrigin.first);
-	*y = (valueY - Editor::gameWindowOrigin.second);
+	//*x = static_cast<int>((valueX - Editor::gameWindowOrigin.first));
+	//*y = static_cast<int>((valueY - Editor::gameWindowOrigin.second));
 
+	//std::cout <<"FINALIZED: " << *x << ' ' << *y << '\n';
+	//std::cout << '\n';
 }
