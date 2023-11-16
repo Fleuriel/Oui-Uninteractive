@@ -277,6 +277,9 @@
     <ClCompile Include="Source\EnemyFSM.cpp">
       <Filter>Component\EnemyAI</Filter>
     </ClCompile>
+    <ClCompile Include="..\lib\imgui-docking\imgui_stdlib.cpp">
+      <Filter>ImGui</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Include\Matrix3x3.h">

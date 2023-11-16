@@ -16,9 +16,10 @@
 #include <chrono>
 #include "GameStateManager.h"
 #include "imgui.h"
+#include "imgui_stdlib.h"
 #include "imgui_impl_glfw.h"
 #include "imgui_impl_opengl3.h"
-#include "misc/cpp/imgui_stdlib.h"
+#include "imgui_stdlib.h"
 #include "implot.h"
 #include "implot_internal.h"
 #include "rapidjson/document.h"
@@ -79,7 +80,7 @@ public:
 	static void CreateAssetBrowser();
 
 	static void RenderDirectory(const std::string& path); // Helper function to render asset browser directory
-
+	static void RenderDirectoryV2(const std::string& filePath); // Tester function for asset browser
 public:
 	bool soundPanel;
 	static std::pair<int, int> gameWindowOrigin;
@@ -121,7 +122,7 @@ struct Panels {
 	bool prefabPanel;
 	bool soundPanel;
 	bool objectPanel;
-	bool assetBrowserPanel;
+	bool assetBrowserPanel{ true };
 	bool debugPanel;
 };
 static Panels panelList;

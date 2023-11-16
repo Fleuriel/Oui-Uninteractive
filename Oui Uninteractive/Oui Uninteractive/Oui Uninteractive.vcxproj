@@ -23,6 +23,7 @@
     <ClCompile Include="..\lib\imgui-docking\backends\imgui_impl_opengl3.cpp" />
     <ClCompile Include="..\lib\imgui-docking\imgui.cpp" />
     <ClCompile Include="..\lib\imgui-docking\imgui_draw.cpp" />
+    <ClCompile Include="..\lib\imgui-docking\imgui_stdlib.cpp" />
     <ClCompile Include="..\lib\imgui-docking\imgui_tables.cpp" />
     <ClCompile Include="..\lib\imgui-docking\imgui_widgets.cpp" />
     <ClCompile Include="..\lib\imgui-docking\implot.cpp" />

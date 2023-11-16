@@ -1133,22 +1133,40 @@ void Editor::CreateObjectList() {
 	ImGui::End();
 }
 
-
 /*************************************************************************
 * @brief This function creates the asset browser panel used to peruse content
 * @return void
 *************************************************************************/
 void Editor::CreateAssetBrowser() {
 	ImGui::Begin("Asset Browser");
-	ImGui::BeginChild("LeftPane", ImVec2(200, 0), true);
-	RenderDirectory(FILEPATH_MASTER);
-	ImGui::EndChild();
-	ImGui::SameLine();
-	// Right Pane
-	{
-		ImGui::Text("Teest2");
+	ImVec2 panelSize = ImGui::GetContentRegionAvail();
+	static bool validPath = true;
+	static std::string inputFilePath = FILEPATH_MASTER;
+	static std::string currFilePath = FILEPATH_MASTER;
 
+
+	if (ImGui::InputText("##FilePath", &inputFilePath, ImGuiInputTextFlags_EnterReturnsTrue) || (ImGui::SameLine(), ImGui::Button("Go"))) {  // Enter if "enter" is pressed
+		if (std::filesystem::exists(inputFilePath) && std::filesystem::is_directory(inputFilePath)) {
+			currFilePath = inputFilePath;
+			validPath = true;
+			std::cout << currFilePath << std::endl;
+		}
+		else {
+			validPath = false;
+			std::cout << "invalid path" << std::endl;
+
+		}
 	}
+			
+	ImGui::BeginChild("LeftPane", ImVec2(panelSize.x, 0), true);
+	if (validPath) {
+		RenderDirectoryV2(currFilePath);
+	}
+	else {
+		ImGui::Text("INVALID PATH");
+	}
+	ImGui::EndChild();
+	
 	
 	ImGui::End();
 }
@@ -1284,3 +1302,38 @@ void Editor::RenderDirectory(const std::string& filePath) {
 	}
 }
 
+void Editor::RenderDirectoryV2(const std::string& filePath) {
+	for (auto& entry : std::filesystem::directory_iterator(filePath)) {
+		const std::string entryName = entry.path().filename().string();
+		const bool isDirectory = entry.is_directory();
+
+		// Use folder or file icon texture
+		ImTextureID iconTexture = isDirectory ? reinterpret_cast<ImTextureID>(static_cast<uintptr_t>(assetManager.GetTexture(TEST1))) : reinterpret_cast<ImTextureID>(static_cast<uintptr_t>(assetManager.GetTexture(TEST2)));
+
+		if (ImGui::ImageButton(iconTexture, ImVec2(32, 32))) {
+			// Single-click behavior
+			if (isDirectory) {
+				// Handle directory click
+				
+			}
+			else {
+				// Handle file click
+			}
+		}
+
+		ImGui::TextWrapped(entryName.c_str());
+		
+		if (ImGui::IsItemClicked(1) && ImGui::IsMouseDoubleClicked(0)) {
+			// Double-click behavior
+			if (isDirectory) {
+				// Handle double-click on directory to go deeper
+				// Call RenderDirectoryV2 with the new directory path
+				RenderDirectoryV2(entry.path().string());
+			}
+			else {
+				// Handle double-click on file
+			}
+		}
+	
+	}
+}
