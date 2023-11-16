@@ -964,7 +964,16 @@ void Editor::CreateObjectList() {
 				}
 				ImGui::Indent();
 				if (ImGui::Checkbox("##Transform", &transformFlag)) {
-
+					Transform* objTX = GET_COMPONENT(objectFactory->GetGameObjectByID(gameobjID), Transform, ComponentType::TRANSFORM);
+					if (objTX != nullptr) {
+						objectFactory->GetGameObjectByID(gameobjID)->RemoveComponent(objTX);
+						transformFlag = false;
+					}
+					else {
+						objectFactory->GetGameObjectByID(gameobjID)->AddComponent(new Transform(), ComponentType::TRANSFORM);
+						objectFactory->GetGameObjectByID(gameobjID)->Initialize();
+						transformFlag = true;
+					}
 				}
 				ImGui::SameLine();
 					if (ImGui::CollapsingHeader("Transform")) {
@@ -999,7 +1008,16 @@ void Editor::CreateObjectList() {
 				
 					ImGui::Indent();
 					if (ImGui::Checkbox("##Physics", &physicsFlag)) {
-
+						PhysicsBody* objBody = GET_COMPONENT(objectFactory->GetGameObjectByID(gameobjID), PhysicsBody, ComponentType::PHYSICS_BODY);
+						if (objBody != nullptr) {
+							objectFactory->GetGameObjectByID(gameobjID)->RemoveComponent(objBody);
+							physicsFlag = false;
+						}
+						else {
+							objectFactory->GetGameObjectByID(gameobjID)->AddComponent(new PhysicsBody(), ComponentType::PHYSICS_BODY);
+							objectFactory->GetGameObjectByID(gameobjID)->Initialize();
+							physicsFlag = true;
+						}
 					}
 					ImGui::SameLine();
 					if (ImGui::CollapsingHeader("Physics Body")) {
@@ -1082,7 +1100,16 @@ void Editor::CreateObjectList() {
 				
 					ImGui::Indent();
 					if (ImGui::Checkbox("##Collider", &colliderFlag)) {
-
+						Collider* objCollider = GET_COMPONENT(objectFactory->GetGameObjectByID(gameobjID), Collider, ComponentType::COLLIDER);
+						if (objCollider != nullptr) {
+							objectFactory->GetGameObjectByID(gameobjID)->RemoveComponent(objCollider);
+							colliderFlag = false;
+						}
+						else {
+							objectFactory->GetGameObjectByID(gameobjID)->AddComponent(new Collider(), ComponentType::COLLIDER);
+							objectFactory->GetGameObjectByID(gameobjID)->Initialize();
+							colliderFlag = true;
+						}
 					}
 					ImGui::SameLine();
 					if (ImGui::CollapsingHeader("Collider")) {
