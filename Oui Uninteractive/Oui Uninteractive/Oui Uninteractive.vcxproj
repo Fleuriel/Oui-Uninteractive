@@ -122,6 +122,7 @@
     <ClInclude Include="Include\Transition.h" />
     <ClInclude Include="Include\UI.h" />
     <ClInclude Include="Include\Vector2D.h" />
+    <ClInclude Include="WeaponPickupScript.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>

@@ -38,11 +38,15 @@ void LogicSystem::Initialize() {
 	ComponentFactory<LogicComponent>* testPtr = new ComponentFactory<LogicComponent>(ComponentType::LOGICCOMPONENT);
 	objectFactory->AddComponentFactory(ComponentType::LOGICCOMPONENT, testPtr);
 	//SCRIPTS
+
 	TestScript* testScript = new TestScript(std::string("testScript"));
 	testScript->Initialize();
 
 	TestScript2* testScript2 = new TestScript2(std::string("testScript2"));
 	testScript2->Initialize();
+
+	TestScript3* testScript3 = new TestScript3(std::string("testScript3"));
+	testScript3->Initialize();
 
 	PlayerShooting* playerShootingScript = new PlayerShooting(std::string("PlayerShooting"));
 	playerShootingScript->Initialize();

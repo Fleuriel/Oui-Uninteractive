@@ -3,6 +3,8 @@
 #include "ObjectFactory.h"
 #include "Logic.h"
 
+
+
 class TestScript : public IScript {
 public:
 	TestScript(std::string newName) : IScript(newName) {
@@ -206,4 +208,48 @@ public:
 
 	void End() {}
 	~TestScript2() {}
+};
+
+class TestScript3 : public IScript {
+public:
+	TestScript3(std::string newName) : IScript(newName) {
+
+	};
+	void Initialize() {
+		logicSystem->AddLogicScript(this);
+	};
+
+	void Update(size_t gameObjectID) {
+		GameObject* gObj = objectFactory->GetGameObjectByID(gameObjectID);
+		if (gObj != nullptr) {
+			Transform* tx = GET_COMPONENT(objectFactory->GetGameObjectByID(gameObjectID), Transform, ComponentType::TRANSFORM);
+			PhysicsBody* physBod = GET_COMPONENT(objectFactory->GetGameObjectByID(gameObjectID), PhysicsBody, ComponentType::PHYSICS_BODY);
+			if (tx != nullptr && physBod != nullptr) {
+				if (tx != nullptr && physBod != nullptr) {
+					PhysicsBody* playerBody = GET_COMPONENT(objectFactory->GetGameObjectByID(gameObjectID), PhysicsBody, ComponentType::PHYSICS_BODY);
+					static int count = 0;
+					if (count == true) {
+
+						PhysicsBody* playerBody1 = GET_COMPONENT(objectFactory->GetGameObjectByID(0), PhysicsBody, ComponentType::PHYSICS_BODY);
+
+						playerBody->txPtr->position.x = playerBody1->txPtr->position.x+200;
+						playerBody->txPtr->position.y = playerBody1->txPtr->position.y;
+						//playerBody->forceManager.ApplyToForce(Vec2(0.0f, 0.1f), 20.f, 0.3f, FORCE_INDEX::EXTERNAL);
+					}
+
+					if (inputSystem.GetKeyState(GLFW_KEY_X)) {
+						count = 0;
+					}
+					if (inputSystem.GetKeyState(GLFW_KEY_C)) {
+						count = 1;
+					}
+
+				}
+			}
+		}
+
+	};
+
+	void End() {}
+	~TestScript3() {}
 };

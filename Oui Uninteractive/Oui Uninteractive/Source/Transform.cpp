@@ -15,7 +15,7 @@
 * @brief Default constructor for Transform component
 *************************************************************************/
 Transform::Transform() {
-	position = Vec2(-250,50);
+	position = Vec2(0,0);
 	previousPosition = position;
 	rotation = 0;
 	scale = 100.f;

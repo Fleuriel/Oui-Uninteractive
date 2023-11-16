@@ -439,5 +439,8 @@
     <ClInclude Include="Include\BulletLifetimeScript.h">
       <Filter>Scripts</Filter>
     </ClInclude>
+    <ClInclude Include="WeaponPickupScript.h">
+      <Filter>Scripts</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
