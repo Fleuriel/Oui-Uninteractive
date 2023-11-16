@@ -428,6 +428,7 @@ void OpenGLObject::Draw(std::string type) const{
 	}
 	if (type == "Weapon") {
 		shaderNumber = static_cast<int>(SHADER_ORDER::MODEL);
+		tex = assetManager.GetTexture("KnifeSprite");
 	}
 	if (type == "Camera") {
 		shaderNumber = static_cast<int>(SHADER_ORDER::CAMERA);
