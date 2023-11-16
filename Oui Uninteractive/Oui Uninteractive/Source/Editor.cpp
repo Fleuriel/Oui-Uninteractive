@@ -1160,7 +1160,13 @@ void Editor::CreateAssetBrowser() {
 	}
 	ImGui::SameLine();
 	if (ImGui::Button("Back")) {
-
+		
+		std::filesystem::path test = currFilePath;
+		if (std::filesystem::exists(test)) {
+			inputFilePath = test.parent_path().string();
+			currFilePath = inputFilePath;
+			validPath = true;
+		}
 	}
 	ImGui::SameLine();
 	if (ImGui::Button("Home")) {
