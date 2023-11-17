@@ -726,9 +726,26 @@ void Editor::CreateObjectList() {
 			if (ImGui::Selectable(objName.c_str(), selectedID == count)) {
 				gameobjID = objID;
 				selectedID = count;
+				selected = objectFactory->GetGameObjectByID(gameobjID);
 			}
+
 			count++;
 		}
+		if (selected != nullptr) {
+			int count2 = 0;
+			if (selected->GetGameObjectID() != gameobjID) {
+				gameobjID = selected->GetGameObjectID();
+				std::map<size_t, GameObject*>::iterator it2 = copyMap.begin();
+				for (; it2 != copyMap.end(); it2++) {
+					if (it2->second->GetGameObjectID() == gameobjID) {
+						selectedID = count2;
+					}
+					count2++;
+				}
+			}
+		}
+		
+		
 		
 		ImGui::EndChild();
 	}
