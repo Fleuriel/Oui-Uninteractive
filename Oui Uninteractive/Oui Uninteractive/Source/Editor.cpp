@@ -1177,10 +1177,13 @@ void Editor::CreateAssetBrowser() {
 			if (std::filesystem::exists(selectedFilePath)) {
 				// Copy file to destination directory
 				std::filesystem::copy(selectedFilePath, destinationPath, std::filesystem::copy_options::overwrite_existing);
-				MessageBox(hwnd, L"File added to assets folder!", L"Success", MB_OK | MB_ICONINFORMATION);
+				// Construct and display message
+				std::wstring test(currFilePath.begin(), currFilePath.end());
+				LPCWSTR boxMessage = (L"File added to \"" + test + L"\" folder!").c_str();
+				MessageBox(hwnd, boxMessage, L"Success", MB_OK | MB_ICONINFORMATION);
 			}
 			else {
-				MessageBox(hwnd, L"Error adding file to assest folder: Souce file does not exist!", L"Failure", MB_OK | MB_ICONERROR);
+				MessageBox(hwnd, L"Error adding file to folder: Souce file does not exist!", L"Failure", MB_OK | MB_ICONERROR);
 			}
 		}
 		// Rset working directory to the project folder
