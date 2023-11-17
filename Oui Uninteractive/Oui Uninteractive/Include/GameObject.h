@@ -39,6 +39,11 @@ private:
 	// Vector of components
 	std::vector<IComponent*> componentList;
 	
+	// Int to store animation frame
+	int gameObjAnimationFrame;
+
+	// Bool to check whether game object is using sprite or texture
+	bool usingSprite;
 
 public:
 	// Set ObjectFactory as friend class to access gameObjectID
@@ -109,6 +114,41 @@ public:
 	* @return T* - component type
 	*************************************************************************/
 	template <typename T> T* GetComponentType(ComponentType typeID);
+
+	/**************************************************************************
+	* @brief Get the direction the game object is facing (for animations)
+	* @return int - 1 if facing up
+	*				2 if facing right
+	*				3 if facing down
+	*				4 if facing left
+	*************************************************************************/
+	int GetSpriteDirection(float directionX, float directionY);
+
+	/**************************************************************************
+	* @brief Get the animation frame (column) of the game object
+	* @return int - frame of game object
+	*************************************************************************/
+	int GetAnimationFrame();
+
+	/**************************************************************************
+	* @brief Get the direction the game object is facing (for animations)
+	* @param frame - frame to set animation to
+	* @return void
+	*************************************************************************/
+	void SetAnimationFrame(int frame);
+
+	/**************************************************************************
+	* @brief Check whether sprite or texture is used
+	* @return true if using sprite. false if texture instead.
+	*************************************************************************/
+	bool IsUsingSprite();
+
+	/**************************************************************************
+	* @brief Set whether sprite/texture is used
+	* @param flag - flag to set whether sprite/texture is used
+	* @return void
+	*************************************************************************/
+	void SetUsingSprite(bool flag);
 };
 
 /**************************************************************************

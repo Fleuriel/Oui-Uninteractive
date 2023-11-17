@@ -22,7 +22,7 @@
                     "FrictionForce": 0.0
                 },
                 "LogicComponent": {
-                    "ScriptID": []
+                    "ScriptID": [4]
                 }
             }
         },
@@ -32,7 +32,7 @@
             "Components": {
                 "LogicComponent": {
                     "ScriptID": [
-                        1
+                        0
                     ]
                 },
                 "PhysicsBody": {
@@ -65,6 +65,7 @@
                 "LogicComponent": {
                     "ScriptID": [
                         0,
+                        1,
                         2
                     ]
                 },

@@ -51,10 +51,14 @@ public:
 				std::string bulletName{ "Bullet" + std::to_string(bulletNumber) };
 				GameObject* bullet = objectFactory->BuildObjectFromPrefab(bulletName, "BulletPrefab");
 				++bulletNumber;
+				if (bulletNumber >= 100) {
+					bulletNumber = 0;
+				}
 
 				// Get player
 				Vec2 playerPos{ GET_COMPONENT(objectFactory->GetGameObjectByID(gameObjectID), Transform, ComponentType::TRANSFORM)->position };
-				//float playerScale{ GET_COMPONENT(objectFactory->GetGameObjectByID(gameObjectID), Transform, ComponentType::TRANSFORM)->scale };
+				float playerScaleX{ GET_COMPONENT(objectFactory->GetGameObjectByID(gameObjectID), Transform, ComponentType::TRANSFORM)->scale.x };
+				float playerScaleY{ GET_COMPONENT(objectFactory->GetGameObjectByID(gameObjectID), Transform, ComponentType::TRANSFORM)->scale.y };
 
 				// Get mouse coordinates
 				double mouseX{}, mouseY{}, convertedMouseX{}, convertedMouseY{};
@@ -66,15 +70,15 @@ public:
 
 				// Set bullet spawn point
 				bulletSpawnAngle = atan2(static_cast<float>(convertedMouseY) - playerPos.y, static_cast<float>(convertedMouseX) - playerPos.x);
-			/*	bulletSpawnOffset = playerScale;
+				bulletSpawnOffset = (playerScaleX >= playerScaleY) ? playerScaleX : playerScaleY;
 				bulletSpawnPos.x = playerPos.x + bulletSpawnOffset * cos(bulletSpawnAngle);
-				bulletSpawnPos.y = playerPos.y + bulletSpawnOffset * sin(bulletSpawnAngle);*/
+				bulletSpawnPos.y = playerPos.y + bulletSpawnOffset * sin(bulletSpawnAngle);
 				GET_COMPONENT(bullet, Transform, ComponentType::TRANSFORM)->position = bulletSpawnPos;
 				GET_COMPONENT(bullet, Transform, ComponentType::TRANSFORM)->rotation = bulletSpawnAngle;
 
 				// Set bullet shooting direction
 				Vec2 shootingDirection;
-				/*if (Vector2DDistance(playerPos, convertedMousePos) >= bulletSpawnOffset) {
+				if (Vector2DDistance(playerPos, convertedMousePos) >= bulletSpawnOffset) {
 					shootingDirection.x = static_cast<float>(convertedMouseX) - playerPos.x;
 					shootingDirection.y = static_cast<float>(convertedMouseY) - playerPos.y;
 				}
@@ -82,7 +86,7 @@ public:
 					shootingDirection.x = bulletSpawnPos.x - playerPos.x;
 					shootingDirection.y = bulletSpawnPos.y - playerPos.y;
 				}
-				Vector2DNormalize(shootingDirection, shootingDirection);*/
+				Vector2DNormalize(shootingDirection, shootingDirection);
 
 				// Set bullet velocity
 				GET_COMPONENT(bullet, PhysicsBody, ComponentType::PHYSICS_BODY)->velocity = shootingDirection * GET_COMPONENT(bullet, PhysicsBody, ComponentType::PHYSICS_BODY)->speed;
