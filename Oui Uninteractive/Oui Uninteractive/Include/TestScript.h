@@ -227,13 +227,13 @@ public:
 			if (tx != nullptr && physBod != nullptr) {
 				if (tx != nullptr && physBod != nullptr) {
 					PhysicsBody* playerBody = GET_COMPONENT(objectFactory->GetGameObjectByID(gameObjectID), PhysicsBody, ComponentType::PHYSICS_BODY);
-					static int count = 0;
+					static bool count = false;
 					if (count == true) {
 
 						PhysicsBody* playerBody1 = GET_COMPONENT(objectFactory->GetGameObjectByID(0), PhysicsBody, ComponentType::PHYSICS_BODY);
 
-						playerBody->txPtr->position.x = playerBody1->txPtr->position.x+200;
-						playerBody->txPtr->position.y = playerBody1->txPtr->position.y;
+						playerBody->txPtr->position.x = playerBody1->txPtr->position.x + 30;
+						playerBody->txPtr->position.y = playerBody1->txPtr->position.y - 20;
 						//playerBody->forceManager.ApplyToForce(Vec2(0.0f, 0.1f), 20.f, 0.3f, FORCE_INDEX::EXTERNAL);
 					}
 
@@ -243,6 +243,18 @@ public:
 					if (inputSystem.GetKeyState(GLFW_KEY_C)) {
 						count = 1;
 					}
+
+					/*if (inputSystem.GetKeyState(GLFW_KEY_X)) {
+						if (count == false) {
+							count = true;
+						}
+						else {
+							count = false;
+						} 
+						//count = !count;
+					}*/
+
+
 
 				}
 			}
