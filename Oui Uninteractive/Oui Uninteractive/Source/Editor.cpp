@@ -1090,6 +1090,7 @@ void Editor::CreateAssetBrowser() {
 		}
 		browserDoubleClicked = false;
 	}
+
 	ImGui::SameLine();
 	if (ImGui::Button("Back")) {
 		// Todo: Add error check for when back to assets folder 
@@ -1100,17 +1101,20 @@ void Editor::CreateAssetBrowser() {
 			validPath = true;
 		}
 	}
+
 	ImGui::SameLine();
 	if (ImGui::Button("Home")) {
 		browserInputPath = FILEPATH_MASTER;
 		currFilePath = browserInputPath;
 		validPath = true;
 	}
+
 	ImGui::SameLine();
 	if (ImGui::Button("Add File")) {
 		// Get absolute path of working directory
 		std::filesystem::path exePath = std::filesystem::current_path();
-		std::filesystem::path absoluteAssetsPath = exePath / "assets\\";
+		std::filesystem::path addToPath = exePath / currFilePath;
+		std::cout << addToPath.string();
 		// Windows API to handle dialog box
 		HWND hwnd = GetActiveWindow();
 		OPENFILENAME ofn;
@@ -1126,7 +1130,7 @@ void Editor::CreateAssetBrowser() {
 		if (GetOpenFileName(&ofn)) {
 			std::wstring selectedFilePath(szFile);
 			// Construct the destination path
-			std::wstring destinationPath = absoluteAssetsPath.wstring() + std::filesystem::path(selectedFilePath).filename().wstring();
+			std::wstring destinationPath = addToPath.wstring() + L"\\" + std::filesystem::path(selectedFilePath).filename().wstring();
 
 			// Check if the source file exists
 			if (std::filesystem::exists(selectedFilePath)) {
