@@ -166,7 +166,7 @@ void Editor::Init() {
 * @return void
 *************************************************************************/
 void Editor::Update() {
-	static GameObject* selected;
+	
 	ImGuiIO& io = ImGui::GetIO();
 	// Add FPS data point to vector
 	fpsData.push_back(io.Framerate);

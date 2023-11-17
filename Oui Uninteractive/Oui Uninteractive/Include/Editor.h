@@ -87,6 +87,7 @@ public:
 	static bool browserDoubleClicked;
 	static std::pair<int, int> gameWindowOrigin;
 	static std::pair<int, int> gameWindowSize;
+	static GameObject* selected;
 
 public:
 	// ImGui colour definitions
