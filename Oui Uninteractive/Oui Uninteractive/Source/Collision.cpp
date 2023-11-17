@@ -22,7 +22,7 @@
  * @param mouseX Coordinate X value of mouse
  * @param mouseY Coordinate Y value of mouse
  *************************************************************************/
-bool CollisionMouseRect(Collider::AABB Rect1, int mouseX, int mouseY) {
+bool CollisionMouseRect(Collider::AABB Rect1, float mouseX, float mouseY) {
 
 	//std::cout << "MOUSE: " << mouseX << '\t' << mouseY << '\t';
 //	std::cout << Rect1.center.x << Rect1.center.y << '\n';
@@ -43,7 +43,22 @@ bool CollisionMouseRect(Collider::AABB Rect1, int mouseX, int mouseY) {
 	}
 }
 
+bool CollisionMouseRect(Vec2 objCenter, float objScaleX, float objScaleY, float mouseX, float mouseY) {
+	/*collider->boundingbox->min = Vec2((-0.5f) * collider->tx->scale.x + collider->tx->position.x, (-0.5f) * collider->tx->scale.y + collider->tx->position.y);
+	collider->boundingbox->max = Vec2((0.5f) * collider->tx->scale.x + collider->tx->position.x, (0.5f) * collider->tx->scale.y + collider->tx->position.y);*/
+	Vec2 max = Vec2((0.5f) * objScaleX + objCenter.x , (0.5f) * objScaleY + objCenter.y);
+	Vec2 min = Vec2(-(0.5f)* objScaleX + objCenter.x , -(0.5f) * objScaleY + objCenter.y);
 
+	if ((max.x > mouseX &&
+		max.y > mouseY) &&
+		(mouseX > min.x &&
+			mouseY > min.y)) {
+		return true;
+	}
+	else {
+		return false;
+	}
+}
 /**************************************************************************
  * @brief Check for collision for mouse and circle
  *

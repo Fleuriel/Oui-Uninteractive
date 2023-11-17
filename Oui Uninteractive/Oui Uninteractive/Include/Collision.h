@@ -29,8 +29,8 @@
   *
   * @param AABB Rect1 The Coordinates (x,y) of the rectangle
   *************************************************************************/
-bool CollisionMouseRect(Collider::AABB Rect1, int mouseX, int mouseY);
-
+bool CollisionMouseRect(Collider::AABB Rect1, float mouseX, float mouseY);
+bool CollisionMouseRect(Vec2 objCenter, float objScaleX, float objScaleY, float mouseX, float mouseY);
 /**************************************************************************
  * @brief Check for collision for mouse and circle
  *
