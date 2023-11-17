@@ -334,19 +334,18 @@ void OpenGLObject::Update(Matrix3x3 scale, Matrix3x3 rotate, Matrix3x3 translate
 * @param  none
 * @return void
 *************************************************************************/
-void OpenGLObject::Draw(std::string type, bool spriteUsage, bool moving) const {
+void OpenGLObject::Draw(std::string type, bool spriteUsage, Vec2 vel) const {
 	//texture object is to use texture image unit 6
 	int tex{};
 	int shaderNumber{ static_cast<int>(SHADER_ORDER::MODEL) };
 
-	std::string movement = (moving) ? "_Walk" : "_Idle";
+	std::string movement = (vel.x || vel.y) ? "_Walk" : "_Idle";
 
 	if (spriteUsage) {
 		shaderNumber = static_cast<int>(SHADER_ORDER::SPRITES);
 		tex = assetManager.GetSprite(type + movement).GetTexture();
 	}
 	if (type == "Weapon") {
-		shaderNumber = static_cast<int>(SHADER_ORDER::MODEL);
 		tex = assetManager.GetTexture("KnifeSprite");
 	}
 	if (type == "Camera") {
@@ -368,9 +367,24 @@ void OpenGLObject::Draw(std::string type, bool spriteUsage, bool moving) const {
 	if (shaderNumber == static_cast<int>(SHADER_ORDER::SPRITES)) {
 		shdrpgms[static_cast<int>(SHADER_ORDER::SPRITES)].SetUniform("uTex2d", 6);
 
+		int spriterow{};
+
+		if (((vel.x > 0) ? vel.x : -vel.x) < ((vel.y > 0) ? vel.y : -vel.y)) {
+			if (vel.y < 0)
+				spriterow = 0;
+			if (vel.y > 0)
+				spriterow = 1;
+		}
+		else {
+			if (vel.x > 0)
+				spriterow = 2;
+			if (vel.x < 0)
+				spriterow = 3;
+		}
+
 		shdrpgms[static_cast<int>(SHADER_ORDER::SPRITES)].SetUniform("col_To_Draw", spritecol);
-		shdrpgms[static_cast<int>(SHADER_ORDER::SPRITES)].SetUniform("rows", 4);
-		shdrpgms[static_cast<int>(SHADER_ORDER::SPRITES)].SetUniform("cols", 6);
+		shdrpgms[static_cast<int>(SHADER_ORDER::SPRITES)].SetUniform("rows", assetManager.GetSprite(type + movement).GetRows());
+		shdrpgms[static_cast<int>(SHADER_ORDER::SPRITES)].SetUniform("cols", assetManager.GetSprite(type + movement).GetColumns());
 		shdrpgms[static_cast<int>(SHADER_ORDER::SPRITES)].SetUniform("row_To_Draw", spriterow);
 	}
 

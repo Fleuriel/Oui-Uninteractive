@@ -88,7 +88,7 @@ AssetManager assetManager;
 
 //temporary variable for changing sprite
 int spritecol;
-int spriterow;
+
 
 /**************************************************************************
 * @brief		Set the parameters for the window, and then Initialize the
@@ -449,19 +449,6 @@ void OpenGLApplication::OpenGLUpdate() {
 
 	inputSystem.UpdateStatesForNextFrame();
 
-	if (inputSystem.GetKeyState(GLFW_KEY_W)) {
-		spriterow = 1;
-	}
-	if (inputSystem.GetKeyState(GLFW_KEY_S)) {
-		spriterow = 0;
-	}
-	if (inputSystem.GetKeyState(GLFW_KEY_A)) {
-		spriterow = 3;
-	}
-	if (inputSystem.GetKeyState(GLFW_KEY_D)) {
-		spriterow = 2;
-	}
-
 
 	/*---------------------------------------------------------------------------*/
 	/*-----------------------------------
@@ -511,7 +498,7 @@ void OpenGLApplication::OpenGLUpdate() {
 	for (std::pair<size_t, GameObject*> gObj : objectFactory->GetGameObjectIDMap()) {
 		if (gObj.second->Has(ComponentType::TRANSFORM) != -1) {
 			if (GET_COMPONENT(gObj.second, Transform, ComponentType::TRANSFORM)->shape->spritecheck)
-			GET_COMPONENT(gObj.second, Transform, ComponentType::TRANSFORM)->shape->Draw(gObj.second->GetType(), true, false);
+			GET_COMPONENT(gObj.second, Transform, ComponentType::TRANSFORM)->shape->Draw(gObj.second->GetType(), true, GET_COMPONENT(gObj.second, PhysicsBody, ComponentType::PHYSICS_BODY)->velocity);
 			else
 				GET_COMPONENT(gObj.second, Transform, ComponentType::TRANSFORM)->shape->Draw({});
 		}

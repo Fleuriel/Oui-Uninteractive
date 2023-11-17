@@ -59,6 +59,8 @@ Vector2D Vector2D::operator-() const {
 	return Vector2D(-x,-y);
 }
 
+
+
 /**************************************************************************
 * @brief Operator overload for +, adds two vector together
 * @param lhs - operand one 

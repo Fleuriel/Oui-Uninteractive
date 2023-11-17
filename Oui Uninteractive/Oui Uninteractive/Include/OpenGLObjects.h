@@ -245,7 +245,7 @@ public:
 	* @param  none
 	* @return void
 	*************************************************************************/
-	void Draw(std::string, bool spriteUsage = false, bool movement = false) const;
+	void Draw(std::string, bool spriteUsage = false, Vec2 vel = {0,0}) const;
 
 	/**************************************************************************
 	* @brief		Initialize the Shaders for Graphics Pipeline for Object to
