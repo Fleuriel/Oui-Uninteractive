@@ -7,15 +7,15 @@
  * @par Course:	CSD 2401
  * @par	Software Engineering Project 3
  * @date 13-09-2023
- * @brief This file contains the definiton of the ObjectFactory class.
+ * @brief This file contains the definition of the ObjectFactory class.
  *		  The functions include:
- *			- stringToEnum
- *			- enumToString
+ *			- StringToEnum
+ *			- EnumToString
  *			- BuildObjectFromFile
  *			- BuildObjectRunTime
-			- BuildObjectFromPrefab
-			- LoadPrefab
- *			- CloneObjects
+ *			- BuildObjectFromPrefab
+ *			- LoadPrefab
+ *			- CloneObject
  *			- SaveObjectsToFile
  *			- Update
  *			- AssignObjectID
@@ -23,11 +23,13 @@
  *			- DestroyAllObjects
  *			- GetGameObjectByID
  *			- GetGameObjectByName
-			- GetPrefabByName
  *			- GetGameObjectIDMap
-			- GetPrefabMap
+ *			- GetPrefabMap
  *			- AddComponentFactory
  *			- AddComponent
+ *			- RemoveComponent
+ *			- AddPrefabToMap
+ *			- RemovePrefabFromMap
  *************************************************************************/
 #include <iostream>
 #include "ObjectFactory.h"
@@ -644,15 +646,35 @@ bool ObjectFactory::AddComponent(componentType componentName, GameObject* gameOb
 
 	return true;
 }
+
+/**************************************************************************
+* @brief Remove a component from a game object
+* @param name - name of component type
+* @param object - pointer to game object
+* @return void
+*************************************************************************/
 void ObjectFactory::RemoveComponent(componentType name, GameObject* object) {
 	int componentIndex = object->Has(name);
 	if (componentIndex != -1) {
 		object->RemoveComponent(object->componentList[componentIndex]);
 	}
 }
+
+/**************************************************************************
+* @brief Add new prefab to map
+* @param newPrefab - pointer to new prefab
+* @param name - name of new prefab
+* @return void
+*************************************************************************/
 void ObjectFactory::AddPrefabToMap(Prefab* newPrefab, std::string name) {
 	prefabMap.insert(std::pair<std::string, Prefab*>(name, newPrefab));
 }
+
+/**************************************************************************
+* @brief Remove prefab from map
+* @param name - name of prefab
+* @return void
+*************************************************************************/
 void ObjectFactory::RemovePrefabFromMap(std::string name) {
 	prefabMap.erase(name);
 }

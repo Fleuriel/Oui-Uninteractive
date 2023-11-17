@@ -7,7 +7,7 @@
  * @par Course:	CSD 2401
  * @par	Software Engineering Project 3
  * @date 13-09-2023
- * @brief This file contains the definiton of the ObjectFactory class.
+ * @brief This file contains the declaration of the ObjectFactory class.
  *		  The functions include:
  *			- StringToEnum
  *			- EnumToString
@@ -24,8 +24,12 @@
  *			- GetGameObjectByID
  *			- GetGameObjectByName
  *			- GetGameObjectIDMap
+ *			- GetPrefabMap
  *			- AddComponentFactory
  *			- AddComponent
+ *			- RemoveComponent
+ *			- AddPrefabToMap
+ *			- RemovePrefabFromMap
  *************************************************************************/
 #ifndef OBJECT_FACTORY_H
 #define OBJECT_FACTORY_H
@@ -206,8 +210,27 @@ public:
 	*************************************************************************/
 	bool AddComponent(componentType name, GameObject* object);
 
+	/**************************************************************************
+	* @brief Remove a component from a game object
+	* @param name - name of component type
+	* @param object - pointer to game object
+	* @return void
+	*************************************************************************/
 	void RemoveComponent(componentType name, GameObject* object);
+
+	/**************************************************************************
+	* @brief Add new prefab to map
+	* @param newPrefab - pointer to new prefab
+	* @param name - name of new prefab
+	* @return void
+	*************************************************************************/
 	void AddPrefabToMap(Prefab* newPrefab, std::string name);
+
+	/**************************************************************************
+	* @brief Remove prefab from map
+	* @param name - name of prefab
+	* @return void
+	*************************************************************************/
 	void RemovePrefabFromMap(std::string name);
 };
 extern ObjectFactory* objectFactory;

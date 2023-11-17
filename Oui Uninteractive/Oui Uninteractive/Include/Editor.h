@@ -36,6 +36,7 @@
 #include "Filepaths.h"
 #include "Collider.h"
 #include "Logic.h"
+#include "TilemapLoader.h"
 
 #define GET_COMPONENT(GameObject, Component, ComponentType) (GameObject->GetComponentType<Component>(ComponentType))
 #define GET_PREFAB_COMPONENT(Prefab, Component, ComponentType) (Prefab->GetComponentType<Component>(ComponentType))

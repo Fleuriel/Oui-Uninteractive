@@ -228,94 +228,8 @@ void Editor::CreateMasterPanel() {
 	ImGui::Checkbox("Asset Browser", & panelList.assetBrowserPanel); // Checkbox for asset browser
 	ImGui::Checkbox("Debug Panel", &panelList.debugPanel); // Checkbox for debug panel
 
-	// The "do smth" button. Interchangable quick access button used for quick testing of features
-	//if (ImGui::Button("Do Something")) {
-	//	// Get absolute path of exe
-	//	std::filesystem::path exePath = std::filesystem::current_path();
-	//	std::filesystem::path absoluteAssetsPath = exePath / "assets\\";
-
-	//	std::cout << absoluteAssetsPath;
-	//	HWND hwnd = GetActiveWindow();
-	//	OPENFILENAME ofn;
-	//	wchar_t szFile[MAX_PATH] = L"";
-
-	//	ZeroMemory(&ofn, sizeof(ofn));
-	//	ofn.lStructSize = sizeof(ofn);
-	//	ofn.hwndOwner = hwnd;
-	//	ofn.lpstrFilter = L"All Files (*.*)\0*.*\0";
-	//	ofn.lpstrFile = szFile;
-	//	ofn.nMaxFile = MAX_PATH;
-	//	ofn.Flags = OFN_FILEMUSTEXIST;
-	//	if (GetOpenFileName(&ofn)) {
-	//		wchar_t sourcePath[MAX_PATH];
-	//		wcscpy_s(sourcePath, MAX_PATH, szFile); // Copy selected file path to sourcePath
-
-	//		// Extract file name from path
-	//		wchar_t* fileName = wcsrchr(sourcePath, L'\\');
-	//		if (fileName != nullptr) {
-	//			fileName++; // Move past backslash to get file name
-	//		}
-	//		else {
-	//			MessageBox(hwnd, L"Invalid file name.", L"Error", MB_OK | MB_ICONERROR);
-	//			return; // Exit if cant extract file name
-	//		}
-
-	//		// Construct destination path with file name
-	//		wchar_t destinationPath[MAX_PATH] = L".\\assets\\";
-	//		wcscat_s(destinationPath, MAX_PATH, fileName);
-
-
-	//		MessageBox(hwnd, sourcePath, L"Source Path", MB_OK);
-	//		MessageBox(hwnd, destinationPath, L"Destination Path", MB_OK);
-	//		if (CopyFile(sourcePath, destinationPath, FALSE)) {
-	//			MessageBox(hwnd, L"File added to assets folder!", L"Success", MB_OK | MB_ICONINFORMATION);
-	//		}
-	//		else {
-	//			// Get more detailed error information.
-	//			DWORD dwError = GetLastError();
-	//			wchar_t errBuff[256];
-	//			// Format the error message into a string.
-	//			FormatMessage(FORMAT_MESSAGE_FROM_SYSTEM, NULL, dwError, 0, errBuff, 256, NULL);
-	//			MessageBox(hwnd, errBuff, L"Failed to add file to assets folder.", MB_OK | MB_ICONERROR);
-	//			//MessageBox(hwnd, L"Failed to add file to assets folder.", L"Error", MB_OK | MB_ICONERROR);
-	//		}
-	//	}
-
-	//}
-
 	if (ImGui::Button("Do Something")) {
-		// Get absolute path of working directory
-		std::filesystem::path exePath = std::filesystem::current_path();
-		std::filesystem::path absoluteAssetsPath = exePath / "assets\\";
-		// Windows API to handle dialog box
-		HWND hwnd = GetActiveWindow();
-		OPENFILENAME ofn;
-		wchar_t szFile[MAX_PATH] = L"";
-		ZeroMemory(&ofn, sizeof(ofn));
-		ofn.lStructSize = sizeof(ofn);
-		ofn.hwndOwner = hwnd;
-		ofn.lpstrFilter = L"All Files (*.*)\0*.*\0";
-		ofn.lpstrFile = szFile;
-		ofn.nMaxFile = MAX_PATH;
-		ofn.Flags = OFN_FILEMUSTEXIST;
-		// Open dialog box
-		if (GetOpenFileName(&ofn)) {
-			std::wstring selectedFilePath(szFile);
-			// Construct the destination path
-			std::wstring destinationPath = absoluteAssetsPath.wstring() + std::filesystem::path(selectedFilePath).filename().wstring();
-			
-			// Check if the source file exists
-			if (std::filesystem::exists(selectedFilePath)) {
-				// Copy file to destination directory
-				std::filesystem::copy(selectedFilePath, destinationPath, std::filesystem::copy_options::overwrite_existing);
-				MessageBox(hwnd, L"File added to assets folder!", L"Success", MB_OK | MB_ICONINFORMATION);
-			}
-			else {
-				MessageBox(hwnd, L"Error adding file to assest folder: Souce file does not exist!", L"Failure", MB_OK | MB_ICONERROR);
-			}	
-		}
-		// Rset working directory to the project folder
-		std::filesystem::current_path(exePath);
+		
 	}
 
 
@@ -345,6 +259,8 @@ void Editor::CreateMasterPanel() {
 	// Load level from file
 	if (ImGui::Button("Load scene")) {
 		objectFactory->DestroyAllObjects();
+		std::vector<std::vector<int>> tilemap;
+		tilemapLoader->LoadTilemap(sceneFileName, tilemap);
 		objectFactory->BuildObjectFromFile(sceneFileName);
 	}
 
@@ -1199,6 +1115,7 @@ void Editor::CreateAssetBrowser() {
 		}
 		browserDoubleClicked = false;
 	}
+
 	ImGui::SameLine();
 	if (ImGui::Button("Back")) {
 		// Todo: Add error check for when back to assets folder 
@@ -1209,11 +1126,48 @@ void Editor::CreateAssetBrowser() {
 			validPath = true;
 		}
 	}
+
 	ImGui::SameLine();
 	if (ImGui::Button("Home")) {
 		browserInputPath = FILEPATH_MASTER;
 		currFilePath = browserInputPath;
 		validPath = true;
+	}
+
+	ImGui::SameLine();
+	if (ImGui::Button("Add File")) {
+		// Get absolute path of working directory
+		std::filesystem::path exePath = std::filesystem::current_path();
+		std::filesystem::path addToPath = exePath / currFilePath;
+		// Windows API to handle dialog box
+		HWND hwnd = GetActiveWindow();
+		OPENFILENAME ofn;
+		wchar_t szFile[MAX_PATH] = L"";
+		ZeroMemory(&ofn, sizeof(ofn));
+		ofn.lStructSize = sizeof(ofn);
+		ofn.hwndOwner = hwnd;
+		ofn.lpstrFilter = L"All Files (*.*)\0*.*\0";
+		ofn.lpstrFile = szFile;
+		ofn.nMaxFile = MAX_PATH;
+		ofn.Flags = OFN_FILEMUSTEXIST;
+		// Open dialog box
+		if (GetOpenFileName(&ofn)) {
+			std::wstring selectedFilePath(szFile);
+			// Construct the destination path
+			std::wstring destinationPath = addToPath.wstring() + L"\\" + std::filesystem::path(selectedFilePath).filename().wstring();
+
+			// Check if the source file exists
+			if (std::filesystem::exists(selectedFilePath)) {
+				// Copy file to destination directory
+				std::filesystem::copy(selectedFilePath, destinationPath, std::filesystem::copy_options::overwrite_existing);
+				MessageBox(hwnd, L"File added to assets folder!", L"Success", MB_OK | MB_ICONINFORMATION);
+			}
+			else {
+				MessageBox(hwnd, L"Error adding file to assest folder: Souce file does not exist!", L"Failure", MB_OK | MB_ICONERROR);
+			}
+		}
+		// Rset working directory to the project folder
+		std::filesystem::current_path(exePath);
 	}
 			
 	ImGui::BeginChild("LeftPane", ImVec2(panelSize.x, 0), true);
