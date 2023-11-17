@@ -71,7 +71,7 @@ void UIManager::Update(float dt) {
 		std::map<size_t, GameObject*>::iterator it = copyMap.begin();
 
 		//for (; it != objectFactory->GetGameObjectIDMap().end(); it++) {
-		for (int x = 0; x < 6, it != copyMap.end(); x++, it++) {
+		for (; it != copyMap.end(); it++) {
 			//std::cout << it->second->GetName() << std::endl;
 			if (it->second->GetType() == "Button") {
 				if (it->second->GetName() == "Exit Button") {

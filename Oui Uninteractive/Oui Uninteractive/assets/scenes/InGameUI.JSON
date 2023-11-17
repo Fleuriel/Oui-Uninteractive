@@ -42,7 +42,8 @@
                     "PositionX": -126.51000213623047,
                     "PositionY": -59.06999969482422,
                     "Rotation": 0.0,
-                    "Scale": 200.0
+                    "ScaleX": 200.0,
+                    "ScaleY": 200.0
                 },
                 "Collider": {
                     "ColliderSizeX": 200.0,
