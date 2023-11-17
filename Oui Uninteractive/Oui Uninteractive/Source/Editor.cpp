@@ -1114,7 +1114,6 @@ void Editor::CreateAssetBrowser() {
 		// Get absolute path of working directory
 		std::filesystem::path exePath = std::filesystem::current_path();
 		std::filesystem::path addToPath = exePath / currFilePath;
-		std::cout << addToPath.string();
 		// Windows API to handle dialog box
 		HWND hwnd = GetActiveWindow();
 		OPENFILENAME ofn;
