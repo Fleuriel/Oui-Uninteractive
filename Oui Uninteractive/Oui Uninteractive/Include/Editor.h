@@ -80,11 +80,12 @@ public:
 	static void CreateDebugPanel();
 	static void CreateAssetBrowser();
 
-	static void RenderDirectory(const std::string& path); // Helper function to render asset browser directory
+	//static void RenderDirectory(const std::string& path); // Helper function to render asset browser directory
 	static void RenderDirectoryV2(const std::string& filePath); // Tester function for asset browser
 public:
 	static std::string browserInputPath;
 	static bool browserDoubleClicked;
+	static std::string browserSelectedItem;
 	static std::pair<int, int> gameWindowOrigin;
 	static std::pair<int, int> gameWindowSize;
 	static GameObject* selected;
@@ -96,7 +97,7 @@ public:
 	static const ImU32 greenColour = IM_COL32(0, 255, 0, 255); // Green color
 	static const ImU32 blueColour = IM_COL32(0, 0, 255, 255); // Blue color
 	static const ImU32 pinkColour = IM_COL32(255, 0, 127, 255); // Pink color
-	static const ImU32 yellowColour = IM_COL32(255, 255, 0, 255); // Yellow color
+	static const ImU32 bananaColour = IM_COL32(255, 255, 0, 255); // Yellow color
 	static const ImU32 purpleColour = IM_COL32(147, 0, 255, 255); // Purple color
 	
 	// Buffer and limit for recording FPS performance

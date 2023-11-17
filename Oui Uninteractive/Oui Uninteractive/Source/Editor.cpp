@@ -21,6 +21,7 @@ std::pair<int, int> Editor::gameWindowSize;
 std::vector<std::string> prefabList;
 std::string Editor::browserInputPath;
 bool Editor::browserDoubleClicked;
+std::string Editor::browserSelectedItem;
 GameObject* Editor::selected; 
 
 /**************************************************************************
@@ -177,7 +178,7 @@ void Editor::Update() {
 	double mouseX = io.MousePos.x;
 	double mouseY = io.MousePos.y;
 	OpenGLObject::FrameBufferMouseCoords(windowNew, &mouseX, &mouseY, OpenGLObject::cameraObject);
-	std::cout << mouseX << "|" << mouseY << "\n";
+	//std::cout << mouseX << "|" << mouseY << "\n";
 	std::map<size_t, GameObject*> copyMap = objectFactory->GetGameObjectIDMap();
 	for (std::pair<size_t, GameObject*> gObj : objectFactory->GetGameObjectIDMap()) {
 		Transform* tx = GET_COMPONENT(gObj.second, Transform, ComponentType::TRANSFORM);
@@ -1219,7 +1220,7 @@ void Editor::CreateDebugPanel() {
 			ImGui::PushStyleColor(ImGuiCol_Text, redColour);
 		}
 		else if (io.Framerate >= 60 && io.Framerate < 100) {
-			ImGui::PushStyleColor(ImGuiCol_Text, yellowColour);
+			ImGui::PushStyleColor(ImGuiCol_Text, bananaColour);
 		}
 		else {
 			ImGui::PushStyleColor(ImGuiCol_Text, greenColour);		
@@ -1310,30 +1311,31 @@ void Editor::CreateDebugPanel() {
 	ImGui::End();
 }
 	
-// Recursive helper function to render the file directory for the asset browser	
-void Editor::RenderDirectory(const std::string& filePath) {
-	std::filesystem::path dirPath(filePath);
-	if (std::filesystem::exists(dirPath)) {
-		// Render folder directories
-		for (auto& entry : std::filesystem::directory_iterator(dirPath)) {
-			if (entry.is_directory()) {
-				if (ImGui::TreeNode(entry.path().filename().string().c_str())) {
-					RenderDirectory(entry.path().string());
-					ImGui::TreePop();
-				}
-			}
-		}
-		// Render individual files
-		for (auto& entry : std::filesystem::directory_iterator(filePath)) {
-			if (!entry.is_directory()) {
-				ImGui::Selectable(entry.path().filename().string().c_str());
-			}
-		}
-	}
-	else {
-		std::cout << "File path does not exist. Maybe check the working directory" << std::endl;
-	}
-}
+//// Recursive helper function to render the file directory for the asset browser	
+//void Editor::RenderDirectory(const std::string& filePath) {
+//	std::filesystem::path dirPath(filePath);
+//	if (std::filesystem::exists(dirPath)) {
+//		// Render folder directories
+//		for (auto& entry : std::filesystem::directory_iterator(dirPath)) {
+//			if (entry.is_directory()) {
+//				if (ImGui::TreeNode(entry.path().filename().string().c_str())) {
+//					RenderDirectory(entry.path().string());
+//					ImGui::TreePop();
+//				}
+//			}
+//		}
+//		// Render individual files
+//		for (auto& entry : std::filesystem::directory_iterator(filePath)) {
+//			if (!entry.is_directory()) {
+//				ImGui::Selectable(entry.path().filename().string().c_str());
+//			}
+//		}
+//	}
+//	else {
+//		std::cout << "File path does not exist. Maybe check the working directory" << std::endl;
+//	}
+//}
+
 
 void Editor::RenderDirectoryV2(const std::string& filePath) {
 	for (auto& entry : std::filesystem::directory_iterator(filePath)) {
@@ -1343,23 +1345,45 @@ void Editor::RenderDirectoryV2(const std::string& filePath) {
 		// Use folder or file icon texture
 		ImTextureID iconTexture = isDirectory ? reinterpret_cast<ImTextureID>(static_cast<uintptr_t>(assetManager.GetTexture(TEST1))) : reinterpret_cast<ImTextureID>(static_cast<uintptr_t>(assetManager.GetTexture(TEST2)));
 
-		ImGui::ImageButton(iconTexture, ImVec2(32, 32));
-		if (ImGui::IsItemHovered() && ImGui::IsMouseDoubleClicked(ImGuiMouseButton_Left)) {
-			// On double click
-			if (isDirectory) {
-				// Handle directory click
-				browserInputPath = entry.path().string();
-				std::cout << browserInputPath << std::endl;
-				browserDoubleClicked = true;
-				
-			}
-			else {
-				// Handle file click
+		// Change button style if entry is selected
+		if (browserSelectedItem == entryName) {
+			// Yellow with opacity differences for visuals
+			ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(1.0f, 1.0f, 0.0f, 0.6f));
+			ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(1.0f, 1.0f, 0.0f, 0.7f));
+			ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4(1.0f, 1.0f, 0.0f, 0.8f));
+		}
 
+		// Render button
+		ImGui::ImageButton(iconTexture, ImVec2(32, 32));
+
+		// Reset button style
+		if (browserSelectedItem == entryName) {
+			ImGui::PopStyleColor(3);
+		}
+
+		if (ImGui::IsItemHovered() ) {
+			if (ImGui::IsMouseDoubleClicked(ImGuiMouseButton_Left)) { // On double click
+				if (isDirectory) {
+					// Handle directory click
+					browserInputPath = entry.path().string();
+					std::cout << browserInputPath << std::endl;
+					browserDoubleClicked = true;
+
+				}
+				else {
+					// Handle file click
+
+				}
 			}
+			else if (ImGui::IsMouseClicked(ImGuiMouseButton_Left)) { // On single click
+				// Handle single click on any item
+				browserSelectedItem = entryName;
+				std::cout << browserSelectedItem << std::endl;
+			}
+			
 		}
 
 		ImGui::TextWrapped(entryName.c_str());
-	
+
 	}
 }
