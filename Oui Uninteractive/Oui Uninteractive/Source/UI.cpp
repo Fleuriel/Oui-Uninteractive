@@ -56,7 +56,7 @@ void UIManager::Update(float dt) {
 		// Put here or else wont get correct coords.
 		OpenGLObject::FrameBufferMouseCoords(windowNew, &convertedMousePos.first, &convertedMousePos.second, OpenGLObject::cameraObject);
 
-		std::cout << "Current Coords: " << convertedMousePos.first << ", " << convertedMousePos.second << '\n';
+		//std::cout << "Current Coords: " << convertedMousePos.first << ", " << convertedMousePos.second << '\n';
 
 
 		//float gameWindowMouseX = mouseX - Editor::gameWindowOrigin.first;

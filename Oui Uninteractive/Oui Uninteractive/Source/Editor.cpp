@@ -18,6 +18,8 @@ std::vector<float> Editor::fpsData;
 std::pair<int, int> Editor::gameWindowOrigin;
 std::pair<int, int> Editor::gameWindowSize;
 std::vector<std::string> prefabList;
+std::string Editor::browserInputPath;
+bool Editor::browserDoubleClicked;
 
 
 /**************************************************************************
@@ -153,6 +155,8 @@ void UsingImGui::Exit() {
 void Editor::Init() {
 	// Set max data points
 	maxFPSdata = 2000;
+	browserDoubleClicked = false;
+	browserInputPath = FILEPATH_MASTER;
 }
 
 
@@ -1133,7 +1137,8 @@ void Editor::CreateObjectList() {
 	ImGui::End();
 }
 
-static std::string inputFilePath = FILEPATH_MASTER;
+
+
 /*************************************************************************
 * @brief This function creates the asset browser panel used to peruse content
 * @return void
@@ -1141,14 +1146,13 @@ static std::string inputFilePath = FILEPATH_MASTER;
 void Editor::CreateAssetBrowser() {
 	ImGui::Begin("Asset Browser");
 	ImVec2 panelSize = ImGui::GetContentRegionAvail();
-	static bool validPath = true;
 	
 	static std::string currFilePath = FILEPATH_MASTER;
+	static bool validPath = true;
 
-
-	if (ImGui::InputText("##FilePath", &inputFilePath, ImGuiInputTextFlags_EnterReturnsTrue) || (ImGui::SameLine(), ImGui::Button("Go"))) {  // Enter if "enter" is pressed
-		if (std::filesystem::exists(inputFilePath) && std::filesystem::is_directory(inputFilePath)) {
-			currFilePath = inputFilePath;
+	if (ImGui::InputText("##FilePath", &browserInputPath, ImGuiInputTextFlags_EnterReturnsTrue) || (ImGui::SameLine(), ImGui::Button("Go")) || browserDoubleClicked) {  // Enter if "enter" is pressed
+		if (std::filesystem::exists(browserInputPath) && std::filesystem::is_directory(browserInputPath)) {
+			currFilePath = browserInputPath;
 			validPath = true;
 			std::cout << currFilePath << std::endl;
 		}
@@ -1157,21 +1161,22 @@ void Editor::CreateAssetBrowser() {
 			std::cout << "invalid path" << std::endl;
 
 		}
+		browserDoubleClicked = false;
 	}
 	ImGui::SameLine();
 	if (ImGui::Button("Back")) {
 		// Todo: Add error check for when back to assets folder 
-		std::filesystem::path test = currFilePath;
-		if (std::filesystem::exists(test)) {
-			inputFilePath = test.parent_path().string();
-			currFilePath = inputFilePath;
+		std::filesystem::path temp = currFilePath;
+		if (std::filesystem::exists(temp) && temp.string() != FILEPATH_MASTER) {
+			browserInputPath = temp.parent_path().string();
+			currFilePath = browserInputPath;
 			validPath = true;
 		}
 	}
 	ImGui::SameLine();
 	if (ImGui::Button("Home")) {
-		inputFilePath = FILEPATH_MASTER;
-		currFilePath = inputFilePath;
+		browserInputPath = FILEPATH_MASTER;
+		currFilePath = browserInputPath;
 		validPath = true;
 	}
 			
@@ -1180,7 +1185,9 @@ void Editor::CreateAssetBrowser() {
 		RenderDirectoryV2(currFilePath);
 	}
 	else {
+		ImGui::PushStyleColor(ImGuiCol_Text, redColour);
 		ImGui::Text("INVALID PATH");
+		ImGui::PopStyleColor();
 	}
 	ImGui::EndChild();
 	
@@ -1327,12 +1334,15 @@ void Editor::RenderDirectoryV2(const std::string& filePath) {
 		// Use folder or file icon texture
 		ImTextureID iconTexture = isDirectory ? reinterpret_cast<ImTextureID>(static_cast<uintptr_t>(assetManager.GetTexture(TEST1))) : reinterpret_cast<ImTextureID>(static_cast<uintptr_t>(assetManager.GetTexture(TEST2)));
 
-		if (ImGui::ImageButton(iconTexture, ImVec2(32, 32))) {
-			// On single click
+		ImGui::ImageButton(iconTexture, ImVec2(32, 32));
+		if (ImGui::IsItemHovered() && ImGui::IsMouseDoubleClicked(ImGuiMouseButton_Left)) {
+			// On double click
 			if (isDirectory) {
 				// Handle directory click
-				inputFilePath = entry.path().string();
-				RenderDirectoryV2(inputFilePath);
+				browserInputPath = entry.path().string();
+				std::cout << browserInputPath << std::endl;
+				browserDoubleClicked = true;
+				
 			}
 			else {
 				// Handle file click
@@ -1341,19 +1351,6 @@ void Editor::RenderDirectoryV2(const std::string& filePath) {
 		}
 
 		ImGui::TextWrapped(entryName.c_str());
-		
-		if (ImGui::IsItemClicked(1) && ImGui::IsMouseDoubleClicked(0)) {
-			// On Double-click
-			if (isDirectory) {
-				// Handle double-click on directory to go deeper
-				// Update RenderDirectoryV2 with new directory path
-				//inputFilePath = entry.path().string();
-				//RenderDirectoryV2(inputFilePath);
-			}
-			else {
-				// Handle double click on file
-			}
-		}
 	
 	}
 }

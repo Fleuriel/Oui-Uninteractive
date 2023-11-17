@@ -82,7 +82,8 @@ public:
 	static void RenderDirectory(const std::string& path); // Helper function to render asset browser directory
 	static void RenderDirectoryV2(const std::string& filePath); // Tester function for asset browser
 public:
-	bool soundPanel;
+	static std::string browserInputPath;
+	static bool browserDoubleClicked;
 	static std::pair<int, int> gameWindowOrigin;
 	static std::pair<int, int> gameWindowSize;
 

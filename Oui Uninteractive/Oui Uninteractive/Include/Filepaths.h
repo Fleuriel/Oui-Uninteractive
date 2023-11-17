@@ -24,7 +24,7 @@
 #define FILEPATH_FONTS						std::string("assets/fonts")
 
 // TEXTURES //
-#define FILEPATH_TEXTURES					std::string("assets/texture")
+#define FILEPATH_TEXTURES					std::string("assets/textures")
 
 // SPRITES //
 #define FILEPATH_SPRITES					std::string("assets/sprites")
