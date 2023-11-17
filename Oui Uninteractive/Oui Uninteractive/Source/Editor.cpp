@@ -236,6 +236,8 @@ void Editor::CreateMasterPanel() {
 	// Load level from file
 	if (ImGui::Button("Load scene")) {
 		objectFactory->DestroyAllObjects();
+		std::vector<std::vector<int>> tilemap;
+		tilemapLoader->LoadTilemap(sceneFileName, tilemap);
 		objectFactory->BuildObjectFromFile(sceneFileName);
 	}
 

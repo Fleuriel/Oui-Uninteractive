@@ -119,6 +119,9 @@
     <Filter Include="BFS">
       <UniqueIdentifier>{f9c102b7-01ac-44e4-93eb-aeca7c7cb084}</UniqueIdentifier>
     </Filter>
+    <Filter Include="TilemapLoader">
+      <UniqueIdentifier>{e93923d9-9058-4d90-bec5-b9ee041b3735}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Composition\GameObject">
       <UniqueIdentifier>{3fad7688-b809-4998-aa15-b231a68df4cf}</UniqueIdentifier>
     </Filter>
@@ -279,6 +282,9 @@
     </ClCompile>
     <ClCompile Include="..\lib\imgui-docking\imgui_stdlib.cpp">
       <Filter>ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\TilemapLoader.cpp">
+      <Filter>TilemapLoader</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -442,8 +448,11 @@
     <ClInclude Include="Include\BulletLifetimeScript.h">
       <Filter>Scripts</Filter>
     </ClInclude>
-    <ClInclude Include="WeaponPickupScript.h">
+    <ClInclude Include="Include\WeaponPickupScript.h">
       <Filter>Scripts</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\TilemapLoader.h">
+      <Filter>TilemapLoader</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

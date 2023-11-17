@@ -55,6 +55,7 @@
     <ClCompile Include="Source\SceneManager.cpp" />
     <ClCompile Include="Source\Sound.cpp" />
     <ClCompile Include="Source\SystemManager.cpp" />
+    <ClCompile Include="Source\TilemapLoader.cpp" />
     <ClCompile Include="Source\Transform.cpp" />
     <ClCompile Include="Source\TransformSystem.cpp" />
     <ClCompile Include="Source\Transition.cpp" />
@@ -110,12 +111,13 @@
     <ClInclude Include="Include\Sound.h" />
     <ClInclude Include="Include\SystemManager.h" />
     <ClInclude Include="Include\TestScript.h" />
+    <ClInclude Include="Include\TilemapLoader.h" />
     <ClInclude Include="Include\Transform.h" />
     <ClInclude Include="Include\TransformSystem.h" />
     <ClInclude Include="Include\Transition.h" />
     <ClInclude Include="Include\UI.h" />
     <ClInclude Include="Include\Vector2D.h" />
-    <ClInclude Include="WeaponPickupScript.h" />
+    <ClInclude Include="Include\WeaponPickupScript.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>

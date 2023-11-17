@@ -68,6 +68,7 @@ bool JsonSerializer::WriteJSONFile(const std::string& filePath, rapidjson::Docum
 	// Setup stream and writer
 	rapidjson::StringBuffer stringBuffer;
 	rapidjson::PrettyWriter<rapidjson::StringBuffer> writer(stringBuffer);
+	writer.SetFormatOptions(rapidjson::kFormatSingleLineArray);
 
 	// Serialize JSON document to a string
 	docRef.Accept(writer);
