@@ -563,8 +563,8 @@ bool AssetManager::LoadSprites() {
  * @param name The name of the sprite to retrieve the texture for.
  * @return The texture ID of the sprite or 0 if the sprite is not found.
  *************************************************************************/
-int AssetManager::GetSprite(std::string name) {
-    return sprites[name].GetTexture();
+Sprite AssetManager::GetSprite(std::string name) {
+    return sprites[name];
 }
 
 /**************************************************************************

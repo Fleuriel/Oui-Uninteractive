@@ -334,22 +334,16 @@ void OpenGLObject::Update(Matrix3x3 scale, Matrix3x3 rotate, Matrix3x3 translate
 * @param  none
 * @return void
 *************************************************************************/
-void OpenGLObject::Draw(std::string type) const {
+void OpenGLObject::Draw(std::string type, bool spriteUsage, bool moving) const {
 	//texture object is to use texture image unit 6
 	int tex{};
 	int shaderNumber{ static_cast<int>(SHADER_ORDER::MODEL) };
 
-	if (type == "Player") {
+	std::string movement = (moving) ? "_Walk" : "_Idle";
+
+	if (spriteUsage) {
 		shaderNumber = static_cast<int>(SHADER_ORDER::SPRITES);
-		if ((inputSystem.GetKeyState(GLFW_KEY_W) == 2) || (inputSystem.GetKeyState(GLFW_KEY_S) == 2)
-			|| (inputSystem.GetKeyState(GLFW_KEY_A) == 2) || (inputSystem.GetKeyState(GLFW_KEY_D) == 2))
-			tex = assetManager.GetSprite("BaldManLeftWalk");
-		else
-			tex = assetManager.GetSprite("BaldManIdle");
-	}
-	if (type == "Enemy") {
-		shaderNumber = static_cast<int>(SHADER_ORDER::SPRITES);
-		tex = assetManager.GetSprite("CommonGuardIdle");
+		tex = assetManager.GetSprite(type + movement).GetTexture();
 	}
 	if (type == "Weapon") {
 		shaderNumber = static_cast<int>(SHADER_ORDER::MODEL);

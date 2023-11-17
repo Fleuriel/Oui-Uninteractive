@@ -107,7 +107,7 @@ public:
 
 	// Access Asset functions
 	int GetTexture(std::string);																	//Function to access textures
-	int GetSprite(std::string);																		//Function to access sprite's texture
+	Sprite GetSprite(std::string);																		//Function to access sprite's texture
 	FMOD::Sound* GetBGM(int);																		//Function to access BGM sounds
 	FMOD::Sound* GetSFX(int);																		//Function to access SFX Sounds
 	std::map<std::string, std::map<char, FontManager::Character>>::iterator GetFont(std::string);	//Function to access fonts
