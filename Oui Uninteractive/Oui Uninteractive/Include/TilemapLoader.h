@@ -12,10 +12,11 @@
 
 #include <string>
 #include <map>
+#include "ISystem.h"
 
-class TilemapLoader {
+class TilemapLoader : public ISystem {
 private:
-
+	std::vector<std::vector<int>> tilemap;
 
 public:
 	/**************************************************************************
@@ -30,7 +31,7 @@ public:
 	* @param tilemap - tilemap to be set
 	* @return bool - true if tilemap is loaded, false otherwise
 	*************************************************************************/
-	bool LoadTilemap(const std::string& filePath, std::vector<std::vector<int>>& tilemap);
+	bool LoadTilemap(const std::string& filePath);
 
 	/**************************************************************************
 	* @brief Save tilemap to scene JSON file
@@ -38,6 +39,25 @@ public:
 	* @return void
 	*************************************************************************/
 	void SaveTilemap(const std::string& filePath);
+
+	/**************************************************************************
+	* @brief Clear tilemap
+	* @return void
+	*************************************************************************/
+	void ClearTilemap();
+
+	/**************************************************************************
+	* @brief Get tilemap
+	* @return std::vector<std::vector<int>> - tilemap
+	*************************************************************************/
+	std::vector<std::vector<int>> GetTilemap();
+
+	/**************************************************************************
+	* @brief Update tilemap loader
+	* @param dt - delta time
+	* @return void
+	*************************************************************************/
+	void Update(float dt);
 };
 extern TilemapLoader* tilemapLoader;
 

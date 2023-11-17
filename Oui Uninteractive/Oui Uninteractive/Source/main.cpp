@@ -15,6 +15,7 @@
 #include "Physics.h"
 #include "SystemManager.h"
 #include "ObjectFactory.h"
+#include "TilemapLoader.h"
 #include "EnemyAISystem.h"
 #include "Logic.h"
 #include "Sound.h"
@@ -45,6 +46,7 @@ int main(){
 	sysManager->AddSystem(new OpenGLApplication());
 	sysManager->AddSystem(new LogicSystem());
 	sysManager->AddSystem(new ObjectFactory());
+	sysManager->AddSystem(new TilemapLoader());
 	sysManager->AddSystem(new ColliderSystem());
 	sysManager->AddSystem(new Physics());
 	sysManager->AddSystem(new EnemyAISystem());

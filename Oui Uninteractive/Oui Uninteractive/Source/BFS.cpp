@@ -29,7 +29,7 @@ Node::Node(int x_, int y_, int parentX_ = -1, int parentY_ = -1) : x(x_), y(y_),
 * @param r - rows of grid
 * @param c - columns of grid
 *************************************************************************/
-BFS::BFS(int r, int c) : rows(r), cols(c) {
+/*BFS::BFS(int r, int c) : rows(r), cols(c) {
     // Initialize containers
     gameMap = std::vector<std::vector<int>>(rows, std::vector<int>(cols, 0));
     visited = std::vector<std::vector<bool>>(rows, std::vector<bool>(cols, false));
@@ -42,6 +42,22 @@ BFS::BFS(int r, int c) : rows(r), cols(c) {
     gameMap[0][2] = 1;
     gameMap[3][2] = 1;
     gameMap[3][3] = 1;
+}*/
+BFS::BFS(std::vector<std::vector<int>> tilemap) : rows{}, cols{}  {
+    // Initialize containers
+    for (size_t i{}; i < tilemap.size(); ++i) {
+        std::vector<int> tilemapRow;
+        for (size_t j{}; j < tilemap[i].size(); ++j) {
+			tilemapRow.push_back(tilemap[i][j]);
+        }
+
+		gameMap.push_back(tilemapRow);
+    }
+	rows = static_cast<int>(gameMap.size());
+	cols = static_cast<int>(gameMap[0].size());
+
+    visited = std::vector<std::vector<bool>>(rows, std::vector<bool>(cols, false));
+    parent = std::vector<std::vector<Node>>(rows, std::vector<Node>(cols, Node(-1, -1)));
 }
 
 /**************************************************************************

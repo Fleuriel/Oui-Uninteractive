@@ -147,6 +147,7 @@ int GameObject::GetSpriteDirection(float directionX, float directionY) {
 	if (directionX == -1 && directionY == 0) {
 		return 4;
 	}
+	return 0;
 }
 
 /**************************************************************************

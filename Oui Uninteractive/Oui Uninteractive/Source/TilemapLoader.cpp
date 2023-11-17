@@ -33,7 +33,11 @@ TilemapLoader::~TilemapLoader() {
 * @param tilemap - tilemap to be set
 * @return bool - true if tilemap is loaded, false otherwise
 *************************************************************************/
-bool TilemapLoader::LoadTilemap(const std::string& filePath, std::vector<std::vector<int>>& tilemap) {
+bool TilemapLoader::LoadTilemap(const std::string& filePath) {
+	if (tilemap.size() > 0) {
+		ClearTilemap();
+	}
+
 	// Create rapidjson doc object and serializer
 	rapidjson::Document objDoc;
 	JsonSerializer serializer;
@@ -59,6 +63,8 @@ bool TilemapLoader::LoadTilemap(const std::string& filePath, std::vector<std::ve
 			tilemap.push_back(tilemapRow);
 		}
 
+		std::reverse(tilemap.begin(), tilemap.end());
+
 		return true;
 	}
 	else {
@@ -74,4 +80,32 @@ bool TilemapLoader::LoadTilemap(const std::string& filePath, std::vector<std::ve
 *************************************************************************/
 void TilemapLoader::SaveTilemap(const std::string& filePath) {
 
+}
+
+/**************************************************************************
+* @brief Clear tilemap
+* @return void
+*************************************************************************/
+void TilemapLoader::ClearTilemap() {
+	for (size_t i{}; i < tilemap.size(); i++) {
+		tilemap[i].clear();
+	}
+	tilemap.clear();
+}
+
+/**************************************************************************
+* @brief Get tilemap
+* @return std::vector<std::vector<int>> - tilemap
+*************************************************************************/
+std::vector<std::vector<int>> TilemapLoader::GetTilemap() {
+	return tilemap;
+}
+
+/**************************************************************************
+* @brief Update tilemap loader
+* @param dt - delta time
+* @return void
+*************************************************************************/
+void TilemapLoader::Update(float dt) {
+	(void)dt;
 }
