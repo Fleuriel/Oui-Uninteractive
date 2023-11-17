@@ -197,8 +197,8 @@ bool CollisionMovingRectRect(Collider::AABB A, Collider::AABB B, Vec2 relativeVe
 	}
 	Collider expanded_target;
 	expanded_target.boundingbox->center = B.center;
-	expanded_target.boundingbox->max = Vec2(B.max.x + A.txPtr->scale / 2, B.max.y + A.txPtr->scale / 2);
-	expanded_target.boundingbox->min = Vec2(B.min.x - A.txPtr->scale / 2, B.min.y - A.txPtr->scale / 2);
+	expanded_target.boundingbox->max = Vec2(B.max.x + A.txPtr->scale.x / 2, B.max.y + A.txPtr->scale.y / 2);
+	expanded_target.boundingbox->min = Vec2(B.min.x - A.txPtr->scale.x / 2, B.min.y - A.txPtr->scale.y / 2);
 	if (MovingPointRectCollision(A.center, relativeVel * dt, *(expanded_target.boundingbox), normal, contactTime)) {
 		if (contactTime < 0.f) {
 			if (Vector2DDotProduct(AVel, normal) < 0) {

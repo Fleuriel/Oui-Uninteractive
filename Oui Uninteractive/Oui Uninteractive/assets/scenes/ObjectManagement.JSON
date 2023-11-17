@@ -18,7 +18,8 @@
                     "PositionX": 77.6383285522461,
                     "PositionY": 46.422462463378906,
                     "Rotation": 0.0,
-                    "Scale": 200.0
+                    "ScaleX": 200.0,
+                    "ScaleY": 200.0
                 },
                 "LogicComponent": {
                     "ScriptID": [
@@ -27,7 +28,8 @@
                     ]
                 },
                 "Collider": {
-                    "ColliderSize": 200.0,
+                    "ColliderSizeX": 200.0,
+                    "ColliderSizeY": 200.0,
                     "ColliderRotation": 0.0
                 }
             }
@@ -49,7 +51,8 @@
                     "PositionX": -812.6199951171875,
                     "PositionY": -400.0,
                     "Rotation": 0.0,
-                    "Scale": 130.0
+                    "ScaleX": 130.0,
+                    "ScaleY": 130.0
                 },
                 "LogicComponent": {
                     "ScriptID": [
@@ -57,7 +60,8 @@
                     ]
                 },
                 "Collider": {
-                    "ColliderSize": 140.0,
+                    "ColliderSizeX": 140.0,
+                    "ColliderSizeY": 140.0,
                     "ColliderRotation": 0.0
                 }
             }
@@ -79,10 +83,12 @@
                     "PositionX": 700.0,
                     "PositionY": 300.0,
                     "Rotation": 0.0,
-                    "Scale": 220.0
+                    "ScaleX": 220.0,
+                    "ScaleY": 220.0
                 },
                 "Collider": {
-                    "ColliderSize": 220.0,
+                    "ColliderSizeX": 220.0,
+                    "ColliderSizeY": 220.0,
                     "ColliderRotation": 0.0
                 }
             }
@@ -104,10 +110,12 @@
                     "PositionX": -215.41000366210938,
                     "PositionY": 300.0,
                     "Rotation": 0.0,
-                    "Scale": 220.0
+                    "ScaleX": 220.0,
+                    "ScaleY": 220.0
                 },
                 "Collider": {
-                    "ColliderSize": 220.0,
+                    "ColliderSizeX": 220.0,
+                    "ColliderSizeY": 220.0,
                     "ColliderRotation": 0.0
                 }
             }
@@ -129,10 +137,12 @@
                     "PositionX": 206.88999938964844,
                     "PositionY": -338.1099853515625,
                     "Rotation": 0.0,
-                    "Scale": 220.0
+                    "ScaleX": 220.0,
+                    "ScaleY": 220.0
                 },
                 "Collider": {
-                    "ColliderSize": 220.0,
+                    "ColliderSizeX": 220.0,
+                    "ColliderSizeY": 220.0,
                     "ColliderRotation": 0.0
                 }
             }
@@ -154,10 +164,12 @@
                     "PositionX": -566.5599975585938,
                     "PositionY": -175.82000732421875,
                     "Rotation": 0.0,
-                    "Scale": 220.0
+                    "ScaleX": 220.0,
+                    "ScaleY": 220.0
                 },
                 "Collider": {
-                    "ColliderSize": 220.0,
+                    "ColliderSizeX": 220.0,
+                    "ColliderSizeY": 220.0,
                     "ColliderRotation": 0.0
                 }
             }

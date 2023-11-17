@@ -48,7 +48,7 @@ public:
 	//Member Variables
 	Vec2 position;
 	Vec2 previousPosition;
-	float scale;
+	Vec2 scale;
 	float rotation;
 	OpenGLObject* shape;
 };

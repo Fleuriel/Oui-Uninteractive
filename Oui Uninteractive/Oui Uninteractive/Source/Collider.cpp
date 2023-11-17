@@ -28,7 +28,8 @@ void Collider::Initialize() {
 *************************************************************************/
 void Collider::Serialize(rapidjson::Value::ConstMemberIterator& itr) {
 	const rapidjson::Value& components{ itr->value };
-	tx->scale = components["ColliderSize"].GetFloat();
+	tx->scale.x = components["ColliderSizeX"].GetFloat();
+	tx->scale.y = components["ColliderSizeY"].GetFloat();
 	tx->rotation = components["ColliderRotation"].GetFloat();
 }
 /**************************************************************************

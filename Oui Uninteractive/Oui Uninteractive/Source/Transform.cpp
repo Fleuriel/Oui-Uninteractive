@@ -18,7 +18,7 @@ Transform::Transform() {
 	position = Vec2(0,0);
 	previousPosition = position;
 	rotation = 0;
-	scale = 100.f;
+	scale = Vec2(100, 100);
 	shape = new OpenGLObject(1);
 }
 /**************************************************************************
@@ -46,7 +46,8 @@ void Transform::Serialize(rapidjson::Value::ConstMemberIterator& itr) {
 	position.x = components["PositionX"].GetFloat();
 	position.y = components["PositionY"].GetFloat();
 	rotation = components["Rotation"].GetFloat();
-	scale = components["Scale"].GetFloat();
+	scale.x = components["ScaleX"].GetFloat();
+	scale.y = components["ScaleY"].GetFloat();
 }
 /**************************************************************************
 * @brief Function to Clone a Transform Component

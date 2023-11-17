@@ -18,7 +18,8 @@
                     "PositionX": 400.0,
                     "PositionY": 150.0,
                     "Rotation": 0.0,
-                    "Scale": 200.0
+                    "ScaleX": 200.0,
+                    "ScaleY": 200.0
                 },
                 "LogicComponent": {
                     "ScriptID": [
@@ -27,7 +28,8 @@
                     ]
                 },
                 "Collider": {
-                    "ColliderSize": 200.0,
+                    "ColliderSizeX": 200.0,
+                    "ColliderSizeY": 200.0,
                     "ColliderRotation": 0.0
                 }
             }
@@ -49,7 +51,8 @@
                     "PositionX": -700.0,
                     "PositionY": -420.0,
                     "Rotation": 0.0,
-                    "Scale": 100.0
+                    "ScaleX": 100.0,
+                    "ScaleY": 100.0
                 },
                 "LogicComponent": {
                     "ScriptID": [
@@ -57,7 +60,8 @@
                     ]
                 },
                 "Collider": {
-                    "ColliderSize": 100.0,
+                    "ColliderSizeX": 100.0,
+                    "ColliderSizeY": 100.0,
                     "ColliderRotation": 0.0
                 },
                 "EnemyFSM": {

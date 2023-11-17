@@ -9,7 +9,8 @@
                     "PositionX": 0.0,
                     "PositionY": 0.0,
                     "Rotation": 0.0,
-                    "Scale": 50.0
+                    "ScaleX": 50.0,
+                    "ScaleY": 100.0
                 },
                 "PhysicsBody": {
                     "VelocityX": 0.0,
@@ -21,10 +22,7 @@
                     "FrictionForce": 0.0
                 },
                 "LogicComponent": {
-                    "ScriptID": [
-                        0,
-                        3
-                    ]
+                    "ScriptID": []
                 }
             }
         },
@@ -50,7 +48,8 @@
                     "PositionX": 0.0,
                     "PositionY": 0.0,
                     "Rotation": 0.0,
-                    "Scale": 100.0
+                    "ScaleX": 100.0,
+                    "ScaleY": 100.0
                 }
             }
         },
@@ -70,14 +69,16 @@
                     ]
                 },
                 "Collider": {
-                    "ColliderSize": 75.0,
+                    "ColliderSizeX": 75.0,
+                    "ColliderSizeY": 75.0,
                     "ColliderRotation": 0.0
                 },
                 "Transform": {
                     "PositionX": 0.0,
                     "PositionY": 0.0,
                     "Rotation": 0.0,
-                    "Scale": 100.0
+                    "ScaleX": 100.0,
+                    "ScaleY": 100.0
                 },
                 "PhysicsBody": {
                     "VelocityX": 0.0,
@@ -95,14 +96,16 @@
             "Type": "TestPrefab",
             "Components": {
                 "Collider": {
-                    "ColliderSize": 75.0,
+                    "ColliderSizeX": 75.0,
+                    "ColliderSizeY": 75.0,
                     "ColliderRotation": 0.0
                 },
                 "Transform": {
                     "PositionX": 0.0,
                     "PositionY": 0.0,
                     "Rotation": 0.0,
-                    "Scale": 100.0
+                    "ScaleX": 100.0,
+                    "ScaleY": 100.0
                 },
                 "PhysicsBody": {
                     "VelocityX": 0.0,

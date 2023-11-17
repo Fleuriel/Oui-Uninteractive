@@ -355,7 +355,7 @@ void Editor::CreateRenderWindow() {
 *************************************************************************/
 void Editor::CreatePrefabPanel() {
 	ImGui::Begin("Prefab Editor");
-	static float phyRotSpeed, phySpeed, phyMass, phyFriction, transXpos, transYpos, transRot, transScale, colScale, colRot;
+	static float phyRotSpeed, phySpeed, phyMass, phyFriction, transXpos, transYpos, transRot, transScaleX, transScaleY, colScaleX, colScaleY, colRot;
 	static bool phyIsStatic, physicsFlag, transformFlag, logicFlag, colliderFlag, saveFlag, loadedFlag = false;
 
 	static int currentScriptIndex;
@@ -455,7 +455,8 @@ void Editor::CreatePrefabPanel() {
 				GET_PREFAB_COMPONENT(objectFactory->GetPrefabByName(selectedName), Transform, ComponentType::TRANSFORM)->position.x = transXpos;
 				GET_PREFAB_COMPONENT(objectFactory->GetPrefabByName(selectedName), Transform, ComponentType::TRANSFORM)->position.y = transYpos;
 				GET_PREFAB_COMPONENT(objectFactory->GetPrefabByName(selectedName), Transform, ComponentType::TRANSFORM)->rotation = transRot;
-				GET_PREFAB_COMPONENT(objectFactory->GetPrefabByName(selectedName), Transform, ComponentType::TRANSFORM)->scale = transScale;
+				GET_PREFAB_COMPONENT(objectFactory->GetPrefabByName(selectedName), Transform, ComponentType::TRANSFORM)->scale.x = transScaleX;
+				GET_PREFAB_COMPONENT(objectFactory->GetPrefabByName(selectedName), Transform, ComponentType::TRANSFORM)->scale.y = transScaleY;
 				transformUpdateFlag = true;
 
 			}
@@ -481,7 +482,8 @@ void Editor::CreatePrefabPanel() {
 			}
 			if (objectFactory->GetPrefabByName(selectedName)->Has(ComponentType::COLLIDER) != -1) {
 				GET_PREFAB_COMPONENT(objectFactory->GetPrefabByName(selectedName), Collider, ComponentType::COLLIDER)->tx->rotation = colRot;
-				GET_PREFAB_COMPONENT(objectFactory->GetPrefabByName(selectedName), Collider, ComponentType::COLLIDER)->tx->scale = colScale;
+				GET_PREFAB_COMPONENT(objectFactory->GetPrefabByName(selectedName), Collider, ComponentType::COLLIDER)->tx->scale.x = colScaleX;
+				GET_PREFAB_COMPONENT(objectFactory->GetPrefabByName(selectedName), Collider, ComponentType::COLLIDER)->tx->scale.y = colScaleY;
 				colliderUpdateFlag = true;
 			}
 			if (!colliderFlag && objectFactory->GetPrefabByName(selectedName)->Has(ComponentType::COLLIDER) != -1) {
@@ -555,11 +557,13 @@ void Editor::CreatePrefabPanel() {
 					transXpos = GET_PREFAB_COMPONENT(objectFactory->GetPrefabByName(selectedName), Transform, ComponentType::TRANSFORM)->position.x;
 					transYpos = GET_PREFAB_COMPONENT(objectFactory->GetPrefabByName(selectedName), Transform, ComponentType::TRANSFORM)->position.y;
 					transRot = GET_PREFAB_COMPONENT(objectFactory->GetPrefabByName(selectedName), Transform, ComponentType::TRANSFORM)->rotation;
-					transScale = GET_PREFAB_COMPONENT(objectFactory->GetPrefabByName(selectedName), Transform, ComponentType::TRANSFORM)->scale;
+					transScaleX = GET_PREFAB_COMPONENT(objectFactory->GetPrefabByName(selectedName), Transform, ComponentType::TRANSFORM)->scale.x;
+					transScaleY = GET_PREFAB_COMPONENT(objectFactory->GetPrefabByName(selectedName), Transform, ComponentType::TRANSFORM)->scale.y;
 				}
 				if (copy[selectedName]->Has(ComponentType::COLLIDER) != -1) {
 					colRot = GET_PREFAB_COMPONENT(objectFactory->GetPrefabByName(selectedName), Collider, ComponentType::COLLIDER)->tx->rotation;
-					colScale = GET_PREFAB_COMPONENT(objectFactory->GetPrefabByName(selectedName), Collider, ComponentType::COLLIDER)->tx->scale;
+					colScaleX = GET_PREFAB_COMPONENT(objectFactory->GetPrefabByName(selectedName), Collider, ComponentType::COLLIDER)->tx->scale.x;
+					colScaleY = GET_PREFAB_COMPONENT(objectFactory->GetPrefabByName(selectedName), Collider, ComponentType::COLLIDER)->tx->scale.y;
 				}
 			}
 		}
@@ -611,7 +615,8 @@ void Editor::CreatePrefabPanel() {
 			if (ImGui::InputFloat("X-Position", &transXpos)) saveFlag = true;
 			if (ImGui::InputFloat("Y-Position", &transYpos)) saveFlag = true;
 			if (ImGui::InputFloat("Rotation", &transRot)) saveFlag = true;
-			if (ImGui::InputFloat("Scale", &transScale)) saveFlag = true;
+			if (ImGui::InputFloat("ScaleX", &transScaleX)) saveFlag = true;
+			if (ImGui::InputFloat("ScaleY", &transScaleY)) saveFlag = true;
 			ImGui::Unindent();
 		}
 		// Render Logic
@@ -667,7 +672,8 @@ void Editor::CreatePrefabPanel() {
 		ImGui::SameLine();
 		if (ImGui::CollapsingHeader("Collider")) {
 			ImGui::Indent();
-			if (ImGui::InputFloat("Scale##", &colScale)) saveFlag = true;
+			if (ImGui::InputFloat("ScaleX##", &colScaleX)) saveFlag = true;
+			if (ImGui::InputFloat("ScaleY##", &colScaleY)) saveFlag = true;
 			if (ImGui::InputFloat("Rotation##", &colRot)) saveFlag = true;
 			ImGui::Unindent();
 		}
@@ -792,7 +798,7 @@ void Editor::CreateObjectList() {
 		ImGui::BeginChild("item view", ImVec2(0, -ImGui::GetFrameHeightWithSpacing())); // Leave room for 1 line below
 		// Detail Tab
 		if (ImGui::CollapsingHeader("Details")) {
-			static float xPos = 0, yPos = 0, scale = 0, speed = 0, angle = 0, rotSpeed = 0;
+			static float xPos = 0, yPos = 0, scaleX = 0, scaleY = 0, speed = 0, angle = 0, rotSpeed = 0;
 			if (objectFactory->GetGameObjectIDMap().empty()) {
 				ImGui::Text("No objects");
 			}
@@ -803,12 +809,13 @@ void Editor::CreateObjectList() {
 						
 							xPos = GET_COMPONENT(objectFactory->GetGameObjectByID(gameobjID), Transform, ComponentType::TRANSFORM)->position.x;
 							yPos = GET_COMPONENT(objectFactory->GetGameObjectByID(gameobjID), Transform, ComponentType::TRANSFORM)->position.y;
-							scale = GET_COMPONENT(objectFactory->GetGameObjectByID(gameobjID), Transform, ComponentType::TRANSFORM)->scale;
+							scaleX = GET_COMPONENT(objectFactory->GetGameObjectByID(gameobjID), Transform, ComponentType::TRANSFORM)->scale.x;
+							scaleY = GET_COMPONENT(objectFactory->GetGameObjectByID(gameobjID), Transform, ComponentType::TRANSFORM)->scale.y;
 							angle = GET_COMPONENT(objectFactory->GetGameObjectByID(gameobjID), Transform, ComponentType::TRANSFORM)->rotation;
 						
 					}
 					else {
-						xPos = yPos = scale = angle = 0;
+						xPos = yPos = scaleX = scaleY = angle = 0;
 					}
 					if (objectFactory->GetGameObjectByID(gameobjID)->Has(ComponentType::PHYSICS_BODY) != -1) {
 						speed = GET_COMPONENT(objectFactory->GetGameObjectByID(gameobjID), PhysicsBody, ComponentType::PHYSICS_BODY)->speed;
@@ -820,7 +827,8 @@ void Editor::CreateObjectList() {
 				}
 				
 				ImGui::Text("X-Position: %.2f | Y-Position: %.2f", xPos, yPos);
-				ImGui::Text("Scale: %.2f", scale);
+				ImGui::Text("ScaleX: %.2f", scaleX);
+				ImGui::Text("ScaleY: %.2f", scaleY);
 				ImGui::Text("Angle: %.2f", angle);
 				ImGui::Text("speed: %.2f", speed);
 				ImGui::Text("Rotation Speed: %.2f", rotSpeed);
@@ -949,7 +957,7 @@ void Editor::CreateObjectList() {
 				ImGui::Text("No Objects, Add some objects above");
 			}
 			else {
-				static float xPos2 = 0, yPos2 = 0, scale2 = 0, speed2 = 0, angle2 = 0, rotSpeed2 = 0;
+				static float xPos2 = 0, yPos2 = 0, scale2 = 0, scaleY2 = 0, speed2 = 0, angle2 = 0, rotSpeed2 = 0;
 				if (objectFactory->GetGameObjectByID(gameobjID)->Has(ComponentType::TRANSFORM) != -1) {
 					transformFlag = true;
 				}
@@ -988,9 +996,14 @@ void Editor::CreateObjectList() {
 								GET_COMPONENT(objectFactory->GetGameObjectByID(gameobjID), Transform, ComponentType::TRANSFORM)->position.y = yPos2;
 							}
 
-							scale2 = GET_COMPONENT(objectFactory->GetGameObjectByID(gameobjID), Transform, ComponentType::TRANSFORM)->scale;
-							if (ImGui::SliderFloat("Scale %", &scale2, 0.0f, 500.0f, "%.2f")) { // Slider for Scale
-								GET_COMPONENT(objectFactory->GetGameObjectByID(gameobjID), Transform, ComponentType::TRANSFORM)->scale = scale2;
+							scale2 = GET_COMPONENT(objectFactory->GetGameObjectByID(gameobjID), Transform, ComponentType::TRANSFORM)->scale.x;
+							if (ImGui::SliderFloat("Scale X %", &scale2, 0.0f, 500.0f, "%.2f")) { // Slider for Scale
+								GET_COMPONENT(objectFactory->GetGameObjectByID(gameobjID), Transform, ComponentType::TRANSFORM)->scale.x = scale2;
+							}
+
+							scaleY2 = GET_COMPONENT(objectFactory->GetGameObjectByID(gameobjID), Transform, ComponentType::TRANSFORM)->scale.y;
+							if (ImGui::SliderFloat("Scale Y %", &scaleY2, 0.0f, 500.0f, "%.2f")) { // Slider for Scale
+								GET_COMPONENT(objectFactory->GetGameObjectByID(gameobjID), Transform, ComponentType::TRANSFORM)->scale.y = scaleY2;
 							}
 
 							angle2 = GET_COMPONENT(objectFactory->GetGameObjectByID(gameobjID), Transform, ComponentType::TRANSFORM)->rotation;

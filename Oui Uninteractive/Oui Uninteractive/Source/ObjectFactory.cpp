@@ -346,7 +346,8 @@ void ObjectFactory::SaveObjectsToFile(const std::string& filePath) {
 				individualComponent.AddMember("PositionX", GET_COMPONENT(it.second, Transform, ComponentType::TRANSFORM)->position.x, allocator);
 				individualComponent.AddMember("PositionY", GET_COMPONENT(it.second, Transform, ComponentType::TRANSFORM)->position.y, allocator);
 				individualComponent.AddMember("Rotation", GET_COMPONENT(it.second, Transform, ComponentType::TRANSFORM)->rotation, allocator);
-				individualComponent.AddMember("Scale", GET_COMPONENT(it.second, Transform, ComponentType::TRANSFORM)->scale, allocator);
+				individualComponent.AddMember("ScaleX", GET_COMPONENT(it.second, Transform, ComponentType::TRANSFORM)->scale.x, allocator);
+				individualComponent.AddMember("ScaleY", GET_COMPONENT(it.second, Transform, ComponentType::TRANSFORM)->scale.y, allocator);
 			}
 			else if (componentName == "LogicComponent") {
 				// Save ScriptID in an array
@@ -359,7 +360,8 @@ void ObjectFactory::SaveObjectsToFile(const std::string& filePath) {
 				individualComponent.AddMember("ScriptID", scriptIDArray, allocator);
 			}
 			else if (componentName == "Collider") {
-				individualComponent.AddMember("ColliderSize", GET_COMPONENT(it.second, Collider, ComponentType::COLLIDER)->tx->scale, allocator);
+				individualComponent.AddMember("ColliderSizeX", GET_COMPONENT(it.second, Collider, ComponentType::COLLIDER)->tx->scale.x, allocator);
+				individualComponent.AddMember("ColliderSizeY", GET_COMPONENT(it.second, Collider, ComponentType::COLLIDER)->tx->scale.y, allocator);
 				individualComponent.AddMember("ColliderRotation", GET_COMPONENT(it.second, Collider, ComponentType::COLLIDER)->tx->rotation, allocator);
 			}
 			else if (componentName == "EnemyFSM") {
@@ -439,7 +441,8 @@ void ObjectFactory::SavePrefabsToFile(const std::string& filePath) {
 				individualComponent.AddMember("PositionX", GET_COMPONENT(it.second, Transform, ComponentType::TRANSFORM)->position.x, allocator);
 				individualComponent.AddMember("PositionY", GET_COMPONENT(it.second, Transform, ComponentType::TRANSFORM)->position.y, allocator);
 				individualComponent.AddMember("Rotation", GET_COMPONENT(it.second, Transform, ComponentType::TRANSFORM)->rotation, allocator);
-				individualComponent.AddMember("Scale", GET_COMPONENT(it.second, Transform, ComponentType::TRANSFORM)->scale, allocator);
+				individualComponent.AddMember("ScaleX", GET_COMPONENT(it.second, Transform, ComponentType::TRANSFORM)->scale.x, allocator);
+				individualComponent.AddMember("ScaleY", GET_COMPONENT(it.second, Transform, ComponentType::TRANSFORM)->scale.y, allocator);
 			}
 			else if (componentName == "LogicComponent") {
 				// Save ScriptID in an array
@@ -452,7 +455,8 @@ void ObjectFactory::SavePrefabsToFile(const std::string& filePath) {
 				individualComponent.AddMember("ScriptID", scriptIDArray, allocator);
 			}
 			else if (componentName == "Collider") {
-				individualComponent.AddMember("ColliderSize", GET_COMPONENT(it.second, Collider, ComponentType::COLLIDER)->tx->scale, allocator);
+				individualComponent.AddMember("ColliderSizeX", GET_COMPONENT(it.second, Collider, ComponentType::COLLIDER)->tx->scale.x, allocator);
+				individualComponent.AddMember("ColliderSizeY", GET_COMPONENT(it.second, Collider, ComponentType::COLLIDER)->tx->scale.y, allocator);
 				individualComponent.AddMember("ColliderRotation", GET_COMPONENT(it.second, Collider, ComponentType::COLLIDER)->tx->rotation, allocator);
 			}
 
