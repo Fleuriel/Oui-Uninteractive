@@ -94,17 +94,27 @@ public:
 				if (inputSystem.GetKeyState(GLFW_KEY_S)) {
 
 					playerBody->forceManager.SetActive(true, FORCE_INDEX::INTERNAL);
-					playerBody->forceManager.SetDirection(-playerBody->direction, FORCE_INDEX::INTERNAL);
+					//playerBody->forceManager.SetDirection(-playerBody->direction, FORCE_INDEX::INTERNAL);
+					playerBody->direction.x = 0;
+					playerBody->direction.y = -1;
+					playerBody->forceManager.SetDirection(playerBody->direction, FORCE_INDEX::INTERNAL);
 					playerBody->forceManager.SetMagnitude(playerBody->speed, FORCE_INDEX::INTERNAL);
 					playerBody->forceManager.SetLifetime(0.2f, FORCE_INDEX::INTERNAL);
+
+					objectFactory->GetGameObjectByID(gameObjectID)->GetSpriteDirection(playerBody->direction.x, playerBody->direction.y);
 				}
 
 				else if (inputSystem.GetKeyState(GLFW_KEY_W)) {
 
 					playerBody->forceManager.SetActive(true, FORCE_INDEX::INTERNAL);
+					//playerBody->forceManager.SetDirection(playerBody->direction, FORCE_INDEX::INTERNAL);
+					playerBody->direction.x = 0;
+					playerBody->direction.y = 1;
 					playerBody->forceManager.SetDirection(playerBody->direction, FORCE_INDEX::INTERNAL);
 					playerBody->forceManager.SetMagnitude(playerBody->speed, FORCE_INDEX::INTERNAL);
 					playerBody->forceManager.SetLifetime(0.2f, FORCE_INDEX::INTERNAL);
+
+					objectFactory->GetGameObjectByID(gameObjectID)->GetSpriteDirection(playerBody->direction.x, playerBody->direction.y);
 				}
 				else {
 
@@ -112,15 +122,25 @@ public:
 				}
 				if (inputSystem.GetKeyState(GLFW_KEY_A)) {
 					playerBody->forceManager.SetActive(true, FORCE_INDEX::INTERNAL);
-					playerBody->forceManager.SetDirection(Vec2(-playerBody->direction.y, playerBody->direction.x), FORCE_INDEX::INTERNAL);
+					//playerBody->forceManager.SetDirection(Vec2(-playerBody->direction.y, playerBody->direction.x), FORCE_INDEX::INTERNAL);
+					playerBody->direction.x = -1;
+					playerBody->direction.y = 0;
+					playerBody->forceManager.SetDirection(playerBody->direction, FORCE_INDEX::INTERNAL);
 					playerBody->forceManager.SetMagnitude(playerBody->speed, FORCE_INDEX::INTERNAL);
 					playerBody->forceManager.SetLifetime(0.2f, FORCE_INDEX::INTERNAL);
+
+					objectFactory->GetGameObjectByID(gameObjectID)->GetSpriteDirection(playerBody->direction.x, playerBody->direction.y);
 				}
 				if (inputSystem.GetKeyState(GLFW_KEY_D)) {
 					playerBody->forceManager.SetActive(true, FORCE_INDEX::INTERNAL);
-					playerBody->forceManager.SetDirection(-Vec2(-playerBody->direction.y, playerBody->direction.x), FORCE_INDEX::INTERNAL);
+					//playerBody->forceManager.SetDirection(-Vec2(-playerBody->direction.y, playerBody->direction.x), FORCE_INDEX::INTERNAL);
+					playerBody->direction.x = 1;
+					playerBody->direction.y = 0;
+					playerBody->forceManager.SetDirection(playerBody->direction, FORCE_INDEX::INTERNAL);
 					playerBody->forceManager.SetMagnitude(playerBody->speed, FORCE_INDEX::INTERNAL);
 					playerBody->forceManager.SetLifetime(0.2f, FORCE_INDEX::INTERNAL);
+
+					objectFactory->GetGameObjectByID(gameObjectID)->GetSpriteDirection(playerBody->direction.x, playerBody->direction.y);
 				}
 				if ((inputSystem.GetKeyState(GLFW_KEY_A) && inputSystem.GetKeyState(GLFW_KEY_D)) || (!inputSystem.GetKeyState(GLFW_KEY_A) && !inputSystem.GetKeyState(GLFW_KEY_D))) {
 					playerBody->currentRotationSpeed = 0;
@@ -227,13 +247,13 @@ public:
 			if (tx != nullptr && physBod != nullptr) {
 				if (tx != nullptr && physBod != nullptr) {
 					PhysicsBody* playerBody = GET_COMPONENT(objectFactory->GetGameObjectByID(gameObjectID), PhysicsBody, ComponentType::PHYSICS_BODY);
-					static int count = 0;
+					static bool count = false;
 					if (count == true) {
 
 						PhysicsBody* playerBody1 = GET_COMPONENT(objectFactory->GetGameObjectByID(0), PhysicsBody, ComponentType::PHYSICS_BODY);
 
-						playerBody->txPtr->position.x = playerBody1->txPtr->position.x+200;
-						playerBody->txPtr->position.y = playerBody1->txPtr->position.y;
+						playerBody->txPtr->position.x = playerBody1->txPtr->position.x + 30;
+						playerBody->txPtr->position.y = playerBody1->txPtr->position.y - 20;
 						//playerBody->forceManager.ApplyToForce(Vec2(0.0f, 0.1f), 20.f, 0.3f, FORCE_INDEX::EXTERNAL);
 					}
 
@@ -243,6 +263,18 @@ public:
 					if (inputSystem.GetKeyState(GLFW_KEY_C)) {
 						count = 1;
 					}
+
+					/*if (inputSystem.GetKeyState(GLFW_KEY_X)) {
+						if (count == false) {
+							count = true;
+						}
+						else {
+							count = false;
+						} 
+						//count = !count;
+					}*/
+
+
 
 				}
 			}

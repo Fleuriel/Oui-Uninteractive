@@ -101,8 +101,10 @@ bool BFS::CreateGrid() {
 
                 // Set position and collider size of wall
                 GET_COMPONENT(wall, PhysicsBody, ComponentType::PHYSICS_BODY)->isStatic = true;
-                GET_COMPONENT(wall, Collider, ComponentType::COLLIDER)->boundingbox->txPtr->scale = scaleTemp;
-                GET_COMPONENT(wall, Transform, ComponentType::TRANSFORM)->scale = scaleTemp;
+                GET_COMPONENT(wall, Collider, ComponentType::COLLIDER)->boundingbox->txPtr->scale.x = scaleTemp;
+                GET_COMPONENT(wall, Collider, ComponentType::COLLIDER)->boundingbox->txPtr->scale.y = scaleTemp;
+                GET_COMPONENT(wall, Transform, ComponentType::TRANSFORM)->scale.x = scaleTemp;
+                GET_COMPONENT(wall, Transform, ComponentType::TRANSFORM)->scale.y = scaleTemp;
                 GET_COMPONENT(wall, Transform, ComponentType::TRANSFORM)->position.x = (j * scaleTemp) + (scaleTemp - windowWidth) / 2;
                 GET_COMPONENT(wall, Transform, ComponentType::TRANSFORM)->position.y = (i * scaleTemp) + (scaleTemp - windowHeight) / 2;
             }

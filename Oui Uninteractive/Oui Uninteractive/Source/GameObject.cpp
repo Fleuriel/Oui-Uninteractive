@@ -22,11 +22,12 @@
 #include <algorithm>
 #include <iostream>
 #include "GameObject.h"
+#include "PhysicsBody.h"
 
 /**************************************************************************
 * @brief Default Constructor
 *************************************************************************/
-GameObject::GameObject(const std::string& name, const std::string& type) : gameObjectID{} {
+GameObject::GameObject(const std::string& name, const std::string& type) : gameObjectID{}, gameObjAnimationFrame{} {
 	gameObjectName = name;
 	gameObjectType = type;
 }
@@ -124,4 +125,60 @@ IComponent* GameObject::GetComponent(ComponentType typeID) {
 		return componentList.at(index);
 	}
 	return nullptr;
+}
+
+/**************************************************************************
+* @brief Get the direction the game object is facing (for animations)
+* @return int - 1 if facing up
+*				2 if facing right
+*				3 if facing down
+*				4 if facing left
+*************************************************************************/
+int GameObject::GetSpriteDirection(float directionX, float directionY) {
+	if (directionX == 0 && directionY == 1) {
+		return 1;
+	}
+	if (directionX == 1 && directionY == 0) {
+		return 2;
+	}
+	if (directionX == 0 && directionY == -1) {
+		return 3;
+	}
+	if (directionX == -1 && directionY == 0) {
+		return 4;
+	}
+}
+
+/**************************************************************************
+* @brief Get the animation frame (column) of the game object
+* @return int - frame of game object
+*************************************************************************/
+int GameObject::GetAnimationFrame() {
+	return gameObjAnimationFrame;
+}
+
+/**************************************************************************
+* @brief Get the direction the game object is facing (for animations)
+* @param frame - frame to set animation to
+* @return void
+*************************************************************************/
+void GameObject::SetAnimationFrame(int frame) {
+	gameObjAnimationFrame = frame;
+}
+
+/**************************************************************************
+* @brief Check whether sprite or texture is used
+* @return true if using sprite. false if texture instead.
+*************************************************************************/
+bool GameObject::IsUsingSprite() {
+	return usingSprite;
+}
+
+/**************************************************************************
+* @brief Set whether sprite/texture is used
+* @param flag - flag to set whether sprite/texture is used
+* @return void
+*************************************************************************/
+void GameObject::SetUsingSprite(bool flag) {
+	usingSprite = flag;
 }
