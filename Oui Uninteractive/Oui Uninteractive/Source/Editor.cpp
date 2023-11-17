@@ -1143,6 +1143,7 @@ void Editor::CreateAssetBrowser() {
 	static bool validPath = true;
 
 	if (ImGui::InputText("##FilePath", &browserInputPath, ImGuiInputTextFlags_EnterReturnsTrue) || (ImGui::SameLine(), ImGui::Button("Go")) || browserDoubleClicked) {  // Enter if "enter" is pressed
+		browserSelectedItem = "";
 		if (std::filesystem::exists(browserInputPath) && std::filesystem::is_directory(browserInputPath)) {
 			currFilePath = browserInputPath;
 			validPath = true;
@@ -1158,11 +1159,11 @@ void Editor::CreateAssetBrowser() {
 
 	ImGui::SameLine();
 	if (ImGui::Button("Back")) {
-		// Todo: Add error check for when back to assets folder 
+		browserSelectedItem = "";
 		std::filesystem::path temp = currFilePath;
 		if (std::filesystem::exists(temp) && temp.string() != FILEPATH_MASTER) {
 			browserInputPath = temp.parent_path().string();
-			currFilePath = browserInputPath;
+			currFilePath = browserInputPath;		
 			validPath = true;
 		}
 	}
@@ -1171,10 +1172,12 @@ void Editor::CreateAssetBrowser() {
 	if (ImGui::Button("Home")) {
 		browserInputPath = FILEPATH_MASTER;
 		currFilePath = browserInputPath;
+		browserSelectedItem = "";
 		validPath = true;
 	}
 
 	ImGui::SameLine();
+	ImGui::Spacing();
 	if (ImGui::Button("Add File")) {
 		// Get absolute path of working directory
 		std::filesystem::path exePath = std::filesystem::current_path();
@@ -1212,8 +1215,46 @@ void Editor::CreateAssetBrowser() {
 		// Rset working directory to the project folder
 		std::filesystem::current_path(exePath);
 	}
+
+	ImGui::SameLine();
+	if (ImGui::Button("Delete Selected") && browserSelectedItem != "") {
+		ImGui::OpenPopup("NO TAKEBACKS");
+	}
+	if (ImGui::BeginPopupModal("NO TAKEBACKS", NULL, ImGuiWindowFlags_AlwaysAutoResize)) {
+		static std::string msg("Are you sure you want to delete the selected item:\n\n" + browserSelectedItem + "\n\nIf u fk everything up by deleting a prefab etc., go settle yourself!");
+		ImGui::TextWrapped(msg.c_str());
+		ImGui::Separator();
+
+		// Show confirm button
+		ImGui::PushStyleColor(ImGuiCol_Button, redColour);
+		if (ImGui::Button("Confirm Deletion")) {
+			if (!browserSelectedItem.empty()) { // Double check for non selection
+				// Concat deletion path
+				std::filesystem::path pathToDelete = std::filesystem::current_path() / browserInputPath / browserSelectedItem;
+				if (std::filesystem::exists(pathToDelete)) {
+					if (std::filesystem::is_directory(pathToDelete)) {
+						std::filesystem::remove_all(pathToDelete); // remove_all for directories
+					}
+					else {
+						std::filesystem::remove(pathToDelete); // remove for individual files
+					}
+					ImGui::CloseCurrentPopup(); // Close the popup when done					
+				}
+				else {
+					std::cout << "File does not exist!";
+				}
+			}
+		}
+		ImGui::PopStyleColor();
+		ImGui::SetItemDefaultFocus();
+		ImGui::SameLine();
+		if (ImGui::Button("Cancel")) {
+			ImGui::CloseCurrentPopup();
+		}
+		ImGui::EndPopup();
+	}	
 			
-	ImGui::BeginChild("LeftPane", ImVec2(panelSize.x, 0), true);
+	ImGui::BeginChild("BrowserPane", ImVec2(panelSize.x, 0), true);
 	if (validPath) {
 		RenderDirectoryV2(currFilePath);
 	}
@@ -1359,15 +1400,15 @@ void Editor::CreateDebugPanel() {
 //	}
 //}
 
-
 void Editor::RenderDirectoryV2(const std::string& filePath) {
+	// Calculate how many icons per column
 	float gridSize = iconSize + iconPadding;
 	ImVec2 panelSize = ImGui::GetContentRegionAvail();
 	int colCount = static_cast<int>(panelSize.x / gridSize);
 	if (colCount < 1) {
 		colCount = 1;
 	}
-
+	// Set render columns
 	ImGui::Columns(colCount, 0, false);
 
 	for (auto& entry : std::filesystem::directory_iterator(filePath)) {
@@ -1393,14 +1434,13 @@ void Editor::RenderDirectoryV2(const std::string& filePath) {
 			ImGui::PopStyleColor(3);
 		}
 
-		if (ImGui::IsItemHovered() ) {
+		if (ImGui::IsItemHovered()) {
 			if (ImGui::IsMouseDoubleClicked(ImGuiMouseButton_Left)) { // On double click
 				if (isDirectory) {
 					// Handle directory click
 					browserInputPath = entry.path().string();
-					std::cout << browserInputPath << std::endl;
 					browserDoubleClicked = true;
-
+					browserSelectedItem = "";
 				}
 				else {
 					// Handle file click
@@ -1410,7 +1450,6 @@ void Editor::RenderDirectoryV2(const std::string& filePath) {
 			else if (ImGui::IsMouseClicked(ImGuiMouseButton_Left)) { // On single click
 				// Handle single click on any item
 				browserSelectedItem = entryName;
-				std::cout << browserSelectedItem << std::endl;
 			}
 			
 		}
