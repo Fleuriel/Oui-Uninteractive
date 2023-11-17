@@ -51,7 +51,6 @@ GLuint OpenGLObject::RBO = 0;
 GLuint OpenGLObject::FrameTexture = 0;
 
 extern int spritecol;
-extern int spriterow;
 
 
 
@@ -369,19 +368,11 @@ void OpenGLObject::Draw(std::string type, bool spriteUsage, Vec2 vel) const {
 
 		int spriterow{};
 
-		if (((vel.x > 0) ? vel.x : -vel.x) < ((vel.y > 0) ? vel.y : -vel.y)) {
-			if (vel.y < 0)
-				spriterow = 0;
-			if (vel.y > 0)
-				spriterow = 1;
-		}
-		else {
-			if (vel.x > 0)
-				spriterow = 2;
-			if (vel.x < 0)
-				spriterow = 3;
-		}
-
+		if (movement == "_Walk")
+			spriterow = (((vel.x > 0) ? vel.x : -vel.x) < ((vel.y > 0) ? vel.y : -vel.y)) ? (vel.y < 0) ? 0 : 1 : (vel.x > 0) ? 2 : 3;
+		else
+			spriterow = 0;
+		
 		shdrpgms[static_cast<int>(SHADER_ORDER::SPRITES)].SetUniform("col_To_Draw", spritecol);
 		shdrpgms[static_cast<int>(SHADER_ORDER::SPRITES)].SetUniform("rows", assetManager.GetSprite(type + movement).GetRows());
 		shdrpgms[static_cast<int>(SHADER_ORDER::SPRITES)].SetUniform("cols", assetManager.GetSprite(type + movement).GetColumns());
