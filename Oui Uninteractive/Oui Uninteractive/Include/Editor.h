@@ -14,6 +14,7 @@
 #include <vector>
 #include <fstream>
 #include <chrono>
+#include <cmath>
 #include "GameStateManager.h"
 #include "imgui.h"
 #include "imgui_stdlib.h"
@@ -103,6 +104,12 @@ public:
 	// Buffer and limit for recording FPS performance
 	size_t maxFPSdata;
 	static std::vector<float> fpsData;
+
+public:
+	// Panel settings
+	static int iconSize;
+	static int iconPadding;
+
 
 struct SystemTime {
 	float physicsTime;

@@ -13,7 +13,7 @@
 #include "Editor.h"
 #include "Collision.h"
 
-// Defining static containers
+// Defining static variables
 Editor::SystemTime Editor::timeRecorder;
 std::vector<float> Editor::fpsData;
 std::pair<int, int> Editor::gameWindowOrigin;
@@ -23,6 +23,9 @@ std::string Editor::browserInputPath;
 bool Editor::browserDoubleClicked;
 std::string Editor::browserSelectedItem;
 GameObject* Editor::selected; 
+	// Editor settings
+int Editor::iconSize{128};
+int Editor::iconPadding{16};
 
 /**************************************************************************
 * @brief Helper function to build a custom tooltip with description
@@ -204,13 +207,33 @@ void Editor::Update() {
    ============================================ */
 
 void Editor::CreateMenuBar() {
+	static bool showAssBrowserSettings = false;
 	if (ImGui::BeginMainMenuBar()) {
 		if (ImGui::BeginMenu("File")) {
 			if (ImGui::MenuItem("Create")) {}		
 			if (ImGui::MenuItem("Save")) {}
 			ImGui::EndMenu();
 		}
+		if (ImGui::BeginMenu("Settings")) {
+			if (ImGui::MenuItem("AssBrowser##1")) {
+				showAssBrowserSettings = true;
+			}		
+			ImGui::EndMenu();
+		}
 		ImGui::EndMainMenuBar();
+	}
+	if (showAssBrowserSettings) {
+		static int exp1 = 7, exp2 = 4;
+		ImGui::Begin("Asset Browser Settings", &showAssBrowserSettings);
+		//ImGui::SliderFloat("Icon Size", &iconSize, 32, 2048);
+		//ImGui::SliderFloat("Icon Padding", &iconPadding, 0, 128);
+		if (ImGui::SliderInt("Icon Size", &exp1, 5, 10)) {
+			iconSize = std::powf(2.0f, exp1);
+		}
+		if (ImGui::SliderInt("Icon Padding", &exp2, 0, 10)) {
+			iconPadding = std::powf(2.0f, exp2);
+		}
+		ImGui::End();
 	}
 }
 
@@ -1338,6 +1361,15 @@ void Editor::CreateDebugPanel() {
 
 
 void Editor::RenderDirectoryV2(const std::string& filePath) {
+	float gridSize = iconSize + iconPadding;
+	ImVec2 panelSize = ImGui::GetContentRegionAvail();
+	int colCount = static_cast<int>(panelSize.x / gridSize);
+	if (colCount < 1) {
+		colCount = 1;
+	}
+
+	ImGui::Columns(colCount, 0, false);
+
 	for (auto& entry : std::filesystem::directory_iterator(filePath)) {
 		const std::string entryName = entry.path().filename().string();
 		const bool isDirectory = entry.is_directory();
@@ -1354,7 +1386,7 @@ void Editor::RenderDirectoryV2(const std::string& filePath) {
 		}
 
 		// Render button
-		ImGui::ImageButton(iconTexture, ImVec2(32, 32));
+		ImGui::ImageButton(iconTexture, ImVec2(iconSize, iconSize));
 
 		// Reset button style
 		if (browserSelectedItem == entryName) {
@@ -1382,8 +1414,8 @@ void Editor::RenderDirectoryV2(const std::string& filePath) {
 			}
 			
 		}
-
 		ImGui::TextWrapped(entryName.c_str());
-
+		ImGui::NextColumn();
 	}
+	ImGui::Columns(1);
 }
