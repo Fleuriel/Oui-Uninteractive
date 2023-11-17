@@ -3,7 +3,7 @@
     "Objects": [
         {
             "Name": "JSONEnemy1",
-            "Type": "Enemy",
+            "Type": "CommonGuard",
             "Components": {
                 "PhysicsBody": {
                     "VelocityX": 0.0,
@@ -35,7 +35,7 @@
         },
         {
             "Name": "JSONEnemy2",
-            "Type": "Enemy",
+            "Type": "CommonGuard",
             "Components": {
                 "PhysicsBody": {
                     "VelocityX": 0.0,
@@ -62,7 +62,7 @@
         },
         {
             "Name": "Object4",
-            "Type": "Enemy",
+            "Type": "CommonGuard",
             "Components": {
                 "PhysicsBody": {
                     "VelocityX": 0.0,
@@ -89,7 +89,7 @@
         },
         {
             "Name": "Object5",
-            "Type": "Enemy",
+            "Type": "CommonGuard",
             "Components": {
                 "PhysicsBody": {
                     "VelocityX": 0.0,
@@ -116,7 +116,7 @@
         },
         {
             "Name": "Object6",
-            "Type": "Enemy",
+            "Type": "CommonGuard",
             "Components": {
                 "PhysicsBody": {
                     "VelocityX": 0.0,
@@ -143,7 +143,7 @@
         },
         {
             "Name": "Object7",
-            "Type": "Enemy",
+            "Type": "CommonGuard",
             "Components": {
                 "PhysicsBody": {
                     "VelocityX": 0.0,
@@ -170,7 +170,7 @@
         },
         {
             "Name": "Object8",
-            "Type": "Enemy",
+            "Type": "CommonGuard",
             "Components": {
                 "PhysicsBody": {
                     "VelocityX": 0.0,
@@ -223,7 +223,7 @@
         },
         {
             "Name": "Object11",
-            "Type": "Enemy",
+            "Type": "CommonGuard",
             "Components": {
                 "PhysicsBody": {
                     "VelocityX": 0.0,

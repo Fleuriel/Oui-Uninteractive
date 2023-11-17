@@ -44,7 +44,7 @@
         },
         {
             "Name": "JSONEnemy1",
-            "Type": "Enemy",
+            "Type": "CommonGuard",
             "Components": {
                 "PhysicsBody": {
                     "VelocityX": 0.0,
