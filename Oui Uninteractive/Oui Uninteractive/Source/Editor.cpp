@@ -21,7 +21,7 @@ std::pair<int, int> Editor::gameWindowSize;
 std::vector<std::string> prefabList;
 std::string Editor::browserInputPath;
 bool Editor::browserDoubleClicked;
-
+GameObject* Editor::selected; 
 
 /**************************************************************************
 * @brief Helper function to build a custom tooltip with description
