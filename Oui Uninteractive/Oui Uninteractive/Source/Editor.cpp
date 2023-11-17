@@ -187,7 +187,7 @@ void Editor::Update() {
 			std::cout << "DEE\n";
 			if (inputSystem.GetMouseState(GLFW_MOUSE_BUTTON_1)) {
 				selected = gObj.second;
-			//	tx->position = Vec2(mouseX, mouseY);
+				tx->position = Vec2(mouseX, mouseY);
 			}
 		}
 	}
