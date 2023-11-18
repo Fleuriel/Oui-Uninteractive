@@ -52,7 +52,8 @@ public:
     * @param r - rows of grid
     * @param c - columns of grid
     *************************************************************************/
-    BFS(int r, int c);
+    //BFS(int r, int c);
+    BFS(std::vector<std::vector<int>> tilemap);
 
     /**************************************************************************
     * @brief Destructor

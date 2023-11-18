@@ -1,10 +1,10 @@
 {
     "Tilemap": [
-        [1, 1, 1, 1, 1],
-        [1, 0, 0, 0, 1],
-        [1, 0, 0, 0, 1],
-        [1, 0, 0, 0, 1],
-        [1, 1, 1, 1, 1]
+        [0, 0, 0, 0, 0],
+        [1, 1, 1, 1, 0],
+        [0, 0, 0, 1, 0],
+        [0, 0, 0, 0, 0],
+        [0, 0, 1, 0, 0]
     ],
     "ObjectCount": 2,
     "Objects": [
@@ -44,7 +44,7 @@
         },
         {
             "Name": "JSONEnemy1",
-            "Type": "Enemy",
+            "Type": "CommonGuard",
             "Components": {
                 "PhysicsBody": {
                     "VelocityX": 0.0,

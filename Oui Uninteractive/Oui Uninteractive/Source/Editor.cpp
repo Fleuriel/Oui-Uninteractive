@@ -13,7 +13,7 @@
 #include "Editor.h"
 #include "Collision.h"
 
-// Defining static containers
+// Defining static variables
 Editor::SystemTime Editor::timeRecorder;
 std::vector<float> Editor::fpsData;
 std::pair<int, int> Editor::gameWindowOrigin;
@@ -21,7 +21,11 @@ std::pair<int, int> Editor::gameWindowSize;
 std::vector<std::string> prefabList;
 std::string Editor::browserInputPath;
 bool Editor::browserDoubleClicked;
+std::string Editor::browserSelectedItem;
 GameObject* Editor::selected; 
+	// Editor settings
+int Editor::iconSize{128};
+int Editor::iconPadding{16};
 
 /**************************************************************************
 * @brief Helper function to build a custom tooltip with description
@@ -209,13 +213,33 @@ void Editor::Update() {
    ============================================ */
 
 void Editor::CreateMenuBar() {
+	static bool showAssBrowserSettings = false;
 	if (ImGui::BeginMainMenuBar()) {
 		if (ImGui::BeginMenu("File")) {
 			if (ImGui::MenuItem("Create")) {}		
 			if (ImGui::MenuItem("Save")) {}
 			ImGui::EndMenu();
 		}
+		if (ImGui::BeginMenu("Settings")) {
+			if (ImGui::MenuItem("AssBrowser##1")) {
+				showAssBrowserSettings = true;
+			}		
+			ImGui::EndMenu();
+		}
 		ImGui::EndMainMenuBar();
+	}
+	if (showAssBrowserSettings) {
+		static int exp1 = 7, exp2 = 4;
+		ImGui::Begin("Asset Browser Settings", &showAssBrowserSettings);
+		//ImGui::SliderFloat("Icon Size", &iconSize, 32, 2048);
+		//ImGui::SliderFloat("Icon Padding", &iconPadding, 0, 128);
+		if (ImGui::SliderInt("Icon Size", &exp1, 5, 10)) {
+			iconSize = std::powf(2.0f, exp1);
+		}
+		if (ImGui::SliderInt("Icon Padding", &exp2, 0, 10)) {
+			iconPadding = std::powf(2.0f, exp2);
+		}
+		ImGui::End();
 	}
 }
 
@@ -265,8 +289,7 @@ void Editor::CreateMasterPanel() {
 	// Load level from file
 	if (ImGui::Button("Load scene")) {
 		objectFactory->DestroyAllObjects();
-		std::vector<std::vector<int>> tilemap;
-		tilemapLoader->LoadTilemap(sceneFileName, tilemap);
+		tilemapLoader->LoadTilemap(sceneFileName);
 		objectFactory->BuildObjectFromFile(sceneFileName);
 	}
 
@@ -732,9 +755,26 @@ void Editor::CreateObjectList() {
 			if (ImGui::Selectable(objName.c_str(), selectedID == count)) {
 				gameobjID = objID;
 				selectedID = count;
+				selected = objectFactory->GetGameObjectByID(gameobjID);
 			}
+
 			count++;
 		}
+		if (selected != nullptr) {
+			int count2 = 0;
+			if (selected->GetGameObjectID() != gameobjID) {
+				gameobjID = selected->GetGameObjectID();
+				std::map<size_t, GameObject*>::iterator it2 = copyMap.begin();
+				for (; it2 != copyMap.end(); it2++) {
+					if (it2->second->GetGameObjectID() == gameobjID) {
+						selectedID = count2;
+					}
+					count2++;
+				}
+			}
+		}
+		
+		
 		
 		ImGui::EndChild();
 	}
@@ -1109,6 +1149,7 @@ void Editor::CreateAssetBrowser() {
 	static bool validPath = true;
 
 	if (ImGui::InputText("##FilePath", &browserInputPath, ImGuiInputTextFlags_EnterReturnsTrue) || (ImGui::SameLine(), ImGui::Button("Go")) || browserDoubleClicked) {  // Enter if "enter" is pressed
+		browserSelectedItem = "";
 		if (std::filesystem::exists(browserInputPath) && std::filesystem::is_directory(browserInputPath)) {
 			currFilePath = browserInputPath;
 			validPath = true;
@@ -1124,11 +1165,11 @@ void Editor::CreateAssetBrowser() {
 
 	ImGui::SameLine();
 	if (ImGui::Button("Back")) {
-		// Todo: Add error check for when back to assets folder 
+		browserSelectedItem = "";
 		std::filesystem::path temp = currFilePath;
 		if (std::filesystem::exists(temp) && temp.string() != FILEPATH_MASTER) {
 			browserInputPath = temp.parent_path().string();
-			currFilePath = browserInputPath;
+			currFilePath = browserInputPath;		
 			validPath = true;
 		}
 	}
@@ -1137,10 +1178,12 @@ void Editor::CreateAssetBrowser() {
 	if (ImGui::Button("Home")) {
 		browserInputPath = FILEPATH_MASTER;
 		currFilePath = browserInputPath;
+		browserSelectedItem = "";
 		validPath = true;
 	}
 
 	ImGui::SameLine();
+	ImGui::Spacing();
 	if (ImGui::Button("Add File")) {
 		// Get absolute path of working directory
 		std::filesystem::path exePath = std::filesystem::current_path();
@@ -1166,17 +1209,58 @@ void Editor::CreateAssetBrowser() {
 			if (std::filesystem::exists(selectedFilePath)) {
 				// Copy file to destination directory
 				std::filesystem::copy(selectedFilePath, destinationPath, std::filesystem::copy_options::overwrite_existing);
-				MessageBox(hwnd, L"File added to assets folder!", L"Success", MB_OK | MB_ICONINFORMATION);
+				// Construct and display message
+				std::wstring test(currFilePath.begin(), currFilePath.end());
+				LPCWSTR boxMessage = (L"File added to \"" + test + L"\" folder!").c_str();
+				MessageBox(hwnd, boxMessage, L"Success", MB_OK | MB_ICONINFORMATION);
 			}
 			else {
-				MessageBox(hwnd, L"Error adding file to assest folder: Souce file does not exist!", L"Failure", MB_OK | MB_ICONERROR);
+				MessageBox(hwnd, L"Error adding file to folder: Souce file does not exist!", L"Failure", MB_OK | MB_ICONERROR);
 			}
 		}
 		// Rset working directory to the project folder
 		std::filesystem::current_path(exePath);
 	}
+
+	ImGui::SameLine();
+	if (ImGui::Button("Delete Selected") && browserSelectedItem != "") {
+		ImGui::OpenPopup("NO TAKEBACKS");
+	}
+	if (ImGui::BeginPopupModal("NO TAKEBACKS", NULL, ImGuiWindowFlags_AlwaysAutoResize)) {
+		static std::string msg("Are you sure you want to delete the selected item:\n\n" + browserSelectedItem + "\n\nIf u fk everything up by deleting a prefab etc., go settle yourself!");
+		ImGui::TextWrapped(msg.c_str());
+		ImGui::Separator();
+
+		// Show confirm button
+		ImGui::PushStyleColor(ImGuiCol_Button, redColour);
+		if (ImGui::Button("Confirm Deletion")) {
+			if (!browserSelectedItem.empty()) { // Double check for non selection
+				// Concat deletion path
+				std::filesystem::path pathToDelete = std::filesystem::current_path() / browserInputPath / browserSelectedItem;
+				if (std::filesystem::exists(pathToDelete)) {
+					if (std::filesystem::is_directory(pathToDelete)) {
+						std::filesystem::remove_all(pathToDelete); // remove_all for directories
+					}
+					else {
+						std::filesystem::remove(pathToDelete); // remove for individual files
+					}
+					ImGui::CloseCurrentPopup(); // Close the popup when done					
+				}
+				else {
+					std::cout << "File does not exist!";
+				}
+			}
+		}
+		ImGui::PopStyleColor();
+		ImGui::SetItemDefaultFocus();
+		ImGui::SameLine();
+		if (ImGui::Button("Cancel")) {
+			ImGui::CloseCurrentPopup();
+		}
+		ImGui::EndPopup();
+	}	
 			
-	ImGui::BeginChild("LeftPane", ImVec2(panelSize.x, 0), true);
+	ImGui::BeginChild("BrowserPane", ImVec2(panelSize.x, 0), true);
 	if (validPath) {
 		RenderDirectoryV2(currFilePath);
 	}
@@ -1206,7 +1290,7 @@ void Editor::CreateDebugPanel() {
 			ImGui::PushStyleColor(ImGuiCol_Text, redColour);
 		}
 		else if (io.Framerate >= 60 && io.Framerate < 100) {
-			ImGui::PushStyleColor(ImGuiCol_Text, yellowColour);
+			ImGui::PushStyleColor(ImGuiCol_Text, bananaColour);
 		}
 		else {
 			ImGui::PushStyleColor(ImGuiCol_Text, greenColour);		
@@ -1297,32 +1381,42 @@ void Editor::CreateDebugPanel() {
 	ImGui::End();
 }
 	
-// Recursive helper function to render the file directory for the asset browser	
-void Editor::RenderDirectory(const std::string& filePath) {
-	std::filesystem::path dirPath(filePath);
-	if (std::filesystem::exists(dirPath)) {
-		// Render folder directories
-		for (auto& entry : std::filesystem::directory_iterator(dirPath)) {
-			if (entry.is_directory()) {
-				if (ImGui::TreeNode(entry.path().filename().string().c_str())) {
-					RenderDirectory(entry.path().string());
-					ImGui::TreePop();
-				}
-			}
-		}
-		// Render individual files
-		for (auto& entry : std::filesystem::directory_iterator(filePath)) {
-			if (!entry.is_directory()) {
-				ImGui::Selectable(entry.path().filename().string().c_str());
-			}
-		}
-	}
-	else {
-		std::cout << "File path does not exist. Maybe check the working directory" << std::endl;
-	}
-}
+//// Recursive helper function to render the file directory for the asset browser	
+//void Editor::RenderDirectory(const std::string& filePath) {
+//	std::filesystem::path dirPath(filePath);
+//	if (std::filesystem::exists(dirPath)) {
+//		// Render folder directories
+//		for (auto& entry : std::filesystem::directory_iterator(dirPath)) {
+//			if (entry.is_directory()) {
+//				if (ImGui::TreeNode(entry.path().filename().string().c_str())) {
+//					RenderDirectory(entry.path().string());
+//					ImGui::TreePop();
+//				}
+//			}
+//		}
+//		// Render individual files
+//		for (auto& entry : std::filesystem::directory_iterator(filePath)) {
+//			if (!entry.is_directory()) {
+//				ImGui::Selectable(entry.path().filename().string().c_str());
+//			}
+//		}
+//	}
+//	else {
+//		std::cout << "File path does not exist. Maybe check the working directory" << std::endl;
+//	}
+//}
 
 void Editor::RenderDirectoryV2(const std::string& filePath) {
+	// Calculate how many icons per column
+	float gridSize = iconSize + iconPadding;
+	ImVec2 panelSize = ImGui::GetContentRegionAvail();
+	int colCount = static_cast<int>(panelSize.x / gridSize);
+	if (colCount < 1) {
+		colCount = 1;
+	}
+	// Set render columns
+	ImGui::Columns(colCount, 0, false);
+
 	for (auto& entry : std::filesystem::directory_iterator(filePath)) {
 		const std::string entryName = entry.path().filename().string();
 		const bool isDirectory = entry.is_directory();
@@ -1330,23 +1424,43 @@ void Editor::RenderDirectoryV2(const std::string& filePath) {
 		// Use folder or file icon texture
 		ImTextureID iconTexture = isDirectory ? reinterpret_cast<ImTextureID>(static_cast<uintptr_t>(assetManager.GetTexture(TEST1))) : reinterpret_cast<ImTextureID>(static_cast<uintptr_t>(assetManager.GetTexture(TEST2)));
 
-		ImGui::ImageButton(iconTexture, ImVec2(32, 32));
-		if (ImGui::IsItemHovered() && ImGui::IsMouseDoubleClicked(ImGuiMouseButton_Left)) {
-			// On double click
-			if (isDirectory) {
-				// Handle directory click
-				browserInputPath = entry.path().string();
-				std::cout << browserInputPath << std::endl;
-				browserDoubleClicked = true;
-				
-			}
-			else {
-				// Handle file click
-
-			}
+		// Change button style if entry is selected
+		if (browserSelectedItem == entryName) {
+			// Yellow with opacity differences for visuals
+			ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(1.0f, 1.0f, 0.0f, 0.6f));
+			ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(1.0f, 1.0f, 0.0f, 0.7f));
+			ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4(1.0f, 1.0f, 0.0f, 0.8f));
 		}
 
+		// Render button
+		ImGui::ImageButton(iconTexture, ImVec2(iconSize, iconSize));
+
+		// Reset button style
+		if (browserSelectedItem == entryName) {
+			ImGui::PopStyleColor(3);
+		}
+
+		if (ImGui::IsItemHovered()) {
+			if (ImGui::IsMouseDoubleClicked(ImGuiMouseButton_Left)) { // On double click
+				if (isDirectory) {
+					// Handle directory click
+					browserInputPath = entry.path().string();
+					browserDoubleClicked = true;
+					browserSelectedItem = "";
+				}
+				else {
+					// Handle file click
+
+				}
+			}
+			else if (ImGui::IsMouseClicked(ImGuiMouseButton_Left)) { // On single click
+				// Handle single click on any item
+				browserSelectedItem = entryName;
+			}
+			
+		}
 		ImGui::TextWrapped(entryName.c_str());
-	
+		ImGui::NextColumn();
 	}
+	ImGui::Columns(1);
 }
