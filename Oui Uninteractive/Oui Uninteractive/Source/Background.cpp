@@ -23,6 +23,7 @@
 #include <glm/gtc/type_ptr.hpp>
 #include <stb_image.h>
 #include "AssetManager.h"
+#include "Editor.h"
 
 
 std::vector<OpenGLShader> Background::shdrpgms; //singleton
@@ -100,8 +101,8 @@ void Background::Init() {
 	};
 
 	// Compute a transformation matrix for scaling from model space to normalized device coordinates (NDC)
-	float scaleX = 2.0f / windowSize.first;
-	float scaleY = 2.0f / windowSize.second;
+	float scaleX = 2.0f / Editor::gameWindowSize.first;
+	float scaleY = 2.0f / Editor::gameWindowSize.second;
 
 	glm::mat3 ScaleToWorldToNDC = glm::mat3 {
 		scaleX, 0, 0,
@@ -110,7 +111,8 @@ void Background::Init() {
 	};
 
 	// Compute a transformation matrix for scaling from model space to normalized device coordinates (NDC)
-	model_To_NDC_xform = OpenGLObject::cameraObject.World_to_NDC_xform * Translate * Rotation * Scale;
+	model_To_NDC_xform = ScaleToWorldToNDC * Translate * Rotation * Scale;
+
 
 #ifdef _DEBUG
 	// Print debug information indicating the end of initialization
@@ -136,13 +138,19 @@ void Background::Update(float newX, float newY, float scaleX, float scaleY) {
 	//Scale the model based on float variable.
 	scaleModel = glm::vec2(scaleX, scaleY);
 	//Set the new position.
-	position = glm::vec2(newX, newY);
+	position = glm::vec2(newX -OpenGLObject::cameraTranslator.position.x, newY - OpenGLObject::cameraTranslator.position.y);
 
 	
+	glm::vec2 afterScaleModel = scaleModel;
+
+	afterScaleModel *= OpenGLObject::cameraObject.heightRatio;
+
+	//scaleX *= OpenGLObject::cameraObject.height;
+
 	// Compute the scale matrix
 	glm::mat3 Scale = glm::mat3(
-		scaleModel.x, 0.0f, 0.0f,
-		0.0f, scaleModel.y, 0.0f,
+		afterScaleModel.x, 0.0f, 0.0f,
+		0.0f, afterScaleModel.y, 0.0f,
 		0.0f, 0.0f, 1.0f
 	);
 
@@ -163,8 +171,8 @@ void Background::Update(float newX, float newY, float scaleX, float scaleY) {
 	);
 
 
-	float valX = 2.0f / windowSize.first;
-	float valY = 2.0f / windowSize.second;
+	float valX = 2.0f / Editor::gameWindowSize.first;
+	float valY = 2.0f / Editor::gameWindowSize.second;
 
 	glm::mat3 ScaleToWorldToNDC = glm::mat3 {
 		valX, 0, 0,
@@ -173,7 +181,7 @@ void Background::Update(float newX, float newY, float scaleX, float scaleY) {
 	};
 
 	// Compute the model-to-world-to-NDC transformation matrix
-	model_To_NDC_xform = OpenGLObject::cameraObject.World_to_NDC_xform * glm::transpose(Translation) * glm::transpose(Rotation)  * glm::transpose(Scale);
+	model_To_NDC_xform = ScaleToWorldToNDC * glm::transpose(Translation) * glm::transpose(Rotation)  * glm::transpose(Scale);
 
 }
 

@@ -174,20 +174,26 @@ void Editor::Update() {
 	if (fpsData.size() > maxFPSdata) {
 		fpsData.erase(fpsData.begin());
 	}
-	double mouseX = io.MousePos.x;
-	double mouseY = io.MousePos.y;
+	double mouseX; // = io.MousePos.x;
+	double mouseY; // = io.MousePos.y;
+	glfwGetCursorPos(windowNew, &mouseX, &mouseY);
+
 	OpenGLObject::FrameBufferMouseCoords(windowNew, &mouseX, &mouseY, OpenGLObject::cameraObject);
-	std::cout << mouseX << "|" << mouseY << "\n";
+	//std::cout << mouseX << "|" << mouseY << "\n";
 	std::map<size_t, GameObject*> copyMap = objectFactory->GetGameObjectIDMap();
 	for (std::pair<size_t, GameObject*> gObj : objectFactory->GetGameObjectIDMap()) {
 		Transform* tx = GET_COMPONENT(gObj.second, Transform, ComponentType::TRANSFORM);
 		//std::cout << tx->position.x << "|" << tx->position.y << "\n";
+		
+
 		if (CollisionMouseRect(tx->position, tx->scale.x, tx->scale.y, mouseX, mouseY)) {
 			
 			std::cout << "DEE\n";
 			if (inputSystem.GetMouseState(GLFW_MOUSE_BUTTON_1)) {
 				selected = gObj.second;
 				tx->position = Vec2(mouseX, mouseY);
+				std::cout << tx->position.x << '\t' << tx->position.y << '\n';
+
 			}
 		}
 	}

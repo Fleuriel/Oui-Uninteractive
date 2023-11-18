@@ -65,10 +65,19 @@ public:
 	int TagID;						// Id for the Model to Texture
 
 	glm::vec2 scaleModel;			// Scale for the Model
+	glm::vec2 afterScaleModel;
+	
+
+
 	float angleDisplacment;			// Angle of the Model (Start)
 	float angleSpeed;				// Speed of the Model Displacement
 	glm::vec2 orientation;			// Rotation
 	glm::vec2 position;				// translation
+
+
+	glm::vec2 originalPosition;
+	glm::vec2 afterPosition;
+
 
 	glm::mat3 model_To_NDC_xform;	// Model to NDC 
 	glm::vec3 color;				// Set Object Color
@@ -163,7 +172,7 @@ public:
 
 		float Left, Right, Top, Bottom;
 
-
+		float heightRatio;
 
 		glm::mat3 cameraProjection;
 		glm::mat3 view_xform, CameraWindow_to_NDC_xform, World_to_NDC_xform;

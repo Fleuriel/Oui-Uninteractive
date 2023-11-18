@@ -270,6 +270,13 @@ void OpenGLApplication::OpenGLUpdate() {
 	myEditor.Update();
 	myImGui.Update();
 
+	if (objectFactory->GetGameObjectByName("JSONPlayer") != nullptr)
+	{
+		float sXX = GET_COMPONENT(objectFactory->GetGameObjectByName("JSONPlayer"), Collider, ComponentType::COLLIDER)->boundingbox->center.x;
+		float sYY = GET_COMPONENT(objectFactory->GetGameObjectByName("JSONPlayer"), Collider, ComponentType::COLLIDER)->boundingbox->center.y;
+
+		//std::cout << sXX << '\t' << sYY << '\n';
+	}
 
 	OpenGLObject::cameraObject.Update(windowNew, static_cast<int>(positionX), static_cast<int>(positionY));
 	// Create x and y pos variables to collect data from the mouse position.
@@ -277,9 +284,15 @@ void OpenGLApplication::OpenGLUpdate() {
 	// Cursor is top left.
 	glfwGetCursorPos(windowNew, &xpos, &ypos);
 
-	
+	double MouseX, MouseY;
+
 	// Change the position of mouse coordinates to frame buffer coordinates.
 	OpenGLObject::FrameBufferMouseCoords(windowNew, &xpos, &ypos, OpenGLObject::cameraObject);
+	MouseX = xpos;
+	MouseY = ypos;
+
+	//std::cout << xpos << '\t' << ypos << '\n';
+
 
 	OpenGLObject::cameraObject.SetGameFBPos();
 
@@ -479,19 +492,17 @@ void OpenGLApplication::OpenGLUpdate() {
 
 	for (OpenGLObject& obj : objects) {
 		if (obj.TagID == 1)
-			obj.Update(350, 300, 100, 100, angle, true);
+			obj.Update(0, 0, 100, 100, angle, true);
 
-		// Tag ID 2
-		if (obj.TagID == 2) {
-			obj.Update(0, 0, 100, 100, angle, false);
-		}
-
+		if (obj.TagID == 2) 
+			obj.Update(300, 300, 100, 100, angle, false);
+		
 		if (obj.TagID == 9)
 			obj.Update(positionX, positionY, 0, 0, 0, 0);
+		
 
 		if (obj.TagID == 3)
-			obj.Update(4000, 4000, 1000, 1000, 0, 0);
-
+			obj.Update(2000, 2000, 1000, 1000, 0, 0);
 	}
 
 	// Updates the Game Object
@@ -515,6 +526,9 @@ void OpenGLApplication::OpenGLUpdate() {
 				static Vector2D min, max;
 				max = colliderSys->colliderMap[gameobjID]->boundingbox->max;
 				min = colliderSys->colliderMap[gameobjID]->boundingbox->min;
+
+
+
 
 				GET_COMPONENT(objectFactory->GetGameObjectByID(gameobjID), Transform, ComponentType::TRANSFORM)->shape->DrawCollisionBox(min, max);
 			}
