@@ -1113,7 +1113,18 @@ void Editor::CreateObjectList() {
 					}
 					ImGui::SameLine();
 					if (ImGui::CollapsingHeader("Collider")) {
+						static float colliderScaleX, colliderScaleY;
 						if (objectFactory->GetGameObjectByID(gameobjID)->Has(ComponentType::COLLIDER) != -1) {
+							colliderScaleX = GET_COMPONENT(objectFactory->GetGameObjectByID(gameobjID), Collider, ComponentType::COLLIDER)->tx->scale.x;
+							if (ImGui::SliderFloat("Collider Scale X", &colliderScaleX, 0.0f, 1000.0f, "%.2f")) { // Slider for Speed
+								GET_COMPONENT(objectFactory->GetGameObjectByID(gameobjID), Collider, ComponentType::COLLIDER)->tx->scale.x = colliderScaleX;
+							}
+
+
+							colliderScaleY = GET_COMPONENT(objectFactory->GetGameObjectByID(gameobjID), Collider, ComponentType::COLLIDER)->tx->scale.y;
+							if (ImGui::SliderFloat("Collider Scale Y", &colliderScaleY, 0.0f, 1000.0f, "%.2f")) { // Slider for Speed
+								GET_COMPONENT(objectFactory->GetGameObjectByID(gameobjID), Collider, ComponentType::COLLIDER)->tx->scale.y = colliderScaleY;
+							}
 						}
 						else {
 							ImGui::Text("Selected Object has no COLLIDER component");
