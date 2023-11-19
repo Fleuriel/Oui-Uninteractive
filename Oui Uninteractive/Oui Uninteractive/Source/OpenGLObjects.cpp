@@ -399,11 +399,23 @@ void OpenGLObject::Draw(std::string type, bool spriteUsage, Vec2 vel) const {
 
 		int spriterow{};
 
-		if (movement == "_Walk")
-			spriterow = (((vel.x > 0) ? vel.x : -vel.x) < ((vel.y > 0) ? vel.y : -vel.y)) ? (vel.y < 0) ? 0 : 1 : (vel.x > 0) ? 2 : 3;
-		else
-			spriterow = 0;
-		
+		if (type == "Player"){
+			double mouseX; // = io.MousePos.x;
+			double mouseY; // = io.MousePos.y;
+			glfwGetCursorPos(windowNew, &mouseX, &mouseY);
+			OpenGLObject::FrameBufferMouseCoords(windowNew, &mouseX, &mouseY, OpenGLObject::cameraObject);
+			
+			Vec2 vec = { static_cast<float>(mouseX) - position.x , static_cast<float>(mouseY) - position.y };
+
+			spriterow = (((vec.x > 0) ? vec.x : -vec.x) < ((vec.y > 0) ? vec.y : -vec.y)) ? (vec.y < 0) ? 0 : 1 : (vec.x > 0) ? 2 : 3;
+		}
+		else {
+			if (movement == "_Walk")
+				spriterow = (((vel.x > 0) ? vel.x : -vel.x) < ((vel.y > 0) ? vel.y : -vel.y)) ? (vel.y < 0) ? 0 : 1 : (vel.x > 0) ? 2 : 3;
+			else
+				spriterow = 0;
+		}
+
 		shdrpgms[static_cast<int>(SHADER_ORDER::SPRITES)].SetUniform("col_To_Draw", spritecol);
 		shdrpgms[static_cast<int>(SHADER_ORDER::SPRITES)].SetUniform("rows", assetManager.GetSprite(type + movement).GetRows());
 		shdrpgms[static_cast<int>(SHADER_ORDER::SPRITES)].SetUniform("cols", assetManager.GetSprite(type + movement).GetColumns());
