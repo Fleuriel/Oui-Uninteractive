@@ -94,9 +94,10 @@ bool BFS::CreateGrid() {
         return false;
 
     // Temp vars
-    float windowWidth = 1920.f;
-    float windowHeight = 1017.f;
-    float scaleTemp = windowHeight / static_cast<float>(rows);
+    float windowWidth = 1300.f;
+    float windowHeight = 1016.f;
+    float scaleX = windowWidth / static_cast<float>(cols);
+    float scaleY = windowHeight / static_cast<float>(rows);
 
     // Wall ID
     int wallID{};
@@ -117,12 +118,12 @@ bool BFS::CreateGrid() {
 
                 // Set position and collider size of wall
                 GET_COMPONENT(wall, PhysicsBody, ComponentType::PHYSICS_BODY)->isStatic = true;
-                GET_COMPONENT(wall, Collider, ComponentType::COLLIDER)->boundingbox->txPtr->scale.x = scaleTemp;
-                GET_COMPONENT(wall, Collider, ComponentType::COLLIDER)->boundingbox->txPtr->scale.y = scaleTemp;
-                GET_COMPONENT(wall, Transform, ComponentType::TRANSFORM)->scale.x = scaleTemp;
-                GET_COMPONENT(wall, Transform, ComponentType::TRANSFORM)->scale.y = scaleTemp;
-                GET_COMPONENT(wall, Transform, ComponentType::TRANSFORM)->position.x = (j * scaleTemp) + (scaleTemp - windowWidth) / 2;
-                GET_COMPONENT(wall, Transform, ComponentType::TRANSFORM)->position.y = (i * scaleTemp) + (scaleTemp - windowHeight) / 2;
+                GET_COMPONENT(wall, Collider, ComponentType::COLLIDER)->boundingbox->txPtr->scale.x = scaleX;
+                GET_COMPONENT(wall, Collider, ComponentType::COLLIDER)->boundingbox->txPtr->scale.y = scaleY;
+                GET_COMPONENT(wall, Transform, ComponentType::TRANSFORM)->scale.x = scaleX;
+                GET_COMPONENT(wall, Transform, ComponentType::TRANSFORM)->scale.y = scaleY;
+                GET_COMPONENT(wall, Transform, ComponentType::TRANSFORM)->position.x = (j * scaleX) + (scaleX - windowWidth) / 2;
+                GET_COMPONENT(wall, Transform, ComponentType::TRANSFORM)->position.y = (i * scaleY) + (scaleY - windowHeight) / 2;
             }
         }
     }
