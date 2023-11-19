@@ -188,18 +188,16 @@ void Editor::Update() {
 	for (std::pair<size_t, GameObject*> gObj : objectFactory->GetGameObjectIDMap()) {
 		Transform* tx = GET_COMPONENT(gObj.second, Transform, ComponentType::TRANSFORM);
 		//std::cout << tx->position.x << "|" << tx->position.y << "\n";
-		
-
-		if (CollisionMouseRect(tx->position, tx->scale.x, tx->scale.y, mouseX, mouseY)) {
-			
-			std::cout << "DEE\n";
-			if (inputSystem.GetMouseState(GLFW_MOUSE_BUTTON_1)) {
-				selected = gObj.second;
-				tx->position = Vec2(mouseX, mouseY);
-				std::cout << tx->position.x << '\t' << tx->position.y << '\n';
-
+		//std::cout << Editor::gameWindowSize.first << "|" << Editor::gameWindowSize.second << "\n";
+		if ((mouseX > (-Editor::gameWindowSize.first / 2.f) && mouseX < (Editor::gameWindowSize.first / 2.f)) && (mouseY > (-Editor::gameWindowSize.second / 2.f) && mouseY < Editor::gameWindowSize.second / 2.f)) {
+			if (CollisionMouseRect(tx->position, tx->scale.x, tx->scale.y, mouseX, mouseY)) {
+				if (inputSystem.GetMouseState(GLFW_MOUSE_BUTTON_1)) {
+					selected = gObj.second;
+					tx->position = Vec2(mouseX, mouseY);
+				}
 			}
 		}
+		
 	}
 	if (inputSystem.GetKeyState(GLFW_KEY_DELETE)) {
 		if (objectFactory->GetGameObjectByID(selected->GetGameObjectID()) != nullptr) {
