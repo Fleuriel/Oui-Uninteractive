@@ -38,7 +38,7 @@ public:
 	* @param filePath - path to scene JSON file
 	* @return void
 	*************************************************************************/
-	void SaveTilemap(const std::string& filePath);
+	rapidjson::Document SaveTilemap(const std::string& filePath);
 
 	/**************************************************************************
 	* @brief Clear tilemap

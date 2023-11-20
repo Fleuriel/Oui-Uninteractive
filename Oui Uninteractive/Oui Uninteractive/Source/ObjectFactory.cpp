@@ -297,11 +297,11 @@ bool ObjectFactory::CloneObject(size_t gameObjectID) {
 }
 
 /**************************************************************************
-* @brief Save existing game object data to JSON file
+* @brief Get rapidjson::Document object (containing JSON objects)
 * @param filePath - directory of JSON file
-* @return void
+* @return rapidjson::Document
 *************************************************************************/
-void ObjectFactory::SaveObjectsToFile(const std::string& filePath) {
+rapidjson::Document ObjectFactory::GetObjectDocSaving(const std::string& filePath) {
 	rapidjson::Document objDoc;
 	rapidjson::Document::AllocatorType& allocator = objDoc.GetAllocator();
 	JsonSerializer serializer;
@@ -310,12 +310,15 @@ void ObjectFactory::SaveObjectsToFile(const std::string& filePath) {
 	// Setting object for output JSON
 	objDoc.SetObject();
 
-	// Adding object count
-	objDoc.AddMember("ObjectCount", gameObjectIDMap.size(), allocator);
-	
+	// Store object count
+	int objectCount{};
+
 	// Add objects to Objects array
 	rapidjson::Value writeObjects(rapidjson::kArrayType);
 	for (const auto& it : gameObjectIDMap) {
+		if (it.second->GetType() == "Wall") {
+			continue;
+		}	
 		const GameObject* gameObject = it.second;
 		rapidjson::Value jsonObj(rapidjson::kObjectType);	// Create JSON object
 		rapidjson::Value stringVar;
@@ -369,7 +372,7 @@ void ObjectFactory::SaveObjectsToFile(const std::string& filePath) {
 			else if (componentName == "EnemyFSM") {
 				individualComponent.AddMember("AggroRange", GET_COMPONENT(it.second, EnemyFSM, ComponentType::ENEMY_FSM)->aggroRange, allocator);
 			}
-			
+
 			// Add individual component to components object
 			rapidjson::Value componentNameJson;
 			componentNameJson.SetString(componentName.c_str(), allocator);
@@ -381,10 +384,28 @@ void ObjectFactory::SaveObjectsToFile(const std::string& filePath) {
 
 		// Add JSON object to Objects array
 		writeObjects.PushBack(jsonObj, allocator);
+
+		// Increment object counter
+		++objectCount;
 	}
+
+	// Adding object count member
+	objDoc.AddMember("ObjectCount", objectCount, allocator);
 
 	// Add object array to output JSON
 	objDoc.AddMember("Objects", writeObjects, allocator);
+
+	return objDoc;
+}
+
+/**************************************************************************
+* @brief Save existing game object data to JSON file
+* @param filePath - directory of JSON file
+* @return void
+*************************************************************************/
+void ObjectFactory::SaveObjectsToFile(const std::string& filePath) {
+	rapidjson::Document objDoc{ GetObjectDocSaving(filePath) };
+	JsonSerializer serializer;
 
 	if (serializer.WriteJSONFile(filePath, objDoc)) {
 		std::cout << "Successfully saved objects to file." << std::endl;

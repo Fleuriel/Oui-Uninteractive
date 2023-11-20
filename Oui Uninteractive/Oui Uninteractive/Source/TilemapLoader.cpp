@@ -24,7 +24,10 @@ TilemapLoader::TilemapLoader() {
 * @brief Destructor
 *************************************************************************/
 TilemapLoader::~TilemapLoader() {
-
+	for (size_t i{}; i < tilemap.size(); i++) {
+		tilemap[i].clear();
+	}
+	tilemap.clear();
 }
 
 /**************************************************************************
@@ -78,8 +81,39 @@ bool TilemapLoader::LoadTilemap(const std::string& filePath) {
 * @param filePath - path to scene JSON file
 * @return void
 *************************************************************************/
-void TilemapLoader::SaveTilemap(const std::string& filePath) {
+rapidjson::Document TilemapLoader::SaveTilemap(const std::string& filePath) {
+	rapidjson::Document objDoc;
+	rapidjson::Document::AllocatorType& allocator = objDoc.GetAllocator();
+	JsonSerializer serializer;
+	serializer.ReadJSONFile(filePath, objDoc);
 
+	// Setting object for output JSON
+	objDoc.SetObject();
+
+	// Add rows to Tilemap array
+	rapidjson::Value tilemapArray(rapidjson::kArrayType);
+	for (auto rowIt{ tilemap.rbegin() }; rowIt != tilemap.rend(); ++rowIt) {
+		std::vector<int> row{ *rowIt };
+
+		// Add column data to Row array
+		rapidjson::Value rowArray(rapidjson::kArrayType);
+		for (int const& col : row) {
+			rapidjson::Value colValue;
+			colValue.SetInt(col);
+			rowArray.PushBack(colValue, allocator);
+		}
+		
+		tilemapArray.PushBack(rowArray, allocator);
+	}
+
+	// Add Tilemap array to output JSON
+	objDoc.AddMember("Tilemap", tilemapArray, allocator);
+
+	return objDoc;
+
+	/*if (serializer.WriteJSONFile(filePath, objDoc)) {
+		std::cout << "Successfully saved objects to file." << std::endl;
+	}*/
 }
 
 /**************************************************************************

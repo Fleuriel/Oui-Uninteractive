@@ -122,6 +122,13 @@ public:
 	bool CloneObject(size_t gameObjectID);
 
 	/**************************************************************************
+	* @brief Get rapidjson::Document object (containing JSON objects)
+	* @param filePath - directory of JSON file
+	* @return rapidjson::Document
+	*************************************************************************/
+	rapidjson::Document GetObjectDocSaving(const std::string& filePath);
+
+	/**************************************************************************
 	* @brief Save existing game object data to JSON file
 	* @param filePath - directory of JSON file
 	* @return void
