@@ -494,15 +494,18 @@ void OpenGLApplication::OpenGLUpdate() {
 		if (obj.TagID == 1)
 			obj.Update(0, 0, 100, 100, angle, true);
 
-		if (obj.TagID == 2) 
+		if (obj.TagID == 2)
 			obj.Update(300, 300, 100, 100, angle, false);
-		
+
+		if (obj.TagID == 3)
+			obj.Update(270, 230, 100, 100, angle, false);
+
 		if (obj.TagID == 9)
 			obj.Update(positionX, positionY, 0, 0, 0, 0);
 		
 
-		if (obj.TagID == 3)
-			obj.Update(2000, 2000, 1000, 1000, 0, 0);
+		//if (obj.TagID == 3)
+		//	obj.Update(2000, 2000, 1000, 1000, 0, 0);
 	}
 
 	// Updates the Game Object

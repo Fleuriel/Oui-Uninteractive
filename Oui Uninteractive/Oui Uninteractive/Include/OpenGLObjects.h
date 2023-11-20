@@ -172,7 +172,6 @@ public:
 
 		float Left, Right, Top, Bottom;
 
-		float heightRatio;
 
 		glm::mat3 cameraProjection;
 		glm::mat3 view_xform, CameraWindow_to_NDC_xform, World_to_NDC_xform;

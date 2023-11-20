@@ -138,19 +138,17 @@ void Background::Update(float newX, float newY, float scaleX, float scaleY) {
 	//Scale the model based on float variable.
 	scaleModel = glm::vec2(scaleX, scaleY);
 	//Set the new position.
-	position = glm::vec2(newX -OpenGLObject::cameraTranslator.position.x, newY - OpenGLObject::cameraTranslator.position.y);
+	position = glm::vec2(newX, newY);
 
 	
-	glm::vec2 afterScaleModel = scaleModel;
 
-	afterScaleModel *= OpenGLObject::cameraObject.heightRatio;
 
 	//scaleX *= OpenGLObject::cameraObject.height;
 
 	// Compute the scale matrix
 	glm::mat3 Scale = glm::mat3(
-		afterScaleModel.x, 0.0f, 0.0f,
-		0.0f, afterScaleModel.y, 0.0f,
+		scaleModel.x, 0.0f, 0.0f,
+		0.0f, scaleModel.y, 0.0f,
 		0.0f, 0.0f, 1.0f
 	);
 
@@ -181,7 +179,7 @@ void Background::Update(float newX, float newY, float scaleX, float scaleY) {
 	};
 
 	// Compute the model-to-world-to-NDC transformation matrix
-	model_To_NDC_xform = ScaleToWorldToNDC * glm::transpose(Translation) * glm::transpose(Rotation)  * glm::transpose(Scale);
+	model_To_NDC_xform = OpenGLObject::cameraObject.World_to_NDC_xform * glm::transpose(Translation) * glm::transpose(Rotation)  * glm::transpose(Scale);
 
 }
 
