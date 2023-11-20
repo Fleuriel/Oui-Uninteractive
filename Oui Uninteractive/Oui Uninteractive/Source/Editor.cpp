@@ -13,7 +13,7 @@
 #include "Editor.h"
 #include "Collision.h"
 
-// Defining static variables
+ // Defining static variables
 Editor::SystemTime Editor::timeRecorder;
 std::vector<float> Editor::fpsData;
 std::pair<int, int> Editor::gameWindowOrigin;
@@ -22,10 +22,10 @@ std::vector<std::string> prefabList;
 std::string Editor::browserInputPath;
 bool Editor::browserDoubleClicked;
 std::string Editor::browserSelectedItem;
-GameObject* Editor::selected; 
-	// Editor settings
-int Editor::iconSize{128};
-int Editor::iconPadding{16};
+GameObject* Editor::selected;
+// Editor settings
+int Editor::iconSize{ 128 };
+int Editor::iconPadding{ 16 };
 
 /**************************************************************************
 * @brief Helper function to build a custom tooltip with description
@@ -46,7 +46,7 @@ static void HelpMarker(std::string desc) {
 /**************************************************************************
 * @brief Initialization function for ImGui
 * @param window - Pointer to the GFLW window
-* @param glsl_vers - C-string containing the GLSL version used 
+* @param glsl_vers - C-string containing the GLSL version used
 * @return void
 *************************************************************************/
 void UsingImGui::Init(GLFWwindow* glfwWindow, const char* glsl_vers) {
@@ -65,7 +65,7 @@ void UsingImGui::Init(GLFWwindow* glfwWindow, const char* glsl_vers) {
 
 	// Config Flags
 	io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
-	
+
 	// Setup bindins
 	ImGui_ImplGlfw_InitForOpenGL(glfwWindow, true);
 	ImGui_ImplOpenGL3_Init(glsl_vers);
@@ -134,7 +134,7 @@ void UsingImGui::Draw() {
 	if (panelList.debugPanel) {
 		Editor::CreateDebugPanel();
 	}
-	
+
 	ImGui::Render();
 	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
@@ -170,7 +170,7 @@ void Editor::Init() {
 * @return void
 *************************************************************************/
 void Editor::Update() {
-	
+
 	ImGuiIO& io = ImGui::GetIO();
 	// Add FPS data point to vector
 	fpsData.push_back(io.Framerate);
@@ -197,7 +197,7 @@ void Editor::Update() {
 				}
 			}
 		}
-		
+
 	}
 	if (inputSystem.GetKeyState(GLFW_KEY_DELETE)) {
 		if (objectFactory->GetGameObjectByID(selected->GetGameObjectID()) != nullptr) {
@@ -214,14 +214,14 @@ void Editor::CreateMenuBar() {
 	static bool showAssBrowserSettings = false;
 	if (ImGui::BeginMainMenuBar()) {
 		if (ImGui::BeginMenu("File")) {
-			if (ImGui::MenuItem("Create")) {}		
+			if (ImGui::MenuItem("Create")) {}
 			if (ImGui::MenuItem("Save")) {}
 			ImGui::EndMenu();
 		}
 		if (ImGui::BeginMenu("Settings")) {
 			if (ImGui::MenuItem("AssBrowser##1")) {
 				showAssBrowserSettings = true;
-			}		
+			}
 			ImGui::EndMenu();
 		}
 		ImGui::EndMainMenuBar();
@@ -253,11 +253,11 @@ void Editor::CreateMasterPanel() {
 	ImGui::Checkbox("Prefab Editor", &panelList.prefabPanel); // Checkbox for prefab editor panel
 	ImGui::Checkbox("Sound Panel", &panelList.soundPanel); // Checkbox for sound panel
 	ImGui::Checkbox("Objects Panel", &panelList.objectPanel); // Checkbox for object manager panel
-	ImGui::Checkbox("Asset Browser", & panelList.assetBrowserPanel); // Checkbox for asset browser
+	ImGui::Checkbox("Asset Browser", &panelList.assetBrowserPanel); // Checkbox for asset browser
 	ImGui::Checkbox("Debug Panel", &panelList.debugPanel); // Checkbox for debug panel
 
 	if (ImGui::Button("Do Something")) {
-		
+
 	}
 
 
@@ -301,7 +301,7 @@ void Editor::CreateMasterPanel() {
 *************************************************************************/
 void Editor::CreateRenderWindow() {
 	ImGui::Begin("Game Window");
-	
+
 	if (ImGui::BeginChild("GameWindow")) {
 		gameWindowOrigin.first = static_cast<int>(ImGui::GetWindowPos().x);
 		gameWindowOrigin.second = static_cast<int>(ImGui::GetWindowPos().y);
@@ -382,11 +382,11 @@ void Editor::CreatePrefabPanel() {
 					size_t number = std::stoi(objName.substr(pos + defaultPrefabName.size())); // Extract and parse the number part
 					highestNumber = std::max(highestNumber, number);
 				}
-				
+
 			}
 		}
 		std::string name = defaultPrefabName + std::to_string(highestNumber + 1);
-		Prefab* prefab{ new Prefab(name, "Temp")};
+		Prefab* prefab{ new Prefab(name, "Temp") };
 		objectFactory->AddPrefabToMap(prefab, prefab->GetName());
 		saveFlag = true;
 	}
@@ -395,7 +395,7 @@ void Editor::CreatePrefabPanel() {
 		objectFactory->RemovePrefabFromMap(selectedName);
 		selectedName = it->first;
 		saveFlag = true;
-		
+
 	}
 	if (saveFlag) {
 		ImGui::SameLine();
@@ -412,7 +412,7 @@ void Editor::CreatePrefabPanel() {
 				GET_PREFAB_COMPONENT(objectFactory->GetPrefabByName(selectedName), PhysicsBody, ComponentType::PHYSICS_BODY)->frictionForce = phyFriction;
 				GET_PREFAB_COMPONENT(objectFactory->GetPrefabByName(selectedName), PhysicsBody, ComponentType::PHYSICS_BODY)->isStatic = phyIsStatic;
 				physicsUpdateFlag = true;
-			}		
+			}
 			if (!physicsFlag && objectFactory->GetPrefabByName(selectedName)->Has(ComponentType::PHYSICS_BODY) != -1) {
 				objectFactory->GetPrefabByName(selectedName)->RemoveComponent(GET_PREFAB_COMPONENT(objectFactory->GetPrefabByName(selectedName), PhysicsBody, ComponentType::PHYSICS_BODY));
 			}
@@ -438,7 +438,7 @@ void Editor::CreatePrefabPanel() {
 				objectFactory->GetPrefabByName(selectedName)->AddComponent(new LogicComponent(), ComponentType::LOGICCOMPONENT);
 			}
 			if (objectFactory->GetPrefabByName(selectedName)->Has(ComponentType::LOGICCOMPONENT) != -1) {
-				GET_PREFAB_COMPONENT(objectFactory->GetPrefabByName(selectedName), LogicComponent, ComponentType::LOGICCOMPONENT)->scriptIndexSet = tempLogicSet;				
+				GET_PREFAB_COMPONENT(objectFactory->GetPrefabByName(selectedName), LogicComponent, ComponentType::LOGICCOMPONENT)->scriptIndexSet = tempLogicSet;
 				logicUpdateFlag = true;
 			}
 			if (!logicFlag && objectFactory->GetPrefabByName(selectedName)->Has(ComponentType::LOGICCOMPONENT) == -1) {
@@ -497,15 +497,15 @@ void Editor::CreatePrefabPanel() {
 			saveFlag = false;
 		}
 	}
-	
 
-	
-	
+
+
+
 	// Left Plane
-	{	
+	{
 		ImGui::BeginChild("left pane", ImVec2(150, 0), true);
 		for (; it != copy.end(); it++) {
-			std::string prefabName = it->first;		
+			std::string prefabName = it->first;
 			if (ImGui::Selectable(prefabName.c_str(), prefabName == selectedName) || !loadedFlag) {
 				selectedName = prefabName;
 				initialized = false;
@@ -515,14 +515,14 @@ void Editor::CreatePrefabPanel() {
 				logicFlag = (copy[selectedName]->Has(ComponentType::LOGICCOMPONENT) != -1);
 				colliderFlag = (copy[selectedName]->Has(ComponentType::COLLIDER) != -1);
 				loadedFlag = true;
-				
+
 				if (copy[selectedName]->Has(ComponentType::PHYSICS_BODY) != -1) {
 					phyRotSpeed = GET_PREFAB_COMPONENT(objectFactory->GetPrefabByName(selectedName), PhysicsBody, ComponentType::PHYSICS_BODY)->rotationSpeed;
 					phySpeed = GET_PREFAB_COMPONENT(objectFactory->GetPrefabByName(selectedName), PhysicsBody, ComponentType::PHYSICS_BODY)->speed;
 					phyMass = GET_PREFAB_COMPONENT(objectFactory->GetPrefabByName(selectedName), PhysicsBody, ComponentType::PHYSICS_BODY)->mass;
 					phyFriction = GET_PREFAB_COMPONENT(objectFactory->GetPrefabByName(selectedName), PhysicsBody, ComponentType::PHYSICS_BODY)->frictionForce;
 					phyIsStatic = GET_PREFAB_COMPONENT(objectFactory->GetPrefabByName(selectedName), PhysicsBody, ComponentType::PHYSICS_BODY)->isStatic;
-				}	
+				}
 				if (copy[selectedName]->Has(ComponentType::TRANSFORM) != -1) {
 					transXpos = GET_PREFAB_COMPONENT(objectFactory->GetPrefabByName(selectedName), Transform, ComponentType::TRANSFORM)->position.x;
 					transYpos = GET_PREFAB_COMPONENT(objectFactory->GetPrefabByName(selectedName), Transform, ComponentType::TRANSFORM)->position.y;
@@ -565,8 +565,8 @@ void Editor::CreatePrefabPanel() {
 		if (ImGui::Checkbox("##Physics", &physicsFlag)) {
 			saveFlag = true;
 		}
-		ImGui::SameLine();		
-		if (ImGui::CollapsingHeader("Physics Body") ) {
+		ImGui::SameLine();
+		if (ImGui::CollapsingHeader("Physics Body")) {
 			ImGui::Indent();
 			if (ImGui::SliderFloat("Rotation Speed", &phyRotSpeed, 0.0f, 1000.0f)) saveFlag = true;
 			if (ImGui::SliderFloat("Speed", &phySpeed, 0.0f, 1000.0f)) saveFlag = true;
@@ -602,7 +602,7 @@ void Editor::CreatePrefabPanel() {
 						currentScriptIndex = i;
 						currentScriptName = logicSystem->scriptVec[i]->name;
 					}
-					
+
 					if (isSelected) {
 						ImGui::SetItemDefaultFocus();
 					}
@@ -626,12 +626,12 @@ void Editor::CreatePrefabPanel() {
 					tempLogicSet = prefabLogic->scriptIndexSet;
 					initialized = true;
 				}
-				
+
 				for (std::set<unsigned int>::iterator it = tempLogicSet.begin(); it != tempLogicSet.end(); it++) {
 					ImGui::Text(logicSystem->scriptVec[*it]->name.c_str());
 				}
 			}
-			
+
 			ImGui::EndChild();
 
 		}
@@ -647,7 +647,7 @@ void Editor::CreatePrefabPanel() {
 			if (ImGui::InputFloat("Rotation##", &colRot)) saveFlag = true;
 			ImGui::Unindent();
 		}
-		
+
 
 		ImGui::EndChild();
 		ImGui::EndGroup();
@@ -683,7 +683,7 @@ void Editor::CreateSoundPanel() {
 
 		// Check pause status for bgmch2
 		soundManager->bgmChannels[1]->getPaused(&pauseStatus2);
-		if (pauseStatus2) { 
+		if (pauseStatus2) {
 			ImGui::PushStyleColor(ImGuiCol_Text, redColour); // Red if not playing
 		}
 		else {
@@ -708,8 +708,8 @@ void Editor::CreateSoundPanel() {
 		if (ImGui::Button("Play/Pause")) {
 			soundManager->PlayBGMSounds();
 			soundManager->TogglePlayChannel(soundManager->bgmChannels[bgmChoice]);
-		} 
-		
+		}
+
 		ImGui::SeparatorText("SFX");
 		static int sfxChoice = 0;
 		ImGui::RadioButton("SFX 1", &sfxChoice, 0); ImGui::SameLine();
@@ -721,7 +721,7 @@ void Editor::CreateSoundPanel() {
 		}
 		ImGui::TreePop();
 	}
-	
+
 	ImGui::End();
 }
 
@@ -734,22 +734,22 @@ void Editor::CreateObjectList() {
 	static bool transformFlag, physicsFlag, logicFlag, colliderFlag;
 	ImGui::Begin("Pretty objects here");
 	static size_t gameobjID = 0;
-	
+
 	std::map<size_t, GameObject*> copyMap = objectFactory->GetGameObjectIDMap();
 	std::map<size_t, GameObject*>::iterator it = copyMap.begin();
 	// Left Plane
 	static size_t selectedID = 0;
 	{
 		ImGui::BeginChild("left pane", ImVec2(150, 0), true);
-		std::string prevName;	
-		
-		
+		std::string prevName;
+
+
 		int count = 0;
 		for (; it != copyMap.end(); it++) {
 
 			std::string objName = it->second->GetName();
 			size_t objID = it->second->GetGameObjectID();
-			
+
 			if (ImGui::Selectable(objName.c_str(), selectedID == count)) {
 				gameobjID = objID;
 				selectedID = count;
@@ -771,9 +771,9 @@ void Editor::CreateObjectList() {
 				}
 			}
 		}
-		
-		
-		
+
+
+
 		ImGui::EndChild();
 	}
 	ImGui::SameLine();
@@ -793,13 +793,13 @@ void Editor::CreateObjectList() {
 				if (objectFactory->GetGameObjectByID(gameobjID) != nullptr) {
 					ImGui::Text("Object ID: %d", objectFactory->GetGameObjectByID(gameobjID)->GetGameObjectID());
 					if (objectFactory->GetGameObjectByID(gameobjID)->Has(ComponentType::TRANSFORM) != -1) {
-						
-							xPos = GET_COMPONENT(objectFactory->GetGameObjectByID(gameobjID), Transform, ComponentType::TRANSFORM)->position.x;
-							yPos = GET_COMPONENT(objectFactory->GetGameObjectByID(gameobjID), Transform, ComponentType::TRANSFORM)->position.y;
-							scaleX = GET_COMPONENT(objectFactory->GetGameObjectByID(gameobjID), Transform, ComponentType::TRANSFORM)->scale.x;
-							scaleY = GET_COMPONENT(objectFactory->GetGameObjectByID(gameobjID), Transform, ComponentType::TRANSFORM)->scale.y;
-							angle = GET_COMPONENT(objectFactory->GetGameObjectByID(gameobjID), Transform, ComponentType::TRANSFORM)->rotation;
-						
+
+						xPos = GET_COMPONENT(objectFactory->GetGameObjectByID(gameobjID), Transform, ComponentType::TRANSFORM)->position.x;
+						yPos = GET_COMPONENT(objectFactory->GetGameObjectByID(gameobjID), Transform, ComponentType::TRANSFORM)->position.y;
+						scaleX = GET_COMPONENT(objectFactory->GetGameObjectByID(gameobjID), Transform, ComponentType::TRANSFORM)->scale.x;
+						scaleY = GET_COMPONENT(objectFactory->GetGameObjectByID(gameobjID), Transform, ComponentType::TRANSFORM)->scale.y;
+						angle = GET_COMPONENT(objectFactory->GetGameObjectByID(gameobjID), Transform, ComponentType::TRANSFORM)->rotation;
+
 					}
 					else {
 						xPos = yPos = scaleX = scaleY = angle = 0;
@@ -812,7 +812,7 @@ void Editor::CreateObjectList() {
 						speed = rotSpeed = 0;
 					}
 				}
-				
+
 				ImGui::Text("X-Position: %.2f | Y-Position: %.2f", xPos, yPos);
 				ImGui::Text("ScaleX: %.2f", scaleX);
 				ImGui::Text("ScaleY: %.2f", scaleY);
@@ -821,7 +821,7 @@ void Editor::CreateObjectList() {
 				ImGui::Text("Rotation Speed: %.2f", rotSpeed);
 				ImGui::Separator();
 			}
-			
+
 		}
 		// Master object controller
 		if (ImGui::CollapsingHeader("Master Object Manager")) {
@@ -830,7 +830,7 @@ void Editor::CreateObjectList() {
 
 			// Adding objects
 			ImGui::InputInt("Add Count", &addCount);
-			ImGui::SameLine(); 
+			ImGui::SameLine();
 
 			if (ImGui::Button("Add")) {
 				size_t highestNumber = 0; // Initialize with the lowest possible ID
@@ -864,20 +864,20 @@ void Editor::CreateObjectList() {
 				gameobjID = objectFactory->GetGameObjectIDMap().begin()->first;
 			}
 
-			ImGui::SameLine(); 
+			ImGui::SameLine();
 			HelpMarker("Use this to add as many objects as you want");
-			
+
 			// Cloning objects
 			ImGui::InputInt("Clone Count", &cloneCount);
 			ImGui::SameLine();
 			if (ImGui::Button("Clone")) {
 				for (int i = 0; i < cloneCount; i++) {
 					objectFactory->CloneObject(gameobjID);
-				}					
+				}
 			}
-			ImGui::SameLine(); 
+			ImGui::SameLine();
 			HelpMarker("Use this to clone as many objects as you want");
-			
+
 			// Deleting objects
 			if (ImGui::Button("Delete")) {
 				if (objectFactory->GetGameObjectByID(gameobjID) != nullptr) {
@@ -896,7 +896,7 @@ void Editor::CreateObjectList() {
 					if (counter == selectedID) {
 						getNext = true;
 					}
-					
+
 					counter++;
 				}
 				//edge case if deleted object is the last one
@@ -927,7 +927,7 @@ void Editor::CreateObjectList() {
 				for (size_t i{}; i < 2500; ++i) {
 					std::string goName{ "ObjectRunTime" + std::to_string(startIndex + i + 1) };
 					objectFactory->BuildObjectRunTime(goName, "Enemy");
-					objectFactory->AddComponent(ComponentType::PHYSICS_BODY, objectFactory->GetGameObjectByID(startIndex+ i));
+					objectFactory->AddComponent(ComponentType::PHYSICS_BODY, objectFactory->GetGameObjectByID(startIndex + i));
 					objectFactory->AddComponent(ComponentType::TRANSFORM, objectFactory->GetGameObjectByID(startIndex + i));
 					objectFactory->AddComponent(ComponentType::COLLIDER, objectFactory->GetGameObjectByID(startIndex + i));
 					objectFactory->GetGameObjectByID(startIndex + i)->Initialize();
@@ -935,7 +935,7 @@ void Editor::CreateObjectList() {
 					GET_COMPONENT(objectFactory->GetGameObjectByID(startIndex + i), Transform, ComponentType::TRANSFORM)->position.y = static_cast<float>(rand() % 600);
 				}
 			}
-		
+
 			ImGui::Separator();
 		}
 		// Individual Object Controls
@@ -944,33 +944,34 @@ void Editor::CreateObjectList() {
 				ImGui::Text("No Objects, Add some objects above");
 			}
 			else {
-				static float xPos2 = 0, yPos2 = 0, scale2 = 0, scaleY2 = 0, speed2 = 0, angle2 = 0, rotSpeed2 = 0;
-				if (objectFactory->GetGameObjectByID(gameobjID)->Has(ComponentType::TRANSFORM) != -1) {
-					transformFlag = true;
-				}
-				if (objectFactory->GetGameObjectByID(gameobjID)->Has(ComponentType::PHYSICS_BODY) != -1) {
-					physicsFlag = true;
-				}
-				if (objectFactory->GetGameObjectByID(gameobjID)->Has(ComponentType::LOGICCOMPONENT) != -1) {
-					logicFlag = true;
-				}
-				if (objectFactory->GetGameObjectByID(gameobjID)->Has(ComponentType::COLLIDER) != -1) {
-					colliderFlag = true;
-				}
-				ImGui::Indent();
-				if (ImGui::Checkbox("##Transform", &transformFlag)) {
-					Transform* objTX = GET_COMPONENT(objectFactory->GetGameObjectByID(gameobjID), Transform, ComponentType::TRANSFORM);
-					if (objTX != nullptr) {
-						objectFactory->GetGameObjectByID(gameobjID)->RemoveComponent(objTX);
-						transformFlag = false;
-					}
-					else {
-						objectFactory->GetGameObjectByID(gameobjID)->AddComponent(new Transform(), ComponentType::TRANSFORM);
-						objectFactory->GetGameObjectByID(gameobjID)->Initialize();
+				if (objectFactory->GetGameObjectByID(gameobjID) != nullptr) {
+					static float xPos2 = 0, yPos2 = 0, scale2 = 0, scaleY2 = 0, speed2 = 0, angle2 = 0, rotSpeed2 = 0;
+					if (objectFactory->GetGameObjectByID(gameobjID)->Has(ComponentType::TRANSFORM) != -1) {
 						transformFlag = true;
 					}
-				}
-				ImGui::SameLine();
+					if (objectFactory->GetGameObjectByID(gameobjID)->Has(ComponentType::PHYSICS_BODY) != -1) {
+						physicsFlag = true;
+					}
+					if (objectFactory->GetGameObjectByID(gameobjID)->Has(ComponentType::LOGICCOMPONENT) != -1) {
+						logicFlag = true;
+					}
+					if (objectFactory->GetGameObjectByID(gameobjID)->Has(ComponentType::COLLIDER) != -1) {
+						colliderFlag = true;
+					}
+					ImGui::Indent();
+					if (ImGui::Checkbox("##Transform", &transformFlag)) {
+						Transform* objTX = GET_COMPONENT(objectFactory->GetGameObjectByID(gameobjID), Transform, ComponentType::TRANSFORM);
+						if (objTX != nullptr) {
+							objectFactory->GetGameObjectByID(gameobjID)->RemoveComponent(objTX);
+							transformFlag = false;
+						}
+						else {
+							objectFactory->GetGameObjectByID(gameobjID)->AddComponent(new Transform(), ComponentType::TRANSFORM);
+							objectFactory->GetGameObjectByID(gameobjID)->Initialize();
+							transformFlag = true;
+						}
+					}
+					ImGui::SameLine();
 					if (ImGui::CollapsingHeader("Transform")) {
 						if (objectFactory->GetGameObjectByID(gameobjID)->Has(ComponentType::TRANSFORM) != -1) {
 							xPos2 = GET_COMPONENT(objectFactory->GetGameObjectByID(gameobjID), Transform, ComponentType::TRANSFORM)->position.x;
@@ -1002,10 +1003,12 @@ void Editor::CreateObjectList() {
 							ImGui::Text("Selected Object has no TRANSFORM component");
 						}
 					}
-				ImGui::Unindent();
-				
-				
-				
+
+
+					ImGui::Unindent();
+
+
+
 					ImGui::Indent();
 					if (ImGui::Checkbox("##Physics", &physicsFlag)) {
 						PhysicsBody* objBody = GET_COMPONENT(objectFactory->GetGameObjectByID(gameobjID), PhysicsBody, ComponentType::PHYSICS_BODY);
@@ -1038,8 +1041,8 @@ void Editor::CreateObjectList() {
 						}
 					}
 					ImGui::Unindent();
-				
-				
+
+
 					static std::string currentScriptName;
 					static int currentScriptIndex;
 					ImGui::Indent();
@@ -1054,7 +1057,7 @@ void Editor::CreateObjectList() {
 							objectFactory->GetGameObjectByID(gameobjID)->Initialize();
 							logicFlag = true;
 						}
-						
+
 
 					}
 					ImGui::SameLine();
@@ -1084,20 +1087,20 @@ void Editor::CreateObjectList() {
 							if (ImGui::Button("Delete Script")) {
 								objectLogic->scriptIndexSet.erase(currentScriptIndex);
 							}
-						
+
 							if (objectLogic != nullptr) {
 								for (std::set<unsigned int>::iterator it = objectLogic->scriptIndexSet.begin(); it != objectLogic->scriptIndexSet.end(); it++) {
 									ImGui::Text(logicSystem->scriptVec[*it]->name.c_str());
 								}
 							}
-							}
+						}
 						else {
 							ImGui::Text("Selected Object has no LOGIC component");
 						}
 					}
 					ImGui::Unindent();
-				
-				
+
+
 					ImGui::Indent();
 					if (ImGui::Checkbox("##Collider", &colliderFlag)) {
 						Collider* objCollider = GET_COMPONENT(objectFactory->GetGameObjectByID(gameobjID), Collider, ComponentType::COLLIDER);
@@ -1130,13 +1133,13 @@ void Editor::CreateObjectList() {
 							ImGui::Text("Selected Object has no COLLIDER component");
 						}
 					}
-				
+				}
 			}
-			
+
 			ImGui::Separator();
 		}
-		
-		
+
+
 		ImGui::EndChild();
 
 		ImGui::EndGroup();
@@ -1153,7 +1156,7 @@ void Editor::CreateObjectList() {
 void Editor::CreateAssetBrowser() {
 	ImGui::Begin("Asset Browser");
 	ImVec2 panelSize = ImGui::GetContentRegionAvail();
-	
+
 	static std::string currFilePath = FILEPATH_MASTER;
 	static bool validPath = true;
 
@@ -1178,7 +1181,7 @@ void Editor::CreateAssetBrowser() {
 		std::filesystem::path temp = currFilePath;
 		if (std::filesystem::exists(temp) && temp.string() != FILEPATH_MASTER) {
 			browserInputPath = temp.parent_path().string();
-			currFilePath = browserInputPath;		
+			currFilePath = browserInputPath;
 			validPath = true;
 		}
 	}
@@ -1267,8 +1270,8 @@ void Editor::CreateAssetBrowser() {
 			ImGui::CloseCurrentPopup();
 		}
 		ImGui::EndPopup();
-	}	
-			
+	}
+
 	ImGui::BeginChild("BrowserPane", ImVec2(panelSize.x, 0), true);
 	if (validPath) {
 		RenderDirectoryV2(currFilePath);
@@ -1279,8 +1282,8 @@ void Editor::CreateAssetBrowser() {
 		ImGui::PopStyleColor();
 	}
 	ImGui::EndChild();
-	
-	
+
+
 	ImGui::End();
 }
 
@@ -1302,11 +1305,11 @@ void Editor::CreateDebugPanel() {
 			ImGui::PushStyleColor(ImGuiCol_Text, bananaColour);
 		}
 		else {
-			ImGui::PushStyleColor(ImGuiCol_Text, greenColour);		
+			ImGui::PushStyleColor(ImGuiCol_Text, greenColour);
 		}
 		ImGui::Text("Program FPS: %.2f", io.Framerate); // Display program FPS in "Performance" tab
 		ImGui::PopStyleColor();
-		
+
 		ImGui::PushStyleColor(ImGuiCol_PlotLines, pinkColour);
 		ImGui::PlotLines("Current FPS", fpsData.data(), static_cast<int>(fpsData.size()), 0, "FPS", 0.0f, 300.0f, ImVec2(0, 80));
 		ImGui::PopStyleColor();
@@ -1324,7 +1327,7 @@ void Editor::CreateDebugPanel() {
 		float scenemanagerPercentage = static_cast<float>(timeRecorder.scenemanagerTime / GetDT());
 		float colliderPercentage = static_cast<float>(timeRecorder.colliderTime / GetDT());
 		float transformPercentage = static_cast<float>(timeRecorder.transformTime / GetDT());
-		static const char* chartLabels[] = { "Physics", "Graphics" , "Sound", "Particles", "Scene Manager", "Collider", "Transform"};
+		static const char* chartLabels[] = { "Physics", "Graphics" , "Sound", "Particles", "Scene Manager", "Collider", "Transform" };
 		float data[] = {
 			physicsPercentage, grpahicsPercentage, soundPercentage, particlesPercentage, scenemanagerPercentage, colliderPercentage, transformPercentage
 		};
@@ -1342,7 +1345,7 @@ void Editor::CreateDebugPanel() {
 		static bool drawBB = false;
 		static size_t gameobjID = 0;
 		ImGui::Checkbox("Display bounding box", &drawBB);
-		
+
 		if (drawBB) {
 
 			OpenGLObject::renderBoundingBox = true;
@@ -1364,15 +1367,15 @@ void Editor::CreateDebugPanel() {
 			ImGui::Text("Mouse position: (%g, %g)", io.MousePos.x, io.MousePos.y);
 		}
 		ImGui::Text("Click duration:");
-		for (int i = 0; i < IM_ARRAYSIZE(io.MouseDown); i++) if (ImGui::IsMouseDown(i)) { 
-			ImGui::SameLine(); ImGui::Text("M%d (%.2f secs)", i + 1, io.MouseDownDuration[i]); 
+		for (int i = 0; i < IM_ARRAYSIZE(io.MouseDown); i++) if (ImGui::IsMouseDown(i)) {
+			ImGui::SameLine(); ImGui::Text("M%d (%.2f secs)", i + 1, io.MouseDownDuration[i]);
 		}
 
 		ImGui::Separator();
 		// Keyboard input checks
 		struct funcs {
 			static bool IsLegacyNativeDupe(ImGuiKey key) {
-				if (key < 0 || key >= ImGuiKey_COUNT) {					
+				if (key < 0 || key >= ImGuiKey_COUNT) {
 					return false; // Handle  key is out of bounds
 				}
 				return key < 512 && ImGui::GetIO().KeyMap[key] != -1;
@@ -1385,11 +1388,11 @@ void Editor::CreateDebugPanel() {
 			ImGui::SameLine();
 			ImGui::Text("\"%s\"", ImGui::GetKeyName(key));
 		}
-		ImGui::Text("Keys modifiers: %s%s%s%s", io.KeyCtrl ? "CTRL " : "", io.KeyShift ? "SHIFT " : "", io.KeyAlt ? "ALT " : "", io.KeySuper ? "SUPER " : "");		
+		ImGui::Text("Keys modifiers: %s%s%s%s", io.KeyCtrl ? "CTRL " : "", io.KeyShift ? "SHIFT " : "", io.KeyAlt ? "ALT " : "", io.KeySuper ? "SUPER " : "");
 	}
 	ImGui::End();
 }
-	
+
 //// Recursive helper function to render the file directory for the asset browser	
 //void Editor::RenderDirectory(const std::string& filePath) {
 //	std::filesystem::path dirPath(filePath);
@@ -1466,7 +1469,7 @@ void Editor::RenderDirectoryV2(const std::string& filePath) {
 				// Handle single click on any item
 				browserSelectedItem = entryName;
 			}
-			
+
 		}
 		ImGui::TextWrapped(entryName.c_str());
 		ImGui::NextColumn();
