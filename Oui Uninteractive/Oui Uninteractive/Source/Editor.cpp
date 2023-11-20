@@ -417,8 +417,13 @@ void Editor::CreatePrefabPanel() {
 	}
 	if (saveFlag) {
 		ImGui::SameLine();
+		bool physicsUpdateFlag = false;
+		bool transformUpdateFlag = false;
+		bool logicUpdateFlag = false;
+		bool colliderUpdateFlag = false;
+		
+		ImGui::SameLine();
 		if (ImGui::Button("Save")) {
-			bool physicsUpdateFlag, transformUpdateFlag, logicUpdateFlag, colliderUpdateFlag = false;
 			// Handle saving/deleteion for physics body component
 			if (physicsFlag && objectFactory->GetPrefabByName(selectedName)->Has(ComponentType::PHYSICS_BODY) == -1) {
 				objectFactory->GetPrefabByName(selectedName)->AddComponent(new PhysicsBody(), ComponentType::PHYSICS_BODY);
@@ -477,42 +482,68 @@ void Editor::CreatePrefabPanel() {
 			if (!colliderFlag && objectFactory->GetPrefabByName(selectedName)->Has(ComponentType::COLLIDER) != -1) {
 				objectFactory->GetPrefabByName(selectedName)->RemoveComponent(GET_PREFAB_COMPONENT(objectFactory->GetPrefabByName(selectedName), Collider, ComponentType::COLLIDER));
 			}
-
+			objectFactory->SavePrefabsToFile(FILEPATH_PREFAB);
+			saveFlag = false;
+		}
+		if (ImGui::Button("Preview Changes")) {
 			std::map<size_t, GameObject*> copyMap = objectFactory->GetGameObjectIDMap();
 			for (std::map<size_t, GameObject*>::iterator it = copyMap.begin(); it != copyMap.end(); it++) {
 				if ((*it).second->GetType() == objectFactory->GetPrefabByName(selectedName)->GetType()) {
-					if (transformUpdateFlag) {
-						Transform* prefabTX = GET_PREFAB_COMPONENT(objectFactory->GetPrefabByName(selectedName), Transform, ComponentType::TRANSFORM);
+				
+					/*	Transform* prefabTX = GET_PREFAB_COMPONENT(objectFactory->GetPrefabByName(selectedName), Transform, ComponentType::TRANSFORM);
 						Transform* objTX = GET_COMPONENT(objectFactory->GetGameObjectByID((*it).second->GetGameObjectID()), Transform, ComponentType::TRANSFORM);
 						objTX->scale = prefabTX->scale;
 						objTX->position = prefabTX->position;
-						objTX->rotation = prefabTX->rotation;
+						objTX->rotation = prefabTX->rotation;*/
+					Transform* objTX = GET_COMPONENT(objectFactory->GetGameObjectByID((*it).second->GetGameObjectID()), Transform, ComponentType::TRANSFORM);
+					if (objTX != nullptr) {
+						objTX->scale.x = transScaleX;
+						objTX->scale.y = transScaleY;
+						objTX->position = Vec2(transXpos, transYpos);
+						objTX->rotation = transRot;
 					}
-					if (physicsUpdateFlag) {
-						PhysicsBody* prefabBody = GET_PREFAB_COMPONENT(objectFactory->GetPrefabByName(selectedName), PhysicsBody, ComponentType::PHYSICS_BODY);
+					
+					
+					/*	PhysicsBody* prefabBody = GET_PREFAB_COMPONENT(objectFactory->GetPrefabByName(selectedName), PhysicsBody, ComponentType::PHYSICS_BODY);
 						PhysicsBody* objBody = GET_COMPONENT(objectFactory->GetGameObjectByID((*it).second->GetGameObjectID()), PhysicsBody, ComponentType::PHYSICS_BODY);
 						objBody->rotationSpeed = prefabBody->rotationSpeed;
 						objBody->mass = prefabBody->mass;
 						objBody->frictionForce = prefabBody->frictionForce;
 						objBody->speed = prefabBody->speed;
-						objBody->isStatic = prefabBody->isStatic;
+						objBody->isStatic = prefabBody->isStatic;*/
+					PhysicsBody* objBody = GET_COMPONENT(objectFactory->GetGameObjectByID((*it).second->GetGameObjectID()), PhysicsBody, ComponentType::PHYSICS_BODY);
+					if (objBody != nullptr) {
+						objBody->rotationSpeed = phyRotSpeed;
+						objBody->speed = phySpeed;
+						objBody->mass = phyMass;
+						objBody->frictionForce = phyFriction;
+						objBody->isStatic = phyIsStatic;
 					}
-					if (logicUpdateFlag) {
-						LogicComponent* prefabLogic = GET_PREFAB_COMPONENT(objectFactory->GetPrefabByName(selectedName), LogicComponent, ComponentType::LOGICCOMPONENT);
+					
+					
+					/*	LogicComponent* prefabLogic = GET_PREFAB_COMPONENT(objectFactory->GetPrefabByName(selectedName), LogicComponent, ComponentType::LOGICCOMPONENT);
 						LogicComponent* objLogic = GET_COMPONENT(objectFactory->GetGameObjectByID((*it).second->GetGameObjectID()), LogicComponent, ComponentType::LOGICCOMPONENT);
-						objLogic->scriptIndexSet = prefabLogic->scriptIndexSet;
+						objLogic->scriptIndexSet = prefabLogic->scriptIndexSet;*/
+					LogicComponent* objLogic = GET_COMPONENT(objectFactory->GetGameObjectByID((*it).second->GetGameObjectID()), LogicComponent, ComponentType::LOGICCOMPONENT);
+					if (objLogic != nullptr) {
+						objLogic->scriptIndexSet = tempLogicSet;
 					}
-					if (colliderUpdateFlag) {
-						Collider* prefabCollider = GET_PREFAB_COMPONENT(objectFactory->GetPrefabByName(selectedName), Collider, ComponentType::COLLIDER);
-						Collider* objCollider = GET_COMPONENT(objectFactory->GetGameObjectByID((*it).second->GetGameObjectID()), Collider, ComponentType::COLLIDER);
-						objCollider->tx->scale = prefabCollider->tx->scale;
-						objCollider->tx->rotation = prefabCollider->tx->rotation;
+					
+					
+					/*Collider* prefabCollider = GET_PREFAB_COMPONENT(objectFactory->GetPrefabByName(selectedName), Collider, ComponentType::COLLIDER);
+					Collider* objCollider = GET_COMPONENT(objectFactory->GetGameObjectByID((*it).second->GetGameObjectID()), Collider, ComponentType::COLLIDER);
+					objCollider->tx->scale = prefabCollider->tx->scale;
+					objCollider->tx->rotation = prefabCollider->tx->rotation;*/
+					Collider* objCollider = GET_COMPONENT(objectFactory->GetGameObjectByID((*it).second->GetGameObjectID()), Collider, ComponentType::COLLIDER);
+					if (objCollider != nullptr) {
+						objCollider->tx->scale.x = colScaleX;
+						objCollider->tx->scale.y = colScaleY;
+						objCollider->tx->rotation = colRot;
 					}
+					
 				}
 			}
 			// Save and serialize prefabs
-			objectFactory->SavePrefabsToFile(FILEPATH_PREFAB);
-			saveFlag = false;
 		}
 	}
 
