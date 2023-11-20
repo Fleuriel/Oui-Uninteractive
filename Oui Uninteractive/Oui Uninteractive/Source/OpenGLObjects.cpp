@@ -405,9 +405,12 @@ void OpenGLObject::Draw(std::string type, bool spriteUsage, Vec2 vel) const {
 			glfwGetCursorPos(windowNew, &mouseX, &mouseY);
 			OpenGLObject::FrameBufferMouseCoords(windowNew, &mouseX, &mouseY, OpenGLObject::cameraObject);
 			
+			std::cout << "Mouse X : " << mouseX << "\n";
+			std::cout << "Mouse Y : " << mouseY << "\n";
+
 			Vec2 vec = { static_cast<float>(mouseX) - position.x , static_cast<float>(mouseY) - position.y };
 
-			spriterow = (((vec.x > 0) ? vec.x : -vec.x) < ((vec.y > 0) ? vec.y : -vec.y)) ? (vec.y < 0) ? 0 : 1 : (vec.x > 0) ? 2 : 3;
+			spriterow = ((vec.x>0)?2:3);
 		}
 		else {
 			if (movement == "_Walk")
