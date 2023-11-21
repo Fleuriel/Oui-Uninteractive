@@ -423,6 +423,7 @@ void Editor::CreatePrefabPanel() {
 		bool colliderUpdateFlag = false;
 		
 		ImGui::SameLine();
+		std::map<size_t, GameObject*> copyMap = objectFactory->GetGameObjectIDMap();
 		if (ImGui::Button("Save")) {
 			// Handle saving/deleteion for physics body component
 			if (physicsFlag && objectFactory->GetPrefabByName(selectedName)->Has(ComponentType::PHYSICS_BODY) == -1) {
@@ -533,7 +534,7 @@ void Editor::CreatePrefabPanel() {
 			saveFlag = false;
 		}
 		if (ImGui::Button("Preview Changes")) {
-			std::map<size_t, GameObject*> copyMap = objectFactory->GetGameObjectIDMap();
+			
 			for (std::map<size_t, GameObject*>::iterator it = copyMap.begin(); it != copyMap.end(); it++) {
 				if ((*it).second->GetType() == objectFactory->GetPrefabByName(selectedName)->GetType()) {
 				
