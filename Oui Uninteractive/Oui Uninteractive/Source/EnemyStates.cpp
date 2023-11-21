@@ -25,8 +25,8 @@
 *************************************************************************/
 //EnemyRoam::EnemyRoam() : bfs(new BFS(5, 5)), transitioned(false), pathFound(false), pathPrinted(false), pathIndex(0) {
 EnemyRoam::EnemyRoam() : bfs(new BFS(tilemapLoader->GetTilemap())), transitioned(false), pathFound(false), pathPrinted(false), pathIndex(0) {
-    windowWidth = 1300.f;
-    windowHeight = 1016.f;
+    windowWidth = 1920.f;
+    windowHeight = 1080.f;
     scaleTemp = windowHeight / bfs->GetRows();
 }
 
