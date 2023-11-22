@@ -139,6 +139,7 @@ void ObjectFactory::BuildObjectFromFile(const std::string& filePath) {
 		// For each object in Objects array (in JSON file)
 		for (auto& obj : objDoc["Objects"].GetArray()) {
 			GameObject* gameObject{ new GameObject(obj["Name"].GetString(), obj["Type"].GetString()) };
+			gameObject->SetUsingSprite(obj["UsingSprite"].GetBool());
 
 			// Get each component(s) in current object
 			const rapidjson::Value& components{ obj["Components"] };
@@ -183,7 +184,6 @@ void ObjectFactory::BuildObjectFromFile(const std::string& filePath) {
 * @return GameObject*
 *************************************************************************/
 GameObject* ObjectFactory::BuildObjectRunTime(const std::string& name, const std::string& type) {
-	//GameObject* objectRunTime{ new GameObject(name, type, state) };
 	GameObject* objectRunTime{ new GameObject(name, type) };
 	AssignObjectID(objectRunTime);
 	return objectRunTime;
@@ -202,6 +202,7 @@ GameObject* ObjectFactory::BuildObjectFromPrefab(const std::string& name, const 
 	}
 	else {
 		GameObject* gameObject{ new GameObject(name, type) };
+		gameObject->SetUsingSprite(prefabMap[type]->IsUsingSprite());
 		
 		// Copy component list from prefab to newly-created game object
 		for (size_t i{}; i < prefabMap[type]->prefabComponentList.size(); ++i) {
@@ -235,6 +236,7 @@ void ObjectFactory::LoadPrefab(const std::string& filePath) {
 		for (auto& obj : objDoc["Objects"].GetArray()) {
 			
 			Prefab* prefab{ new Prefab(obj["Name"].GetString(), obj["Type"].GetString()) };
+			prefab->SetUsingSprite(obj["UsingSprite"].GetBool());
 
 			// Get each component(s) in current prefab
 			const rapidjson::Value& components{ obj["Components"] };
@@ -283,6 +285,7 @@ bool ObjectFactory::CloneObject(size_t gameObjectID) {
 		objectStr += "Object" + std::to_string(gameObjectCurrentID + 1);
 
 		GameObject* clone = BuildObjectRunTime(objectStr, original->gameObjectType);
+		clone->SetUsingSprite(original->IsUsingSprite());
 
 		for (int i = 0; i < original->componentList.size(); i++) {
 			clone->AddComponent(original->componentList.at(i)->Clone(), original->componentList[i]->componentType);
@@ -297,11 +300,11 @@ bool ObjectFactory::CloneObject(size_t gameObjectID) {
 }
 
 /**************************************************************************
-* @brief Save existing game object data to JSON file
+* @brief Get rapidjson::Document object (containing JSON objects)
 * @param filePath - directory of JSON file
-* @return void
+* @return rapidjson::Document
 *************************************************************************/
-void ObjectFactory::SaveObjectsToFile(const std::string& filePath) {
+rapidjson::Document ObjectFactory::GetObjectDocSaving(const std::string& filePath) {
 	rapidjson::Document objDoc;
 	rapidjson::Document::AllocatorType& allocator = objDoc.GetAllocator();
 	JsonSerializer serializer;
@@ -310,12 +313,15 @@ void ObjectFactory::SaveObjectsToFile(const std::string& filePath) {
 	// Setting object for output JSON
 	objDoc.SetObject();
 
-	// Adding object count
-	objDoc.AddMember("ObjectCount", gameObjectIDMap.size(), allocator);
-	
+	// Store object count
+	int objectCount{};
+
 	// Add objects to Objects array
 	rapidjson::Value writeObjects(rapidjson::kArrayType);
 	for (const auto& it : gameObjectIDMap) {
+		if (it.second->GetType() == "Wall") {
+			continue;
+		}	
 		const GameObject* gameObject = it.second;
 		rapidjson::Value jsonObj(rapidjson::kObjectType);	// Create JSON object
 		rapidjson::Value stringVar;
@@ -325,6 +331,8 @@ void ObjectFactory::SaveObjectsToFile(const std::string& filePath) {
 		jsonObj.AddMember("Name", stringVar, allocator);
 		stringVar.SetString(gameObject->gameObjectType.c_str(), allocator);
 		jsonObj.AddMember("Type", stringVar, allocator);
+		stringVar.SetBool(gameObject->usingSprite);
+		jsonObj.AddMember("UsingSprite", stringVar, allocator);
 
 		// Components object
 		rapidjson::Value components(rapidjson::kObjectType);
@@ -369,7 +377,7 @@ void ObjectFactory::SaveObjectsToFile(const std::string& filePath) {
 			else if (componentName == "EnemyFSM") {
 				individualComponent.AddMember("AggroRange", GET_COMPONENT(it.second, EnemyFSM, ComponentType::ENEMY_FSM)->aggroRange, allocator);
 			}
-			
+
 			// Add individual component to components object
 			rapidjson::Value componentNameJson;
 			componentNameJson.SetString(componentName.c_str(), allocator);
@@ -381,10 +389,28 @@ void ObjectFactory::SaveObjectsToFile(const std::string& filePath) {
 
 		// Add JSON object to Objects array
 		writeObjects.PushBack(jsonObj, allocator);
+
+		// Increment object counter
+		++objectCount;
 	}
+
+	// Adding object count member
+	objDoc.AddMember("ObjectCount", objectCount, allocator);
 
 	// Add object array to output JSON
 	objDoc.AddMember("Objects", writeObjects, allocator);
+
+	return objDoc;
+}
+
+/**************************************************************************
+* @brief Save existing game object data to JSON file
+* @param filePath - directory of JSON file
+* @return void
+*************************************************************************/
+void ObjectFactory::SaveObjectsToFile(const std::string& filePath) {
+	rapidjson::Document objDoc{ GetObjectDocSaving(filePath) };
+	JsonSerializer serializer;
 
 	if (serializer.WriteJSONFile(filePath, objDoc)) {
 		std::cout << "Successfully saved objects to file." << std::endl;
@@ -420,6 +446,8 @@ void ObjectFactory::SavePrefabsToFile(const std::string& filePath) {
 		jsonObj.AddMember("Name", stringVar, allocator);
 		stringVar.SetString(prefab->prefabName.c_str(), allocator);
 		jsonObj.AddMember("Type", stringVar, allocator);
+		stringVar.SetBool(prefab->usingSprite);
+		jsonObj.AddMember("UsingSprite", stringVar, allocator);
 
 		// Components object
 		rapidjson::Value components(rapidjson::kObjectType);

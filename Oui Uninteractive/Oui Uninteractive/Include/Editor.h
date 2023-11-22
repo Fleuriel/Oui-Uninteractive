@@ -90,6 +90,7 @@ public:
 	static std::pair<int, int> gameWindowOrigin;
 	static std::pair<int, int> gameWindowSize;
 	static GameObject* selected;
+	static OpenGLObject selectedOutline;
 
 public:
 	// ImGui colour definitions

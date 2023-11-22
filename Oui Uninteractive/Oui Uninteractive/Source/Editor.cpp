@@ -12,7 +12,7 @@
 #include <iostream>
 #include "Editor.h"
 #include "Collision.h"
-
+#define PI 3.141592653589793
  // Defining static variables
 Editor::SystemTime Editor::timeRecorder;
 std::vector<float> Editor::fpsData;
@@ -23,6 +23,7 @@ std::string Editor::browserInputPath;
 bool Editor::browserDoubleClicked;
 std::string Editor::browserSelectedItem;
 GameObject* Editor::selected;
+OpenGLObject Editor::selectedOutline;
 // Editor settings
 int Editor::iconSize{ 128 };
 int Editor::iconPadding{ 16 };
@@ -135,6 +136,7 @@ void UsingImGui::Draw() {
 		Editor::CreateDebugPanel();
 	}
 
+	//Editor::selectedOutline.Draw(std::string(""), true);
 	ImGui::Render();
 	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
@@ -162,6 +164,7 @@ void Editor::Init() {
 	maxFPSdata = 2000;
 	browserDoubleClicked = false;
 	browserInputPath = FILEPATH_MASTER;
+	Editor::selectedOutline.InitObjects();
 }
 
 
@@ -190,20 +193,49 @@ void Editor::Update() {
 		//std::cout << tx->position.x << "|" << tx->position.y << "\n";
 		//std::cout << Editor::gameWindowSize.first << "|" << Editor::gameWindowSize.second << "\n";
 		if ((mouseX > (-Editor::gameWindowSize.first / 2.f) && mouseX < (Editor::gameWindowSize.first / 2.f)) && (mouseY > (-Editor::gameWindowSize.second / 2.f) && mouseY < Editor::gameWindowSize.second / 2.f)) {
-			if (CollisionMouseRect(tx->position, tx->scale.x, tx->scale.y, mouseX, mouseY)) {
-				if (inputSystem.GetMouseState(GLFW_MOUSE_BUTTON_1)) {
+			if (inputSystem.GetMouseState(GLFW_MOUSE_BUTTON_1)) {
+				if (CollisionMouseRect(tx->position, tx->scale.x, tx->scale.y, mouseX, mouseY)) {
 					selected = gObj.second;
-					tx->position = Vec2(mouseX, mouseY);
+					break;
+				}
+				else {
+					selected = nullptr;
 				}
 			}
 		}
 
 	}
+
+	if (selected != nullptr) {
+		Transform* tx = GET_COMPONENT(selected, Transform, ComponentType::TRANSFORM);
+		if ((mouseX > (-Editor::gameWindowSize.first / 2.f) && mouseX < (Editor::gameWindowSize.first / 2.f)) && (mouseY > (-Editor::gameWindowSize.second / 2.f) && mouseY < Editor::gameWindowSize.second / 2.f)) {
+			if (inputSystem.GetMouseState(GLFW_MOUSE_BUTTON_1)) {
+				tx->position = Vec2(mouseX, mouseY);
+			}
+		}
+		if (tx != nullptr) {
+			Matrix3x3 scale = Matrix3x3(tx->scale.x * 1.1f, 0.f, 0.f,
+				0.f, tx->scale.y * 1.1f, 0.f,
+				0.f, 0.0f, 1.0f);
+			float radRot = tx->rotation * (static_cast<float>(PI) / 180.0f);
+			Matrix3x3 rotate = Matrix3x3(cosf(radRot), sinf(radRot), 0,
+				-sinf(radRot), cosf(radRot), 0.f,
+				0.f, 0.f, 1.0f);
+			Matrix3x3 translate = Matrix3x3(1.f, 0.f, 0.f,
+				0.f, 1.f, 0.f,
+				tx->position.x, tx->position.y, 1.0f);
+			selectedOutline.Update(scale, rotate, translate);
+		}
+		
+	}
 	if (inputSystem.GetKeyState(GLFW_KEY_DELETE)) {
-		if (objectFactory->GetGameObjectByID(selected->GetGameObjectID()) != nullptr) {
+		if (selected != nullptr) {
 			objectFactory->DestroyObject(objectFactory->GetGameObjectByID(selected->GetGameObjectID()));
+			selected = nullptr;
 		}
 	}
+
+	
 }
 
 /* ============================================
@@ -281,7 +313,25 @@ void Editor::CreateMasterPanel() {
 	//std::cout << sceneFileName << std::endl;
 	// Save level to file
 	if (ImGui::Button("Save scene")) {
-		objectFactory->SaveObjectsToFile(sceneFileName);
+		rapidjson::Document tilemapDoc = tilemapLoader->SaveTilemap(sceneFileName);
+		const rapidjson::Document& objectDoc = objectFactory->GetObjectDocSaving(sceneFileName);
+
+		rapidjson::Document::AllocatorType& allocator = tilemapDoc.GetAllocator();
+		
+		for (auto& member : objectDoc.GetObj()) {
+			// Check for conflicts or handle them based on your needs
+			if (!tilemapDoc.HasMember(member.name)) {
+				rapidjson::Value key(member.name, allocator);
+				rapidjson::Value value;
+				value.CopyFrom(member.value, allocator);
+				tilemapDoc.AddMember(key, value, allocator);
+			}
+		}
+		JsonSerializer serializer;
+		if (serializer.WriteJSONFile(sceneFileName, tilemapDoc)) {
+			std::cout << "Successfully saved objects to file." << std::endl;
+		}
+		//objectFactory->SaveObjectsToFile(sceneFileName);
 	}
 	ImGui::SameLine();
 	// Load level from file
@@ -399,8 +449,14 @@ void Editor::CreatePrefabPanel() {
 	}
 	if (saveFlag) {
 		ImGui::SameLine();
+		bool physicsUpdateFlag = false;
+		bool transformUpdateFlag = false;
+		bool logicUpdateFlag = false;
+		bool colliderUpdateFlag = false;
+		
+		ImGui::SameLine();
+		std::map<size_t, GameObject*> copyMap = objectFactory->GetGameObjectIDMap();
 		if (ImGui::Button("Save")) {
-			bool physicsUpdateFlag, transformUpdateFlag, logicUpdateFlag, colliderUpdateFlag = false;
 			// Handle saving/deleteion for physics body component
 			if (physicsFlag && objectFactory->GetPrefabByName(selectedName)->Has(ComponentType::PHYSICS_BODY) == -1) {
 				objectFactory->GetPrefabByName(selectedName)->AddComponent(new PhysicsBody(), ComponentType::PHYSICS_BODY);
@@ -459,18 +515,23 @@ void Editor::CreatePrefabPanel() {
 			if (!colliderFlag && objectFactory->GetPrefabByName(selectedName)->Has(ComponentType::COLLIDER) != -1) {
 				objectFactory->GetPrefabByName(selectedName)->RemoveComponent(GET_PREFAB_COMPONENT(objectFactory->GetPrefabByName(selectedName), Collider, ComponentType::COLLIDER));
 			}
-
-			std::map<size_t, GameObject*> copyMap = objectFactory->GetGameObjectIDMap();
 			for (std::map<size_t, GameObject*>::iterator it = copyMap.begin(); it != copyMap.end(); it++) {
 				if ((*it).second->GetType() == objectFactory->GetPrefabByName(selectedName)->GetType()) {
-					if (transformUpdateFlag) {
+
+				
+					Transform* objTX = GET_COMPONENT(objectFactory->GetGameObjectByID((*it).second->GetGameObjectID()), Transform, ComponentType::TRANSFORM);
+					if (objTX != nullptr) {
 						Transform* prefabTX = GET_PREFAB_COMPONENT(objectFactory->GetPrefabByName(selectedName), Transform, ComponentType::TRANSFORM);
 						Transform* objTX = GET_COMPONENT(objectFactory->GetGameObjectByID((*it).second->GetGameObjectID()), Transform, ComponentType::TRANSFORM);
 						objTX->scale = prefabTX->scale;
 						objTX->position = prefabTX->position;
 						objTX->rotation = prefabTX->rotation;
 					}
-					if (physicsUpdateFlag) {
+
+
+					
+					PhysicsBody* objBody = GET_COMPONENT(objectFactory->GetGameObjectByID((*it).second->GetGameObjectID()), PhysicsBody, ComponentType::PHYSICS_BODY);
+					if (objBody != nullptr) {
 						PhysicsBody* prefabBody = GET_PREFAB_COMPONENT(objectFactory->GetPrefabByName(selectedName), PhysicsBody, ComponentType::PHYSICS_BODY);
 						PhysicsBody* objBody = GET_COMPONENT(objectFactory->GetGameObjectByID((*it).second->GetGameObjectID()), PhysicsBody, ComponentType::PHYSICS_BODY);
 						objBody->rotationSpeed = prefabBody->rotationSpeed;
@@ -479,22 +540,90 @@ void Editor::CreatePrefabPanel() {
 						objBody->speed = prefabBody->speed;
 						objBody->isStatic = prefabBody->isStatic;
 					}
-					if (logicUpdateFlag) {
+
+
+					
+					LogicComponent* objLogic = GET_COMPONENT(objectFactory->GetGameObjectByID((*it).second->GetGameObjectID()), LogicComponent, ComponentType::LOGICCOMPONENT);
+					if (objLogic != nullptr) {
 						LogicComponent* prefabLogic = GET_PREFAB_COMPONENT(objectFactory->GetPrefabByName(selectedName), LogicComponent, ComponentType::LOGICCOMPONENT);
 						LogicComponent* objLogic = GET_COMPONENT(objectFactory->GetGameObjectByID((*it).second->GetGameObjectID()), LogicComponent, ComponentType::LOGICCOMPONENT);
 						objLogic->scriptIndexSet = prefabLogic->scriptIndexSet;
 					}
-					if (colliderUpdateFlag) {
+
+
+					
+					Collider* objCollider = GET_COMPONENT(objectFactory->GetGameObjectByID((*it).second->GetGameObjectID()), Collider, ComponentType::COLLIDER);
+					if (objCollider != nullptr) {
 						Collider* prefabCollider = GET_PREFAB_COMPONENT(objectFactory->GetPrefabByName(selectedName), Collider, ComponentType::COLLIDER);
 						Collider* objCollider = GET_COMPONENT(objectFactory->GetGameObjectByID((*it).second->GetGameObjectID()), Collider, ComponentType::COLLIDER);
 						objCollider->tx->scale = prefabCollider->tx->scale;
 						objCollider->tx->rotation = prefabCollider->tx->rotation;
 					}
+
+				}
+			}
+			objectFactory->SavePrefabsToFile(FILEPATH_PREFAB);
+			saveFlag = false;
+		}
+		if (ImGui::Button("Preview Changes")) {
+			
+			for (std::map<size_t, GameObject*>::iterator it = copyMap.begin(); it != copyMap.end(); it++) {
+				if ((*it).second->GetType() == objectFactory->GetPrefabByName(selectedName)->GetType()) {
+				
+					/*	Transform* prefabTX = GET_PREFAB_COMPONENT(objectFactory->GetPrefabByName(selectedName), Transform, ComponentType::TRANSFORM);
+						Transform* objTX = GET_COMPONENT(objectFactory->GetGameObjectByID((*it).second->GetGameObjectID()), Transform, ComponentType::TRANSFORM);
+						objTX->scale = prefabTX->scale;
+						objTX->position = prefabTX->position;
+						objTX->rotation = prefabTX->rotation;*/
+					Transform* objTX = GET_COMPONENT(objectFactory->GetGameObjectByID((*it).second->GetGameObjectID()), Transform, ComponentType::TRANSFORM);
+					if (objTX != nullptr) {
+						objTX->scale.x = transScaleX;
+						objTX->scale.y = transScaleY;
+						objTX->position = Vec2(transXpos, transYpos);
+						objTX->rotation = transRot;
+					}
+					
+					
+					/*	PhysicsBody* prefabBody = GET_PREFAB_COMPONENT(objectFactory->GetPrefabByName(selectedName), PhysicsBody, ComponentType::PHYSICS_BODY);
+						PhysicsBody* objBody = GET_COMPONENT(objectFactory->GetGameObjectByID((*it).second->GetGameObjectID()), PhysicsBody, ComponentType::PHYSICS_BODY);
+						objBody->rotationSpeed = prefabBody->rotationSpeed;
+						objBody->mass = prefabBody->mass;
+						objBody->frictionForce = prefabBody->frictionForce;
+						objBody->speed = prefabBody->speed;
+						objBody->isStatic = prefabBody->isStatic;*/
+					PhysicsBody* objBody = GET_COMPONENT(objectFactory->GetGameObjectByID((*it).second->GetGameObjectID()), PhysicsBody, ComponentType::PHYSICS_BODY);
+					if (objBody != nullptr) {
+						objBody->rotationSpeed = phyRotSpeed;
+						objBody->speed = phySpeed;
+						objBody->mass = phyMass;
+						objBody->frictionForce = phyFriction;
+						objBody->isStatic = phyIsStatic;
+					}
+					
+					
+					/*	LogicComponent* prefabLogic = GET_PREFAB_COMPONENT(objectFactory->GetPrefabByName(selectedName), LogicComponent, ComponentType::LOGICCOMPONENT);
+						LogicComponent* objLogic = GET_COMPONENT(objectFactory->GetGameObjectByID((*it).second->GetGameObjectID()), LogicComponent, ComponentType::LOGICCOMPONENT);
+						objLogic->scriptIndexSet = prefabLogic->scriptIndexSet;*/
+					LogicComponent* objLogic = GET_COMPONENT(objectFactory->GetGameObjectByID((*it).second->GetGameObjectID()), LogicComponent, ComponentType::LOGICCOMPONENT);
+					if (objLogic != nullptr) {
+						objLogic->scriptIndexSet = tempLogicSet;
+					}
+					
+					
+					/*Collider* prefabCollider = GET_PREFAB_COMPONENT(objectFactory->GetPrefabByName(selectedName), Collider, ComponentType::COLLIDER);
+					Collider* objCollider = GET_COMPONENT(objectFactory->GetGameObjectByID((*it).second->GetGameObjectID()), Collider, ComponentType::COLLIDER);
+					objCollider->tx->scale = prefabCollider->tx->scale;
+					objCollider->tx->rotation = prefabCollider->tx->rotation;*/
+					Collider* objCollider = GET_COMPONENT(objectFactory->GetGameObjectByID((*it).second->GetGameObjectID()), Collider, ComponentType::COLLIDER);
+					if (objCollider != nullptr) {
+						objCollider->tx->scale.x = colScaleX;
+						objCollider->tx->scale.y = colScaleY;
+						objCollider->tx->rotation = colRot;
+					}
+					
 				}
 			}
 			// Save and serialize prefabs
-			objectFactory->SavePrefabsToFile(FILEPATH_PREFAB);
-			saveFlag = false;
 		}
 	}
 

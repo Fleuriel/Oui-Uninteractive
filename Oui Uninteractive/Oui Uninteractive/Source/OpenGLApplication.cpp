@@ -525,12 +525,17 @@ void OpenGLApplication::OpenGLUpdate() {
 		
 
 	}
-
+	if (Editor::selected != nullptr) {
+		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+		Editor::selectedOutline.Draw(std::string(""), true);
+		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+	}
+	
 	// Updates the Game Object
 	for (std::pair<size_t, GameObject*> gObj : objectFactory->GetGameObjectIDMap()) {
 		if (gObj.second->Has(ComponentType::TRANSFORM) != -1) {
 			if (GET_COMPONENT(gObj.second, Transform, ComponentType::TRANSFORM)->shape->spritecheck && gObj.second->Has(ComponentType::PHYSICS_BODY) != -1)
-				GET_COMPONENT(gObj.second, Transform, ComponentType::TRANSFORM)->shape->Draw(gObj.second->GetType(), true, GET_COMPONENT(gObj.second, PhysicsBody, ComponentType::PHYSICS_BODY)->velocity);
+				GET_COMPONENT(gObj.second, Transform, ComponentType::TRANSFORM)->shape->Draw(gObj.second->GetType(), gObj.second->IsUsingSprite(), GET_COMPONENT(gObj.second, PhysicsBody, ComponentType::PHYSICS_BODY)->velocity);
 			else
 				GET_COMPONENT(gObj.second, Transform, ComponentType::TRANSFORM)->shape->Draw({});
 		}

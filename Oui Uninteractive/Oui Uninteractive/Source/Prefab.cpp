@@ -114,3 +114,20 @@ IComponent* Prefab::GetComponent(ComponentType typeID) {
 	}
 	return nullptr;
 }
+
+/**************************************************************************
+* @brief Check whether sprite or texture is used
+* @return true if using sprite. false if texture instead.
+*************************************************************************/
+bool Prefab::IsUsingSprite() {
+	return usingSprite;
+}
+
+/**************************************************************************
+* @brief Set whether sprite/texture is used
+* @param flag - flag to set whether sprite/texture is used
+* @return void
+*************************************************************************/
+void Prefab::SetUsingSprite(bool flag) {
+	usingSprite = flag;
+}

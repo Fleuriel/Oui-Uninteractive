@@ -4,6 +4,7 @@
         {
             "Name": "JSONPlayer",
             "Type": "Player",
+            "UsingSprite": true,
             "Components": {
                 "PhysicsBody": {
                     "VelocityX": 0.0,
@@ -38,6 +39,7 @@
         {
             "Name": "Exit Button",
             "Type": "Button",
+            "UsingSprite": true,
             "Components": {
                 "Transform": {
                     "PositionX": -126.51000213623047,

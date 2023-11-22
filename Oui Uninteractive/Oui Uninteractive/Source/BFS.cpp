@@ -94,8 +94,8 @@ bool BFS::CreateGrid() {
         return false;
 
     // Temp vars
-    float windowWidth = 1300.f;
-    float windowHeight = 1016.f;
+    float windowWidth = 1920.f;
+    float windowHeight = 1080.f;
     float scaleX = windowWidth / static_cast<float>(cols);
     float scaleY = windowHeight / static_cast<float>(rows);
 
