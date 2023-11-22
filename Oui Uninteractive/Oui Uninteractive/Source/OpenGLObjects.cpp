@@ -339,6 +339,10 @@ void OpenGLObject::Draw(std::string type, bool spriteUsage, Vec2 vel) const {
 	}
 	else if (type == "Camera")
 		shaderNumber = static_cast<int>(SHADER_ORDER::CAMERA);
+	else if (type == "Knife(Weapon)")
+		tex = assetManager.GetTexture("Knife(Weapon)");
+	else if (type == "Rifle(Weapon)")
+		tex = assetManager.GetTexture("Rifle");
 	else
 		tex = assetManager.GetTexture(type);
 

@@ -182,7 +182,7 @@
             }
         },
         {
-            "Name": "EXACALIBAAAAA",
+            "Name": "Knife",
             "Type": "Knife(Weapon)",
             "UsingSprite": false,
             "Components": {
@@ -196,11 +196,39 @@
                     "FrictionForce": 20.0
                 },
                 "Transform": {
-                    "PositionX": 232.4199981689453,
+                    "PositionX": 342.4199981689453,
                     "PositionY": 219.24000549316406,
                     "Rotation": 335.3699951171875,
-                    "ScaleX": 500.0,
-                    "ScaleY": 500.0
+                    "ScaleX": 300.0,
+                    "ScaleY": 300.0
+                },
+                "LogicComponent": {
+                    "ScriptID": [
+                        2
+                    ]
+                }
+            }
+        },
+        {
+            "Name": "Rifle",
+            "Type": "Rifle(Weapon)",
+            "UsingSprite": false,
+            "Components": {
+                "PhysicsBody": {
+                    "VelocityX": 0.0,
+                    "VelocityY": 0.0,
+                    "RotationSpeed": 302.6300048828125,
+                    "Speed": 74.20999908447266,
+                    "Mass": 80.0,
+                    "IsStatic": false,
+                    "FrictionForce": 20.0
+                },
+                "Transform": {
+                    "PositionX": 142.4199981689453,
+                    "PositionY": 219.24000549316406,
+                    "Rotation": 335.3699951171875,
+                    "ScaleX": 300.0,
+                    "ScaleY": 300.0
                 },
                 "LogicComponent": {
                     "ScriptID": [
