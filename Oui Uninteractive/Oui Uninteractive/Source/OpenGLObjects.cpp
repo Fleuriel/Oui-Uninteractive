@@ -373,9 +373,9 @@ void OpenGLObject::Draw(std::string type, bool spriteUsage, Vec2 vel) const {
 
 	
 
-		/*	std::cout << "Mouse X : " << mouseX << "\t";
-			std::cout << "Mouse Y : " << mouseY << "\t";*/
-			std::cout << playerPos.x << '\t' << playerPos.y << '\t';
+			//std::cout << "Mouse X : " << mouseX << "\t";
+			//std::cout << "Mouse Y : " << mouseY << "\t";
+			//std::cout << playerPos.x << '\t' << playerPos.y << '\t';
 			Vec2 vec = { static_cast<float>(mouseX) - playerPos.x , static_cast<float>(mouseY) - playerPos.y };
 
 			spriterow = (((vec.x > 0) ? vec.x : -vec.x) < ((vec.y > 0) ? vec.y : -vec.y)) ? (vec.y < 0) ? 0 : 1 : (vec.x > 0) ? 2 : 3;

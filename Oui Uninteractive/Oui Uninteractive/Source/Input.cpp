@@ -27,11 +27,11 @@ InputSystem inputSystem;
 bool capsLockReleased{ true };
 bool capsLockOn{ false };
 
-// Container to store commands (not implemented yet)
-//std::map<std::string, std::function<void()>> shortcuts;
+bool altTabbedAway{ false };
 
-//shortcuts["Ctrl+S"] = SaveFunction;
-//shortcuts["Ctrl+Z"] = UndoFunction;
+// Pointer to the window
+extern GLFWwindow* windowNew;
+
 
 
 /**************************************************************************
@@ -155,26 +155,38 @@ void KeyCallBack(GLFWwindow* window3, int key, int scancode, int action, int mod
 	(void)action;
 	(void)scancode;
 
-	// Return if unknown key pressed (e.g. multimedia keys)
-	if (key == GLFW_KEY_UNKNOWN)
-		return;
-	
-	/* 
-	Update the state of the pressed key
-	 - If the key is pressed (action == GLFW_PRESS) and its state was not previously pressed,
-	   set its state to 1 (pressed).
-	 - If the key is released (action == GLFW_RELEASE), set its state to 0 (not pressed).
-	 - If the key is held down (action == GLFW_REPEAT), set its state to 2 (held down).
-	*/ 
-	inputSystem.SetKeyState(key, (action == GLFW_PRESS && inputSystem.GetKeyState(key) == 0) ? 1 : (action == GLFW_RELEASE) ? 0 : 2);
-	//std::cout << "keyval : " << keyStates[key] << std::endl;
+	if (!altTabbedAway) {
+		// Return if unknown key pressed (e.g. multimedia keys)
+		if (key == GLFW_KEY_UNKNOWN)
+			return;
 
-	#ifdef _DEBUG
-		// Print debug information based on the key action (press, hold, release)
-		//std::cout << ((action == GLFW_PRESS) ? "Pressed Keys\n" : (action == GLFW_REPEAT) ? "Held Keys\n" : "Released Keys\n");
-	#endif
+		/*
+		Update the state of the pressed key
+		 - If the key is pressed (action == GLFW_PRESS) and its state was not previously pressed,
+		   set its state to 1 (pressed).
+		 - If the key is released (action == GLFW_RELEASE), set its state to 0 (not pressed).
+		 - If the key is held down (action == GLFW_REPEAT), set its state to 2 (held down).
+		*/
+		inputSystem.SetKeyState(key, (action == GLFW_PRESS && inputSystem.GetKeyState(key) == 0) ? 1 : (action == GLFW_RELEASE) ? 0 : 2);
+		//std::cout << "keyval : " << keyStates[key] << std::endl;
+
+#ifdef _DEBUG
+	// Print debug information based on the key action (press, hold, release)
+	//std::cout << ((action == GLFW_PRESS) ? "Pressed Keys\n" : (action == GLFW_REPEAT) ? "Held Keys\n" : "Released Keys\n");
+#endif
 
 		if (key == GLFW_KEY_CAPS_LOCK) capsLockReleased = (action == GLFW_RELEASE) ? true : false;
+	}
+	else {
+		for (size_t i = 0; i < GLFW_KEY_LAST + 1; i++)
+			inputSystem.SetKeyState(i, 0);
+
+		for (size_t c = 0; c < GLFW_MOUSE_BUTTON_LAST + 1; c++)
+			inputSystem.SetMouseState(c, false);
+
+		inputSystem.SetScrollState(0);
+
+	}
 }
 
 
@@ -294,4 +306,18 @@ void InputSystem::UpdateStatesForNextFrame() {
 void WindowCloseCallback(GLFWwindow* window6){
 	(void)window6;
 	NextGameState = STATE_QUIT;
+}
+
+
+void windowFocusCallback(GLFWwindow* window, int focused) {
+	// If alt tabbed away
+	if (focused == GLFW_FALSE) {
+		// Minimizes window if alt tabbed away
+		glfwIconifyWindow(windowNew);
+	}
+	// If alt tabbed back to window
+	else {
+		
+	}
+
 }

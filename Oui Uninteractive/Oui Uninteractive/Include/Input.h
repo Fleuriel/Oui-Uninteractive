@@ -215,4 +215,9 @@ void ScrollCallBack(GLFWwindow* window, double xOffset, double yOffset);
  *************************************************************************/
 void WindowCloseCallback(GLFWwindow* window);
 
+void windowFocusCallback(GLFWwindow* window, int focused);
+
+
+
+
 #endif // INPUTKEYS_H

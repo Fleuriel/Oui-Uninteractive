@@ -58,7 +58,6 @@ Editor myEditor;
 // Serializer instance
 JsonSerializer serializer;
 
-
 OpenGLObject Objects;								// First Instance of Object to Update.
 std::list<OpenGLObject> objects;					// singleton
 
@@ -142,6 +141,8 @@ void OpenGLApplication::OpenGLWindowInit() {
 	glfwSetMouseButtonCallback(windowNew, MouseCallBack);
 
 	glfwSetScrollCallback(windowNew, ScrollCallBack);
+
+	glfwSetWindowFocusCallback(windowNew, windowFocusCallback);
 
 	// Make the current window the current context
 	glfwMakeContextCurrent(windowNew);
@@ -433,7 +434,6 @@ void OpenGLApplication::OpenGLUpdate() {
 
 	
 	if (inputSystem.GetMouseState(GLFW_MOUSE_BUTTON_LEFT)) {
-		//assetManager.ReloadAll();
 #ifdef _DEBUG
 	//	std::cout << "LCLICK\n";
 #endif
