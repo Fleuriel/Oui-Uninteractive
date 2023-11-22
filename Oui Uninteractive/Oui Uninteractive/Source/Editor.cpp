@@ -196,6 +196,7 @@ void Editor::Update() {
 			if (inputSystem.GetMouseState(GLFW_MOUSE_BUTTON_1)) {
 				if (CollisionMouseRect(tx->position, tx->scale.x, tx->scale.y, mouseX, mouseY)) {
 					selected = gObj.second;
+					break;
 				}
 				else {
 					selected = nullptr;
