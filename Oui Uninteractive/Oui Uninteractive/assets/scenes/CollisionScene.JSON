@@ -183,7 +183,7 @@
         },
         {
             "Name": "EXACALIBAAAAA",
-            "Type": "Weapon",
+            "Type": "Knife(Weapon)",
             "UsingSprite": false,
             "Components": {
                 "PhysicsBody": {
