@@ -508,7 +508,9 @@ void OpenGLApplication::OpenGLUpdate() {
 		//	obj.Update(2000, 2000, 1000, 1000, 0, 0);
 	}
 	if (Editor::selected != nullptr) {
+		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 		Editor::selectedOutline.Draw(std::string(""), true);
+		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 	}
 	
 	// Updates the Game Object
