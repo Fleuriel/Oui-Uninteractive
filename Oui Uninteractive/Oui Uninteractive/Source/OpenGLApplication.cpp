@@ -507,7 +507,10 @@ void OpenGLApplication::OpenGLUpdate() {
 		//if (obj.TagID == 3)
 		//	obj.Update(2000, 2000, 1000, 1000, 0, 0);
 	}
-
+	if (Editor::selected != nullptr) {
+		Editor::selectedOutline.Draw(std::string(""), true);
+	}
+	
 	// Updates the Game Object
 	for (std::pair<size_t, GameObject*> gObj : objectFactory->GetGameObjectIDMap()) {
 		if (gObj.second->Has(ComponentType::TRANSFORM) != -1) {

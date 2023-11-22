@@ -12,7 +12,7 @@
 #include <iostream>
 #include "Editor.h"
 #include "Collision.h"
-
+#define PI 3.141592653589793
  // Defining static variables
 Editor::SystemTime Editor::timeRecorder;
 std::vector<float> Editor::fpsData;
@@ -23,6 +23,7 @@ std::string Editor::browserInputPath;
 bool Editor::browserDoubleClicked;
 std::string Editor::browserSelectedItem;
 GameObject* Editor::selected;
+OpenGLObject Editor::selectedOutline;
 // Editor settings
 int Editor::iconSize{ 128 };
 int Editor::iconPadding{ 16 };
@@ -135,6 +136,7 @@ void UsingImGui::Draw() {
 		Editor::CreateDebugPanel();
 	}
 
+	//Editor::selectedOutline.Draw(std::string(""), true);
 	ImGui::Render();
 	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
@@ -162,6 +164,7 @@ void Editor::Init() {
 	maxFPSdata = 2000;
 	browserDoubleClicked = false;
 	browserInputPath = FILEPATH_MASTER;
+	Editor::selectedOutline.InitObjects();
 }
 
 
@@ -206,6 +209,17 @@ void Editor::Update() {
 		if (inputSystem.GetMouseState(GLFW_MOUSE_BUTTON_1)) {
 			Transform* tx = GET_COMPONENT(selected, Transform, ComponentType::TRANSFORM);
 			tx->position = Vec2(mouseX, mouseY);
+			Matrix3x3 scale = Matrix3x3(tx->scale.x * 2.f, 0.f, 0.f,
+				0.f, tx->scale.y * 2.f, 0.f,
+				0.f, 0.0f, 1.0f);
+			float radRot = tx->rotation * (static_cast<float>(PI) / 180.0f);
+			Matrix3x3 rotate = Matrix3x3(cosf(radRot), sinf(radRot), 0,
+				-sinf(radRot), cosf(radRot), 0.f,
+				0.f, 0.f, 1.0f);
+			Matrix3x3 translate = Matrix3x3(1.f, 0.f, 0.f,
+				0.f, 1.f, 0.f,
+				tx->position.x, tx->position.y, 1.0f);
+			selectedOutline.Update(scale, rotate, translate);
 		}
 	}
 	if (inputSystem.GetKeyState(GLFW_KEY_DELETE)) {
@@ -213,6 +227,8 @@ void Editor::Update() {
 			objectFactory->DestroyObject(objectFactory->GetGameObjectByID(selected->GetGameObjectID()));
 		}
 	}
+
+	
 }
 
 /* ============================================
