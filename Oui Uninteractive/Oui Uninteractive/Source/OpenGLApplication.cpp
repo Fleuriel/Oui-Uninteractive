@@ -294,7 +294,6 @@ void OpenGLApplication::OpenGLUpdate() {
 	//std::cout << xpos << '\t' << ypos << '\n';
 
 
-	OpenGLObject::cameraObject.SetGameFBPos();
 
 	// Clear the FBO and render.
 	glClear(GL_COLOR_BUFFER_BIT);
@@ -335,6 +334,18 @@ void OpenGLApplication::OpenGLUpdate() {
 	// Create Object using R-SHIFT, with tag ID of 1.
 	if (inputSystem.GetKeyState(GLFW_KEY_RIGHT_SHIFT) == 1) {
 		OpenGLObject newObject1(1);
+#ifdef _DEBUG
+		std::cout << "Tag ID: " << newObject1.TagID << '\n';
+#endif
+
+		newObject1.InitObjects();
+
+		// Emplace back into the container.
+		objects.emplace_back(newObject1);
+	}
+
+	if (inputSystem.GetKeyState(GLFW_KEY_LEFT_SHIFT) == 1) {
+		OpenGLObject newObject1(4);
 #ifdef _DEBUG
 		std::cout << "Tag ID: " << newObject1.TagID << '\n';
 #endif
@@ -491,28 +502,35 @@ void OpenGLApplication::OpenGLUpdate() {
 
 
 	for (OpenGLObject& obj : objects) {
+	
+		// TESTING
 		if (obj.TagID == 1)
 			obj.Update(0, 0, 100, 100, angle, true);
 
 		if (obj.TagID == 2)
-			obj.Update(300, 300, 100, 100, angle, false);
+			obj.Update(100, 100, 100, 100, angle, false);
 
 		if (obj.TagID == 3)
-			obj.Update(270, 230, 100, 100, angle, false);
+			obj.Update(300, 300, 100, 100, angle, false);
 
+		if (obj.TagID == 4)
+			obj.Update(-300, 300, 100, 100, angle, false);
+
+		// END OF TESTING
+
+
+		// CAMERA
 		if (obj.TagID == 9)
 			obj.Update(positionX, positionY, 0, 0, 0, 0);
 		
 
-		//if (obj.TagID == 3)
-		//	obj.Update(2000, 2000, 1000, 1000, 0, 0);
 	}
 
 	// Updates the Game Object
 	for (std::pair<size_t, GameObject*> gObj : objectFactory->GetGameObjectIDMap()) {
 		if (gObj.second->Has(ComponentType::TRANSFORM) != -1) {
 			if (GET_COMPONENT(gObj.second, Transform, ComponentType::TRANSFORM)->shape->spritecheck && gObj.second->Has(ComponentType::PHYSICS_BODY) != -1)
-			GET_COMPONENT(gObj.second, Transform, ComponentType::TRANSFORM)->shape->Draw(gObj.second->GetType(), true, GET_COMPONENT(gObj.second, PhysicsBody, ComponentType::PHYSICS_BODY)->velocity);
+				GET_COMPONENT(gObj.second, Transform, ComponentType::TRANSFORM)->shape->Draw(gObj.second->GetType(), true, GET_COMPONENT(gObj.second, PhysicsBody, ComponentType::PHYSICS_BODY)->velocity);
 			else
 				GET_COMPONENT(gObj.second, Transform, ComponentType::TRANSFORM)->shape->Draw({});
 		}

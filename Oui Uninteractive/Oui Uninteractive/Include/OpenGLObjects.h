@@ -157,18 +157,9 @@ public:
 		OpenGLObject* Cam;
 
 		GLfloat posX, posY;
-		GLfloat FOV;
 
 		glm::vec2 up, right;
 
-		glm::vec2 frameBufferCoordinates;
-		glm::vec2 gameWindowFBCoords;
-
-		glm::vec3 cameraTarget;
-		glm::vec3 cameraUp;
-		glm::vec3 cameraPos;
-		glm::mat4 viewMatrix;
-		glm::mat4 viewProjectionMatrix;
 
 		float Left, Right, Top, Bottom;
 
@@ -176,19 +167,15 @@ public:
 		glm::mat3 cameraProjection;
 		glm::mat3 view_xform, CameraWindow_to_NDC_xform, World_to_NDC_xform;
 
-		GLfloat height{ 1500 }; // Current Height of the depth i.e. Zoom
+		GLfloat height{ 1300 }; // Current Height of the depth i.e. Zoom
 		GLfloat min_height{ 0 };
 		GLfloat max_height{ 5000 };
 
 
 		GLfloat aspectRatio;
 
-		// 1 or -1.
-		GLint heightChangeBoolean{ 1 };
-
 		GLint heightChangeValue{ 5 };
 
-		GLfloat linearSpeed{ 2.0f };
 
 
 
@@ -197,7 +184,6 @@ public:
 		void Update(GLFWwindow*, int, int);
 
 		void SetFrameBufferPosition(float x, float y);
-		void SetGameFBPos();
 
 	};
 	static glm::mat4 fontProjection;

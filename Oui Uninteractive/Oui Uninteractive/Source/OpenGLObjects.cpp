@@ -671,9 +671,6 @@ void OpenGLObject::Camera2D::Init(GLFWwindow* camWindow, OpenGLObject* ptr) {
 	Top	   = 1.0f;
 
 	cameraProjection = glm::ortho(Left, Right, Bottom, Top, -1.0f, 1.0f);
-	cameraUp = glm::vec3(0.0f, 1.0f, 0.0f);
-	cameraTarget = glm::vec3(0.0f, 0.0f, 0.0f);
-	cameraPos = glm::vec3(0.0f, 0.0f, 3.0f);
 
 
 	/*
@@ -729,26 +726,16 @@ void OpenGLObject::Camera2D::Update(GLFWwindow* camWindow, int positionX, int po
 
 	(void)camWindow;
 
-	viewMatrix = glm::lookAt(cameraPos, cameraTarget, cameraUp);
-
 	
-	//glUniformMatrix4fv(glGetUniformLocation(shdrpgms[1].GetHandle(), "projection"), 1, GL_FALSE, glm::value_ptr(cameraProjection));
+	cameraProjection = glm::ortho(Left, Right, Bottom, Top, -1.0f, 1.0f);
+	
 
 	// ZOOM in
 	//if (inputSystem.GetScrollState() == 1) 
 	if (inputSystem.GetKeyState(GLFW_KEY_UP) == 2)
 	{
-		std::cout << height << '\n';
 		// Height Decrement by 1.1f
 		height -= heightChangeValue;
-
-
-		Left += 0.05f;
-		Right -= 0.05f;
-		Bottom += 0.05f;
-		Top -= 0.05f;
-
-		std::cout << Top << "\n";
 
 	}
 
@@ -756,19 +743,11 @@ void OpenGLObject::Camera2D::Update(GLFWwindow* camWindow, int positionX, int po
 	//if (inputSystem.GetScrollState() == -1)
 	if (inputSystem.GetKeyState(GLFW_KEY_DOWN) == 2)
 	{
-		std::cout << height << '\n';
 		// Height Increment by 1.1f
 		height += heightChangeValue;
 
-		
-		Left -= 0.05f;
-		Right += 0.05f;
-		Bottom -= 0.05f;
-		Top += 0.05f;
-
-		
-		std::cout << Left << "\t" << Right << "\t" << Bottom << "\t" << Top << "\n";
 	}
+
 
 	if (inputSystem.GetKeyState(GLFW_KEY_F6) == 2)
 		height = 1000;	
@@ -804,43 +783,30 @@ void OpenGLObject::Camera2D::Update(GLFWwindow* camWindow, int positionX, int po
 	}
 
 
+
 	/*
 					< Initialize for initial creation >
 	Create the Frame Buffer Width and Height(This must be here as the
 	FBuffer will update	 Every single time, it is zoom in/out /move		*/
 
-	aspectRatio = static_cast<float>(Editor::gameWindowSize.first) / static_cast<float>(Editor::gameWindowSize.second);
-	// Calculate Frame buffer
-	//aspectRatio = static_cast<GLfloat>(Editor::gameWindowSize.first) / static_cast<GLfloat>(Editor::gameWindowSize.second);
+	aspectRatio = static_cast<GLfloat>(Editor::gameWindowSize.first) / static_cast<GLfloat>(Editor::gameWindowSize.second);
 
-	//std::cout << fb_width <<" " << fb_height  << "\t" << Editor::gameWindowSize.first  << " " << Editor::gameWindowSize.second << '\n';
-
-
-	// View Transform 
-	//view_xform = glm::mat3
-	//{
-	//	right.x, up.x, 0,
-	//	right.y, up.y, 0,
-	//	glm::dot(-right, Cam->position), glm::dot(-up, Cam->position), 1
-	//};
-	view_xform = glm::mat3
+	view_xform =glm::mat3
 	{
-		right.x, up.x, 0,
-		right.y, up.y, 0,
-		glm::dot(-right, Cam->position), glm::dot(-up, Cam->position), 1
+		1, 0, 0,
+		0, 1, 0,
+		-Cam->position.x, -Cam->position.y, 1
 	};
-	//std::cout << aspectRatio << '\t' << static_cast<float>(Editor::gameWindowSize.first) / static_cast<float>(Editor::gameWindowSize.second) << '\n';
 
 
 	// Set the Camer Window to NDC xform
 	CameraWindow_to_NDC_xform = glm::mat3{
-		2.f / (height * aspectRatio), 0, 0,
-		0, 2.f / height , 0,
+		2.f / (Editor::gameWindowSize.first) * (1000 /cameraObject.height ), 0, 0,
+		0, 2.f / Editor::gameWindowSize.second * (1000 /cameraObject.height), 0,
 		0, 0, 1
 	};
 
 
-	cameraProjection = glm::ortho(Left, Right, Bottom, Top, -1.0f, 1.0f);
 
 	// World to NDC transform
 	// Set the World to NDC transform for the camera
@@ -872,15 +838,6 @@ void OpenGLObject::CameraUpdate(int posX, int posY) {
 
 	position = glm::vec2(posX, posY);
 
-
-
-	//cameraObject.posX = posX;
-	//cameraObject.posY = posY;
-
-	//cameraObject.posX = posX + Editor::gameWindowOrigin.first/2.0f;
-	//cameraObject.posY = posY + Editor::gameWindowOrigin.second/2.0f;
-	//cameraObject.posX = static_cast<float>(posX + Editor::gameWindowOrigin.first);
-	//cameraObject.posY = static_cast<float>(posY + Editor::gameWindowOrigin.second);
 
 	cameraObject.posX = posX + Editor::gameWindowOrigin.first;
 	cameraObject.posY = posY + Editor::gameWindowOrigin.second;
@@ -929,26 +886,6 @@ void OpenGLObject::CameraUpdate(int posX, int posY) {
 }
 
 
-
-void OpenGLObject::Camera2D::SetFrameBufferPosition(float x, float y) {
-
-
-
-
-
-}
-
-void OpenGLObject::Camera2D::SetGameFBPos() {
-
-
-	gameWindowFBCoords.x = Editor::gameWindowSize.first;
-	gameWindowFBCoords.y = Editor::gameWindowSize.second;
-
-
-
-
-	//std::cout << Editor::gameWindowOrigin.first << '\t' << Editor::gameWindowOrigin.second <<'\n';
-}
 /*=======================================================================================================================*/
 /*=======================================================================================================================*/
 /*==================================================GRAPHIC SHADERS======================================================*/
@@ -1105,30 +1042,39 @@ void OpenGLObject::FrameBufferMouseCoords(GLFWwindow* originalWindow, double* x,
 	double originalX = *x - Editor::gameWindowOrigin.first;
 	double originalY = *y - Editor::gameWindowOrigin.second;
 
+	//std::cout << originalX << '\t' << originalY << '\t';
+
 
 	// get the center coordinates of the frame buffer window.
 	int centerX = Editor::gameWindowSize.first / 2.0;
 	int centerY = Editor::gameWindowSize.second / 2.0;
 
+	//std::cout << centerX << '\t' << centerY << '\t';
 
 	// Calculate corrected coordinates relative to the camera's position.
 	double correctedX = (originalX - centerX) + camera.posX;
 	double correctedY = centerY - originalY + camera.posY;  // Note the y-coordinate inversion
 
+
+	//std::cout << correctedX << '\t' << correctedY << '\t';
+
 	// set value of X and Y, (valueX, valueY) to the respective y values,
 	// Y no change as no difference. X, on the other hand needs to be multiplied with the multiplier of height.,
-	float valueX = correctedX / 1000;
-	float valueY = correctedY;
+	float valueX = correctedX - Editor::gameWindowOrigin.first;
+	float valueY = correctedY - Editor::gameWindowOrigin.second;
 
+
+	valueX /= 0.77;
+	valueY /= 0.77;
 
 	// set valueX to multiply by camera height.
-	valueX *= camera.height;
+	//valueX *= camera.height;
 
 
 
-	// set values of *x and *y.
-	*x = (valueX - Editor::gameWindowOrigin.first);
-	*y = (valueY - Editor::gameWindowOrigin.second);
+	*x = valueX;
+	*y = valueY;
+	
 
 	//std::cout << '\n';
 	std::cout << *x << '\t' << *y << '\n';
