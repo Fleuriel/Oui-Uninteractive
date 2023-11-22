@@ -210,9 +210,7 @@ void Editor::Update() {
 		Transform* tx = GET_COMPONENT(selected, Transform, ComponentType::TRANSFORM);
 		if ((mouseX > (-Editor::gameWindowSize.first / 2.f) && mouseX < (Editor::gameWindowSize.first / 2.f)) && (mouseY > (-Editor::gameWindowSize.second / 2.f) && mouseY < Editor::gameWindowSize.second / 2.f)) {
 			if (inputSystem.GetMouseState(GLFW_MOUSE_BUTTON_1)) {
-
 				tx->position = Vec2(mouseX, mouseY);
-
 			}
 		}
 		if (tx != nullptr) {
@@ -231,8 +229,9 @@ void Editor::Update() {
 		
 	}
 	if (inputSystem.GetKeyState(GLFW_KEY_DELETE)) {
-		if (objectFactory->GetGameObjectByID(selected->GetGameObjectID()) != nullptr) {
+		if (selected != nullptr) {
 			objectFactory->DestroyObject(objectFactory->GetGameObjectByID(selected->GetGameObjectID()));
+			selected = nullptr;
 		}
 	}
 
