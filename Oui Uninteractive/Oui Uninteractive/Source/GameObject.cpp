@@ -27,9 +27,10 @@
 /**************************************************************************
 * @brief Default Constructor
 *************************************************************************/
-GameObject::GameObject(const std::string& name, const std::string& type) : gameObjectID{}, gameObjAnimationFrame{} {
+GameObject::GameObject(const std::string& name, const std::string& type) : gameObjectID{}, gameObjAnimationFrame{}{
 	gameObjectName = name;
 	gameObjectType = type;
+	
 }
 
 /**************************************************************************

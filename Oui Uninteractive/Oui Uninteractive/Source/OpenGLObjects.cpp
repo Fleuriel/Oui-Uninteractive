@@ -337,13 +337,10 @@ void OpenGLObject::Draw(std::string type, bool spriteUsage, Vec2 vel) const {
 		shaderNumber = static_cast<int>(SHADER_ORDER::SPRITES);
 		tex = assetManager.GetSprite(type + movement).GetTexture();
 	}
-	if (type == "Weapon") {
-		shaderNumber = static_cast<int>(SHADER_ORDER::MODEL);
-		tex = assetManager.GetTexture("KnifeSprite");
-	}
-	if (type == "Camera") {
+	else if (type == "Camera")
 		shaderNumber = static_cast<int>(SHADER_ORDER::CAMERA);
-	}
+	else
+		tex = assetManager.GetTexture(type);
 
 	// Bind Texture to 6.
 	glBindTextureUnit(6, tex);

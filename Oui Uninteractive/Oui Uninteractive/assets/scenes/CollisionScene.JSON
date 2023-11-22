@@ -177,7 +177,7 @@
         },
         {
             "Name": "EXACALIBAAAAA",
-            "Type": "Weapon",
+            "Type": "Knife(Weapon)",
             "Components": {
                 "PhysicsBody": {
                     "VelocityX": 0.0,
