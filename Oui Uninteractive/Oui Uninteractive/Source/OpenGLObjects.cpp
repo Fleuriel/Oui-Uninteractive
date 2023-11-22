@@ -839,8 +839,8 @@ void OpenGLObject::CameraUpdate(int posX, int posY) {
 	position = glm::vec2(posX, posY);
 
 
-	cameraObject.posX = posX + Editor::gameWindowOrigin.first;
-	cameraObject.posY = posY + Editor::gameWindowOrigin.second;
+	cameraObject.posX = posX;
+	cameraObject.posY = posY;
 
 
 	// in case user does not set, angleDisplacement will be in the range of
@@ -1037,6 +1037,7 @@ void OpenGLObject::InitFont()
 void OpenGLObject::FrameBufferMouseCoords(GLFWwindow* originalWindow, double* x, double* y, OpenGLObject::Camera2D camera)
 {
 
+	
 	(void)originalWindow;
 	// set a variable original X and Y
 	double originalX = *x - Editor::gameWindowOrigin.first;
@@ -1052,16 +1053,16 @@ void OpenGLObject::FrameBufferMouseCoords(GLFWwindow* originalWindow, double* x,
 	//std::cout << centerX << '\t' << centerY << '\t';
 
 	// Calculate corrected coordinates relative to the camera's position.
-	double correctedX = (originalX - centerX) + camera.posX;
-	double correctedY = centerY - originalY + camera.posY;  // Note the y-coordinate inversion
+	double correctedX = (originalX - centerX) + camera.posX * 0.77;
+	double correctedY = centerY - originalY + camera.posY * 0.77;  // Note the y-coordinate inversion
 
 
 	//std::cout << correctedX << '\t' << correctedY << '\t';
 
 	// set value of X and Y, (valueX, valueY) to the respective y values,
 	// Y no change as no difference. X, on the other hand needs to be multiplied with the multiplier of height.,
-	float valueX = correctedX - Editor::gameWindowOrigin.first;
-	float valueY = correctedY - Editor::gameWindowOrigin.second;
+	float valueX = correctedX;
+	float valueY = correctedY;
 
 
 	valueX /= 0.77;
@@ -1072,11 +1073,11 @@ void OpenGLObject::FrameBufferMouseCoords(GLFWwindow* originalWindow, double* x,
 
 
 
-	*x = valueX;
-	*y = valueY;
+	*x = std::floor(valueX);
+	*y = std::floor(valueY);
 	
 
 	//std::cout << '\n';
-	std::cout << *x << '\t' << *y << '\n';
+	//std::cout << *x << '\t' << *y <<'\t' <<" Camera PositionX: " << cameraObject.posX << '\t' << cameraObject.posY << '\n';
 
 }
