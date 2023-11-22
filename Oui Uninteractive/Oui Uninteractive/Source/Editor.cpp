@@ -206,11 +206,17 @@ void Editor::Update() {
 	}
 
 	if (selected != nullptr) {
-		if (inputSystem.GetMouseState(GLFW_MOUSE_BUTTON_1)) {
-			Transform* tx = GET_COMPONENT(selected, Transform, ComponentType::TRANSFORM);
-			tx->position = Vec2(mouseX, mouseY);
-			Matrix3x3 scale = Matrix3x3(tx->scale.x * 2.f, 0.f, 0.f,
-				0.f, tx->scale.y * 2.f, 0.f,
+		Transform* tx = GET_COMPONENT(selected, Transform, ComponentType::TRANSFORM);
+		if ((mouseX > (-Editor::gameWindowSize.first / 2.f) && mouseX < (Editor::gameWindowSize.first / 2.f)) && (mouseY > (-Editor::gameWindowSize.second / 2.f) && mouseY < Editor::gameWindowSize.second / 2.f)) {
+			if (inputSystem.GetMouseState(GLFW_MOUSE_BUTTON_1)) {
+
+				tx->position = Vec2(mouseX, mouseY);
+
+			}
+		}
+		if (tx != nullptr) {
+			Matrix3x3 scale = Matrix3x3(tx->scale.x * 1.1f, 0.f, 0.f,
+				0.f, tx->scale.y * 1.1f, 0.f,
 				0.f, 0.0f, 1.0f);
 			float radRot = tx->rotation * (static_cast<float>(PI) / 180.0f);
 			Matrix3x3 rotate = Matrix3x3(cosf(radRot), sinf(radRot), 0,
@@ -221,6 +227,7 @@ void Editor::Update() {
 				tx->position.x, tx->position.y, 1.0f);
 			selectedOutline.Update(scale, rotate, translate);
 		}
+		
 	}
 	if (inputSystem.GetKeyState(GLFW_KEY_DELETE)) {
 		if (objectFactory->GetGameObjectByID(selected->GetGameObjectID()) != nullptr) {
