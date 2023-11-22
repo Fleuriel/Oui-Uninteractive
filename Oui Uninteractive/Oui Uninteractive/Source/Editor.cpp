@@ -192,7 +192,6 @@ void Editor::Update() {
 
 	glfwGetCursorPos(windowNew, &ogMouseX, &ogMouseY);
 
-	std::cout << ogMouseY << "\n";
 	std::map<size_t, GameObject*> copyMap = objectFactory->GetGameObjectIDMap();
 	std::pair<int, int> xBounds = std::pair<int, int>(0, Editor::gameWindowSize.first);
 	std::pair<int, int> yBounds = std::pair<int, int>(0, (Editor::gameWindowSize.second));
