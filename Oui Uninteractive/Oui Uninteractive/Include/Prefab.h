@@ -21,6 +21,9 @@ private:
 	// String to represent prefab type
 	std::string prefabType;
 
+	// Bool to check whether prefab is using sprite or texture
+	bool usingSprite;
+
 	// Vector of components for prefab
 	std::vector<IComponent*> prefabComponentList;
 
@@ -88,6 +91,19 @@ public:
 	* @return std::vector - container of components
 	*************************************************************************/
 	std::vector<IComponent*> GetPrefabComponentList();
+
+	/**************************************************************************
+	* @brief Check whether sprite or texture is used
+	* @return true if using sprite. false if texture instead.
+	*************************************************************************/
+	bool IsUsingSprite();
+
+	/**************************************************************************
+	* @brief Set whether sprite/texture is used
+	* @param flag - flag to set whether sprite/texture is used
+	* @return void
+	*************************************************************************/
+	void SetUsingSprite(bool flag);
 };
 
 /**************************************************************************

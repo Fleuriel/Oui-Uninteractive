@@ -4,6 +4,7 @@
         {
             "Name": "BulletPrefab",
             "Type": "BulletPrefab",
+            "UsingSprite": true,
             "Components": {
                 "Transform": {
                     "PositionX": 0.0,
@@ -29,6 +30,7 @@
         {
             "Name": "EnemyPrefab",
             "Type": "EnemyPrefab",
+            "UsingSprite": true,
             "Components": {
                 "LogicComponent": {
                     "ScriptID": [
@@ -56,11 +58,13 @@
         {
             "Name": "NewPrefab2",
             "Type": "NewPrefab2",
+            "UsingSprite": true,
             "Components": {}
         },
         {
             "Name": "PlayerPrefab",
             "Type": "PlayerPrefab",
+            "UsingSprite": true,
             "Components": {
                 "LogicComponent": {
                     "ScriptID": [
@@ -95,6 +99,7 @@
         {
             "Name": "TestPrefab",
             "Type": "TestPrefab",
+            "UsingSprite": true,
             "Components": {
                 "Collider": {
                     "ColliderSizeX": 75.0,

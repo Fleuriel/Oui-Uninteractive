@@ -4,6 +4,7 @@
         {
             "Name": "JSONEnemy1",
             "Type": "CommonGuard",
+            "UsingSprite": true,
             "Components": {
                 "PhysicsBody": {
                     "VelocityX": 0.0,
@@ -36,6 +37,7 @@
         {
             "Name": "JSONEnemy2",
             "Type": "CommonGuard",
+            "UsingSprite": true,
             "Components": {
                 "PhysicsBody": {
                     "VelocityX": 0.0,
@@ -63,6 +65,7 @@
         {
             "Name": "Object4",
             "Type": "CommonGuard",
+            "UsingSprite": true,
             "Components": {
                 "PhysicsBody": {
                     "VelocityX": 0.0,
@@ -90,6 +93,7 @@
         {
             "Name": "Object5",
             "Type": "CommonGuard",
+            "UsingSprite": true,
             "Components": {
                 "PhysicsBody": {
                     "VelocityX": 0.0,
@@ -117,6 +121,7 @@
         {
             "Name": "Object6",
             "Type": "CommonGuard",
+            "UsingSprite": true,
             "Components": {
                 "PhysicsBody": {
                     "VelocityX": 0.0,
@@ -144,6 +149,7 @@
         {
             "Name": "Object7",
             "Type": "CommonGuard",
+            "UsingSprite": true,
             "Components": {
                 "PhysicsBody": {
                     "VelocityX": 0.0,
@@ -171,6 +177,7 @@
         {
             "Name": "Object8",
             "Type": "CommonGuard",
+            "UsingSprite": true,
             "Components": {
                 "PhysicsBody": {
                     "VelocityX": 0.0,
@@ -198,6 +205,7 @@
         {
             "Name": "Object9",
             "Type": "",
+            "UsingSprite": true,
             "Components": {
                 "Transform": {
                     "PositionX": -919.0,
@@ -211,6 +219,7 @@
         {
             "Name": "Object10",
             "Type": "",
+            "UsingSprite": true,
             "Components": {
                 "Transform": {
                     "PositionX": -389.0,
@@ -224,6 +233,7 @@
         {
             "Name": "Object11",
             "Type": "CommonGuard",
+            "UsingSprite": true,
             "Components": {
                 "PhysicsBody": {
                     "VelocityX": 0.0,
