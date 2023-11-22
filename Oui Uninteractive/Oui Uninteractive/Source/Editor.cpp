@@ -190,14 +190,23 @@ void Editor::Update() {
 		//std::cout << tx->position.x << "|" << tx->position.y << "\n";
 		//std::cout << Editor::gameWindowSize.first << "|" << Editor::gameWindowSize.second << "\n";
 		if ((mouseX > (-Editor::gameWindowSize.first / 2.f) && mouseX < (Editor::gameWindowSize.first / 2.f)) && (mouseY > (-Editor::gameWindowSize.second / 2.f) && mouseY < Editor::gameWindowSize.second / 2.f)) {
-			if (CollisionMouseRect(tx->position, tx->scale.x, tx->scale.y, mouseX, mouseY)) {
-				if (inputSystem.GetMouseState(GLFW_MOUSE_BUTTON_1)) {
+			if (inputSystem.GetMouseState(GLFW_MOUSE_BUTTON_1)) {
+				if (CollisionMouseRect(tx->position, tx->scale.x, tx->scale.y, mouseX, mouseY)) {
 					selected = gObj.second;
-					tx->position = Vec2(mouseX, mouseY);
+				}
+				else {
+					selected = nullptr;
 				}
 			}
 		}
 
+	}
+
+	if (selected != nullptr) {
+		if (inputSystem.GetMouseState(GLFW_MOUSE_BUTTON_1)) {
+			Transform* tx = GET_COMPONENT(selected, Transform, ComponentType::TRANSFORM);
+			tx->position = Vec2(mouseX, mouseY);
+		}
 	}
 	if (inputSystem.GetKeyState(GLFW_KEY_DELETE)) {
 		if (objectFactory->GetGameObjectByID(selected->GetGameObjectID()) != nullptr) {
