@@ -24,7 +24,7 @@
                 "LogicComponent": {
                     "ScriptID": [
                         1,
-                        2,
+                        
                         3
                     ]
                 },
@@ -199,11 +199,6 @@
                     "ScriptID": [
                         2
                     ]
-                },
-                "Collider": {
-                    "ColliderSizeX": 50.0,
-                    "ColliderSizeY": 50.0,
-                    "ColliderRotation": 0.0
                 }
             }
         }
