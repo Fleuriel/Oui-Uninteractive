@@ -186,13 +186,19 @@ void Editor::Update() {
 	glfwGetCursorPos(windowNew, &mouseX, &mouseY);
 
 	OpenGLObject::FrameBufferMouseCoords(windowNew, &mouseX, &mouseY, OpenGLObject::cameraObject);
-	//std::cout << mouseX << "|" << mouseY << "\n";
+
+	double ogMouseX; 
+	double ogMouseY;
+
+	glfwGetCursorPos(windowNew, &ogMouseX, &ogMouseY);
+
+	std::cout << ogMouseY << "\n";
 	std::map<size_t, GameObject*> copyMap = objectFactory->GetGameObjectIDMap();
+	std::pair<int, int> xBounds = std::pair<int, int>(0, Editor::gameWindowSize.first);
+	std::pair<int, int> yBounds = std::pair<int, int>(0, (Editor::gameWindowSize.second));
 	for (std::pair<size_t, GameObject*> gObj : objectFactory->GetGameObjectIDMap()) {
 		Transform* tx = GET_COMPONENT(gObj.second, Transform, ComponentType::TRANSFORM);
-		//std::cout << tx->position.x << "|" << tx->position.y << "\n";
-		//std::cout << Editor::gameWindowSize.first << "|" << Editor::gameWindowSize.second << "\n";
-		if ((mouseX > (-Editor::gameWindowSize.first / 2.f) && mouseX < (Editor::gameWindowSize.first / 2.f)) && (mouseY > (-Editor::gameWindowSize.second / 2.f) && mouseY < Editor::gameWindowSize.second / 2.f)) {
+		if ((ogMouseX > xBounds.first && ogMouseX < xBounds.second) && (ogMouseY > yBounds.first && ogMouseY < yBounds.second)) {
 			if (inputSystem.GetMouseState(GLFW_MOUSE_BUTTON_1)) {
 				if (CollisionMouseRect(tx->position, tx->scale.x, tx->scale.y, mouseX, mouseY)) {
 					selected = gObj.second;
@@ -203,12 +209,11 @@ void Editor::Update() {
 				}
 			}
 		}
-
 	}
 
 	if (selected != nullptr) {
 		Transform* tx = GET_COMPONENT(selected, Transform, ComponentType::TRANSFORM);
-		if ((mouseX > (-Editor::gameWindowSize.first / 2.f) && mouseX < (Editor::gameWindowSize.first / 2.f)) && (mouseY > (-Editor::gameWindowSize.second / 2.f) && mouseY < Editor::gameWindowSize.second / 2.f)) {
+		if ((ogMouseX > xBounds.first && ogMouseX < xBounds.second) && (ogMouseY > yBounds.first && ogMouseY < yBounds.second)) {
 			if (inputSystem.GetMouseState(GLFW_MOUSE_BUTTON_1)) {
 				tx->position = Vec2(mouseX, mouseY);
 			}
