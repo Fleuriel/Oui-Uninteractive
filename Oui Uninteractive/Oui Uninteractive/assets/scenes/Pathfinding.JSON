@@ -1,20 +1,20 @@
 {
     "Tilemap": [
-        [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-        [1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-        [1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-        [1, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1],
-        [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-        [1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 1],
-        [1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1],
-        [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1],
+        [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1], 
+        [1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1], 
+        [1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1], 
+        [1, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1], 
+        [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1], 
+        [1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 1], 
+        [1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1], 
+        [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1], 
         [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
     ],
     "ObjectCount": 2,
-    "Objects": [
-        {
+    "Objects": [{
             "Name": "JSONPlayer",
             "Type": "Player",
+            "UsingSprite": true,
             "Components": {
                 "PhysicsBody": {
                     "VelocityX": 0.0,
@@ -26,18 +26,14 @@
                     "FrictionForce": 20.0
                 },
                 "Transform": {
-                    "PositionX": 400.0,
-                    "PositionY": 150.0,
+                    "PositionX": 669.3441772460938,
+                    "PositionY": -286.0372009277344,
                     "Rotation": 0.0,
                     "ScaleX": 100.0,
                     "ScaleY": 100.0
                 },
                 "LogicComponent": {
-                    "ScriptID": [
-                        1,
-                        2,
-                        3
-                    ]
+                    "ScriptID": [1, 2, 3]
                 },
                 "Collider": {
                     "ColliderSizeX": 100.0,
@@ -45,14 +41,14 @@
                     "ColliderRotation": 0.0
                 }
             }
-        },
-        {
+        }, {
             "Name": "JSONEnemy1",
             "Type": "CommonGuard",
+            "UsingSprite": true,
             "Components": {
                 "PhysicsBody": {
-                    "VelocityX": 0.0,
-                    "VelocityY": 0.0,
+                    "VelocityX": -212.1597442626953,
+                    "VelocityY": 212.10433959960938,
                     "RotationSpeed": 20.0,
                     "Speed": 120.0,
                     "Mass": 10.0,
@@ -60,16 +56,14 @@
                     "FrictionForce": 20.0
                 },
                 "Transform": {
-                    "PositionX": -400.0,
-                    "PositionY": -250.0,
+                    "PositionX": -432.5343322753906,
+                    "PositionY": -347.4375915527344,
                     "Rotation": 0.0,
                     "ScaleX": 50.0,
                     "ScaleY": 50.0
                 },
                 "LogicComponent": {
-                    "ScriptID": [
-                        0
-                    ]
+                    "ScriptID": [0]
                 },
                 "Collider": {
                     "ColliderSizeX": 50.0,
@@ -80,6 +74,5 @@
                     "AggroRange": 250.0
                 }
             }
-        }
-    ]
+        }]
 }

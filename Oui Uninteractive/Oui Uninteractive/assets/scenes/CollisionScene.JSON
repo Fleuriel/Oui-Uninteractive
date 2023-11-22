@@ -4,6 +4,7 @@
         {
             "Name": "JSONPlayer",
             "Type": "Player",
+            "UsingSprite": true,
             "Components": {
                 "PhysicsBody": {
                     "VelocityX": 0.0,
@@ -38,6 +39,7 @@
         {
             "Name": "JSONEnemy1",
             "Type": "CommonGuard",
+            "UsingSprite": true,
             "Components": {
                 "PhysicsBody": {
                     "VelocityX": 0.0,
@@ -70,6 +72,7 @@
         {
             "Name": "JSONEnemy2",
             "Type": "CommonGuard",
+            "UsingSprite": true,
             "Components": {
                 "PhysicsBody": {
                     "VelocityX": 0.0,
@@ -97,6 +100,7 @@
         {
             "Name": "Object4",
             "Type": "CommonGuard",
+            "UsingSprite": true,
             "Components": {
                 "PhysicsBody": {
                     "VelocityX": 0.0,
@@ -124,6 +128,7 @@
         {
             "Name": "Object5",
             "Type": "CommonGuard",
+            "UsingSprite": true,
             "Components": {
                 "PhysicsBody": {
                     "VelocityX": 0.0,
@@ -151,6 +156,7 @@
         {
             "Name": "Object6",
             "Type": "CommonGuard",
+            "UsingSprite": true,
             "Components": {
                 "PhysicsBody": {
                     "VelocityX": 0.0,
@@ -178,6 +184,7 @@
         {
             "Name": "EXACALIBAAAAA",
             "Type": "Weapon",
+            "UsingSprite": false,
             "Components": {
                 "PhysicsBody": {
                     "VelocityX": 0.0,
