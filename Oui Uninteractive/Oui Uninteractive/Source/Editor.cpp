@@ -216,6 +216,9 @@ void Editor::Update() {
 			if (inputSystem.GetMouseState(GLFW_MOUSE_BUTTON_1)) {
 				tx->position = Vec2(mouseX, mouseY);
 			}
+			if (inputSystem.GetMouseState(GLFW_MOUSE_BUTTON_2)) {
+				tx->rotation += 20.f;
+			}
 		}
 		if (tx != nullptr) {
 			Matrix3x3 scale = Matrix3x3(tx->scale.x * 1.1f, 0.f, 0.f,
