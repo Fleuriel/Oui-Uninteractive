@@ -173,6 +173,7 @@ void Editor::Init() {
 void Editor::SetFileFilters() {
 	fileFilterList[FILEPATH_MASTER] = L"All Files (*.*)\0*.*\0";
 	fileFilterList[FILEPATH_FONTS] = L"Font Files (*.ttf)\0*.ttf\0";
+	//fileFilterList[FILEPATH_SOUNDS_BGM] = L"Audio Files (*.mp3;*.wav)\0*.mp3;*.wav\0";
 }
 
 double scaleOutline = 30.f;
