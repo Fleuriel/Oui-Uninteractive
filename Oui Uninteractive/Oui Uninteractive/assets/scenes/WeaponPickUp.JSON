@@ -166,8 +166,8 @@
                     "FrictionForce": 20.0
                 },
                 "Transform": {
-                    "PositionX": -110.38343048095703,
-                    "PositionY": -54.095001220703125,
+                    "PositionX": -95.17529296875,
+                    "PositionY": -89.07833862304688,
                     "Rotation": 0.0,
                     "ScaleX": 200.0,
                     "ScaleY": 200.0
@@ -176,8 +176,8 @@
                     "ScriptID": [1, 3]
                 },
                 "Collider": {
-                    "ColliderSizeX": 200.0,
-                    "ColliderSizeY": 200.0,
+                    "ColliderSizeX": 87.20999908447266,
+                    "ColliderSizeY": 194.5,
                     "ColliderRotation": 0.0
                 }
             }

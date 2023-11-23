@@ -42,7 +42,7 @@ public:
 
 					
 					if (pickedup == false) {
-						for (int i = 8; i < 11; i++) {
+						for (int i = 8; i < 10; i++) {
 							
 							//knife
 							PhysicsBody* playerBody = GET_COMPONENT(objectFactory->GetGameObjectByID(z), PhysicsBody, ComponentType::PHYSICS_BODY);
