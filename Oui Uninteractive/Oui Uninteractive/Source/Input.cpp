@@ -141,7 +141,6 @@ void toggleFullScreen() {
 		glfwSetWindowMonitor(windowNew, monitor, 0, 0, mode->width, mode->height, mode->refreshRate);
 
 		fullScreen = true;
-		std::cout << "FullScreen : " << fullScreen << std::endl;
 	}
 	else {
 		// If fullscreen, make it windowed
@@ -151,7 +150,6 @@ void toggleFullScreen() {
 		glfwSetWindowMonitor(windowNew, nullptr, windowedXPos, windowedYPos, windowedWidth, windowedHeight, GLFW_DONT_CARE);
 
 		fullScreen = false;
-		std::cout << "FullScreen : " << fullScreen << std::endl;
 	}
 }
 
@@ -340,13 +338,15 @@ void windowFocusCallback(GLFWwindow* window, int focused) {
 
 		// Minimizes window if alt tabbed away
 		glfwIconifyWindow(windowNew);
-		std::cout << "FullScreen : " << fullScreen << std::endl;
+		soundManager->PauseAll();
+
 	}
 	// If alt tabbed back to window
 	else {
+
+		// Resores window if alt tabbed back
 		glfwRestoreWindow(windowNew);
-		// Toggle fullscreen state
-		
+		soundManager->ResumeAll();
 
 	}
 
