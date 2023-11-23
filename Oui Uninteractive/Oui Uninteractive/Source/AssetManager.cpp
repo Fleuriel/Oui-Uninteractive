@@ -625,24 +625,25 @@ bool AssetManager::LoadSounds() {
  * @return True if BGM is loaded successfully, false otherwise.
  *************************************************************************/
 bool AssetManager::LoadBGM() {
-
-    // BGM file path
-    //std::filesystem::path bgmPath{ "assets/sounds/bgm" };
-
     if (fs::is_directory(FILEPATH_SOUNDS_BGM)) {
         for (const auto& entry : fs::directory_iterator(FILEPATH_SOUNDS_BGM)) {
             FMOD::Sound* newSound;
             soundManager->result = soundManager->system->createSound(entry.path().string().c_str(), FMOD_DEFAULT, 0, &newSound);
-            if (soundManager->result != FMOD_OK)
+            if (soundManager->result != FMOD_OK) {
                 std::cout << "FMOD error: " << FMOD_ErrorString(soundManager->result);
-            bgmSounds.push_back(newSound);
+                return false;
+            }
+            else {
+                std::string fileName = entry.path().filename().string();
+                bgmSounds.insert(std::make_pair(fileName, newSound));
+            }
+            return true;
         }
-        return true;
     }
     else {
-        // Print error
-        std::cout << "The specified bgm path is not a directory." << std::endl;
-        return false;
+       // Print error
+       std::cout << "The specified bgm path is not a directory." << std::endl;
+       return false;
     }
 }
 
@@ -658,23 +659,25 @@ bool AssetManager::LoadBGM() {
  * @return True if SFX is loaded successfully, false otherwise.
  *************************************************************************/
 bool AssetManager::LoadSFX() {
-
-    // SFX file path
-    //std::filesystem::path sfxPath{ "assets/sounds/sfx" };
-
     if (fs::is_directory(FILEPATH_SOUNDS_SFX)) {
         for (const auto& entry : fs::directory_iterator(FILEPATH_SOUNDS_SFX)) {
             FMOD::Sound* newSound;
             soundManager->result = soundManager->system->createSound(entry.path().string().c_str(), FMOD_DEFAULT, 0, &newSound);
-            if (soundManager->result != FMOD_OK)
+            if (soundManager->result != FMOD_OK) {
                 std::cout << "FMOD error: " << FMOD_ErrorString(soundManager->result);
-            sfxSounds.push_back(newSound);
+                return false;
+            }
+            else {
+                std::string fileName = entry.path().filename().string();
+                std::cout << fileName;
+                sfxSounds.insert(std::make_pair(fileName, newSound));
+            }
         }
         return true;
     }
     else {
         // Print error
-        std::cout << "The specified sfx path is not a directory." << std::endl;
+        std::cout << "The specified bgm path is not a directory." << std::endl;
         return false;
     }
 }
@@ -688,9 +691,9 @@ bool AssetManager::LoadSFX() {
  * @param index - The index of the BGM sound to retrieve.
  * @return The FMOD Sound object for the specified BGM, or nullptr if the index is out of bounds.
  *************************************************************************/
-FMOD::Sound* AssetManager::GetBGM(int index) {
+FMOD::Sound* AssetManager::GetBGM(std::string key) {
     // Return BGM
-    return bgmSounds[index];
+    return bgmSounds[key];
 }
 
 /**************************************************************************
@@ -702,9 +705,9 @@ FMOD::Sound* AssetManager::GetBGM(int index) {
  * @param index - The index of the SFX sound to retrieve.
  * @return The FMOD Sound object for the specified SFX, or nullptr if the index is out of bounds.
  *************************************************************************/
-FMOD::Sound* AssetManager::GetSFX(int index) {
+FMOD::Sound* AssetManager::GetSFX(std::string key) {
     // Return SFX
-    return sfxSounds[index];
+    return sfxSounds[key];
 }
 
 /**************************************************************************
@@ -733,9 +736,10 @@ bool AssetManager::FreeSounds() {
  *************************************************************************/
 bool AssetManager::FreeBGM() {
     // Free individual BGM sounds
-    for (const auto& i : bgmSounds)
-        i->release();
-
+    for (const auto& i : bgmSounds) {
+        FMOD::Sound* sound = i.second;
+        sound->release();
+    }  
     // Empty BGM container
     bgmSounds.clear();
 
@@ -752,8 +756,11 @@ bool AssetManager::FreeBGM() {
  *************************************************************************/
 bool AssetManager::FreeSFX() {
     // Free individual SFX sounds
-    for (const auto& i : sfxSounds)
-        i->release();
+    for (const auto& i : sfxSounds) {
+        FMOD::Sound* sound = i.second;
+        sound->release();
+    }
+        
 
     // Empty SFX container
     sfxSounds.clear();
