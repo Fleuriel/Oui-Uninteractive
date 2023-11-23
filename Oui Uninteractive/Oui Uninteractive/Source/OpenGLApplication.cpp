@@ -528,6 +528,7 @@ void OpenGLApplication::OpenGLUpdate() {
 	if (Editor::selected != nullptr) {
 		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 		Editor::selectedOutline.Draw(std::string(""), true);
+		Editor::selectedOutline1.Draw(std::string(""), true);
 		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 	}
 	

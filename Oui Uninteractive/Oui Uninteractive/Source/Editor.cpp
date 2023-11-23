@@ -25,6 +25,7 @@ std::string Editor::browserSelectedItem;
 GameObject* Editor::selected;
 
 OpenGLObject Editor::selectedOutline;
+OpenGLObject Editor::selectedOutline1;
 // Editor settings
 int Editor::iconSize{ 128 };
 int Editor::iconPadding{ 16 };
@@ -220,17 +221,26 @@ void Editor::Update() {
 	
 	if (selected != nullptr) {
 		Transform* tx = GET_COMPONENT(selected, Transform, ComponentType::TRANSFORM);
+		static Vec2 help;
+		Vec2 translationVec = Vec2(tx->scale.x / 2.f, 0);
+		Vec2 rotated;
+		float radRot = tx->rotation * (PI / 180.f);
+		rotated.x = ((translationVec.x - tx->position.x) * cosf(radRot)) - ((translationVec.y - tx->position.y) * sinf(radRot)) + tx->position.x;
+		rotated.y = ((translationVec.x - tx->position.x) * sinf(radRot)) + ((translationVec.y - tx->position.y) * cosf(radRot)) + tx->position.y;
+		help = Vec2(tx->position.x, tx->position.y) + rotated;
 		if ((ogMouseX > xBounds.first && ogMouseX < xBounds.second) && (ogMouseY > yBounds.first && ogMouseY < yBounds.second)) {
+			
 			if (inputSystem.GetMouseState(GLFW_MOUSE_BUTTON_1)) {
 				if (translateMode != true && scaleMode != true && scaleMode2 != true && scaleMode3 != true && scaleMode4 != true){//}&& scaleMode4 != true) {
 					std::cout << CollisionPointRotateRect(tx->position, tx->scale.x, tx->scale.y, mouseX, mouseY, tx->rotation) << "\n";
+					
 					if (CollisionPointRotateRect(tx->position, tx->scale.x, tx->scale.y, mouseX, mouseY, tx->rotation)) {
 						translateMode = true;
 					}
-					else if (CollisionPointRotateRect(Vec2(tx->position.x + scaleOutline + tx->scale.x / 2.f, tx->position.y), scaleOutline, tx->scale.y + scaleOutline, mouseX, mouseY, tx->rotation)) {
+					else if (CollisionPointRotateRect(help, scaleOutline, tx->scale.y + scaleOutline, mouseX, mouseY, tx->rotation)) {
 						scaleMode = true;
 					}
-					else if (CollisionPointRotateRect(Vec2(tx->position.x - scaleOutline - tx->scale.x / 2.f, tx->position.y), scaleOutline, tx->scale.y + scaleOutline, mouseX, mouseY, tx->rotation)) {
+					/*else if (CollisionPointRotateRect(Vec2(tx->position.x - scaleOutline - tx->scale.x / 2.f, tx->position.y), scaleOutline, tx->scale.y + scaleOutline, mouseX, mouseY, tx->rotation)) {
 						scaleMode2 = true;
 					}
 					else if (CollisionPointRotateRect(Vec2(tx->position.x, tx->position.y + scaleOutline + tx->scale.y / 2.f), tx->scale.x + scaleOutline, scaleOutline, mouseX, mouseY, tx->rotation)) {
@@ -239,7 +249,7 @@ void Editor::Update() {
 					}
 					else if (CollisionPointRotateRect(Vec2(tx->position.x, tx->position.y - scaleOutline - tx->scale.y / 2.f), tx->scale.x + scaleOutline, scaleOutline, mouseX, mouseY, tx->rotation)) {
 						scaleMode4 = true;
-					}
+					}*/
 				}
 				
 			}
@@ -256,6 +266,18 @@ void Editor::Update() {
 				0.f, 1.f, 0.f,
 				tx->position.x, tx->position.y, 1.0f);
 			selectedOutline.Update(scale, rotate, translate);
+
+			Matrix3x3 scale2 = Matrix3x3(scaleOutline, 0.f, 0.f,
+				0.f, tx->scale.y + scaleOutline, 0.f,
+				0.f, 0.0f, 1.0f);
+			float radRot2 = tx->rotation * (static_cast<float>(PI) / 180.0f);
+			Matrix3x3 rotate2 = Matrix3x3(cosf(radRot2), sinf(radRot), 0,
+				-sinf(radRot), cosf(radRot), 0.f,
+				0.f, 0.f, 1.0f);
+			Matrix3x3 translate2 = Matrix3x3(1.f, 0.f, 0.f,
+				0.f, 1.f, 0.f,
+				help.x, help.y, 1.0f);
+			selectedOutline1.Update(scale2, rotate2, translate2);
 		}
 		
 	}
