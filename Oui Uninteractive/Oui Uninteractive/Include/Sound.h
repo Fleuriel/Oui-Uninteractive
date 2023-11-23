@@ -28,6 +28,11 @@ public:
 
 	FMOD_RESULT result{ FMOD_OK }; // To store FMOD function results
 
+	enum class SoundType {
+		BGM,
+		SFX
+	};
+
 	// Channels
 	std::vector<FMOD::Channel*> bgmChannels{3};
 	std::vector<FMOD::Channel*> sfxChannels{3};

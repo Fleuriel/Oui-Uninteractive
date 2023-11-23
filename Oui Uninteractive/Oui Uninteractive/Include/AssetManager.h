@@ -108,8 +108,8 @@ public:
 	// Access Asset functions
 	int GetTexture(std::string);																	//Function to access textures
 	Sprite GetSprite(std::string);																		//Function to access sprite's texture
-	FMOD::Sound* GetBGM(int);																		//Function to access BGM sounds
-	FMOD::Sound* GetSFX(int);																		//Function to access SFX Sounds
+	FMOD::Sound* GetBGM(std::string);																		//Function to access BGM sounds
+	FMOD::Sound* GetSFX(std::string);																		//Function to access SFX Sounds
 	std::map<std::string, std::map<char, FontManager::Character>>::iterator GetFont(std::string);	//Function to access fonts
 	std::string GetScene(int);																		//Function to access scenes
 	
@@ -118,8 +118,8 @@ private:
 	//Containers	
 	std::map<std::string, int> textures{};										//Container for textures
 	std::map<std::string, Sprite> sprites{};									//Container for sprites
-	std::vector<FMOD::Sound*> bgmSounds{};										//Container for bgm sounds
-	std::vector<FMOD::Sound*> sfxSounds{};										//Container for sfx sounds
+	std::map<std::string, FMOD::Sound*> bgmSounds{};							//Container for bgm sounds
+	std::map<std::string, FMOD::Sound*> sfxSounds{};							//Container for sfx sounds
 	std::map<std::string, std::map<char, FontManager::Character>> fontCharsMap; //Container for all glyphs for all fonts
 	std::vector<std::string> scenes{};											//Container for scenes
 };

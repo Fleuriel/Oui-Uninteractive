@@ -77,7 +77,7 @@ void SoundManager::PlayBGMSounds() {
 	bool playStatus1, playStatus2;
 	bgmChannels[0]->isPlaying(&playStatus1);
 	if (bgmChannels[0] == nullptr || !playStatus1) {
-		result = system->playSound(assetManager.GetBGM(0), nullptr, true, &bgmChannels[0]);
+		result = system->playSound(assetManager.GetBGM("Nightshift__BGM2_Loop_70bpm.wav"), nullptr, true, &bgmChannels[0]);
 		if (result != FMOD_OK) {
 			std::cout << "FMOD error: " << FMOD_ErrorString(result);
 			return;
@@ -86,7 +86,7 @@ void SoundManager::PlayBGMSounds() {
 	
 	bgmChannels[1]->isPlaying(&playStatus2);
 	if (bgmChannels[1] == nullptr || !playStatus2) {
-		result = system->playSound(assetManager.GetBGM(1), nullptr, true, &bgmChannels[1]);
+		result = system->playSound(assetManager.GetBGM("Suspense.wav"), nullptr, true, &bgmChannels[1]);
 		if (result != FMOD_OK) {
 			std::cout << "FMOD error: " << FMOD_ErrorString(result);
 			return;
@@ -103,7 +103,7 @@ void SoundManager::PlayBGMSounds() {
 void SoundManager::PlaySFXSounds() {
 	// Play SFX once clicked
 	sfxChannels[0]->stop();
-	result = system->playSound(assetManager.GetSFX(sfxChoice), nullptr, false, &sfxChannels[0]);
+	result = system->playSound(assetManager.GetSFX("Gunshot.wav"), nullptr, false, &sfxChannels[0]);
 	if (result != FMOD_OK) {
 		std::cout << "FMOD error: " << FMOD_ErrorString(result);
 	}
