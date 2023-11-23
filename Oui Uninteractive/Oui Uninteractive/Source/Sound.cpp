@@ -41,7 +41,7 @@ void SoundManager::Initialize() {
 		std::cout << "FMOD error: " << FMOD_ErrorString(result);
 	}
 	// Initailize FMOD
-	result = system->init(512, FMOD_INIT_NORMAL, 0); // 100 max channels set
+	result = system->init(512, FMOD_INIT_NORMAL, 0); // 512 max channels set
 	if (result != FMOD_OK) {
 		std::cout << "FMOD error: " << FMOD_ErrorString(result);
 	}
@@ -106,6 +106,106 @@ void SoundManager::PlaySFX(const std::string& sound) {
 	int channelID = getAvailableChannelID();
 	soundChannels[channelID] = channel;
 }
+
+
+void SoundManager::PlayBGM(const std::string& sound) {
+	FMOD::Sound* bgmSound = assetManager.GetBGM(sound);
+	FMOD::Channel* channel;
+	bgmSound->setMode(FMOD_LOOP_NORMAL);
+	result = system->playSound(bgmSound, soundGroups[SoundGroup::SGBGM], false, &channel);
+	if (result != FMOD_OK) {
+		std::cout << "FMOD error: " << FMOD_ErrorString(result);
+		return;
+	}
+	int channelID = getAvailableChannelID();
+	soundChannels[channelID] = channel;
+}
+
+
+void SoundManager::PlayAdvanced(const std::string& sound, SoundType type, float volume, bool looping, SoundGroup group) {
+	FMOD::Sound* fetchedSound;
+	FMOD::Channel* channel;
+	if (type == SoundType::BGM) {
+		fetchedSound = assetManager.GetBGM(sound);
+	}
+	else if (type == SoundType::SFX) {
+		fetchedSound = assetManager.GetSFX(sound);
+	}
+	else {
+		std::cout << "Error: Sound type does not exist";
+	}
+	fetchedSound->setMode(looping ? FMOD_LOOP_NORMAL : FMOD_LOOP_OFF);
+	result = system->playSound(fetchedSound, soundGroups[group], false, &channel);
+	if (result != FMOD_OK) {
+		std::cout << "FMOD error: " << FMOD_ErrorString(result);
+		return;
+	}
+	channel->setVolume(volume);
+	int channelID = getAvailableChannelID();
+	soundChannels[channelID] = channel;
+}
+
+void SoundManager::PauseAll() {
+	for (auto& [id, channel] : soundChannels) {
+		channel->setPaused(true);
+	}
+}
+
+
+void SoundManager::PauseGroup(SoundGroup group) {
+	soundGroups[group]->setPaused(true);
+}
+
+
+void SoundManager::ResumeAll() {
+	for (auto& [id, channel] : soundChannels) {
+		channel->setPaused(false);
+	}
+}
+
+void SoundManager::ResumeGroup(SoundGroup group) {
+	soundGroups[group]->setPaused(false);
+}
+
+
+void SoundManager::StopAll() {
+	for (auto& [id, channel] : soundChannels) {
+		channel->stop();
+	}
+	soundChannels.clear();
+}
+
+
+void SoundManager::StopGroup(SoundGroup group) {
+	std::vector<int> channelsToRemove;
+	for (auto& [id, channel] : soundChannels) {
+		FMOD::ChannelGroup* currentGroup;
+		channel->getChannelGroup(&currentGroup);
+		if (currentGroup == soundGroups[group]) {
+			channel->stop();
+			channelsToRemove.push_back(id);
+		}
+	}
+
+	for (int id : channelsToRemove) {
+		soundChannels.erase(id);
+	}
+}
+
+
+void SoundManager::SetGroupVolume(SoundGroup group, float volume) {
+	soundGroups[group]->setVolume(volume);
+}
+
+
+float SoundManager::GetGroupVolume(SoundGroup group) {
+	float volume;
+	soundGroups[group]->getVolume(&volume);
+	return volume;
+}
+
+
+
 
 //**************************************************************************
 //* @brief This function plays the BGM sounds

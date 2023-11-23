@@ -132,9 +132,9 @@ private:
 struct Panels {
 	bool gamePanel{ true };
 	bool prefabPanel;
-	bool soundPanel;
+	bool soundPanel{ true };
 	bool objectPanel;
-	bool assetBrowserPanel{ true };
+	bool assetBrowserPanel;
 	bool debugPanel;
 };
 static Panels panelList;

@@ -1006,6 +1006,20 @@ void Editor::CreateSoundPanel() {
 		//soundManager->PlaySFXSounds();
 		soundManager->PlaySFX("Door.wav");
 	}
+	if (ImGui::Button("PlayBGM")) {
+		//soundManager->sfxChoice = sfxChoice;
+		//soundManager->PlaySFXSounds();
+		soundManager->PlayBGM("Nightshift__BGM2_Loop_70bpm.wav");
+	}
+	if (ImGui::Button("Pause All")) {
+		soundManager->PauseAll();
+	}
+	if (ImGui::Button("Resume All")) {
+		soundManager->ResumeAll();
+	}
+	if (ImGui::Button("Stop All")) {
+		soundManager->StopAll();
+	}
 	//	ImGui::TreePop();
 	//}
 

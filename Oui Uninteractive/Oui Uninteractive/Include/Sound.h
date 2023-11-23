@@ -27,9 +27,7 @@ public:
 	//void PlayBGMSounds();
 	//void PlaySFXSounds();
 	//void TogglePlayChannel(FMOD::Channel* selectedChannel);
-	void PlaySFX(const std::string& sound);
-
-	 ~SoundManager();
+	~SoundManager();
 
 	FMOD_RESULT result{ FMOD_OK }; // To store FMOD function results
 
@@ -42,6 +40,18 @@ public:
 	enum SoundGroup {
 		SGSFX, SGBGM, SG2, SG3, SG4, SG5, SG6, SG7, SG8, SG9, SGCOUNT
 	};
+
+	void PlaySFX(const std::string& sound);
+	void PlayBGM(const std::string& sound);
+	void PlayAdvanced(const std::string& sound, SoundType type, float volume, bool looping, SoundGroup group);
+	void PauseAll();
+	void PauseGroup(SoundGroup group);
+	void ResumeAll();
+	void ResumeGroup(SoundGroup group);
+	void StopAll();
+	void StopGroup(SoundGroup group);
+	void SetGroupVolume(SoundGroup group, float volume);
+	float GetGroupVolume(SoundGroup group);
 
 	// Channels
 	std::map<int, FMOD::Channel*> soundChannels;

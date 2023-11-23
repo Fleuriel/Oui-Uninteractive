@@ -637,8 +637,8 @@ bool AssetManager::LoadBGM() {
                 std::string fileName = entry.path().filename().string();
                 soundMap[SoundManager::SoundType::BGM].insert(std::make_pair(fileName, newSound));
             }
-            return true;
         }
+        return true;
     }
     else {
        // Print error
