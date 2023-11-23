@@ -123,7 +123,7 @@ void SoundManager::PlayBGM(const std::string& sound) {
 
 
 void SoundManager::PlayAdvanced(const std::string& sound, SoundType type, float volume, bool looping, SoundGroup group) {
-	FMOD::Sound* fetchedSound;
+	FMOD::Sound* fetchedSound = nullptr;
 	FMOD::Channel* channel;
 	if (type == SoundType::BGM) {
 		fetchedSound = assetManager.GetBGM(sound);

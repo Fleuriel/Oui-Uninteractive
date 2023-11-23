@@ -1498,6 +1498,10 @@ void Editor::CreateAssetBrowser() {
 	ImGui::SameLine();
 	ImGui::Spacing();
 	if (ImGui::Button("Add File")) {
+		
+		std::cout << "\n" << currFilePath << "\n" << FILEPATH_FONTS << std::endl;
+		
+		
 		// Get absolute path of working directory
 		std::filesystem::path exePath = std::filesystem::current_path();
 		std::filesystem::path addToPath = exePath / currFilePath;
