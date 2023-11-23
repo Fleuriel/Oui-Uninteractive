@@ -168,7 +168,7 @@ void Editor::Init() {
 	Editor::selectedOutline.InitObjects();
 }
 
-double scaleOutline = 20.f;
+double scaleOutline = 30.f;
 /**************************************************************************
 * @brief This function updates the editor
 * @return void
@@ -208,7 +208,7 @@ void Editor::Update() {
 		Transform* tx = GET_COMPONENT(gObj.second, Transform, ComponentType::TRANSFORM);
 		if ((ogMouseX > xBounds.first && ogMouseX < xBounds.second) && (ogMouseY > yBounds.first && ogMouseY < yBounds.second)) {
 			if (inputSystem.GetMouseState(GLFW_MOUSE_BUTTON_1)) {
-				if (CollisionMouseRect(tx->position, tx->scale.x + scaleOutline, tx->scale.y + scaleOutline, mouseX, mouseY)) {
+				if (CollisionPointRotateRect(tx->position, tx->scale.x + scaleOutline, tx->scale.y + scaleOutline, mouseX, mouseY, tx->rotation)) {
 					if (translateMode != true && scaleMode != true && scaleMode2 != true && scaleMode3 != true && scaleMode4 != true) {
 						selected = gObj.second;
 					}
@@ -218,26 +218,26 @@ void Editor::Update() {
 		}
 	}
 	
-//	static bool scaleMode4 = false;
 	if (selected != nullptr) {
 		Transform* tx = GET_COMPONENT(selected, Transform, ComponentType::TRANSFORM);
 		if ((ogMouseX > xBounds.first && ogMouseX < xBounds.second) && (ogMouseY > yBounds.first && ogMouseY < yBounds.second)) {
 			if (inputSystem.GetMouseState(GLFW_MOUSE_BUTTON_1)) {
 				if (translateMode != true && scaleMode != true && scaleMode2 != true && scaleMode3 != true && scaleMode4 != true){//}&& scaleMode4 != true) {
-					if (CollisionMouseRect(tx->position, tx->scale.x, tx->scale.y, mouseX, mouseY)) {
+					std::cout << CollisionPointRotateRect(tx->position, tx->scale.x, tx->scale.y, mouseX, mouseY, tx->rotation) << "\n";
+					if (CollisionPointRotateRect(tx->position, tx->scale.x, tx->scale.y, mouseX, mouseY, tx->rotation)) {
 						translateMode = true;
 					}
-					else if (CollisionMouseRect(Vec2(tx->position.x + tx->scale.x / 2.f, tx->position.y), scaleOutline, tx->scale.y + scaleOutline, mouseX, mouseY)) {
+					else if (CollisionPointRotateRect(Vec2(tx->position.x + scaleOutline + tx->scale.x / 2.f, tx->position.y), scaleOutline, tx->scale.y + scaleOutline, mouseX, mouseY, tx->rotation)) {
 						scaleMode = true;
 					}
-					else if (CollisionMouseRect(Vec2(tx->position.x - tx->scale.x / 2.f, tx->position.y), scaleOutline, tx->scale.y + scaleOutline, mouseX, mouseY)) {
+					else if (CollisionPointRotateRect(Vec2(tx->position.x - scaleOutline - tx->scale.x / 2.f, tx->position.y), scaleOutline, tx->scale.y + scaleOutline, mouseX, mouseY, tx->rotation)) {
 						scaleMode2 = true;
 					}
-					else if (CollisionMouseRect(Vec2(tx->position.x, tx->position.y + tx->scale.y / 2.f), tx->scale.x + scaleOutline, scaleOutline, mouseX, mouseY)) {
+					else if (CollisionPointRotateRect(Vec2(tx->position.x, tx->position.y + scaleOutline + tx->scale.y / 2.f), tx->scale.x + scaleOutline, scaleOutline, mouseX, mouseY, tx->rotation)) {
 						scaleMode3 = true;
 					
 					}
-					else if (CollisionMouseRect(Vec2(tx->position.x, tx->position.y - tx->scale.y / 2.f), tx->scale.x + scaleOutline, scaleOutline, mouseX, mouseY)) {
+					else if (CollisionPointRotateRect(Vec2(tx->position.x, tx->position.y - scaleOutline - tx->scale.y / 2.f), tx->scale.x + scaleOutline, scaleOutline, mouseX, mouseY, tx->rotation)) {
 						scaleMode4 = true;
 					}
 				}
@@ -260,6 +260,7 @@ void Editor::Update() {
 		
 	}
 	static bool buttonDown = false;
+	static bool rightButtonDown = false;
 	if (translateMode) {
 		if (selected != nullptr) {
 			Transform* tx = GET_COMPONENT(selected, Transform, ComponentType::TRANSFORM);
@@ -368,6 +369,12 @@ void Editor::Update() {
 
 				}
 			}
+		}
+	}
+	if (inputSystem.GetMouseState(GLFW_MOUSE_BUTTON_2) == GLFW_PRESS) {
+		if (selected != nullptr) {
+			Transform* tx = GET_COMPONENT(selected, Transform, ComponentType::TRANSFORM);
+			tx->rotation += 20.f;
 		}
 	}
 	if (inputSystem.GetKeyState(GLFW_KEY_DELETE)) {
@@ -934,65 +941,71 @@ void Editor::CreatePrefabPanel() {
 *************************************************************************/
 void Editor::CreateSoundPanel() {
 	ImGui::Begin("Sound Control Panel");
-	if (ImGui::TreeNode("Tracks")) {
-		ImGui::SeparatorText("BGM");
-		static int bgmChoice = 0;
-		static float volValue = 1.0f, bgmVol1 = 1.0f, bgmVol2 = 1.0f;
-		bool pauseStatus1 = true, pauseStatus2 = true;
+	//if (ImGui::TreeNode("Tracks")) {
+	//	ImGui::SeparatorText("BGM");
+	//	static int bgmChoice = 0;
+	//	static float volValue = 1.0f, bgmVol1 = 1.0f, bgmVol2 = 1.0f;
+	//	bool pauseStatus1 = true, pauseStatus2 = true;
 
-		// Check pause status for bgmch1	
-		soundManager->bgmChannels[0]->getPaused(&pauseStatus1);
-		if (pauseStatus1) {
-			ImGui::PushStyleColor(ImGuiCol_Text, redColour); // Red if not playing	
-		}
-		else {
-			ImGui::PushStyleColor(ImGuiCol_Text, greenColour); // Green if playing
-		}
-		if (ImGui::RadioButton("BGM 1", &bgmChoice, 0)) { // On radio button 1 click
-			volValue = bgmVol1;
-		} ImGui::SameLine();
-		ImGui::PopStyleColor();
+	//	// Check pause status for bgmch1	
+	//	soundManager->bgmChannels[0]->getPaused(&pauseStatus1);
+	//	if (pauseStatus1) {
+	//		ImGui::PushStyleColor(ImGuiCol_Text, redColour); // Red if not playing	
+	//	}
+	//	else {
+	//		ImGui::PushStyleColor(ImGuiCol_Text, greenColour); // Green if playing
+	//	}
+	//	if (ImGui::RadioButton("BGM 1", &bgmChoice, 0)) { // On radio button 1 click
+	//		volValue = bgmVol1;
+	//	} ImGui::SameLine();
+	//	ImGui::PopStyleColor();
 
-		// Check pause status for bgmch2
-		soundManager->bgmChannels[1]->getPaused(&pauseStatus2);
-		if (pauseStatus2) {
-			ImGui::PushStyleColor(ImGuiCol_Text, redColour); // Red if not playing
-		}
-		else {
-			ImGui::PushStyleColor(ImGuiCol_Text, greenColour); // Green if playing
-		}
-		if (ImGui::RadioButton("BGM 2", &bgmChoice, 1)) { // On radio button 2 click
-			volValue = bgmVol2;
-		}
-		ImGui::PopStyleColor();
+	//	// Check pause status for bgmch2
+	//	soundManager->bgmChannels[1]->getPaused(&pauseStatus2);
+	//	if (pauseStatus2) {
+	//		ImGui::PushStyleColor(ImGuiCol_Text, redColour); // Red if not playing
+	//	}
+	//	else {
+	//		ImGui::PushStyleColor(ImGuiCol_Text, greenColour); // Green if playing
+	//	}
+	//	if (ImGui::RadioButton("BGM 2", &bgmChoice, 1)) { // On radio button 2 click
+	//		volValue = bgmVol2;
+	//	}
+	//	ImGui::PopStyleColor();
 
-		// On Volume slider click
-		if (ImGui::SliderFloat("Volume", &volValue, 0.0f, 1.0f, "%.2f")) {
-			if (bgmChoice == 0) {
-				bgmVol1 = volValue;
-			}
-			else if (bgmChoice == 1) {
-				bgmVol2 = volValue;
-			}
-			soundManager->bgmChannels[bgmChoice]->setVolume(volValue);
-		}
-		// On play button click
-		if (ImGui::Button("Play/Pause")) {
-			soundManager->PlayBGMSounds();
-			soundManager->TogglePlayChannel(soundManager->bgmChannels[bgmChoice]);
-		}
+	//	// On Volume slider click
+	//	if (ImGui::SliderFloat("Volume", &volValue, 0.0f, 1.0f, "%.2f")) {
+	//		if (bgmChoice == 0) {
+	//			bgmVol1 = volValue;
+	//		}
+	//		else if (bgmChoice == 1) {
+	//			bgmVol2 = volValue;
+	//		}
+	//		soundManager->bgmChannels[bgmChoice]->setVolume(volValue);
+	//	}
+	//	// On play button click
+	//	if (ImGui::Button("Play/Pause")) {
+	//		soundManager->PlayBGMSounds();
+	//		soundManager->TogglePlayChannel(soundManager->bgmChannels[bgmChoice]);
+	//	}
 
-		ImGui::SeparatorText("SFX");
-		static int sfxChoice = 0;
-		ImGui::RadioButton("SFX 1", &sfxChoice, 0); ImGui::SameLine();
-		ImGui::RadioButton("SFX 2", &sfxChoice, 1); ImGui::SameLine();
-		ImGui::RadioButton("SFX 3", &sfxChoice, 2);
-		if (ImGui::Button("Play")) {
-			soundManager->sfxChoice = sfxChoice;
-			soundManager->PlaySFXSounds();
-		}
-		ImGui::TreePop();
+	//	ImGui::SeparatorText("SFX");
+	//	static int sfxChoice = 0;
+	//	ImGui::RadioButton("SFX 1", &sfxChoice, 0); ImGui::SameLine();
+	//	ImGui::RadioButton("SFX 2", &sfxChoice, 1); ImGui::SameLine();
+	//	ImGui::RadioButton("SFX 3", &sfxChoice, 2);
+	if (ImGui::Button("PlaySFX1")) {
+		//soundManager->sfxChoice = sfxChoice;
+		//soundManager->PlaySFXSounds();
+		soundManager->PlaySFX("Gunshot.wav");
 	}
+	if (ImGui::Button("PlaySFX2")) {
+		//soundManager->sfxChoice = sfxChoice;
+		//soundManager->PlaySFXSounds();
+		soundManager->PlaySFX("Door.wav");
+	}
+	//	ImGui::TreePop();
+	//}
 
 	ImGui::End();
 }

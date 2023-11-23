@@ -14,6 +14,7 @@
 #include <fmod/fmod_errors.h>
 #include <vector>
 #include <filesystem> 
+#include <queue>
 #include "ISystem.h"
 
 class SoundManager : public ISystem {
@@ -21,27 +22,38 @@ public:
 	SoundManager();
 	void Initialize();
 	virtual void Update(float dt);
-	void PlayBGMSounds();
-	void PlaySFXSounds();
-	void TogglePlayChannel(FMOD::Channel* selectedChannel);
+	int getAvailableChannelID();
+	void recycleChannelID(int id);
+	//void PlayBGMSounds();
+	//void PlaySFXSounds();
+	//void TogglePlayChannel(FMOD::Channel* selectedChannel);
+	void PlaySFX(const std::string& sound);
+
 	 ~SoundManager();
 
 	FMOD_RESULT result{ FMOD_OK }; // To store FMOD function results
 
+	// Class enum for types of sounds
 	enum class SoundType {
 		BGM,
 		SFX
 	};
+	// Class enum for channels
+	enum SoundGroup {
+		SGSFX, SGBGM, SG2, SG3, SG4, SG5, SG6, SG7, SG8, SG9, SGCOUNT
+	};
 
 	// Channels
-	std::vector<FMOD::Channel*> bgmChannels{3};
-	std::vector<FMOD::Channel*> sfxChannels{3};
+	std::map<int, FMOD::Channel*> soundChannels;
+	std::vector<FMOD::ChannelGroup*> soundGroups{ SGCOUNT };
+	
 
-	int sfxChoice{0};
+	//int sfxChoice{0};
 	
 	FMOD::System* system{ nullptr };
 
-private:
+	// Queue to store not assigned channel IDs
+	std::queue<int> availableIDs;
 	
 };
 extern SoundManager* soundManager;

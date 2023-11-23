@@ -11,7 +11,7 @@
  *************************************************************************/
 
 #include "Collision.h"
-
+#define PI 3.141592653589793
 /**************************************************************************
  * @brief Check for collision for mouse and rectangle
  *
@@ -44,8 +44,6 @@ bool CollisionMouseRect(Collider::AABB Rect1, float mouseX, float mouseY) {
 }
 
 bool CollisionMouseRect(Vec2 objCenter, float objScaleX, float objScaleY, float mouseX, float mouseY) {
-	/*collider->boundingbox->min = Vec2((-0.5f) * collider->tx->scale.x + collider->tx->position.x, (-0.5f) * collider->tx->scale.y + collider->tx->position.y);
-	collider->boundingbox->max = Vec2((0.5f) * collider->tx->scale.x + collider->tx->position.x, (0.5f) * collider->tx->scale.y + collider->tx->position.y);*/
 	Vec2 max = Vec2((0.5f) * objScaleX + objCenter.x , (0.5f) * objScaleY + objCenter.y);
 	Vec2 min = Vec2(-(0.5f)* objScaleX + objCenter.x , -(0.5f) * objScaleY + objCenter.y);
 
@@ -226,4 +224,34 @@ bool CollisionMovingRectRect(Collider::AABB A, Collider::AABB B, Vec2 relativeVe
 		}
 	}
 	return false;
+}
+bool CollisionPointRotateRect(Vec2 objCenter, float objScaleX, float objScaleY, float mouseX, float mouseY, float angle) {
+	float angleRad = angle * (PI / 180.f);
+	Vec2 topRight = Vec2((0.5f) * objScaleX + objCenter.x, (0.5f) * objScaleY + objCenter.y);
+	Vec2 topLeft = Vec2(-(0.5f) * objScaleX + objCenter.x, topRight.y);
+	Vec2 botLeft = Vec2(-(0.5f) * objScaleX + objCenter.x, -(0.5f) * objScaleY + objCenter.y);
+	Vec2 botRight = Vec2((0.5f) * objScaleX + objCenter.x, botLeft.y);
+
+	std::vector<Vec2> corners;
+	corners.push_back(topRight);
+	corners.push_back(topLeft);
+	corners.push_back(botLeft);
+	corners.push_back(botRight);
+
+	for (Vec2& corner : corners) {
+		Vec2 tempVec = corner - objCenter;
+		Vec2 rotated = Vec2(tempVec.x * cosf(angleRad) - tempVec.y * sinf(angleRad), tempVec.x * sinf(angleRad) + tempVec.y * cosf(angleRad));
+
+		corner = Vec2(rotated.x + objCenter.x, rotated.y + objCenter.y);
+	}
+	Vec2 mouse = Vec2(mouseX, mouseY);
+	Vec2 AM = mouse - corners[1];
+	Vec2 AB = corners[0] - corners[1];
+	Vec2 AD = corners[2] - corners[1];
+	bool test = ((0 <= Vector2DDotProduct(AM, AB)) && (Vector2DDotProduct(AM, AB) < Vector2DDotProduct(AB, AB)));
+	bool test2 = ((0 <= Vector2DDotProduct(AM, AD)) && (Vector2DDotProduct(AM, AD) < Vector2DDotProduct(AD, AD)));
+	if (test && test2) {
+		std::cout << "test\n";
+	}
+	return test && test2;
 }
