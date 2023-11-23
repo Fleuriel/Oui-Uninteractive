@@ -183,6 +183,7 @@ void Editor::Update() {
 	}
 	double mouseX; // = io.MousePos.x;
 	double mouseY; // = io.MousePos.y;
+
 	glfwGetCursorPos(windowNew, &mouseX, &mouseY);
 
 	OpenGLObject::FrameBufferMouseCoords(windowNew, &mouseX, &mouseY, OpenGLObject::cameraObject);
@@ -199,25 +200,31 @@ void Editor::Update() {
 		Transform* tx = GET_COMPONENT(gObj.second, Transform, ComponentType::TRANSFORM);
 		if ((ogMouseX > xBounds.first && ogMouseX < xBounds.second) && (ogMouseY > yBounds.first && ogMouseY < yBounds.second)) {
 			if (inputSystem.GetMouseState(GLFW_MOUSE_BUTTON_1)) {
-				if (CollisionMouseRect(tx->position, tx->scale.x, tx->scale.y, mouseX, mouseY)) {
+				if (CollisionMouseRect(tx->position, tx->scale.x * 1.1, tx->scale.y * 1.1, mouseX, mouseY)) {
 					selected = gObj.second;
 					break;
-				}
-				else {
-					selected = nullptr;
 				}
 			}
 		}
 	}
-
+	static bool translateMode = false;
+	static bool scaleMode = false;
 	if (selected != nullptr) {
 		Transform* tx = GET_COMPONENT(selected, Transform, ComponentType::TRANSFORM);
 		if ((ogMouseX > xBounds.first && ogMouseX < xBounds.second) && (ogMouseY > yBounds.first && ogMouseY < yBounds.second)) {
 			if (inputSystem.GetMouseState(GLFW_MOUSE_BUTTON_1)) {
-				tx->position = Vec2(mouseX, mouseY);
-			}
-			if (inputSystem.GetMouseState(GLFW_MOUSE_BUTTON_2)) {
-				tx->rotation += 20.f;
+				if (translateMode != true && scaleMode != true) {
+					if (CollisionMouseRect(tx->position, tx->scale.x, tx->scale.y, mouseX, mouseY)) {
+						translateMode = true;
+						//	tx->position = Vec2(mouseX, mouseY);
+					}
+					else if (CollisionMouseRect(tx->position, tx->scale.x * 1.1f, tx->scale.y * 1.1, mouseX, mouseY)) {
+						scaleMode = true;
+						/*tx->scale.x += mouseX - (tx->position.x + tx->scale.x / 2);
+						tx->position += Vec2(mouseX - (tx->position.x + tx->scale.x / 2), 0);		*/
+					}
+				}
+				
 			}
 		}
 		if (tx != nullptr) {
@@ -234,6 +241,44 @@ void Editor::Update() {
 			selectedOutline.Update(scale, rotate, translate);
 		}
 		
+	}
+	static bool buttonDown = false;
+	if (translateMode) {
+		if (selected != nullptr) {
+			Transform* tx = GET_COMPONENT(selected, Transform, ComponentType::TRANSFORM);
+			if (tx != nullptr) {
+				if (inputSystem.GetMouseState(GLFW_MOUSE_BUTTON_1) == GLFW_PRESS) {
+					buttonDown = true;
+				}
+				else {
+					buttonDown = false;
+					translateMode = false;
+				}
+
+				if (buttonDown) {
+					tx->position = Vec2(mouseX, mouseY);
+				}
+			}
+		}
+	}
+	if (scaleMode) {
+		if (selected != nullptr) {
+			Transform* tx = GET_COMPONENT(selected, Transform, ComponentType::TRANSFORM);
+			if (tx != nullptr) {
+				if (inputSystem.GetMouseState(GLFW_MOUSE_BUTTON_1) == GLFW_PRESS) {
+					buttonDown = true;
+				}
+				else {
+					buttonDown = false;
+					scaleMode = false;
+				}
+
+				if (buttonDown) {
+					tx->scale.x += mouseX - (tx->position.x + tx->scale.x / 2);
+					tx->position += Vec2(mouseX - (tx->position.x + tx->scale.x / 2), 0);
+				}
+			}
+		}
 	}
 	if (inputSystem.GetKeyState(GLFW_KEY_DELETE)) {
 		if (selected != nullptr) {
