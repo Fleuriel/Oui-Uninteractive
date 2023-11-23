@@ -194,6 +194,13 @@ void Editor::Update() {
 
 	glfwGetCursorPos(windowNew, &ogMouseX, &ogMouseY);
 
+
+	static bool translateMode = false;
+	static bool scaleMode = false;
+	static bool scaleMode2 = false;
+	static bool scaleMode3 = false;
+	static bool scaleMode4 = false;
+
 	std::map<size_t, GameObject*> copyMap = objectFactory->GetGameObjectIDMap();
 	std::pair<int, int> xBounds = std::pair<int, int>(Editor::gameWindowOrigin.first, Editor::gameWindowSize.first);
 	std::pair<int, int> yBounds = std::pair<int, int>(Editor::gameWindowOrigin.second, (Editor::gameWindowSize.second));
@@ -202,30 +209,26 @@ void Editor::Update() {
 		if ((ogMouseX > xBounds.first && ogMouseX < xBounds.second) && (ogMouseY > yBounds.first && ogMouseY < yBounds.second)) {
 			if (inputSystem.GetMouseState(GLFW_MOUSE_BUTTON_1)) {
 				if (CollisionMouseRect(tx->position, tx->scale.x * 1.1, tx->scale.y * 1.1, mouseX, mouseY)) {
-					selected = gObj.second;
+					if (translateMode != true && scaleMode != true && scaleMode2 != true && scaleMode3 != true && scaleMode4 != true) {
+						selected = gObj.second;
+					}
 					break;
 				}
 			}
 		}
 	}
-	static bool translateMode = false;
-	static bool scaleMode = false;
-	static bool scaleMode2 = false;
-	static bool scaleMode3 = false;
+	
 //	static bool scaleMode4 = false;
 	if (selected != nullptr) {
 		Transform* tx = GET_COMPONENT(selected, Transform, ComponentType::TRANSFORM);
 		if ((ogMouseX > xBounds.first && ogMouseX < xBounds.second) && (ogMouseY > yBounds.first && ogMouseY < yBounds.second)) {
 			if (inputSystem.GetMouseState(GLFW_MOUSE_BUTTON_1)) {
-				if (translateMode != true && scaleMode != true && scaleMode2 != true && scaleMode3 != true){//}&& scaleMode4 != true) {
+				if (translateMode != true && scaleMode != true && scaleMode2 != true && scaleMode3 != true && scaleMode4 != true){//}&& scaleMode4 != true) {
 					if (CollisionMouseRect(tx->position, tx->scale.x, tx->scale.y, mouseX, mouseY)) {
 						translateMode = true;
-						//	tx->position = Vec2(mouseX, mouseY);
 					}
 					else if (CollisionMouseRect(Vec2(tx->position.x + tx->scale.x / 2.f, tx->position.y), tx->scale.x * 0.1f, tx->scale.y * 1.1, mouseX, mouseY)) {
 						scaleMode = true;
-						/*tx->scale.x += mouseX - (tx->position.x + tx->scale.x / 2);
-						tx->position += Vec2(mouseX - (tx->position.x + tx->scale.x / 2), 0);		*/
 					}
 					else if (CollisionMouseRect(Vec2(tx->position.x - tx->scale.x / 2.f, tx->position.y), tx->scale.x * 0.1f, tx->scale.y * 1.1, mouseX, mouseY)) {
 						scaleMode2 = true;
@@ -234,9 +237,9 @@ void Editor::Update() {
 						scaleMode3 = true;
 					
 					}
-					/*else if (CollisionMouseRect(Vec2(tx->position.x, tx->position.y - tx->scale.y / 2.f), tx->scale.x * 1.1f, tx->scale.y * 0.1, mouseX, mouseY)) {
+					else if (CollisionMouseRect(Vec2(tx->position.x, tx->position.y - tx->scale.y / 2.f), tx->scale.x * 1.1f, tx->scale.y * 0.1, mouseX, mouseY)) {
 						scaleMode4 = true;
-					}*/
+					}
 				}
 				
 			}
@@ -336,6 +339,33 @@ void Editor::Update() {
 				if (buttonDown) {
 					tx->scale.y += mouseY - (tx->position.y + tx->scale.y / 2);
 					tx->position += Vec2(0, mouseY - (tx->position.y + tx->scale.y / 2));
+				}
+			}
+		}
+	}
+
+	if (scaleMode4) {
+		if (selected != nullptr) {
+			Transform* tx = GET_COMPONENT(selected, Transform, ComponentType::TRANSFORM);
+			if (tx != nullptr) {
+				if (inputSystem.GetMouseState(GLFW_MOUSE_BUTTON_1) == GLFW_PRESS) {
+					buttonDown = true;
+				}
+				else {
+					buttonDown = false;
+					scaleMode4 = false;
+				}
+
+				if (buttonDown) {
+					if (mouseY < (tx->position.y - tx->scale.y / 2)) {
+						tx->scale.y += abs((mouseY)-((tx->position.y - tx->scale.y / 2)));
+						tx->position -= Vec2(0, abs((mouseY)-((tx->position.y - tx->scale.y / 2))));
+					}
+					else {
+						tx->scale.y -= abs((mouseY)-((tx->position.y - tx->scale.y / 2)));
+						tx->position += Vec2(0, abs((mouseY)-((tx->position.y - tx->scale.y / 2))));
+					}
+
 				}
 			}
 		}
