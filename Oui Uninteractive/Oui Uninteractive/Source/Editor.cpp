@@ -168,7 +168,7 @@ void Editor::Init() {
 	Editor::selectedOutline.InitObjects();
 }
 
-
+double scaleOutline = 20.f;
 /**************************************************************************
 * @brief This function updates the editor
 * @return void
@@ -208,7 +208,7 @@ void Editor::Update() {
 		Transform* tx = GET_COMPONENT(gObj.second, Transform, ComponentType::TRANSFORM);
 		if ((ogMouseX > xBounds.first && ogMouseX < xBounds.second) && (ogMouseY > yBounds.first && ogMouseY < yBounds.second)) {
 			if (inputSystem.GetMouseState(GLFW_MOUSE_BUTTON_1)) {
-				if (CollisionMouseRect(tx->position, tx->scale.x * 1.1, tx->scale.y * 1.1, mouseX, mouseY)) {
+				if (CollisionMouseRect(tx->position, tx->scale.x + scaleOutline, tx->scale.y + scaleOutline, mouseX, mouseY)) {
 					if (translateMode != true && scaleMode != true && scaleMode2 != true && scaleMode3 != true && scaleMode4 != true) {
 						selected = gObj.second;
 					}
@@ -227,17 +227,17 @@ void Editor::Update() {
 					if (CollisionMouseRect(tx->position, tx->scale.x, tx->scale.y, mouseX, mouseY)) {
 						translateMode = true;
 					}
-					else if (CollisionMouseRect(Vec2(tx->position.x + tx->scale.x / 2.f, tx->position.y), tx->scale.x * 0.1f, tx->scale.y * 1.1, mouseX, mouseY)) {
+					else if (CollisionMouseRect(Vec2(tx->position.x + tx->scale.x / 2.f, tx->position.y), scaleOutline, tx->scale.y + scaleOutline, mouseX, mouseY)) {
 						scaleMode = true;
 					}
-					else if (CollisionMouseRect(Vec2(tx->position.x - tx->scale.x / 2.f, tx->position.y), tx->scale.x * 0.1f, tx->scale.y * 1.1, mouseX, mouseY)) {
+					else if (CollisionMouseRect(Vec2(tx->position.x - tx->scale.x / 2.f, tx->position.y), scaleOutline, tx->scale.y + scaleOutline, mouseX, mouseY)) {
 						scaleMode2 = true;
 					}
-					else if (CollisionMouseRect(Vec2(tx->position.x, tx->position.y + tx->scale.y / 2.f), tx->scale.x * 1.1f, tx->scale.y * 0.1, mouseX, mouseY)) {
+					else if (CollisionMouseRect(Vec2(tx->position.x, tx->position.y + tx->scale.y / 2.f), tx->scale.x + scaleOutline, scaleOutline, mouseX, mouseY)) {
 						scaleMode3 = true;
 					
 					}
-					else if (CollisionMouseRect(Vec2(tx->position.x, tx->position.y - tx->scale.y / 2.f), tx->scale.x * 1.1f, tx->scale.y * 0.1, mouseX, mouseY)) {
+					else if (CollisionMouseRect(Vec2(tx->position.x, tx->position.y - tx->scale.y / 2.f), tx->scale.x + scaleOutline, scaleOutline, mouseX, mouseY)) {
 						scaleMode4 = true;
 					}
 				}
@@ -245,8 +245,8 @@ void Editor::Update() {
 			}
 		}
 		if (tx != nullptr) {
-			Matrix3x3 scale = Matrix3x3(tx->scale.x * 1.1f, 0.f, 0.f,
-				0.f, tx->scale.y * 1.1f, 0.f,
+			Matrix3x3 scale = Matrix3x3(tx->scale.x + scaleOutline, 0.f, 0.f,
+				0.f, tx->scale.y + scaleOutline, 0.f,
 				0.f, 0.0f, 1.0f);
 			float radRot = tx->rotation * (static_cast<float>(PI) / 180.0f);
 			Matrix3x3 rotate = Matrix3x3(cosf(radRot), sinf(radRot), 0,
