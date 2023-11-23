@@ -168,7 +168,7 @@ void Editor::Init() {
 	Editor::selectedOutline.InitObjects();
 }
 
-double scaleOutline = 20.f;
+double scaleOutline = 30.f;
 /**************************************************************************
 * @brief This function updates the editor
 * @return void
@@ -208,7 +208,7 @@ void Editor::Update() {
 		Transform* tx = GET_COMPONENT(gObj.second, Transform, ComponentType::TRANSFORM);
 		if ((ogMouseX > xBounds.first && ogMouseX < xBounds.second) && (ogMouseY > yBounds.first && ogMouseY < yBounds.second)) {
 			if (inputSystem.GetMouseState(GLFW_MOUSE_BUTTON_1)) {
-				if (CollisionMouseRect(tx->position, tx->scale.x + scaleOutline, tx->scale.y + scaleOutline, mouseX, mouseY)) {
+				if (CollisionPointRotateRect(tx->position, tx->scale.x + scaleOutline, tx->scale.y + scaleOutline, mouseX, mouseY, tx->rotation)) {
 					if (translateMode != true && scaleMode != true && scaleMode2 != true && scaleMode3 != true && scaleMode4 != true) {
 						selected = gObj.second;
 					}
@@ -218,26 +218,26 @@ void Editor::Update() {
 		}
 	}
 	
-//	static bool scaleMode4 = false;
 	if (selected != nullptr) {
 		Transform* tx = GET_COMPONENT(selected, Transform, ComponentType::TRANSFORM);
 		if ((ogMouseX > xBounds.first && ogMouseX < xBounds.second) && (ogMouseY > yBounds.first && ogMouseY < yBounds.second)) {
 			if (inputSystem.GetMouseState(GLFW_MOUSE_BUTTON_1)) {
 				if (translateMode != true && scaleMode != true && scaleMode2 != true && scaleMode3 != true && scaleMode4 != true){//}&& scaleMode4 != true) {
-					if (CollisionMouseRect(tx->position, tx->scale.x, tx->scale.y, mouseX, mouseY)) {
+					std::cout << CollisionPointRotateRect(tx->position, tx->scale.x, tx->scale.y, mouseX, mouseY, tx->rotation) << "\n";
+					if (CollisionPointRotateRect(tx->position, tx->scale.x, tx->scale.y, mouseX, mouseY, tx->rotation)) {
 						translateMode = true;
 					}
-					else if (CollisionMouseRect(Vec2(tx->position.x + tx->scale.x / 2.f, tx->position.y), scaleOutline, tx->scale.y + scaleOutline, mouseX, mouseY)) {
+					else if (CollisionPointRotateRect(Vec2(tx->position.x + scaleOutline + tx->scale.x / 2.f, tx->position.y), scaleOutline, tx->scale.y + scaleOutline, mouseX, mouseY, tx->rotation)) {
 						scaleMode = true;
 					}
-					else if (CollisionMouseRect(Vec2(tx->position.x - tx->scale.x / 2.f, tx->position.y), scaleOutline, tx->scale.y + scaleOutline, mouseX, mouseY)) {
+					else if (CollisionPointRotateRect(Vec2(tx->position.x - scaleOutline - tx->scale.x / 2.f, tx->position.y), scaleOutline, tx->scale.y + scaleOutline, mouseX, mouseY, tx->rotation)) {
 						scaleMode2 = true;
 					}
-					else if (CollisionMouseRect(Vec2(tx->position.x, tx->position.y + tx->scale.y / 2.f), tx->scale.x + scaleOutline, scaleOutline, mouseX, mouseY)) {
+					else if (CollisionPointRotateRect(Vec2(tx->position.x, tx->position.y + scaleOutline + tx->scale.y / 2.f), tx->scale.x + scaleOutline, scaleOutline, mouseX, mouseY, tx->rotation)) {
 						scaleMode3 = true;
 					
 					}
-					else if (CollisionMouseRect(Vec2(tx->position.x, tx->position.y - tx->scale.y / 2.f), tx->scale.x + scaleOutline, scaleOutline, mouseX, mouseY)) {
+					else if (CollisionPointRotateRect(Vec2(tx->position.x, tx->position.y - scaleOutline - tx->scale.y / 2.f), tx->scale.x + scaleOutline, scaleOutline, mouseX, mouseY, tx->rotation)) {
 						scaleMode4 = true;
 					}
 				}
@@ -260,6 +260,7 @@ void Editor::Update() {
 		
 	}
 	static bool buttonDown = false;
+	static bool rightButtonDown = false;
 	if (translateMode) {
 		if (selected != nullptr) {
 			Transform* tx = GET_COMPONENT(selected, Transform, ComponentType::TRANSFORM);
@@ -368,6 +369,12 @@ void Editor::Update() {
 
 				}
 			}
+		}
+	}
+	if (inputSystem.GetMouseState(GLFW_MOUSE_BUTTON_2) == GLFW_PRESS) {
+		if (selected != nullptr) {
+			Transform* tx = GET_COMPONENT(selected, Transform, ComponentType::TRANSFORM);
+			tx->rotation += 20.f;
 		}
 	}
 	if (inputSystem.GetKeyState(GLFW_KEY_DELETE)) {

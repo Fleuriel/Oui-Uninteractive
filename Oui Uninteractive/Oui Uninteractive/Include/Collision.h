@@ -81,4 +81,6 @@ bool CollisionStaticDynamicRectRect(Collider::AABB Rect1, Collider::AABB Rect2);
  *************************************************************************/
 bool CollisionMovingRectRect(Collider::AABB A, Collider::AABB B, Vec2 relativeVel, float& contactTime, Vec2& normal, float dt, Vec2 AVel);
 bool MovingPointRectCollision(Vec2 origin, Vec2 direction, Collider::AABB target, Vec2& contactNormal, float& contactTime);
+
+bool CollisionPointRotateRect(Vec2 objCenter, float objScaleX, float objScaleY, float mouseX, float mouseY, float angle);
 #endif
