@@ -220,7 +220,7 @@ void Editor::Update() {
 	
 	if (selected != nullptr) {
 		Transform* tx = GET_COMPONENT(selected, Transform, ComponentType::TRANSFORM);
-		if ((ogMouseX > xBounds.first && ogMouseX < xBounds.second) && (ogMouseY > yBounds.first && ogMouseY < yBounds.second)) {
+		if (tx != nullptr && (ogMouseX > xBounds.first && ogMouseX < xBounds.second) && (ogMouseY > yBounds.first && ogMouseY < yBounds.second)) {
 			if (inputSystem.GetMouseState(GLFW_MOUSE_BUTTON_1)) {
 				if (translateMode != true && scaleMode != true && scaleMode2 != true && scaleMode3 != true && scaleMode4 != true){//}&& scaleMode4 != true) {
 					std::cout << CollisionPointRotateRect(tx->position, tx->scale.x, tx->scale.y, mouseX, mouseY, tx->rotation) << "\n";
@@ -374,7 +374,9 @@ void Editor::Update() {
 	if (inputSystem.GetMouseState(GLFW_MOUSE_BUTTON_2) == GLFW_PRESS) {
 		if (selected != nullptr) {
 			Transform* tx = GET_COMPONENT(selected, Transform, ComponentType::TRANSFORM);
-			tx->rotation += 20.f;
+			if (tx != nullptr) {
+				tx->rotation += 20.f;
+			}
 		}
 	}
 	if (inputSystem.GetKeyState(GLFW_KEY_DELETE)) {

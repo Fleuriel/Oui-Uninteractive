@@ -16,6 +16,13 @@
 #include "IState.h"
 #include "BFS.h"
 
+/**************************************************************************
+* @brief Get the start node's X and Y position
+* @param currentEnemy - pointer to current enemy
+* @return std::pair<int, int> - pair of int (X and Y position)
+*************************************************************************/
+//std::pair<int, int> GetStartNodePosition(Vec2 currentEnemyPos, BFS* bfs, float scale, float windowWidth, float windowHeight);
+
 class EnemyRoam : public IState {
 private:
 	BFS* bfs;
@@ -28,7 +35,7 @@ private:
 	// TEMPORARY VARIABLES
 	float windowWidth;
 	float windowHeight;
-	float scaleTemp;
+	float scale;
 
 public:
 	/**************************************************************************
@@ -38,6 +45,7 @@ public:
 
 	/**************************************************************************
 	* @brief Update the EnemyRoam state
+	* @param gameObjectID - ID of enemy
 	* @return void
 	*************************************************************************/
 	void Update(size_t gameObjectID) override;
@@ -66,6 +74,7 @@ public:
 
 	/**************************************************************************
 	* @brief Update the EnemyAttack state
+	* @param gameObjectID - ID of enemy
 	* @return void
 	*************************************************************************/
 	void Update(size_t gameObjectID) override;
@@ -80,6 +89,45 @@ public:
 	* @brief Destructor
 	*************************************************************************/
 	~EnemyAttack() override;
+};
+
+class EnemyFlee : public IState {
+private:
+	BFS* bfs;
+	std::vector<Node> pathToTake;
+	bool transitioned;
+	bool pathFound;
+	bool pathPrinted;
+	int pathIndex;
+
+	// TEMPORARY VARIABLES
+	float windowWidth;
+	float windowHeight;
+	float scale;
+
+public:
+	/**************************************************************************
+	* @brief Constructor
+	*************************************************************************/
+	EnemyFlee();
+
+	/**************************************************************************
+	* @brief Update the EnemyRoam state
+	* @param gameObjectID - ID of enemy
+	* @return void
+	*************************************************************************/
+	void Update(size_t gameObjectID) override;
+
+	/**************************************************************************
+	* @brief Exit the EnemyRoam state
+	* @return void
+	*************************************************************************/
+	void ExitState() override;
+
+	/**************************************************************************
+	* @brief Destructor
+	*************************************************************************/
+	~EnemyFlee() override;
 };
 
 #endif
