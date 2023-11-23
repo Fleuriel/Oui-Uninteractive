@@ -445,7 +445,7 @@
     <ClInclude Include="Include\EnemyFSM.h">
       <Filter>Component\EnemyAI</Filter>
     </ClInclude>
-    <ClInclude Include="Include\BulletLifetimeScript.h">
+    <ClInclude Include="Include\BulletScript.h">
       <Filter>Scripts</Filter>
     </ClInclude>
     <ClInclude Include="Include\WeaponPickupScript.h">

@@ -108,13 +108,14 @@ bool BFS::CreateGrid() {
             if (gameMap[i][j] == 1) {
                 // Create walls
                 std::string wallName = "Wall" + std::to_string(wallID);
-                GameObject* wall = objectFactory->BuildObjectRunTime(wallName, "Wall");
+                /*GameObject* wall = objectFactory->BuildObjectRunTime(wallName, "Wall");
                 objectFactory->AddComponent(ComponentType::TRANSFORM, wall);
                 objectFactory->AddComponent(ComponentType::COLLIDER, wall);
-                objectFactory->AddComponent(ComponentType::PHYSICS_BODY, wall);
+                objectFactory->AddComponent(ComponentType::PHYSICS_BODY, wall);*/
+                GameObject* wall{ objectFactory->BuildObjectFromPrefab(wallName, "WallPrefab") };
 
                 ++wallID;
-                wall->Initialize();
+                //wall->Initialize();
 
                 // Set position and collider size of wall
                 GET_COMPONENT(wall, PhysicsBody, ComponentType::PHYSICS_BODY)->isStatic = true;

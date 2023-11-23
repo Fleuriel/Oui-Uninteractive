@@ -15,7 +15,7 @@
 #include "TestScript.h"
 #include "EnemyFSM.h"
 #include "PlayerShooting.h"
-#include "BulletLifetimeScript.h"
+#include "BulletScript.h"
 #include "WeaponPickupScript.h"
 
 LogicSystem* logicSystem = nullptr;
@@ -52,8 +52,8 @@ void LogicSystem::Initialize() {
 	PlayerShooting* playerShootingScript = new PlayerShooting(std::string("PlayerShooting"));
 	playerShootingScript->Initialize();
 
-	BulletLifetime* bulletLifetimeScript = new BulletLifetime(std::string("BulletLifetime"));
-	bulletLifetimeScript->Initialize();
+	BulletScript* bulletScript = new BulletScript(std::string("BulletScript"));
+	bulletScript->Initialize();
 }
 /**************************************************************************
 * @brief Update function for Logic System

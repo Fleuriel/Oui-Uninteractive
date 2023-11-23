@@ -455,13 +455,13 @@ void Editor::CreateMasterPanel() {
 	//std::cout << sceneFileName << std::endl;
 	// Save level to file
 	if (ImGui::Button("Save scene")) {
+		// Get rapidjson documents of tilemap and game objects
 		rapidjson::Document tilemapDoc = tilemapLoader->SaveTilemap(sceneFileName);
-		const rapidjson::Document& objectDoc = objectFactory->GetObjectDocSaving(sceneFileName);
-
+		rapidjson::Document const& objectDoc = objectFactory->GetObjectDocSaving(sceneFileName);
 		rapidjson::Document::AllocatorType& allocator = tilemapDoc.GetAllocator();
 		
+		// Merge game objects document into tilemap document
 		for (auto& member : objectDoc.GetObj()) {
-			// Check for conflicts or handle them based on your needs
 			if (!tilemapDoc.HasMember(member.name)) {
 				rapidjson::Value key(member.name, allocator);
 				rapidjson::Value value;
@@ -469,11 +469,12 @@ void Editor::CreateMasterPanel() {
 				tilemapDoc.AddMember(key, value, allocator);
 			}
 		}
+
+		// Save data to JSON file
 		JsonSerializer serializer;
 		if (serializer.WriteJSONFile(sceneFileName, tilemapDoc)) {
 			std::cout << "Successfully saved objects to file." << std::endl;
 		}
-		//objectFactory->SaveObjectsToFile(sceneFileName);
 	}
 	ImGui::SameLine();
 	// Load level from file

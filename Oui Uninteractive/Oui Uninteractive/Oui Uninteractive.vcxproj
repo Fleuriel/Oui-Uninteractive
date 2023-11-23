@@ -67,7 +67,7 @@
     <ClInclude Include="Include\AssetManager.h" />
     <ClInclude Include="Include\Background.h" />
     <ClInclude Include="Include\BFS.h" />
-    <ClInclude Include="Include\BulletLifetimeScript.h" />
+    <ClInclude Include="Include\BulletScript.h" />
     <ClInclude Include="Include\Collider.h" />
     <ClInclude Include="Include\ColliderSystem.h" />
     <ClInclude Include="Include\Collision.h" />
