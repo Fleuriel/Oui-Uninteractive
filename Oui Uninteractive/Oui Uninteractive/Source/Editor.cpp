@@ -299,8 +299,15 @@ void Editor::Update() {
 				}
 
 				if (buttonDown) {
-					tx->scale.x += abs(mouseX) - abs((tx->position.x - tx->scale.x / 2));
-					tx->position -= Vec2(abs(mouseX) - abs((tx->position.x - tx->scale.x / 2)), 0);
+					if (mouseX < (tx->position.x - tx->scale.x / 2)) {
+						tx->scale.x += abs((mouseX)-((tx->position.x - tx->scale.x / 2)));
+						tx->position -= Vec2(abs((mouseX)-((tx->position.x - tx->scale.x / 2))), 0);
+					}
+					else {
+						tx->scale.x -= abs((mouseX)-((tx->position.x - tx->scale.x / 2)));
+						tx->position += Vec2(abs((mouseX)-((tx->position.x - tx->scale.x / 2))), 0);
+					}
+					
 				}
 			}
 		}
