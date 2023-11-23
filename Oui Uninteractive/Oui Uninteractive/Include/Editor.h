@@ -72,6 +72,7 @@ class Editor {
 public:
 	void Init();
 	void Update();
+	void SetFileFilters();
 	static void CreateMenuBar();
 	static void CreateRenderWindow();
 	static void CreateMasterPanel();
@@ -126,15 +127,16 @@ static SystemTime timeRecorder;
 
 private:
 	static std::vector<std::string> prefabList;
+	static std::map<std::string, std::wstring> fileFilterList;
 };
 
 // Store panel selection
 struct Panels {
 	bool gamePanel{ true };
 	bool prefabPanel;
-	bool soundPanel{ true };
+	bool soundPanel;
 	bool objectPanel;
-	bool assetBrowserPanel;
+	bool assetBrowserPanel{ true };
 	bool debugPanel;
 };
 static Panels panelList;

@@ -23,6 +23,7 @@ std::string Editor::browserInputPath;
 bool Editor::browserDoubleClicked;
 std::string Editor::browserSelectedItem;
 GameObject* Editor::selected;
+std::map<std::string, std::wstring> Editor::fileFilterList;
 
 OpenGLObject Editor::selectedOutline;
 // Editor settings
@@ -166,6 +167,12 @@ void Editor::Init() {
 	browserDoubleClicked = false;
 	browserInputPath = FILEPATH_MASTER;
 	Editor::selectedOutline.InitObjects();
+	SetFileFilters();
+}
+
+void Editor::SetFileFilters() {
+	fileFilterList[FILEPATH_MASTER] = L"All Files (*.*)\0*.*\0";
+	fileFilterList[FILEPATH_FONTS] = L"Font Files (*.ttf)\0*.ttf\0";
 }
 
 double scaleOutline = 30.f;
@@ -1497,13 +1504,7 @@ void Editor::CreateAssetBrowser() {
 
 	ImGui::SameLine();
 	ImGui::Spacing();
-	if (ImGui::Button("Add File")) {
-		if (currFilePath == FILEPATH_FONTS) {
-			std::cout << "\n" << currFilePath << "\n" << FILEPATH_FONTS << std::endl;
-
-		}
-		
-		
+	if (ImGui::Button("Add File")) {	
 		// Get absolute path of working directory
 		std::filesystem::path exePath = std::filesystem::current_path();
 		std::filesystem::path addToPath = exePath / currFilePath;
@@ -1514,7 +1515,8 @@ void Editor::CreateAssetBrowser() {
 		ZeroMemory(&ofn, sizeof(ofn));
 		ofn.lStructSize = sizeof(ofn);
 		ofn.hwndOwner = hwnd;
-		ofn.lpstrFilter = L"All Files (*.*)\0*.*\0";
+		//ofn.lpstrFilter = L"All Files (*.*)\0*.*\0";
+		ofn.lpstrFilter = fileFilterList[FILEPATH_FONTS].c_str();
 		ofn.lpstrFile = szFile;
 		ofn.nMaxFile = MAX_PATH;
 		ofn.Flags = OFN_FILEMUSTEXIST;
