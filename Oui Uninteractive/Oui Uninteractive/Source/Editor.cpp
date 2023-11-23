@@ -940,65 +940,71 @@ void Editor::CreatePrefabPanel() {
 *************************************************************************/
 void Editor::CreateSoundPanel() {
 	ImGui::Begin("Sound Control Panel");
-	if (ImGui::TreeNode("Tracks")) {
-		ImGui::SeparatorText("BGM");
-		static int bgmChoice = 0;
-		static float volValue = 1.0f, bgmVol1 = 1.0f, bgmVol2 = 1.0f;
-		bool pauseStatus1 = true, pauseStatus2 = true;
+	//if (ImGui::TreeNode("Tracks")) {
+	//	ImGui::SeparatorText("BGM");
+	//	static int bgmChoice = 0;
+	//	static float volValue = 1.0f, bgmVol1 = 1.0f, bgmVol2 = 1.0f;
+	//	bool pauseStatus1 = true, pauseStatus2 = true;
 
-		// Check pause status for bgmch1	
-		soundManager->bgmChannels[0]->getPaused(&pauseStatus1);
-		if (pauseStatus1) {
-			ImGui::PushStyleColor(ImGuiCol_Text, redColour); // Red if not playing	
-		}
-		else {
-			ImGui::PushStyleColor(ImGuiCol_Text, greenColour); // Green if playing
-		}
-		if (ImGui::RadioButton("BGM 1", &bgmChoice, 0)) { // On radio button 1 click
-			volValue = bgmVol1;
-		} ImGui::SameLine();
-		ImGui::PopStyleColor();
+	//	// Check pause status for bgmch1	
+	//	soundManager->bgmChannels[0]->getPaused(&pauseStatus1);
+	//	if (pauseStatus1) {
+	//		ImGui::PushStyleColor(ImGuiCol_Text, redColour); // Red if not playing	
+	//	}
+	//	else {
+	//		ImGui::PushStyleColor(ImGuiCol_Text, greenColour); // Green if playing
+	//	}
+	//	if (ImGui::RadioButton("BGM 1", &bgmChoice, 0)) { // On radio button 1 click
+	//		volValue = bgmVol1;
+	//	} ImGui::SameLine();
+	//	ImGui::PopStyleColor();
 
-		// Check pause status for bgmch2
-		soundManager->bgmChannels[1]->getPaused(&pauseStatus2);
-		if (pauseStatus2) {
-			ImGui::PushStyleColor(ImGuiCol_Text, redColour); // Red if not playing
-		}
-		else {
-			ImGui::PushStyleColor(ImGuiCol_Text, greenColour); // Green if playing
-		}
-		if (ImGui::RadioButton("BGM 2", &bgmChoice, 1)) { // On radio button 2 click
-			volValue = bgmVol2;
-		}
-		ImGui::PopStyleColor();
+	//	// Check pause status for bgmch2
+	//	soundManager->bgmChannels[1]->getPaused(&pauseStatus2);
+	//	if (pauseStatus2) {
+	//		ImGui::PushStyleColor(ImGuiCol_Text, redColour); // Red if not playing
+	//	}
+	//	else {
+	//		ImGui::PushStyleColor(ImGuiCol_Text, greenColour); // Green if playing
+	//	}
+	//	if (ImGui::RadioButton("BGM 2", &bgmChoice, 1)) { // On radio button 2 click
+	//		volValue = bgmVol2;
+	//	}
+	//	ImGui::PopStyleColor();
 
-		// On Volume slider click
-		if (ImGui::SliderFloat("Volume", &volValue, 0.0f, 1.0f, "%.2f")) {
-			if (bgmChoice == 0) {
-				bgmVol1 = volValue;
-			}
-			else if (bgmChoice == 1) {
-				bgmVol2 = volValue;
-			}
-			soundManager->bgmChannels[bgmChoice]->setVolume(volValue);
-		}
-		// On play button click
-		if (ImGui::Button("Play/Pause")) {
-			soundManager->PlayBGMSounds();
-			soundManager->TogglePlayChannel(soundManager->bgmChannels[bgmChoice]);
-		}
+	//	// On Volume slider click
+	//	if (ImGui::SliderFloat("Volume", &volValue, 0.0f, 1.0f, "%.2f")) {
+	//		if (bgmChoice == 0) {
+	//			bgmVol1 = volValue;
+	//		}
+	//		else if (bgmChoice == 1) {
+	//			bgmVol2 = volValue;
+	//		}
+	//		soundManager->bgmChannels[bgmChoice]->setVolume(volValue);
+	//	}
+	//	// On play button click
+	//	if (ImGui::Button("Play/Pause")) {
+	//		soundManager->PlayBGMSounds();
+	//		soundManager->TogglePlayChannel(soundManager->bgmChannels[bgmChoice]);
+	//	}
 
-		ImGui::SeparatorText("SFX");
-		static int sfxChoice = 0;
-		ImGui::RadioButton("SFX 1", &sfxChoice, 0); ImGui::SameLine();
-		ImGui::RadioButton("SFX 2", &sfxChoice, 1); ImGui::SameLine();
-		ImGui::RadioButton("SFX 3", &sfxChoice, 2);
-		if (ImGui::Button("Play")) {
-			soundManager->sfxChoice = sfxChoice;
-			soundManager->PlaySFXSounds();
-		}
-		ImGui::TreePop();
+	//	ImGui::SeparatorText("SFX");
+	//	static int sfxChoice = 0;
+	//	ImGui::RadioButton("SFX 1", &sfxChoice, 0); ImGui::SameLine();
+	//	ImGui::RadioButton("SFX 2", &sfxChoice, 1); ImGui::SameLine();
+	//	ImGui::RadioButton("SFX 3", &sfxChoice, 2);
+	if (ImGui::Button("PlaySFX1")) {
+		//soundManager->sfxChoice = sfxChoice;
+		//soundManager->PlaySFXSounds();
+		soundManager->PlaySFX("Gunshot.wav");
 	}
+	if (ImGui::Button("PlaySFX2")) {
+		//soundManager->sfxChoice = sfxChoice;
+		//soundManager->PlaySFXSounds();
+		soundManager->PlaySFX("Door.wav");
+	}
+	//	ImGui::TreePop();
+	//}
 
 	ImGui::End();
 }
