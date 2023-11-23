@@ -440,7 +440,7 @@ void OpenGLApplication::OpenGLUpdate() {
 	}
 	if (inputSystem.GetMouseState(GLFW_MOUSE_BUTTON_RIGHT)) {
 #ifdef _DEBUG
-		std::cout << "RCLICK\n";
+	//	std::cout << "RCLICK\n";
 #endif
 	}
 
