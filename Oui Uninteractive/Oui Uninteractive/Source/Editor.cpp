@@ -29,6 +29,7 @@ OpenGLObject Editor::selectedOutline1;
 // Editor settings
 int Editor::iconSize{ 128 };
 int Editor::iconPadding{ 16 };
+double scaleOutline = 30.f;
 
 /**************************************************************************
 * @brief Helper function to build a custom tooltip with description
@@ -169,7 +170,7 @@ void Editor::Init() {
 	Editor::selectedOutline.InitObjects();
 }
 
-double scaleOutline = 30.f;
+
 /**************************************************************************
 * @brief This function updates the editor
 * @return void
@@ -222,12 +223,8 @@ void Editor::Update() {
 	if (selected != nullptr) {
 		Transform* tx = GET_COMPONENT(selected, Transform, ComponentType::TRANSFORM);
 		static Vec2 help;
-		Vec2 translationVec = Vec2(tx->scale.x / 2.f, 0);
-		Vec2 rotated;
-		float radRot = tx->rotation * (PI / 180.f);
-		rotated.x = ((translationVec.x - tx->position.x) * cosf(radRot)) - ((translationVec.y - tx->position.y) * sinf(radRot)) + tx->position.x;
-		rotated.y = ((translationVec.x - tx->position.x) * sinf(radRot)) + ((translationVec.y - tx->position.y) * cosf(radRot)) + tx->position.y;
-		help = Vec2(tx->position.x, tx->position.y) + rotated;
+	
+		help = tx->position + Vector2DRotate(Vec2(tx->scale.x / 2.f, 0), tx->rotation, Vec2(0, 0));
 		if ((ogMouseX > xBounds.first && ogMouseX < xBounds.second) && (ogMouseY > yBounds.first && ogMouseY < yBounds.second)) {
 			
 			if (inputSystem.GetMouseState(GLFW_MOUSE_BUTTON_1)) {
@@ -237,7 +234,7 @@ void Editor::Update() {
 					if (CollisionPointRotateRect(tx->position, tx->scale.x, tx->scale.y, mouseX, mouseY, tx->rotation)) {
 						translateMode = true;
 					}
-					else if (CollisionPointRotateRect(help, scaleOutline, tx->scale.y + scaleOutline, mouseX, mouseY, tx->rotation)) {
+					else if (CollisionPointRotateRect(tx->position + Vector2DRotate(Vec2(tx->scale.x / 2.f, 0), tx->rotation, Vec2(0,0)), scaleOutline, tx->scale.y + scaleOutline, mouseX, mouseY, tx->rotation)) {
 						scaleMode = true;
 					}
 					/*else if (CollisionPointRotateRect(Vec2(tx->position.x - scaleOutline - tx->scale.x / 2.f, tx->position.y), scaleOutline, tx->scale.y + scaleOutline, mouseX, mouseY, tx->rotation)) {
@@ -314,8 +311,37 @@ void Editor::Update() {
 				}
 
 				if (buttonDown) {
-					tx->scale.x += mouseX - (tx->position.x + tx->scale.x / 2);
-					tx->position += Vec2(mouseX - (tx->position.x + tx->scale.x / 2), 0);
+					Vec2 rotatedPt = Vec2(tx->position.x + tx->scale.x / 2, tx->position.y);
+					rotatedPt = Vector2DRotate(rotatedPt, tx->rotation, Vec2(0, 0));
+
+					Vec2 rotatedMin = Vec2(tx->position.x + tx->scale.x / 2, tx->position.y - tx->scale.y / 2);
+					rotatedMin = Vector2DRotate(rotatedMin, tx->rotation, Vec2(0, 0));
+
+					Vec2 rotatedMax = Vec2(tx->position.x + tx->scale.x / 2, tx->position.y + tx->scale.y / 2);
+					rotatedMax = Vector2DRotate(rotatedMax, tx->rotation, Vec2(0, 0));
+
+	
+					Vec2 direction = rotatedPt - tx->position;
+					Vec2 normalizedDir;
+					Vector2DNormalize(normalizedDir, direction);
+
+					Vec2 translationVec = Vec2(mouseX, mouseY) - rotatedPt;
+					
+					translationVec = normalizedDir * translationVec;
+					//double a = rotatedMax.y - rotatedMin.y;
+					//double b = rotatedMax.x - rotatedMin.x;
+					//double c = (rotatedMin.x * rotatedMax.y) - (rotatedMax.x * rotatedMin.y);
+
+					//double magnitudeTest = a * rotatedMin.x + b * rotatedMin.y + c / sqrt(a * a + b * b);
+					
+					float magnitude = Vector2DLength(Vec2(translationVec));
+					if (Vector2DDotProduct(translationVec, direction) < 0) {
+						magnitude = -magnitude;
+					}
+				//	Vec2 rotated = Vector2DRotate(translationVec, -tx->rotation, Vec2(0, 0));
+					tx->scale.x += magnitude ;
+
+					tx->position += normalizedDir * magnitude / 2.f;//Vector2DRotate(Vec2(rotated.x, 0), tx->rotation, Vec2(0,0)) / 2;// Vector2DRotate(Vec2(mouseX - (tx->position.x + tx->scale.x / 2), 0), tx->rotation, Vec2(0, 0));
 				}
 			}
 		}

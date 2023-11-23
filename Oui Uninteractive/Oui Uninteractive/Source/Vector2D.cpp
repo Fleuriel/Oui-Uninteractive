@@ -191,3 +191,11 @@ float Vector2DDotProduct(const Vector2D& pVec0, const Vector2D& pVec1) {
 float Vector2DCrossProductMag(const Vector2D& pVec0, const Vector2D& pVec1) {
 	return pVec0.x * pVec1.y - pVec0.y * pVec1.x;
 }
+Vec2 Vector2DRotate(Vector2D vectorToRotate, float angle, Vec2 centerOfRot){
+	
+	Vec2 rotated;
+	float radRot = angle * (M_PI / 180.f);
+	rotated.x = ((vectorToRotate.x) * cosf(radRot)) - ((vectorToRotate.y) * sinf(radRot));
+	rotated.y = ((vectorToRotate.x) * sinf(radRot)) + ((vectorToRotate.y) * cosf(radRot));
+	return rotated;
+}
