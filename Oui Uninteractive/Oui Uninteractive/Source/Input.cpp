@@ -20,7 +20,7 @@
 #include <Editor.h>	
 #include <ParticleSystem.h>
 #include <Cheats.h>
-
+#include <AssetManager.h>
 
 InputSystem inputSystem;
 
@@ -381,8 +381,8 @@ void windowFocusCallback(GLFWwindow* window, int focused) {
 	if (focused == GLFW_FALSE) {
 
 		// Minimizes window if alt tabbed away
-
-		glfwIconifyWindow(windowNew);
+		if (!assetManager.Currentlyloading)
+			glfwIconifyWindow(windowNew);
 		soundManager->PauseAll();
 
 	}

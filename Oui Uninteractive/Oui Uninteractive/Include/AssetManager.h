@@ -113,6 +113,7 @@ public:
 	std::map<std::string, std::map<char, FontManager::Character>>::iterator GetFont(std::string);	//Function to access fonts
 	std::string GetScene(int);																		//Function to access scenes
 	
+	bool Currentlyloading{ false };
 	
 private:
 	//Containers	

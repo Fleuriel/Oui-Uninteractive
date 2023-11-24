@@ -30,6 +30,12 @@
 namespace fs = std::filesystem;
 
 
+std::string toLowerCase(const std::string& input) {
+    std::string result = input;
+    std::transform(result.begin(), result.end(), result.begin(), [](unsigned char c) { return std::tolower(c); });
+    return result;
+}
+
 /**************************************************************************
  * @brief Constructor for the AssetManager class.
  *
@@ -132,7 +138,7 @@ void AssetManager::ReloadAll() {
  *************************************************************************/
 bool AssetManager::LoadTextures() {
 
-    //std::string directoryPath = "assets/texture"; // Change this to the directory of texture folder
+    Currentlyloading = true;
 
     if (fs::is_directory(FILEPATH_TEXTURES)) {
         for (const auto& entry : fs::directory_iterator(FILEPATH_TEXTURES)) {
@@ -149,7 +155,7 @@ bool AssetManager::LoadTextures() {
                 std::string allowedExtensions = ".jpg,.jpeg,.png,.gif";
 
                 // Check if the substring exists in the full string
-                size_t found = allowedExtensions.find(Extension);
+                size_t found = allowedExtensions.find(toLowerCase(Extension));
 
                 if (found == std::string::npos) {
                     std::string file(entry.path().filename().string());
@@ -159,26 +165,29 @@ bool AssetManager::LoadTextures() {
                     // Convert std::string to std::wstring
                     std::wstring widefilepath(filepath.begin(), filepath.end());
 
-                    std::wstring message = widefile + L" File added to \"" + widefilepath + L"\" folder!";
+                    std::wstring message = L"Incompatible file \"" + widefile + L"\" detected in \"" + widefilepath + L"\" folder!\n\nFile not loaded!";
                     LPCWSTR boxMessage = message.c_str();
 
-                    MessageBox(hwnd, boxMessage, L"Success", MB_OK | MB_ICONERROR);
+                    MessageBox(hwnd, boxMessage, L"Load Failure", MB_OK | MB_ICONERROR);
 
+                    continue;
                 }
                 
 
                 textures[nameWithoutExtension] = AssetManager::SetUpTexture(texFilePath);
-                //std::cout << textures[nameWithoutExtension] << " success!\n";
+                std::cout << nameWithoutExtension << " success!\n";
             }
             else
                 std::cout << "File " << entry.path().filename().string() << " is missing file extension.\n";
             
         }
+        Currentlyloading = false;
         return true;
     }
     else {
         // Print error
         std::cout << "The specified path is not a directory." << std::endl;
+        Currentlyloading = false;
         return false;
     }
 }
@@ -497,6 +506,8 @@ bool Sprite::AddCoordinates(int a, int b) {
  *************************************************************************/
 bool AssetManager::LoadSprites() {
 
+    Currentlyloading = true;
+
     // if file path for sprites exist
     if (fs::is_directory(FILEPATH_SPRITES)) {
         // for every sprite in the file path
@@ -509,6 +520,29 @@ bool AssetManager::LoadSprites() {
             size_t extensionPos = entry.path().filename().string().find_last_of('.');
             // if file extension found
             if (extensionPos != std::string::npos) {
+
+                std::string Extension = entry.path().filename().string().substr(extensionPos);
+                //std::cout << Extension;
+                std::string allowedExtensions = ".png";
+
+                // Check if the substring exists in the full string
+                size_t found = allowedExtensions.find(toLowerCase(Extension));
+
+                if (found == std::string::npos) {
+                    std::string file(entry.path().filename().string());
+                    std::wstring widefile(file.begin(), file.end());
+                    HWND hwnd = GetActiveWindow();
+                    std::string filepath(FILEPATH_SPRITES);
+                    // Convert std::string to std::wstring
+                    std::wstring widefilepath(filepath.begin(), filepath.end());
+
+                    std::wstring message = L"Incompatible file \"" + widefile + L"\" detected in \"" + widefilepath + L"\" folder!\n\nFile not loaded!";
+                    LPCWSTR boxMessage = message.c_str();
+
+                    MessageBox(hwnd, boxMessage, L"Load Failure", MB_OK | MB_ICONERROR);
+
+                    continue;
+                }
 
                 // create new sprite class
                 Sprite newsprite;
@@ -568,11 +602,13 @@ bool AssetManager::LoadSprites() {
                 std::cout << "File " << entry.path().filename().string() << " is missing file extension.\n";
 
         }
+        Currentlyloading = false;
         return true;
     }
     else {
         // Print error
         std::cout << "The specified path is not a directory." << std::endl;
+        Currentlyloading = false;
         return false;
     }
 
@@ -650,8 +686,38 @@ bool AssetManager::LoadSounds() {
  * @return True if BGM is loaded successfully, false otherwise.
  *************************************************************************/
 bool AssetManager::LoadBGM() {
+
+    Currentlyloading = true;
+
     if (fs::is_directory(FILEPATH_SOUNDS_BGM)) {
         for (const auto& entry : fs::directory_iterator(FILEPATH_SOUNDS_BGM)) {
+
+            // find the file extension 
+            size_t extensionPos = entry.path().filename().string().find_last_of('.');
+
+            std::string Extension = entry.path().filename().string().substr(extensionPos);
+            //std::cout << Extension;
+            std::string allowedExtensions = ".mp3,.wav,.ogg,.FLAC";
+
+            // Check if the substring exists in the full string
+            size_t found = allowedExtensions.find(toLowerCase(Extension));
+
+            if (found == std::string::npos) {
+                std::string file(entry.path().filename().string());
+                std::wstring widefile(file.begin(), file.end());
+                HWND hwnd = GetActiveWindow();
+                std::string filepath(FILEPATH_SOUNDS_BGM);
+                // Convert std::string to std::wstring
+                std::wstring widefilepath(filepath.begin(), filepath.end());
+
+                std::wstring message = L"Incompatible file \"" + widefile + L"\" detected in \"" + widefilepath + L"\" folder!\n\nFile not loaded!";
+                LPCWSTR boxMessage = message.c_str();
+
+                MessageBox(hwnd, boxMessage, L"Load Failure", MB_OK | MB_ICONERROR);
+
+                continue;
+            }
+
             FMOD::Sound* newSound;
             soundManager->result = soundManager->system->createSound(entry.path().string().c_str(), FMOD_DEFAULT, 0, &newSound);
             if (soundManager->result != FMOD_OK) {
@@ -663,11 +729,13 @@ bool AssetManager::LoadBGM() {
                 soundMap[SoundManager::SoundType::BGM].insert(std::make_pair(fileName, newSound));
             }
         }
+        Currentlyloading = false;
         return true;
     }
     else {
        // Print error
        std::cout << "The specified bgm path is not a directory." << std::endl;
+       Currentlyloading = false;
        return false;
     }
 }
@@ -684,8 +752,38 @@ bool AssetManager::LoadBGM() {
  * @return True if SFX is loaded successfully, false otherwise.
  *************************************************************************/
 bool AssetManager::LoadSFX() {
+
+    Currentlyloading = true;
+
     if (fs::is_directory(FILEPATH_SOUNDS_SFX)) {
         for (const auto& entry : fs::directory_iterator(FILEPATH_SOUNDS_SFX)) {
+
+            // find the file extension 
+            size_t extensionPos = entry.path().filename().string().find_last_of('.');
+
+            std::string Extension = entry.path().filename().string().substr(extensionPos);
+            //std::cout << Extension;
+            std::string allowedExtensions = ".mp3,.wav,.ogg,.FLAC";
+
+            // Check if the substring exists in the full string
+            size_t found = allowedExtensions.find(toLowerCase(Extension));
+
+            if (found == std::string::npos) {
+                std::string file(entry.path().filename().string());
+                std::wstring widefile(file.begin(), file.end());
+                HWND hwnd = GetActiveWindow();
+                std::string filepath(FILEPATH_SOUNDS_SFX);
+                // Convert std::string to std::wstring
+                std::wstring widefilepath(filepath.begin(), filepath.end());
+
+                std::wstring message = L"Incompatible file \"" + widefile + L"\" detected in \"" + widefilepath + L"\" folder!\n\nFile not loaded!";
+                LPCWSTR boxMessage = message.c_str();
+
+                MessageBox(hwnd, boxMessage, L"Load Failure", MB_OK | MB_ICONERROR);
+
+                continue;
+            }
+
             FMOD::Sound* newSound;
             soundManager->result = soundManager->system->createSound(entry.path().string().c_str(), FMOD_DEFAULT, 0, &newSound);
             if (soundManager->result != FMOD_OK) {
@@ -697,11 +795,13 @@ bool AssetManager::LoadSFX() {
                 soundMap[SoundManager::SoundType::SFX].insert(std::make_pair(fileName, newSound));
             }
         }
+        Currentlyloading = false;
         return true;
     }
     else {
         // Print error
         std::cout << "The specified bgm path is not a directory." << std::endl;
+        Currentlyloading = false;
         return false;
     }
 }
@@ -848,6 +948,9 @@ bool AssetManager::ReloadSounds() {
  * @return True if the fonts and characters are successfully loaded, false otherwise.
  *************************************************************************/
 bool AssetManager::LoadFonts() {
+
+    Currentlyloading = true;
+
     // File paths to the respetive fonts
     //std::filesystem::path fontPath{ "assets/fonts/" };
     bool result{ true };
@@ -855,6 +958,31 @@ bool AssetManager::LoadFonts() {
         for (const auto& entry : fs::directory_iterator(FILEPATH_FONTS)) {
 
 
+            // find the file extension 
+            size_t extensionPos = entry.path().filename().string().find_last_of('.');
+
+            std::string Extension = entry.path().filename().string().substr(extensionPos);
+            //std::cout << Extension;
+            std::string allowedExtensions = ".ttf,.otf";
+
+            // Check if the substring exists in the full string
+            size_t found = allowedExtensions.find(toLowerCase(Extension));
+
+            if (found == std::string::npos) {
+                std::string file(entry.path().filename().string());
+                std::wstring widefile(file.begin(), file.end());
+                HWND hwnd = GetActiveWindow();
+                std::string filepath(FILEPATH_FONTS);
+                // Convert std::string to std::wstring
+                std::wstring widefilepath(filepath.begin(), filepath.end());
+
+                std::wstring message = L"Incompatible file \"" + widefile + L"\" detected in \"" + widefilepath + L"\" folder!\n\nFile not loaded!";
+                LPCWSTR boxMessage = message.c_str();
+
+                MessageBox(hwnd, boxMessage, L"Load Failure", MB_OK | MB_ICONERROR);
+
+                continue;
+            }
 
             // Temp map to store currently loaded font glyphs            
             std::map<char, FontManager::Character> tempMap;
@@ -913,12 +1041,14 @@ bool AssetManager::LoadFonts() {
             // Free up faces
             FT_Done_Face(newFace);
         }
+
     }
     else {
         // Print error
         std::cout << "The specified font path is not a directory." << std::endl;
         result = false;
     }  
+    Currentlyloading = false;
     return result;
 }
 
@@ -988,9 +1118,37 @@ bool AssetManager::FontFound(std::map<std::string, std::map<char, FontManager::C
  * @return True if the scenes were loaded successfully, false if there was an error.
  *************************************************************************/
 bool AssetManager::LoadScenes() {
+    Currentlyloading = true;
     bool result{true};
     if (fs::is_directory(FILEPATH_SCENES)) {
         for (const auto& entry : fs::directory_iterator(FILEPATH_SCENES)) {
+
+            // find the file extension 
+            size_t extensionPos = entry.path().filename().string().find_last_of('.');
+
+            std::string Extension = entry.path().filename().string().substr(extensionPos);
+            //std::cout << Extension;
+            std::string allowedExtensions = ".json";
+
+            // Check if the substring exists in the full string
+            size_t found = allowedExtensions.find(toLowerCase(Extension));
+
+            if (found == std::string::npos) {
+                std::string file(entry.path().filename().string());
+                std::wstring widefile(file.begin(), file.end());
+                HWND hwnd = GetActiveWindow();
+                std::string filepath(FILEPATH_SCENES);
+                // Convert std::string to std::wstring
+                std::wstring widefilepath(filepath.begin(), filepath.end());
+
+                std::wstring message = L"Incompatible file \"" + widefile + L"\" detected in \"" + widefilepath + L"\" folder!\n\nFile not loaded!";
+                LPCWSTR boxMessage = message.c_str();
+
+                MessageBox(hwnd, boxMessage, L"Load Failure", MB_OK | MB_ICONERROR);
+
+                continue;
+            }
+
             scenes.push_back(entry.path().filename().string());
         }
     }
@@ -999,6 +1157,7 @@ bool AssetManager::LoadScenes() {
         std::cout << "The specified scenes path is not a directory." << std::endl;
         result = false;
     }
+    Currentlyloading = false;
     return result;
 }
 
