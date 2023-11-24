@@ -8,21 +8,24 @@
  * @brief This source file contains the code to setup and run the editor
  *************************************************************************/
 
-#include <Windows.h>
 #include <iostream>
 #include "Editor.h"
 #include "Collision.h"
 #define PI 3.141592653589793
+
  // Defining static variables
+bool Editor::editorOn;
 Editor::SystemTime Editor::timeRecorder;
 std::vector<float> Editor::fpsData;
 std::pair<int, int> Editor::gameWindowOrigin;
 std::pair<int, int> Editor::gameWindowSize;
 std::vector<std::string> prefabList;
 std::string Editor::browserInputPath;
+std::string Editor::consoleTextInput;
 bool Editor::browserDoubleClicked;
 std::string Editor::browserSelectedItem;
 GameObject* Editor::selected;
+std::map<std::string, LPCWSTR> Editor::fileFilterList;
 
 OpenGLObject Editor::selectedOutline;
 OpenGLObject Editor::selectedOutline1;
@@ -138,6 +141,9 @@ void UsingImGui::Draw() {
 	if (panelList.debugPanel) {
 		Editor::CreateDebugPanel();
 	}
+	if (panelList.consolePanel || inputSystem.cheater) {
+		Editor::CreateConsolePanel();
+	}
 
 	//Editor::selectedOutline.Draw(std::string(""), true);
 	ImGui::Render();
@@ -168,6 +174,19 @@ void Editor::Init() {
 	browserDoubleClicked = false;
 	browserInputPath = FILEPATH_MASTER;
 	Editor::selectedOutline.InitObjects();
+	SetFileFilters();
+}
+
+void Editor::SetFileFilters() {
+	fileFilterList.clear();
+	fileFilterList.insert(std::make_pair(FILEPATH_MASTER, L"All Files (*.*)\0*.*\0"));
+	fileFilterList.insert(std::make_pair(FILEPATH_FONTS, L"Font Files (*.ttf; *.otf)\0*.ttf;*.otf\0"));
+	fileFilterList.insert(std::make_pair(FILEPATH_TEXTURES, L"Image Files (*.jpg; *.jpeg; *.png; *.gif)\0*.jpg;*.jpeg;*.png;*.gif\0"));
+	fileFilterList.insert(std::make_pair(FILEPATH_SPRITES, fileFilterList[FILEPATH_TEXTURES]));
+	fileFilterList.insert(std::make_pair(FILEPATH_SOUNDS_BGM, L"Audio Files (*.mp3; *.wav; *.ogg; *.FLAC)\0*.mp3; *.wav; *.ogg; *.FLAC\0"));
+	fileFilterList.insert(std::make_pair(FILEPATH_SOUNDS_SFX, fileFilterList[FILEPATH_SOUNDS_BGM]));
+	fileFilterList.insert(std::make_pair(FILEPATH_SCENES, L"Text Files (*.JSON)\0*.JSON\0"));
+	fileFilterList.insert(std::make_pair(FILEPATH_PREFABS, L"Text Files (*.JSON)\0*.JSON\0"));
 }
 
 
@@ -222,13 +241,15 @@ void Editor::Update() {
 	
 	if (selected != nullptr) {
 		Transform* tx = GET_COMPONENT(selected, Transform, ComponentType::TRANSFORM);
+
 		static Vec2 help;
 		if (tx != nullptr) {
 			help = tx->position - Vector2DRotate(Vec2(0, tx->scale.y / 2.f), tx->rotation, Vec2(0, 0));
 		}
 		
-		if ((ogMouseX > xBounds.first && ogMouseX < xBounds.second) && (ogMouseY > yBounds.first && ogMouseY < yBounds.second)) {
+		if (tx != nullptr && (ogMouseX > xBounds.first && ogMouseX < xBounds.second) && (ogMouseY > yBounds.first && ogMouseY < yBounds.second)) {
 			
+
 			if (inputSystem.GetMouseState(GLFW_MOUSE_BUTTON_1)) {
 				if (translateMode != true && scaleMode != true && scaleMode2 != true && scaleMode3 != true && scaleMode4 != true){//}&& scaleMode4 != true) {
 					std::cout << CollisionPointRotateRect(tx->position, tx->scale.x, tx->scale.y, mouseX, mouseY, tx->rotation) << "\n";
@@ -457,7 +478,9 @@ void Editor::Update() {
 	if (inputSystem.GetMouseState(GLFW_MOUSE_BUTTON_2) == GLFW_PRESS) {
 		if (selected != nullptr) {
 			Transform* tx = GET_COMPONENT(selected, Transform, ComponentType::TRANSFORM);
-			tx->rotation += 20.f;
+			if (tx != nullptr) {
+				tx->rotation += 20.f;
+			}
 		}
 	}
 	if (inputSystem.GetKeyState(GLFW_KEY_DELETE)) {
@@ -519,6 +542,7 @@ void Editor::CreateMasterPanel() {
 	ImGui::Checkbox("Objects Panel", &panelList.objectPanel); // Checkbox for object manager panel
 	ImGui::Checkbox("Asset Browser", &panelList.assetBrowserPanel); // Checkbox for asset browser
 	ImGui::Checkbox("Debug Panel", &panelList.debugPanel); // Checkbox for debug panel
+	ImGui::Checkbox("Console Panel", &panelList.consolePanel); // Checkbox for console panel
 
 	if (ImGui::Button("Do Something")) {
 
@@ -545,13 +569,13 @@ void Editor::CreateMasterPanel() {
 	//std::cout << sceneFileName << std::endl;
 	// Save level to file
 	if (ImGui::Button("Save scene")) {
+		// Get rapidjson documents of tilemap and game objects
 		rapidjson::Document tilemapDoc = tilemapLoader->SaveTilemap(sceneFileName);
-		const rapidjson::Document& objectDoc = objectFactory->GetObjectDocSaving(sceneFileName);
-
+		rapidjson::Document const& objectDoc = objectFactory->GetObjectDocSaving(sceneFileName);
 		rapidjson::Document::AllocatorType& allocator = tilemapDoc.GetAllocator();
 		
+		// Merge game objects document into tilemap document
 		for (auto& member : objectDoc.GetObj()) {
-			// Check for conflicts or handle them based on your needs
 			if (!tilemapDoc.HasMember(member.name)) {
 				rapidjson::Value key(member.name, allocator);
 				rapidjson::Value value;
@@ -559,11 +583,12 @@ void Editor::CreateMasterPanel() {
 				tilemapDoc.AddMember(key, value, allocator);
 			}
 		}
+
+		// Save data to JSON file
 		JsonSerializer serializer;
 		if (serializer.WriteJSONFile(sceneFileName, tilemapDoc)) {
 			std::cout << "Successfully saved objects to file." << std::endl;
 		}
-		//objectFactory->SaveObjectsToFile(sceneFileName);
 	}
 	ImGui::SameLine();
 	// Load level from file
@@ -607,8 +632,8 @@ void Editor::CreateRenderWindow() {
 *************************************************************************/
 void Editor::CreatePrefabPanel() {
 	ImGui::Begin("Prefab Editor");
-	static float phyRotSpeed, phySpeed, phyMass, phyFriction, transXpos, transYpos, transRot, transScaleX, transScaleY, colScaleX, colScaleY, colRot;
-	static bool phyIsStatic, physicsFlag, transformFlag, logicFlag, colliderFlag, saveFlag, loadedFlag = false;
+	static float phyRotSpeed, phySpeed, phyMass, phyFriction, transXpos, transYpos, transRot, transScaleX, transScaleY, colScaleX, colScaleY, colRot, aggRange;
+	static bool phyIsStatic, physicsFlag, transformFlag, logicFlag, colliderFlag, enemyfsmFlag, saveFlag, loadedFlag = false;
 
 	static int currentScriptIndex;
 	static std::set<unsigned int> tempLogicSet;
@@ -624,7 +649,7 @@ void Editor::CreatePrefabPanel() {
 
 	// Refresh list of prefabs from file directory
 	//if (ImGui::Button("Refresh")) {
-	//	std::filesystem::path prefabPath{ FILEPATH_PREFAB };
+	//	std::filesystem::path prefabPath{ FILEPATH_PREFAB_DEFAULT };
 	//	if (std::filesystem::is_directory(prefabPath)) {
 	//		for (const auto& entry : std::filesystem::directory_iterator(prefabPath)) {
 	//			
@@ -721,6 +746,7 @@ void Editor::CreatePrefabPanel() {
 			if (!transformFlag && objectFactory->GetPrefabByName(selectedName)->Has(ComponentType::TRANSFORM) != -1) {
 				objectFactory->GetPrefabByName(selectedName)->RemoveComponent(GET_PREFAB_COMPONENT(objectFactory->GetPrefabByName(selectedName), Transform, ComponentType::TRANSFORM));
 			}
+
 			//Handle saving/deletion for logic component
 			if (logicFlag && objectFactory->GetPrefabByName(selectedName)->Has(ComponentType::LOGICCOMPONENT) == -1) {
 				objectFactory->GetPrefabByName(selectedName)->AddComponent(new LogicComponent(), ComponentType::LOGICCOMPONENT);
@@ -747,6 +773,19 @@ void Editor::CreatePrefabPanel() {
 			if (!colliderFlag && objectFactory->GetPrefabByName(selectedName)->Has(ComponentType::COLLIDER) != -1) {
 				objectFactory->GetPrefabByName(selectedName)->RemoveComponent(GET_PREFAB_COMPONENT(objectFactory->GetPrefabByName(selectedName), Collider, ComponentType::COLLIDER));
 			}
+
+			// Handle saving/deleteion for enemy FSM component
+			/*if (enemyfsmFlag && objectFactory->GetPrefabByName(selectedName)->Has(ComponentType::ENEMY_FSM) == -1) {
+				objectFactory->GetPrefabByName(selectedName)->AddComponent(new EnemyFSM(), ComponentType::ENEMY_FSM);
+			}
+			if (objectFactory->GetPrefabByName(selectedName)->Has(ComponentType::ENEMY_FSM) != -1) {
+				GET_PREFAB_COMPONENT(objectFactory->GetPrefabByName(selectedName), EnemyFSM, ComponentType::ENEMY_FSM)->aggroRange = aggRange;
+				enemyfsmFlag = true;
+			}
+			if (!enemyfsmFlag && objectFactory->GetPrefabByName(selectedName)->Has(ComponentType::ENEMY_FSM) != -1) {
+				objectFactory->GetPrefabByName(selectedName)->RemoveComponent(GET_PREFAB_COMPONENT(objectFactory->GetPrefabByName(selectedName), EnemyFSM, ComponentType::ENEMY_FSM));
+			}*/
+
 			for (std::map<size_t, GameObject*>::iterator it = copyMap.begin(); it != copyMap.end(); it++) {
 				if ((*it).second->GetType() == objectFactory->GetPrefabByName(selectedName)->GetType()) {
 
@@ -792,9 +831,18 @@ void Editor::CreatePrefabPanel() {
 						objCollider->tx->rotation = prefabCollider->tx->rotation;
 					}
 
+
+
+					/*EnemyFSM* objFSM = GET_COMPONENT(objectFactory->GetGameObjectByID((*it).second->GetGameObjectID()), EnemyFSM, ComponentType::ENEMY_FSM);
+					if (objFSM != nullptr) {
+						EnemyFSM* prefabFSM = GET_PREFAB_COMPONENT(objectFactory->GetPrefabByName(selectedName), EnemyFSM, ComponentType::ENEMY_FSM);
+						EnemyFSM* objFSM = GET_COMPONENT(objectFactory->GetGameObjectByID((*it).second->GetGameObjectID()), EnemyFSM, ComponentType::ENEMY_FSM);
+						objFSM->aggroRange = prefabFSM->aggroRange;
+					}*/
+					
 				}
 			}
-			objectFactory->SavePrefabsToFile(FILEPATH_PREFAB);
+			objectFactory->SavePrefabsToFile(FILEPATH_PREFAB_DEFAULT);
 			saveFlag = false;
 		}
 		if (ImGui::Button("Preview Changes")) {
@@ -852,6 +900,12 @@ void Editor::CreatePrefabPanel() {
 						objCollider->tx->scale.y = colScaleY;
 						objCollider->tx->rotation = colRot;
 					}
+
+
+					/*EnemyFSM* objFSM = GET_COMPONENT(objectFactory->GetGameObjectByID((*it).second->GetGameObjectID()), EnemyFSM, ComponentType::ENEMY_FSM);
+					if (objFSM != nullptr) {
+						objFSM->aggroRange = aggRange;
+					}*/
 					
 				}
 			}
@@ -875,6 +929,7 @@ void Editor::CreatePrefabPanel() {
 				transformFlag = (copy[selectedName]->Has(ComponentType::TRANSFORM) != -1);
 				logicFlag = (copy[selectedName]->Has(ComponentType::LOGICCOMPONENT) != -1);
 				colliderFlag = (copy[selectedName]->Has(ComponentType::COLLIDER) != -1);
+				enemyfsmFlag = (copy[selectedName]->Has(ComponentType::ENEMY_FSM) != -1);
 				loadedFlag = true;
 
 				if (copy[selectedName]->Has(ComponentType::PHYSICS_BODY) != -1) {
@@ -896,6 +951,9 @@ void Editor::CreatePrefabPanel() {
 					colScaleX = GET_PREFAB_COMPONENT(objectFactory->GetPrefabByName(selectedName), Collider, ComponentType::COLLIDER)->tx->scale.x;
 					colScaleY = GET_PREFAB_COMPONENT(objectFactory->GetPrefabByName(selectedName), Collider, ComponentType::COLLIDER)->tx->scale.y;
 				}
+				/*if (copy[selectedName]->Has(ComponentType::ENEMY_FSM) != -1) {
+					aggRange = GET_PREFAB_COMPONENT(objectFactory->GetPrefabByName(selectedName), EnemyFSM, ComponentType::ENEMY_FSM)->aggroRange;
+				}*/
 			}
 		}
 		ImGui::EndChild();
@@ -1009,6 +1067,17 @@ void Editor::CreatePrefabPanel() {
 			ImGui::Unindent();
 		}
 
+		// Render EnemyFSM
+		/*if (ImGui::Checkbox("##EnemyFSM", &enemyfsmFlag)) {
+			saveFlag = true;
+		}
+		ImGui::SameLine();
+		if (ImGui::CollapsingHeader("Enemy FSM")) {
+			ImGui::Indent();
+			if (ImGui::InputFloat("Aggro Range", &aggRange)) saveFlag = true;
+			ImGui::Unindent();
+		}*/
+
 
 		ImGui::EndChild();
 		ImGui::EndGroup();
@@ -1023,65 +1092,85 @@ void Editor::CreatePrefabPanel() {
 *************************************************************************/
 void Editor::CreateSoundPanel() {
 	ImGui::Begin("Sound Control Panel");
-	if (ImGui::TreeNode("Tracks")) {
-		ImGui::SeparatorText("BGM");
-		static int bgmChoice = 0;
-		static float volValue = 1.0f, bgmVol1 = 1.0f, bgmVol2 = 1.0f;
-		bool pauseStatus1 = true, pauseStatus2 = true;
+	//if (ImGui::TreeNode("Tracks")) {
+	//	ImGui::SeparatorText("BGM");
+	//	static int bgmChoice = 0;
+	//	static float volValue = 1.0f, bgmVol1 = 1.0f, bgmVol2 = 1.0f;
+	//	bool pauseStatus1 = true, pauseStatus2 = true;
 
-		// Check pause status for bgmch1	
-		soundManager->bgmChannels[0]->getPaused(&pauseStatus1);
-		if (pauseStatus1) {
-			ImGui::PushStyleColor(ImGuiCol_Text, redColour); // Red if not playing	
-		}
-		else {
-			ImGui::PushStyleColor(ImGuiCol_Text, greenColour); // Green if playing
-		}
-		if (ImGui::RadioButton("BGM 1", &bgmChoice, 0)) { // On radio button 1 click
-			volValue = bgmVol1;
-		} ImGui::SameLine();
-		ImGui::PopStyleColor();
+	//	// Check pause status for bgmch1	
+	//	soundManager->bgmChannels[0]->getPaused(&pauseStatus1);
+	//	if (pauseStatus1) {
+	//		ImGui::PushStyleColor(ImGuiCol_Text, redColour); // Red if not playing	
+	//	}
+	//	else {
+	//		ImGui::PushStyleColor(ImGuiCol_Text, greenColour); // Green if playing
+	//	}
+	//	if (ImGui::RadioButton("BGM 1", &bgmChoice, 0)) { // On radio button 1 click
+	//		volValue = bgmVol1;
+	//	} ImGui::SameLine();
+	//	ImGui::PopStyleColor();
 
-		// Check pause status for bgmch2
-		soundManager->bgmChannels[1]->getPaused(&pauseStatus2);
-		if (pauseStatus2) {
-			ImGui::PushStyleColor(ImGuiCol_Text, redColour); // Red if not playing
-		}
-		else {
-			ImGui::PushStyleColor(ImGuiCol_Text, greenColour); // Green if playing
-		}
-		if (ImGui::RadioButton("BGM 2", &bgmChoice, 1)) { // On radio button 2 click
-			volValue = bgmVol2;
-		}
-		ImGui::PopStyleColor();
+	//	// Check pause status for bgmch2
+	//	soundManager->bgmChannels[1]->getPaused(&pauseStatus2);
+	//	if (pauseStatus2) {
+	//		ImGui::PushStyleColor(ImGuiCol_Text, redColour); // Red if not playing
+	//	}
+	//	else {
+	//		ImGui::PushStyleColor(ImGuiCol_Text, greenColour); // Green if playing
+	//	}
+	//	if (ImGui::RadioButton("BGM 2", &bgmChoice, 1)) { // On radio button 2 click
+	//		volValue = bgmVol2;
+	//	}
+	//	ImGui::PopStyleColor();
 
-		// On Volume slider click
-		if (ImGui::SliderFloat("Volume", &volValue, 0.0f, 1.0f, "%.2f")) {
-			if (bgmChoice == 0) {
-				bgmVol1 = volValue;
-			}
-			else if (bgmChoice == 1) {
-				bgmVol2 = volValue;
-			}
-			soundManager->bgmChannels[bgmChoice]->setVolume(volValue);
-		}
-		// On play button click
-		if (ImGui::Button("Play/Pause")) {
-			soundManager->PlayBGMSounds();
-			soundManager->TogglePlayChannel(soundManager->bgmChannels[bgmChoice]);
-		}
+	//	// On Volume slider click
+	//	if (ImGui::SliderFloat("Volume", &volValue, 0.0f, 1.0f, "%.2f")) {
+	//		if (bgmChoice == 0) {
+	//			bgmVol1 = volValue;
+	//		}
+	//		else if (bgmChoice == 1) {
+	//			bgmVol2 = volValue;
+	//		}
+	//		soundManager->bgmChannels[bgmChoice]->setVolume(volValue);
+	//	}
+	//	// On play button click
+	//	if (ImGui::Button("Play/Pause")) {
+	//		soundManager->PlayBGMSounds();
+	//		soundManager->TogglePlayChannel(soundManager->bgmChannels[bgmChoice]);
+	//	}
 
-		ImGui::SeparatorText("SFX");
-		static int sfxChoice = 0;
-		ImGui::RadioButton("SFX 1", &sfxChoice, 0); ImGui::SameLine();
-		ImGui::RadioButton("SFX 2", &sfxChoice, 1); ImGui::SameLine();
-		ImGui::RadioButton("SFX 3", &sfxChoice, 2);
-		if (ImGui::Button("Play")) {
-			soundManager->sfxChoice = sfxChoice;
-			soundManager->PlaySFXSounds();
-		}
-		ImGui::TreePop();
+	//	ImGui::SeparatorText("SFX");
+	//	static int sfxChoice = 0;
+	//	ImGui::RadioButton("SFX 1", &sfxChoice, 0); ImGui::SameLine();
+	//	ImGui::RadioButton("SFX 2", &sfxChoice, 1); ImGui::SameLine();
+	//	ImGui::RadioButton("SFX 3", &sfxChoice, 2);
+	if (ImGui::Button("PlaySFX1")) {
+		//soundManager->sfxChoice = sfxChoice;
+		//soundManager->PlaySFXSounds();
+		soundManager->PlaySFX("Gunshot.wav");
 	}
+	if (ImGui::Button("PlaySFX2")) {
+		//soundManager->sfxChoice = sfxChoice;
+		//soundManager->PlaySFXSounds();
+		soundManager->PlaySFX("Door.wav");
+	}
+	if (ImGui::Button("PlayBGM")) {
+		//soundManager->sfxChoice = sfxChoice;
+		//soundManager->PlaySFXSounds();
+		soundManager->PlayBGM("Nightshift__BGM2_Loop_70bpm.wav");
+	}
+	if (ImGui::Button("Pause All")) {
+		soundManager->PauseAll();
+	}
+	if (ImGui::Button("Resume All")) {
+		soundManager->ResumeAll();
+	}
+	if (ImGui::Button("Stop All")) {
+		soundManager->StopAll();
+	}
+	//	ImGui::TreePop();
+	//}
 
 	ImGui::End();
 }
@@ -1557,7 +1646,7 @@ void Editor::CreateAssetBrowser() {
 
 	ImGui::SameLine();
 	ImGui::Spacing();
-	if (ImGui::Button("Add File")) {
+	if (ImGui::Button("Add File")) {	
 		// Get absolute path of working directory
 		std::filesystem::path exePath = std::filesystem::current_path();
 		std::filesystem::path addToPath = exePath / currFilePath;
@@ -1567,8 +1656,8 @@ void Editor::CreateAssetBrowser() {
 		wchar_t szFile[MAX_PATH] = L"";
 		ZeroMemory(&ofn, sizeof(ofn));
 		ofn.lStructSize = sizeof(ofn);
-		ofn.hwndOwner = hwnd;
-		ofn.lpstrFilter = L"All Files (*.*)\0*.*\0";
+		ofn.hwndOwner = hwnd;	
+		ofn.lpstrFilter = fileFilterList[currFilePath];
 		ofn.lpstrFile = szFile;
 		ofn.nMaxFile = MAX_PATH;
 		ofn.Flags = OFN_FILEMUSTEXIST;
@@ -1583,8 +1672,8 @@ void Editor::CreateAssetBrowser() {
 				// Copy file to destination directory
 				std::filesystem::copy(selectedFilePath, destinationPath, std::filesystem::copy_options::overwrite_existing);
 				// Construct and display message
-				std::wstring test(currFilePath.begin(), currFilePath.end());
-				LPCWSTR boxMessage = (L"File added to \"" + test + L"\" folder!").c_str();
+				std::wstring temp(currFilePath.begin(), currFilePath.end());
+				LPCWSTR boxMessage = (L"File added to \"" + temp + L"\" folder!").c_str();
 				MessageBox(hwnd, boxMessage, L"Success", MB_OK | MB_ICONINFORMATION);
 			}
 			else {
@@ -1836,4 +1925,13 @@ void Editor::RenderDirectoryV2(const std::string& filePath) {
 		ImGui::NextColumn();
 	}
 	ImGui::Columns(1);
+}
+
+
+void Editor::CreateConsolePanel() {
+	ImGui::Begin("Console");
+	if (ImGui::InputText("####", &consoleTextInput, ImGuiInputTextFlags_EnterReturnsTrue) || (ImGui::SameLine(), ImGui::Button("Enter"))) {
+		ImGui::Text("Inputs", consoleTextInput);
+	}
+	ImGui::End();
 }

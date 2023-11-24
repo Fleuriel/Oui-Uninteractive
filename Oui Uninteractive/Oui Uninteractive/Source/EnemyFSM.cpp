@@ -14,9 +14,10 @@
  /**************************************************************************
  * @brief Constructor
  *************************************************************************/
-EnemyFSM::EnemyFSM() : aggroRange(250.f), nextState(nullptr) {
+EnemyFSM::EnemyFSM() : aggroRange{}, nextState(nullptr) {
 	statesMap["EnemyRoam"] = new EnemyRoam();
 	statesMap["EnemyAttack"] = new EnemyAttack();
+	statesMap["EnemyFlee"] = new EnemyFlee();
 
 	currentState = statesMap["EnemyRoam"];
 }

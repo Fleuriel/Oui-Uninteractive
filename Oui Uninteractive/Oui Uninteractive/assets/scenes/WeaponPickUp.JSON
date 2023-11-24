@@ -1,7 +1,157 @@
 {
-    "ObjectCount": 3,
-    "Objects": [
-        {
+    "Tilemap": [],
+    "ObjectCount": 12,
+    "Objects": [{
+            "Name": "NewFloor1",
+            "Type": "NewFloor",
+            "UsingSprite": false,
+            "Components": {
+                "PhysicsBody": {
+                    "VelocityX": 0.0,
+                    "VelocityY": 0.0,
+                    "RotationSpeed": 200.0,
+                    "Speed": 100.0,
+                    "Mass": 140.0,
+                    "IsStatic": false,
+                    "FrictionForce": 20.0
+                },
+                "Transform": {
+                    "PositionX": 1.0,
+                    "PositionY": -226.0,
+                    "Rotation": 0.0,
+                    "ScaleX": 565.0,
+                    "ScaleY": 565.0
+                },
+                "LogicComponent": {
+                    "ScriptID": [0]
+                }
+            }
+        }, {
+            "Name": "NewFloor2",
+            "Type": "NewFloor",
+            "UsingSprite": false,
+            "Components": {
+                "PhysicsBody": {
+                    "VelocityX": 0.0,
+                    "VelocityY": 0.0,
+                    "RotationSpeed": 200.0,
+                    "Speed": 100.0,
+                    "Mass": 140.0,
+                    "IsStatic": false,
+                    "FrictionForce": 20.0
+                },
+                "Transform": {
+                    "PositionX": 0.0,
+                    "PositionY": 338.0,
+                    "Rotation": 0.0,
+                    "ScaleX": 565.0,
+                    "ScaleY": 565.0
+                },
+                "LogicComponent": {
+                    "ScriptID": [0]
+                }
+            }
+        }, {
+            "Name": "NewFloor3",
+            "Type": "NewFloor",
+            "UsingSprite": false,
+            "Components": {
+                "PhysicsBody": {
+                    "VelocityX": 0.0,
+                    "VelocityY": 0.0,
+                    "RotationSpeed": 200.0,
+                    "Speed": 100.0,
+                    "Mass": 140.0,
+                    "IsStatic": false,
+                    "FrictionForce": 20.0
+                },
+                "Transform": {
+                    "PositionX": -564.0,
+                    "PositionY": 336.0,
+                    "Rotation": 0.0,
+                    "ScaleX": 565.0,
+                    "ScaleY": 565.0
+                },
+                "LogicComponent": {
+                    "ScriptID": [0]
+                }
+            }
+        }, {
+            "Name": "NewFloor4",
+            "Type": "NewFloor",
+            "UsingSprite": false,
+            "Components": {
+                "PhysicsBody": {
+                    "VelocityX": 0.0,
+                    "VelocityY": 0.0,
+                    "RotationSpeed": 200.0,
+                    "Speed": 100.0,
+                    "Mass": 140.0,
+                    "IsStatic": false,
+                    "FrictionForce": 20.0
+                },
+                "Transform": {
+                    "PositionX": 564.0,
+                    "PositionY": 335.0,
+                    "Rotation": 0.0,
+                    "ScaleX": 565.0,
+                    "ScaleY": 565.0
+                },
+                "LogicComponent": {
+                    "ScriptID": [0]
+                }
+            }
+        }, {
+            "Name": "NewFloor5",
+            "Type": "NewFloor",
+            "UsingSprite": false,
+            "Components": {
+                "PhysicsBody": {
+                    "VelocityX": 0.0,
+                    "VelocityY": 0.0,
+                    "RotationSpeed": 200.0,
+                    "Speed": 100.0,
+                    "Mass": 140.0,
+                    "IsStatic": false,
+                    "FrictionForce": 20.0
+                },
+                "Transform": {
+                    "PositionX": 564.0,
+                    "PositionY": -226.0,
+                    "Rotation": 0.0,
+                    "ScaleX": 565.0,
+                    "ScaleY": 565.0
+                },
+                "LogicComponent": {
+                    "ScriptID": [0]
+                }
+            }
+        }, {
+            "Name": "NewFloor6",
+            "Type": "NewFloor",
+            "UsingSprite": false,
+            "Components": {
+                "PhysicsBody": {
+                    "VelocityX": 0.0,
+                    "VelocityY": 0.0,
+                    "RotationSpeed": 200.0,
+                    "Speed": 100.0,
+                    "Mass": 140.0,
+                    "IsStatic": false,
+                    "FrictionForce": 20.0
+                },
+                "Transform": {
+                    "PositionX": -564.0,
+                    "PositionY": -228.0,
+                    "Rotation": 0.0,
+                    "ScaleX": 565.0,
+                    "ScaleY": 565.0
+                },
+                "LogicComponent": {
+                    "ScriptID": [0]
+                }
+            }
+        }, {
             "Name": "JSONPlayer",
             "Type": "Player",
             "UsingSprite": true,
@@ -16,27 +166,22 @@
                     "FrictionForce": 20.0
                 },
                 "Transform": {
-                    "PositionX": 184.50914001464844,
-                    "PositionY": 117.46430206298828,
+                    "PositionX": -95.17529296875,
+                    "PositionY": -89.07833862304688,
                     "Rotation": 0.0,
                     "ScaleX": 200.0,
                     "ScaleY": 200.0
                 },
                 "LogicComponent": {
-                    "ScriptID": [
-                        1,
-                        
-                        3
-                    ]
+                    "ScriptID": [1, 3]
                 },
                 "Collider": {
-                    "ColliderSizeX": 200.0,
-                    "ColliderSizeY": 200.0,
+                    "ColliderSizeX": 87.20999908447266,
+                    "ColliderSizeY": 194.5,
                     "ColliderRotation": 0.0
                 }
             }
-        },
-        {
+        }, {
             "Name": "Knife",
             "Type": "Knife(Weapon)",
             "UsingSprite": false,
@@ -51,20 +196,17 @@
                     "FrictionForce": 20.0
                 },
                 "Transform": {
-                    "PositionX": 342.4199981689453,
-                    "PositionY": 219.24000549316406,
-                    "Rotation": 335.3699951171875,
-                    "ScaleX": 300.0,
-                    "ScaleY": 300.0
+                    "PositionX": 451.92999267578125,
+                    "PositionY": 215.3218231201172,
+                    "Rotation": 326.3299865722656,
+                    "ScaleX": 237.9600067138672,
+                    "ScaleY": 237.9600067138672
                 },
                 "LogicComponent": {
-                    "ScriptID": [
-                        2
-                    ]
+                    "ScriptID": [2]
                 }
             }
-        },
-        {
+        }, {
             "Name": "Rifle",
             "Type": "Rifle(Weapon)",
             "UsingSprite": false,
@@ -79,18 +221,100 @@
                     "FrictionForce": 20.0
                 },
                 "Transform": {
-                    "PositionX": 142.4199981689453,
-                    "PositionY": 219.24000549316406,
-                    "Rotation": 335.3699951171875,
-                    "ScaleX": 300.0,
-                    "ScaleY": 300.0
+                    "PositionX": 40.939998626708984,
+                    "PositionY": 206.53436279296875,
+                    "Rotation": 359.5,
+                    "ScaleX": 252.41000366210938,
+                    "ScaleY": 252.41000366210938
                 },
                 "LogicComponent": {
-                    "ScriptID": [
-                        2
-                    ]
+                    "ScriptID": [2]
                 }
             }
-        }
-    ]
+        }, {
+            "Name": "Pistol",
+            "Type": "Pistol(Weapon)",
+            "UsingSprite": false,
+            "Components": {
+                "PhysicsBody": {
+                    "VelocityX": 0.0,
+                    "VelocityY": 0.0,
+                    "RotationSpeed": 302.6300048828125,
+                    "Speed": 74.20999908447266,
+                    "Mass": 80.0,
+                    "IsStatic": false,
+                    "FrictionForce": 20.0
+                },
+                "Transform": {
+                    "PositionX": -352.57000732421875,
+                    "PositionY": 206.53436279296875,
+                    "Rotation": 359.5,
+                    "ScaleX": 156.80999755859375,
+                    "ScaleY": 155.44000244140625
+                },
+                "LogicComponent": {
+                    "ScriptID": [2]
+                }
+            }
+        }, {
+            "Name": "EnvironmentVertical",
+            "Type": "EnvironmentVertical",
+            "UsingSprite": false,
+            "Components": {
+                "PhysicsBody": {
+                    "VelocityX": 0.0,
+                    "VelocityY": 0.0,
+                    "RotationSpeed": 20.0,
+                    "Speed": 120.0,
+                    "Mass": 10.0,
+                    "IsStatic": false,
+                    "FrictionForce": 20.0
+                },
+                "Transform": {
+                    "PositionX": -732.0,
+                    "PositionY": 438.0,
+                    "Rotation": 0.0,
+                    "ScaleX": 259.2799987792969,
+                    "ScaleY": 500.0
+                },
+                "LogicComponent": {
+                    "ScriptID": [0]
+                },
+                "Collider": {
+                    "ColliderSizeX": 191.1999969482422,
+                    "ColliderSizeY": 301.2300109863281,
+                    "ColliderRotation": 0.0
+                }
+            }
+        }, {
+            "Name": "WallTileMap",
+            "Type": "WallTileMap",
+            "UsingSprite": false,
+            "Components": {
+                "PhysicsBody": {
+                    "VelocityX": 0.0,
+                    "VelocityY": 0.0,
+                    "RotationSpeed": 20.0,
+                    "Speed": 120.0,
+                    "Mass": 10.0,
+                    "IsStatic": false,
+                    "FrictionForce": 20.0
+                },
+                "Transform": {
+                    "PositionX": 595.5499877929688,
+                    "PositionY": -203.35000610351563,
+                    "Rotation": 0.0,
+                    "ScaleX": 500.0,
+                    "ScaleY": 500.0
+                },
+                "LogicComponent": {
+                    "ScriptID": [0]
+                },
+                "Collider": {
+                    "ColliderSizeX": 508.94000244140625,
+                    "ColliderSizeY": 507.57000732421875,
+                    "ColliderRotation": 0.0
+                }
+            }
+        }]
 }

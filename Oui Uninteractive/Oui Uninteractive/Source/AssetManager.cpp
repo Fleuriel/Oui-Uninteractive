@@ -23,6 +23,8 @@
 #include "Sound.h"
 #include "FontManager.h"
 #include "Filepaths.h"
+#define NOMINMAX
+#include <Windows.h>
 
 
 namespace fs = std::filesystem;
@@ -635,10 +637,10 @@ bool AssetManager::LoadBGM() {
             }
             else {
                 std::string fileName = entry.path().filename().string();
-                bgmSounds.insert(std::make_pair(fileName, newSound));
+                soundMap[SoundManager::SoundType::BGM].insert(std::make_pair(fileName, newSound));
             }
-            return true;
         }
+        return true;
     }
     else {
        // Print error
@@ -669,8 +671,7 @@ bool AssetManager::LoadSFX() {
             }
             else {
                 std::string fileName = entry.path().filename().string();
-                std::cout << fileName;
-                sfxSounds.insert(std::make_pair(fileName, newSound));
+                soundMap[SoundManager::SoundType::SFX].insert(std::make_pair(fileName, newSound));
             }
         }
         return true;
@@ -693,7 +694,7 @@ bool AssetManager::LoadSFX() {
  *************************************************************************/
 FMOD::Sound* AssetManager::GetBGM(std::string key) {
     // Return BGM
-    return bgmSounds[key];
+    return soundMap[SoundManager::SoundType::BGM][key];
 }
 
 /**************************************************************************
@@ -707,7 +708,7 @@ FMOD::Sound* AssetManager::GetBGM(std::string key) {
  *************************************************************************/
 FMOD::Sound* AssetManager::GetSFX(std::string key) {
     // Return SFX
-    return sfxSounds[key];
+    return soundMap[SoundManager::SoundType::SFX][key];
 }
 
 /**************************************************************************
@@ -736,15 +737,15 @@ bool AssetManager::FreeSounds() {
  *************************************************************************/
 bool AssetManager::FreeBGM() {
     // Free individual BGM sounds
-    for (const auto& i : bgmSounds) {
+    for (const auto& i : soundMap[SoundManager::SoundType::BGM]) {
         FMOD::Sound* sound = i.second;
         sound->release();
     }  
     // Empty BGM container
-    bgmSounds.clear();
+    soundMap[SoundManager::SoundType::BGM].clear();
 
     // Return true if the container size is 0, false otherwise.
-    return bgmSounds.empty();
+    return soundMap[SoundManager::SoundType::BGM].empty();
 }
 
 /**************************************************************************
@@ -756,17 +757,17 @@ bool AssetManager::FreeBGM() {
  *************************************************************************/
 bool AssetManager::FreeSFX() {
     // Free individual SFX sounds
-    for (const auto& i : sfxSounds) {
+    for (const auto& i : soundMap[SoundManager::SoundType::SFX]) {
         FMOD::Sound* sound = i.second;
         sound->release();
     }
         
 
     // Empty SFX container
-    sfxSounds.clear();
+    soundMap[SoundManager::SoundType::SFX].clear();
 
     // Return true if the container size is 0, false otherwise.
-    return sfxSounds.empty();
+    return soundMap[SoundManager::SoundType::SFX].empty();
 }
 
 /**************************************************************************

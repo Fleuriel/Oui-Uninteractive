@@ -15,37 +15,38 @@
 #define FILEPATH_MASTER						std::string("assets")
 
 // WINDOW //
-#define FILEPATH_WINDOWDATA					std::string("assets/window-data/window-data.JSON")
+#define FILEPATH_WINDOWDATA					std::string("assets\\window-data\\window-data.JSON")
 
 // EDITOR //
-#define FILEPATH_IMGUI						"assets/imgui.ini"
+#define FILEPATH_IMGUI						"assets\\imgui.ini"
 
 // FONTS //
-#define FILEPATH_FONTS						std::string("assets/fonts")
+#define FILEPATH_FONTS						std::string("assets\\fonts")
 
 // TEXTURES //
-#define FILEPATH_TEXTURES					std::string("assets/textures")
+#define FILEPATH_TEXTURES					std::string("assets\\textures")
 
 // SPRITES //
-#define FILEPATH_SPRITES					std::string("assets/sprites")
+#define FILEPATH_SPRITES					std::string("assets\\sprites")
 
 // SOUNDS // 
-#define FILEPATH_SOUNDS_BGM					std::string("assets/sounds/bgm")
-#define FILEPATH_SOUNDS_SFX					std::string("assets/sounds/sfx")
+#define FILEPATH_SOUNDS_BGM					std::string("assets\\sounds\\bgm")
+#define FILEPATH_SOUNDS_SFX					std::string("assets\\sounds\\sfx")
 
 // SCENES //
-#define FILEPATH_SCENES						std::string("assets/scenes")
-#define FILEPATH_SCENES_TESTWALLS			std::string("assets/scenes/TestWalls.JSON")
-#define FILEPATH_SCENES_TESTSCENEREADING	std::string("assets/scenes/TestsceneWriting.JSON")
-#define FILEPATH_SCENES_TESTSCENEREADING2	std::string("assets/scenes/TestsceneReading2.JSON")
-#define FILEPATH_SCENES_TESTSCENEWRITING	std::string("assets/scenes/TestsceneWriting.JSON")
+#define FILEPATH_SCENES						std::string("assets\\scenes")
+#define FILEPATH_SCENES_TESTWALLS			std::string("assets\\scenes\\TestWalls.JSON")
+#define FILEPATH_SCENES_TESTSCENEREADING	std::string("assets\\scenes\\TestsceneWriting.JSON")
+#define FILEPATH_SCENES_TESTSCENEREADING2	std::string("assets\\scenes\\TestsceneReading2.JSON")
+#define FILEPATH_SCENES_TESTSCENEWRITING	std::string("assets\\scenes\\TestsceneWriting.JSON")
 
 // PREFABS //
-#define FILEPATH_PREFAB						std::string("assets/prefab/Prefab.JSON")
+#define FILEPATH_PREFABS					std::string("assets\\prefabs")
+#define FILEPATH_PREFAB_DEFAULT				std::string("assets\\prefabs\\Prefab.JSON")
 
 
 // TESTS //
-#define TEST1 std::string("assets/texture/folder_icon.png")
-#define TEST2 std::string("assets/texture/file_icon.png")
+#define TEST1 std::string("assets\\texture\\folder_icon.png")
+#define TEST2 std::string("assets\\texture\\file_icon.png")
 
 #endif

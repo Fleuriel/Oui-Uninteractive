@@ -158,7 +158,7 @@ void OpenGLApplication::OpenGLWindowInit() {
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-	
+	Editor::editorOn = true;
 }
 
 
@@ -241,6 +241,10 @@ void OpenGLApplication::OpenGLInit() {
 * @return void
 *************************************************************************/
 void OpenGLApplication::OpenGLUpdate() {
+	// Toggle editor state
+	if (inputSystem.GetKeyState(GLFW_KEY_GRAVE_ACCENT) == 1) {
+		Editor::editorOn = !Editor::editorOn;		
+	}
 
 	triggerEveryQuarterSecond += static_cast<float>(GetDT());
 	if (triggerEveryQuarterSecond >= 0.25) {
@@ -266,10 +270,12 @@ void OpenGLApplication::OpenGLUpdate() {
 	// Bind the FBO for rendering
 	glBindFramebuffer(GL_FRAMEBUFFER, OpenGLObject::FBO);
 
+	if (Editor::editorOn) {
+		myImGui.CreateFrame();
+		myEditor.Update();
+		myImGui.Update();
+	}
 
-	myImGui.CreateFrame();
-	myEditor.Update();
-	myImGui.Update();
 
 	if (objectFactory->GetGameObjectByName("JSONPlayer") != nullptr)
 	{
@@ -440,7 +446,7 @@ void OpenGLApplication::OpenGLUpdate() {
 	}
 	if (inputSystem.GetMouseState(GLFW_MOUSE_BUTTON_RIGHT)) {
 #ifdef _DEBUG
-		std::cout << "RCLICK\n";
+	//	std::cout << "RCLICK\n";
 #endif
 	}
 
@@ -573,7 +579,10 @@ void OpenGLApplication::OpenGLUpdate() {
 	// Unbind the FBO to restore the default framebuffer
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
-	myImGui.Draw();
+	if (Editor::editorOn) {
+		myImGui.Draw();
+	}
+	
 
 	
 	

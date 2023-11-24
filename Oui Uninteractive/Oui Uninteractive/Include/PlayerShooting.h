@@ -71,6 +71,7 @@ public:
 				// Set bullet spawn point
 				bulletSpawnAngle = atan2(static_cast<float>(convertedMouseY) - playerPos.y, static_cast<float>(convertedMouseX) - playerPos.x);
 				bulletSpawnOffset = (playerScaleX >= playerScaleY) ? playerScaleX : playerScaleY;
+				bulletSpawnOffset *= 1.1f;
 				bulletSpawnPos.x = playerPos.x + bulletSpawnOffset * cos(bulletSpawnAngle);
 				bulletSpawnPos.y = playerPos.y + bulletSpawnOffset * sin(bulletSpawnAngle);
 				GET_COMPONENT(bullet, Transform, ComponentType::TRANSFORM)->position = bulletSpawnPos;
@@ -95,7 +96,7 @@ public:
 			}
 			else {
 				++shootingInterval;
-				if (shootingInterval >= 30) {
+				if (shootingInterval >= 60) {
 					shootingInterval = 0;
 				}
 			}

@@ -23,6 +23,7 @@
     <ClCompile Include="Source\AssetManager.cpp" />
     <ClCompile Include="Source\Background.cpp" />
     <ClCompile Include="Source\BFS.cpp" />
+    <ClCompile Include="Source\Cheats.cpp" />
     <ClCompile Include="Source\Collider.cpp" />
     <ClCompile Include="Source\ColliderSystem.cpp" />
     <ClCompile Include="Source\Collision.cpp" />
@@ -67,7 +68,8 @@
     <ClInclude Include="Include\AssetManager.h" />
     <ClInclude Include="Include\Background.h" />
     <ClInclude Include="Include\BFS.h" />
-    <ClInclude Include="Include\BulletLifetimeScript.h" />
+    <ClInclude Include="Include\BulletScript.h" />
+    <ClInclude Include="Include\Cheats.h" />
     <ClInclude Include="Include\Collider.h" />
     <ClInclude Include="Include\ColliderSystem.h" />
     <ClInclude Include="Include\Collision.h" />

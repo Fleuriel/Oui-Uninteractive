@@ -45,13 +45,15 @@ void EnemyAISystem::Update(float dt) {
 
 	for (auto& it : enemyFSMMap) {
 		// Update game object's current state
-		it.second->currentState->Update(it.first);
+		if (it.second->currentState != nullptr)
+			it.second->currentState->Update(it.first);
 
 		// If within range of player, enter attack state
 		Vec2 playerPos = Vec2(0, 0);
 		Vec2 enemyPos = Vec2(0, 0);
 		GameObject* player = objectFactory->GetGameObjectByName("JSONPlayer");
 		GameObject* enemy = objectFactory->GetGameObjectByName(it.second->GetOwner()->GetName());
+		std::string enemyType{};
 
 		if (player != nullptr) {
 			Transform* playerTx = GET_COMPONENT(player, Transform, ComponentType::TRANSFORM);
@@ -60,22 +62,37 @@ void EnemyAISystem::Update(float dt) {
 			}
 		}
 		if (enemy != nullptr) {
+			enemyType = enemy->GetType();
 			Transform* enemyTx = GET_COMPONENT(enemy, Transform, ComponentType::TRANSFORM);
 			if (enemyTx != nullptr) {
 				enemyPos = enemyTx->position;
 			}
 		}
 
-		// Enemy changes state if player is within aggro range
-		if (Vector2DDistance(playerPos, enemyPos) < it.second->aggroRange) {
-			it.second->nextState = it.second->statesMap["EnemyAttack"];
+		// "Common Guard" enemy changes state if player is within aggro range
+		if (enemyType == "CommonGuard") {
+			if (Vector2DDistance(playerPos, enemyPos) < it.second->aggroRange) {
+				it.second->nextState = it.second->statesMap["EnemyAttack"];
+			}
+			else {
+				it.second->nextState = it.second->statesMap["EnemyRoam"];
+			}
 		}
-		else {
-			it.second->nextState = it.second->statesMap["EnemyRoam"];
+		// "Target" enemy flees if player is within aggro range
+		else if (enemyType == "Target") {
+			if (Vector2DDistance(playerPos, enemyPos) < it.second->aggroRange) {
+				it.second->nextState = it.second->statesMap["EnemyFlee"];
+			}
+			else {
+				it.second->nextState = it.second->currentState;
+			}
 		}
 
 		if (it.second->nextState != it.second->currentState) {
 			it.second->currentState->ExitState();
+			it.second->currentState = it.second->nextState;
+		}
+		else {
 			it.second->currentState = it.second->nextState;
 		}
 	}

@@ -26,23 +26,9 @@ Node::Node(int x_, int y_, int parentX_ = -1, int parentY_ = -1) : x(x_), y(y_),
 
 /**************************************************************************
 * @brief Constructor
-* @param r - rows of grid
-* @param c - columns of grid
+* @param tilemap - 2D vector of tilemap
 *************************************************************************/
-/*BFS::BFS(int r, int c) : rows(r), cols(c) {
-    // Initialize containers
-    gameMap = std::vector<std::vector<int>>(rows, std::vector<int>(cols, 0));
-    visited = std::vector<std::vector<bool>>(rows, std::vector<bool>(cols, false));
-    parent = std::vector<std::vector<Node>>(rows, std::vector<Node>(cols, Node(-1, -1)));
 
-    // Test walls
-    gameMap[3][0] = 1;
-    gameMap[1][1] = 1;
-    gameMap[3][1] = 1;
-    gameMap[0][2] = 1;
-    gameMap[3][2] = 1;
-    gameMap[3][3] = 1;
-}*/
 BFS::BFS(std::vector<std::vector<int>> tilemap) : rows{}, cols{}  {
     // Initialize containers
     for (size_t i{}; i < tilemap.size(); ++i) {
@@ -108,13 +94,14 @@ bool BFS::CreateGrid() {
             if (gameMap[i][j] == 1) {
                 // Create walls
                 std::string wallName = "Wall" + std::to_string(wallID);
-                GameObject* wall = objectFactory->BuildObjectRunTime(wallName, "Wall");
+                /*GameObject* wall = objectFactory->BuildObjectRunTime(wallName, "Wall");
                 objectFactory->AddComponent(ComponentType::TRANSFORM, wall);
                 objectFactory->AddComponent(ComponentType::COLLIDER, wall);
-                objectFactory->AddComponent(ComponentType::PHYSICS_BODY, wall);
+                objectFactory->AddComponent(ComponentType::PHYSICS_BODY, wall);*/
+                GameObject* wall{ objectFactory->BuildObjectFromPrefab(wallName, "WallPrefab") };
 
                 ++wallID;
-                wall->Initialize();
+                //wall->Initialize();
 
                 // Set position and collider size of wall
                 GET_COMPONENT(wall, PhysicsBody, ComponentType::PHYSICS_BODY)->isStatic = true;

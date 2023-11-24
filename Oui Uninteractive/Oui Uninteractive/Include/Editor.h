@@ -37,7 +37,11 @@
 #include "Filepaths.h"
 #include "Collider.h"
 #include "Logic.h"
+#include "EnemyFSM.h"
 #include "TilemapLoader.h"
+#define NOMINMAX // Suppresses min/max keywords in windows to deconflict with std::min/max
+#include <Windows.h>
+
 
 #define GET_COMPONENT(GameObject, Component, ComponentType) (GameObject->GetComponentType<Component>(ComponentType))
 #define GET_PREFAB_COMPONENT(Prefab, Component, ComponentType) (Prefab->GetComponentType<Component>(ComponentType))
@@ -72,6 +76,7 @@ class Editor {
 public:
 	void Init();
 	void Update();
+	void SetFileFilters();
 	static void CreateMenuBar();
 	static void CreateRenderWindow();
 	static void CreateMasterPanel();
@@ -80,11 +85,14 @@ public:
 	static void CreateObjectList();
 	static void CreateDebugPanel();
 	static void CreateAssetBrowser();
+	static void CreateConsolePanel();
 
 	//static void RenderDirectory(const std::string& path); // Helper function to render asset browser directory
 	static void RenderDirectoryV2(const std::string& filePath); // Tester function for asset browser
 public:
+	static bool editorOn;
 	static std::string browserInputPath;
+	static std::string consoleTextInput;
 	static bool browserDoubleClicked;
 	static std::string browserSelectedItem;
 	static std::pair<int, int> gameWindowOrigin;
@@ -127,6 +135,7 @@ static SystemTime timeRecorder;
 
 private:
 	static std::vector<std::string> prefabList;
+	static std::map<std::string, LPCWSTR> fileFilterList;
 };
 
 // Store panel selection
@@ -135,8 +144,9 @@ struct Panels {
 	bool prefabPanel;
 	bool soundPanel;
 	bool objectPanel;
-	bool assetBrowserPanel{ true };
+	bool assetBrowserPanel;
 	bool debugPanel;
+	bool consolePanel{ true };
 };
 static Panels panelList;
 
