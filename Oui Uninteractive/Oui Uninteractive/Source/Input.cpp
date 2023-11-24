@@ -228,18 +228,22 @@ void KeyCallBack(GLFWwindow* window3, int key, int scancode, int action, int mod
 			}
 			else if (key == GLFW_KEY_ENTER) {
 				if(inputSystem.cheater){
-					if (CheckCheatCode(inputSystem.developermodeon)) {
-						std::cout << inputSystem.developermodeon << " found" << std::endl;
-						Cheat(inputSystem.developermodeon);
+					if (inputSystem.developermodeon == "developermodeoff") {
+						inputSystem.cheater = false;
+						std::cout << "Cheat Menu Deactivated" << std::endl;
 					}
-					else
-						std::cout << inputSystem.developermodeon << " not found" << std::endl;
-
+					else {
+						if (CheckCheatCode(inputSystem.developermodeon)) {
+							std::cout << inputSystem.developermodeon << " found" << std::endl;
+							Cheat(inputSystem.developermodeon);
+						}
+						else
+							std::cout << inputSystem.developermodeon << " not found" << std::endl;
+					}
 					inputSystem.developermodeon = std::string("");
 
 				}
-				else
-				if (inputSystem.developermodeon == "developermodeon") {
+				else if (inputSystem.developermodeon == "developermodeon") {
 					inputSystem.cheater = true;
 					inputSystem.developermodeon = std::string("");
 					std::cout << "Cheat Menu Activated" << std::endl;
