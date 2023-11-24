@@ -14,6 +14,8 @@
 #include <map>
 #include "ISystem.h"
 
+extern std::pair<int, int> windowSize;
+
 class TilemapLoader : public ISystem {
 private:
 	std::vector<std::vector<int>> tilemap;
@@ -58,6 +60,12 @@ public:
 	* @return void
 	*************************************************************************/
 	void Update(float dt);
+
+	/**************************************************************************
+	* @brief Create the grid
+	* @return bool - true if grid is created, false otherwise
+	*************************************************************************/
+	bool CreateGrid();
 };
 extern TilemapLoader* tilemapLoader;
 

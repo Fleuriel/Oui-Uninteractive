@@ -16,15 +16,11 @@
 #include "IState.h"
 #include "BFS.h"
 
-/**************************************************************************
-* @brief Get the start node's X and Y position
-* @param currentEnemy - pointer to current enemy
-* @return std::pair<int, int> - pair of int (X and Y position)
-*************************************************************************/
-//std::pair<int, int> GetStartNodePosition(Vec2 currentEnemyPos, BFS* bfs, float scale, float windowWidth, float windowHeight);
+extern std::pair<int, int> windowSize;
 
 class EnemyRoam : public IState {
 private:
+	// Variables for pathfinding
 	BFS* bfs;
 	std::vector<Node> pathToTake;
 	bool transitioned;
@@ -32,7 +28,7 @@ private:
 	bool pathPrinted;
 	int pathIndex;
 
-	// TEMPORARY VARIABLES
+	// Variables for sizing and scaling
 	float windowWidth;
 	float windowHeight;
 	float scale;
@@ -93,6 +89,7 @@ public:
 
 class EnemyFlee : public IState {
 private:
+	// Variables for pathfinding
 	BFS* bfs;
 	std::vector<Node> pathToTake;
 	bool transitioned;
@@ -100,7 +97,7 @@ private:
 	bool pathPrinted;
 	int pathIndex;
 
-	// TEMPORARY VARIABLES
+	// Variables for sizing and scaling
 	float windowWidth;
 	float windowHeight;
 	float scale;

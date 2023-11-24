@@ -578,6 +578,7 @@ void Editor::CreateMasterPanel() {
 		objectFactory->DestroyAllObjects();
 		tilemapLoader->LoadTilemap(sceneFileName);
 		objectFactory->BuildObjectFromFile(sceneFileName);
+		tilemapLoader->CreateGrid();
 	}
 
 	ImGui::End();
