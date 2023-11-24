@@ -8,11 +8,11 @@
  * @brief This source file contains the code to setup and run the editor
  *************************************************************************/
 
-
 #include <iostream>
 #include "Editor.h"
 #include "Collision.h"
 #define PI 3.141592653589793
+
  // Defining static variables
 Editor::SystemTime Editor::timeRecorder;
 std::vector<float> Editor::fpsData;
@@ -20,6 +20,7 @@ std::pair<int, int> Editor::gameWindowOrigin;
 std::pair<int, int> Editor::gameWindowSize;
 std::vector<std::string> prefabList;
 std::string Editor::browserInputPath;
+std::string Editor::consoleTextInput;
 bool Editor::browserDoubleClicked;
 std::string Editor::browserSelectedItem;
 GameObject* Editor::selected;
@@ -136,6 +137,9 @@ void UsingImGui::Draw() {
 	}
 	if (panelList.debugPanel) {
 		Editor::CreateDebugPanel();
+	}
+	if (panelList.consolePanel || inputSystem.cheater) {
+		Editor::CreateConsolePanel();
 	}
 
 	//Editor::selectedOutline.Draw(std::string(""), true);
@@ -452,6 +456,7 @@ void Editor::CreateMasterPanel() {
 	ImGui::Checkbox("Objects Panel", &panelList.objectPanel); // Checkbox for object manager panel
 	ImGui::Checkbox("Asset Browser", &panelList.assetBrowserPanel); // Checkbox for asset browser
 	ImGui::Checkbox("Debug Panel", &panelList.debugPanel); // Checkbox for debug panel
+	ImGui::Checkbox("Console Panel", &panelList.consolePanel); // Checkbox for console panel
 
 	if (ImGui::Button("Do Something")) {
 
@@ -1790,4 +1795,13 @@ void Editor::RenderDirectoryV2(const std::string& filePath) {
 		ImGui::NextColumn();
 	}
 	ImGui::Columns(1);
+}
+
+
+void Editor::CreateConsolePanel() {
+	ImGui::Begin("Console");
+	if (ImGui::InputText("####", &consoleTextInput, ImGuiInputTextFlags_EnterReturnsTrue) || (ImGui::SameLine(), ImGui::Button("Enter"))) {
+		ImGui::Text("Inputs", consoleTextInput);
+	}
+	ImGui::End();
 }

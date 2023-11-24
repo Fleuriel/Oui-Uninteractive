@@ -84,11 +84,13 @@ public:
 	static void CreateObjectList();
 	static void CreateDebugPanel();
 	static void CreateAssetBrowser();
+	static void CreateConsolePanel();
 
 	//static void RenderDirectory(const std::string& path); // Helper function to render asset browser directory
 	static void RenderDirectoryV2(const std::string& filePath); // Tester function for asset browser
 public:
 	static std::string browserInputPath;
+	static std::string consoleTextInput;
 	static bool browserDoubleClicked;
 	static std::string browserSelectedItem;
 	static std::pair<int, int> gameWindowOrigin;
@@ -139,8 +141,9 @@ struct Panels {
 	bool prefabPanel;
 	bool soundPanel;
 	bool objectPanel;
-	bool assetBrowserPanel{ true };
+	bool assetBrowserPanel;
 	bool debugPanel;
+	bool consolePanel{ true };
 };
 static Panels panelList;
 
