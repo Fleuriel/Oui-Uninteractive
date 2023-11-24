@@ -77,6 +77,7 @@ public:
 	void Init();
 	void Update();
 	void SetFileFilters();
+	void DrawGizmos(float scaleX, float scaleY,  Vec2 pos, float rot);
 	static void CreateMenuBar();
 	static void CreateRenderWindow();
 	static void CreateMasterPanel();
@@ -100,6 +101,7 @@ public:
 	static GameObject* selected;
 	static OpenGLObject selectedOutline;
 	static OpenGLObject selectedOutline1;
+	static OpenGLObject selectedOutline2;
 
 public:
 	// ImGui colour definitions

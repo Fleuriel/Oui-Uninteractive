@@ -29,6 +29,7 @@ std::map<std::string, LPCWSTR> Editor::fileFilterList;
 
 OpenGLObject Editor::selectedOutline;
 OpenGLObject Editor::selectedOutline1;
+OpenGLObject Editor::selectedOutline2;
 // Editor settings
 int Editor::iconSize{ 128 };
 int Editor::iconPadding{ 16 };
@@ -244,7 +245,8 @@ void Editor::Update() {
 
 		static Vec2 help;
 		if (tx != nullptr) {
-			help = tx->position - Vector2DRotate(Vec2(0, tx->scale.y / 2.f), tx->rotation, Vec2(0, 0));
+			//help = tx->position - Vector2DRotate(Vec2(0, tx->scale.y / 2.f), tx->rotation, Vec2(0, 0));
+			help = tx->position + Vector2DRotate(Vec2(tx->scale.x / 2.f, 0) + Vec2(scaleOutline, 0), tx->rotation, Vec2(0, 0));
 		}
 		
 		if (tx != nullptr && (ogMouseX > xBounds.first && ogMouseX < xBounds.second) && (ogMouseY > yBounds.first && ogMouseY < yBounds.second)) {
@@ -257,10 +259,10 @@ void Editor::Update() {
 					if (CollisionPointRotateRect(tx->position, tx->scale.x, tx->scale.y, mouseX, mouseY, tx->rotation)) {
 						translateMode = true;
 					}
-					else if (CollisionPointRotateRect(tx->position + Vector2DRotate(Vec2(tx->scale.x / 2.f, 0), tx->rotation, Vec2(0,0)), scaleOutline, tx->scale.y + scaleOutline, mouseX, mouseY, tx->rotation)) {
+					else if (CollisionPointRotateRect(tx->position + Vector2DRotate(Vec2(tx->scale.x / 2.f + scaleOutline, 0) , tx->rotation, Vec2(0, 0)), scaleOutline, tx->scale.y + scaleOutline, mouseX, mouseY, tx->rotation)) {
 						scaleMode = true;
 					}
-					else if (CollisionPointRotateRect(tx->position - Vector2DRotate(Vec2(tx->scale.x / 2.f, 0), tx->rotation, Vec2(0, 0)), scaleOutline, tx->scale.y + scaleOutline, mouseX, mouseY, tx->rotation)) {
+					else if (CollisionPointRotateRect(tx->position - Vector2DRotate(Vec2((tx->scale.x / 2.f) + scaleOutline, 0), tx->rotation, Vec2(0, 0)), scaleOutline, tx->scale.y + scaleOutline, mouseX, mouseY, tx->rotation)) {
 						scaleMode2 = true;
 					}
 					else if (CollisionPointRotateRect(tx->position + Vector2DRotate(Vec2(0, tx->scale.y / 2.f), tx->rotation, Vec2(0, 0)), tx->scale.x + scaleOutline, scaleOutline , mouseX, mouseY, tx->rotation)) {
@@ -275,29 +277,7 @@ void Editor::Update() {
 			}
 		}
 		if (tx != nullptr) {
-			Matrix3x3 scale = Matrix3x3(tx->scale.x + scaleOutline, 0.f, 0.f,
-				0.f, tx->scale.y + scaleOutline, 0.f,
-				0.f, 0.0f, 1.0f);
-			float radRot = tx->rotation * (static_cast<float>(PI) / 180.0f);
-			Matrix3x3 rotate = Matrix3x3(cosf(radRot), sinf(radRot), 0,
-				-sinf(radRot), cosf(radRot), 0.f,
-				0.f, 0.f, 1.0f);
-			Matrix3x3 translate = Matrix3x3(1.f, 0.f, 0.f,
-				0.f, 1.f, 0.f,
-				tx->position.x, tx->position.y, 1.0f);
-			selectedOutline.Update(scale, rotate, translate);
-
-			Matrix3x3 scale2 = Matrix3x3(tx->scale.x + scaleOutline, 0.f, 0.f,
-				0.f, scaleOutline, 0.f,
-				0.f, 0.0f, 1.0f);
-			float radRot2 = tx->rotation * (static_cast<float>(PI) / 180.0f);
-			Matrix3x3 rotate2 = Matrix3x3(cosf(radRot2), sinf(radRot), 0,
-				-sinf(radRot), cosf(radRot), 0.f,
-				0.f, 0.f, 1.0f);
-			Matrix3x3 translate2 = Matrix3x3(1.f, 0.f, 0.f,
-				0.f, 1.f, 0.f,
-				help.x, help.y, 1.0f);
-			selectedOutline1.Update(scale2, rotate2, translate2);
+			DrawGizmos(tx->scale.x, tx->scale.y, tx->position, tx->rotation);
 		}
 		
 	}
@@ -351,7 +331,9 @@ void Editor::Update() {
 					
 					float displacement = (mouseVec.x - (tx->position.x + tx->scale.x / 2));
 					tx->scale.x += displacement;
-					//tx->position += Vector2DRotate(Vec2(displacement / 2 , 0), tx->rotation, Vec2(0, 0));
+					if (tx->scale.x < 0) {
+						tx->scale.x = 0;
+					}
 				}
 			}
 		}
@@ -390,6 +372,9 @@ void Editor::Update() {
 					else {
 						tx->scale.x -= abs((mouseVec.x - (tx->position.x - tx->scale.x / 2)));
 					}
+					if (tx->scale.x < 0) {
+						tx->scale.x = 0;
+					}
 				}
 			}
 		}
@@ -423,6 +408,9 @@ void Editor::Update() {
 
 
 					tx->scale.y += (mouseVec.y - (tx->position.y + tx->scale.y / 2));
+					if (tx->scale.y < 0) {
+						tx->scale.y = 0;
+					}
 				}
 			}
 		}
@@ -461,15 +449,9 @@ void Editor::Update() {
 						tx->scale.y -= abs((mouseVec.y - (tx->position.y - tx->scale.y / 2)));
 					}
 
-					//tx->scale.y += (mouseVec.y - (tx->position.y + tx->scale.y / 2));
-					/*if (mouseY < (tx->position.y - tx->scale.y / 2)) {
-						tx->scale.y += abs((mouseY)-((tx->position.y - tx->scale.y / 2)));
-						tx->position -= Vec2(0, abs((mouseY)-((tx->position.y - tx->scale.y / 2))));
+					if (tx->scale.y < 0) {
+						tx->scale.y = 0;
 					}
-					else {
-						tx->scale.y -= abs((mouseY)-((tx->position.y - tx->scale.y / 2)));
-						tx->position += Vec2(0, abs((mouseY)-((tx->position.y - tx->scale.y / 2))));
-					}*/
 
 				}
 			}
@@ -1934,4 +1916,43 @@ void Editor::CreateConsolePanel() {
 		ImGui::Text("Inputs", consoleTextInput);
 	}
 	ImGui::End();
+}
+void Editor::DrawGizmos(float scaleX, float scaleY, Vec2 pos, float rot) {
+	Matrix3x3 scale = Matrix3x3(scaleX + scaleOutline, 0.f, 0.f,
+		0.f, scaleY + scaleOutline, 0.f,
+		0.f, 0.0f, 1.0f);
+	float radRot = rot * (static_cast<float>(PI) / 180.0f);
+	Matrix3x3 rotate = Matrix3x3(cosf(radRot), sinf(radRot), 0,
+		-sinf(radRot), cosf(radRot), 0.f,
+		0.f, 0.f, 1.0f);
+	Matrix3x3 translate = Matrix3x3(1.f, 0.f, 0.f,
+		0.f, 1.f, 0.f,
+		pos.x, pos.y, 1.0f);
+	selectedOutline.Update(scale, rotate, translate);
+
+	scale = Matrix3x3(scaleOutline, 0.f, 0.f,
+		0.f,scaleY + scaleOutline, 0.f,
+		0.f, 0.0f, 1.0f);
+	 radRot = rot * (static_cast<float>(PI) / 180.0f);
+	rotate = Matrix3x3(cosf(radRot), sinf(radRot), 0,
+		-sinf(radRot), cosf(radRot), 0.f,
+		0.f, 0.f, 1.0f);
+	Vec2 translateVec = pos + Vector2DRotate(Vec2(scaleX / 2.f, 0) + Vec2(scaleOutline, 0), rot, Vec2(0, 0));
+	translate = Matrix3x3(1.f, 0.f, 0.f,
+		0.f, 1.f, 0.f,
+		translateVec.x, translateVec.y, 1.0f);
+	selectedOutline1.Update(scale, rotate, translate);
+
+	scale = Matrix3x3(scaleOutline, 0.f, 0.f,
+		0.f, scaleY + scaleOutline, 0.f,
+		0.f, 0.0f, 1.0f);
+	radRot = rot * (static_cast<float>(PI) / 180.0f);
+	rotate = Matrix3x3(cosf(radRot), sinf(radRot), 0,
+		-sinf(radRot), cosf(radRot), 0.f,
+		0.f, 0.f, 1.0f);
+	translateVec = pos - Vector2DRotate(Vec2(scaleX / 2.f, 0) + Vec2(scaleOutline, 0), rot, Vec2(0, 0));
+	translate = Matrix3x3(1.f, 0.f, 0.f,
+		0.f, 1.f, 0.f,
+		translateVec.x, translateVec.y, 1.0f);
+	selectedOutline2.Update(scale, rotate, translate);
 }
