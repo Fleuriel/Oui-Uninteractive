@@ -144,6 +144,29 @@ bool AssetManager::LoadTextures() {
                 std::string nameWithoutExtension = entry.path().filename().string().substr(0, pos);
                 //std::cout << nameWithoutExtension << std::endl;
 
+                std::string Extension = entry.path().filename().string().substr(pos);
+                //std::cout << Extension;
+                std::string allowedExtensions = ".jpg,.jpeg,.png,.gif";
+
+                // Check if the substring exists in the full string
+                size_t found = allowedExtensions.find(Extension);
+
+                if (found == std::string::npos) {
+                    std::string file(entry.path().filename().string());
+                    std::wstring widefile(file.begin(), file.end());
+                    HWND hwnd = GetActiveWindow();
+                    std::string filepath(FILEPATH_TEXTURES);
+                    // Convert std::string to std::wstring
+                    std::wstring widefilepath(filepath.begin(), filepath.end());
+
+                    std::wstring message = widefile + L" File added to \"" + widefilepath + L"\" folder!";
+                    LPCWSTR boxMessage = message.c_str();
+
+                    MessageBox(hwnd, boxMessage, L"Success", MB_OK | MB_ICONERROR);
+
+                }
+                
+
                 textures[nameWithoutExtension] = AssetManager::SetUpTexture(texFilePath);
                 //std::cout << textures[nameWithoutExtension] << " success!\n";
             }
@@ -830,6 +853,9 @@ bool AssetManager::LoadFonts() {
     bool result{ true };
     if (fs::is_directory(FILEPATH_FONTS)) {
         for (const auto& entry : fs::directory_iterator(FILEPATH_FONTS)) {
+
+
+
             // Temp map to store currently loaded font glyphs            
             std::map<char, FontManager::Character> tempMap;
 
