@@ -9,7 +9,7 @@
  *		  The enemy states consists of:
  *		  - Roam
  *		  - Attack
- *        This file should only contain the behaviour of enemies during
+ *        This file should only contain the behavior of enemies during
  *        its respective states.
  *************************************************************************/
 #include <iostream>
@@ -25,7 +25,12 @@
 * @param currentEnemy - pointer to current enemy
 * @return std::pair<int, int> - pair of int (X and Y position)
 *************************************************************************/
-std::pair<int, int> GetStartNodePosition(Vec2 currentEnemyPos, BFS* bfs, float scale, float windowWidth, float windowHeight) {
+std::pair<int, int> GetStartNodePosition(Vec2 currentEnemyPos, BFS* bfs, float scale, std::pair<int, int> windowSize) {
+    // Window width and height
+    float windowWidth{ static_cast<float>(windowSize.first) };
+    float windowHeight{ static_cast<float>(windowSize.second) };
+
+	// Start Node's x and y index
     std::pair<int, int> startNodePos{};
     int& startX{ startNodePos.first };
     int& startY{ startNodePos.second };
@@ -62,8 +67,8 @@ std::pair<int, int> GetStartNodePosition(Vec2 currentEnemyPos, BFS* bfs, float s
 * @brief Constructor for EnemyRoam
 *************************************************************************/
 EnemyRoam::EnemyRoam() : bfs(new BFS(tilemapLoader->GetTilemap())), transitioned(false), pathFound(false), pathPrinted(false), pathIndex(0) {
-    windowWidth = 1920.f;
-    windowHeight = 1080.f;
+    windowWidth = windowSize.first;
+    windowHeight = windowSize.second;
     scale = windowHeight / bfs->GetRows();
 }
 
@@ -86,7 +91,7 @@ void EnemyRoam::Update(size_t gameObjectID) {
         Transform* currentEnemyTx = GET_COMPONENT(currentEnemy, Transform, ComponentType::TRANSFORM);
         if (currentEnemyTx != nullptr) {
             currentEnemyPos = currentEnemyTx->position;
-            startNodePos = GetStartNodePosition(currentEnemyPos, bfs, scale, windowWidth, windowHeight);
+            startNodePos = GetStartNodePosition(currentEnemyPos, bfs, scale, windowSize);
         }
     }
     int startX{ startNodePos.first };
@@ -109,14 +114,6 @@ void EnemyRoam::Update(size_t gameObjectID) {
         targetX = rangeX(gen);
         targetY = rangeY(gen);
     }
-
-	// If grid created, find path
-    /*if (bfs->CreateGrid()) {
-		pathFound = false;
-        pathPrinted = false;
-        pathIndex = 0;
-        pathToTake.clear();
-    }*/
 
     if (!pathFound) {
         // Find path
@@ -233,8 +230,8 @@ EnemyAttack::~EnemyAttack() {
 * @brief Constructor for EnemyFlee
 *************************************************************************/
 EnemyFlee::EnemyFlee() : bfs(new BFS(tilemapLoader->GetTilemap())), transitioned(false), pathFound(false), pathPrinted(false), pathIndex(0) {
-    windowWidth = 1920.f;
-    windowHeight = 1080.f;
+    windowWidth = windowSize.first;
+    windowHeight = windowSize.second;
     scale = windowHeight / bfs->GetRows();
 }
 
@@ -257,7 +254,7 @@ void EnemyFlee::Update(size_t gameObjectID) {
         Transform* currentEnemyTx = GET_COMPONENT(currentEnemy, Transform, ComponentType::TRANSFORM);
         if (currentEnemyTx != nullptr) {
             currentEnemyPos = currentEnemyTx->position;
-            startNodePos = GetStartNodePosition(currentEnemyPos, bfs, scale, windowWidth, windowHeight);
+            startNodePos = GetStartNodePosition(currentEnemyPos, bfs, scale, windowSize);
         }
     }
     int startX{ startNodePos.first };

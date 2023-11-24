@@ -113,10 +113,6 @@ rapidjson::Document TilemapLoader::SaveTilemap(const std::string& filePath) {
 	objDoc.AddMember("Tilemap", tilemapArray, allocator);
 
 	return objDoc;
-
-	/*if (serializer.WriteJSONFile(filePath, objDoc)) {
-		std::cout << "Successfully saved objects to file." << std::endl;
-	}*/
 }
 
 /**************************************************************************
@@ -162,11 +158,11 @@ bool TilemapLoader::CreateGrid() {
 	int rows{ static_cast<int>(tilemap.size()) };
 	int cols{ static_cast<int>(tilemap[0].size()) };
 
-	// Temp vars
-	float windowWidth = 1920.f;
-	float windowHeight = 1080.f;
-	float scaleX = windowWidth / static_cast<float>(cols);
-	float scaleY = windowHeight / static_cast<float>(rows);
+	// Store window width/height and scale factor
+	float windowWidth{ static_cast<float>(windowSize.first) };
+	float windowHeight{ static_cast<float>(windowSize.second) };
+	float scaleX{ windowWidth / static_cast<float>(cols) };
+	float scaleY{ windowHeight / static_cast<float>(rows) };
 
 	// Wall ID
 	int wallID{};

@@ -16,10 +16,11 @@
 #include "IState.h"
 #include "BFS.h"
 
-//extern std::pair<int, int> windowSize;
+extern std::pair<int, int> windowSize;
 
 class EnemyRoam : public IState {
 private:
+	// Variables for pathfinding
 	BFS* bfs;
 	std::vector<Node> pathToTake;
 	bool transitioned;
@@ -27,7 +28,7 @@ private:
 	bool pathPrinted;
 	int pathIndex;
 
-	// TEMPORARY VARIABLES
+	// Variables for sizing and scaling
 	float windowWidth;
 	float windowHeight;
 	float scale;
@@ -88,6 +89,7 @@ public:
 
 class EnemyFlee : public IState {
 private:
+	// Variables for pathfinding
 	BFS* bfs;
 	std::vector<Node> pathToTake;
 	bool transitioned;
@@ -95,7 +97,7 @@ private:
 	bool pathPrinted;
 	int pathIndex;
 
-	// TEMPORARY VARIABLES
+	// Variables for sizing and scaling
 	float windowWidth;
 	float windowHeight;
 	float scale;
