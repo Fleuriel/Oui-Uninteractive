@@ -14,6 +14,7 @@
 #define PI 3.141592653589793
 
  // Defining static variables
+bool Editor::editorOn;
 Editor::SystemTime Editor::timeRecorder;
 std::vector<float> Editor::fpsData;
 std::pair<int, int> Editor::gameWindowOrigin;
@@ -1586,8 +1587,8 @@ void Editor::CreateAssetBrowser() {
 				// Copy file to destination directory
 				std::filesystem::copy(selectedFilePath, destinationPath, std::filesystem::copy_options::overwrite_existing);
 				// Construct and display message
-				std::wstring test(currFilePath.begin(), currFilePath.end());
-				LPCWSTR boxMessage = (L"File added to \"" + test + L"\" folder!").c_str();
+				std::wstring temp(currFilePath.begin(), currFilePath.end());
+				LPCWSTR boxMessage = (L"File added to \"" + temp + L"\" folder!").c_str();
 				MessageBox(hwnd, boxMessage, L"Success", MB_OK | MB_ICONINFORMATION);
 			}
 			else {
