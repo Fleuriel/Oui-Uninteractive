@@ -1,7 +1,6 @@
 {
-    "ObjectCount": 6,
-    "Objects": [
-        {
+    "ObjectCount": 4,
+    "Objects": [{
             "Name": "BulletPrefab",
             "Type": "BulletPrefab",
             "UsingSprite": true,
@@ -10,37 +9,34 @@
                     "PositionX": 0.0,
                     "PositionY": 0.0,
                     "Rotation": 0.0,
-                    "ScaleX": 50.0,
-                    "ScaleY": 50.0
+                    "ScaleX": 100.0,
+                    "ScaleY": 100.0
                 },
                 "PhysicsBody": {
                     "VelocityX": 0.0,
                     "VelocityY": 0.0,
-                    "RotationSpeed": 0.0,
-                    "Speed": 2500.0,
-                    "Mass": 0.0,
+                    "RotationSpeed": 525.0,
+                    "Speed": 428.125,
+                    "Mass": 387.5,
                     "IsStatic": false,
-                    "FrictionForce": 0.0
+                    "FrictionForce": 35.9379997253418
                 },
                 "LogicComponent": {
-                    "ScriptID": [4]
+                    "ScriptID": []
                 },
                 "Collider": {
-                    "ColliderSizeX": 50.0,
-                    "ColliderSizeY": 50.0,
+                    "ColliderSizeX": 75.0,
+                    "ColliderSizeY": 75.0,
                     "ColliderRotation": 0.0
                 }
             }
-        },
-        {
+        }, {
             "Name": "EnemyPrefab",
             "Type": "EnemyPrefab",
             "UsingSprite": true,
             "Components": {
                 "LogicComponent": {
-                    "ScriptID": [
-                        0
-                    ]
+                    "ScriptID": [0]
                 },
                 "PhysicsBody": {
                     "VelocityX": 0.0,
@@ -57,20 +53,15 @@
                     "Rotation": 0.0,
                     "ScaleX": 100.0,
                     "ScaleY": 100.0
-                }   
+                }
             }
-        },
-        {
+        }, {
             "Name": "PlayerPrefab",
             "Type": "PlayerPrefab",
             "UsingSprite": true,
             "Components": {
                 "LogicComponent": {
-                    "ScriptID": [
-                        0,
-                        1,
-                        2
-                    ]
+                    "ScriptID": [0, 1, 2]
                 },
                 "Collider": {
                     "ColliderSizeX": 75.0,
@@ -94,8 +85,7 @@
                     "FrictionForce": 35.9379997253418
                 }
             }
-        },
-        {
+        }, {
             "Name": "WallPrefab",
             "Type": "WallPrefab",
             "UsingSprite": true,
@@ -122,45 +112,5 @@
                     "FrictionForce": 0.0
                 }
             }
-        },
-        {
-            "Name": "NewPrefab2",
-            "Type": "NewPrefab2",
-            "UsingSprite": true,
-            "Components": {}
-        },
-        {
-            "Name": "TestPrefab",
-            "Type": "TestPrefab",
-            "UsingSprite": true,
-            "Components": {
-                "Collider": {
-                    "ColliderSizeX": 75.0,
-                    "ColliderSizeY": 75.0,
-                    "ColliderRotation": 0.0
-                },
-                "Transform": {
-                    "PositionX": 0.0,
-                    "PositionY": 0.0,
-                    "Rotation": 0.0,
-                    "ScaleX": 100.0,
-                    "ScaleY": 100.0
-                },
-                "PhysicsBody": {
-                    "VelocityX": 0.0,
-                    "VelocityY": 0.0,
-                    "RotationSpeed": 525.0,
-                    "Speed": 428.125,
-                    "Mass": 387.5,
-                    "IsStatic": false,
-                    "FrictionForce": 35.9379997253418
-                },
-                "LogicComponent": {
-                    "ScriptID": [
-                        0
-                    ]
-                }
-            }
-        }
-    ]
+        }]
 }

@@ -704,5 +704,6 @@ void ObjectFactory::AddPrefabToMap(Prefab* newPrefab, std::string name) {
 * @return void
 *************************************************************************/
 void ObjectFactory::RemovePrefabFromMap(std::string name) {
+	delete prefabMap[name];
 	prefabMap.erase(name);
 }
