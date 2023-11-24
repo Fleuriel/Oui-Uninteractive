@@ -37,6 +37,7 @@
 #include "Filepaths.h"
 #include "Collider.h"
 #include "Logic.h"
+#include "EnemyFSM.h"
 #include "TilemapLoader.h"
 #define NOMINMAX // Suppresses min/max keywords in windows to deconflict with std::min/max
 #include <Windows.h>
