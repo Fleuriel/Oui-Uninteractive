@@ -109,19 +109,14 @@ void EnemyRoam::Update(size_t gameObjectID) {
         targetX = rangeX(gen);
         targetY = rangeY(gen);
     }
-    
-    // If grid not created, create grid
-    /*if (!bfs->gridCreated) {
-        bfs->CreateGrid();
-    }*/
 
 	// If grid created, find path
-    if (bfs->CreateGrid()) {
+    /*if (bfs->CreateGrid()) {
 		pathFound = false;
         pathPrinted = false;
         pathIndex = 0;
         pathToTake.clear();
-    }
+    }*/
 
     if (!pathFound) {
         // Find path
@@ -278,19 +273,6 @@ void EnemyFlee::Update(size_t gameObjectID) {
             targetY = static_cast<int>(std::distance(gameMap.begin(), row));
             break;
         }
-    }
-
-    // If grid not created, create grid
-    /*if (!bfs->gridCreated) {
-        bfs->CreateGrid();
-    }*/
-
-    // If grid created, find path
-    if (bfs->CreateGrid()) {
-        pathFound = false;
-        pathPrinted = false;
-        pathIndex = 0;
-        pathToTake.clear();
     }
 
     if (!pathFound) {

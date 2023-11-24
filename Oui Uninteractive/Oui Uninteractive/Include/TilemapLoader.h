@@ -58,6 +58,12 @@ public:
 	* @return void
 	*************************************************************************/
 	void Update(float dt);
+
+	/**************************************************************************
+	* @brief Create the grid
+	* @return bool - true if grid is created, false otherwise
+	*************************************************************************/
+	bool CreateGrid();
 };
 extern TilemapLoader* tilemapLoader;
 

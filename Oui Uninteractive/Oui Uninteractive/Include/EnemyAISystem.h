@@ -36,12 +36,6 @@ public:
 	*************************************************************************/
 	void Update(float dt) override;
 
-	/**************************************************************************
-	* @brief Create the grid
-	* @return bool - true if grid is created, false otherwise
-	*************************************************************************/
-	//bool CreateGrid();
-
 	// Map of EnemyFSM
 	std::map<size_t, EnemyFSM*> enemyFSMMap;
 };

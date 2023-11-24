@@ -61,12 +61,6 @@ public:
 	~BFS();
 
     /**************************************************************************
-    * @brief Create the grid
-    * @return bool - true if grid is created, false otherwise
-    *************************************************************************/
-    bool CreateGrid();
-
-    /**************************************************************************
     * @brief Find the path using Breadth-First Search algorithm
 	* @param startX - x-index of start node
 	* @param startY - y-index of start node
