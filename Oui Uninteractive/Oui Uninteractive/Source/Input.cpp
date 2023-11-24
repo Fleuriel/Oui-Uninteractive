@@ -381,6 +381,7 @@ void windowFocusCallback(GLFWwindow* window, int focused) {
 	if (focused == GLFW_FALSE) {
 
 		// Minimizes window if alt tabbed away
+
 		glfwIconifyWindow(windowNew);
 		soundManager->PauseAll();
 
