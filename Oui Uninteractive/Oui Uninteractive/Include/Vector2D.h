@@ -170,3 +170,5 @@ float Vector2DDotProduct(const Vector2D &pVec0, const Vector2D &pVec1);
 * @return float
 **************************************************************************/
 float Vector2DCrossProductMag(const Vector2D &pVec0, const Vector2D &pVec1);
+
+Vec2 Vector2DRotate(Vector2D vectorToRotate, float angle, Vec2 centerOfRot);
