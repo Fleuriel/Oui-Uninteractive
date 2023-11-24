@@ -231,11 +231,11 @@ void KeyCallBack(GLFWwindow* window3, int key, int scancode, int action, int mod
 			else if (key == GLFW_KEY_ENTER) {
 				if(cheater){
 					if (CheckCheatCode(developermodeon)) {
-						std::cout << developermodeon << " found";
+						std::cout << developermodeon << " found" << std::endl;
 						Cheat(developermodeon);
 					}
 					else
-						std::cout << developermodeon << " not found";
+						std::cout << developermodeon << " not found" << std::endl;
 
 					developermodeon = std::string("");
 
@@ -244,7 +244,7 @@ void KeyCallBack(GLFWwindow* window3, int key, int scancode, int action, int mod
 				if (developermodeon == "developermodeon") {
 					cheater = true;
 					developermodeon = std::string("");
-					std::cout << "Cheat Menu Activated";
+					std::cout << "Cheat Menu Activated" << std::endl;
 				}
 				typePW = false;
 			}
