@@ -30,6 +30,8 @@ std::map<std::string, LPCWSTR> Editor::fileFilterList;
 OpenGLObject Editor::selectedOutline;
 OpenGLObject Editor::selectedOutline1;
 OpenGLObject Editor::selectedOutline2;
+OpenGLObject Editor::selectedOutline3;
+OpenGLObject Editor::selectedOutline4;
 // Editor settings
 int Editor::iconSize{ 128 };
 int Editor::iconPadding{ 16 };
@@ -265,11 +267,11 @@ void Editor::Update() {
 					else if (CollisionPointRotateRect(tx->position - Vector2DRotate(Vec2((tx->scale.x / 2.f) + scaleOutline, 0), tx->rotation, Vec2(0, 0)), scaleOutline, tx->scale.y + scaleOutline, mouseX, mouseY, tx->rotation)) {
 						scaleMode2 = true;
 					}
-					else if (CollisionPointRotateRect(tx->position + Vector2DRotate(Vec2(0, tx->scale.y / 2.f), tx->rotation, Vec2(0, 0)), tx->scale.x + scaleOutline, scaleOutline , mouseX, mouseY, tx->rotation)) {
+					else if (CollisionPointRotateRect(tx->position + Vector2DRotate(Vec2(0, (tx->scale.y / 2.f) + scaleOutline), tx->rotation, Vec2(0, 0)), tx->scale.x + scaleOutline, scaleOutline, mouseX, mouseY, tx->rotation)) {
 						scaleMode3 = true;
 					
 					}
-					else if (CollisionPointRotateRect(tx->position - Vector2DRotate(Vec2(0, tx->scale.y / 2.f), tx->rotation, Vec2(0, 0)), tx->scale.x + scaleOutline, scaleOutline, mouseX, mouseY, tx->rotation)) {
+					else if (CollisionPointRotateRect(tx->position - Vector2DRotate(Vec2(0, (tx->scale.y / 2.f) + scaleOutline), tx->rotation, Vec2(0, 0)), tx->scale.x + scaleOutline, scaleOutline, mouseX, mouseY, tx->rotation)) {
 						scaleMode4 = true;
 					}
 				}
@@ -1956,4 +1958,30 @@ void Editor::DrawGizmos(float scaleX, float scaleY, Vec2 pos, float rot) {
 		0.f, 1.f, 0.f,
 		translateVec.x, translateVec.y, 1.0f);
 	selectedOutline2.Update(scale, rotate, translate);
+
+	scale = Matrix3x3(scaleX + scaleOutline, 0.f, 0.f,
+		0.f, scaleOutline, 0.f,
+		0.f, 0.0f, 1.0f);
+	radRot = rot * (static_cast<float>(PI) / 180.0f);
+	rotate = Matrix3x3(cosf(radRot), sinf(radRot), 0,
+		-sinf(radRot), cosf(radRot), 0.f,
+		0.f, 0.f, 1.0f);
+	translateVec = pos + Vector2DRotate(Vec2(0, (scaleY / 2.f) + scaleOutline), rot, Vec2(0, 0));
+	translate = Matrix3x3(1.f, 0.f, 0.f,
+		0.f, 1.f, 0.f,
+		translateVec.x, translateVec.y, 1.0f);
+	selectedOutline3.Update(scale, rotate, translate);
+
+	scale = Matrix3x3(scaleX + scaleOutline, 0.f, 0.f,
+		0.f, scaleOutline, 0.f,
+		0.f, 0.0f, 1.0f);
+	radRot = rot * (static_cast<float>(PI) / 180.0f);
+	rotate = Matrix3x3(cosf(radRot), sinf(radRot), 0,
+		-sinf(radRot), cosf(radRot), 0.f,
+		0.f, 0.f, 1.0f);
+	translateVec = pos - Vector2DRotate(Vec2(0, (scaleY / 2.f) + scaleOutline), rot, Vec2(0, 0));
+	translate = Matrix3x3(1.f, 0.f, 0.f,
+		0.f, 1.f, 0.f,
+		translateVec.x, translateVec.y, 1.0f);
+	selectedOutline4.Update(scale, rotate, translate);
 }

@@ -102,6 +102,8 @@ public:
 	static OpenGLObject selectedOutline;
 	static OpenGLObject selectedOutline1;
 	static OpenGLObject selectedOutline2;
+	static OpenGLObject selectedOutline3;
+	static OpenGLObject selectedOutline4;
 
 public:
 	// ImGui colour definitions
