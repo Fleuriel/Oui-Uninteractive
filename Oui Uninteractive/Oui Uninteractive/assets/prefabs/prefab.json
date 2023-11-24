@@ -9,24 +9,24 @@
                     "PositionX": 0.0,
                     "PositionY": 0.0,
                     "Rotation": 0.0,
-                    "ScaleX": 100.0,
-                    "ScaleY": 100.0
+                    "ScaleX": 50.0,
+                    "ScaleY": 50.0
                 },
                 "PhysicsBody": {
                     "VelocityX": 0.0,
                     "VelocityY": 0.0,
-                    "RotationSpeed": 525.0,
-                    "Speed": 428.125,
-                    "Mass": 387.5,
+                    "RotationSpeed": 0.0,
+                    "Speed": 500.0,
+                    "Mass": 0.0,
                     "IsStatic": false,
-                    "FrictionForce": 35.9379997253418
+                    "FrictionForce": 0.0
                 },
                 "LogicComponent": {
-                    "ScriptID": []
+                    "ScriptID": [4]
                 },
                 "Collider": {
-                    "ColliderSizeX": 75.0,
-                    "ColliderSizeY": 75.0,
+                    "ColliderSizeX": 50.0,
+                    "ColliderSizeY": 50.0,
                     "ColliderRotation": 0.0
                 }
             }
