@@ -19,6 +19,7 @@
 #include <Physics.h>
 #include <Editor.h>	
 #include <ParticleSystem.h>
+#include <Cheats.h>
 
 
 InputSystem inputSystem;
@@ -26,6 +27,9 @@ InputSystem inputSystem;
 // true for on, false for off
 bool capsLockReleased{ true };
 bool capsLockOn{ false };
+bool cheater{ false };
+bool typePW{ false };
+std::string developermodeon{};
 
 // Pointer to the window
 extern GLFWwindow* windowNew;
@@ -189,25 +193,67 @@ void KeyCallBack(GLFWwindow* window3, int key, int scancode, int action, int mod
 	if (key == GLFW_KEY_UNKNOWN)
 		return;
 
-	/*
-	Update the state of the pressed key
-	 - If the key is pressed (action == GLFW_PRESS) and its state was not previously pressed,
-	   set its state to 1 (pressed).
-	 - If the key is released (action == GLFW_RELEASE), set its state to 0 (not pressed).
-	 - If the key is held down (action == GLFW_REPEAT), set its state to 2 (held down).
-	*/
-	inputSystem.SetKeyState(key, (action == GLFW_PRESS && inputSystem.GetKeyState(key) == 0) ? 1 : (action == GLFW_RELEASE) ? 0 : 2);
-	
+	if (!typePW) {
+
+		/*
+		Update the state of the pressed key
+		 - If the key is pressed (action == GLFW_PRESS) and its state was not previously pressed,
+		   set its state to 1 (pressed).
+		 - If the key is released (action == GLFW_RELEASE), set its state to 0 (not pressed).
+		 - If the key is held down (action == GLFW_REPEAT), set its state to 2 (held down).
+		*/
+		inputSystem.SetKeyState(key, (action == GLFW_PRESS && inputSystem.GetKeyState(key) == 0) ? 1 : (action == GLFW_RELEASE) ? 0 : 2);
+
 
 #ifdef _DEBUG
-	// Print debug information based on the key action (press, hold, release)
-	//std::cout << ((action == GLFW_PRESS) ? "Pressed Keys\n" : (action == GLFW_REPEAT) ? "Held Keys\n" : "Released Keys\n");
+		// Print debug information based on the key action (press, hold, release)
+		//std::cout << ((action == GLFW_PRESS) ? "Pressed Keys\n" : (action == GLFW_REPEAT) ? "Held Keys\n" : "Released Keys\n");
 #endif
 
-	if (key == GLFW_KEY_CAPS_LOCK) capsLockReleased = (action == GLFW_RELEASE) ? true : false;
+		if (key == GLFW_KEY_CAPS_LOCK) capsLockReleased = (action == GLFW_RELEASE) ? true : false;
 
-	if (inputSystem.GetKeyState(GLFW_KEY_F11))
-		toggleFullScreen();
+		if (inputSystem.GetKeyState(GLFW_KEY_F11))
+			toggleFullScreen();
+
+		if (key == GLFW_KEY_F1)typePW = true;
+	}
+	else {
+		if (action == GLFW_PRESS) {
+			if (key >= GLFW_KEY_A && key <= GLFW_KEY_Z) {
+				char newchar{ 'a' + static_cast<char>(key - GLFW_KEY_A) };
+				if (developermodeon.length() == 0)
+					developermodeon += newchar;
+				else
+					developermodeon += newchar;
+
+				std::cout << "developermodeon: " << developermodeon << std::endl;
+			}
+			else if (key == GLFW_KEY_ENTER) {
+				if(cheater){
+					if (CheckCheatCode(developermodeon)) {
+						std::cout << developermodeon << " found";
+						Cheat(developermodeon);
+					}
+					else
+						std::cout << developermodeon << " not found";
+
+					developermodeon = std::string("");
+
+				}
+				else
+				if (developermodeon == "developermodeon") {
+					cheater = true;
+					developermodeon = std::string("");
+					std::cout << "Cheat Menu Activated";
+				}
+				typePW = false;
+			}
+			else {
+				developermodeon = std::string("");
+				std::cout << "developermodeon : " << developermodeon << std::endl;
+			}
+		}
+	}
 }
 
 
