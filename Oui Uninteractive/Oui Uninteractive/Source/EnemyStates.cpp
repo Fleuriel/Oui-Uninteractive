@@ -337,9 +337,9 @@ void EnemyFlee::Update(size_t gameObjectID) {
                 std::cout << "Travelled to node (" << currentNode.x << ", " << currentNode.y << ")" << std::endl;
             }
         }
-        else {
+        /* else {
 			std::cout << "TARGET ESCAPED" << std::endl;
-        }
+        }*/
     }
 }
 

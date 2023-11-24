@@ -84,7 +84,7 @@ void EnemyAISystem::Update(float dt) {
 				it.second->nextState = it.second->statesMap["EnemyFlee"];
 			}
 			else {
-				it.second->nextState = it.second->statesMap["EnemyRoam"];
+				it.second->nextState = it.second->currentState;
 			}
 		}
 
