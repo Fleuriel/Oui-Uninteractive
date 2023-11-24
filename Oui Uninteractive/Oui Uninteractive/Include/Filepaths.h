@@ -41,7 +41,8 @@
 #define FILEPATH_SCENES_TESTSCENEWRITING	std::string("assets\\scenes\\TestsceneWriting.JSON")
 
 // PREFABS //
-#define FILEPATH_PREFAB						std::string("assets\\prefab\\Prefab.JSON")
+#define FILEPATH_PREFABS					std::string("assets\\prefabs")
+#define FILEPATH_PREFAB_DEFAULT				std::string("assets\\prefabs\\Prefab.JSON")
 
 
 // TESTS //
