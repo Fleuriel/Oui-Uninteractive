@@ -38,6 +38,9 @@
 #include "Collider.h"
 #include "Logic.h"
 #include "TilemapLoader.h"
+#define NOMINMAX // Suppresses min/max keywords in windows to deconflict with std::min/max
+#include <Windows.h>
+
 
 #define GET_COMPONENT(GameObject, Component, ComponentType) (GameObject->GetComponentType<Component>(ComponentType))
 #define GET_PREFAB_COMPONENT(Prefab, Component, ComponentType) (Prefab->GetComponentType<Component>(ComponentType))
@@ -127,7 +130,7 @@ static SystemTime timeRecorder;
 
 private:
 	static std::vector<std::string> prefabList;
-	static std::map<std::string, std::wstring> fileFilterList;
+	static std::map<std::string, LPCWSTR> fileFilterList;
 };
 
 // Store panel selection

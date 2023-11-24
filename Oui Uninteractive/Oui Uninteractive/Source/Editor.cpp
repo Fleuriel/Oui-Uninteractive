@@ -8,7 +8,7 @@
  * @brief This source file contains the code to setup and run the editor
  *************************************************************************/
 
-#include <Windows.h>
+
 #include <iostream>
 #include "Editor.h"
 #include "Collision.h"
@@ -23,7 +23,7 @@ std::string Editor::browserInputPath;
 bool Editor::browserDoubleClicked;
 std::string Editor::browserSelectedItem;
 GameObject* Editor::selected;
-std::map<std::string, std::wstring> Editor::fileFilterList;
+std::map<std::string, LPCWSTR> Editor::fileFilterList;
 
 OpenGLObject Editor::selectedOutline;
 // Editor settings
@@ -171,9 +171,15 @@ void Editor::Init() {
 }
 
 void Editor::SetFileFilters() {
-	fileFilterList[FILEPATH_MASTER] = L"All Files (*.*)\0*.*\0";
-	fileFilterList[FILEPATH_FONTS] = L"Font Files (*.ttf)\0*.ttf\0";
-	//fileFilterList[FILEPATH_SOUNDS_BGM] = L"Audio Files (*.mp3;*.wav)\0*.mp3;*.wav\0";
+	fileFilterList.clear();
+	fileFilterList.insert(std::make_pair(FILEPATH_MASTER, L"All Files (*.*)\0*.*\0"));
+	fileFilterList.insert(std::make_pair(FILEPATH_FONTS, L"Font Files (*.ttf; *.otf)\0*.ttf;*.otf\0"));
+	fileFilterList.insert(std::make_pair(FILEPATH_TEXTURES, L"Image Files (*.jpg; *.jpeg; *.png; *.gif)\0*.jpg;*.jpeg;*.png;*.gif\0"));
+	fileFilterList.insert(std::make_pair(FILEPATH_SPRITES, fileFilterList[FILEPATH_TEXTURES]));
+	fileFilterList.insert(std::make_pair(FILEPATH_SOUNDS_BGM, L"Audio Files (*.mp3; *.wav; *.ogg; *.FLAC)\0*.mp3; *.wav; *.ogg; *.FLAC\0"));
+	fileFilterList.insert(std::make_pair(FILEPATH_SOUNDS_SFX, fileFilterList[FILEPATH_SOUNDS_BGM]));
+	fileFilterList.insert(std::make_pair(FILEPATH_SCENES, L"Text Files (*.JSON)\0*.JSON\0"));
+	fileFilterList.insert(std::make_pair(FILEPATH_PREFABS, L"Text Files (*.JSON)\0*.JSON\0"));
 }
 
 double scaleOutline = 30.f;
@@ -552,7 +558,7 @@ void Editor::CreatePrefabPanel() {
 
 	// Refresh list of prefabs from file directory
 	//if (ImGui::Button("Refresh")) {
-	//	std::filesystem::path prefabPath{ FILEPATH_PREFAB };
+	//	std::filesystem::path prefabPath{ FILEPATH_PREFAB_DEFAULT };
 	//	if (std::filesystem::is_directory(prefabPath)) {
 	//		for (const auto& entry : std::filesystem::directory_iterator(prefabPath)) {
 	//			
@@ -722,7 +728,7 @@ void Editor::CreatePrefabPanel() {
 
 				}
 			}
-			objectFactory->SavePrefabsToFile(FILEPATH_PREFAB);
+			objectFactory->SavePrefabsToFile(FILEPATH_PREFAB_DEFAULT);
 			saveFlag = false;
 		}
 		if (ImGui::Button("Preview Changes")) {
@@ -1515,9 +1521,8 @@ void Editor::CreateAssetBrowser() {
 		wchar_t szFile[MAX_PATH] = L"";
 		ZeroMemory(&ofn, sizeof(ofn));
 		ofn.lStructSize = sizeof(ofn);
-		ofn.hwndOwner = hwnd;
-		//ofn.lpstrFilter = L"All Files (*.*)\0*.*\0";
-		ofn.lpstrFilter = fileFilterList[FILEPATH_FONTS].c_str();
+		ofn.hwndOwner = hwnd;	
+		ofn.lpstrFilter = fileFilterList[currFilePath];
 		ofn.lpstrFile = szFile;
 		ofn.nMaxFile = MAX_PATH;
 		ofn.Flags = OFN_FILEMUSTEXIST;
