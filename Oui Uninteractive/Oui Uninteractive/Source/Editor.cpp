@@ -328,8 +328,9 @@ void Editor::Update() {
 					}
 					Vec2 mouseVec = Vector2DRotate(Vec2(mouseX, mouseY), -angle, Vec2(0,0));
 					
-					
-					tx->scale.x += (mouseVec.x - (tx->position.x + tx->scale.x / 2));
+					float displacement = (mouseVec.x - (tx->position.x + tx->scale.x / 2));
+					tx->scale.x += displacement;
+					//tx->position += Vector2DRotate(Vec2(displacement / 2 , 0), tx->rotation, Vec2(0, 0));
 				}
 			}
 		}
