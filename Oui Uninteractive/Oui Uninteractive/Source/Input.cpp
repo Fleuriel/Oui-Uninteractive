@@ -313,7 +313,7 @@ void windowFocusCallback(GLFWwindow* window, int focused) {
 	// If alt tabbed away
 	if (focused == GLFW_FALSE) {
 		// Minimizes window if alt tabbed away
-		glfwIconifyWindow(windowNew);
+		//glfwIconifyWindow(windowNew);
 	}
 	// If alt tabbed back to window
 	else {

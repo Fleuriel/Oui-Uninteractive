@@ -224,7 +224,7 @@ void Editor::Update() {
 		Transform* tx = GET_COMPONENT(selected, Transform, ComponentType::TRANSFORM);
 		static Vec2 help;
 	
-		help = tx->position + Vector2DRotate(Vec2(tx->scale.x / 2.f, 0), tx->rotation, Vec2(0, 0));
+		help = tx->position - Vector2DRotate(Vec2(tx->scale.x / 2.f, 0), tx->rotation, Vec2(0, 0));
 		if ((ogMouseX > xBounds.first && ogMouseX < xBounds.second) && (ogMouseY > yBounds.first && ogMouseY < yBounds.second)) {
 			
 			if (inputSystem.GetMouseState(GLFW_MOUSE_BUTTON_1)) {
@@ -237,10 +237,10 @@ void Editor::Update() {
 					else if (CollisionPointRotateRect(tx->position + Vector2DRotate(Vec2(tx->scale.x / 2.f, 0), tx->rotation, Vec2(0,0)), scaleOutline, tx->scale.y + scaleOutline, mouseX, mouseY, tx->rotation)) {
 						scaleMode = true;
 					}
-					/*else if (CollisionPointRotateRect(Vec2(tx->position.x - scaleOutline - tx->scale.x / 2.f, tx->position.y), scaleOutline, tx->scale.y + scaleOutline, mouseX, mouseY, tx->rotation)) {
+					else if (CollisionPointRotateRect(tx->position - Vector2DRotate(Vec2(tx->scale.x / 2.f, 0), tx->rotation, Vec2(0, 0)), scaleOutline, tx->scale.y + scaleOutline, mouseX, mouseY, tx->rotation)) {
 						scaleMode2 = true;
 					}
-					else if (CollisionPointRotateRect(Vec2(tx->position.x, tx->position.y + scaleOutline + tx->scale.y / 2.f), tx->scale.x + scaleOutline, scaleOutline, mouseX, mouseY, tx->rotation)) {
+					/*else if (CollisionPointRotateRect(Vec2(tx->position.x, tx->position.y + scaleOutline + tx->scale.y / 2.f), tx->scale.x + scaleOutline, scaleOutline, mouseX, mouseY, tx->rotation)) {
 						scaleMode3 = true;
 					
 					}
@@ -280,6 +280,7 @@ void Editor::Update() {
 	}
 	static bool buttonDown = false;
 	static bool rightButtonDown = false;
+	
 	if (translateMode) {
 		if (selected != nullptr) {
 			Transform* tx = GET_COMPONENT(selected, Transform, ComponentType::TRANSFORM);
@@ -311,37 +312,26 @@ void Editor::Update() {
 				}
 
 				if (buttonDown) {
-					Vec2 rotatedPt = Vec2(tx->position.x + tx->scale.x / 2, tx->position.y);
-					rotatedPt = Vector2DRotate(rotatedPt, tx->rotation, Vec2(0, 0));
+					Vec2 edgePt = tx->position + Vec2(tx->scale.x / 2.f, 0);
+					edgePt = Vector2DRotate(edgePt, tx->rotation, Vec2(0,0));
+					Vec2 dir = edgePt - tx->position;
+					Vector2DNormalize(dir, dir);
 
-					Vec2 rotatedMin = Vec2(tx->position.x + tx->scale.x / 2, tx->position.y - tx->scale.y / 2);
-					rotatedMin = Vector2DRotate(rotatedMin, tx->rotation, Vec2(0, 0));
-
-					Vec2 rotatedMax = Vec2(tx->position.x + tx->scale.x / 2, tx->position.y + tx->scale.y / 2);
-					rotatedMax = Vector2DRotate(rotatedMax, tx->rotation, Vec2(0, 0));
-
-	
-					Vec2 direction = rotatedPt - tx->position;
-					Vec2 normalizedDir;
-					Vector2DNormalize(normalizedDir, direction);
-
-					Vec2 translationVec = Vec2(mouseX, mouseY) - rotatedPt;
-					
-					translationVec = normalizedDir * translationVec;
-					//double a = rotatedMax.y - rotatedMin.y;
-					//double b = rotatedMax.x - rotatedMin.x;
-					//double c = (rotatedMin.x * rotatedMax.y) - (rotatedMax.x * rotatedMin.y);
-
-					//double magnitudeTest = a * rotatedMin.x + b * rotatedMin.y + c / sqrt(a * a + b * b);
-					
-					float magnitude = Vector2DLength(Vec2(translationVec));
-					if (Vector2DDotProduct(translationVec, direction) < 0) {
-						magnitude = -magnitude;
+					float dp = Vector2DDotProduct(Vec2(mouseX, mouseY) - tx->position, Vec2(1, 0));
+					float mags = Vector2DLength(Vec2(mouseX, mouseY) - tx->position) * Vector2DLength(Vec2(1, 0));
+					float angle = acosf(dp / mags);
+					angle = angle * (180 / PI);
+					if (tx->rotation > 180.f) {
+						angle = 360.f - angle;
 					}
-				//	Vec2 rotated = Vector2DRotate(translationVec, -tx->rotation, Vec2(0, 0));
-					tx->scale.x += magnitude ;
-
-					tx->position += normalizedDir * magnitude / 2.f;//Vector2DRotate(Vec2(rotated.x, 0), tx->rotation, Vec2(0,0)) / 2;// Vector2DRotate(Vec2(mouseX - (tx->position.x + tx->scale.x / 2), 0), tx->rotation, Vec2(0, 0));
+					Vec2 mouseVec = Vector2DRotate(Vec2(mouseX, mouseY), -angle, Vec2(0,0));
+					
+					
+					tx->scale.x += (mouseVec.x - (tx->position.x + tx->scale.x / 2));
+					
+					
+					//tx->position += dir * (mouseVec.x - (tx->position.x + tx->scale.x / 2)) / 2.f;
+				
 				}
 			}
 		}
@@ -360,7 +350,28 @@ void Editor::Update() {
 				}
 
 				if (buttonDown) {
-					if (mouseX < (tx->position.x - tx->scale.x / 2)) {
+					Vec2 edgePt = tx->position - Vec2(tx->scale.x / 2.f, 0);
+					edgePt = Vector2DRotate(edgePt, tx->rotation, Vec2(0, 0));
+					Vec2 dir = edgePt - tx->position;
+					Vector2DNormalize(dir, dir);
+
+					float dp = Vector2DDotProduct(Vec2(mouseX, mouseY) - tx->position, Vec2(1, 0));
+					float mags = Vector2DLength(Vec2(mouseX, mouseY) - tx->position) * Vector2DLength(Vec2(1, 0));
+					float angle = acosf(dp / mags);
+					angle = angle * (180 / PI);
+					if (tx->rotation < 180.f) {
+						angle = 360.f - angle;
+					}
+					Vec2 mouseVec = Vector2DRotate(Vec2(mouseX, mouseY), 180 - angle, Vec2(0, 0));
+
+					if (mouseVec.x < (tx->position.x - tx->scale.x / 2)) {
+						tx->scale.x += abs((mouseVec.x - (tx->position.x - tx->scale.x / 2)));
+					}
+					else {
+						tx->scale.x -= abs((mouseVec.x - (tx->position.x - tx->scale.x / 2)));
+					}
+
+					/*if (mouseX < (tx->position.x - tx->scale.x / 2)) {
 						tx->scale.x += abs((mouseX)-((tx->position.x - tx->scale.x / 2)));
 						tx->position -= Vec2(abs((mouseX)-((tx->position.x - tx->scale.x / 2))), 0);
 					}
@@ -368,7 +379,7 @@ void Editor::Update() {
 						tx->scale.x -= abs((mouseX)-((tx->position.x - tx->scale.x / 2)));
 						tx->position += Vec2(abs((mouseX)-((tx->position.x - tx->scale.x / 2))), 0);
 					}
-					
+					*/
 				}
 			}
 		}
