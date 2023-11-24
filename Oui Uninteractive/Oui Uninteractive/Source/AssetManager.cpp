@@ -23,6 +23,8 @@
 #include "Sound.h"
 #include "FontManager.h"
 #include "Filepaths.h"
+#define NOMINMAX
+#include <Windows.h>
 
 
 namespace fs = std::filesystem;

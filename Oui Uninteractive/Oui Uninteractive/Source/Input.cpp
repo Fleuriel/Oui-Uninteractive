@@ -27,9 +27,7 @@ InputSystem inputSystem;
 // true for on, false for off
 bool capsLockReleased{ true };
 bool capsLockOn{ false };
-bool cheater{ false };
-bool typePW{ false };
-std::string developermodeon{};
+
 
 // Pointer to the window
 extern GLFWwindow* windowNew;
@@ -193,7 +191,7 @@ void KeyCallBack(GLFWwindow* window3, int key, int scancode, int action, int mod
 	if (key == GLFW_KEY_UNKNOWN)
 		return;
 
-	if (!typePW) {
+	if (!inputSystem.typePW) {
 
 		/*
 		Update the state of the pressed key
@@ -215,42 +213,42 @@ void KeyCallBack(GLFWwindow* window3, int key, int scancode, int action, int mod
 		if (inputSystem.GetKeyState(GLFW_KEY_F11))
 			toggleFullScreen();
 
-		if (key == GLFW_KEY_F1)typePW = true;
+		if (key == GLFW_KEY_F1)inputSystem.typePW = true;
 	}
 	else {
 		if (action == GLFW_PRESS) {
 			if (key >= GLFW_KEY_A && key <= GLFW_KEY_Z) {
 				char newchar{ 'a' + static_cast<char>(key - GLFW_KEY_A) };
-				if (developermodeon.length() == 0)
-					developermodeon += newchar;
+				if (inputSystem.developermodeon.length() == 0)
+					inputSystem.developermodeon += newchar;
 				else
-					developermodeon += newchar;
+					inputSystem.developermodeon += newchar;
 
-				std::cout << "developermodeon: " << developermodeon << std::endl;
+				std::cout << "developermodeon: " << inputSystem.developermodeon << std::endl;
 			}
 			else if (key == GLFW_KEY_ENTER) {
-				if(cheater){
-					if (CheckCheatCode(developermodeon)) {
-						std::cout << developermodeon << " found" << std::endl;
-						Cheat(developermodeon);
+				if(inputSystem.cheater){
+					if (CheckCheatCode(inputSystem.developermodeon)) {
+						std::cout << inputSystem.developermodeon << " found" << std::endl;
+						Cheat(inputSystem.developermodeon);
 					}
 					else
-						std::cout << developermodeon << " not found" << std::endl;
+						std::cout << inputSystem.developermodeon << " not found" << std::endl;
 
-					developermodeon = std::string("");
+					inputSystem.developermodeon = std::string("");
 
 				}
 				else
-				if (developermodeon == "developermodeon") {
-					cheater = true;
-					developermodeon = std::string("");
+				if (inputSystem.developermodeon == "developermodeon") {
+					inputSystem.cheater = true;
+					inputSystem.developermodeon = std::string("");
 					std::cout << "Cheat Menu Activated" << std::endl;
 				}
-				typePW = false;
+				inputSystem.typePW = false;
 			}
 			else {
-				developermodeon = std::string("");
-				std::cout << "developermodeon : " << developermodeon << std::endl;
+				inputSystem.developermodeon = std::string("");
+				std::cout << "developermodeon : " << inputSystem.developermodeon << std::endl;
 			}
 		}
 	}

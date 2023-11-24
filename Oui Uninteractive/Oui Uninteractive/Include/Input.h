@@ -15,6 +15,7 @@
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 #include <array>
+#include <string>
 
 
 
@@ -102,6 +103,9 @@ public:
 	 *************************************************************************/
 	void UpdateStatesForNextFrame();
 
+	bool cheater{ false };
+	bool typePW{ false };
+	std::string developermodeon{};
 
 private:
 	// Define an array to keep track of key states
