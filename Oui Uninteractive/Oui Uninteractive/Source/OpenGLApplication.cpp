@@ -265,15 +265,17 @@ void OpenGLApplication::OpenGLUpdate() {
 	}
 	//glBindFramebuffer(GL_FRAMEBUFFER, OpenGLObject::FBO);
 
-	// Clear the original window
-	glClear(GL_COLOR_BUFFER_BIT);
-	// Bind the FBO for rendering
-	glBindFramebuffer(GL_FRAMEBUFFER, OpenGLObject::FBO);
 
 	if (Editor::editorOn) {
 		myImGui.CreateFrame();
 		myEditor.Update();
 		myImGui.Update();
+
+
+		// Clear the original window
+		glClear(GL_COLOR_BUFFER_BIT);
+		// Bind the FBO for rendering
+		glBindFramebuffer(GL_FRAMEBUFFER, OpenGLObject::FBO);
 	}
 
 
