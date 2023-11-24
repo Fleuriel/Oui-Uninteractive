@@ -226,7 +226,7 @@ bool CollisionMovingRectRect(Collider::AABB A, Collider::AABB B, Vec2 relativeVe
 	return false;
 }
 bool CollisionPointRotateRect(Vec2 objCenter, float objScaleX, float objScaleY, float mouseX, float mouseY, float angle) {
-	float angleRad = angle * (PI / 180.f);
+	float angleRad = angle * (static_cast<float>(PI) / 180.f);
 	Vec2 topRight = Vec2((0.5f) * objScaleX + objCenter.x, (0.5f) * objScaleY + objCenter.y);
 	Vec2 topLeft = Vec2(-(0.5f) * objScaleX + objCenter.x, topRight.y);
 	Vec2 botLeft = Vec2(-(0.5f) * objScaleX + objCenter.x, -(0.5f) * objScaleY + objCenter.y);

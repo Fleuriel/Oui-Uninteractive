@@ -75,12 +75,6 @@ void Physics::Update(float dt) {
 			Collider* collider = GET_COMPONENT(body->GetOwner(), Collider, ComponentType::COLLIDER);
 			Vec2 previousVelocity = body->velocity;
 			if (collider != nullptr) {
-				if (body->GetOwner()->GetName() == "JSONPlayer") {
-					std::cout << collider->contactTime << "\n";
-					if (collider->contactTime == 0) {
-						int test = 0;
-					}
-				}
 				body->velocity = (body->velocity + body->acceleration * static_cast<float>(sysManager->fixedDeltaTime)) * (collider->contactTime);//GetDT();//* sysManager->fixedDeltaTime;
 				
 			}

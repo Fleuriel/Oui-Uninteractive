@@ -48,7 +48,7 @@ public:
 				if (CollisionMovingRectRect(*GET_COMPONENT(bullet, Collider, ComponentType::COLLIDER)->boundingbox, 
 											*GET_COMPONENT(obj.second, Collider, ComponentType::COLLIDER)->boundingbox, 
 											GET_COMPONENT(bullet, PhysicsBody, ComponentType::PHYSICS_BODY)->velocity - GET_COMPONENT(obj.second, PhysicsBody, ComponentType::PHYSICS_BODY)->velocity, 
-											contactTime, normal, GetDT(), 
+											contactTime, normal, static_cast<float>(GetDT()), 
 											GET_COMPONENT(bullet, PhysicsBody, ComponentType::PHYSICS_BODY)->velocity)) {
 					objectFactory->DestroyObject(bullet);
 				}

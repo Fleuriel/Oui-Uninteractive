@@ -80,7 +80,7 @@ void UIManager::Update(float dt) {
 
 					//std::cout << collider->boundingbox->min.x << ", " << collider->boundingbox->min.y <<'\t' << collider->boundingbox->max.x << ", " << collider->boundingbox->max.y << '\n';
 
-					if (CollisionMouseRect(*(collider->boundingbox), static_cast<int>(convertedMousePos.first), static_cast<int>(convertedMousePos.second))) {
+					if (CollisionMouseRect(*(collider->boundingbox), static_cast<float>(convertedMousePos.first), static_cast<float>(convertedMousePos.second))) {
 						// For tristan. Put the stuff here
 						sceneManager->currSceneID = STATE_QUIT;
 						

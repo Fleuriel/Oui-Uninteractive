@@ -25,10 +25,10 @@
 * @param currentEnemy - pointer to current enemy
 * @return std::pair<int, int> - pair of int (X and Y position)
 *************************************************************************/
-std::pair<int, int> GetStartNodePosition(Vec2 currentEnemyPos, BFS* bfs, float scale, std::pair<int, int> windowSize) {
+std::pair<int, int> GetStartNodePosition(Vec2 currentEnemyPos, BFS* bfs, float scale, std::pair<int, int> windowSz) {
     // Window width and height
-    float windowWidth{ static_cast<float>(windowSize.first) };
-    float windowHeight{ static_cast<float>(windowSize.second) };
+    float windowWidth{ static_cast<float>(windowSz.first) };
+    float windowHeight{ static_cast<float>(windowSz.second) };
 
 	// Start Node's x and y index
     std::pair<int, int> startNodePos{};
@@ -67,9 +67,9 @@ std::pair<int, int> GetStartNodePosition(Vec2 currentEnemyPos, BFS* bfs, float s
 * @brief Constructor for EnemyRoam
 *************************************************************************/
 EnemyRoam::EnemyRoam() : bfs(new BFS(tilemapLoader->GetTilemap())), transitioned(false), pathFound(false), pathPrinted(false), pathIndex(0) {
-    windowWidth = windowSize.first;
-    windowHeight = windowSize.second;
-    scale = windowHeight / bfs->GetRows();
+    windowWidth = static_cast<float>(windowSize.first);
+    windowHeight = static_cast<float>(windowSize.second);
+    scale = windowHeight / static_cast<float>(bfs->GetRows());
 }
 
 /**************************************************************************
@@ -230,9 +230,9 @@ EnemyAttack::~EnemyAttack() {
 * @brief Constructor for EnemyFlee
 *************************************************************************/
 EnemyFlee::EnemyFlee() : bfs(new BFS(tilemapLoader->GetTilemap())), transitioned(false), pathFound(false), pathPrinted(false), pathIndex(0) {
-    windowWidth = windowSize.first;
-    windowHeight = windowSize.second;
-    scale = windowHeight / bfs->GetRows();
+    windowWidth = static_cast<float>(windowSize.first);
+    windowHeight = static_cast<float>(windowSize.second);
+    scale = windowHeight / static_cast<float>(bfs->GetRows());
 }
 
 /**************************************************************************
