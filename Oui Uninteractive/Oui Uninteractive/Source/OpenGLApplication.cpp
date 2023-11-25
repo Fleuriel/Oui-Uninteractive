@@ -393,13 +393,13 @@ void OpenGLApplication::OpenGLUpdate() {
 
 	if (ctrlKeyPressed) {
 #ifdef _DEBUG
-		std::cout << "CONTROL ON\n";
+		//std::cout << "CONTROL ON\n";
 #endif
 	}
 
 	if (shiftKeyPressed) {
 #ifdef _DEBUG
-		std::cout << "SHIFT ON\n";
+		//std::cout << "SHIFT ON\n";
 #endif
 	}
 
