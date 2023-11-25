@@ -134,6 +134,12 @@
     <Filter Include="Systems\EnemyAI">
       <UniqueIdentifier>{9cd2934e-9e00-4c49-a043-b66aa39fed72}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Component\HealthComponent">
+      <UniqueIdentifier>{4ebc14e9-885b-4f9b-a1b7-73906d3e1a40}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Systems\HealthSystem">
+      <UniqueIdentifier>{9d5f2b11-a15c-4efc-971d-04c4ff781b7c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\GameStateManager.cpp">
@@ -285,6 +291,13 @@
     </ClCompile>
     <ClCompile Include="Source\TilemapLoader.cpp">
       <Filter>TilemapLoader</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Cheats.cpp" />
+    <ClCompile Include="Source\HealthComponent.cpp">
+      <Filter>Component\HealthComponent</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\HealthSystem.cpp">
+      <Filter>Systems\HealthSystem</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -453,6 +466,13 @@
     </ClInclude>
     <ClInclude Include="Include\TilemapLoader.h">
       <Filter>TilemapLoader</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\Cheats.h" />
+    <ClInclude Include="Include\HealthComponent.h">
+      <Filter>Component\HealthComponent</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\HealthSystem.h">
+      <Filter>Systems\HealthSystem</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
