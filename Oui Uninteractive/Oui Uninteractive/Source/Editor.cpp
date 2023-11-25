@@ -1896,24 +1896,28 @@ void Editor::RenderDirectoryV2(const std::string& filePath) {
 			iconTexture = reinterpret_cast<ImTextureID>(static_cast<uintptr_t>(assetManager.GetTexture("folder_icon")));
 		}
 		else { // Non-folder icons
-			// Textures
+			// For images
 			if (entryExt == ".jpg" || entryExt == ".jpeg" || entryExt == ".png" || entryExt == ".gif") {
+				std::string texNameWithoutExt = entry.path().stem().string();
+				// For Spites
 				if (filePath == FILEPATH_SPRITES) {
-					std::string texNameWithoutExt = entry.path().stem().string();
+					size_t bracketPos = texNameWithoutExt.find('('); // Cutout size for accessing
+					if (bracketPos != std::string::npos) {
+						texNameWithoutExt = texNameWithoutExt.substr(0, bracketPos);
+					}
 					iconTexture = reinterpret_cast<ImTextureID>(static_cast<uintptr_t>(assetManager.GetSprite(texNameWithoutExt).GetTexture()));
-					std::cout << "lol";
 				}
+				// For Textures
 				else {
-					std::string texNameWithoutExt = entry.path().stem().string();
 					iconTexture = reinterpret_cast<ImTextureID>(static_cast<uintptr_t>(assetManager.GetTexture(texNameWithoutExt)));
 				}			
-			}
+			} // For everything else
 			else {
 				auto it = iconExtList.find(entryExt);
-				if (it != iconExtList.end()) {
-					iconTexture = reinterpret_cast<ImTextureID>(static_cast<uintptr_t>(assetManager.GetTexture(it->second)));
+				if (it != iconExtList.end()) { // Use corresponding texture
+					iconTexture = reinterpret_cast<ImTextureID>(static_cast<uintptr_t>(assetManager.GetTexture(it->second))); 
 				}
-				else {
+				else { // Use default texture
 					iconTexture = reinterpret_cast<ImTextureID>(static_cast<uintptr_t>(assetManager.GetTexture("others_icon")));
 				}
 			}		
