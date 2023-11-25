@@ -45,6 +45,9 @@ private:
 	// Bool to check whether game object is using sprite or texture
 	bool usingSprite;
 
+	// String to represent texture name
+	std::string textureName;
+
 public:
 	// Set ObjectFactory as friend class to access gameObjectID
 	friend class ObjectFactory;
@@ -149,6 +152,19 @@ public:
 	* @return void
 	*************************************************************************/
 	void SetUsingSprite(bool flag);
+
+	/**************************************************************************
+	* @brief Get texture of game object
+	* @return std::string - texture
+	*************************************************************************/
+	std::string GetTexture();
+
+	/**************************************************************************
+	* @brief Set texture of game object
+	* @param std::string - texture name
+	* @return void
+	*************************************************************************/
+	void SetTexture(std::string tex);
 };
 
 /**************************************************************************

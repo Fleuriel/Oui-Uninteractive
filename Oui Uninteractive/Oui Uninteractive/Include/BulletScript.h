@@ -42,9 +42,9 @@ public:
 		float contactTime{};
 		Vec2 normal(0.f, 0.f);
 
-		// Check for bullet collision with walls
+		// Check for bullet collision with walls or enemies
 		for (auto& obj : objectFactory->GetGameObjectIDMap()) {
-			if (obj.second->GetType() == "WallPrefab" || obj.second->GetName().find("Bullet") != std::string::npos || obj.second->GetType() == "CommonGuard" || obj.second->GetType() == "Target") {
+			if (obj.second->GetType() == "WallPrefab" || obj.second->GetType() == "Enemy" || obj.second->GetName().find("Bullet") != std::string::npos) {
 				if (CollisionMovingRectRect(*GET_COMPONENT(bullet, Collider, ComponentType::COLLIDER)->boundingbox, 
 											*GET_COMPONENT(obj.second, Collider, ComponentType::COLLIDER)->boundingbox, 
 											GET_COMPONENT(bullet, PhysicsBody, ComponentType::PHYSICS_BODY)->velocity - GET_COMPONENT(obj.second, PhysicsBody, ComponentType::PHYSICS_BODY)->velocity, 

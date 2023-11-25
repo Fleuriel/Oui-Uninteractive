@@ -14,6 +14,7 @@
     "Objects": [{
             "Name": "JSONPlayer",
             "Type": "Player",
+            "Texture": "Player",
             "UsingSprite": true,
             "Components": {
                 "PhysicsBody": {
@@ -45,6 +46,7 @@
         {
             "Name": "JSONEnemy1",
             "Type": "CommonGuard",
+            "Texture": "CommonGuard",
             "UsingSprite": true,
             "Components": {
                 "PhysicsBody": {
@@ -79,6 +81,7 @@
         {
             "Name": "TargetEnemy",
             "Type": "Target",
+            "Texture": "Target",
             "UsingSprite": true,
             "Components": {
                 "PhysicsBody": {

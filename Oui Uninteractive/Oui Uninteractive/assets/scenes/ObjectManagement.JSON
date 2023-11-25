@@ -4,6 +4,7 @@
         {
             "Name": "JSONPlayer",
             "Type": "Player",
+            "Texture": "Player",
             "UsingSprite": true,
             "Components": {
                 "PhysicsBody": {
@@ -38,7 +39,8 @@
         },
         {
             "Name": "JSONEnemy1",
-            "Type": "CommonGuard",
+            "Type": "Enemy",
+            "Texture": "CommonGuard",
             "UsingSprite": true,
             "Components": {
                 "PhysicsBody": {
@@ -71,7 +73,8 @@
         },
         {
             "Name": "JSONEnemy2",
-            "Type": "CommonGuard",
+            "Type": "Enemy",
+            "Texture": "CommonGuard",
             "UsingSprite": true,
             "Components": {
                 "PhysicsBody": {
@@ -99,7 +102,8 @@
         },
         {
             "Name": "Object4",
-            "Type": "ArmouredGuard",
+            "Type": "Enemy",
+            "Texture": "ArmouredGuard",
             "UsingSprite": true,
             "Components": {
                 "PhysicsBody": {
@@ -127,7 +131,8 @@
         },
         {
             "Name": "Object5",
-            "Type": "ArmouredGuard",
+            "Type": "Enemy",
+            "Texture": "ArmouredGuard",
             "UsingSprite": true,
             "Components": {
                 "PhysicsBody": {
@@ -155,7 +160,8 @@
         },
         {
             "Name": "Object6",
-            "Type": "Target",
+            "Type": "Enemy",
+            "Texture": "Target",
             "UsingSprite": true,
             "Components": {
                 "PhysicsBody": {

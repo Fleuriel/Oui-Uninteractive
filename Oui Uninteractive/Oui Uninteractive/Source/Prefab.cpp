@@ -133,3 +133,20 @@ bool Prefab::IsUsingSprite() {
 void Prefab::SetUsingSprite(bool flag) {
 	usingSprite = flag;
 }
+
+/**************************************************************************
+* @brief Get texture of game object
+* @return std::string - texture
+*************************************************************************/
+std::string Prefab::GetTexture() {
+	return textureName;
+}
+
+/**************************************************************************
+* @brief Set texture of game object
+* @param std::string - texture name
+* @return void
+*************************************************************************/
+void Prefab::SetTexture(std::string tex) {
+	textureName = tex;
+}

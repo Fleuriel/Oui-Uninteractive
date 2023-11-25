@@ -186,3 +186,20 @@ bool GameObject::IsUsingSprite() {
 void GameObject::SetUsingSprite(bool flag) {
 	usingSprite = flag;
 }
+
+/**************************************************************************
+* @brief Get texture of game object
+* @return std::string - texture
+*************************************************************************/
+std::string GameObject::GetTexture() {
+	return textureName;
+}
+
+/**************************************************************************
+* @brief Set texture of game object
+* @param std::string - texture name
+* @return void
+*************************************************************************/
+void GameObject::SetTexture(std::string tex) {
+	textureName = tex;
+}

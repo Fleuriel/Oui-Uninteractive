@@ -3,6 +3,7 @@
     "Objects": [{
             "Name": "BulletPrefab",
             "Type": "BulletPrefab",
+            "Texture": "",
             "UsingSprite": true,
             "Components": {
                 "Transform": {
@@ -31,8 +32,35 @@
                 }
             }
         }, {
-            "Name": "EnemyPrefab",
-            "Type": "EnemyPrefab",
+            "Name": "CommonGuardPrefab",
+            "Type": "CommonGuardPrefab",
+            "Texture": "CommonGuard",
+            "UsingSprite": true,
+            "Components": {
+                "LogicComponent": {
+                    "ScriptID": [0]
+                },
+                "PhysicsBody": {
+                    "VelocityX": 0.0,
+                    "VelocityY": 0.0,
+                    "RotationSpeed": 140.625,
+                    "Speed": 140.8780059814453,
+                    "Mass": 174.7570037841797,
+                    "IsStatic": false,
+                    "FrictionForce": 44.98400115966797
+                },
+                "Transform": {
+                    "PositionX": 0.0,
+                    "PositionY": 0.0,
+                    "Rotation": 0.0,
+                    "ScaleX": 100.0,
+                    "ScaleY": 100.0
+                }
+            }
+        }, {
+            "Name": "ArmouredGuardPrefab",
+            "Type": "ArmouredGuardPrefab",
+            "Texture": "ArmouredGuard",
             "UsingSprite": true,
             "Components": {
                 "LogicComponent": {
@@ -58,6 +86,7 @@
         }, {
             "Name": "PlayerPrefab",
             "Type": "PlayerPrefab",
+            "Texture": "Player",
             "UsingSprite": true,
             "Components": {
                 "LogicComponent": {
@@ -88,6 +117,7 @@
         }, {
             "Name": "WallPrefab",
             "Type": "WallPrefab",
+            "Texture": "",
             "UsingSprite": true,
             "Components": {
                 "Collider": {

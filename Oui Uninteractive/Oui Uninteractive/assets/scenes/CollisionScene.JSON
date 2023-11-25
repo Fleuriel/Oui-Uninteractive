@@ -4,6 +4,7 @@
         {
             "Name": "JSONPlayer",
             "Type": "Player",
+            "Texture": "Player",
             "UsingSprite": true,
             "Components": {
                 "PhysicsBody": {
@@ -23,11 +24,7 @@
                     "ScaleY": 200.0
                 },
                 "LogicComponent": {
-                    "ScriptID": [
-                        1,
-                        
-                        3
-                    ]
+                    "ScriptID": [1, 3]
                 },
                 "Collider": {
                     "ColliderSizeX": 200.0,
@@ -38,7 +35,8 @@
         },
         {
             "Name": "JSONEnemy1",
-            "Type": "CommonGuard",
+            "Type": "Enemy",
+            "Texture": "CommonGuard",
             "UsingSprite": true,
             "Components": {
                 "PhysicsBody": {
@@ -58,9 +56,7 @@
                     "ScaleY": 130.0
                 },
                 "LogicComponent": {
-                    "ScriptID": [
-                        0
-                    ]
+                    "ScriptID": [0]
                 },
                 "Collider": {
                     "ColliderSizeX": 140.0,
@@ -71,7 +67,8 @@
         },
         {
             "Name": "JSONEnemy2",
-            "Type": "CommonGuard",
+            "Type": "Enemy",
+            "Texture": "CommonGuard",
             "UsingSprite": true,
             "Components": {
                 "PhysicsBody": {
@@ -99,7 +96,8 @@
         },
         {
             "Name": "Object4",
-            "Type": "CommonGuard",
+            "Type": "Enemy",
+            "Texture": "CommonGuard",
             "UsingSprite": true,
             "Components": {
                 "PhysicsBody": {
@@ -127,7 +125,8 @@
         },
         {
             "Name": "Object5",
-            "Type": "CommonGuard",
+            "Type": "Enemy",
+            "Texture": "CommonGuard",
             "UsingSprite": true,
             "Components": {
                 "PhysicsBody": {
@@ -155,7 +154,8 @@
         },
         {
             "Name": "Object6",
-            "Type": "CommonGuard",
+            "Type": "Enemy",
+            "Texture": "CommonGuard",
             "UsingSprite": true,
             "Components": {
                 "PhysicsBody": {

@@ -147,6 +147,7 @@ void ObjectFactory::BuildObjectFromFile(const std::string& filePath) {
 		for (auto& obj : objDoc["Objects"].GetArray()) {
 			GameObject* gameObject{ new GameObject(obj["Name"].GetString(), obj["Type"].GetString()) };
 			gameObject->SetUsingSprite(obj["UsingSprite"].GetBool());
+			gameObject->SetTexture(obj["Texture"].GetString());
 
 			// Get each component(s) in current object
 			const rapidjson::Value& components{ obj["Components"] };
@@ -210,6 +211,7 @@ GameObject* ObjectFactory::BuildObjectFromPrefab(const std::string& name, const 
 	else {
 		GameObject* gameObject{ new GameObject(name, type) };
 		gameObject->SetUsingSprite(prefabMap[type]->IsUsingSprite());
+		gameObject->SetTexture(prefabMap[type]->GetTexture());
 		
 		// Copy component list from prefab to newly-created game object
 		for (size_t i{}; i < prefabMap[type]->prefabComponentList.size(); ++i) {
@@ -244,6 +246,7 @@ void ObjectFactory::LoadPrefab(const std::string& filePath) {
 			
 			Prefab* prefab{ new Prefab(obj["Name"].GetString(), obj["Type"].GetString()) };
 			prefab->SetUsingSprite(obj["UsingSprite"].GetBool());
+			prefab->SetTexture(obj["Texture"].GetString());
 
 			// Get each component(s) in current prefab
 			const rapidjson::Value& components{ obj["Components"] };
@@ -340,6 +343,8 @@ rapidjson::Document ObjectFactory::GetObjectDocSaving(const std::string& filePat
 		jsonObj.AddMember("Type", stringVar, allocator);
 		stringVar.SetBool(gameObject->usingSprite);
 		jsonObj.AddMember("UsingSprite", stringVar, allocator);
+		stringVar.SetString(gameObject->textureName.c_str(), allocator);
+		jsonObj.AddMember("Texture", stringVar, allocator);
 
 		// Components object
 		rapidjson::Value components(rapidjson::kObjectType);
@@ -458,6 +463,8 @@ void ObjectFactory::SavePrefabsToFile(const std::string& filePath) {
 		jsonObj.AddMember("Type", stringVar, allocator);
 		stringVar.SetBool(prefab->usingSprite);
 		jsonObj.AddMember("UsingSprite", stringVar, allocator);
+		stringVar.SetString(prefab->textureName.c_str(), allocator);
+		jsonObj.AddMember("Texture", stringVar, allocator);
 
 		// Components object
 		rapidjson::Value components(rapidjson::kObjectType);

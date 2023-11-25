@@ -3,7 +3,8 @@
     "Objects": [
         {
             "Name": "JSONEnemy1",
-            "Type": "CommonGuard",
+            "Type": "Enemy",
+            "Texture": "CommonGuard",
             "UsingSprite": true,
             "Components": {
                 "PhysicsBody": {
@@ -36,7 +37,8 @@
         },
         {
             "Name": "JSONEnemy2",
-            "Type": "CommonGuard",
+            "Type": "Enemy",
+            "Texture": "CommonGuard",
             "UsingSprite": true,
             "Components": {
                 "PhysicsBody": {
@@ -64,7 +66,8 @@
         },
         {
             "Name": "Object4",
-            "Type": "CommonGuard",
+            "Type": "Enemy",
+            "Texture": "CommonGuard",
             "UsingSprite": true,
             "Components": {
                 "PhysicsBody": {
@@ -92,7 +95,8 @@
         },
         {
             "Name": "Object5",
-            "Type": "CommonGuard",
+            "Type": "Enemy",
+            "Texture": "CommonGuard",
             "UsingSprite": true,
             "Components": {
                 "PhysicsBody": {
@@ -120,7 +124,8 @@
         },
         {
             "Name": "Object6",
-            "Type": "CommonGuard",
+            "Type": "Enemy",
+            "Texture": "CommonGuard",
             "UsingSprite": true,
             "Components": {
                 "PhysicsBody": {
@@ -148,7 +153,8 @@
         },
         {
             "Name": "Object7",
-            "Type": "CommonGuard",
+            "Type": "Enemy",
+            "Texture": "CommonGuard",
             "UsingSprite": true,
             "Components": {
                 "PhysicsBody": {
@@ -176,7 +182,8 @@
         },
         {
             "Name": "Object8",
-            "Type": "CommonGuard",
+            "Type": "Enemy",
+            "Texture": "CommonGuard",
             "UsingSprite": true,
             "Components": {
                 "PhysicsBody": {
@@ -205,6 +212,7 @@
         {
             "Name": "Object9",
             "Type": "",
+            "Texture": "",
             "UsingSprite": true,
             "Components": {
                 "Transform": {
@@ -219,6 +227,7 @@
         {
             "Name": "Object10",
             "Type": "",
+            "Texture": "",
             "UsingSprite": true,
             "Components": {
                 "Transform": {
@@ -232,7 +241,8 @@
         },
         {
             "Name": "Object11",
-            "Type": "CommonGuard",
+            "Type": "Enemy",
+            "Texture": "CommonGuard",
             "UsingSprite": true,
             "Components": {
                 "PhysicsBody": {

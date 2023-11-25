@@ -4,6 +4,7 @@
     "Objects": [{
             "Name": "JSONPlayer",
             "Type": "Player",
+            "Texture": "Player",
             "UsingSprite": true,
             "Components": {
                 "PhysicsBody": {
@@ -33,7 +34,8 @@
             }
         }, {
             "Name": "Knife",
-            "Type": "Knife(Weapon)",
+            "Type": "Weapon",
+            "Texture": "Knife(Weapon)",
             "UsingSprite": false,
             "Components": {
                 "PhysicsBody": {
@@ -58,7 +60,8 @@
             }
         }, {
             "Name": "Rifle",
-            "Type": "Rifle(Weapon)",
+            "Type": "Weapon",
+            "Texture": "Rifle(Weapon)",
             "UsingSprite": false,
             "Components": {
                 "PhysicsBody": {
@@ -83,7 +86,8 @@
             }
         }, {
             "Name": "Pistol",
-            "Type": "Pistol(Weapon)",
+            "Type": "Weapon",
+            "Texture": "Pistol(Weapon)",
             "UsingSprite": false,
             "Components": {
                 "PhysicsBody": {
@@ -109,6 +113,7 @@
         }, {
             "Name": "EnvironmentVertical",
             "Type": "EnvironmentVertical",
+            "Texture": "EnvironmentVertical",
             "UsingSprite": false,
             "Components": {
                 "PhysicsBody": {
@@ -139,6 +144,7 @@
         }, {
             "Name": "WallTileMap",
             "Type": "WallTileMap",
+            "Texture": "WallTileMap",
             "UsingSprite": false,
             "Components": {
                 "PhysicsBody": {
