@@ -279,7 +279,7 @@ void Editor::Update() {
 			rotateGizmoPos = tx->position + Vector2DRotate(Vec2(0, (tx->scale.y / 2.f) + (3 * scaleOutline)), tx->rotation, Vec2(0, 0));
 			if (inputSystem.GetMouseState(GLFW_MOUSE_BUTTON_1)) {
 				if (translateMode != true && scaleMode != true && scaleMode2 != true && scaleMode3 != true && scaleMode4 != true && rotateMode != true){
-					if (CollisionPointRotateRect(tx->position, tx->scale.x, tx->scale.y, mouseX, mouseY, tx->rotation)) {
+					if (CollisionPointRotateRect(tx->position, tx->scale.x + scaleOutline, tx->scale.y + scaleOutline, mouseX, mouseY, tx->rotation)) {
 						translateMode = true;
 					}
 					else if (CollisionPointRotateRect(rightGizmoPos, scaleOutline, tx->scale.y + scaleOutline, mouseX, mouseY, tx->rotation)) {
