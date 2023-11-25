@@ -108,5 +108,5 @@ bool MovingPointRectCollision(Vec2 origin, Vec2 direction, Collider::AABB target
  * @param mouseX	Y position of mouse
  * @param angle		Rotation of Rect
  *************************************************************************/
-bool CollisionPointRotateRect(Vec2 objCenter, float objScaleX, float objScaleY, float mouseX, float mouseY, float angle);
+bool CollisionPointRotateRect(Vec2 objCenter, float objScaleX, float objScaleY, double mouseX, double mouseY, float angle);
 #endif

@@ -40,7 +40,7 @@ OpenGLObject Editor::rotatedWidget;
 // Editor settings
 int Editor::iconSize{ 128 };
 int Editor::iconPadding{ 16 };
-double scaleOutline = 30.f;
+float scaleOutline = 30.f;
 
 /**************************************************************************
 * @brief Helper function to build a custom tooltip with description
@@ -248,17 +248,20 @@ void Editor::Update() {
 	std::map<size_t, GameObject*> copyMap = objectFactory->GetGameObjectIDMap();
 	std::pair<int, int> xBounds = std::pair<int, int>(Editor::gameWindowOrigin.first, Editor::gameWindowSize.first);
 	std::pair<int, int> yBounds = std::pair<int, int>(Editor::gameWindowOrigin.second, (Editor::gameWindowSize.second));
-	for (std::pair<size_t, GameObject*> gObj : objectFactory->GetGameObjectIDMap()) {
-		Transform* tx = GET_COMPONENT(gObj.second, Transform, ComponentType::TRANSFORM);
-		if ((ogMouseX > xBounds.first && ogMouseX < xBounds.second) && (ogMouseY > yBounds.first && ogMouseY < yBounds.second)) {
+	if ((ogMouseX > xBounds.first && ogMouseX < xBounds.second) && (ogMouseY > yBounds.first && ogMouseY < yBounds.second)) {
+		for (std::pair<size_t, GameObject*> gObj : objectFactory->GetGameObjectIDMap()) {
+			Transform* tx = GET_COMPONENT(gObj.second, Transform, ComponentType::TRANSFORM);
 			if (inputSystem.GetMouseState(GLFW_MOUSE_BUTTON_1)) {
-				if (CollisionPointRotateRect(tx->position, tx->scale.x + scaleOutline, tx->scale.y + scaleOutline, mouseX, mouseY, tx->rotation)) {
-					if (translateMode != true && scaleMode != true && scaleMode2 != true && scaleMode3 != true && scaleMode4 != true && rotateMode != true) {
-						selected = gObj.second;
+				if (tx != nullptr) {
+					if (CollisionPointRotateRect(tx->position, tx->scale.x + scaleOutline, tx->scale.y + scaleOutline, mouseX, mouseY, tx->rotation)) {
+						if (translateMode != true && scaleMode != true && scaleMode2 != true && scaleMode3 != true && scaleMode4 != true && rotateMode != true) {
+							selected = gObj.second;
+						}
+						break;
 					}
-					break;
 				}
 			}
+
 		}
 	}
 	
@@ -312,8 +315,7 @@ void Editor::Update() {
 		
 	}
 	static bool buttonDown = false;
-	static bool rightButtonDown = false;
-	
+
 	if (translateMode) {
 		if (selected != nullptr) {
 			Transform* tx = GET_COMPONENT(selected, Transform, ComponentType::TRANSFORM);
@@ -354,7 +356,7 @@ void Editor::Update() {
 					float dp = Vector2DDotProduct(Vec2(mouseX, mouseY) - tx->position, Vec2(1, 0));
 					float mags = Vector2DLength(Vec2(mouseX, mouseY) - tx->position) * Vector2DLength(Vec2(1, 0));
 					float angle = acosf(dp / mags);
-					angle = angle * (180 / PI);
+					angle = angle * static_cast<float>((180.f / PI));
 					if (tx->rotation > 180.f) {
 						angle = 360.f - angle;
 					}
@@ -391,7 +393,7 @@ void Editor::Update() {
 					float dp = Vector2DDotProduct(Vec2(mouseX, mouseY) - tx->position, Vec2(1, 0));
 					float mags = Vector2DLength(Vec2(mouseX, mouseY) - tx->position) * Vector2DLength(Vec2(1, 0));
 					float angle = acosf(dp / mags);
-					angle = angle * (180 / PI);
+					angle = angle * static_cast<float>((180.f / PI));
 					if (tx->rotation < 180.f) {
 						angle = 360.f - angle;
 					}
@@ -432,7 +434,7 @@ void Editor::Update() {
 					float dp = Vector2DDotProduct(Vec2(mouseX, mouseY) - tx->position, Vec2(0, 1));
 					float mags = Vector2DLength(Vec2(mouseX, mouseY) - tx->position) * Vector2DLength(Vec2(0, 1));
 					float angle = acosf(dp / mags);
-					angle = angle * (180 / PI);
+					angle = angle * static_cast<float>((180 / PI));
 					if (tx->rotation > 180.f) {
 						angle = 360.f - angle;
 					}
@@ -470,7 +472,7 @@ void Editor::Update() {
 					float dp = Vector2DDotProduct(Vec2(mouseX, mouseY) - tx->position, Vec2(0, 1));
 					float mags = Vector2DLength(Vec2(mouseX, mouseY) - tx->position) * Vector2DLength(Vec2(0, 1));
 					float angle = acosf(dp / mags);
-					angle = angle * (180 / PI);
+					angle = angle * static_cast<float>((180.f / PI));
 					if (tx->rotation < 180.f) {
 						angle = 360.f - angle;
 					}
@@ -505,7 +507,7 @@ void Editor::Update() {
 						float dp = Vector2DDotProduct(Vec2(mouseX, mouseY) - tx->position, Vec2(0,1));
 					float mags = Vector2DLength(Vec2(mouseX, mouseY) - tx->position) * Vector2DLength(Vec2(0,1));
 					float angle = acosf(dp / mags);
-					angle = angle * (180 / PI);
+					angle = angle * static_cast<float>((180.f / PI));
 					if (mouseX > tx->position.x) {
 						angle = 360.f - angle;
 					}
@@ -746,6 +748,7 @@ void Editor::CreatePrefabPanel() {
 		ImGui::SameLine();
 		std::map<size_t, GameObject*> copyMap = objectFactory->GetGameObjectIDMap();
 		if (ImGui::Button("Save")) {
+			
 			// Handle saving/deleteion for physics body component
 			if (physicsFlag && objectFactory->GetPrefabByName(selectedName)->Has(ComponentType::PHYSICS_BODY) == -1) {
 				objectFactory->GetPrefabByName(selectedName)->AddComponent(new PhysicsBody(), ComponentType::PHYSICS_BODY);
@@ -818,92 +821,62 @@ void Editor::CreatePrefabPanel() {
 				objectFactory->GetPrefabByName(selectedName)->RemoveComponent(GET_PREFAB_COMPONENT(objectFactory->GetPrefabByName(selectedName), EnemyFSM, ComponentType::ENEMY_FSM));
 			}*/
 
-			for (std::map<size_t, GameObject*>::iterator it = copyMap.begin(); it != copyMap.end(); it++) {
-				if ((*it).second->GetType() == objectFactory->GetPrefabByName(selectedName)->GetType()) {
-
-				
-					Transform* objTX = GET_COMPONENT(objectFactory->GetGameObjectByID((*it).second->GetGameObjectID()), Transform, ComponentType::TRANSFORM);
+			for (std::map<size_t, GameObject*>::iterator itGameObject = copyMap.begin(); itGameObject != copyMap.end(); itGameObject++) {
+				if ((*itGameObject).second->GetType() == objectFactory->GetPrefabByName(selectedName)->GetType()) {
+					Transform* objTX = GET_COMPONENT(objectFactory->GetGameObjectByID((*itGameObject).second->GetGameObjectID()), Transform, ComponentType::TRANSFORM);
 					if (objTX != nullptr) {
 						Transform* prefabTX = GET_PREFAB_COMPONENT(objectFactory->GetPrefabByName(selectedName), Transform, ComponentType::TRANSFORM);
-						Transform* objTX = GET_COMPONENT(objectFactory->GetGameObjectByID((*it).second->GetGameObjectID()), Transform, ComponentType::TRANSFORM);
+
 						objTX->scale = prefabTX->scale;
 						objTX->position = prefabTX->position;
 						objTX->rotation = prefabTX->rotation;
 					}
-
-
-					
-					PhysicsBody* objBody = GET_COMPONENT(objectFactory->GetGameObjectByID((*it).second->GetGameObjectID()), PhysicsBody, ComponentType::PHYSICS_BODY);
+					PhysicsBody* objBody = GET_COMPONENT(objectFactory->GetGameObjectByID((*itGameObject).second->GetGameObjectID()), PhysicsBody, ComponentType::PHYSICS_BODY);
 					if (objBody != nullptr) {
 						PhysicsBody* prefabBody = GET_PREFAB_COMPONENT(objectFactory->GetPrefabByName(selectedName), PhysicsBody, ComponentType::PHYSICS_BODY);
-						PhysicsBody* objBody = GET_COMPONENT(objectFactory->GetGameObjectByID((*it).second->GetGameObjectID()), PhysicsBody, ComponentType::PHYSICS_BODY);
 						objBody->rotationSpeed = prefabBody->rotationSpeed;
 						objBody->mass = prefabBody->mass;
 						objBody->frictionForce = prefabBody->frictionForce;
 						objBody->speed = prefabBody->speed;
 						objBody->isStatic = prefabBody->isStatic;
 					}
-
-
-					
-					LogicComponent* objLogic = GET_COMPONENT(objectFactory->GetGameObjectByID((*it).second->GetGameObjectID()), LogicComponent, ComponentType::LOGICCOMPONENT);
+					LogicComponent* objLogic = GET_COMPONENT(objectFactory->GetGameObjectByID((*itGameObject).second->GetGameObjectID()), LogicComponent, ComponentType::LOGICCOMPONENT);
 					if (objLogic != nullptr) {
 						LogicComponent* prefabLogic = GET_PREFAB_COMPONENT(objectFactory->GetPrefabByName(selectedName), LogicComponent, ComponentType::LOGICCOMPONENT);
-						LogicComponent* objLogic = GET_COMPONENT(objectFactory->GetGameObjectByID((*it).second->GetGameObjectID()), LogicComponent, ComponentType::LOGICCOMPONENT);
 						objLogic->scriptIndexSet = prefabLogic->scriptIndexSet;
 					}
-
-
-					
-					Collider* objCollider = GET_COMPONENT(objectFactory->GetGameObjectByID((*it).second->GetGameObjectID()), Collider, ComponentType::COLLIDER);
+					Collider* objCollider = GET_COMPONENT(objectFactory->GetGameObjectByID((*itGameObject).second->GetGameObjectID()), Collider, ComponentType::COLLIDER);
 					if (objCollider != nullptr) {
 						Collider* prefabCollider = GET_PREFAB_COMPONENT(objectFactory->GetPrefabByName(selectedName), Collider, ComponentType::COLLIDER);
-						Collider* objCollider = GET_COMPONENT(objectFactory->GetGameObjectByID((*it).second->GetGameObjectID()), Collider, ComponentType::COLLIDER);
 						objCollider->tx->scale = prefabCollider->tx->scale;
 						objCollider->tx->rotation = prefabCollider->tx->rotation;
 					}
-
-
-
 					/*EnemyFSM* objFSM = GET_COMPONENT(objectFactory->GetGameObjectByID((*it).second->GetGameObjectID()), EnemyFSM, ComponentType::ENEMY_FSM);
 					if (objFSM != nullptr) {
 						EnemyFSM* prefabFSM = GET_PREFAB_COMPONENT(objectFactory->GetPrefabByName(selectedName), EnemyFSM, ComponentType::ENEMY_FSM);
 						EnemyFSM* objFSM = GET_COMPONENT(objectFactory->GetGameObjectByID((*it).second->GetGameObjectID()), EnemyFSM, ComponentType::ENEMY_FSM);
 						objFSM->aggroRange = prefabFSM->aggroRange;
 					}*/
-					
+
 				}
 			}
 			objectFactory->SavePrefabsToFile(FILEPATH_PREFAB_DEFAULT);
 			saveFlag = false;
+			
 		}
 		if (ImGui::Button("Preview Changes")) {
 			
-			for (std::map<size_t, GameObject*>::iterator it = copyMap.begin(); it != copyMap.end(); it++) {
-				if ((*it).second->GetType() == objectFactory->GetPrefabByName(selectedName)->GetType()) {
+			for (std::map<size_t, GameObject*>::iterator itPreview = copyMap.begin(); itPreview != copyMap.end(); itPreview++) {
+				if ((*itPreview).second->GetType() == objectFactory->GetPrefabByName(selectedName)->GetType()) {
 				
-					/*	Transform* prefabTX = GET_PREFAB_COMPONENT(objectFactory->GetPrefabByName(selectedName), Transform, ComponentType::TRANSFORM);
-						Transform* objTX = GET_COMPONENT(objectFactory->GetGameObjectByID((*it).second->GetGameObjectID()), Transform, ComponentType::TRANSFORM);
-						objTX->scale = prefabTX->scale;
-						objTX->position = prefabTX->position;
-						objTX->rotation = prefabTX->rotation;*/
-					Transform* objTX = GET_COMPONENT(objectFactory->GetGameObjectByID((*it).second->GetGameObjectID()), Transform, ComponentType::TRANSFORM);
+					Transform* objTX = GET_COMPONENT(objectFactory->GetGameObjectByID((*itPreview).second->GetGameObjectID()), Transform, ComponentType::TRANSFORM);
 					if (objTX != nullptr) {
 						objTX->scale.x = transScaleX;
 						objTX->scale.y = transScaleY;
 						objTX->position = Vec2(transXpos, transYpos);
 						objTX->rotation = transRot;
 					}
-					
-					
-					/*	PhysicsBody* prefabBody = GET_PREFAB_COMPONENT(objectFactory->GetPrefabByName(selectedName), PhysicsBody, ComponentType::PHYSICS_BODY);
-						PhysicsBody* objBody = GET_COMPONENT(objectFactory->GetGameObjectByID((*it).second->GetGameObjectID()), PhysicsBody, ComponentType::PHYSICS_BODY);
-						objBody->rotationSpeed = prefabBody->rotationSpeed;
-						objBody->mass = prefabBody->mass;
-						objBody->frictionForce = prefabBody->frictionForce;
-						objBody->speed = prefabBody->speed;
-						objBody->isStatic = prefabBody->isStatic;*/
-					PhysicsBody* objBody = GET_COMPONENT(objectFactory->GetGameObjectByID((*it).second->GetGameObjectID()), PhysicsBody, ComponentType::PHYSICS_BODY);
+					PhysicsBody* objBody = GET_COMPONENT(objectFactory->GetGameObjectByID((*itPreview).second->GetGameObjectID()), PhysicsBody, ComponentType::PHYSICS_BODY);
 					if (objBody != nullptr) {
 						objBody->rotationSpeed = phyRotSpeed;
 						objBody->speed = phySpeed;
@@ -911,28 +884,16 @@ void Editor::CreatePrefabPanel() {
 						objBody->frictionForce = phyFriction;
 						objBody->isStatic = phyIsStatic;
 					}
-					
-					
-					/*	LogicComponent* prefabLogic = GET_PREFAB_COMPONENT(objectFactory->GetPrefabByName(selectedName), LogicComponent, ComponentType::LOGICCOMPONENT);
-						LogicComponent* objLogic = GET_COMPONENT(objectFactory->GetGameObjectByID((*it).second->GetGameObjectID()), LogicComponent, ComponentType::LOGICCOMPONENT);
-						objLogic->scriptIndexSet = prefabLogic->scriptIndexSet;*/
-					LogicComponent* objLogic = GET_COMPONENT(objectFactory->GetGameObjectByID((*it).second->GetGameObjectID()), LogicComponent, ComponentType::LOGICCOMPONENT);
+					LogicComponent* objLogic = GET_COMPONENT(objectFactory->GetGameObjectByID((*itPreview).second->GetGameObjectID()), LogicComponent, ComponentType::LOGICCOMPONENT);
 					if (objLogic != nullptr) {
 						objLogic->scriptIndexSet = tempLogicSet;
 					}
-					
-					
-					/*Collider* prefabCollider = GET_PREFAB_COMPONENT(objectFactory->GetPrefabByName(selectedName), Collider, ComponentType::COLLIDER);
-					Collider* objCollider = GET_COMPONENT(objectFactory->GetGameObjectByID((*it).second->GetGameObjectID()), Collider, ComponentType::COLLIDER);
-					objCollider->tx->scale = prefabCollider->tx->scale;
-					objCollider->tx->rotation = prefabCollider->tx->rotation;*/
-					Collider* objCollider = GET_COMPONENT(objectFactory->GetGameObjectByID((*it).second->GetGameObjectID()), Collider, ComponentType::COLLIDER);
+					Collider* objCollider = GET_COMPONENT(objectFactory->GetGameObjectByID((*itPreview).second->GetGameObjectID()), Collider, ComponentType::COLLIDER);
 					if (objCollider != nullptr) {
 						objCollider->tx->scale.x = colScaleX;
 						objCollider->tx->scale.y = colScaleY;
 						objCollider->tx->rotation = colRot;
 					}
-
 
 					/*EnemyFSM* objFSM = GET_COMPONENT(objectFactory->GetGameObjectByID((*it).second->GetGameObjectID()), EnemyFSM, ComponentType::ENEMY_FSM);
 					if (objFSM != nullptr) {
@@ -1077,12 +1038,10 @@ void Editor::CreatePrefabPanel() {
 					tempLogicSet = prefabLogic->scriptIndexSet;
 					initialized = true;
 				}
-
-				for (std::set<unsigned int>::iterator it = tempLogicSet.begin(); it != tempLogicSet.end(); it++) {
-					ImGui::Text(logicSystem->scriptVec[*it]->name.c_str());
+				for (std::set<unsigned int>::iterator itLogic = tempLogicSet.begin(); itLogic != tempLogicSet.end(); it++) {
+					ImGui::Text(logicSystem->scriptVec[*itLogic]->name.c_str());
 				}
 			}
-
 			ImGui::EndChild();
 
 		}
@@ -1571,8 +1530,8 @@ void Editor::CreateObjectList() {
 							}
 
 							if (objectLogic != nullptr) {
-								for (std::set<unsigned int>::iterator it = objectLogic->scriptIndexSet.begin(); it != objectLogic->scriptIndexSet.end(); it++) {
-									ImGui::Text(logicSystem->scriptVec[*it]->name.c_str());
+								for (std::set<unsigned int>::iterator itScript = objectLogic->scriptIndexSet.begin(); itScript != objectLogic->scriptIndexSet.end(); itScript++) {
+									ImGui::Text(logicSystem->scriptVec[*itScript]->name.c_str());
 								}
 							}
 						}
