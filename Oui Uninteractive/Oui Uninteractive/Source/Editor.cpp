@@ -1977,7 +1977,7 @@ void Editor::CreateConsolePanel() {
 	}
 
 	// Action to be taken on Enter press
-	ImGui::Text(CheckCheatCode(consoleTextInput) ? "Command Check: Command Found" : "Command Check: Command Not Found");
+	ImGui::Text((CheckCheatCode(consoleTextInput) || consoleTextInput == "developermodeoff") ? "Command Check: Command Found" : "Command Check: Command Not Found");
 
 	ImGui::End();
 }
