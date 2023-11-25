@@ -227,10 +227,6 @@ void Editor::SetIconExtList() {
 * @return void
 *************************************************************************/
 void Editor::Update() {
-	if (itemDrag) {
-		std::cout << "ugfiuosadfgasdiuogbfsduigbfsdbuig" << std::endl;
-	}
-
 	ImGuiIO& io = ImGui::GetIO();
 	// Add FPS data point to vector
 	fpsData.push_back(io.Framerate);
@@ -676,8 +672,12 @@ void Editor::CreateRenderWindow() {
 		ImGui::Image(reinterpret_cast<ImTextureID>(static_cast<uintptr_t>(OpenGLObject::FrameTexture)), wsize, ImVec2(0.0f, 1.0f), ImVec2(1.0f, 0.0f)); // Replace thirdTexture with handle to FBO when graphics done rendering to FBO	
 		// Setup drag and drop checks within window
 		if (ImGui::BeginDragDropTarget()) {
-			if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("DRAGDROPPAYLOAD")) {
-				std::cout << payload->Data << std::endl;
+			if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("PAYLOAD_TEXTURE")) {
+				std::string dropTextureName = static_cast<const char*>(payload->Data);
+				if (selected != nullptr) {
+					//selected.SetTexture(dropTextureName);
+					//std::cout << selected->GetName() << std::endl;
+				}			
 			}
 
 			itemDrag = false;
@@ -1715,6 +1715,13 @@ void Editor::CreateAssetBrowser() {
 	if (ImGui::Button("Delete Selected") && browserSelectedItem != "") {
 		ImGui::OpenPopup("NO TAKEBACKS");
 	}
+
+	if (currFilePath == FILEPATH_TEXTURES) {
+		ImGui::SameLine();
+		HelpMarker("Drag and drop assets to load onto selected object");
+	}
+
+
 	if (ImGui::BeginPopupModal("NO TAKEBACKS", NULL, ImGuiWindowFlags_AlwaysAutoResize)) {
 		static std::string msg("Are you sure you want to delete the selected item:\n\n" + browserSelectedItem + "\n\nIf u fk everything up by deleting a prefab etc., go settle yourself!");
 		ImGui::TextWrapped(msg.c_str());
@@ -1886,6 +1893,7 @@ void Editor::RenderDirectoryV2(const std::string& filePath) {
 		const std::string entryName = entry.path().filename().string();
 		const bool isDirectory = entry.is_directory();
 		const std::string entryExt = entry.path().extension().string();
+		std::string texNameWithoutExt = entry.path().stem().string();
 		// Set correct icons
 		//ImTextureID iconTexture = isDirectory ? reinterpret_cast<ImTextureID>(static_cast<uintptr_t>(assetManager.GetTexture("folder_icon"))) : reinterpret_cast<ImTextureID>(static_cast<uintptr_t>(assetManager.GetTexture("file_icon")));
 		ImTextureID iconTexture = nullptr;
@@ -1895,14 +1903,13 @@ void Editor::RenderDirectoryV2(const std::string& filePath) {
 		else { // Non-folder icons
 			// For images
 			if (entryExt == ".jpg" || entryExt == ".jpeg" || entryExt == ".png" || entryExt == ".gif") {
-				std::string texNameWithoutExt = entry.path().stem().string();
 				// For Spites
 				if (filePath == FILEPATH_SPRITES) {
 					size_t bracketPos = texNameWithoutExt.find('('); // Cutout size for accessing
 					if (bracketPos != std::string::npos) {
 						texNameWithoutExt = texNameWithoutExt.substr(0, bracketPos);
 					}
-					iconTexture = reinterpret_cast<ImTextureID>(static_cast<uintptr_t>(assetManager.GetSprite(texNameWithoutExt).GetTexture()));
+					iconTexture = reinterpret_cast<ImTextureID>(static_cast<uintptr_t>(assetManager.GetSpriteTexture(texNameWithoutExt)));
 				}
 				// For Textures
 				else {
@@ -1931,16 +1938,20 @@ void Editor::RenderDirectoryV2(const std::string& filePath) {
 		// Render button
 		ImGui::ImageButton(iconTexture, ImVec2(iconSize, iconSize));
 
-		// Set drag sourece
-		if (ImGui::BeginDragDropSource(ImGuiDragDropFlags_None)) {
-			itemDrag = true;
-			// Set payload
-			ImGui::SetDragDropPayload("DRAGDROPPAYLOAD", entryName.c_str(), entryName.size() + 1);
-			// Display held item
-			ImGui::Image(iconTexture, ImVec2(iconSize / 4, iconSize / 4));
-			ImGui::EndDragDropSource();
-		}
+		// Set drag sourece for textures
+		if (filePath == FILEPATH_TEXTURES) {
+			if (ImGui::BeginDragDropSource(ImGuiDragDropFlags_None)) {
+				itemDrag = true;
+				// Set payload type
+				ImGui::SetDragDropPayload("PAYLOAD_TEXTURE", texNameWithoutExt.c_str(), texNameWithoutExt.size() + 1);
 
+
+				// Display held item
+				ImGui::Image(iconTexture, ImVec2(iconSize / 4, iconSize / 4));
+				ImGui::EndDragDropSource();
+			}
+		}
+		
 		// Reset button style
 		if (browserSelectedItem == entryName) {
 			ImGui::PopStyleColor(3);
