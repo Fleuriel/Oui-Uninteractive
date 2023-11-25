@@ -45,7 +45,7 @@ public:
 
 		// Check for bullet collision with walls or enemies
 		for (auto& obj : objectFactory->GetGameObjectIDMap()) {
-			if (obj.second->GetType() == "WallPrefab" || obj.second->GetType() == "Enemy" || obj.second->GetName().find("Bullet") != std::string::npos) {
+			if (obj.second->GetType() == "WallPrefab" || obj.second->GetType() == "Enemy" || obj.second->GetType() == "Player" || obj.second->GetName().find("Bullet") != std::string::npos) {
 				if (CollisionMovingRectRect(*GET_COMPONENT(bullet, Collider, ComponentType::COLLIDER)->boundingbox, 
 											*GET_COMPONENT(obj.second, Collider, ComponentType::COLLIDER)->boundingbox, 
 											GET_COMPONENT(bullet, PhysicsBody, ComponentType::PHYSICS_BODY)->velocity - GET_COMPONENT(obj.second, PhysicsBody, ComponentType::PHYSICS_BODY)->velocity, 
