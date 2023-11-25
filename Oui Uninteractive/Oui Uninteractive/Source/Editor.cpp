@@ -298,6 +298,9 @@ void Editor::Update() {
 					else if (CollisionPointRotateRect(rotateGizmoPos, scaleOutline, scaleOutline, mouseX, mouseY, tx->rotation)) {
 						rotateMode = true;
 					}
+					else {
+						selected = nullptr;
+					}
 				}
 				
 			}
