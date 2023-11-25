@@ -17,6 +17,8 @@
  // Defining static variables
 bool Editor::editorOn;
 bool Editor::fileBrowserOpen;
+bool Editor::consoleEntered;
+bool Editor::itemDrag;
 Editor::SystemTime Editor::timeRecorder;
 std::vector<float> Editor::fpsData;
 std::pair<int, int> Editor::gameWindowOrigin;
@@ -160,16 +162,11 @@ void UsingImGui::Draw() {
 		Editor::CreateConsolePanel();
 	}
 
-	if (!panelList.consolePanel || !inputSystem.cheater) {
-		inputSystem.cheater = false;
-		panelList.consolePanel = false;
-	}
-		
-
 	//Editor::selectedOutline.Draw(std::string(""), true);
+	
 	ImGui::Render();
 	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
-
+	
 }
 
 
@@ -230,6 +227,9 @@ void Editor::SetIconExtList() {
 * @return void
 *************************************************************************/
 void Editor::Update() {
+	if (itemDrag) {
+		std::cout << "ugfiuosadfgasdiuogbfsduigbfsdbuig" << std::endl;
+	}
 
 	ImGuiIO& io = ImGui::GetIO();
 	// Add FPS data point to vector
@@ -267,7 +267,7 @@ void Editor::Update() {
 			if (inputSystem.GetMouseState(GLFW_MOUSE_BUTTON_1)) {
 				if (tx != nullptr) {
 					if (CollisionPointRotateRect(tx->position, tx->scale.x + scaleOutline, tx->scale.y + scaleOutline, mouseX, mouseY, tx->rotation)) {
-						if (translateMode != true && scaleMode != true && scaleMode2 != true && scaleMode3 != true && scaleMode4 != true && rotateMode != true) {
+						if (translateMode != true && scaleMode != true && scaleMode2 != true && scaleMode3 != true && scaleMode4 != true && rotateMode != true && itemDrag != true) {
 							selected = gObj.second;
 						}
 						break;
@@ -304,7 +304,7 @@ void Editor::Update() {
 			}
 			if (inputSystem.GetMouseState(GLFW_MOUSE_BUTTON_1)) {
 				holdDown = true;
-				if (translateMode != true && scaleMode != true && scaleMode2 != true && scaleMode3 != true && scaleMode4 != true && rotateMode != true){
+				if (translateMode != true && scaleMode != true && scaleMode2 != true && scaleMode3 != true && scaleMode4 != true && rotateMode != true && itemDrag != true){
 					if (CollisionPointRotateRect(tx->position, tx->scale.x + scaleOutline, tx->scale.y + scaleOutline, mouseX, mouseY, tx->rotation)) {
 						translateMode = true;
 					}
@@ -545,8 +545,7 @@ void Editor::Update() {
 			selected = nullptr;
 		}
 	}
-
-	
+	itemDrag = false;
 }
 
 /* ============================================
@@ -665,7 +664,6 @@ void Editor::CreateMasterPanel() {
 *************************************************************************/
 void Editor::CreateRenderWindow() {
 	ImGui::Begin("Game Window");
-
 	if (ImGui::BeginChild("GameWindow")) {
 		gameWindowOrigin.first = static_cast<int>(ImGui::GetWindowPos().x);
 		gameWindowOrigin.second = static_cast<int>(ImGui::GetWindowPos().y);
@@ -676,6 +674,16 @@ void Editor::CreateRenderWindow() {
 		// Invert V from openGL
 		//ImGui::Image(reinterpret_cast<ImTextureID>(0), wsize, ImVec2(0, 1), ImVec2(1, 0));
 		ImGui::Image(reinterpret_cast<ImTextureID>(static_cast<uintptr_t>(OpenGLObject::FrameTexture)), wsize, ImVec2(0.0f, 1.0f), ImVec2(1.0f, 0.0f)); // Replace thirdTexture with handle to FBO when graphics done rendering to FBO	
+		// Setup drag and drop checks within window
+		if (ImGui::BeginDragDropTarget()) {
+			if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("DRAGDROPPAYLOAD")) {
+				std::cout << payload->Data << std::endl;
+			}
+
+			itemDrag = false;
+			ImGui::EndDragDropTarget();
+		}
+	
 	}
 	ImGui::EndChild();
 	ImGui::End();
@@ -1925,10 +1933,11 @@ void Editor::RenderDirectoryV2(const std::string& filePath) {
 
 		// Set drag sourece
 		if (ImGui::BeginDragDropSource(ImGuiDragDropFlags_None)) {
+			itemDrag = true;
 			// Set payload
 			ImGui::SetDragDropPayload("DRAGDROPPAYLOAD", entryName.c_str(), entryName.size() + 1);
 			// Display held item
-			ImGui::Image(iconTexture, ImVec2(iconSize/4, iconSize/4));
+			ImGui::Image(iconTexture, ImVec2(iconSize / 4, iconSize / 4));
 			ImGui::EndDragDropSource();
 		}
 
