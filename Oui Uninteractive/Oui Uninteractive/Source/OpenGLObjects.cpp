@@ -335,7 +335,7 @@ void OpenGLObject::Draw(std::string type, bool spriteUsage, Vec2 vel) const {
 
 	if (spriteUsage) {
 		shaderNumber = static_cast<int>(SHADER_ORDER::SPRITES);
-		tex = assetManager.GetSprite(type + movement).GetTexture();
+		tex = assetManager.GetSpriteTexture(type + movement);
 	}
 	else if (type == "Camera")
 		shaderNumber = static_cast<int>(SHADER_ORDER::CAMERA);
