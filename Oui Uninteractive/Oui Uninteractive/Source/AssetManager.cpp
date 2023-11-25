@@ -628,6 +628,10 @@ Sprite AssetManager::GetSprite(std::string name) {
     return sprites[name];
 }
 
+int AssetManager::GetSpriteTexture(std::string name) {
+    return GetSprite(name).GetTexture();
+}
+
 /**************************************************************************
  * @brief Clears the sprite container and frees associated resources.
  *
