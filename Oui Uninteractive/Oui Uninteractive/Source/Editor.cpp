@@ -272,6 +272,9 @@ void Editor::Update() {
 	Vec2 botGizmoPos = Vec2(0, 0);
 	Vec2 rotateGizmoPos = Vec2(0, 0);
 	//detecting what action the user wants to take
+	static bool buttonDown = false;
+	static bool holdDown = false;
+	static bool canReleaseSelect = false;
 	if (selected != nullptr) {
 		Transform* tx = GET_COMPONENT(selected, Transform, ComponentType::TRANSFORM);
 		if (tx != nullptr && (ogMouseX > xBounds.first && ogMouseX < xBounds.second) && (ogMouseY > yBounds.first && ogMouseY < yBounds.second)) {
@@ -281,7 +284,13 @@ void Editor::Update() {
 			topGizmoPos = tx->position + Vector2DRotate(Vec2(0, (tx->scale.y / 2.f) + scaleOutline), tx->rotation, Vec2(0, 0));
 			botGizmoPos = tx->position - Vector2DRotate(Vec2(0, (tx->scale.y / 2.f) + scaleOutline), tx->rotation, Vec2(0, 0));
 			rotateGizmoPos = tx->position + Vector2DRotate(Vec2(0, (tx->scale.y / 2.f) + (3 * scaleOutline)), tx->rotation, Vec2(0, 0));
+			if (canReleaseSelect && holdDown && inputSystem.GetMouseState(GLFW_MOUSE_BUTTON_1) == GLFW_RELEASE) {
+				holdDown = false;
+				canReleaseSelect = false;
+				selected = nullptr;
+			}
 			if (inputSystem.GetMouseState(GLFW_MOUSE_BUTTON_1)) {
+				holdDown = true;
 				if (translateMode != true && scaleMode != true && scaleMode2 != true && scaleMode3 != true && scaleMode4 != true && rotateMode != true){
 					if (CollisionPointRotateRect(tx->position, tx->scale.x + scaleOutline, tx->scale.y + scaleOutline, mouseX, mouseY, tx->rotation)) {
 						translateMode = true;
@@ -303,10 +312,12 @@ void Editor::Update() {
 						rotateMode = true;
 					}
 					else {
-						selected = nullptr;
+						canReleaseSelect = true;
 					}
-				}
-				
+				}	
+			}
+			else {
+				holdDown = false;
 			}
 		}
 		if (tx != nullptr) {
@@ -314,8 +325,7 @@ void Editor::Update() {
 		}
 		
 	}
-	static bool buttonDown = false;
-
+	
 	if (translateMode) {
 		if (selected != nullptr) {
 			Transform* tx = GET_COMPONENT(selected, Transform, ComponentType::TRANSFORM);
