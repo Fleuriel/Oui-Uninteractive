@@ -1898,8 +1898,15 @@ void Editor::RenderDirectoryV2(const std::string& filePath) {
 		else { // Non-folder icons
 			// Textures
 			if (entryExt == ".jpg" || entryExt == ".jpeg" || entryExt == ".png" || entryExt == ".gif") {
-				std::string texNameWithoutExt = entry.path().stem().string();
-				iconTexture = reinterpret_cast<ImTextureID>(static_cast<uintptr_t>(assetManager.GetTexture(texNameWithoutExt)));
+				if (filePath == FILEPATH_SPRITES) {
+					std::string texNameWithoutExt = entry.path().stem().string();
+					iconTexture = reinterpret_cast<ImTextureID>(static_cast<uintptr_t>(assetManager.GetSprite(texNameWithoutExt).GetTexture()));
+					std::cout << "lol";
+				}
+				else {
+					std::string texNameWithoutExt = entry.path().stem().string();
+					iconTexture = reinterpret_cast<ImTextureID>(static_cast<uintptr_t>(assetManager.GetTexture(texNameWithoutExt)));
+				}			
 			}
 			else {
 				auto it = iconExtList.find(entryExt);
