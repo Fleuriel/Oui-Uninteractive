@@ -15,6 +15,7 @@
 
  // Defining static variables
 bool Editor::editorOn;
+bool Editor::fileBrowserOpen;
 Editor::SystemTime Editor::timeRecorder;
 std::vector<float> Editor::fpsData;
 std::pair<int, int> Editor::gameWindowOrigin;
@@ -178,6 +179,7 @@ void Editor::Init() {
 	maxFPSdata = 2000;
 	browserDoubleClicked = false;
 	browserInputPath = FILEPATH_MASTER;
+	fileBrowserOpen = false;
 	Editor::selectedOutline.InitObjects();
 	SetFileFilters();
 }
@@ -1674,6 +1676,7 @@ void Editor::CreateAssetBrowser() {
 		ofn.nMaxFile = MAX_PATH;
 		ofn.Flags = OFN_FILEMUSTEXIST;
 		// Open dialog box
+		fileBrowserOpen = true;
 		if (GetOpenFileName(&ofn)) {
 			std::wstring selectedFilePath(szFile);
 			// Construct the destination path
@@ -1692,6 +1695,7 @@ void Editor::CreateAssetBrowser() {
 				MessageBox(hwnd, L"Error adding file to folder: Souce file does not exist!", L"Failure", MB_OK | MB_ICONERROR);
 			}
 		}
+		fileBrowserOpen = false;
 		// Rset working directory to the project folder
 		std::filesystem::current_path(exePath);
 	}
@@ -1894,17 +1898,21 @@ void Editor::RenderDirectoryV2(const std::string& filePath) {
 	for (auto& entry : std::filesystem::directory_iterator(filePath)) {
 		const std::string entryName = entry.path().filename().string();
 		const bool isDirectory = entry.is_directory();
-
+		const std::string entryExt = entry.path().extension().string();
 		// Set correct icons
 		//ImTextureID iconTexture = isDirectory ? reinterpret_cast<ImTextureID>(static_cast<uintptr_t>(assetManager.GetTexture("folder_icon"))) : reinterpret_cast<ImTextureID>(static_cast<uintptr_t>(assetManager.GetTexture("file_icon")));
 		ImTextureID iconTexture = nullptr;
 		if (isDirectory) { // For folders
 			iconTexture = reinterpret_cast<ImTextureID>(static_cast<uintptr_t>(assetManager.GetTexture("folder_icon")));
 		}
-		else { 
-			if (entry.path().string().find("textures") != std::string::npos) {
+		else { // Non-folder icons
+			// Textures
+			if (entryExt == ".jpg" || entryExt == ".jpeg" || entryExt == ".png" || entryExt == ".gif") {
 				std::string texNameWithoutExt = entry.path().stem().string();
 				iconTexture = reinterpret_cast<ImTextureID>(static_cast<uintptr_t>(assetManager.GetTexture(texNameWithoutExt)));
+			}
+			else if (entryExt == ".ttf" || entryExt == ".otf") {
+
 			}
 		}
 

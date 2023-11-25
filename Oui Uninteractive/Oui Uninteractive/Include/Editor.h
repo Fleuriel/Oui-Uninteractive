@@ -92,6 +92,7 @@ public:
 	static void RenderDirectoryV2(const std::string& filePath); // Tester function for asset browser
 public:
 	static bool editorOn;
+	static bool fileBrowserOpen;
 	static std::string browserInputPath;
 	static std::string consoleTextInput;
 	static bool browserDoubleClicked;
