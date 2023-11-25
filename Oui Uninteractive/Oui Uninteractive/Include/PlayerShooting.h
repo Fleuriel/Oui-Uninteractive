@@ -75,8 +75,8 @@ public:
 					mousePos.y = static_cast<float>(convertedMouseY);
 				}
 				else {
-					mousePos.x = static_cast<float>(mouseX) - windowSize.first / 2.f;
-					mousePos.y = windowSize.second / 2.f - static_cast<float>(mouseY);
+					mousePos.x = static_cast<float>(mouseX) - static_cast<float>(windowSize.first) / 2.f;
+					mousePos.y = static_cast<float>(windowSize.second) / 2.f - static_cast<float>(mouseY);
 				}
 
 				// Set bullet spawn point
