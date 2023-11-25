@@ -478,8 +478,6 @@ void Editor::Update() {
 					rotateMode = false;
 				}
 				if (buttonDown) {
-				/*	float dp = Vector2DDotProduct(Vec2(mouseX, mouseY) - tx->position, rotateGizmoPos);
-					float mags = Vector2DLength(Vec2(mouseX, mouseY) - tx->position) * Vector2DLength(rotateGizmoPos);*/
 						float dp = Vector2DDotProduct(Vec2(mouseX, mouseY) - tx->position, Vec2(0,1));
 					float mags = Vector2DLength(Vec2(mouseX, mouseY) - tx->position) * Vector2DLength(Vec2(0,1));
 					float angle = acosf(dp / mags);
