@@ -707,8 +707,9 @@ void Editor::CreatePrefabPanel() {
 		Prefab* prefabObj = objectFactory->GetPrefabByName(selectedName);
 		std::string name = selectedName + std::to_string(highestNumber + 1);
 		GameObject* objFromPrefab = objectFactory->BuildObjectFromPrefab(prefabObj->GetName(), prefabObj->GetType());
-		objFromPrefab->SetName(name);
-
+		if (objFromPrefab != nullptr) {
+			objFromPrefab->SetName(name);
+		}
 	}
 
 	if (ImGui::Button("Add Prefab")) {
@@ -727,7 +728,7 @@ void Editor::CreatePrefabPanel() {
 			}
 		}
 		std::string name = defaultPrefabName + std::to_string(highestNumber + 1);
-		Prefab* prefab{ new Prefab(name, "Temp") };
+		Prefab* prefab{ new Prefab(name, name) };
 		objectFactory->AddPrefabToMap(prefab, prefab->GetName());
 		saveFlag = true;
 	}
@@ -736,7 +737,6 @@ void Editor::CreatePrefabPanel() {
 		objectFactory->RemovePrefabFromMap(selectedName);
 		selectedName = it->first;
 		saveFlag = true;
-
 	}
 	if (saveFlag) {
 		ImGui::SameLine();
@@ -1194,7 +1194,10 @@ void Editor::CreateObjectList() {
 			if (ImGui::Selectable(objName.c_str(), selectedID == count)) {
 				gameobjID = objID;
 				selectedID = count;
-				selected = objectFactory->GetGameObjectByID(gameobjID);
+				if (objectFactory->GetGameObjectByID(gameobjID)->Has(ComponentType::TRANSFORM) != -1) {
+					selected = objectFactory->GetGameObjectByID(gameobjID);
+				}
+				
 			}
 
 			count++;
