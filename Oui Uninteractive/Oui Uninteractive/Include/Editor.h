@@ -94,6 +94,7 @@ public:
 public:
 	static bool editorOn;
 	static bool fileBrowserOpen;
+	static bool consoleEntered;
 	static std::string browserInputPath;
 	static std::string consoleTextInput;
 	static bool browserDoubleClicked;
