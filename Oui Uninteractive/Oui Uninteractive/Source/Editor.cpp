@@ -21,6 +21,7 @@ bool Editor::consoleEntered;
 bool Editor::itemDrag;
 bool Editor::gameWindowHover;
 Editor::SystemTime Editor::timeRecorder;
+
 std::vector<float> Editor::fpsData;
 std::pair<int, int> Editor::gameWindowOrigin;
 std::pair<int, int> Editor::gameWindowSize;
@@ -43,6 +44,8 @@ OpenGLObject Editor::rotatedWidget;
 // Editor settings
 int Editor::EditorSettings::iconSize{ 128 };
 int Editor::EditorSettings::iconPadding{ 16 };
+int Editor::EditorSettings::pieChartDisplayCount{ 5 };
+int Editor::EditorSettings::dataAvgPeriod{ 1 };
 float scaleOutline = 30.f;
 
 /**************************************************************************
@@ -560,6 +563,7 @@ void Editor::Update() {
 
 void Editor::CreateMenuBar() {
 	static bool showAssBrowserSettings = false;
+	static bool showPerformanceSettings = false;
 	if (ImGui::BeginMainMenuBar()) {
 		if (ImGui::BeginMenu("File")) {
 			if (ImGui::MenuItem("Create")) {}
@@ -567,8 +571,11 @@ void Editor::CreateMenuBar() {
 			ImGui::EndMenu();
 		}
 		if (ImGui::BeginMenu("Settings")) {
-			if (ImGui::MenuItem("AssBrowser##1")) {
+			if (ImGui::MenuItem("Asset Browser##1")) {
 				showAssBrowserSettings = true;
+			}
+			if (ImGui::MenuItem("Performance Info")) {
+				showPerformanceSettings = true;
 			}
 			ImGui::EndMenu();
 		}
@@ -585,6 +592,14 @@ void Editor::CreateMenuBar() {
 		if (ImGui::SliderInt("Icon Padding", &exp2, 0, 10)) {
 			EditorSettings::iconPadding = std::powf(2.0f, exp2);
 		}
+		ImGui::End();
+	}
+	if (showPerformanceSettings) {
+		ImGui::Begin("Performance Viewer Settings", &showPerformanceSettings);
+		ImGui::PushItemWidth(ImGui::GetWindowWidth() / 3);
+		ImGui::SliderInt("Pie Chart Item Count", &EditorSettings::pieChartDisplayCount, 0, 10);
+		ImGui::SliderInt("Data AVG period", &EditorSettings::dataAvgPeriod, 0, 5);
+		ImGui::PopItemWidth();
 		ImGui::End();
 	}
 }
@@ -1798,101 +1813,159 @@ void Editor::CreateDebugPanel() {
 	ImGuiIO& io = ImGui::GetIO();
 
 	if (ImGui::CollapsingHeader("Perfomance")) {
+		static std::map<std::string, float> sysTimeAccumulators;
+		static std::vector<std::pair<std::string, float>> avgSysTimes;
+		static int sysTimeSampleCount = 0;
+		int sampleCounter = EditorSettings::dataAvgPeriod * 60;
+		static std::vector<float> fpsSamples;
+		static float timeAccumulator = 0.0f;
+		// Record system times
+		sysTimeAccumulators["Physics"] += timeRecorder.physicsTime / io.DeltaTime;
+		sysTimeAccumulators["Graphics"] += timeRecorder.graphicsTime / io.DeltaTime;
+		sysTimeAccumulators["Sound"] += timeRecorder.soundTime / io.DeltaTime;
+		sysTimeAccumulators["Particles"] += timeRecorder.particlesTime / io.DeltaTime;
+		sysTimeAccumulators["Scene Manager"] += timeRecorder.scenemanagerTime / io.DeltaTime;
+		sysTimeAccumulators["Collider"] += timeRecorder.colliderTime / io.DeltaTime;
+		sysTimeAccumulators["Transform"] += timeRecorder.transformTime / io.DeltaTime;
+		sysTimeSampleCount++;
+		std::vector<const char*> chartLabels;
+		std::vector<float> data;
+		// Record FPS
+		fpsSamples.push_back(io.Framerate);
+		timeAccumulator += io.DeltaTime;
+		// Average out FPS
+		static float avgFPS;
+		// On avg period
+		if (timeAccumulator >= EditorSettings::dataAvgPeriod) {
+			avgFPS = std::accumulate(fpsSamples.begin(), fpsSamples.end(), 0.0f) / static_cast<float>(fpsSamples.size());
+			avgSysTimes.clear();
+			fpsSamples.clear();
+
+			for (auto& [system, accumulatedTime] : sysTimeAccumulators) {
+				float averageTime = accumulatedTime / static_cast<float>(sysTimeSampleCount);
+				avgSysTimes.emplace_back(system, averageTime);
+				sysTimeAccumulators[system] = 0.0f; // Reset accumulator for each system
+			}
+			// Sort times in descending order for pie chart
+			std::sort(avgSysTimes.begin(), avgSysTimes.end(),
+				[](const std::pair<std::string, float>& a, const std::pair<std::string, float>& b) {
+					return a.second > b.second;
+				});	
+
+			size_t countToDisplay = std::min(static_cast<size_t>(EditorSettings::pieChartDisplayCount), avgSysTimes.size());
+			for (size_t i = 0; i < countToDisplay; i++) {
+				std::cout << avgSysTimes[i].second << std::endl;
+
+			}
+			sysTimeSampleCount = 0;
+			timeAccumulator = 0.0f;
+		}
+		
 		// FPS DATA	
-		if (io.Framerate < 60) {
+		if (avgFPS < 60) {
 			ImGui::PushStyleColor(ImGuiCol_Text, redColour);
 		}
-		else if (io.Framerate >= 60 && io.Framerate < 100) {
+		else if (avgFPS >= 60 && avgFPS < 100) {
 			ImGui::PushStyleColor(ImGuiCol_Text, bananaColour);
 		}
 		else {
 			ImGui::PushStyleColor(ImGuiCol_Text, greenColour);
 		}
-		ImGui::Text("Program FPS: %.2f", io.Framerate); // Display program FPS in "Performance" tab
+		ImGui::Text("Program FPS: %.2f", avgFPS); // Display program FPS in "Performance" tab
 		ImGui::PopStyleColor();
-
+		ImGui::PushItemWidth(ImGui::GetWindowWidth() / 2);
 		ImGui::PushStyleColor(ImGuiCol_PlotLines, pinkColour);
-		ImGui::PlotLines("Current FPS", fpsData.data(), static_cast<int>(fpsData.size()), 0, "FPS", 0.0f, 300.0f, ImVec2(0, 80));
+		ImGui::PlotLines("Average FPS", fpsData.data(), static_cast<int>(fpsData.size()), 0, "FPS", 0.0f, 300.0f, ImVec2(0, 80));
+		ImGui::PopItemWidth();
 		ImGui::PopStyleColor();
 		// FRAME TIME DATA
 		ImGui::Text("Frame time: %.2f ms", 1000.0f / GetFrames());// Display program FPS in "Performance" tab
 		ImGui::Text("Program run time: %.2f", GetGameRunTime());
 		ImGui::Separator();
 
-		// SYSTEM TIME DATA
-		ImGui::Text("System Time Percentage");
-		float physicsPercentage = static_cast<float>(timeRecorder.physicsTime / GetDT());
-		float grpahicsPercentage = static_cast<float>(timeRecorder.graphicsTime / GetDT());
-		float soundPercentage = static_cast<float>(timeRecorder.soundTime / GetDT());
-		float particlesPercentage = static_cast<float>(timeRecorder.particlesTime / GetDT());
-		float scenemanagerPercentage = static_cast<float>(timeRecorder.scenemanagerTime / GetDT());
-		float colliderPercentage = static_cast<float>(timeRecorder.colliderTime / GetDT());
-		float transformPercentage = static_cast<float>(timeRecorder.transformTime / GetDT());
-		static const char* chartLabels[] = { "Physics", "Graphics" , "Sound", "Particles", "Scene Manager", "Collider", "Transform" };
-		float data[] = {
-			physicsPercentage, grpahicsPercentage, soundPercentage, particlesPercentage, scenemanagerPercentage, colliderPercentage, transformPercentage
-		};
+		ImGui::Text("System Time Percentage");		
+
+		if (!avgSysTimes.empty()) {
+			chartLabels.clear();
+			data.clear();
+			size_t countToDisplay = std::min(static_cast<size_t>(EditorSettings::pieChartDisplayCount), avgSysTimes.size());
+			for (size_t i = 0; i < countToDisplay; i++) {
+				//std::cout << avgSysTimes[i].second << std::endl;
+				chartLabels.push_back(avgSysTimes[i].first.c_str());
+				data.push_back(avgSysTimes[i].second);
+			}
+		}
+
+		/*size_t countToDisplay = std::min(static_cast<size_t>(EditorSettings::pieChartDisplayCount), avgSysTimes.size());
+		for (size_t i = 0; i < countToDisplay; i++) {
+			if (!avgSysTimes.empty()) {
+				chartLabels.push_back(avgSysTimes[i].first.c_str());
+				data.push_back(avgSysTimes[i].second);
+			}
+		}*/
 		static ImPlotPieChartFlags flags = 0;
 		// Draw pie chart
-		ImPlot::BeginPlot("##PieSystemTime", ImVec2(250, 250), ImPlotFlags_Equal | ImPlotFlags_NoMouseText);
-		ImPlot::SetupAxes(nullptr, nullptr, ImPlotAxisFlags_NoDecorations, ImPlotAxisFlags_NoDecorations);
-		ImPlot::SetupAxesLimits(0, 1, 0, 1);
-		ImPlot::PlotPieChart(chartLabels, data, sizeof(data) / sizeof(float), 0.5, 0.5, 0.4, "%.2f", 90, flags);
-		ImPlot::EndPlot();
-	}
+		
+		if (ImPlot::BeginPlot("##PieSystemTime", ImVec2(ImGui::GetWindowWidth(), 250), ImPlotFlags_Equal | ImPlotFlags_NoMouseText)) {
+			ImPlot::SetupAxes(nullptr, nullptr, ImPlotAxisFlags_NoDecorations, ImPlotAxisFlags_NoDecorations);
+			ImPlot::SetupAxesLimits(0, 1, 0, 1);
+			ImPlot::PlotPieChart(chartLabels.data(), data.data(), data.size(), 0.5, 0.5, 0.4, "%.2f", 90, flags);
+			ImPlot::EndPlot();
+		}	
 
-	if (ImGui::CollapsingHeader("Tools")) {
+		if (ImGui::CollapsingHeader("Tools")) {
 
-		static bool drawBB = false;
-		static size_t gameobjID = 0;
-		ImGui::Checkbox("Display bounding box", &drawBB);
+			static bool drawBB = false;
+			static size_t gameobjID = 0;
+			ImGui::Checkbox("Display bounding box", &drawBB);
 
-		if (drawBB) {
+			if (drawBB) {
 
-			OpenGLObject::renderBoundingBox = true;
-		}
-		else
-		{
-			OpenGLObject::renderBoundingBox = false;
-		}
-
-		ImGui::Separator();
-	}
-
-	if (ImGui::CollapsingHeader("Inputs")) {
-		// Mouse input checks
-		if (io.MousePos.x < 0 || io.MousePos.x > windowSize.first || io.MousePos.y < 0 || io.MousePos.y > windowSize.second) {
-			ImGui::Text("Mouse position: Out of window");
-		}
-		else {
-			ImGui::Text("Mouse position: (%g, %g)", io.MousePos.x, io.MousePos.y);
-		}
-		ImGui::Text("Click duration:");
-		for (int i = 0; i < IM_ARRAYSIZE(io.MouseDown); i++) if (ImGui::IsMouseDown(i)) {
-			ImGui::SameLine(); ImGui::Text("M%d (%.2f secs)", i + 1, io.MouseDownDuration[i]);
-		}
-
-		ImGui::Separator();
-		// Keyboard input checks
-		struct funcs {
-			static bool IsLegacyNativeDupe(ImGuiKey key) {
-				if (key < 0 || key >= ImGuiKey_COUNT) {
-					return false; // Handle  key is out of bounds
-				}
-				return key < 512 && ImGui::GetIO().KeyMap[key] != -1;
+				OpenGLObject::renderBoundingBox = true;
 			}
-		};
-		ImGuiKey start_key = (ImGuiKey)0;
-		ImGui::Text("Keys down:");
-		for (ImGuiKey key = start_key; key < ImGuiKey_NamedKey_END; key = (ImGuiKey)(key + 1)) { // Check Keydowns
-			if (funcs::IsLegacyNativeDupe(key) || !ImGui::IsKeyDown(key)) continue;
-			ImGui::SameLine();
-			ImGui::Text("\"%s\"", ImGui::GetKeyName(key));
+			else {
+				OpenGLObject::renderBoundingBox = false;
+			}
+
+			ImGui::Separator();
 		}
-		ImGui::Text("Keys modifiers: %s%s%s%s", io.KeyCtrl ? "CTRL " : "", io.KeyShift ? "SHIFT " : "", io.KeyAlt ? "ALT " : "", io.KeySuper ? "SUPER " : "");
+
+		if (ImGui::CollapsingHeader("Inputs")) {
+			// Mouse input checks
+			if (io.MousePos.x < 0 || io.MousePos.x > windowSize.first || io.MousePos.y < 0 || io.MousePos.y > windowSize.second) {
+				ImGui::Text("Mouse position: Out of window");
+			}
+			else {
+				ImGui::Text("Mouse position: (%g, %g)", io.MousePos.x, io.MousePos.y);
+			}
+			ImGui::Text("Click duration:");
+			for (int i = 0; i < IM_ARRAYSIZE(io.MouseDown); i++) if (ImGui::IsMouseDown(i)) {
+				ImGui::SameLine(); ImGui::Text("M%d (%.2f secs)", i + 1, io.MouseDownDuration[i]);
+			}
+
+			ImGui::Separator();
+			// Keyboard input checks
+			struct funcs {
+				static bool IsLegacyNativeDupe(ImGuiKey key) {
+					if (key < 0 || key >= ImGuiKey_COUNT) {
+						return false; // Handle  key is out of bounds
+					}
+					return key < 512 && ImGui::GetIO().KeyMap[key] != -1;
+				}
+			};
+			ImGuiKey start_key = (ImGuiKey)0;
+			ImGui::Text("Keys down:");
+			for (ImGuiKey key = start_key; key < ImGuiKey_NamedKey_END; key = (ImGuiKey)(key + 1)) { // Check Keydowns
+				if (funcs::IsLegacyNativeDupe(key) || !ImGui::IsKeyDown(key)) continue;
+				ImGui::SameLine();
+				ImGui::Text("\"%s\"", ImGui::GetKeyName(key));
+			}
+			ImGui::Text("Keys modifiers: %s%s%s%s", io.KeyCtrl ? "CTRL " : "", io.KeyShift ? "SHIFT " : "", io.KeyAlt ? "ALT " : "", io.KeySuper ? "SUPER " : "");
+		}
 	}
-	ImGui::End();
+		ImGui::End();
 }
+
 
 
 void Editor::RenderDirectoryV2(const std::string& filePath) {

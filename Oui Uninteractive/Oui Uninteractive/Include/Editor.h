@@ -15,6 +15,7 @@
 #include <fstream>
 #include <chrono>
 #include <cmath>
+#include <numeric>
 #include "GameStateManager.h"
 #include "imgui.h"
 #include "imgui_stdlib.h"
@@ -129,10 +130,9 @@ public:
 	struct EditorSettings {
 		static int iconSize;
 		static int iconPadding;
+		static int pieChartDisplayCount;
+		static int dataAvgPeriod;
 	};
-	// Panel settings
-	//static int iconSize;
-	//static int iconPadding;
 
 
 struct SystemTime {
@@ -144,9 +144,9 @@ struct SystemTime {
 	float scenemanagerTime;
 	float colliderTime;
 	float transformTime;
+	std::vector<std::pair<std::string, float>> systemTimes;
 };
 static SystemTime timeRecorder;
-
 private:
 	static std::vector<std::string> prefabList;
 	static std::map<std::string, LPCWSTR> fileFilterList;
