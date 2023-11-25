@@ -1934,6 +1934,15 @@ void Editor::RenderDirectoryV2(const std::string& filePath) {
 		// Render button
 		ImGui::ImageButton(iconTexture, ImVec2(iconSize, iconSize));
 
+		// Set drag sourece
+		if (ImGui::BeginDragDropSource(ImGuiDragDropFlags_None)) {
+			// Set payload
+			ImGui::SetDragDropPayload("DRAGDROPPAYLOAD", entryName.c_str(), entryName.size() + 1);
+			// Display held item
+			ImGui::Image(iconTexture, ImVec2(iconSize/4, iconSize/4));
+			ImGui::EndDragDropSource();
+		}
+
 		// Reset button style
 		if (browserSelectedItem == entryName) {
 			ImGui::PopStyleColor(3);
@@ -1969,6 +1978,7 @@ void Editor::CreateConsolePanel() {
 	ImGui::Begin("Console");
 	if (ImGui::InputText("####", &consoleTextInput, ImGuiInputTextFlags_EnterReturnsTrue) || (ImGui::SameLine(), ImGui::Button("Enter"))) {
 		ImGui::Text("Inputs", consoleTextInput);
+		std::cout << consoleTextInput;
 	}
 	ImGui::End();
 }
