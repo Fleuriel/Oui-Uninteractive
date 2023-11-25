@@ -46,7 +46,5 @@
 
 
 // TESTS //
-#define TEST1 std::string("assets\\texture\\folder_icon.png")
-#define TEST2 std::string("assets\\texture\\file_icon.png")
 
 #endif

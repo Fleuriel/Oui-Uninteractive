@@ -149,9 +149,9 @@ struct Panels {
 	bool prefabPanel;
 	bool soundPanel;
 	bool objectPanel;
-	bool assetBrowserPanel;
+	bool assetBrowserPanel{ true };
 	bool debugPanel;
-	bool consolePanel{ true };
+	bool consolePanel;
 };
 static Panels panelList;
 
