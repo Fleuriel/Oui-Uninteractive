@@ -62,7 +62,7 @@ void EnemyAISystem::Update(float dt) {
 			}
 		}
 		if (enemy != nullptr) {
-			enemyType = enemy->GetType();
+			enemyType = enemy->GetTexture(); // GetTexture() gets the enemy's type
 			Transform* enemyTx = GET_COMPONENT(enemy, Transform, ComponentType::TRANSFORM);
 			if (enemyTx != nullptr) {
 				enemyPos = enemyTx->position;

@@ -15,6 +15,7 @@
 #include "Logic.h"
 #include "ObjectFactory.h"
 #include "Vector2D.h"
+#include "HealthComponent.h"
 
 class BulletScript : public IScript {
 public:
@@ -44,13 +45,17 @@ public:
 
 		// Check for bullet collision with walls or enemies
 		for (auto& obj : objectFactory->GetGameObjectIDMap()) {
-			if (obj.second->GetType() == "WallPrefab" || obj.second->GetType() == "Enemy" || obj.second->GetName().find("Bullet") != std::string::npos) {
+			if (obj.second->GetType() == "WallPrefab" || obj.second->GetType() == "Enemy" || obj.second->GetType() == "Player" || obj.second->GetName().find("Bullet") != std::string::npos) {
 				if (CollisionMovingRectRect(*GET_COMPONENT(bullet, Collider, ComponentType::COLLIDER)->boundingbox, 
 											*GET_COMPONENT(obj.second, Collider, ComponentType::COLLIDER)->boundingbox, 
 											GET_COMPONENT(bullet, PhysicsBody, ComponentType::PHYSICS_BODY)->velocity - GET_COMPONENT(obj.second, PhysicsBody, ComponentType::PHYSICS_BODY)->velocity, 
 											contactTime, normal, static_cast<float>(GetDT()), 
 											GET_COMPONENT(bullet, PhysicsBody, ComponentType::PHYSICS_BODY)->velocity)) {
 					objectFactory->DestroyObject(bullet);
+
+					if (obj.second->GetType() == "Enemy") {
+						--GET_COMPONENT(obj.second, HealthComponent, ComponentType::HEALTH)->currentHealth;
+					}
 				}
 			}
 		}

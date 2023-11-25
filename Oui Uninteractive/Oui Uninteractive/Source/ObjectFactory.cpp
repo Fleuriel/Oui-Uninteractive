@@ -389,9 +389,9 @@ rapidjson::Document ObjectFactory::GetObjectDocSaving(const std::string& filePat
 			else if (componentName == "EnemyFSM") {
 				individualComponent.AddMember("AggroRange", GET_COMPONENT(it.second, EnemyFSM, ComponentType::ENEMY_FSM)->aggroRange, allocator);
 			}
-			/*else if (componentName == "HealthComponent") {
+			else if (componentName == "HealthComponent") {
 				individualComponent.AddMember("MaxHealth", GET_COMPONENT(it.second, HealthComponent, ComponentType::HEALTH)->maxHealth, allocator);
-			}*/
+			}
 
 			// Add individual component to components object
 			rapidjson::Value componentNameJson;
@@ -506,9 +506,9 @@ void ObjectFactory::SavePrefabsToFile(const std::string& filePath) {
 				individualComponent.AddMember("ColliderSizeY", GET_COMPONENT(it.second, Collider, ComponentType::COLLIDER)->tx->scale.y, allocator);
 				individualComponent.AddMember("ColliderRotation", GET_COMPONENT(it.second, Collider, ComponentType::COLLIDER)->tx->rotation, allocator);
 			}
-			/*else if (componentName == "HealthComponent") {
+			else if (componentName == "HealthComponent") {
 				individualComponent.AddMember("MaxHealth", GET_COMPONENT(it.second, HealthComponent, ComponentType::HEALTH)->maxHealth, allocator);
-			}*/
+			}
 
 			// Add individual component to components object
 			rapidjson::Value componentNameJson;
