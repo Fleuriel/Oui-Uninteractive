@@ -3,10 +3,28 @@
 #include "ObjectFactory.h"
 #include "Logic.h"
 
+class inventory {
+public:
+	GameObject* knife = objectFactory->GetGameObjectByID(0);
+	GameObject* rifle = objectFactory->GetGameObjectByID(1);
+	GameObject* pistol = objectFactory->GetGameObjectByID(2);
+	GameObject* bag[3] = { knife, rifle, pistol };
+};
+
+class inventory2 {
+public:
+	PhysicsBody* playerBodyFirst = GET_COMPONENT(inventory().bag[0], PhysicsBody, ComponentType::PHYSICS_BODY);
+	PhysicsBody* playerBodySecond = GET_COMPONENT(inventory().bag[1], PhysicsBody, ComponentType::PHYSICS_BODY);
+	PhysicsBody* playerBodyThird = GET_COMPONENT(inventory().bag[2], PhysicsBody, ComponentType::PHYSICS_BODY);
+	PhysicsBody* Bodies[3] = { playerBodyFirst, playerBodySecond, playerBodyThird };
+};
+
+
+
 class WeaponPickupScript : public IScript {
 public:
 	WeaponPickupScript(std::string newName) : IScript(newName) {
-
+		
 	};
 	void Initialize() {
 		logicSystem->AddLogicScript(this);
@@ -20,10 +38,16 @@ public:
 			if (tx != nullptr && physBod != nullptr) {
 				if (tx != nullptr && physBod != nullptr) {
 
+					//Flags initializers
 					static bool count = false;
 					static bool pickedup = false;
-					int z = 1;
 
+					//Set playerBody1 as the player (permanent)
+					PhysicsBody* playerBody1 = GET_COMPONENT(objectFactory->GetGameObjectByID(18), PhysicsBody, ComponentType::PHYSICS_BODY);
+					//Declare a temporary physics body for the final weapon chosen
+					static PhysicsBody* playerBodyFinale = GET_COMPONENT(objectFactory->GetGameObjectByID(0), PhysicsBody, ComponentType::PHYSICS_BODY);
+
+					//Checking key pressed to enable weapon pickup / drop off
 					if (inputSystem.GetKeyState(GLFW_KEY_X)) {
 						count = 0;
 						pickedup = false;
@@ -33,31 +57,18 @@ public:
 						count = 1;
 						pickedup = true;
 					}
-
-					//Set playerBody1 as the player (permanent)
-					PhysicsBody* playerBody1 = GET_COMPONENT(objectFactory->GetGameObjectByID(0), PhysicsBody, ComponentType::PHYSICS_BODY);
-
-					//Declare a temporary physics body for the final weapon chosen
-					static PhysicsBody* playerBodyFinale = GET_COMPONENT(objectFactory->GetGameObjectByID(1), PhysicsBody, ComponentType::PHYSICS_BODY);
-
 					
 					if (pickedup == false) {
-						for (int i = 2; i < 4; i++) {
-							
-							//knife
-							PhysicsBody* playerBody = GET_COMPONENT(objectFactory->GetGameObjectByID(z), PhysicsBody, ComponentType::PHYSICS_BODY);
-							int tempo = Vector2DDistance(playerBody->txPtr->position, playerBody1->txPtr->position);
-							//Set playerBodyZ as the weapon after knife
-						    PhysicsBody* playerBodyZ = GET_COMPONENT(objectFactory->GetGameObjectByID(i), PhysicsBody, ComponentType::PHYSICS_BODY);
-							int tempo2 = Vector2DDistance(playerBodyZ->txPtr->position, playerBody1->txPtr->position);
-							
+						for (int z = 0, i = 1; i < 3; i++) {
+							int tempo = Vector2DDistance(inventory2().Bodies[z]->txPtr->position, playerBody1->txPtr->position);
+							int tempo2 = Vector2DDistance(inventory2().Bodies[i]->txPtr->position, playerBody1->txPtr->position);
 							if (tempo < tempo2) {
-								playerBodyFinale = playerBody;
+								playerBodyFinale = inventory2().Bodies[z];
 							}
 							else {
-								playerBodyFinale = playerBodyZ;
+								playerBodyFinale = inventory2().Bodies[i];
 								tempo = tempo2;
-								playerBody = playerBodyZ;
+								inventory2().Bodies[z] = inventory2().Bodies[i];
 								z++;
 							}
 							

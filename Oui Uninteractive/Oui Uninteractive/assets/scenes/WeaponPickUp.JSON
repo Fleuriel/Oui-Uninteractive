@@ -1,38 +1,7 @@
 {
     "Tilemap": [],
-    "ObjectCount": 6,
+    "ObjectCount": 19,
     "Objects": [{
-            "Name": "JSONPlayer",
-            "Type": "Player",
-            "Texture": "Player",
-            "UsingSprite": true,
-            "Components": {
-                "PhysicsBody": {
-                    "VelocityX": 0.0,
-                    "VelocityY": 0.0,
-                    "RotationSpeed": 200.0,
-                    "Speed": 100.0,
-                    "Mass": 140.0,
-                    "IsStatic": false,
-                    "FrictionForce": 20.0
-                },
-                "Transform": {
-                    "PositionX": -95.17529296875,
-                    "PositionY": -89.07833862304688,
-                    "Rotation": 0.0,
-                    "ScaleX": 200.0,
-                    "ScaleY": 200.0
-                },
-                "LogicComponent": {
-                    "ScriptID": [1, 3]
-                },
-                "Collider": {
-                    "ColliderSizeX": 87.20999908447266,
-                    "ColliderSizeY": 194.5,
-                    "ColliderRotation": 0.0
-                }
-            }
-        }, {
             "Name": "Knife",
             "Type": "Weapon",
             "Texture": "Knife(Weapon)",
@@ -48,8 +17,8 @@
                     "FrictionForce": 20.0
                 },
                 "Transform": {
-                    "PositionX": 451.92999267578125,
-                    "PositionY": 215.3218231201172,
+                    "PositionX": -78.0,
+                    "PositionY": -37.0,
                     "Rotation": 326.3299865722656,
                     "ScaleX": 237.9600067138672,
                     "ScaleY": 237.9600067138672
@@ -74,8 +43,8 @@
                     "FrictionForce": 20.0
                 },
                 "Transform": {
-                    "PositionX": 40.939998626708984,
-                    "PositionY": 206.53436279296875,
+                    "PositionX": -634.0,
+                    "PositionY": -16.0,
                     "Rotation": 359.5,
                     "ScaleX": 252.41000366210938,
                     "ScaleY": 252.41000366210938
@@ -100,8 +69,8 @@
                     "FrictionForce": 20.0
                 },
                 "Transform": {
-                    "PositionX": -352.57000732421875,
-                    "PositionY": 206.53436279296875,
+                    "PositionX": -338.0,
+                    "PositionY": -17.0,
                     "Rotation": 359.5,
                     "ScaleX": 156.80999755859375,
                     "ScaleY": 155.44000244140625
@@ -111,9 +80,9 @@
                 }
             }
         }, {
-            "Name": "EnvironmentVertical",
-            "Type": "EnvironmentVertical",
-            "Texture": "EnvironmentVertical",
+            "Name": "Wall1",
+            "Type": "Wall1",
+            "Texture": "Wall1",
             "UsingSprite": false,
             "Components": {
                 "PhysicsBody": {
@@ -126,18 +95,297 @@
                     "FrictionForce": 20.0
                 },
                 "Transform": {
-                    "PositionX": -732.0,
-                    "PositionY": 438.0,
+                    "PositionX": 72.0,
+                    "PositionY": 474.0,
                     "Rotation": 0.0,
-                    "ScaleX": 259.2799987792969,
+                    "ScaleX": 500.0,
+                    "ScaleY": 200.33999633789063
+                },
+                "LogicComponent": {
+                    "ScriptID": [0]
+                },
+                "Collider": {
+                    "ColliderSizeX": 496.79998779296875,
+                    "ColliderSizeY": 5.519999980926514,
+                    "ColliderRotation": 0.0
+                }
+            }
+        }, {
+            "Name": "Wall2",
+            "Type": "Wall2",
+            "Texture": "Wall2",
+            "UsingSprite": false,
+            "Components": {
+                "PhysicsBody": {
+                    "VelocityX": 0.0,
+                    "VelocityY": 0.0,
+                    "RotationSpeed": 20.0,
+                    "Speed": 120.0,
+                    "Mass": 10.0,
+                    "IsStatic": false,
+                    "FrictionForce": 20.0
+                },
+                "Transform": {
+                    "PositionX": 572.0,
+                    "PositionY": 474.0,
+                    "Rotation": 0.0,
+                    "ScaleX": 500.0,
+                    "ScaleY": 200.3300018310547
+                },
+                "LogicComponent": {
+                    "ScriptID": [0]
+                },
+                "Collider": {
+                    "ColliderSizeX": 496.79998779296875,
+                    "ColliderSizeY": 5.519999980926514,
+                    "ColliderRotation": 0.0
+                }
+            }
+        }, {
+            "Name": "Wall3",
+            "Type": "Wall3",
+            "Texture": "Wall3",
+            "UsingSprite": false,
+            "Components": {
+                "PhysicsBody": {
+                    "VelocityX": 0.0,
+                    "VelocityY": 0.0,
+                    "RotationSpeed": 20.0,
+                    "Speed": 120.0,
+                    "Mass": 10.0,
+                    "IsStatic": false,
+                    "FrictionForce": 20.0
+                },
+                "Transform": {
+                    "PositionX": 888.0,
+                    "PositionY": 324.0,
+                    "Rotation": 0.0,
+                    "ScaleX": 136.30999755859375,
                     "ScaleY": 500.0
                 },
                 "LogicComponent": {
                     "ScriptID": [0]
                 },
                 "Collider": {
-                    "ColliderSizeX": 191.1999969482422,
-                    "ColliderSizeY": 301.2300109863281,
+                    "ColliderSizeX": 136.97999572753906,
+                    "ColliderSizeY": 487.8599853515625,
+                    "ColliderRotation": 0.0
+                }
+            }
+        }, {
+            "Name": "Wall4",
+            "Type": "Wall1",
+            "Texture": "Wall1",
+            "UsingSprite": false,
+            "Components": {
+                "PhysicsBody": {
+                    "VelocityX": 0.0,
+                    "VelocityY": 0.0,
+                    "RotationSpeed": 20.0,
+                    "Speed": 120.0,
+                    "Mass": 10.0,
+                    "IsStatic": false,
+                    "FrictionForce": 20.0
+                },
+                "Transform": {
+                    "PositionX": -428.0,
+                    "PositionY": 474.0,
+                    "Rotation": 0.0,
+                    "ScaleX": 500.0,
+                    "ScaleY": 200.33999633789063
+                },
+                "LogicComponent": {
+                    "ScriptID": [0]
+                },
+                "Collider": {
+                    "ColliderSizeX": 496.79998779296875,
+                    "ColliderSizeY": 5.519999980926514,
+                    "ColliderRotation": 0.0
+                }
+            }
+        }, {
+            "Name": "Wall5",
+            "Type": "Wall2",
+            "Texture": "Wall2",
+            "UsingSprite": false,
+            "Components": {
+                "PhysicsBody": {
+                    "VelocityX": 0.0,
+                    "VelocityY": 0.0,
+                    "RotationSpeed": 20.0,
+                    "Speed": 120.0,
+                    "Mass": 10.0,
+                    "IsStatic": false,
+                    "FrictionForce": 20.0
+                },
+                "Transform": {
+                    "PositionX": -755.0,
+                    "PositionY": 474.0,
+                    "Rotation": 0.0,
+                    "ScaleX": 157.15264892578125,
+                    "ScaleY": 200.3300018310547
+                },
+                "LogicComponent": {
+                    "ScriptID": [0]
+                },
+                "Collider": {
+                    "ColliderSizeX": 155.6300048828125,
+                    "ColliderSizeY": 206.25,
+                    "ColliderRotation": 0.0
+                }
+            }
+        }, {
+            "Name": "Wall6",
+            "Type": "Wall3",
+            "Texture": "Wall3",
+            "UsingSprite": false,
+            "Components": {
+                "PhysicsBody": {
+                    "VelocityX": 0.0,
+                    "VelocityY": 0.0,
+                    "RotationSpeed": 20.0,
+                    "Speed": 120.0,
+                    "Mass": 10.0,
+                    "IsStatic": false,
+                    "FrictionForce": 20.0
+                },
+                "Transform": {
+                    "PositionX": -899.0,
+                    "PositionY": 324.0,
+                    "Rotation": 0.0,
+                    "ScaleX": 136.30999755859375,
+                    "ScaleY": 500.0
+                },
+                "LogicComponent": {
+                    "ScriptID": [0]
+                },
+                "Collider": {
+                    "ColliderSizeX": 136.97999572753906,
+                    "ColliderSizeY": 499.8399963378906,
+                    "ColliderRotation": 0.0
+                }
+            }
+        }, {
+            "Name": "Wall7",
+            "Type": "Wall3",
+            "Texture": "Wall3",
+            "UsingSprite": false,
+            "Components": {
+                "PhysicsBody": {
+                    "VelocityX": 0.0,
+                    "VelocityY": 0.0,
+                    "RotationSpeed": 20.0,
+                    "Speed": 120.0,
+                    "Mass": 10.0,
+                    "IsStatic": false,
+                    "FrictionForce": 20.0
+                },
+                "Transform": {
+                    "PositionX": -900.0,
+                    "PositionY": -36.0,
+                    "Rotation": 0.0,
+                    "ScaleX": 136.30999755859375,
+                    "ScaleY": 500.0
+                },
+                "LogicComponent": {
+                    "ScriptID": [0]
+                },
+                "Collider": {
+                    "ColliderSizeX": 136.97999572753906,
+                    "ColliderSizeY": 499.8399963378906,
+                    "ColliderRotation": 0.0
+                }
+            }
+        }, {
+            "Name": "Wall8",
+            "Type": "Wall3",
+            "Texture": "Wall3",
+            "UsingSprite": false,
+            "Components": {
+                "PhysicsBody": {
+                    "VelocityX": 0.0,
+                    "VelocityY": 0.0,
+                    "RotationSpeed": 20.0,
+                    "Speed": 120.0,
+                    "Mass": 10.0,
+                    "IsStatic": false,
+                    "FrictionForce": 20.0
+                },
+                "Transform": {
+                    "PositionX": -900.0,
+                    "PositionY": -330.0,
+                    "Rotation": 0.0,
+                    "ScaleX": 137.30303955078125,
+                    "ScaleY": 356.510009765625
+                },
+                "LogicComponent": {
+                    "ScriptID": [0]
+                },
+                "Collider": {
+                    "ColliderSizeX": 133.6699981689453,
+                    "ColliderSizeY": 364.2300109863281,
+                    "ColliderRotation": 0.0
+                }
+            }
+        }, {
+            "Name": "Wall9",
+            "Type": "Wall3",
+            "Texture": "Wall3",
+            "UsingSprite": false,
+            "Components": {
+                "PhysicsBody": {
+                    "VelocityX": 0.0,
+                    "VelocityY": 0.0,
+                    "RotationSpeed": 20.0,
+                    "Speed": 120.0,
+                    "Mass": 10.0,
+                    "IsStatic": false,
+                    "FrictionForce": 20.0
+                },
+                "Transform": {
+                    "PositionX": 888.0,
+                    "PositionY": -36.0,
+                    "Rotation": 0.0,
+                    "ScaleX": 136.30999755859375,
+                    "ScaleY": 500.0
+                },
+                "LogicComponent": {
+                    "ScriptID": [0]
+                },
+                "Collider": {
+                    "ColliderSizeX": 136.97999572753906,
+                    "ColliderSizeY": 499.8399963378906,
+                    "ColliderRotation": 0.0
+                }
+            }
+        }, {
+            "Name": "Wall10",
+            "Type": "Wall3",
+            "Texture": "Wall3",
+            "UsingSprite": false,
+            "Components": {
+                "PhysicsBody": {
+                    "VelocityX": 0.0,
+                    "VelocityY": 0.0,
+                    "RotationSpeed": 20.0,
+                    "Speed": 120.0,
+                    "Mass": 10.0,
+                    "IsStatic": false,
+                    "FrictionForce": 20.0
+                },
+                "Transform": {
+                    "PositionX": 889.0,
+                    "PositionY": -329.0,
+                    "Rotation": 0.0,
+                    "ScaleX": 137.30303955078125,
+                    "ScaleY": 356.510009765625
+                },
+                "LogicComponent": {
+                    "ScriptID": [0]
+                },
+                "Collider": {
+                    "ColliderSizeX": 133.6699981689453,
+                    "ColliderSizeY": 364.2300109863281,
                     "ColliderRotation": 0.0
                 }
             }
@@ -157,10 +405,10 @@
                     "FrictionForce": 20.0
                 },
                 "Transform": {
-                    "PositionX": 595.5499877929688,
-                    "PositionY": -203.35000610351563,
+                    "PositionX": 482.0,
+                    "PositionY": -185.0,
                     "Rotation": 0.0,
-                    "ScaleX": 500.0,
+                    "ScaleX": 497.82672119140625,
                     "ScaleY": 500.0
                 },
                 "LogicComponent": {
@@ -169,6 +417,161 @@
                 "Collider": {
                     "ColliderSizeX": 508.94000244140625,
                     "ColliderSizeY": 507.57000732421875,
+                    "ColliderRotation": 0.0
+                }
+            }
+        }, {
+            "Name": "EnvironmentVertical",
+            "Type": "EnvironmentVertical",
+            "Texture": "EnvironmentVertical",
+            "UsingSprite": false,
+            "Components": {
+                "PhysicsBody": {
+                    "VelocityX": 0.0,
+                    "VelocityY": 0.0,
+                    "RotationSpeed": 20.0,
+                    "Speed": 120.0,
+                    "Mass": 10.0,
+                    "IsStatic": false,
+                    "FrictionForce": 20.0
+                },
+                "Transform": {
+                    "PositionX": -667.0,
+                    "PositionY": 387.0,
+                    "Rotation": 0.0,
+                    "ScaleX": 259.2799987792969,
+                    "ScaleY": 500.0
+                },
+                "LogicComponent": {
+                    "ScriptID": [0]
+                },
+                "Collider": {
+                    "ColliderSizeX": 191.1999969482422,
+                    "ColliderSizeY": 104.8499984741211,
+                    "ColliderRotation": 0.0
+                }
+            }
+        }, {
+            "Name": "Table",
+            "Type": "Table",
+            "Texture": "Table",
+            "UsingSprite": false,
+            "Components": {
+                "PhysicsBody": {
+                    "VelocityX": 0.0,
+                    "VelocityY": 0.0,
+                    "RotationSpeed": 20.0,
+                    "Speed": 120.0,
+                    "Mass": 10.0,
+                    "IsStatic": false,
+                    "FrictionForce": 20.0
+                },
+                "Transform": {
+                    "PositionX": -339.0,
+                    "PositionY": 310.0,
+                    "Rotation": 0.0,
+                    "ScaleX": 500.0,
+                    "ScaleY": 200.33999633789063
+                },
+                "LogicComponent": {
+                    "ScriptID": [0]
+                },
+                "Collider": {
+                    "ColliderSizeX": 378.5899963378906,
+                    "ColliderSizeY": 5.519999980926514,
+                    "ColliderRotation": 0.0
+                }
+            }
+        }, {
+            "Name": "Generator",
+            "Type": "Generator",
+            "Texture": "Generator",
+            "UsingSprite": false,
+            "Components": {
+                "PhysicsBody": {
+                    "VelocityX": 0.0,
+                    "VelocityY": 0.0,
+                    "RotationSpeed": 20.0,
+                    "Speed": 120.0,
+                    "Mass": 10.0,
+                    "IsStatic": false,
+                    "FrictionForce": 20.0
+                },
+                "Transform": {
+                    "PositionX": 409.0,
+                    "PositionY": 345.0,
+                    "Rotation": 0.0,
+                    "ScaleX": 700.0,
+                    "ScaleY": 300.3399963378906
+                },
+                "LogicComponent": {
+                    "ScriptID": [0]
+                },
+                "Collider": {
+                    "ColliderSizeX": 558.5,
+                    "ColliderSizeY": 50.77000045776367,
+                    "ColliderRotation": 0.0
+                }
+            }
+        }, {
+            "Name": "Chair",
+            "Type": "Chair",
+            "Texture": "Chair",
+            "UsingSprite": false,
+            "Components": {
+                "PhysicsBody": {
+                    "VelocityX": 0.0,
+                    "VelocityY": 0.0,
+                    "RotationSpeed": 20.0,
+                    "Speed": 120.0,
+                    "Mass": 10.0,
+                    "IsStatic": false,
+                    "FrictionForce": 20.0
+                },
+                "Transform": {
+                    "PositionX": -334.0,
+                    "PositionY": 219.0,
+                    "Rotation": 0.0,
+                    "ScaleX": 175.5,
+                    "ScaleY": 186.52999877929688
+                },
+                "LogicComponent": {
+                    "ScriptID": [0]
+                },
+                "Collider": {
+                    "ColliderSizeX": 73.94999694824219,
+                    "ColliderSizeY": 9.930000305175781,
+                    "ColliderRotation": 0.0
+                }
+            }
+        }, {
+            "Name": "JSONPlayer",
+            "Type": "Player",
+            "Texture": "Player",
+            "UsingSprite": true,
+            "Components": {
+                "PhysicsBody": {
+                    "VelocityX": 0.0,
+                    "VelocityY": 0.0,
+                    "RotationSpeed": 200.0,
+                    "Speed": 100.0,
+                    "Mass": 140.0,
+                    "IsStatic": false,
+                    "FrictionForce": 20.0
+                },
+                "Transform": {
+                    "PositionX": -261.65045166015625,
+                    "PositionY": -230.8221893310547,
+                    "Rotation": 0.0,
+                    "ScaleX": 200.0,
+                    "ScaleY": 200.0
+                },
+                "LogicComponent": {
+                    "ScriptID": [1, 3]
+                },
+                "Collider": {
+                    "ColliderSizeX": 71.76000213623047,
+                    "ColliderSizeY": 198.91000366210938,
                     "ColliderRotation": 0.0
                 }
             }

@@ -67,7 +67,7 @@ void Background::Init() {
 
 
 	// Load a background texture from a file
-	backgroundTexture = assetManager.GetTexture("background");
+	backgroundTexture = assetManager.GetTexture("newbackground");
 
 	// Initialize model and shader references to zero
 	mdl_ref = 0;
