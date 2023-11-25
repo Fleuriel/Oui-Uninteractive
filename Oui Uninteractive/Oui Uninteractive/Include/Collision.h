@@ -80,7 +80,33 @@ bool CollisionStaticDynamicRectRect(Collider::AABB Rect1, Collider::AABB Rect2);
  * @param s1, s2  Width of first and second rectangle respectively
  *************************************************************************/
 bool CollisionMovingRectRect(Collider::AABB A, Collider::AABB B, Vec2 relativeVel, float& contactTime, Vec2& normal, float dt, Vec2 AVel);
+/**************************************************************************
+ * @brief Whether a point moving in a specified direction will collide with
+		  a rectangle (represented by an Axis-Aligned Bounding Box (AABB)).
+ *
+ * This function returns true or false depending on whether collision is
+ * detected or not
+ *
+ * @param origin		The starting point of the line coordinates(x,y)
+ * @param direction		A vector to represent direction
+ * @param target		The destination point of the line coordinates(x,y)
+ * @param contactNormal The normal of a vector on the point of collision
+ * @param contactTime	The time on the point of collision
+ *************************************************************************/
 bool MovingPointRectCollision(Vec2 origin, Vec2 direction, Collider::AABB target, Vec2& contactNormal, float& contactTime);
 
+/**************************************************************************
+ * @brief Collision detection whether a point is within a rotated rectangle
+ *
+ * This function returns true or false depending on whether collision is
+ * detected or not
+ *
+ * @param objCenter	Point representing center of the object
+ * @param objScaleX	X Scale of Rectangle
+ * @param objScaleY	Y Scale of Rectangle
+ * @param mouseX	X position of mouse
+ * @param mouseX	Y position of mouse
+ * @param angle		Rotation of Rect
+ *************************************************************************/
 bool CollisionPointRotateRect(Vec2 objCenter, float objScaleX, float objScaleY, float mouseX, float mouseY, float angle);
 #endif

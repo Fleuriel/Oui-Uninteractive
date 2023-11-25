@@ -225,6 +225,19 @@ bool CollisionMovingRectRect(Collider::AABB A, Collider::AABB B, Vec2 relativeVe
 	}
 	return false;
 }
+/**************************************************************************
+ * @brief Collision detection whether a point is within a rotated rectangle
+ *
+ * This function returns true or false depending on whether collision is
+ * detected or not
+ *
+ * @param objCenter	Point representing center of the object
+ * @param objScaleX	X Scale of Rectangle
+ * @param objScaleY	Y Scale of Rectangle
+ * @param mouseX	X position of mouse
+ * @param mouseX	Y position of mouse
+ * @param angle		Rotation of Rect
+ *************************************************************************/
 bool CollisionPointRotateRect(Vec2 objCenter, float objScaleX, float objScaleY, float mouseX, float mouseY, float angle) {
 	float angleRad = angle * (static_cast<float>(PI) / 180.f);
 	Vec2 topRight = Vec2((0.5f) * objScaleX + objCenter.x, (0.5f) * objScaleY + objCenter.y);
@@ -248,10 +261,7 @@ bool CollisionPointRotateRect(Vec2 objCenter, float objScaleX, float objScaleY, 
 	Vec2 AM = mouse - corners[1];
 	Vec2 AB = corners[0] - corners[1];
 	Vec2 AD = corners[2] - corners[1];
-	bool test = ((0 <= Vector2DDotProduct(AM, AB)) && (Vector2DDotProduct(AM, AB) < Vector2DDotProduct(AB, AB)));
-	bool test2 = ((0 <= Vector2DDotProduct(AM, AD)) && (Vector2DDotProduct(AM, AD) < Vector2DDotProduct(AD, AD)));
-	if (test && test2) {
-		std::cout << "test\n";
-	}
-	return test && test2;
+	bool condition1 = ((0 <= Vector2DDotProduct(AM, AB)) && (Vector2DDotProduct(AM, AB) < Vector2DDotProduct(AB, AB)));
+	bool condition2 = ((0 <= Vector2DDotProduct(AM, AD)) && (Vector2DDotProduct(AM, AD) < Vector2DDotProduct(AD, AD)));
+	return condition1 && condition2;
 }

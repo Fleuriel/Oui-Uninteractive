@@ -170,5 +170,11 @@ float Vector2DDotProduct(const Vector2D &pVec0, const Vector2D &pVec1);
 * @return float
 **************************************************************************/
 float Vector2DCrossProductMag(const Vector2D &pVec0, const Vector2D &pVec1);
-
+/**************************************************************************
+* @brief Rotates a vector by an angle
+* @param vectorToRotate - the vector to rotate
+* @param angle - the angle to rotate by
+* Vec2 centerOfRot - the point to rotate around
+* @return Vec2 - rotated point
+**************************************************************************/
 Vec2 Vector2DRotate(Vector2D vectorToRotate, float angle, Vec2 centerOfRot);

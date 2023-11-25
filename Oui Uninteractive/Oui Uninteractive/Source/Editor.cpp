@@ -251,6 +251,7 @@ void Editor::Update() {
 	Vec2 topGizmoPos = Vec2(0, 0);
 	Vec2 botGizmoPos = Vec2(0, 0);
 	Vec2 rotateGizmoPos = Vec2(0, 0);
+	//detecting what action the user wants to take
 	if (selected != nullptr) {
 		Transform* tx = GET_COMPONENT(selected, Transform, ComponentType::TRANSFORM);
 		if (tx != nullptr && (ogMouseX > xBounds.first && ogMouseX < xBounds.second) && (ogMouseY > yBounds.first && ogMouseY < yBounds.second)) {
@@ -311,6 +312,7 @@ void Editor::Update() {
 			}
 		}
 	}
+	//scale x
 	if (scaleMode) {
 		if (selected != nullptr) {
 			Transform* tx = GET_COMPONENT(selected, Transform, ComponentType::TRANSFORM);
@@ -347,7 +349,7 @@ void Editor::Update() {
 			}
 		}
 	}
-
+	//scale x
 	if (scaleMode2) {
 		if (selected != nullptr) {
 			Transform* tx = GET_COMPONENT(selected, Transform, ComponentType::TRANSFORM);
@@ -388,6 +390,7 @@ void Editor::Update() {
 			}
 		}
 	}
+	//scale left
 	if (scaleMode3) {
 		if (selected != nullptr) {
 			Transform* tx = GET_COMPONENT(selected, Transform, ComponentType::TRANSFORM);
@@ -425,6 +428,7 @@ void Editor::Update() {
 		}
 	}
 
+	//scale left
 	if (scaleMode4) {
 		if (selected != nullptr) {
 			Transform* tx = GET_COMPONENT(selected, Transform, ComponentType::TRANSFORM);
@@ -490,14 +494,6 @@ void Editor::Update() {
 			}
 		}
 	}
-	/*if (inputSystem.GetMouseState(GLFW_MOUSE_BUTTON_2) == GLFW_PRESS) {
-		if (selected != nullptr) {
-			Transform* tx = GET_COMPONENT(selected, Transform, ComponentType::TRANSFORM);
-			if (tx != nullptr) {
-				tx->rotation += 20.f;
-			}
-		}
-	}*/
 	if (inputSystem.GetKeyState(GLFW_KEY_DELETE)) {
 		if (selected != nullptr) {
 			objectFactory->DestroyObject(objectFactory->GetGameObjectByID(selected->GetGameObjectID()));
@@ -1951,10 +1947,16 @@ void Editor::CreateConsolePanel() {
 	}
 	ImGui::End();
 }
+/**************************************************************************
+* @brief This function calculates and updates the matrix for the shapes used 
+		 in a basic gizmo for scaling/rotating/moving a game object in the Editor
+* @param float scaleX - X scale of Game Object
+* @param float scaleY - Y scale of Game Object
+* @param Vec2 pos - position of Game Object
+* @param float rot - rotation of Game Object
+* @return void
+*************************************************************************/
 void Editor::DrawGizmos(float scaleX, float scaleY, Vec2 pos, float rot) {
-
-
-
 	Matrix3x3 scale = Matrix3x3(scaleX + scaleOutline, 0.f, 0.f,
 								0.f, scaleY + scaleOutline, 0.f,
 								0.f, 0.0f, 1.0f);

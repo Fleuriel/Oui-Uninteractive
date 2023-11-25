@@ -93,8 +93,8 @@ ForceManager::ForceManager() {
 }
 /**************************************************************************
 * @brief Setter for Magnitude variable
-* @param FORCE_INDEX index - index of force to set
-* @param float new_mag - value to set to
+* @param index - index of force to set
+* @param new_mag - value to set to
 * @return void
 *************************************************************************/
 void ForceManager::SetMagnitude(float new_mag, FORCE_INDEX index) {
@@ -103,7 +103,7 @@ void ForceManager::SetMagnitude(float new_mag, FORCE_INDEX index) {
 }
 /**************************************************************************
 * @brief Update function for forceManager
-* @param float dt - delta time
+* @param dt - delta time
 * @return void
 *************************************************************************/
 void ForceManager::Update(float dt) {
@@ -129,7 +129,7 @@ void ForceManager::AddForce(LinearForce* force) {
 }
 /**************************************************************************
 * @brief Deactivate force if active
-* @param int index - index of force to deactivate
+* @param index - index of force to deactivate
 * @return void
 *************************************************************************/
 void ForceManager::DeactivateForce(int index) {
@@ -140,7 +140,7 @@ void ForceManager::DeactivateForce(int index) {
 }
 /**************************************************************************
 * @brief Deactivate force if active
-* @param FORCE_INDEX index - index of force to deactivate
+* @param index - index of force to deactivate
 * @return void
 *************************************************************************/
 void ForceManager::DeactivateForce(FORCE_INDEX index) {
@@ -151,8 +151,8 @@ void ForceManager::DeactivateForce(FORCE_INDEX index) {
 }
 /**************************************************************************
 * @brief Setter for isActive flag
-* @param bool activeFlag - the flag to set to
-* @param FORCE_INDEX index - index of force to change
+* @param activeFlag - the flag to set to
+* @param index - index of force to change
 * @return void
 *************************************************************************/
 void ForceManager::SetActive(bool activeFlag, FORCE_INDEX index) {
@@ -160,8 +160,8 @@ void ForceManager::SetActive(bool activeFlag, FORCE_INDEX index) {
 }
 /**************************************************************************
 * @brief Setter for Direction 
-* @param Vec2 dir - direction to set to
-* @param FORCE_INDEX index - index of force to change
+* @param dir - direction to set to
+* @param index - index of force to change
 * @return void
 *************************************************************************/
 void ForceManager::SetDirection(Vec2 dir, FORCE_INDEX index) {
@@ -169,8 +169,8 @@ void ForceManager::SetDirection(Vec2 dir, FORCE_INDEX index) {
 }
 /**************************************************************************
 * @brief Setter for Lifetime
-* @param float lf - lifetime to set to
-* @param FORCE_INDEX index - index of force to change
+* @param lf - lifetime to set to
+* @param index - index of force to change
 * @return void
 *************************************************************************/
 void ForceManager::SetLifetime(float lf, FORCE_INDEX index) {
@@ -178,10 +178,10 @@ void ForceManager::SetLifetime(float lf, FORCE_INDEX index) {
 }
 /**************************************************************************
 * @brief Applies another Vector to a Force in the Force Vectpr
-* @param Vec2 dir - direction of new force 
-* @param float magnitude - magnitude of the force
-* @param float lifetime - lifetime of the new force
-* @param FORCE_INDEX index - index of force to apply new force to
+* @param dir - direction of new force 
+* @param magnitude - magnitude of the force
+* @param lifetime - lifetime of the new force
+* @param index - index of force to apply new force to
 * @return void
 *************************************************************************/
 void ForceManager::ApplyToForce(Vec2 direction, float magnitude, float lifetime, FORCE_INDEX index) {
