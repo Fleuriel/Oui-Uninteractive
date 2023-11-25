@@ -105,7 +105,7 @@ public:
 
 	bool cheater{ false };
 	bool typePW{ false };
-	std::string developermodeon{};
+	std::string hiddenconsole{};
 
 private:
 	// Define an array to keep track of key states
