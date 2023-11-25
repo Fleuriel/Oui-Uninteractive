@@ -698,20 +698,24 @@ void Editor::CreateRenderWindow() {
 		ImGui::Image(reinterpret_cast<ImTextureID>(static_cast<uintptr_t>(OpenGLObject::FrameTexture)), wsize, ImVec2(0.0f, 1.0f), ImVec2(1.0f, 0.0f)); // Replace thirdTexture with handle to FBO when graphics done rendering to FBO	
 		// Setup drag and drop checks within window
 		if (ImGui::BeginDragDropTarget()) {
-			if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("PAYLOAD_TEXTURE")) {
-				std::string dropTextureName = static_cast<const char*>(payload->Data);
-				if (selected != nullptr) {
-					selected->SetTexture(dropTextureName);				
-				}			
-			}
-			else if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("PAYLOAD_SPRITE")) {
-				std::string dropTextureName = static_cast<const char*>(payload->Data);
-				if (selected != nullptr) {
-					std::cout << dropTextureName << std::endl;
-					selected->SetTexture(dropTextureName);
+			if (selected != nullptr) {			
+				if (!selected->IsUsingSprite()) {
+					if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("PAYLOAD_TEXTURE")) {
+						std::string dropTextureName = static_cast<const char*>(payload->Data);
+						selected->SetTexture(dropTextureName);		
+					}
 				}
-			}
-
+				else if (selected->IsUsingSprite()) {
+					if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("PAYLOAD_SPRITE")) {
+						std::string dropTextureName = static_cast<const char*>(payload->Data);			
+						std::cout << dropTextureName << std::endl;
+						selected->SetTexture(dropTextureName);
+					}
+					else if (!ImGui::IsDragDropPayloadBeingAccepted()) {
+						std::cout << "WRTONG PL";
+					}
+				}
+			}		
 			itemDrag = false;
 			ImGui::EndDragDropTarget();
 		}
