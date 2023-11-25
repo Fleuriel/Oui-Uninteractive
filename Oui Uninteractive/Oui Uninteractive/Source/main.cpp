@@ -17,6 +17,7 @@
 #include "ObjectFactory.h"
 #include "TilemapLoader.h"
 #include "EnemyAISystem.h"
+#include "HealthSystem.h"
 #include "Logic.h"
 #include "Sound.h"
 #include "TransformSystem.h"
@@ -48,6 +49,7 @@ int main(){
 	sysManager->AddSystem(new ObjectFactory());
 	sysManager->AddSystem(new TilemapLoader());
 	sysManager->AddSystem(new ColliderSystem());
+	sysManager->AddSystem(new HealthSystem());
 	sysManager->AddSystem(new Physics());
 	sysManager->AddSystem(new EnemyAISystem());
 

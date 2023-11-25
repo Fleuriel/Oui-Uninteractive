@@ -15,6 +15,7 @@
 #include "Logic.h"
 #include "ObjectFactory.h"
 #include "Vector2D.h"
+#include "HealthComponent.h"
 
 class BulletScript : public IScript {
 public:
@@ -51,6 +52,10 @@ public:
 											contactTime, normal, static_cast<float>(GetDT()), 
 											GET_COMPONENT(bullet, PhysicsBody, ComponentType::PHYSICS_BODY)->velocity)) {
 					objectFactory->DestroyObject(bullet);
+
+					if (obj.second->GetType() == "Enemy") {
+						--GET_COMPONENT(obj.second, HealthComponent, ComponentType::HEALTH)->currentHealth;
+					}
 				}
 			}
 		}

@@ -40,12 +40,15 @@
                     "ColliderSizeX": 50.0,
                     "ColliderSizeY": 50.0,
                     "ColliderRotation": 0.0
+                },
+                "HealthComponent": {
+                    "MaxHealth": 5
                 }
             }
         }, 
         {
             "Name": "JSONEnemy1",
-            "Type": "CommonGuard",
+            "Type": "Enemy",
             "Texture": "CommonGuard",
             "UsingSprite": true,
             "Components": {
@@ -75,12 +78,15 @@
                 },
                 "EnemyFSM": {
                     "AggroRange": 200.0
+                },
+                "HealthComponent": {
+                    "MaxHealth": 3
                 }
             }
         },
         {
             "Name": "TargetEnemy",
-            "Type": "Target",
+            "Type": "Enemy",
             "Texture": "Target",
             "UsingSprite": true,
             "Components": {
@@ -110,6 +116,9 @@
                 },
                 "EnemyFSM": {
                     "AggroRange": 250.0
+                },
+                "HealthComponent": {
+                    "MaxHealth": 3
                 }
             }
         }
