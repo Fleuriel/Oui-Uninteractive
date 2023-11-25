@@ -96,6 +96,7 @@ public:
 	static bool fileBrowserOpen;
 	static bool consoleEntered;
 	static bool itemDrag;
+	static bool gameWindowHover;
 	static std::string browserInputPath;
 	static std::string consoleTextInput;
 	static bool browserDoubleClicked;

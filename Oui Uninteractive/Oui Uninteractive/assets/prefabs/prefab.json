@@ -4,7 +4,7 @@
             "Name": "BulletPrefab",
             "Type": "BulletPrefab",
             "Texture": "",
-            "UsingSprite": true,
+            "UsingSprite": false,
             "Components": {
                 "Transform": {
                     "PositionX": 0.0,
@@ -118,7 +118,7 @@
             "Name": "WallPrefab",
             "Type": "WallPrefab",
             "Texture": "",
-            "UsingSprite": true,
+            "UsingSprite": false,
             "Components": {
                 "Collider": {
                     "ColliderSizeX": 75.0,

@@ -19,6 +19,7 @@ bool Editor::editorOn;
 bool Editor::fileBrowserOpen;
 bool Editor::consoleEntered;
 bool Editor::itemDrag;
+bool Editor::gameWindowHover;
 Editor::SystemTime Editor::timeRecorder;
 std::vector<float> Editor::fpsData;
 std::pair<int, int> Editor::gameWindowOrigin;
@@ -82,6 +83,7 @@ void UsingImGui::Init(GLFWwindow* glfwWindow, const char* glsl_vers) {
 
 	// Config Flags
 	io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
+	//io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;
 
 	// Setup bindins
 	ImGui_ImplGlfw_InitForOpenGL(glfwWindow, true);
@@ -166,6 +168,14 @@ void UsingImGui::Draw() {
 	
 	ImGui::Render();
 	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+
+	ImGuiIO& io = ImGui::GetIO();
+	if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable) {
+		GLFWwindow* backupContext = glfwGetCurrentContext();
+		ImGui::UpdatePlatformWindows();
+		ImGui::RenderPlatformWindowsDefault();
+		glfwMakeContextCurrent(backupContext);
+	}
 	
 }
 
@@ -298,7 +308,7 @@ void Editor::Update() {
 				canReleaseSelect = false;
 				selected = nullptr;
 			}
-			if (inputSystem.GetMouseState(GLFW_MOUSE_BUTTON_1)) {
+			if (inputSystem.GetMouseState(GLFW_MOUSE_BUTTON_1) && gameWindowHover) {
 				holdDown = true;
 				if (translateMode != true && scaleMode != true && scaleMode2 != true && scaleMode3 != true && scaleMode4 != true && rotateMode != true && itemDrag != true){
 					if (CollisionPointRotateRect(tx->position, tx->scale.x + scaleOutline, tx->scale.y + scaleOutline, mouseX, mouseY, tx->rotation)) {
@@ -661,6 +671,7 @@ void Editor::CreateMasterPanel() {
 void Editor::CreateRenderWindow() {
 	ImGui::Begin("Game Window");
 	if (ImGui::BeginChild("GameWindow")) {
+		ImGui::IsWindowHovered(ImGuiHoveredFlags_AllowWhenBlockedByPopup) ? gameWindowHover = true : gameWindowHover = false;
 		gameWindowOrigin.first = static_cast<int>(ImGui::GetWindowPos().x);
 		gameWindowOrigin.second = static_cast<int>(ImGui::GetWindowPos().y);
 		gameWindowSize.first = static_cast<int>(ImGui::GetWindowSize().x);
@@ -675,9 +686,15 @@ void Editor::CreateRenderWindow() {
 			if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("PAYLOAD_TEXTURE")) {
 				std::string dropTextureName = static_cast<const char*>(payload->Data);
 				if (selected != nullptr) {
-					//selected.SetTexture(dropTextureName);
-					//std::cout << selected->GetName() << std::endl;
+					selected->SetTexture(dropTextureName);				
 				}			
+			}
+			else if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("PAYLOAD_SPRITE")) {
+				std::string dropTextureName = static_cast<const char*>(payload->Data);
+				if (selected != nullptr) {
+					std::cout << dropTextureName << std::endl;
+					selected->SetTexture(dropTextureName);
+				}
 			}
 
 			itemDrag = false;
@@ -1716,14 +1733,14 @@ void Editor::CreateAssetBrowser() {
 		ImGui::OpenPopup("NO TAKEBACKS");
 	}
 
-	if (currFilePath == FILEPATH_TEXTURES) {
+	if (currFilePath == FILEPATH_TEXTURES || currFilePath == FILEPATH_SPRITES) {
 		ImGui::SameLine();
 		HelpMarker("Drag and drop assets to load onto selected object");
 	}
 
 
 	if (ImGui::BeginPopupModal("NO TAKEBACKS", NULL, ImGuiWindowFlags_AlwaysAutoResize)) {
-		static std::string msg("Are you sure you want to delete the selected item:\n\n" + browserSelectedItem + "\n\nIf u fk everything up by deleting a prefab etc., go settle yourself!");
+		static std::string msg("Are you sure you want to delete the selected item:\n\n" + browserSelectedItem);
 		ImGui::TextWrapped(msg.c_str());
 		ImGui::Separator();
 
@@ -1910,6 +1927,12 @@ void Editor::RenderDirectoryV2(const std::string& filePath) {
 						texNameWithoutExt = texNameWithoutExt.substr(0, bracketPos);
 					}
 					iconTexture = reinterpret_cast<ImTextureID>(static_cast<uintptr_t>(assetManager.GetSpriteTexture(texNameWithoutExt)));
+					
+					// Trim everything except name
+					size_t underscorePos = texNameWithoutExt.find("_");
+					if (underscorePos != std::string::npos) {
+						texNameWithoutExt = texNameWithoutExt.substr(0, underscorePos);
+					}
 				}
 				// For Textures
 				else {
@@ -1944,8 +1967,16 @@ void Editor::RenderDirectoryV2(const std::string& filePath) {
 				itemDrag = true;
 				// Set payload type
 				ImGui::SetDragDropPayload("PAYLOAD_TEXTURE", texNameWithoutExt.c_str(), texNameWithoutExt.size() + 1);
-
-
+				// Display held item
+				ImGui::Image(iconTexture, ImVec2(iconSize / 4, iconSize / 4));
+				ImGui::EndDragDropSource();
+			}
+		}
+		if (filePath == FILEPATH_SPRITES) {
+			if (ImGui::BeginDragDropSource(ImGuiDragDropFlags_None)) {
+				itemDrag = true;
+				// Set payload type
+				ImGui::SetDragDropPayload("PAYLOAD_SPRITE", texNameWithoutExt.c_str(), texNameWithoutExt.size() + 1);
 				// Display held item
 				ImGui::Image(iconTexture, ImVec2(iconSize / 4, iconSize / 4));
 				ImGui::EndDragDropSource();
