@@ -16,6 +16,7 @@
 #include "Logic.h"
 #include "ObjectFactory.h"
 #include "PhysicsBody.h"
+#include "Editor.h"
 
 #define PI 3.141592653589793
 
@@ -60,16 +61,26 @@ public:
 				float playerScaleX{ GET_COMPONENT(objectFactory->GetGameObjectByID(gameObjectID), Transform, ComponentType::TRANSFORM)->scale.x };
 				float playerScaleY{ GET_COMPONENT(objectFactory->GetGameObjectByID(gameObjectID), Transform, ComponentType::TRANSFORM)->scale.y };
 
-				// Get mouse coordinates
+				// Get mouse coordinates (converted/non-converted)
 				double mouseX{}, mouseY{}, convertedMouseX{}, convertedMouseY{};
+				Vec2 mousePos(0.f, 0.f);
 				glfwGetCursorPos(windowNew, &mouseX, &mouseY);
 				convertedMouseX = mouseX;
 				convertedMouseY = mouseY;
 				OpenGLObject::FrameBufferMouseCoords(windowNew, &convertedMouseX, &convertedMouseY, OpenGLObject::cameraObject);
-				Vec2 convertedMousePos{ static_cast<float>(convertedMouseX), static_cast<float>(convertedMouseY) };
+
+				// Determine mouse coordinates to use
+				if (Editor::editorOn) {
+					mousePos.x = static_cast<float>(convertedMouseX);
+					mousePos.y = static_cast<float>(convertedMouseY);
+				}
+				else {
+					mousePos.x = static_cast<float>(mouseX) - windowSize.first / 2.f;
+					mousePos.y = windowSize.second / 2.f - static_cast<float>(mouseY);
+				}
 
 				// Set bullet spawn point
-				bulletSpawnAngle = atan2(static_cast<float>(convertedMouseY) - playerPos.y, static_cast<float>(convertedMouseX) - playerPos.x);
+				bulletSpawnAngle = atan2(static_cast<float>(mousePos.y) - playerPos.y, static_cast<float>(mousePos.x) - playerPos.x);
 				bulletSpawnOffset = (playerScaleX >= playerScaleY) ? playerScaleX : playerScaleY;
 				bulletSpawnOffset *= 1.1f;
 				bulletSpawnPos.x = playerPos.x + bulletSpawnOffset * cos(bulletSpawnAngle);
@@ -79,9 +90,9 @@ public:
 
 				// Set bullet shooting direction
 				Vec2 shootingDirection;
-				if (Vector2DDistance(playerPos, convertedMousePos) >= bulletSpawnOffset) {
-					shootingDirection.x = static_cast<float>(convertedMouseX) - playerPos.x;
-					shootingDirection.y = static_cast<float>(convertedMouseY) - playerPos.y;
+				if (Vector2DDistance(playerPos, mousePos) >= bulletSpawnOffset) {
+					shootingDirection.x = static_cast<float>(mousePos.x) - playerPos.x;
+					shootingDirection.y = static_cast<float>(mousePos.y) - playerPos.y;
 				}
 				else {
 					shootingDirection.x = bulletSpawnPos.x - playerPos.x;

@@ -15,7 +15,7 @@
 #include "IComponent.h"
 
 class HealthComponent : public IComponent {
-private:
+public:
 	int maxHealth;
 	int currentHealth;
 

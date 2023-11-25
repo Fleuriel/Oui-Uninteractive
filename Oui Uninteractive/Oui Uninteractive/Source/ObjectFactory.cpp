@@ -40,6 +40,7 @@
 #include "LogicComponent.h"
 #include "Collider.h"
 #include "EnemyFSM.h"
+#include "HealthComponent.h"
 
 ObjectFactory* objectFactory = NULL;
 
@@ -63,6 +64,9 @@ ComponentType ObjectFactory::StringToEnum(std::string str) {
 	}
 	else if (str == "EnemyFSM") {
 		return ComponentType::ENEMY_FSM;
+	}
+	else if (str == "HealthComponent") {
+		return ComponentType::HEALTH;
 	}
 	else {
 		return ComponentType::COUNT;
@@ -89,6 +93,9 @@ std::string ObjectFactory::EnumToString(ComponentType ct) {
 	}
 	else if (ct == ComponentType::ENEMY_FSM) {
 		return "EnemyFSM";
+	}
+	else if (ct == ComponentType::HEALTH) {
+		return "HealthComponent";
 	}
 	else {
 		return "None";
@@ -377,6 +384,9 @@ rapidjson::Document ObjectFactory::GetObjectDocSaving(const std::string& filePat
 			else if (componentName == "EnemyFSM") {
 				individualComponent.AddMember("AggroRange", GET_COMPONENT(it.second, EnemyFSM, ComponentType::ENEMY_FSM)->aggroRange, allocator);
 			}
+			/*else if (componentName == "HealthComponent") {
+				individualComponent.AddMember("MaxHealth", GET_COMPONENT(it.second, HealthComponent, ComponentType::HEALTH)->maxHealth, allocator);
+			}*/
 
 			// Add individual component to components object
 			rapidjson::Value componentNameJson;
@@ -489,6 +499,9 @@ void ObjectFactory::SavePrefabsToFile(const std::string& filePath) {
 				individualComponent.AddMember("ColliderSizeY", GET_COMPONENT(it.second, Collider, ComponentType::COLLIDER)->tx->scale.y, allocator);
 				individualComponent.AddMember("ColliderRotation", GET_COMPONENT(it.second, Collider, ComponentType::COLLIDER)->tx->rotation, allocator);
 			}
+			/*else if (componentName == "HealthComponent") {
+				individualComponent.AddMember("MaxHealth", GET_COMPONENT(it.second, HealthComponent, ComponentType::HEALTH)->maxHealth, allocator);
+			}*/
 
 			// Add individual component to components object
 			rapidjson::Value componentNameJson;
