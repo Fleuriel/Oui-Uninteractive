@@ -121,6 +121,8 @@ void OpenGLApplication::OpenGLWindowInit() {
 		return;
 	}
 
+	toggleFullScreen();
+
 	// Tell GLFW we are using OpenGL 4.5
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 5);
