@@ -17,7 +17,7 @@
 #include <array>
 #include <string>
 
-
+void toggleFullScreen();
 
 class InputSystem
 {

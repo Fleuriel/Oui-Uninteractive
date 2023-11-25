@@ -121,6 +121,8 @@ void OpenGLApplication::OpenGLWindowInit() {
 		return;
 	}
 
+	toggleFullScreen();
+
 	// Tell GLFW we are using OpenGL 4.5
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 5);
@@ -393,13 +395,13 @@ void OpenGLApplication::OpenGLUpdate() {
 
 	if (ctrlKeyPressed) {
 #ifdef _DEBUG
-		std::cout << "CONTROL ON\n";
+		//std::cout << "CONTROL ON\n";
 #endif
 	}
 
 	if (shiftKeyPressed) {
 #ifdef _DEBUG
-		std::cout << "SHIFT ON\n";
+		//std::cout << "SHIFT ON\n";
 #endif
 	}
 
