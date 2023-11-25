@@ -77,6 +77,7 @@ public:
 	void Init();
 	void Update();
 	void SetFileFilters();
+	void SetIconExtList();
 	void DrawGizmos(float scaleX, float scaleY,  Vec2 pos, float rot);
 	static void CreateMenuBar();
 	static void CreateRenderWindow();
@@ -142,6 +143,7 @@ static SystemTime timeRecorder;
 private:
 	static std::vector<std::string> prefabList;
 	static std::map<std::string, LPCWSTR> fileFilterList;
+	static std::map<std::string, std::string> iconExtList;
 };
 
 // Store panel selection
