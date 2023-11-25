@@ -16,6 +16,7 @@
  // Defining static variables
 bool Editor::editorOn;
 bool Editor::fileBrowserOpen;
+bool Editor::consoleEntered;
 Editor::SystemTime Editor::timeRecorder;
 std::vector<float> Editor::fpsData;
 std::pair<int, int> Editor::gameWindowOrigin;
@@ -1980,6 +1981,7 @@ void Editor::RenderDirectoryV2(const std::string& filePath) {
 void Editor::CreateConsolePanel() {
 	ImGui::Begin("Console");
 	if (ImGui::InputText("####", &consoleTextInput, ImGuiInputTextFlags_EnterReturnsTrue) || (ImGui::SameLine(), ImGui::Button("Enter"))) {
+		consoleEntered = true;
 		ImGui::Text("Inputs", consoleTextInput);
 		std::cout << consoleTextInput;
 	}
