@@ -126,9 +126,13 @@ public:
 	static std::vector<float> fpsData;
 
 public:
+	struct EditorSettings {
+		static int iconSize;
+		static int iconPadding;
+	};
 	// Panel settings
-	static int iconSize;
-	static int iconPadding;
+	//static int iconSize;
+	//static int iconPadding;
 
 
 struct SystemTime {

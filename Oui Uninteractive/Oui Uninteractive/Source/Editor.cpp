@@ -41,8 +41,8 @@ OpenGLObject Editor::selectedOutline4;
 OpenGLObject Editor::rotatedWidget;
 
 // Editor settings
-int Editor::iconSize{ 128 };
-int Editor::iconPadding{ 16 };
+int Editor::EditorSettings::iconSize{ 128 };
+int Editor::EditorSettings::iconPadding{ 16 };
 float scaleOutline = 30.f;
 
 /**************************************************************************
@@ -580,10 +580,10 @@ void Editor::CreateMenuBar() {
 		//ImGui::SliderFloat("Icon Size", &iconSize, 32, 2048);
 		//ImGui::SliderFloat("Icon Padding", &iconPadding, 0, 128);
 		if (ImGui::SliderInt("Icon Size", &exp1, 5, 10)) {
-			iconSize = std::powf(2.0f, exp1);
+			EditorSettings::iconSize = std::powf(2.0f, exp1);
 		}
 		if (ImGui::SliderInt("Icon Padding", &exp2, 0, 10)) {
-			iconPadding = std::powf(2.0f, exp2);
+			EditorSettings::iconPadding = std::powf(2.0f, exp2);
 		}
 		ImGui::End();
 	}
@@ -1897,7 +1897,7 @@ void Editor::CreateDebugPanel() {
 
 void Editor::RenderDirectoryV2(const std::string& filePath) {
 	// Calculate how many icons per column
-	float gridSize = iconSize + iconPadding;
+	float gridSize = EditorSettings::iconSize + EditorSettings::iconPadding;
 	ImVec2 panelSize = ImGui::GetContentRegionAvail();
 	int colCount = static_cast<int>(panelSize.x / gridSize);
 	if (colCount < 1) {
@@ -1959,7 +1959,7 @@ void Editor::RenderDirectoryV2(const std::string& filePath) {
 		}
 
 		// Render button
-		ImGui::ImageButton(iconTexture, ImVec2(iconSize, iconSize));
+		ImGui::ImageButton(iconTexture, ImVec2(EditorSettings::iconSize, EditorSettings::iconSize));
 
 		// Set drag sourece for textures
 		if (filePath == FILEPATH_TEXTURES) {
@@ -1968,7 +1968,7 @@ void Editor::RenderDirectoryV2(const std::string& filePath) {
 				// Set payload type
 				ImGui::SetDragDropPayload("PAYLOAD_TEXTURE", texNameWithoutExt.c_str(), texNameWithoutExt.size() + 1);
 				// Display held item
-				ImGui::Image(iconTexture, ImVec2(iconSize / 4, iconSize / 4));
+				ImGui::Image(iconTexture, ImVec2(EditorSettings::iconSize / 4, EditorSettings::iconSize / 4));
 				ImGui::EndDragDropSource();
 			}
 		}
@@ -1978,7 +1978,7 @@ void Editor::RenderDirectoryV2(const std::string& filePath) {
 				// Set payload type
 				ImGui::SetDragDropPayload("PAYLOAD_SPRITE", texNameWithoutExt.c_str(), texNameWithoutExt.size() + 1);
 				// Display held item
-				ImGui::Image(iconTexture, ImVec2(iconSize / 4, iconSize / 4));
+				ImGui::Image(iconTexture, ImVec2(EditorSettings::iconSize / 4, EditorSettings::iconSize / 4));
 				ImGui::EndDragDropSource();
 			}
 		}
