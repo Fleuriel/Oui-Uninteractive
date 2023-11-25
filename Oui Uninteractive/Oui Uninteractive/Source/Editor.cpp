@@ -32,6 +32,8 @@ OpenGLObject Editor::selectedOutline1;
 OpenGLObject Editor::selectedOutline2;
 OpenGLObject Editor::selectedOutline3;
 OpenGLObject Editor::selectedOutline4;
+OpenGLObject Editor::rotatedWidget;
+
 // Editor settings
 int Editor::iconSize{ 128 };
 int Editor::iconPadding{ 16 };
@@ -224,6 +226,7 @@ void Editor::Update() {
 	static bool scaleMode2 = false;
 	static bool scaleMode3 = false;
 	static bool scaleMode4 = false;
+	static bool rotateMode = false;
 
 	std::map<size_t, GameObject*> copyMap = objectFactory->GetGameObjectIDMap();
 	std::pair<int, int> xBounds = std::pair<int, int>(Editor::gameWindowOrigin.first, Editor::gameWindowSize.first);
@@ -242,37 +245,41 @@ void Editor::Update() {
 		}
 	}
 	
+
+	Vec2 rightGizmoPos = Vec2(0, 0);
+	Vec2 leftGizmoPos = Vec2(0, 0);
+	Vec2 topGizmoPos = Vec2(0, 0);
+	Vec2 botGizmoPos = Vec2(0, 0);
+	Vec2 rotateGizmoPos = Vec2(0, 0);
 	if (selected != nullptr) {
 		Transform* tx = GET_COMPONENT(selected, Transform, ComponentType::TRANSFORM);
-
-		static Vec2 help;
-		if (tx != nullptr) {
-			//help = tx->position - Vector2DRotate(Vec2(0, tx->scale.y / 2.f), tx->rotation, Vec2(0, 0));
-			help = tx->position + Vector2DRotate(Vec2(tx->scale.x / 2.f, 0) + Vec2(scaleOutline, 0), tx->rotation, Vec2(0, 0));
-		}
-		
 		if (tx != nullptr && (ogMouseX > xBounds.first && ogMouseX < xBounds.second) && (ogMouseY > yBounds.first && ogMouseY < yBounds.second)) {
 			
-
+			rightGizmoPos = tx->position + Vector2DRotate(Vec2(tx->scale.x / 2.f + scaleOutline, 0), tx->rotation, Vec2(0, 0));
+			leftGizmoPos = tx->position - Vector2DRotate(Vec2((tx->scale.x / 2.f) + scaleOutline, 0), tx->rotation, Vec2(0, 0));
+			topGizmoPos = tx->position + Vector2DRotate(Vec2(0, (tx->scale.y / 2.f) + scaleOutline), tx->rotation, Vec2(0, 0));
+			botGizmoPos = tx->position - Vector2DRotate(Vec2(0, (tx->scale.y / 2.f) + scaleOutline), tx->rotation, Vec2(0, 0));
+			rotateGizmoPos = tx->position + Vector2DRotate(Vec2(0, (tx->scale.y / 2.f) + (3 * scaleOutline)), tx->rotation, Vec2(0, 0));
 			if (inputSystem.GetMouseState(GLFW_MOUSE_BUTTON_1)) {
-				if (translateMode != true && scaleMode != true && scaleMode2 != true && scaleMode3 != true && scaleMode4 != true){//}&& scaleMode4 != true) {
-					std::cout << CollisionPointRotateRect(tx->position, tx->scale.x, tx->scale.y, mouseX, mouseY, tx->rotation) << "\n";
-					
+				if (translateMode != true && scaleMode != true && scaleMode2 != true && scaleMode3 != true && scaleMode4 != true && rotateMode != true){
 					if (CollisionPointRotateRect(tx->position, tx->scale.x, tx->scale.y, mouseX, mouseY, tx->rotation)) {
 						translateMode = true;
 					}
-					else if (CollisionPointRotateRect(tx->position + Vector2DRotate(Vec2(tx->scale.x / 2.f + scaleOutline, 0) , tx->rotation, Vec2(0, 0)), scaleOutline, tx->scale.y + scaleOutline, mouseX, mouseY, tx->rotation)) {
+					else if (CollisionPointRotateRect(rightGizmoPos, scaleOutline, tx->scale.y + scaleOutline, mouseX, mouseY, tx->rotation)) {
 						scaleMode = true;
 					}
-					else if (CollisionPointRotateRect(tx->position - Vector2DRotate(Vec2((tx->scale.x / 2.f) + scaleOutline, 0), tx->rotation, Vec2(0, 0)), scaleOutline, tx->scale.y + scaleOutline, mouseX, mouseY, tx->rotation)) {
+					else if (CollisionPointRotateRect(leftGizmoPos, scaleOutline, tx->scale.y + scaleOutline, mouseX, mouseY, tx->rotation)) {
 						scaleMode2 = true;
 					}
-					else if (CollisionPointRotateRect(tx->position + Vector2DRotate(Vec2(0, (tx->scale.y / 2.f) + scaleOutline), tx->rotation, Vec2(0, 0)), tx->scale.x + scaleOutline, scaleOutline, mouseX, mouseY, tx->rotation)) {
+					else if (CollisionPointRotateRect(topGizmoPos, tx->scale.x + scaleOutline, scaleOutline, mouseX, mouseY, tx->rotation)) {
 						scaleMode3 = true;
 					
 					}
-					else if (CollisionPointRotateRect(tx->position - Vector2DRotate(Vec2(0, (tx->scale.y / 2.f) + scaleOutline), tx->rotation, Vec2(0, 0)), tx->scale.x + scaleOutline, scaleOutline, mouseX, mouseY, tx->rotation)) {
+					else if (CollisionPointRotateRect(botGizmoPos, tx->scale.x + scaleOutline, scaleOutline, mouseX, mouseY, tx->rotation)) {
 						scaleMode4 = true;
+					}
+					else if (CollisionPointRotateRect(rotateGizmoPos, scaleOutline, scaleOutline, mouseX, mouseY, tx->rotation)) {
+						rotateMode = true;
 					}
 				}
 				
@@ -459,14 +466,40 @@ void Editor::Update() {
 			}
 		}
 	}
-	if (inputSystem.GetMouseState(GLFW_MOUSE_BUTTON_2) == GLFW_PRESS) {
+	if (rotateMode) {
+		if (selected != nullptr) {
+			Transform* tx = GET_COMPONENT(selected, Transform, ComponentType::TRANSFORM);
+			if (tx != nullptr) {
+				if (inputSystem.GetMouseState(GLFW_MOUSE_BUTTON_1) == GLFW_PRESS) {
+					buttonDown = true;
+				}
+				else {
+					buttonDown = false;
+					rotateMode = false;
+				}
+				if (buttonDown) {
+				/*	float dp = Vector2DDotProduct(Vec2(mouseX, mouseY) - tx->position, rotateGizmoPos);
+					float mags = Vector2DLength(Vec2(mouseX, mouseY) - tx->position) * Vector2DLength(rotateGizmoPos);*/
+						float dp = Vector2DDotProduct(Vec2(mouseX, mouseY) - tx->position, Vec2(0,1));
+					float mags = Vector2DLength(Vec2(mouseX, mouseY) - tx->position) * Vector2DLength(Vec2(0,1));
+					float angle = acosf(dp / mags);
+					angle = angle * (180 / PI);
+					if (mouseX > tx->position.x) {
+						angle = 360.f - angle;
+					}
+					tx->rotation = angle;
+				}
+			}
+		}
+	}
+	/*if (inputSystem.GetMouseState(GLFW_MOUSE_BUTTON_2) == GLFW_PRESS) {
 		if (selected != nullptr) {
 			Transform* tx = GET_COMPONENT(selected, Transform, ComponentType::TRANSFORM);
 			if (tx != nullptr) {
 				tx->rotation += 20.f;
 			}
 		}
-	}
+	}*/
 	if (inputSystem.GetKeyState(GLFW_KEY_DELETE)) {
 		if (selected != nullptr) {
 			objectFactory->DestroyObject(objectFactory->GetGameObjectByID(selected->GetGameObjectID()));
@@ -1921,16 +1954,20 @@ void Editor::CreateConsolePanel() {
 	ImGui::End();
 }
 void Editor::DrawGizmos(float scaleX, float scaleY, Vec2 pos, float rot) {
+
+
+
 	Matrix3x3 scale = Matrix3x3(scaleX + scaleOutline, 0.f, 0.f,
-		0.f, scaleY + scaleOutline, 0.f,
-		0.f, 0.0f, 1.0f);
+								0.f, scaleY + scaleOutline, 0.f,
+								0.f, 0.0f, 1.0f);
 	float radRot = rot * (static_cast<float>(PI) / 180.0f);
 	Matrix3x3 rotate = Matrix3x3(cosf(radRot), sinf(radRot), 0,
-		-sinf(radRot), cosf(radRot), 0.f,
-		0.f, 0.f, 1.0f);
+								-sinf(radRot), cosf(radRot), 0.f,
+								0.f, 0.f, 1.0f);
 	Matrix3x3 translate = Matrix3x3(1.f, 0.f, 0.f,
-		0.f, 1.f, 0.f,
-		pos.x, pos.y, 1.0f);
+									0.f, 1.f, 0.f,
+									pos.x, pos.y, 1.0f);
+
 	selectedOutline.Update(scale, rotate, translate);
 
 	scale = Matrix3x3(scaleOutline, 0.f, 0.f,
@@ -1984,4 +2021,17 @@ void Editor::DrawGizmos(float scaleX, float scaleY, Vec2 pos, float rot) {
 		0.f, 1.f, 0.f,
 		translateVec.x, translateVec.y, 1.0f);
 	selectedOutline4.Update(scale, rotate, translate);
+
+	scale = Matrix3x3(scaleOutline, 0.f, 0.f,
+		0.f, scaleOutline, 0.f,
+		0.f, 0.0f, 1.0f);
+	radRot = rot * (static_cast<float>(PI) / 180.0f);
+	rotate = Matrix3x3(cosf(radRot), sinf(radRot), 0,
+		-sinf(radRot), cosf(radRot), 0.f,
+		0.f, 0.f, 1.0f);
+	translateVec = pos + Vector2DRotate(Vec2(0, (scaleY / 2.f) + (3 * scaleOutline)), rot, Vec2(0, 0));
+	translate = Matrix3x3(1.f, 0.f, 0.f,
+		0.f, 1.f, 0.f,
+		translateVec.x, translateVec.y, 1.0f);
+	rotatedWidget.Update(scale, rotate, translate);
 }

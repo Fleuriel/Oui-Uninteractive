@@ -104,6 +104,7 @@ public:
 	static OpenGLObject selectedOutline2;
 	static OpenGLObject selectedOutline3;
 	static OpenGLObject selectedOutline4;
+	static OpenGLObject rotatedWidget;
 
 public:
 	// ImGui colour definitions
