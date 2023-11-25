@@ -1895,8 +1895,18 @@ void Editor::RenderDirectoryV2(const std::string& filePath) {
 		const std::string entryName = entry.path().filename().string();
 		const bool isDirectory = entry.is_directory();
 
-		// Use folder or file icon texture
-		ImTextureID iconTexture = isDirectory ? reinterpret_cast<ImTextureID>(static_cast<uintptr_t>(assetManager.GetTexture("folder_icon"))) : reinterpret_cast<ImTextureID>(static_cast<uintptr_t>(assetManager.GetTexture("file_icon")));
+		// Set correct icons
+		//ImTextureID iconTexture = isDirectory ? reinterpret_cast<ImTextureID>(static_cast<uintptr_t>(assetManager.GetTexture("folder_icon"))) : reinterpret_cast<ImTextureID>(static_cast<uintptr_t>(assetManager.GetTexture("file_icon")));
+		ImTextureID iconTexture = nullptr;
+		if (isDirectory) { // For folders
+			iconTexture = reinterpret_cast<ImTextureID>(static_cast<uintptr_t>(assetManager.GetTexture("folder_icon")));
+		}
+		else { 
+			if (entry.path().string().find("textures") != std::string::npos) {
+				std::string texNameWithoutExt = entry.path().stem().string();
+				iconTexture = reinterpret_cast<ImTextureID>(static_cast<uintptr_t>(assetManager.GetTexture(texNameWithoutExt)));
+			}
+		}
 
 		// Change button style if entry is selected
 		if (browserSelectedItem == entryName) {
