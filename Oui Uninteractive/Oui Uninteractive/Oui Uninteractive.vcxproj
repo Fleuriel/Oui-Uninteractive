@@ -36,6 +36,8 @@
     <ClCompile Include="Source\GameObject.cpp" />
     <ClCompile Include="Source\GameStateManager.cpp" />
     <ClCompile Include="Source\Global.cpp" />
+    <ClCompile Include="Source\HealthComponent.cpp" />
+    <ClCompile Include="Source\HealthSystem.cpp" />
     <ClCompile Include="Source\JsonSerializer.cpp" />
     <ClCompile Include="Source\Logic.cpp" />
     <ClCompile Include="Source\LogicComponent.cpp" />
@@ -85,6 +87,8 @@
     <ClInclude Include="Include\GameObject.h" />
     <ClInclude Include="Include\GameStateManager.h" />
     <ClInclude Include="Include\Global.h" />
+    <ClInclude Include="Include\HealthComponent.h" />
+    <ClInclude Include="Include\HealthSystem.h" />
     <ClInclude Include="Include\IComponent.h" />
     <ClInclude Include="Include\IScene.h" />
     <ClInclude Include="Include\IMessage.h" />

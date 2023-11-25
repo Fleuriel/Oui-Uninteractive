@@ -27,6 +27,7 @@ bool Editor::browserDoubleClicked;
 std::string Editor::browserSelectedItem;
 GameObject* Editor::selected;
 std::map<std::string, LPCWSTR> Editor::fileFilterList;
+std::map<std::string, std::string> Editor::iconExtList;
 
 OpenGLObject Editor::selectedOutline;
 OpenGLObject Editor::selectedOutline1;
@@ -182,6 +183,7 @@ void Editor::Init() {
 	fileBrowserOpen = false;
 	Editor::selectedOutline.InitObjects();
 	SetFileFilters();
+	SetIconExtList();
 }
 
 void Editor::SetFileFilters() {
@@ -196,6 +198,18 @@ void Editor::SetFileFilters() {
 	fileFilterList.insert(std::make_pair(FILEPATH_PREFABS, L"Text Files (*.JSON)\0*.JSON\0"));
 }
 
+
+void Editor::SetIconExtList() {
+	iconExtList.clear();
+	iconExtList.insert(std::make_pair(".ttf", "font_icon"));
+	iconExtList.insert(std::make_pair(".otf", "font_icon"));
+	iconExtList.insert(std::make_pair(".frag", "frag_icon"));
+	iconExtList.insert(std::make_pair(".vert", "vert_icon"));
+	iconExtList.insert(std::make_pair(".JSON", "json_icon"));
+	iconExtList.insert(std::make_pair(".mp3", "audio_icon"));
+	iconExtList.insert(std::make_pair(".wav", "audio_icon"));
+	iconExtList.insert(std::make_pair(".ogg", "audio_icon"));
+}
 
 /**************************************************************************
 * @brief This function updates the editor
@@ -1859,30 +1873,6 @@ void Editor::CreateDebugPanel() {
 	ImGui::End();
 }
 
-//// Recursive helper function to render the file directory for the asset browser	
-//void Editor::RenderDirectory(const std::string& filePath) {
-//	std::filesystem::path dirPath(filePath);
-//	if (std::filesystem::exists(dirPath)) {
-//		// Render folder directories
-//		for (auto& entry : std::filesystem::directory_iterator(dirPath)) {
-//			if (entry.is_directory()) {
-//				if (ImGui::TreeNode(entry.path().filename().string().c_str())) {
-//					RenderDirectory(entry.path().string());
-//					ImGui::TreePop();
-//				}
-//			}
-//		}
-//		// Render individual files
-//		for (auto& entry : std::filesystem::directory_iterator(filePath)) {
-//			if (!entry.is_directory()) {
-//				ImGui::Selectable(entry.path().filename().string().c_str());
-//			}
-//		}
-//	}
-//	else {
-//		std::cout << "File path does not exist. Maybe check the working directory" << std::endl;
-//	}
-//}
 
 void Editor::RenderDirectoryV2(const std::string& filePath) {
 	// Calculate how many icons per column
@@ -1906,14 +1896,31 @@ void Editor::RenderDirectoryV2(const std::string& filePath) {
 			iconTexture = reinterpret_cast<ImTextureID>(static_cast<uintptr_t>(assetManager.GetTexture("folder_icon")));
 		}
 		else { // Non-folder icons
-			// Textures
+			// For images
 			if (entryExt == ".jpg" || entryExt == ".jpeg" || entryExt == ".png" || entryExt == ".gif") {
 				std::string texNameWithoutExt = entry.path().stem().string();
-				iconTexture = reinterpret_cast<ImTextureID>(static_cast<uintptr_t>(assetManager.GetTexture(texNameWithoutExt)));
-			}
-			else if (entryExt == ".ttf" || entryExt == ".otf") {
-
-			}
+				// For Spites
+				if (filePath == FILEPATH_SPRITES) {
+					size_t bracketPos = texNameWithoutExt.find('('); // Cutout size for accessing
+					if (bracketPos != std::string::npos) {
+						texNameWithoutExt = texNameWithoutExt.substr(0, bracketPos);
+					}
+					iconTexture = reinterpret_cast<ImTextureID>(static_cast<uintptr_t>(assetManager.GetSprite(texNameWithoutExt).GetTexture()));
+				}
+				// For Textures
+				else {
+					iconTexture = reinterpret_cast<ImTextureID>(static_cast<uintptr_t>(assetManager.GetTexture(texNameWithoutExt)));
+				}			
+			} // For everything else
+			else {
+				auto it = iconExtList.find(entryExt);
+				if (it != iconExtList.end()) { // Use corresponding texture
+					iconTexture = reinterpret_cast<ImTextureID>(static_cast<uintptr_t>(assetManager.GetTexture(it->second))); 
+				}
+				else { // Use default texture
+					iconTexture = reinterpret_cast<ImTextureID>(static_cast<uintptr_t>(assetManager.GetTexture("others_icon")));
+				}
+			}		
 		}
 
 		// Change button style if entry is selected
