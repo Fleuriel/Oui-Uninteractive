@@ -22,7 +22,7 @@ public:
 
 					static bool count = false;
 					static bool pickedup = false;
-					int z = 7;
+					int z = 1;
 
 					if (inputSystem.GetKeyState(GLFW_KEY_X)) {
 						count = 0;
@@ -35,14 +35,14 @@ public:
 					}
 
 					//Set playerBody1 as the player (permanent)
-					PhysicsBody* playerBody1 = GET_COMPONENT(objectFactory->GetGameObjectByID(6), PhysicsBody, ComponentType::PHYSICS_BODY);
+					PhysicsBody* playerBody1 = GET_COMPONENT(objectFactory->GetGameObjectByID(0), PhysicsBody, ComponentType::PHYSICS_BODY);
 
 					//Declare a temporary physics body for the final weapon chosen
-					static PhysicsBody* playerBodyFinale = GET_COMPONENT(objectFactory->GetGameObjectByID(7), PhysicsBody, ComponentType::PHYSICS_BODY);
+					static PhysicsBody* playerBodyFinale = GET_COMPONENT(objectFactory->GetGameObjectByID(1), PhysicsBody, ComponentType::PHYSICS_BODY);
 
 					
 					if (pickedup == false) {
-						for (int i = 8; i < 10; i++) {
+						for (int i = 2; i < 4; i++) {
 							
 							//knife
 							PhysicsBody* playerBody = GET_COMPONENT(objectFactory->GetGameObjectByID(z), PhysicsBody, ComponentType::PHYSICS_BODY);
