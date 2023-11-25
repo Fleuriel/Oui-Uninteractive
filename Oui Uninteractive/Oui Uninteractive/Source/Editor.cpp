@@ -11,12 +11,12 @@
 #include <iostream>
 #include "Editor.h"
 #include "Collision.h"
+#include "Cheats.h"
 #define PI 3.141592653589793
 
  // Defining static variables
 bool Editor::editorOn;
 bool Editor::fileBrowserOpen;
-bool Editor::consoleEntered;
 Editor::SystemTime Editor::timeRecorder;
 std::vector<float> Editor::fpsData;
 std::pair<int, int> Editor::gameWindowOrigin;
@@ -149,9 +149,22 @@ void UsingImGui::Draw() {
 	if (panelList.debugPanel) {
 		Editor::CreateDebugPanel();
 	}
-	if (panelList.consolePanel || inputSystem.cheater) {
+	
+	if (panelList.consolePanel && !inputSystem.cheater) {
+		inputSystem.cheater = panelList.consolePanel;
+	}
+	else
+		panelList.consolePanel = inputSystem.cheater;
+
+	if (panelList.consolePanel) {
 		Editor::CreateConsolePanel();
 	}
+
+	if (!panelList.consolePanel || !inputSystem.cheater) {
+		inputSystem.cheater = false;
+		panelList.consolePanel = false;
+	}
+		
 
 	//Editor::selectedOutline.Draw(std::string(""), true);
 	ImGui::Render();
@@ -1952,13 +1965,23 @@ void Editor::RenderDirectoryV2(const std::string& filePath) {
 
 void Editor::CreateConsolePanel() {
 	ImGui::Begin("Console");
+
 	if (ImGui::InputText("####", &consoleTextInput, ImGuiInputTextFlags_EnterReturnsTrue) || (ImGui::SameLine(), ImGui::Button("Enter"))) {
-		consoleEntered = true;
-		ImGui::Text("Inputs", consoleTextInput);
-		std::cout << consoleTextInput;
+		if (CheckCheatCode(consoleTextInput))
+			Cheat(consoleTextInput);
+		if (consoleTextInput == "developermodeoff") {
+			panelList.consolePanel = false;
+			inputSystem.cheater = false;
+		}
+		consoleTextInput.clear();
 	}
+
+	// Action to be taken on Enter press
+	ImGui::Text(CheckCheatCode(consoleTextInput) ? "Command Check: Command Found" : "Command Check: Command Not Found");
+
 	ImGui::End();
 }
+
 /**************************************************************************
 * @brief This function calculates and updates the matrix for the shapes used 
 		 in a basic gizmo for scaling/rotating/moving a game object in the Editor

@@ -217,26 +217,32 @@ void KeyCallBack(GLFWwindow* window3, int key, int scancode, int action, int mod
 	if (key == GLFW_KEY_F11 && action == GLFW_PRESS)
 		toggleFullScreen();
 
-	if (key == GLFW_KEY_F1 && action == GLFW_PRESS) inputSystem.typePW = true;
+	
+	if (key == GLFW_KEY_F1 && action == GLFW_PRESS) { 
+		std::cout << std::endl;
+		inputSystem.typePW = true; 
+	}
 
 	if (inputSystem.typePW) {
 		if (action == GLFW_PRESS) {
 			if (key >= GLFW_KEY_A && key <= GLFW_KEY_Z) {
 				char newchar{ 'a' + static_cast<char>(key - GLFW_KEY_A) };
 					inputSystem.hiddenconsole += newchar;
-				std::cout << "hiddenconsole: " << inputSystem.hiddenconsole << std::endl;
+				std::cout << newchar;
 			}
 			if (key == GLFW_KEY_ENTER) {
-				if (inputSystem.hiddenconsole == "developermodeon")
+				if (inputSystem.hiddenconsole == "developermodeon") {
 					inputSystem.cheater = true;
-				if (inputSystem.hiddenconsole == "developermodeoff")
-					inputSystem.cheater = false;
+				}
 
 				inputSystem.typePW = false;
 				inputSystem.hiddenconsole = std::string("");
+				std::cout << std::endl;
 			}
 		}
 	}
+
+	
 }
 
 
