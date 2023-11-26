@@ -1015,6 +1015,13 @@ bool AssetManager::ReloadSFX() {
     return (AssetManager::FreeSFX() && AssetManager::LoadSFX());
 }
 
+/**************************************************************************
+ * @brief Getter for the sound asset map
+ *
+ * This function gets the sound asset map.
+ *
+ * @return Map of the sound assets.
+ *************************************************************************/
 std::map<SoundManager::SoundType, std::map<std::string, FMOD::Sound*>> AssetManager::GetSoundMap() {
     return assetManager.soundMap;
 }

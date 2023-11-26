@@ -83,9 +83,11 @@ void UsingImGui::Init(GLFWwindow* glfwWindow, const char* glsl_vers) {
 
 	// Load fonts for editor
 	LoadFonts();
-
-	io.FontDefault = io.Fonts->Fonts[0];
-
+ 
+	if (!io.Fonts->Fonts.empty()) {
+		io.FontDefault = io.Fonts->Fonts[0];
+	}
+	
 	// Config Flags
 	io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
 	//io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;
@@ -97,6 +99,10 @@ void UsingImGui::Init(GLFWwindow* glfwWindow, const char* glsl_vers) {
 }
 
 
+/**************************************************************************
+* @brief This function loads fonts for use with ImGui Editor
+* @return void
+*************************************************************************/
 void UsingImGui::LoadFonts() {
 	ImGuiIO& io = ImGui::GetIO();
 	for (const auto& entry : std::filesystem::directory_iterator(FILEPATH_FONTS)) {
@@ -216,6 +222,11 @@ void Editor::Init() {
 	SetIconExtList();
 }
 
+
+/**************************************************************************
+* @brief This function loads fonts for use with ImGui Editor
+* @return void
+*************************************************************************/
 void Editor::SetFileFilters() {
 	fileFilterList.clear();
 	fileFilterList.insert(std::make_pair(FILEPATH_MASTER, L"All Files (*.*)\0*.*\0"));
@@ -229,6 +240,10 @@ void Editor::SetFileFilters() {
 }
 
 
+/**************************************************************************
+* @brief This function sets up the different file icons to be used with the various extension types
+* @return void
+*************************************************************************/
 void Editor::SetIconExtList() {
 	iconExtList.clear();
 	iconExtList.insert(std::make_pair(".ttf", "font_icon"));
@@ -552,7 +567,10 @@ void Editor::Update() {
 /* ============================================
 	CREATING INDIVIDUAL DOCKABLE IMGUI PANELS
    ============================================ */
-
+/**************************************************************************
+* @brief This function renders the menu bar at the top of the window
+* @return void
+*************************************************************************/
 void Editor::CreateMenuBar() {
 	static bool showAssBrowserSettings = false;
 	static bool showPerformanceSettings = false;
@@ -579,10 +597,10 @@ void Editor::CreateMenuBar() {
 		//ImGui::SliderFloat("Icon Size", &iconSize, 32, 2048);
 		//ImGui::SliderFloat("Icon Padding", &iconPadding, 0, 128);
 		if (ImGui::SliderInt("Icon Size", &exp1, 5, 10)) {
-			EditorSettings::iconSize = std::powf(2.0f, exp1);
+			EditorSettings::iconSize = static_cast<int>(std::powf(2.0f, static_cast<float>(exp1)));
 		}
 		if (ImGui::SliderInt("Icon Padding", &exp2, 0, 10)) {
-			EditorSettings::iconPadding = std::powf(2.0f, exp2);
+			EditorSettings::iconPadding = static_cast<int>(std::powf(2.0f, static_cast<float>(exp2)));
 		}
 		ImGui::End();
 	}
@@ -634,7 +652,6 @@ void Editor::CreateMasterPanel() {
 		}
 		ImGui::EndCombo();
 	}
-	//std::cout << sceneFileName << std::endl;
 	// Save level to file
 	if (ImGui::Button("Save scene")) {
 		// Get rapidjson documents of tilemap and game objects
@@ -757,13 +774,10 @@ void Editor::CreateRenderWindow() {
 					}
 				}
 			}
-
-
 			itemDrag = false;
 			ImGui::EndDragDropTarget();
 
 		}
-	
 	}
 	ImGui::EndChild();
 	ImGui::End();
@@ -1030,9 +1044,6 @@ void Editor::CreatePrefabPanel() {
 		}
 	}
 
-
-
-
 	// Left Plane
 	{
 		ImGui::BeginChild("left pane", ImVec2(150, 0), true);
@@ -1157,9 +1168,7 @@ void Editor::CreatePrefabPanel() {
 			if (ImGui::Button("Delete Script")) {
 				tempLogicSet.erase(currentScriptIndex);
 				saveFlag = true;
-			}
-
-			
+			}		
 			LogicComponent* prefabLogic = GET_PREFAB_COMPONENT(copy[selectedName], LogicComponent, ComponentType::LOGICCOMPONENT);
 			if (prefabLogic != nullptr) {
 				if (initialized == false) {
@@ -1170,8 +1179,6 @@ void Editor::CreatePrefabPanel() {
 					ImGui::Text(logicSystem->scriptVec[*itLogic]->name.c_str());
 				}
 			}
-			
-
 		}
 		// Render Collider
 		if (ImGui::Checkbox("##Collider", &colliderFlag)) {
@@ -1205,8 +1212,6 @@ void Editor::CreatePrefabPanel() {
 			if (ImGui::InputInt("Max Health", &maxHp)) saveFlag = true;
 			ImGui::Unindent();
 		}
-
-
 		ImGui::EndChild();
 		ImGui::EndGroup();
 	}
@@ -1220,60 +1225,6 @@ void Editor::CreatePrefabPanel() {
 *************************************************************************/
 void Editor::CreateSoundPanel() {
 	ImGui::Begin("Sound Control Panel");
-	//if (ImGui::TreeNode("Tracks")) {
-	//	ImGui::SeparatorText("BGM");
-	//	static int bgmChoice = 0;
-	//	static float volValue = 1.0f, bgmVol1 = 1.0f, bgmVol2 = 1.0f;
-	//	bool pauseStatus1 = true, pauseStatus2 = true;
-
-	//	// Check pause status for bgmch1	
-	//	soundManager->bgmChannels[0]->getPaused(&pauseStatus1);
-	//	if (pauseStatus1) {
-	//		ImGui::PushStyleColor(ImGuiCol_Text, redColour); // Red if not playing	
-	//	}
-	//	else {
-	//		ImGui::PushStyleColor(ImGuiCol_Text, greenColour); // Green if playing
-	//	}
-	//	if (ImGui::RadioButton("BGM 1", &bgmChoice, 0)) { // On radio button 1 click
-	//		volValue = bgmVol1;
-	//	} ImGui::SameLine();
-	//	ImGui::PopStyleColor();
-
-	//	// Check pause status for bgmch2
-	//	soundManager->bgmChannels[1]->getPaused(&pauseStatus2);
-	//	if (pauseStatus2) {
-	//		ImGui::PushStyleColor(ImGuiCol_Text, redColour); // Red if not playing
-	//	}
-	//	else {
-	//		ImGui::PushStyleColor(ImGuiCol_Text, greenColour); // Green if playing
-	//	}
-	//	if (ImGui::RadioButton("BGM 2", &bgmChoice, 1)) { // On radio button 2 click
-	//		volValue = bgmVol2;
-	//	}
-	//	ImGui::PopStyleColor();
-
-	//	// On Volume slider click
-	//	if (ImGui::SliderFloat("Volume", &volValue, 0.0f, 1.0f, "%.2f")) {
-	//		if (bgmChoice == 0) {
-	//			bgmVol1 = volValue;
-	//		}
-	//		else if (bgmChoice == 1) {
-	//			bgmVol2 = volValue;
-	//		}
-	//		soundManager->bgmChannels[bgmChoice]->setVolume(volValue);
-	//	}
-	//	// On play button click
-	//	if (ImGui::Button("Play/Pause")) {
-	//		soundManager->PlayBGMSounds();
-	//		soundManager->TogglePlayChannel(soundManager->bgmChannels[bgmChoice]);
-	//	}
-
-	//	ImGui::SeparatorText("SFX");
-	//	static int sfxChoice = 0;
-	//	ImGui::RadioButton("SFX 1", &sfxChoice, 0); ImGui::SameLine();
-	//	ImGui::RadioButton("SFX 2", &sfxChoice, 1); ImGui::SameLine();
-	//	ImGui::RadioButton("SFX 3", &sfxChoice, 2);
-
 	// Get copy of sound map
 	auto soundMap = assetManager.GetSoundMap();
 	// Do SFX stuff
@@ -1292,22 +1243,22 @@ void Editor::CreateSoundPanel() {
 		}
 		ImGui::EndCombo();
 	}
-	if (ImGui::Button("Play##SFX")) {
+	if (ImGui::Button("Start##SFX")) {
 		if (!currSelectedSFX.empty()) {
-			soundManager->PlaySFX(currSelectedSFX);
+			soundManager->PlayAdvanced(currSelectedSFX, SoundManager::SoundType::SFX, 0.7f, false, SoundManager::SG2);
 		}
 	}
 	ImGui::SameLine();
 	if (ImGui::Button("Pause##SFX")) {
-		soundManager->PauseGroup(SoundManager::SGSFX);
+		soundManager->PauseGroup(SoundManager::SG2);
 	}
 	ImGui::SameLine();
 	if (ImGui::Button("Resume##SFX")) {
-		soundManager->ResumeGroup(SoundManager::SGSFX);
+		soundManager->ResumeGroup(SoundManager::SG2);
 	}
 	ImGui::SameLine();
 	if (ImGui::Button("Stop##SFX")) {
-		soundManager->StopGroup(SoundManager::SGSFX);
+		soundManager->StopGroup(SoundManager::SG2);
 	}
 	
 	// Do BGM stuff
@@ -1326,22 +1277,22 @@ void Editor::CreateSoundPanel() {
 		}
 		ImGui::EndCombo();
 	}
-	if (ImGui::Button("Play##BGM")) {
-		if (!currSelectedSFX.empty()) {
-			soundManager->PlayBGM(currSelectedBGM);
+	if (ImGui::Button("Start##BGM")) {
+		if (!currSelectedBGM.empty()) {
+			soundManager->PlayAdvanced(currSelectedBGM, SoundManager::SoundType::BGM, 1.0f, true, SoundManager::SG3);
 		}
 	}
 	ImGui::SameLine();
 	if (ImGui::Button("Pause##BGM")) {
-		soundManager->PauseGroup(SoundManager::SGBGM);
+		soundManager->PauseGroup(SoundManager::SG3);
 	}
 	ImGui::SameLine();
 	if (ImGui::Button("Resume##BGM")) {
-		soundManager->ResumeGroup(SoundManager::SGBGM);
+		soundManager->ResumeGroup(SoundManager::SG3);
 	}
 	ImGui::SameLine();
 	if (ImGui::Button("Stop##BGM")) {
-		soundManager->StopGroup(SoundManager::SGBGM);
+		soundManager->StopGroup(SoundManager::SG3);
 	}
 	ImGui::End();
 }
@@ -1805,11 +1756,11 @@ void Editor::CreateObjectList() {
 					if (ImGui::CollapsingHeader("Health Component")) {
 						if (objectFactory->GetGameObjectByID(gameobjID)->Has(ComponentType::HEALTH) != -1) {
 							currentHp2 = GET_COMPONENT(objectFactory->GetGameObjectByID(gameobjID), HealthComponent, ComponentType::HEALTH)->currentHealth;
-							if (ImGui::SliderInt("Current Health", &currentHp2, 0, 50, "%d")) { // Slider for Current Health
+							if (ImGui::SliderInt("Current Health", &currentHp2, 0, maxHp2, "%d")) { // Slider for Current Health
 								GET_COMPONENT(objectFactory->GetGameObjectByID(gameobjID), HealthComponent, ComponentType::HEALTH)->currentHealth = currentHp2;
 							}
 							maxHp2 = GET_COMPONENT(objectFactory->GetGameObjectByID(gameobjID), HealthComponent, ComponentType::HEALTH)->maxHealth;
-							if (ImGui::SliderInt("Max Health", &maxHp2, 0, 50, "%d")) { // Slider for Max Health
+							if (ImGui::SliderInt("Max Health", &maxHp2, 0, 10, "%d")) { // Slider for Max Health
 								GET_COMPONENT(objectFactory->GetGameObjectByID(gameobjID), HealthComponent, ComponentType::HEALTH)->maxHealth = maxHp2;
 							}
 						}
@@ -1820,13 +1771,9 @@ void Editor::CreateObjectList() {
 					ImGui::Unindent();
 				}
 			}
-
 			ImGui::Separator();
 		}
-
-
 		ImGui::EndChild();
-
 		ImGui::EndGroup();
 	}
 	ImGui::End();
@@ -1859,7 +1806,6 @@ void Editor::CreateAssetBrowser() {
 		}
 		browserDoubleClicked = false;
 	}
-
 	ImGui::SameLine();
 	if (ImGui::Button("Back")) {
 		browserSelectedItem = "";
@@ -1938,7 +1884,6 @@ void Editor::CreateAssetBrowser() {
 		HelpMarker("Drag and drop assets to load onto selected object");
 	}
 
-
 	if (ImGui::BeginPopupModal("NO TAKEBACKS", NULL, ImGuiWindowFlags_AlwaysAutoResize)) {
 		static std::string msg("Are you sure you want to delete the selected item:\n\n" + browserSelectedItem);
 		ImGui::TextWrapped(msg.c_str());
@@ -1983,8 +1928,6 @@ void Editor::CreateAssetBrowser() {
 		ImGui::PopStyleColor();
 	}
 	ImGui::EndChild();
-
-
 	ImGui::End();
 }
 
@@ -2001,7 +1944,7 @@ void Editor::CreateDebugPanel() {
 		static std::map<std::string, float> sysTimeAccumulators;
 		static std::vector<std::pair<std::string, float>> avgSysTimes;
 		static int sysTimeSampleCount = 0;
-		int sampleCounter = EditorSettings::dataAvgPeriod * 60;
+		//int sampleCounter = EditorSettings::dataAvgPeriod * 60;
 		static std::vector<float> fpsSamples;
 		static float timeAccumulator = 0.0f;
 		// Record system times
@@ -2082,12 +2025,11 @@ void Editor::CreateDebugPanel() {
 		}
 
 		static ImPlotPieChartFlags flags = 0;
-		// Draw pie chart
-		
+		// Draw pie chart	
 		if (ImPlot::BeginPlot("##PieSystemTime", ImVec2(ImGui::GetWindowWidth(), 250), ImPlotFlags_Equal | ImPlotFlags_NoMouseText)) {
 			ImPlot::SetupAxes(nullptr, nullptr, ImPlotAxisFlags_NoDecorations, ImPlotAxisFlags_NoDecorations);
 			ImPlot::SetupAxesLimits(0, 1, 0, 1);
-			ImPlot::PlotPieChart(chartLabels.data(), data.data(), data.size(), 0.5, 0.5, 0.4, "%.2f", 90, flags);
+			ImPlot::PlotPieChart(chartLabels.data(), data.data(), static_cast<int>(data.size()), 0.5, 0.5, 0.4, "%.2f", 90, flags);
 			ImPlot::EndPlot();
 		}	
 
@@ -2145,10 +2087,14 @@ void Editor::CreateDebugPanel() {
 }
 
 
-
+/**************************************************************************
+* @brief This function renders file directories
+* @param[in] filePath - Current file path of the asset browser
+* @return void
+*************************************************************************/
 void Editor::RenderDirectoryV2(const std::string& filePath) {
 	// Calculate how many icons per column
-	float gridSize = EditorSettings::iconSize + EditorSettings::iconPadding;
+	float gridSize = static_cast<float>(EditorSettings::iconSize + EditorSettings::iconPadding);
 	ImVec2 panelSize = ImGui::GetContentRegionAvail();
 	int colCount = static_cast<int>(panelSize.x / gridSize);
 	if (colCount < 1) {
@@ -2167,7 +2113,7 @@ void Editor::RenderDirectoryV2(const std::string& filePath) {
 		if (isDirectory && entry.path().string() != FILEPATH_TRASHBIN) { // For folders
 			iconTexture = reinterpret_cast<ImTextureID>(static_cast<uintptr_t>(assetManager.GetTexture("folder_icon")));
 		}
-		else if (isDirectory && entry.path().string() == FILEPATH_TRASHBIN) {
+		else if (isDirectory && entry.path().string() == FILEPATH_TRASHBIN) { // For trash folder
 			iconTexture = reinterpret_cast<ImTextureID>(static_cast<uintptr_t>(assetManager.GetTexture("trash_icon")));
 		}
 		else { // Non-folder icons
@@ -2212,7 +2158,7 @@ void Editor::RenderDirectoryV2(const std::string& filePath) {
 		}
 
 		// Render button
-		ImGui::ImageButton(iconTexture, ImVec2(EditorSettings::iconSize, EditorSettings::iconSize));
+		ImGui::ImageButton(iconTexture, ImVec2(static_cast<float>(EditorSettings::iconSize), static_cast<float>(EditorSettings::iconSize)));
 
 		
 		// Set Drag Source
@@ -2245,7 +2191,7 @@ void Editor::RenderDirectoryV2(const std::string& filePath) {
 			if (mismatchPayload) {
 				iconTexture = reinterpret_cast<ImTextureID>(static_cast<uintptr_t>(assetManager.GetTexture("error_icon")));
 			}
-			ImGui::Image(iconTexture, ImVec2(EditorSettings::iconSize / 4, EditorSettings::iconSize / 4));
+			ImGui::Image(iconTexture, ImVec2(static_cast<float>(EditorSettings::iconSize / 4), static_cast<float>(EditorSettings::iconSize / 4)));
 			ImGui::EndDragDropSource();
 		}
 			
@@ -2281,7 +2227,10 @@ void Editor::RenderDirectoryV2(const std::string& filePath) {
 	ImGui::Columns(1);
 }
 
-
+/**************************************************************************
+* @brief This function renders console panel used to enter commands and cheat codes
+* @return void
+*************************************************************************/
 void Editor::CreateConsolePanel() {
 	ImGui::Begin("Console");
 

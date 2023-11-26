@@ -47,6 +47,8 @@ public:
 class HealthSystem : public ISystem {
 private:
 	std::vector<GameObject*> playerHealthbar;
+	int nextMaxHP;
+	int nextCurrentHP;
 public:
 	/**************************************************************************
 	* @brief Constructor

@@ -67,20 +67,22 @@ void GodModeOn() {
 	if (player != nullptr){
 		auto playercomponent = GET_COMPONENT(player, HealthComponent, ComponentType::HEALTH);
 		playercomponent->currentHealth = invincibilityHP;
+		playercomponent->maxHealth = invincibilityHP;
 	}
 
 	std::cout << "GODMODEON" << std::endl;
 }
 
 void GodModeOff() {
-	// wait Austin gor gor push code
 	if (objectFactory->GetGameObjectsByType("Player").size() == 0)
 		return;
 
 	GameObject* player = objectFactory->GetGameObjectsByType("Player")[0];
 	if (player != nullptr) {
+		int prefabHealth = GET_PREFAB_COMPONENT(objectFactory->GetPrefabByName("PlayerPrefab"), HealthComponent, ComponentType::HEALTH)->maxHealth;
 		auto playercomponent = GET_COMPONENT(player, HealthComponent, ComponentType::HEALTH);
-		playercomponent->currentHealth = playercomponent->maxHealth;
+		playercomponent->currentHealth = prefabHealth;
+		playercomponent->maxHealth = prefabHealth;
 	}
 	std::cout << "DOGMODEON" << std::endl;
 }
