@@ -3,6 +3,7 @@
 #include "SceneManager.h"
 #include "ObjectFactory.h" 
 #include "Collision.h"
+#include "Background.h"
 class PauseMenuLogic : public IScript {
 	public:
 		PauseMenuLogic(std::string newName, bool gameplayFlag) : IScript(newName, gameplayFlag) {}
@@ -17,7 +18,7 @@ class PauseMenuLogic : public IScript {
 				double mouseY; // = io.MousePos.y;
 
 				glfwGetCursorPos(windowNew, &mouseX, &mouseY);
-
+				background.SetBackGround(assetManager.GetTexture("Background3"));
 				OpenGLObject::FrameBufferMouseCoords(windowNew, &mouseX, &mouseY, OpenGLObject::cameraObject);
 				GameObject* gObj = objectFactory->GetGameObjectByID(gameObjectID);
 				if (gObj != nullptr) {
@@ -47,6 +48,9 @@ class PauseMenuLogic : public IScript {
 					
 				}
 				
+			}
+			else {
+				background.SetBackGround(assetManager.GetTexture("newbackground"));
 			}
 			
 		}
