@@ -1105,7 +1105,7 @@ void Editor::CreatePrefabPanel() {
 					tempLogicSet = prefabLogic->scriptIndexSet;
 					initialized = true;
 				}
-				for (std::set<unsigned int>::iterator itLogic = tempLogicSet.begin(); itLogic != tempLogicSet.end(); it++) {
+				for (std::set<unsigned int>::iterator itLogic = tempLogicSet.begin(); itLogic != tempLogicSet.end(); itLogic++) {
 					ImGui::Text(logicSystem->scriptVec[*itLogic]->name.c_str());
 				}
 			}
