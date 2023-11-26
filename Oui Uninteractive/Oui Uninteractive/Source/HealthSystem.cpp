@@ -69,7 +69,7 @@ void HealthSystem::Update(float dt) {
 							std::string heartName{ "Heart" + std::to_string(i + 1) };
 							GameObject* heart = objectFactory->BuildObjectFromPrefab(heartName, "HeartPrefab");
 							GET_COMPONENT(heart, Transform, ComponentType::TRANSFORM)->position.x = (static_cast<float>(-windowSize.first) / 3.f) + i * GET_COMPONENT(heart, Transform, ComponentType::TRANSFORM)->scale.x;
-							GET_COMPONENT(heart, Transform, ComponentType::TRANSFORM)->position.y = (static_cast<float>(windowSize.second) / 3.f);
+							GET_COMPONENT(heart, Transform, ComponentType::TRANSFORM)->position.y = (static_cast<float>(windowSize.second) / 4.f);
 
 							playerHealthbar.push_back(heart);
 						}
@@ -91,7 +91,7 @@ void HealthSystem::Update(float dt) {
 						std::string heartName{ "HeartGodmode" };
 						GameObject* heart = objectFactory->BuildObjectFromPrefab(heartName, "HeartPrefab");
 						GET_COMPONENT(heart, Transform, ComponentType::TRANSFORM)->position.x = (static_cast<float>(-windowSize.first) / 3.f);
-						GET_COMPONENT(heart, Transform, ComponentType::TRANSFORM)->position.y = (static_cast<float>(windowSize.second) / 3.f);
+						GET_COMPONENT(heart, Transform, ComponentType::TRANSFORM)->position.y = (static_cast<float>(windowSize.second) / 4.f);
 
 						playerHealthbar.push_back(heart);
 
