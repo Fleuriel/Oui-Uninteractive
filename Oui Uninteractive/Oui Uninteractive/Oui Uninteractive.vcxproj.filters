@@ -474,5 +474,8 @@
     <ClInclude Include="Include\HealthSystem.h">
       <Filter>Systems\HealthSystem</Filter>
     </ClInclude>
+    <ClInclude Include="Include\PauseMenuLogic.h">
+      <Filter>Scripts</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

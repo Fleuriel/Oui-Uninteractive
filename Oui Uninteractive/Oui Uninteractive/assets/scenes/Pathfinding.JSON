@@ -79,7 +79,7 @@
                     "AggroRange": 250.0
                 },                
                 "HealthComponent": {
-                    "MaxHealth": 3
+                    "MaxHealth": 20
                 }
             }
         }]

@@ -67,12 +67,13 @@ std::pair<int, int> GetStartNodePosition(Vec2 currentEnemyPos, BFS* bfs, float s
 * @brief Constructor for EnemyRoam
 *************************************************************************/
 EnemyRoam::EnemyRoam() : bfs(nullptr), transitioned(false), pathFound(false), pathPrinted(false), pathIndex(0), scale(0.f) {
+    windowWidth = static_cast<float>(windowSize.first);
+    windowHeight = static_cast<float>(windowSize.second);
+
     if (tilemapLoader->GetTilemap().size() != 0) {
         bfs = new BFS(tilemapLoader->GetTilemap());
         scale = windowHeight / static_cast<float>(bfs->GetRows());
     }
-    windowWidth = static_cast<float>(windowSize.first);
-    windowHeight = static_cast<float>(windowSize.second);
 }
 
 /**************************************************************************
@@ -130,7 +131,7 @@ void EnemyRoam::Update(size_t gameObjectID) {
         }
     }
     else {
-        if (!pathPrinted) {
+        /*if (!pathPrinted) {
             // Start traversing path
             std::cout << "Start\n";
             
@@ -141,7 +142,7 @@ void EnemyRoam::Update(size_t gameObjectID) {
             std::cout << "End" << std::endl;
 
             pathPrinted = true;
-        }
+        }*/
 
 		if (pathIndex < pathToTake.size()) {
             // Enemy to traverse along path to take
@@ -236,12 +237,13 @@ EnemyAttack::~EnemyAttack() {
 * @brief Constructor for EnemyFlee
 *************************************************************************/
 EnemyFlee::EnemyFlee() : bfs(nullptr), transitioned(false), pathFound(false), pathPrinted(false), pathIndex(0), scale(0.f) {
+    windowWidth = static_cast<float>(windowSize.first);
+    windowHeight = static_cast<float>(windowSize.second);
+
     if (tilemapLoader->GetTilemap().size() != 0) {
         bfs = new BFS(tilemapLoader->GetTilemap());
         scale = windowHeight / static_cast<float>(bfs->GetRows());
     }
-    windowWidth = static_cast<float>(windowSize.first);
-    windowHeight = static_cast<float>(windowSize.second);
 }
 
 /**************************************************************************
@@ -250,6 +252,9 @@ EnemyFlee::EnemyFlee() : bfs(nullptr), transitioned(false), pathFound(false), pa
 * @return void
 *************************************************************************/
 void EnemyFlee::Update(size_t gameObjectID) {
+    if (bfs == nullptr)
+        return;
+
     if (!transitioned) {
         std::cout << "\nTRANSITIONED TO FLEE STATE" << std::endl;
         transitioned = true;
@@ -290,7 +295,7 @@ void EnemyFlee::Update(size_t gameObjectID) {
         }
     }
     else {
-        if (!pathPrinted) {
+        /*if (!pathPrinted) {
             // Start traversing path
             std::cout << "Start (fleeing)\n";
 
@@ -301,7 +306,7 @@ void EnemyFlee::Update(size_t gameObjectID) {
             std::cout << "End" << std::endl;
 
             pathPrinted = true;
-        }
+        }*/
 
         if (pathIndex < pathToTake.size()) {
             // Enemy to traverse along path to take

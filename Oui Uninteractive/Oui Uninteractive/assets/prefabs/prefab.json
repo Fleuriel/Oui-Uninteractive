@@ -7,7 +7,7 @@
             "UsingSprite": true,
             "Components": {
                 "LogicComponent": {
-                    "ScriptID": [0]
+                    "ScriptID": []
                 },
                 "PhysicsBody": {
                     "VelocityX": 0.0,
@@ -24,6 +24,9 @@
                     "Rotation": 0.0,
                     "ScaleX": 100.0,
                     "ScaleY": 100.0
+                },
+                "HealthComponent": {
+                    "MaxHealth": 8
                 }
             }
         }, {
@@ -82,7 +85,9 @@
                     "ScaleX": 100.0,
                     "ScaleY": 100.0
                 },
-                "EnemyFSM": {},
+                "EnemyFSM": {
+                    "AggroRange": 0.0
+                },
                 "HealthComponent": {
                     "MaxHealth": 5
                 }
@@ -116,6 +121,9 @@
                     "Mass": 387.5,
                     "IsStatic": false,
                     "FrictionForce": 35.9379997253418
+                },
+                "HealthComponent": {
+                    "MaxHealth": 3
                 }
             }
         }, {

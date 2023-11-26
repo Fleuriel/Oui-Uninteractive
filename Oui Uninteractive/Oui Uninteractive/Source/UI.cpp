@@ -77,16 +77,16 @@ void UIManager::Update(float dt) {
 				if (it->second->GetType() == "Button") {
 					if (it->second->GetName() == "Exit Button") {
 						//std::cout << it->second->GetName();
-						Collider* collider = GET_COMPONENT(it->second, Collider, ComponentType::COLLIDER);
+						//Collider* collider = GET_COMPONENT(it->second, Collider, ComponentType::COLLIDER);
 
 						//std::cout << collider->boundingbox->min.x << ", " << collider->boundingbox->min.y <<'\t' << collider->boundingbox->max.x << ", " << collider->boundingbox->max.y << '\n';
 
-						if (CollisionMouseRect(*(collider->boundingbox), static_cast<float>(convertedMousePos.first), static_cast<float>(convertedMousePos.second))) {
-							// For tristan. Put the stuff here
-							sceneManager->currSceneID = STATE_QUIT;
+						//if (CollisionMouseRect(*(collider->boundingbox), static_cast<float>(convertedMousePos.first), static_cast<float>(convertedMousePos.second))) {
+						//	// For tristan. Put the stuff here
+						//	sceneManager->currSceneID = STATE_QUIT;
 
-							std::cout << "YESSS";
-						}
+						//	std::cout << "YESSS";
+						//}
 					}
 				}
 

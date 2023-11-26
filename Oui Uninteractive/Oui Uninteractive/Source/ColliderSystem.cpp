@@ -76,10 +76,10 @@ void ColliderSystem::Update(float dt) {
 						if (collided) {
 							didCollide = true;
 							if (pBody1->GetOwner()->GetType() == "BulletPrefab") {
+								objectFactory->DestroyObject(pBody1->GetOwner());
 								if (pBody2->GetOwner()->GetType() == "Enemy") {
 									--GET_COMPONENT(pBody2->GetOwner(), HealthComponent, ComponentType::HEALTH)->currentHealth;
 								}
-								objectFactory->DestroyObject(pBody1->GetOwner());
 							}
 							if (pBody2->GetOwner()->GetType() == "BulletPrefab") {
 								objectFactory->DestroyObject(pBody2->GetOwner());

@@ -1,4 +1,6 @@
 #pragma once
+
+#include <string>
 class IScript {
 public:
 	IScript(std::string newName) {

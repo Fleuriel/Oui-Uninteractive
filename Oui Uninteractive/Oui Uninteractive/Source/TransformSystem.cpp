@@ -27,7 +27,7 @@ void TransformSystem::Initialize() {
 * @return void
 *************************************************************************/
 void TransformSystem::Update(float) {
-	if (sysManager->isPaused == false) {
+	
 		TimeProfiler profiler(Editor::timeRecorder.transformTime);
 		std::map<size_t, GameObject*> copyMap = objectFactory->GetGameObjectIDMap();
 		std::map<size_t, GameObject*>::iterator it = copyMap.begin();
@@ -91,5 +91,5 @@ void TransformSystem::Update(float) {
 				continue;
 			}
 		}
-	}
+	
 }
