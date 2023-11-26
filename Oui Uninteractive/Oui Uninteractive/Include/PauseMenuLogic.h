@@ -19,7 +19,7 @@ class PauseMenuLogic : public IScript {
 				double mouseY; // = io.MousePos.y;
 				glfwGetCursorPos(windowNew, &mouseX, &mouseY);				
 				background.SetBackGround(assetManager.GetTexture("GreenBG1920"));
-				fontManager->RenderText("Valoon.ttf", "Resume", 0, 0, 1.0f, glm::vec3(0.4, 0.7, 0.9));
+				fontManager->RenderText("Valoon.ttf", "A", 0, 250, 1.0f, glm::vec3(0.4, 0.7, 0.9));
 				if (Editor::editorOn)
 					OpenGLObject::FrameBufferMouseCoords(windowNew, &mouseX, &mouseY, OpenGLObject::cameraObject);
 				else

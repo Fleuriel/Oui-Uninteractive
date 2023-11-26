@@ -685,6 +685,7 @@ void Editor::CreateRenderWindow() {
 		gameWindowOrigin.second = static_cast<int>(ImGui::GetWindowPos().y);
 		gameWindowSize.first = static_cast<int>(ImGui::GetWindowSize().x);
 		gameWindowSize.second = static_cast<int>(ImGui::GetWindowSize().y);
+
 		// Get draw size of window
 		ImVec2 wsize = ImGui::GetWindowSize();
 		// Invert V from openGL

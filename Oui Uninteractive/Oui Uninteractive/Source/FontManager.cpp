@@ -90,18 +90,37 @@ void FontManager::RenderText(std::string fontName, std::string text, float xPos,
 				// Find character with char key
 				Character ch = charMapIt->second;
 
+
 				// Setup dimensions
 				float positionX = xPos, positionY = yPos;
 				if (Editor::editorOn)
 				{
-					positionX += Editor::gameWindowSize.first / 2;
-					positionY += Editor::gameWindowSize.second / 2;
+
+					float fromBottomCoordY = Editor::gameWindowOrigin.second + Editor::gameWindowSize.second;
+					float bottomCoordY = windowSize.second - fromBottomCoordY;
+					//std::cout << bottomCoordY << '\t';
+
+
+					positionX += Editor::gameWindowSize.first /2.0f;
+					std::cout << positionX << '\t';
+
+
+					positionY += (bottomCoordY + (Editor::gameWindowSize.second/2));
+					std::cout << positionY << '\n';
 				}
 				else
 				{
+
+
 					positionX += windowSize.first / 2;
 					positionY += windowSize.second / 2;
 				}
+				//																 /\
+				//																/__\
+				// Set to middle of the font (i.e. A, will be between both the /    \ )
+				//																 ^ Middle here
+
+				positionX -= 15 * static_cast<int>(text.size());
 
 
 				float renderX = positionX + ch.glyphBearing.x * scale;

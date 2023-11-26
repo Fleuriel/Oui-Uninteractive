@@ -1130,7 +1130,7 @@ void OpenGLObject::windowMouseCoords(GLFWwindow* originalWindow, double* x, doub
 	correctedY = -correctedY;
 
 	correctedX /= 1.18;
-	correctedY /= 1.17;
+	correctedY /= 1.02;
 
 	std::cout << correctedX << ' ' << correctedY << '\n';
 	*x = correctedX;
