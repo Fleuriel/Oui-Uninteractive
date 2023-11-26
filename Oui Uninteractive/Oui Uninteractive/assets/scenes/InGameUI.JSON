@@ -5,11 +5,11 @@
             "Name": "Quit",
             "Type": "PauseMenu",
             "UsingSprite": false,
-            "Texture": "",
+            "Texture": "quitbutton",
             "Components": {
                 "Transform": {
-                    "PositionX": -126.51000213623047,
-                    "PositionY": -59.06999969482422,
+                    "PositionX": 315.5,
+                    "PositionY": 0.0,
                     "Rotation": 0.0,
                     "ScaleX": 200.0,
                     "ScaleY": 200.0
@@ -27,11 +27,11 @@
             "Name": "Resume",
             "Type": "PauseMenu",
             "UsingSprite": false,
-            "Texture": "",
+            "Texture": "restartbutton",
             "Components": {
                 "Transform": {
-                    "PositionX": -126.51000213623047,
-                    "PositionY": -59.06999969482422,
+                    "PositionX": -315.5,
+                    "PositionY": 0.0,
                     "Rotation": 0.0,
                     "ScaleX": 200.0,
                     "ScaleY": 200.0
