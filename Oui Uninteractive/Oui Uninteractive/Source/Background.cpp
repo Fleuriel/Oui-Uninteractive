@@ -200,17 +200,9 @@ void Background::SetBackGround(int tex) {
  *       `shdrpgms`, and OpenGL bindings are available and properly defined.
 *************************************************************************/
 void Background::Draw() const {
-	// Bind the background texture to texture image unit 6
-	int tex{};
-	switch (texID) {
-	case 0:
-		tex = backgroundTexture;
-		break;
-	default:
-		break;
-	}
 
-	glBindTextureUnit(6, tex);
+
+	glBindTextureUnit(6, backgroundTexture);
 
 	shdrpgms[shd_ref].Use(); // Use the shader program for rendering
 

@@ -33,7 +33,7 @@
 class Background
 {
 public:
-	Background(): position (0,0), scaleModel(10,10), model_To_NDC_xform(glm::mat3(1.0)), texID(0){};
+	Background(): position (0,0), scaleModel(10,10), model_To_NDC_xform(glm::mat3(1.0)){};
 	
 	~Background(){};
 
@@ -42,7 +42,6 @@ public:
 	glm::mat3 model_To_NDC_xform;				// Model to NDC 
 	static GLuint mdl_ref, shd_ref;				// Model and Shader Reference
 
-	int texID;									// Determines which texture to use
 	static GLuint VAO, VBO;						// Object VAO VBO
 
 
