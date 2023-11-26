@@ -617,7 +617,7 @@ void Editor::CreateMasterPanel() {
 	}
 
 
-	ImGui::SeparatorText("Scene controls");
+	ImGui::SeparatorText("Scene Controls");
 	static int selectedScene = 0;
 	static std::string sceneFileName;
 	// Render drop menu for scene file selector
@@ -723,6 +723,9 @@ void Editor::CreateRenderWindow() {
 						mismatchPayload = true;
 					}
 				}
+				else if (payload->IsDataType("PAYLOAD_UNKNOWN")) {
+					mismatchPayload = true;					
+				}
 			}
 			else { // NO OBJECT SELECTED
 				if (payload->IsDataType("PAYLOAD_AUDIO_BGM")) {
@@ -733,14 +736,14 @@ void Editor::CreateRenderWindow() {
 						soundManager->PlayBGM(dropBGMName);
 					}				
 				}
-				if (payload->IsDataType("PAYLOAD_AUDIO_SFX")) {
+				else if (payload->IsDataType("PAYLOAD_AUDIO_SFX")) {
 					mismatchPayload = false;
 					if (const ImGuiPayload* droppedPayload = ImGui::AcceptDragDropPayload("PAYLOAD_AUDIO_SFX")) {
 						std::string dropSFXName = static_cast<const char*>(droppedPayload->Data);
 						soundManager->PlaySFX(dropSFXName);
 					}
 				}
-				if (payload->IsDataType("PAYLOAD_SCENE")) {
+				else if (payload->IsDataType("PAYLOAD_SCENE")) {
 					mismatchPayload = false;
 					if (const ImGuiPayload* droppedPayload = ImGui::AcceptDragDropPayload("PAYLOAD_SCENE")) {
 						std::string dropSceneName = static_cast<const char*>(droppedPayload->Data);
@@ -2172,18 +2175,24 @@ void Editor::RenderDirectoryV2(const std::string& filePath) {
 				// Set payload type
 				ImGui::SetDragDropPayload("PAYLOAD_TEXTURE", texNameWithoutExt.c_str(), texNameWithoutExt.size() + 1);
 			}
-			if (filePath == FILEPATH_SPRITES) {
+			else if (filePath == FILEPATH_SPRITES) {
 				// Set payload type
 				ImGui::SetDragDropPayload("PAYLOAD_SPRITE", texNameWithoutExt.c_str(), texNameWithoutExt.size() + 1);
 			}
-			if (filePath == FILEPATH_SOUNDS_BGM) {
+			else if (filePath == FILEPATH_SOUNDS_BGM) {
 				ImGui::SetDragDropPayload("PAYLOAD_AUDIO_BGM", browserSelectedItem.c_str(), browserSelectedItem.size() + 1);
 			}
-			if (filePath == FILEPATH_SOUNDS_SFX) {
+			else if (filePath == FILEPATH_SOUNDS_SFX) {
 				ImGui::SetDragDropPayload("PAYLOAD_AUDIO_SFX", browserSelectedItem.c_str(), browserSelectedItem.size() + 1);
 			}
-			if (filePath == FILEPATH_SCENES) {
+			else if (filePath == FILEPATH_SCENES) {
 				ImGui::SetDragDropPayload("PAYLOAD_SCENE", browserSelectedItem.c_str(), browserSelectedItem.size() + 1);
+			}
+			else if (filePath == FILEPATH_FONTS) {
+				ImGui::SetDragDropPayload("PAYLOAD_FONT", browserSelectedItem.c_str(), browserSelectedItem.size() + 1);
+			}
+			else {
+				ImGui::SetDragDropPayload("PAYLOAD_UNKNOWN", browserSelectedItem.c_str(), browserSelectedItem.size() + 1);
 			}
 			// Display held item
 			if (mismatchPayload) {
