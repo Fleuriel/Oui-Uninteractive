@@ -259,14 +259,12 @@ void Editor::Update() {
 
 	glfwGetCursorPos(windowNew, &ogMouseX, &ogMouseY);
 
-
 	static bool translateMode = false;
 	static bool scaleMode = false;
 	static bool scaleMode2 = false;
 	static bool scaleMode3 = false;
 	static bool scaleMode4 = false;
 	static bool rotateMode = false;
-
 	std::map<size_t, GameObject*> copyMap = objectFactory->GetGameObjectIDMap();
 	std::pair<int, int> xBounds = std::pair<int, int>(Editor::gameWindowOrigin.first, Editor::gameWindowSize.first);
 	std::pair<int, int> yBounds = std::pair<int, int>(Editor::gameWindowOrigin.second, (Editor::gameWindowSize.second));
@@ -286,8 +284,6 @@ void Editor::Update() {
 
 		}
 	}
-	
-
 	Vec2 rightGizmoPos = Vec2(0, 0);
 	Vec2 leftGizmoPos = Vec2(0, 0);
 	Vec2 topGizmoPos = Vec2(0, 0);
@@ -299,8 +295,7 @@ void Editor::Update() {
 	static bool canReleaseSelect = false;
 	if (selected != nullptr) {
 		Transform* tx = GET_COMPONENT(selected, Transform, ComponentType::TRANSFORM);
-		if (tx != nullptr && (ogMouseX > xBounds.first && ogMouseX < xBounds.second) && (ogMouseY > yBounds.first && ogMouseY < yBounds.second)) {
-			
+		if (tx != nullptr && (ogMouseX > xBounds.first && ogMouseX < xBounds.second) && (ogMouseY > yBounds.first && ogMouseY < yBounds.second)) {		
 			rightGizmoPos = tx->position + Vector2DRotate(Vec2(tx->scale.x / 2.f + scaleOutline, 0), tx->rotation, Vec2(0, 0));
 			leftGizmoPos = tx->position - Vector2DRotate(Vec2((tx->scale.x / 2.f) + scaleOutline, 0), tx->rotation, Vec2(0, 0));
 			topGizmoPos = tx->position + Vector2DRotate(Vec2(0, (tx->scale.y / 2.f) + scaleOutline), tx->rotation, Vec2(0, 0));
@@ -344,10 +339,8 @@ void Editor::Update() {
 		}
 		if (tx != nullptr) {
 			DrawGizmos(tx->scale.x, tx->scale.y, tx->position, tx->rotation);
-		}
-		
+		}	
 	}
-	
 	if (translateMode) {
 		if (selected != nullptr) {
 			Transform* tx = GET_COMPONENT(selected, Transform, ComponentType::TRANSFORM);
@@ -415,7 +408,6 @@ void Editor::Update() {
 					buttonDown = false;
 					scaleMode2 = false;
 				}
-
 				if (buttonDown) {
 					Vec2 edgePt = tx->position - Vec2(tx->scale.x / 2.f, 0);
 					edgePt = Vector2DRotate(edgePt, tx->rotation, Vec2(0, 0));
@@ -471,8 +463,6 @@ void Editor::Update() {
 						angle = 360.f - angle;
 					}
 					Vec2 mouseVec = Vector2DRotate(Vec2(mouseX, mouseY), -angle, Vec2(0, 0));
-
-
 					tx->scale.y += (mouseVec.y - (tx->position.y + tx->scale.y / 2));
 					if (tx->scale.y < 0) {
 						tx->scale.y = 0;
@@ -481,7 +471,6 @@ void Editor::Update() {
 			}
 		}
 	}
-
 	//scale left
 	if (scaleMode4) {
 		if (selected != nullptr) {
@@ -494,7 +483,6 @@ void Editor::Update() {
 					buttonDown = false;
 					scaleMode4 = false;
 				}
-
 				if (buttonDown) {
 					Vec2 edgePt = tx->position - Vec2(0, tx->scale.y / 2.f);
 					edgePt = Vector2DRotate(edgePt, tx->rotation, Vec2(0, 0));
@@ -515,11 +503,9 @@ void Editor::Update() {
 					else {
 						tx->scale.y -= abs((mouseVec.y - (tx->position.y - tx->scale.y / 2)));
 					}
-
 					if (tx->scale.y < 0) {
 						tx->scale.y = 0;
 					}
-
 				}
 			}
 		}
@@ -872,7 +858,7 @@ void Editor::CreatePrefabPanel() {
 				GET_PREFAB_COMPONENT(objectFactory->GetPrefabByName(selectedName), Collider, ComponentType::COLLIDER)->tx->scale.y = colScaleY;
 				colliderUpdateFlag = true;
 			}
-			if (!colliderFlag && objectFactory->GetPrefabByName(selectedName)->Has(ComponentType::COLLIDER) != -1) {
+			if (!colliderFlag && objectFactory->GetPrefabByName(selectedName)->Has(ComponentType::COLLIDER) != -1) {	
 				objectFactory->GetPrefabByName(selectedName)->RemoveComponent(GET_PREFAB_COMPONENT(objectFactory->GetPrefabByName(selectedName), Collider, ComponentType::COLLIDER));
 			}
 
@@ -1489,22 +1475,18 @@ void Editor::CreateObjectList() {
 							if (ImGui::SliderFloat("X-Position", &xPos2, static_cast<float>(-(windowSize.first / 2)), static_cast<float>(windowSize.first / 2), "%.2f")) { // Slider for X-Position
 								GET_COMPONENT(objectFactory->GetGameObjectByID(gameobjID), Transform, ComponentType::TRANSFORM)->position.x = xPos2;
 							}
-
 							yPos2 = GET_COMPONENT(objectFactory->GetGameObjectByID(gameobjID), Transform, ComponentType::TRANSFORM)->position.y;
 							if (ImGui::SliderFloat("Y-Position", &yPos2, static_cast<float>(-(windowSize.second / 2)), static_cast<float>(windowSize.second / 2), "%.2f")) { // Slider for Y-Position
 								GET_COMPONENT(objectFactory->GetGameObjectByID(gameobjID), Transform, ComponentType::TRANSFORM)->position.y = yPos2;
 							}
-
 							scale2 = GET_COMPONENT(objectFactory->GetGameObjectByID(gameobjID), Transform, ComponentType::TRANSFORM)->scale.x;
 							if (ImGui::SliderFloat("Scale X %", &scale2, 0.0f, 500.0f, "%.2f")) { // Slider for Scale
 								GET_COMPONENT(objectFactory->GetGameObjectByID(gameobjID), Transform, ComponentType::TRANSFORM)->scale.x = scale2;
 							}
-
 							scaleY2 = GET_COMPONENT(objectFactory->GetGameObjectByID(gameobjID), Transform, ComponentType::TRANSFORM)->scale.y;
 							if (ImGui::SliderFloat("Scale Y %", &scaleY2, 0.0f, 500.0f, "%.2f")) { // Slider for Scale
 								GET_COMPONENT(objectFactory->GetGameObjectByID(gameobjID), Transform, ComponentType::TRANSFORM)->scale.y = scaleY2;
 							}
-
 							angle2 = GET_COMPONENT(objectFactory->GetGameObjectByID(gameobjID), Transform, ComponentType::TRANSFORM)->rotation;
 							if (ImGui::SliderFloat("Angle", &angle2, 0.0f, 360.0f, "%.2f")) { // Slider for true angle
 								GET_COMPONENT(objectFactory->GetGameObjectByID(gameobjID), Transform, ComponentType::TRANSFORM)->rotation = angle2;
@@ -1514,12 +1496,7 @@ void Editor::CreateObjectList() {
 							ImGui::Text("Selected Object has no TRANSFORM component");
 						}
 					}
-
-
 					ImGui::Unindent();
-
-
-
 					ImGui::Indent();
 					if (ImGui::Checkbox("##Physics", &physicsFlag)) {
 						PhysicsBody* objBody = GET_COMPONENT(objectFactory->GetGameObjectByID(gameobjID), PhysicsBody, ComponentType::PHYSICS_BODY);
@@ -1540,8 +1517,6 @@ void Editor::CreateObjectList() {
 							if (ImGui::SliderFloat("Speed", &speed2, 0.0f, 100.0f, "%.2f")) { // Slider for Speed
 								GET_COMPONENT(objectFactory->GetGameObjectByID(gameobjID), PhysicsBody, ComponentType::PHYSICS_BODY)->speed = speed2;
 							}
-
-
 							rotSpeed2 = GET_COMPONENT(objectFactory->GetGameObjectByID(gameobjID), PhysicsBody, ComponentType::PHYSICS_BODY)->rotationSpeed;
 							if (ImGui::SliderFloat("Rotation Speed", &rotSpeed2, 0.0f, 500.0f, "%.2f")) {// Slider for rotation speed
 								GET_COMPONENT(objectFactory->GetGameObjectByID(gameobjID), PhysicsBody, ComponentType::PHYSICS_BODY)->rotationSpeed = rotSpeed2;
@@ -1552,8 +1527,6 @@ void Editor::CreateObjectList() {
 						}
 					}
 					ImGui::Unindent();
-
-
 					static std::string currentScriptName;
 					static int currentScriptIndex;
 					ImGui::Indent();
@@ -1568,7 +1541,6 @@ void Editor::CreateObjectList() {
 							objectFactory->GetGameObjectByID(gameobjID)->Initialize();
 							logicFlag = true;
 						}
-
 
 					}
 					ImGui::SameLine();

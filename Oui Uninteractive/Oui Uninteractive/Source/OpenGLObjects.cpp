@@ -364,9 +364,15 @@ void OpenGLObject::Draw(std::string type, bool spriteUsage, Vec2 vel) const {
 			double mouseY; // = io.MousePos.y;
 			glfwGetCursorPos(windowNew, &mouseX, &mouseY);
 			OpenGLObject::FrameBufferMouseCoords(windowNew, &mouseX, &mouseY, OpenGLObject::cameraObject);
+			Vec2 playerPos = Vec2(0, 0);
+			if (objectFactory->GetGameObjectByName("JSONPlayer") != nullptr) {
+				playerPos = GET_COMPONENT(objectFactory->GetGameObjectByName("JSONPlayer"), Transform, ComponentType::TRANSFORM)->position;
+			}
+			else if (objectFactory->GetGameObjectByName("PlayerPrefab") != nullptr) {
+				playerPos = GET_COMPONENT(objectFactory->GetGameObjectByName("PlayerPrefab1"), Transform, ComponentType::TRANSFORM)->position;
+			}
 			
-			Vec2 playerPos = GET_COMPONENT(objectFactory->GetGameObjectByName("JSONPlayer"), Transform, ComponentType::TRANSFORM)->position;
-
+			
 	
 
 			//std::cout << "Mouse X : " << mouseX << "\t";

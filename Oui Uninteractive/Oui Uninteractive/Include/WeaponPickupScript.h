@@ -36,52 +36,78 @@ public:
 			Transform* tx = GET_COMPONENT(objectFactory->GetGameObjectByID(gameObjectID), Transform, ComponentType::TRANSFORM);
 			PhysicsBody* physBod = GET_COMPONENT(objectFactory->GetGameObjectByID(gameObjectID), PhysicsBody, ComponentType::PHYSICS_BODY);
 			if (tx != nullptr && physBod != nullptr) {
-				if (tx != nullptr && physBod != nullptr) {
 
-					//Flags initializers
-					static bool count = false;
-					static bool pickedup = false;
+				//Flags initializers
+				static bool count = false;
+				static bool pickedup = false;
 
-					//Set playerBody1 as the player (permanent)
-					PhysicsBody* playerBody1 = GET_COMPONENT(objectFactory->GetGameObjectByID(18), PhysicsBody, ComponentType::PHYSICS_BODY);
+				//Set playerBody1 as the player (permanent)
+				GameObject* player = objectFactory->GetGameObjectByName("JSONPlayer");
+				if (player != nullptr) {
+					PhysicsBody* playerBody1 = GET_COMPONENT(player, PhysicsBody, ComponentType::PHYSICS_BODY);
 					//Declare a temporary physics body for the final weapon chosen
-					static PhysicsBody* playerBodyFinale = GET_COMPONENT(objectFactory->GetGameObjectByID(0), PhysicsBody, ComponentType::PHYSICS_BODY);
+					if (playerBody1 != nullptr) {
+	
+						static PhysicsBody* playerBodyFinale = GET_COMPONENT(objectFactory->GetGameObjectByID(0), PhysicsBody, ComponentType::PHYSICS_BODY);
+						if (playerBodyFinale != nullptr) {
+							//Checking key pressed to enable weapon pickup / drop off
+							if (inputSystem.GetKeyState(GLFW_KEY_X)) {
+								count = 0;
+								pickedup = false;
 
-					//Checking key pressed to enable weapon pickup / drop off
-					if (inputSystem.GetKeyState(GLFW_KEY_X)) {
-						count = 0;
-						pickedup = false;
+							}
+							if (inputSystem.GetKeyState(GLFW_KEY_C)) {
+								count = 1;
+								pickedup = true;
+							}
 
-					}
-					if (inputSystem.GetKeyState(GLFW_KEY_C)) {
-						count = 1;
-						pickedup = true;
-					}
-					
-					if (pickedup == false) {
-						for (int z = 0, i = 1; i < 3; i++) {
-							int tempo = Vector2DDistance(inventory2().Bodies[z]->txPtr->position, playerBody1->txPtr->position);
-							int tempo2 = Vector2DDistance(inventory2().Bodies[i]->txPtr->position, playerBody1->txPtr->position);
-							if (tempo < tempo2) {
-								playerBodyFinale = inventory2().Bodies[z];
+							if (pickedup == false) {
+								int closestID = 0;
+								float closestDistance = 0;
+								bool initialized = false;
+								for (int i = 0; i < 3; i++) {
+									if (inventory2().Bodies[i] != nullptr) {
+										float tempo = Vector2DDistance(inventory2().Bodies[i]->txPtr->position, playerBody1->txPtr->position);
+
+										if (tempo < closestDistance || initialized == false) {
+											initialized = true;
+											closestDistance = tempo;
+											closestID = i;
+										}
+										//int tempo2 = Vector2DDistance(inventory2().Bodies[i]->txPtr->position, playerBody1->txPtr->position);
+										/*if (tempo < tempo2) {
+											playerBodyFinale = inventory2().Bodies[z];
+										}
+										else {
+											playerBodyFinale = inventory2().Bodies[i];
+											tempo = tempo2;
+											inventory2().Bodies[z] = inventory2().Bodies[i];
+											z++;
+										}*/
+									}
+									else {
+										continue;
+									}
+									
+								}
+								playerBodyFinale = inventory2().Bodies[closestID];
 							}
-							else {
-								playerBodyFinale = inventory2().Bodies[i];
-								tempo = tempo2;
-								inventory2().Bodies[z] = inventory2().Bodies[i];
-								z++;
-							}
+
+							if (count == 1) {
+								if (playerBodyFinale != nullptr && playerBody1 != nullptr) {
+									if (playerBodyFinale->txPtr != nullptr && playerBody1->txPtr != nullptr) {
+										playerBodyFinale->txPtr->position.x = playerBody1->txPtr->position.x + 30;
+										playerBodyFinale->txPtr->position.y = playerBody1->txPtr->position.y - 20;
+									}
+									
+								}
 							
+							}
 						}
+						
 					}
-
-					if (count == 1) {
-						playerBodyFinale->txPtr->position.x = playerBody1->txPtr->position.x + 30;
-						playerBodyFinale->txPtr->position.y = playerBody1->txPtr->position.y - 20;
+						
 					}
-
-
-				}
 			}
 		}
 
