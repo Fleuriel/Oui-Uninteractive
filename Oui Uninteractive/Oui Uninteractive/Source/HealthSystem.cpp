@@ -42,7 +42,7 @@ void HealthSystem::Initialize() {
 * @return void
 *************************************************************************/
 void HealthSystem::Update(float dt) {
-	if (sysManager->isPaused == false) {
+	if (!sysManager->isPaused) {
 		(void)dt;
 
 		for (auto& it : healthComponentMap) {
@@ -62,8 +62,10 @@ void HealthSystem::DamageTaken(DamageTakenMessage* msg) {
 	HealthComponent* healthFirst{ GET_COMPONENT(msg->GetFirst(), HealthComponent, ComponentType::HEALTH) };
 	HealthComponent* healthSecond{ GET_COMPONENT(msg->GetSecond(), HealthComponent, ComponentType::HEALTH) };
 
-	if (msg->GetFirst()->GetType() == "Enemy")
+	if (msg->GetFirst()->GetType() == "Enemy") {
 		--healthFirst->currentHealth;
-	else if (msg->GetSecond()->GetType() == "Enemy")
+	}
+	else if (msg->GetSecond()->GetType() == "Enemy") {
 		--healthSecond->currentHealth;
+	}
 }
