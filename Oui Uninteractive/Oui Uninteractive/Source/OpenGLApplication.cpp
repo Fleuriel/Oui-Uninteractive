@@ -458,7 +458,7 @@ void OpenGLApplication::OpenGLUpdate() {
 #endif
 	}
 	if (inputSystem.GetMouseState(GLFW_MOUSE_BUTTON_MIDDLE)) {
-		background.SetBackGround(assetManager.GetTexture("Defeatscreen"));
+		background.SetBackGround(assetManager.GetTexture("newbackground"));
 #ifdef _DEBUG
 		//	std::cout << "MIDDLECLICK\n";
 #endif	
