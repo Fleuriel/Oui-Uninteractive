@@ -69,19 +69,16 @@ public:
 				glfwGetCursorPos(windowNew, &mouseX, &mouseY);
 				convertedMouseX = mouseX;
 				convertedMouseY = mouseY;
-				OpenGLObject::FrameBufferMouseCoords(windowNew, &convertedMouseX, &convertedMouseY, OpenGLObject::cameraObject);
+				if (Editor::editorOn)
+					OpenGLObject::FrameBufferMouseCoords(windowNew, &convertedMouseX, &convertedMouseY, OpenGLObject::cameraObject);
+				else
+					OpenGLObject::windowMouseCoords(windowNew, &convertedMouseX, &convertedMouseY, OpenGLObject::cameraObject);
 
-				// Determine mouse coordinates to use
-				if (Editor::editorOn) {
-					mousePos.x = static_cast<float>(convertedMouseX);
-					mousePos.y = static_cast<float>(convertedMouseY);
-				}
-				else {
-					mousePos.x = static_cast<float>(mouseX) - static_cast<float>(windowSize.first) / 2.f;
-					mousePos.y = static_cast<float>(windowSize.second) / 2.f - static_cast<float>(mouseY);
-				}
 
-				// Set bullet spawn point
+
+				mousePos.x = static_cast<float>(convertedMouseX);
+				mousePos.y = static_cast<float>(convertedMouseY);
+
 				bulletSpawnAngle = atan2(mousePos.y - playerPos.y, mousePos.x - playerPos.x);
 				bulletSpawnOffset = (playerScaleX >= playerScaleY) ? playerScaleX : playerScaleY;
 				bulletSpawnOffset *= 1.1f;

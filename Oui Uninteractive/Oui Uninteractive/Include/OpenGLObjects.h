@@ -292,6 +292,7 @@ public:
 	//static void 
 	static void FrameBufferMouseCoords(GLFWwindow*, double* x, double* y, Camera2D);
 
+	static void windowMouseCoords(GLFWwindow*, double* x, double* y, Camera2D);
 private:
 
 };

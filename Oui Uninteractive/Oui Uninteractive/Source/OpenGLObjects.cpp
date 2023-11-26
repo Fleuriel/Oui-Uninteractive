@@ -395,7 +395,11 @@ void OpenGLObject::Draw(std::string type, bool spriteUsage, Vec2 vel) const {
 			double mouseX; // = io.MousePos.x;
 			double mouseY; // = io.MousePos.y;
 			glfwGetCursorPos(windowNew, &mouseX, &mouseY);
-			OpenGLObject::FrameBufferMouseCoords(windowNew, &mouseX, &mouseY, OpenGLObject::cameraObject);
+			if (Editor::editorOn)
+				OpenGLObject::FrameBufferMouseCoords(windowNew, &mouseX, &mouseY, OpenGLObject::cameraObject);
+			else
+				OpenGLObject::windowMouseCoords(windowNew, &mouseX, &mouseY, OpenGLObject::cameraObject);
+			
 			Vec2 playerPos = Vec2(0, 0);
 			if (objectFactory->GetGameObjectByName("JSONPlayer") != nullptr) {
 				playerPos = GET_COMPONENT(objectFactory->GetGameObjectByName("JSONPlayer"), Transform, ComponentType::TRANSFORM)->position;
@@ -1101,5 +1105,41 @@ void OpenGLObject::FrameBufferMouseCoords(GLFWwindow* originalWindow, double* x,
 
 	//std::cout << '\n';
 	//std::cout << *x << '\t' << *y <<'\t' <<" Camera PositionX: " << cameraObject.posX << '\t' << cameraObject.posY << '\n';
+
+}
+
+
+void OpenGLObject::windowMouseCoords(GLFWwindow* originalWindow, double* x, double* y, OpenGLObject::Camera2D camera)
+{
+	(void)originalWindow;
+
+
+	double originalX = *x; // - windowSize.first;
+	double originalY = *y - windowSize.second;// -windowSize.second;
+
+
+
+	int centerX = windowSize.first / 2.0;
+	int centerY = windowSize.second / 2.0;
+
+
+	double correctedX = (originalX -centerX) + camera.posX ;
+	double correctedY = (originalY + centerY) - camera.posY;
+
+	correctedY = -correctedY;
+
+//	correctedX /= 1.18;
+	correctedY /= 1.07;
+
+	std::cout << correctedX << ' ' << correctedY << '\n';
+	*x = correctedX;
+	*y = correctedY;
+
+
+
+
+
+
+
 
 }

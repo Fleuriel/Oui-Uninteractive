@@ -19,7 +19,10 @@ class PauseMenuLogic : public IScript {
 
 				glfwGetCursorPos(windowNew, &mouseX, &mouseY);
 				background.SetBackGround(assetManager.GetTexture("Background3"));
-				OpenGLObject::FrameBufferMouseCoords(windowNew, &mouseX, &mouseY, OpenGLObject::cameraObject);
+				if (Editor::editorOn)
+					OpenGLObject::FrameBufferMouseCoords(windowNew, &mouseX, &mouseY, OpenGLObject::cameraObject);
+				else
+					OpenGLObject::windowMouseCoords(windowNew, &mouseX, &mouseY, OpenGLObject::cameraObject);
 				GameObject* gObj = objectFactory->GetGameObjectByID(gameObjectID);
 				if (gObj != nullptr) {
 					Transform* tx = GET_COMPONENT(gObj, Transform, ComponentType::TRANSFORM);

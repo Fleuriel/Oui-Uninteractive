@@ -252,7 +252,10 @@ void Editor::Update() {
 
 	glfwGetCursorPos(windowNew, &mouseX, &mouseY);
 
-	OpenGLObject::FrameBufferMouseCoords(windowNew, &mouseX, &mouseY, OpenGLObject::cameraObject);
+	if (Editor::editorOn)
+		OpenGLObject::FrameBufferMouseCoords(windowNew, &mouseX, &mouseY, OpenGLObject::cameraObject);
+	else
+		OpenGLObject::windowMouseCoords(windowNew, &mouseX, &mouseY, OpenGLObject::cameraObject);
 
 	double ogMouseX; 
 	double ogMouseY;

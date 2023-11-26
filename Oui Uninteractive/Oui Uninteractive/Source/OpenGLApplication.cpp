@@ -249,13 +249,13 @@ void OpenGLApplication::OpenGLUpdate() {
 	}
 
 	
-		triggerEveryQuarterSecond += static_cast<float>(GetDT());
-		if (triggerEveryQuarterSecond >= 0.25) {
-			spritecol++;
-			if (spritecol >= 6)
-				spritecol = 0;
-			triggerEveryQuarterSecond = 0;
-		}
+	triggerEveryQuarterSecond += static_cast<float>(GetDT());
+	if (triggerEveryQuarterSecond >= 0.25) {
+		spritecol++;
+		if (spritecol >= 6)
+			spritecol = 0;
+		triggerEveryQuarterSecond = 0;
+	}
 	
 	
 
@@ -294,7 +294,18 @@ void OpenGLApplication::OpenGLUpdate() {
 	double MouseX, MouseY;
 
 	// Change the position of mouse coordinates to frame buffer coordinates.
-	OpenGLObject::FrameBufferMouseCoords(windowNew, &xpos, &ypos, OpenGLObject::cameraObject);
+	if (Editor::editorOn)
+	{
+		OpenGLObject::FrameBufferMouseCoords(windowNew, &xpos, &ypos, OpenGLObject::cameraObject);
+	}
+	else
+	{
+		OpenGLObject::windowMouseCoords(windowNew, &xpos, &ypos, OpenGLObject::cameraObject);
+	}
+	
+
+	//std::cout << "mousePos " << xpos << "\t" << ypos << '\n';
+
 	MouseX = xpos;
 	MouseY = ypos;
 
@@ -710,7 +721,10 @@ void OpenGLApplication::OpenGLWindowResizeCallback(GLFWwindow* window2, int widt
 	// Update the window dimensions once changed
 	// set callback for the window size
 	glViewport(0, 0, width, height);
-	Editor::gameWindowSize.first = width;
-	Editor::gameWindowSize.second = height;
+	//Editor::gameWindowSize.first = width;
+	//Editor::gameWindowSize.second = height;
+
+	windowSize.first = width;
+	windowSize.second = height;
 
 }
