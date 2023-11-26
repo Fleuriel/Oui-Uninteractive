@@ -51,8 +51,16 @@ void HealthSystem::Update(float dt) {
 			if (it.second->currentHealth <= 0) {
 				objectFactory->DestroyObject(it.second->GetOwner());
 			}
+			if (it.second->currentHealth > it.second->maxHealth) {
+				it.second->currentHealth = it.second->maxHealth;
+			}
 			
-			if (it.second->GetOwner()->GetType() == "Player" && playerHealthbar.size() == 0) {
+			if (it.second->GetOwner()->GetType() == "Player") {
+				for (size_t i{}; i < playerHealthbar.size(); ++i) {
+					objectFactory->DestroyObject(playerHealthbar[i]);
+				}
+				playerHealthbar.clear();
+
 				// Create player healthbar
 				for (int i{}; i < it.second->maxHealth; ++i) {
 					// Create bullet object from prefab
@@ -63,8 +71,7 @@ void HealthSystem::Update(float dt) {
 
 					playerHealthbar.push_back(heart);
 				}
-			}
-			else if (it.second->GetOwner()->GetType() == "Player") {
+
 				// Update player healthbar textures
 				for (int i{}; i < it.second->currentHealth - 1; ++i) {
 					playerHealthbar[i]->SetTexture("Heart");
