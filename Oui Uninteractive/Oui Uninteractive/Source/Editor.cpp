@@ -655,6 +655,7 @@ void Editor::CreateMasterPanel() {
 	ImGui::SameLine();
 	// Load level from file
 	if (ImGui::Button("Load scene")) {
+		sysManager->isPaused = false;
 		objectFactory->DestroyAllObjects();
 		tilemapLoader->LoadTilemap(sceneFileName);
 		objectFactory->BuildObjectFromFile(sceneFileName);

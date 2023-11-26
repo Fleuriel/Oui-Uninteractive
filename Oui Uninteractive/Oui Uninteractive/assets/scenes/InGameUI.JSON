@@ -38,8 +38,8 @@
             }
         },
         {
-            "Name": "Exit Button",
-            "Type": "Button",
+            "Name": "Quit",
+            "Type": "PauseMenu",
             "Texture": "",
             "UsingSprite": true,
             "Components": {
@@ -54,6 +54,11 @@
                     "ColliderSizeX": 200.0,
                     "ColliderSizeY": 200.0,
                     "ColliderRotation": 0.0
+                },
+                "LogicComponent": {
+                    "ScriptID": [
+                       5
+                    ]
                 }
             }
         }

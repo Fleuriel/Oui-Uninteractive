@@ -17,6 +17,7 @@
 #include "PlayerShooting.h"
 #include "BulletScript.h"
 #include "WeaponPickupScript.h"
+#include "PauseMenuLogic.h"
 
 LogicSystem* logicSystem = nullptr;
 /**************************************************************************
@@ -54,6 +55,11 @@ void LogicSystem::Initialize() {
 
 	BulletScript* bulletScript = new BulletScript(std::string("BulletScript"));
 	bulletScript->Initialize();
+
+	PauseMenuLogic* pauseMenuScript = new PauseMenuLogic(std::string("PauseMenuLogic"));
+	pauseMenuScript->Initialize();
+
+
 }
 /**************************************************************************
 * @brief Update function for Logic System

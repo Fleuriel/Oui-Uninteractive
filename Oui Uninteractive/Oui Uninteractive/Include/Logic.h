@@ -21,7 +21,8 @@ enum LOGIC_ENUM {
 	PLAYER_MOVEMENT,
 	WEAPON_PICKUP,
 	PLAYER_ATTACK,
-	BULLET_LIFETIME
+	BULLET_LIFETIME,
+	PAUSE_MENU
 };
 class LogicSystem : public ISystem {
 public:

@@ -10,7 +10,6 @@
 #ifndef BULLET_SCRIPT_H
 #define BULLET_SCRIPT_H
 
-#include <string>
 #include "IScript.h"
 #include "Logic.h"
 #include "ObjectFactory.h"

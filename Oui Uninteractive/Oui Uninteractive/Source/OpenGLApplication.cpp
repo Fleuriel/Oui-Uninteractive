@@ -243,18 +243,22 @@ void OpenGLApplication::OpenGLInit() {
 * @return void
 *************************************************************************/
 void OpenGLApplication::OpenGLUpdate() {
+
 	// Toggle editor state
 	if (inputSystem.GetKeyState(GLFW_KEY_GRAVE_ACCENT) == 1) {
 		Editor::editorOn = !Editor::editorOn;		
 	}
 
-	triggerEveryQuarterSecond += static_cast<float>(GetDT());
-	if (triggerEveryQuarterSecond >= 0.25) {
-		spritecol++;
-		if (spritecol >= 6)
-			spritecol = 0;
-		triggerEveryQuarterSecond = 0;
-	}
+	
+		triggerEveryQuarterSecond += static_cast<float>(GetDT());
+		if (triggerEveryQuarterSecond >= 0.25) {
+			spritecol++;
+			if (spritecol >= 6)
+				spritecol = 0;
+			triggerEveryQuarterSecond = 0;
+		}
+	
+	
 
 	// Start time profiling for grpahics system
 	//TimeProfiler profiler(Editor::timeRecorder.graphicsTime);
@@ -549,10 +553,26 @@ void OpenGLApplication::OpenGLUpdate() {
 	// Updates the Game Object
 	for (std::pair<size_t, GameObject*> gObj : objectFactory->GetGameObjectIDMap()) {
 		if (gObj.second->Has(ComponentType::TRANSFORM) != -1) {
-			if (GET_COMPONENT(gObj.second, Transform, ComponentType::TRANSFORM)->shape->spritecheck && gObj.second->Has(ComponentType::PHYSICS_BODY) != -1)
-				GET_COMPONENT(gObj.second, Transform, ComponentType::TRANSFORM)->shape->Draw(gObj.second->GetTexture(), gObj.second->IsUsingSprite(), GET_COMPONENT(gObj.second, PhysicsBody, ComponentType::PHYSICS_BODY)->velocity);
-			else
-				GET_COMPONENT(gObj.second, Transform, ComponentType::TRANSFORM)->shape->Draw({});
+			if (GET_COMPONENT(gObj.second, Transform, ComponentType::TRANSFORM)->shape->spritecheck && gObj.second->Has(ComponentType::PHYSICS_BODY) != -1) {
+				if (sysManager->isPaused == false) {
+					GET_COMPONENT(gObj.second, Transform, ComponentType::TRANSFORM)->shape->Draw(gObj.second->GetTexture(), gObj.second->IsUsingSprite(), GET_COMPONENT(gObj.second, PhysicsBody, ComponentType::PHYSICS_BODY)->velocity);
+				}		
+			}	
+			else {
+				if (sysManager->isPaused == false) {
+					if (gObj.second->GetType() == "PauseMenu" && sysManager->isPaused == false) {
+						continue;
+					}
+					GET_COMPONENT(gObj.second, Transform, ComponentType::TRANSFORM)->shape->Draw({});
+				}
+				else {
+					if (gObj.second->GetType() == "PauseMenu") {
+						GET_COMPONENT(gObj.second, Transform, ComponentType::TRANSFORM)->shape->Draw({});
+					}
+				}
+				
+			}
+				
 		}
 	}
 
@@ -618,9 +638,9 @@ void OpenGLApplication::Initialize() {
 void OpenGLApplication::Update(float dt)
 {
 	dt;
-	if (sysManager->isPaused == false) {
+	/*if (sysManager->isPaused == false) {*/
 		OpenGLUpdate();
-	}
+	//}
 }
 
 OpenGLApplication::~OpenGLApplication() {

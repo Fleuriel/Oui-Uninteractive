@@ -105,6 +105,7 @@
     <ClInclude Include="Include\OpenGLApplication.h" />
     <ClInclude Include="Include\Input.h" />
     <ClInclude Include="Include\ParticleSystem.h" />
+    <ClInclude Include="Include\PauseMenuLogic.h" />
     <ClInclude Include="Include\Physics.h" />
     <ClInclude Include="Include\PhysicsBody.h" />
     <ClInclude Include="Include\PhysicsHeaders.h" />
