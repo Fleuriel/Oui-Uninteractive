@@ -165,7 +165,7 @@ bool AssetManager::LoadTextures() {
                     // Convert std::string to std::wstring
                     std::wstring widefilepath(filepath.begin(), filepath.end());
 
-                    std::wstring message = L"Incompatible file \"" + widefile + L"\" detected in \"" + widefilepath + L"\" folder!\n\nFile Deleted!";
+                    std::wstring message = L"Incompatible file \"" + widefile + L"\" detected in \"" + widefilepath + L"\" folder!\n\nFile moved to trash bin!";
                     LPCWSTR boxMessage = message.c_str();
 
                     MessageBox(hwnd, boxMessage, L"Load Failure", MB_OK | MB_ICONERROR);
@@ -560,7 +560,7 @@ bool AssetManager::LoadSprites() {
                     // Convert std::string to std::wstring
                     std::wstring widefilepath(filepath.begin(), filepath.end());
 
-                    std::wstring message = L"Incompatible file \"" + widefile + L"\" detected in \"" + widefilepath + L"\" folder!\n\nFile Deleted!";
+                    std::wstring message = L"Incompatible file \"" + widefile + L"\" detected in \"" + widefilepath + L"\" folder!\n\nFile moved to trash bin!";
                     LPCWSTR boxMessage = message.c_str();
 
                     MessageBox(hwnd, boxMessage, L"Load Failure", MB_OK | MB_ICONERROR);
@@ -762,7 +762,7 @@ bool AssetManager::LoadBGM() {
                 // Convert std::string to std::wstring
                 std::wstring widefilepath(filepath.begin(), filepath.end());
 
-                std::wstring message = L"Incompatible file \"" + widefile + L"\" detected in \"" + widefilepath + L"\" folder!\n\nFile Deleted!";
+                std::wstring message = L"Incompatible file \"" + widefile + L"\" detected in \"" + widefilepath + L"\" folder!\n\nFile moved to trash bin!";
                 LPCWSTR boxMessage = message.c_str();
 
                 MessageBox(hwnd, boxMessage, L"Load Failure", MB_OK | MB_ICONERROR);
@@ -852,7 +852,7 @@ bool AssetManager::LoadSFX() {
                 // Convert std::string to std::wstring
                 std::wstring widefilepath(filepath.begin(), filepath.end());
 
-                std::wstring message = L"Incompatible file \"" + widefile + L"\" detected in \"" + widefilepath + L"\" folder!\n\nFile Deleted!";
+                std::wstring message = L"Incompatible file \"" + widefile + L"\" detected in \"" + widefilepath + L"\" folder!\n\nFile moved to trash bin!";
                 LPCWSTR boxMessage = message.c_str();
 
                 MessageBox(hwnd, boxMessage, L"Load Failure", MB_OK | MB_ICONERROR);
@@ -1080,7 +1080,7 @@ bool AssetManager::LoadFonts() {
                 // Convert std::string to std::wstring
                 std::wstring widefilepath(filepath.begin(), filepath.end());
 
-                std::wstring message = L"Incompatible file \"" + widefile + L"\" detected in \"" + widefilepath + L"\" folder!\n\nFile Deleted!";
+                std::wstring message = L"Incompatible file \"" + widefile + L"\" detected in \"" + widefilepath + L"\" folder!\n\nFile moved to trash bin!";
                 LPCWSTR boxMessage = message.c_str();
 
                 MessageBox(hwnd, boxMessage, L"Load Failure", MB_OK | MB_ICONERROR);
@@ -1269,7 +1269,7 @@ bool AssetManager::LoadScenes() {
                 // Convert std::string to std::wstring
                 std::wstring widefilepath(filepath.begin(), filepath.end());
 
-                std::wstring message = L"Incompatible file \"" + widefile + L"\" detected in \"" + widefilepath + L"\" folder!\n\nFile Deleted!";
+                std::wstring message = L"Incompatible file \"" + widefile + L"\" detected in \"" + widefilepath + L"\" folder!\n\nFile moved to trash bin!";
                 LPCWSTR boxMessage = message.c_str();
 
                 MessageBox(hwnd, boxMessage, L"Load Failure", MB_OK | MB_ICONERROR);
