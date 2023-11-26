@@ -59,6 +59,9 @@ void Defeat() {
 }
 
 void GodModeOn() {
+	if (objectFactory->GetGameObjectsByType("Player").size() == 0)
+		return;
+
 	int invincibilityHP = 696969;
 	GameObject* player = objectFactory->GetGameObjectsByType("Player")[0];
 	if (player != nullptr){
@@ -71,6 +74,9 @@ void GodModeOn() {
 
 void GodModeOff() {
 	// wait Austin gor gor push code
+	if (objectFactory->GetGameObjectsByType("Player").size() == 0)
+		return;
+
 	GameObject* player = objectFactory->GetGameObjectsByType("Player")[0];
 	if (player != nullptr) {
 		auto playercomponent = GET_COMPONENT(player, HealthComponent, ComponentType::HEALTH);

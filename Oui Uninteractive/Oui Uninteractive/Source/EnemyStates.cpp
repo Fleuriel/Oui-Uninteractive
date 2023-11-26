@@ -218,6 +218,9 @@ EnemyAttack::EnemyAttack() : transitioned(false) {
 *************************************************************************/
 void EnemyAttack::Update(size_t gameObjectID) {
     (void)gameObjectID;
+    if (objectFactory->GetGameObjectsByType("Player").size() == 0)
+        return;
+
     if (!transitioned) {
         std::cout << "\nTRANSITIONED TO ATTACK STATE" << std::endl;
         transitioned = true;
@@ -226,7 +229,7 @@ void EnemyAttack::Update(size_t gameObjectID) {
     if (shootingInterval == 0) {
         // Create bullet object from prefab
         std::string bulletName{ "EnemyBullet" + std::to_string(bulletNumber) };
-        GameObject* bullet = objectFactory->BuildObjectFromPrefab(bulletName, "BulletPrefab");
+        GameObject* bullet = objectFactory->BuildObjectFromPrefab(bulletName, "EnemyBulletPrefab");
         ++bulletNumber;
         if (bulletNumber >= 100) {
             bulletNumber = 0;
