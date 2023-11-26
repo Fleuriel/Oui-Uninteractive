@@ -34,6 +34,9 @@
                     "ColliderSizeX": 200.0,
                     "ColliderSizeY": 200.0,
                     "ColliderRotation": 0.0
+                },
+                "HealthComponent": {
+                    "MaxHealth": 3
                 }
             }
         },
@@ -68,6 +71,9 @@
                     "ColliderSizeX": 140.0,
                     "ColliderSizeY": 140.0,
                     "ColliderRotation": 0.0
+                },
+                "HealthComponent": {
+                    "MaxHealth": 3
                 }
             }
         },
@@ -97,6 +103,9 @@
                     "ColliderSizeX": 220.0,
                     "ColliderSizeY": 220.0,
                     "ColliderRotation": 0.0
+                },
+                "HealthComponent": {
+                    "MaxHealth": 3
                 }
             }
         },
@@ -126,6 +135,9 @@
                     "ColliderSizeX": 220.0,
                     "ColliderSizeY": 220.0,
                     "ColliderRotation": 0.0
+                },
+                "HealthComponent": {
+                    "MaxHealth": 3
                 }
             }
         },
@@ -155,6 +167,9 @@
                     "ColliderSizeX": 220.0,
                     "ColliderSizeY": 220.0,
                     "ColliderRotation": 0.0
+                },
+                "HealthComponent": {
+                    "MaxHealth": 3
                 }
             }
         },
@@ -184,6 +199,9 @@
                     "ColliderSizeX": 220.0,
                     "ColliderSizeY": 220.0,
                     "ColliderRotation": 0.0
+                },
+                "HealthComponent": {
+                    "MaxHealth": 3
                 }
             }
         }

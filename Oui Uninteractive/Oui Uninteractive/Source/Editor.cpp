@@ -917,10 +917,10 @@ void Editor::CreatePrefabPanel() {
 						objCollider->tx->scale = prefabCollider->tx->scale;
 						objCollider->tx->rotation = prefabCollider->tx->rotation;
 					}
-					EnemyFSM* objFSM = GET_COMPONENT(objectFactory->GetGameObjectByID((*itGameObject).second->GetGameObjectID()), EnemyFSM, ComponentType::ENEMY_FSM);
-					if (objFSM != nullptr) {
+					EnemyFSM* objEnemyFSM = GET_COMPONENT(objectFactory->GetGameObjectByID((*itGameObject).second->GetGameObjectID()), EnemyFSM, ComponentType::ENEMY_FSM);
+					if (objEnemyFSM != nullptr) {
 						EnemyFSM* prefabFSM = GET_PREFAB_COMPONENT(objectFactory->GetPrefabByName(selectedName), EnemyFSM, ComponentType::ENEMY_FSM);
-						objFSM->aggroRange = prefabFSM->aggroRange;
+						objEnemyFSM->aggroRange = prefabFSM->aggroRange;
 					}
 					HealthComponent* objMaxHp = GET_COMPONENT(objectFactory->GetGameObjectByID((*itGameObject).second->GetGameObjectID()), HealthComponent, ComponentType::HEALTH);
 					if (objMaxHp != nullptr) {
@@ -964,15 +964,14 @@ void Editor::CreatePrefabPanel() {
 						objCollider->tx->scale.y = colScaleY;
 						objCollider->tx->rotation = colRot;
 					}
-					EnemyFSM* objFSM = GET_COMPONENT(objectFactory->GetGameObjectByID((*itPreview).second->GetGameObjectID()), EnemyFSM, ComponentType::ENEMY_FSM);
-					if (objFSM != nullptr) {
-						objFSM->aggroRange = aggRange;
+					EnemyFSM* objEnemyFSM = GET_COMPONENT(objectFactory->GetGameObjectByID((*itPreview).second->GetGameObjectID()), EnemyFSM, ComponentType::ENEMY_FSM);
+					if (objEnemyFSM != nullptr) {
+						objEnemyFSM->aggroRange = aggRange;
 					}
 					HealthComponent* objMaxHp = GET_COMPONENT(objectFactory->GetGameObjectByID((*itPreview).second->GetGameObjectID()), HealthComponent, ComponentType::HEALTH);
 					if (objMaxHp != nullptr) {
 						objMaxHp->maxHealth = maxHp;
 					}
-					
 				}
 			}
 			// Save and serialize prefabs
@@ -996,6 +995,7 @@ void Editor::CreatePrefabPanel() {
 				logicFlag = (copy[selectedName]->Has(ComponentType::LOGICCOMPONENT) != -1);
 				colliderFlag = (copy[selectedName]->Has(ComponentType::COLLIDER) != -1);
 				enemyfsmFlag = (copy[selectedName]->Has(ComponentType::ENEMY_FSM) != -1);
+				hpFlag = (copy[selectedName]->Has(ComponentType::HEALTH) != -1);
 				loadedFlag = true;
 
 				if (copy[selectedName]->Has(ComponentType::PHYSICS_BODY) != -1) {
@@ -1257,7 +1257,7 @@ void Editor::CreateSoundPanel() {
 * @return void
 *************************************************************************/
 void Editor::CreateObjectList() {
-	static bool transformFlag, physicsFlag, logicFlag, colliderFlag;
+	static bool transformFlag, physicsFlag, logicFlag, colliderFlag, enemyfsmFlag, hpFlag;
 	ImGui::Begin("Pretty objects here");
 	static size_t gameobjID = 0;
 
@@ -1475,7 +1475,8 @@ void Editor::CreateObjectList() {
 			}
 			else {
 				if (objectFactory->GetGameObjectByID(gameobjID) != nullptr) {
-					static float xPos2 = 0, yPos2 = 0, scale2 = 0, scaleY2 = 0, speed2 = 0, angle2 = 0, rotSpeed2 = 0;
+					static float xPos2 = 0, yPos2 = 0, scale2 = 0, scaleY2 = 0, speed2 = 0, angle2 = 0, rotSpeed2 = 0, aggRange2 = 0;
+					static int currentHp2= 0, maxHp2 = 0;
 					if (objectFactory->GetGameObjectByID(gameobjID)->Has(ComponentType::TRANSFORM) != -1) {
 						transformFlag = true;
 					}
@@ -1488,6 +1489,14 @@ void Editor::CreateObjectList() {
 					if (objectFactory->GetGameObjectByID(gameobjID)->Has(ComponentType::COLLIDER) != -1) {
 						colliderFlag = true;
 					}
+					if (objectFactory->GetGameObjectByID(gameobjID)->Has(ComponentType::ENEMY_FSM) != -1) {
+						enemyfsmFlag = true;
+					}
+					if (objectFactory->GetGameObjectByID(gameobjID)->Has(ComponentType::HEALTH) != -1) {
+						hpFlag = true;
+					}
+
+					// Transform Controls
 					ImGui::Indent();
 					if (ImGui::Checkbox("##Transform", &transformFlag)) {
 						Transform* objTX = GET_COMPONENT(objectFactory->GetGameObjectByID(gameobjID), Transform, ComponentType::TRANSFORM);
@@ -1530,6 +1539,8 @@ void Editor::CreateObjectList() {
 						}
 					}
 					ImGui::Unindent();
+
+					// Physics Controls
 					ImGui::Indent();
 					if (ImGui::Checkbox("##Physics", &physicsFlag)) {
 						PhysicsBody* objBody = GET_COMPONENT(objectFactory->GetGameObjectByID(gameobjID), PhysicsBody, ComponentType::PHYSICS_BODY);
@@ -1560,6 +1571,8 @@ void Editor::CreateObjectList() {
 						}
 					}
 					ImGui::Unindent();
+
+					// Logic Controls
 					static std::string currentScriptName;
 					static int currentScriptIndex;
 					ImGui::Indent();
@@ -1616,7 +1629,7 @@ void Editor::CreateObjectList() {
 					}
 					ImGui::Unindent();
 
-
+					// Collider Controls
 					ImGui::Indent();
 					if (ImGui::Checkbox("##Collider", &colliderFlag)) {
 						Collider* objCollider = GET_COMPONENT(objectFactory->GetGameObjectByID(gameobjID), Collider, ComponentType::COLLIDER);
@@ -1649,6 +1662,68 @@ void Editor::CreateObjectList() {
 							ImGui::Text("Selected Object has no COLLIDER component");
 						}
 					}
+					ImGui::Unindent();
+
+					// FSM Controls
+					ImGui::Indent();
+					if (ImGui::Checkbox("##EnemyFSM", &enemyfsmFlag)) {
+						EnemyFSM* objEnemyFSM = GET_COMPONENT(objectFactory->GetGameObjectByID(gameobjID), EnemyFSM, ComponentType::ENEMY_FSM);
+						if (objEnemyFSM != nullptr) {
+							objectFactory->GetGameObjectByID(gameobjID)->RemoveComponent(objEnemyFSM);
+							enemyfsmFlag = false;
+						}
+						else {
+							objectFactory->GetGameObjectByID(gameobjID)->AddComponent(new EnemyFSM(), ComponentType::ENEMY_FSM);
+							objectFactory->GetGameObjectByID(gameobjID)->Initialize();
+							enemyfsmFlag = true;
+						}
+					}
+					ImGui::SameLine();
+					if (ImGui::CollapsingHeader("Enemy FSM")) {
+						if (objectFactory->GetGameObjectByID(gameobjID)->Has(ComponentType::ENEMY_FSM) != -1) {
+							aggRange2 = GET_COMPONENT(objectFactory->GetGameObjectByID(gameobjID), EnemyFSM, ComponentType::ENEMY_FSM)->aggroRange;
+							if (ImGui::SliderFloat("AggroRange", &aggRange2, 0.f, 500.f, "%.2f")) { // Slider for Aggro Range
+								GET_COMPONENT(objectFactory->GetGameObjectByID(gameobjID), EnemyFSM, ComponentType::ENEMY_FSM)->aggroRange = aggRange2;
+							}
+						}
+						else {
+							ImGui::Text("Selected Object has no ENEMY FSM component");
+						}
+					}
+					ImGui::Unindent();
+
+					// Health Component Controls
+					ImGui::Indent();
+					if (ImGui::Checkbox("##HealthComponent", &hpFlag)) {
+						HealthComponent* objHp = GET_COMPONENT(objectFactory->GetGameObjectByID(gameobjID), HealthComponent, ComponentType::HEALTH);
+						if (objHp != nullptr) {
+							objectFactory->GetGameObjectByID(gameobjID)->RemoveComponent(objHp);
+							hpFlag = false;
+						}
+						else {
+							objectFactory->GetGameObjectByID(gameobjID)->AddComponent(new HealthComponent(), ComponentType::HEALTH);
+							objectFactory->GetGameObjectByID(gameobjID)->Initialize();
+							hpFlag = true;
+						}
+					}
+					ImGui::SameLine();
+					if (ImGui::CollapsingHeader("Health Component")) {
+						if (objectFactory->GetGameObjectByID(gameobjID)->Has(ComponentType::HEALTH) != -1) {
+							int maxHpTemp = GET_COMPONENT(objectFactory->GetGameObjectByID(gameobjID), HealthComponent, ComponentType::HEALTH)->maxHealth;
+							currentHp2 = GET_COMPONENT(objectFactory->GetGameObjectByID(gameobjID), HealthComponent, ComponentType::HEALTH)->currentHealth;
+							if (ImGui::SliderInt("Current Health", &maxHp2, 0, 50, "%d")) { // Slider for Current Health
+								GET_COMPONENT(objectFactory->GetGameObjectByID(gameobjID), HealthComponent, ComponentType::HEALTH)->currentHealth = currentHp2;
+							}
+							maxHp2 = GET_COMPONENT(objectFactory->GetGameObjectByID(gameobjID), HealthComponent, ComponentType::HEALTH)->maxHealth;
+							if (ImGui::SliderInt("Max Health", &maxHp2, 0, 50, "%d")) { // Slider for Max Health
+								GET_COMPONENT(objectFactory->GetGameObjectByID(gameobjID), HealthComponent, ComponentType::HEALTH)->maxHealth = maxHp2;
+							}
+						}
+						else {
+							ImGui::Text("Selected Object has no HEALTH component");
+						}
+					}
+					ImGui::Unindent();
 				}
 			}
 

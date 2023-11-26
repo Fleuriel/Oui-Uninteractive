@@ -34,6 +34,9 @@
                     "ColliderSizeX": 200.0,
                     "ColliderSizeY": 200.0,
                     "ColliderRotation": 0.0
+                },
+                "HealthComponent": {
+                    "MaxHealth": 3
                 }
             }
         },
