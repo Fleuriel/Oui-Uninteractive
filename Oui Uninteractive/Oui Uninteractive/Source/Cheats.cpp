@@ -5,7 +5,7 @@
  * @par Course: CSD 2401
  * @par Software Engineering Project 3
  * @date 09-05-2023
- * @brief 
+ * @brief Implementation of cheat code functionalities for the game.
  *************************************************************************/
 
 #include <Cheats.h>
@@ -15,6 +15,7 @@
 #include <HealthComponent.h>
 #include <Background.h>
 
+ // List of available cheat codes
 std::vector<std::string> cheatCodes{
 	"skiplevel", // skip to next level
 	"victory", // skip to winning screen
@@ -23,10 +24,19 @@ std::vector<std::string> cheatCodes{
 	"godmodeoff"
 };
 
+/**************************************************************************
+ * @brief Checks if a given cheat code is valid.
+ * @param cheatCode The cheat code to check.
+ * @return True if the cheat code is valid, false otherwise.
+ *************************************************************************/
 bool CheckCheatCode(const std::string& cheatCode) {
     return std::any_of(cheatCodes.begin(), cheatCodes.end(), [&](const std::string& cheat) { return cheatCode == cheat; });
 }
 
+/**************************************************************************
+ * @brief Applies the effect of a cheat code.
+ * @param cheatCode The cheat code to apply.
+ *************************************************************************/
 void Cheat(std::string cheatCode) {
 	if (cheatCode == "skiplevel")
 		SkipLevel();
@@ -40,16 +50,27 @@ void Cheat(std::string cheatCode) {
 		GodModeOff();
 }
 
+/**************************************************************************
+ * @brief Skips to the next game level.
+ *************************************************************************/
 void SkipLevel() {
 	sceneManager->nextSceneID++;
 	std::cout << "SKIPLEVEL" << std::endl;
 }
 
+/**************************************************************************
+ * @brief Skips to the victory screen.
+ *        Also changes the background and creates victory screen objects.
+ *************************************************************************/
 void Victory() {
 	//sceneManager->nextSceneID = victorysceneid
 	std::cout << "VICTORY" << std::endl;
 }
 
+/**************************************************************************
+ * @brief Skips to the defeat screen.
+ *        Also changes the background and creates defeat screen objects.
+ *************************************************************************/
 void Defeat() {
 	//sceneManager->nextSceneID = defeatsceneid
 	//Should change background to defeat screen (not the entire defeat screen as an object, then objects as buttons to click
@@ -58,6 +79,10 @@ void Defeat() {
 	std::cout << "DEFEAT" << std::endl;
 }
 
+/**************************************************************************
+ * @brief Activates god mode, making the player invulnerable with increased 
+		  damage.
+ *************************************************************************/
 void GodModeOn() {
 	if (objectFactory->GetGameObjectsByType("Player").size() == 0)
 		return;
@@ -73,6 +98,10 @@ void GodModeOn() {
 	std::cout << "GODMODEON" << std::endl;
 }
 
+/**************************************************************************
+ * @brief Deactivates god mode, restoring the player's health to its 
+		  maximum.
+ *************************************************************************/
 void GodModeOff() {
 	if (objectFactory->GetGameObjectsByType("Player").size() == 0)
 		return;
