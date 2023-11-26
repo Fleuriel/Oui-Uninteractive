@@ -32,15 +32,15 @@
         }, {
             "Name": "BulletPrefab",
             "Type": "BulletPrefab",
-            "Texture": "error_icon",
+            "Texture": "bullet",
             "UsingSprite": false,
             "Components": {
                 "Transform": {
                     "PositionX": 0.0,
                     "PositionY": 0.0,
                     "Rotation": 0.0,
-                    "ScaleX": 50.0,
-                    "ScaleY": 50.0
+                    "ScaleX": 15.0,
+                    "ScaleY": 15.0
                 },
                 "PhysicsBody": {
                     "VelocityX": 0.0,
@@ -55,8 +55,8 @@
                     "ScriptID": [4]
                 },
                 "Collider": {
-                    "ColliderSizeX": 50.0,
-                    "ColliderSizeY": 50.0,
+                    "ColliderSizeX": 15.0,
+                    "ColliderSizeY": 15.0,
                     "ColliderRotation": 0.0
                 },
                 "HealthComponent": {
