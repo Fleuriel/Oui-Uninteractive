@@ -15,24 +15,38 @@ uniform int row_To_Draw;
 
 uniform mat3 uModel_to_NDC;
 
+
+out vec3 Normal;
+out vec3 FragPos;
+
+
+out vec2 TexCoord;  // Pass texture coordinates to the fragment shader
+
 void main(void){
 
+	mat3 normalMatrix = transpose(inverse(mat3(uModel_to_NDC)));
+
+	vec4 worldPosition = vec4(vec2(uModel_to_NDC * vec3(aVertexPosition, 1.0f)), 0.0, 1.0);
+
+
 	//set the position
-	gl_Position = vec4(vec2(uModel_to_NDC * vec3(aVertexPosition, 1.f)), 0.0, 1.0);
+	gl_Position =  worldPosition;
 	//set the color
 	vColor = aVertexColor;
 
 	float width = aVertexTexture.x / cols;
 	float height = aVertexTexture.y / rows;
 
-
-
 	vTex = vec2(width , height) + vec2(float(col_To_Draw)/float(cols),float(row_To_Draw)/float(rows));
 
-	//vColor = vec3(col_To_Draw,rows,cols);
+
+	// Lighting?
+	TexCoord = aVertexTexture;
 
 
-	// Set the texture to the 'bytes'
-	//vTex = aVertexTexture;
+        //Normal = normalMatrix;
 
+
+        // Pass the world-space position to the fragment shader
+        FragPos = vec3(worldPosition);
 }

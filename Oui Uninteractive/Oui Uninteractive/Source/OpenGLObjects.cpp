@@ -72,6 +72,20 @@ void OpenGLObject::Initialize() {
 	InitShaders();
 	// Fonts
 	InitFont();
+	InitLighting();
+
+	GLchar infoLog[512];
+	GLint success;
+	
+	
+	// Check for linking errors
+
+	glGetProgramiv(shdrpgms[static_cast<int>(SHADER_ORDER::LIGHTING)].GetHandle(), GL_LINK_STATUS, &success);
+	if (!success) {
+		glGetProgramInfoLog(shdrpgms[static_cast<int>(SHADER_ORDER::LIGHTING)].GetHandle(), 512, NULL, infoLog);
+		std::cout << "Shader program linking failed:\n" << infoLog << std::endl;
+	}
+
 
 	// Emplace model to the model vector
 	models.emplace_back(OpenGLObject::Box_Model(color));
@@ -345,8 +359,25 @@ void OpenGLObject::Draw(std::string type, bool spriteUsage, Vec2 vel) const {
 	// Bind Texture to 6.
 	glBindTextureUnit(6, tex);
 
+//	shdrpgms[static_cast<int>(SHADER_ORDER::LIGHTING)].Use();
 	// Install the shader program
 	shdrpgms[shaderNumber].Use();
+
+	glm::vec3 worldLightPos = glm::vec3(-0.4f, 0.3f, 0.0f);
+
+	// Convert world coordinates to NDC
+	glm::vec3 ndcLightPos = cameraObject.World_to_NDC_xform * worldLightPos;
+
+
+	//need know
+
+
+	shdrpgms[static_cast<int>(SHADER_ORDER::LIGHTING)].SetUniform("uTex2d", 6);
+
+	glUniform3f(glGetUniformLocation(shdrpgms[static_cast<int>(SHADER_ORDER::LIGHTING)].GetHandle(), "ambient_light"), 0.3f, 0.3f, 0.3f);
+	glUniform3f(glGetUniformLocation(shdrpgms[static_cast<int>(SHADER_ORDER::LIGHTING)].GetHandle(), "point_light_pos"), -0.4f, 0.3f, 0.0f);
+	glUniform3f(glGetUniformLocation(shdrpgms[static_cast<int>(SHADER_ORDER::LIGHTING)].GetHandle(), "point_light_col"), 0.999f, 0.999f, 0.999f);
+	glUniform1f(glGetUniformLocation(shdrpgms[static_cast<int>(SHADER_ORDER::LIGHTING)].GetHandle(), "point_light_intensity"), 0.4f);
 
 	// In Shader Program [uTex2d] is the texture uniform position.
 	// set uniform uTex2d to #6.
@@ -359,7 +390,8 @@ void OpenGLObject::Draw(std::string type, bool spriteUsage, Vec2 vel) const {
 
 		int spriterow{};
 
-		if (type == "Player"){
+
+		if (type == "Player") {
 			double mouseX; // = io.MousePos.x;
 			double mouseY; // = io.MousePos.y;
 			glfwGetCursorPos(windowNew, &mouseX, &mouseY);
@@ -393,11 +425,13 @@ void OpenGLObject::Draw(std::string type, bool spriteUsage, Vec2 vel) const {
 		shdrpgms[static_cast<int>(SHADER_ORDER::SPRITES)].SetUniform("rows", assetManager.GetSprite(type + movement).GetRows());
 		shdrpgms[static_cast<int>(SHADER_ORDER::SPRITES)].SetUniform("cols", assetManager.GetSprite(type + movement).GetColumns());
 		shdrpgms[static_cast<int>(SHADER_ORDER::SPRITES)].SetUniform("row_To_Draw", spriterow);
+
 	}
 
 
 	// Part 2: Bind object's VAO handle
 	glBindVertexArray(models[mdl_ref].vaoid); // Bind object's VAO handle
+
 
 	// Part 3: Copy object's 3x3 model-to-NDC matrix to vertex shader
 
@@ -418,8 +452,12 @@ void OpenGLObject::Draw(std::string type, bool spriteUsage, Vec2 vel) const {
 
 	// Part 5: Clean up
 	glBindVertexArray(0); // Unbind the VAO
+
 	shdrpgms[shaderNumber].UnUse(); // Uninstall the shader program
+
+	shdrpgms[static_cast<int>(SHADER_ORDER::LIGHTING)].UnUse(); // Uninstall the shader program
 }
+
 
 /**************************************************************************
 * @brief		 Cleanup the Object Creation.
@@ -669,30 +707,12 @@ void OpenGLObject::Camera2D::Init(GLFWwindow* camWindow, OpenGLObject* ptr) {
 	// Set a OpenGLObject to the pointer that is inputted, i.e. another OpenGLObject
 	Cam = ptr;
 
-	Left   = -1.0f;
-	Right  = 1.0f;
-	Bottom = -1.0f;
-	Top	   = 1.0f;
-
-	cameraProjection = glm::ortho(Left, Right, Bottom, Top, -1.0f, 1.0f);
-
-
-	/*
-					< Initialize for initial creation >
-	Create the Frame Buffer Width and Height(This must be here as the
-	FBuffer will update	 Every single time, it is zoom in/out /move		*/
-
-	aspectRatio = static_cast<GLdouble>(Editor::gameWindowSize.first) / static_cast<GLdouble>(Editor::gameWindowSize.first);
-
 
 	// compute camera's up and right vectors ...
 	up = glm::vec2{ -sinf(glm::radians(Cam->orientation.x)), cosf(glm::radians(Cam->orientation.x)) };
 
 	// compute camera's right vectors (U)
 	right = glm::vec2{ cosf(glm::radians(Cam->orientation.x)), sinf(glm::radians(Cam->orientation.x)) };
-
-
-	//heightRatio = height / 1000;
 
 
 	// view transform 
@@ -704,15 +724,15 @@ void OpenGLObject::Camera2D::Init(GLFWwindow* camWindow, OpenGLObject* ptr) {
 	};
 	// Camera to NDC
 	CameraWindow_to_NDC_xform = glm::mat3{
-		2.f / (height * aspectRatio), 0, 0,
-		0, 2.f / height , 0,
+		2.f / (Editor::gameWindowSize.first) * (1000 / cameraObject.height), 0, 0,
+		0, 2.f / Editor::gameWindowSize.second * (1000 / cameraObject.height), 0,
 		0, 0, 1
 	};
 
 	// World to NDC transform
 	// Set the World to NDC transform for the camera
 	//World_to_NDC_xform = CameraWindow_to_NDC_xform * view_xform;
-	World_to_NDC_xform = CameraWindow_to_NDC_xform * cameraProjection;
+	World_to_NDC_xform = CameraWindow_to_NDC_xform * view_xform;
 
 }
 /**************************************************************************
@@ -728,19 +748,14 @@ void OpenGLObject::Camera2D::Update(GLFWwindow* camWindow, int positionX, int po
 
 	using glm::radians;
 
-	(void)camWindow;
-
-	
-	cameraProjection = glm::ortho(Left, Right, Bottom, Top, -1.0f, 1.0f);
-	
+	(void)camWindow;	
 
 	// ZOOM in
 	//if (inputSystem.GetScrollState() == 1) 
 	if (inputSystem.GetKeyState(GLFW_KEY_UP) == 2)
 	{
 		// Height Decrement by 1.1f
-		height -= heightChangeValue;
-
+		height -= 50;
 	}
 
 	// ZOOM OUT
@@ -748,31 +763,8 @@ void OpenGLObject::Camera2D::Update(GLFWwindow* camWindow, int positionX, int po
 	if (inputSystem.GetKeyState(GLFW_KEY_DOWN) == 2)
 	{
 		// Height Increment by 1.1f
-		height += heightChangeValue;
-
+		height += 50;
 	}
-
-
-	if (inputSystem.GetKeyState(GLFW_KEY_F6) == 2)
-		height = 1000;	
-	if (inputSystem.GetKeyState(GLFW_KEY_F7) == 2)
-		height = 1500;	
-	if (inputSystem.GetKeyState(GLFW_KEY_F8) == 2)
-		height = 2000;
-
-	if (Left >= 0)
-		Left		= 0;
-
-	if (Right <= 0)
-		Right		= 0;
-
-	if (Top <= 0)
-		Top			= 0;
-
-	if (Bottom >= 0)
-		Bottom		= 0;
-
-
 
 	// Set minimum parameter of height < Depth >
 	if (height <= min_height)
@@ -785,15 +777,6 @@ void OpenGLObject::Camera2D::Update(GLFWwindow* camWindow, int positionX, int po
 	{
 		height = max_height;
 	}
-
-
-
-	/*
-					< Initialize for initial creation >
-	Create the Frame Buffer Width and Height(This must be here as the
-	FBuffer will update	 Every single time, it is zoom in/out /move		*/
-
-	aspectRatio = static_cast<GLfloat>(Editor::gameWindowSize.first) / static_cast<GLfloat>(Editor::gameWindowSize.second);
 
 	view_xform =glm::mat3
 	{
@@ -809,8 +792,6 @@ void OpenGLObject::Camera2D::Update(GLFWwindow* camWindow, int positionX, int po
 		0, 2.f / Editor::gameWindowSize.second * (1000 /cameraObject.height), 0,
 		0, 0, 1
 	};
-
-
 
 	// World to NDC transform
 	// Set the World to NDC transform for the camera
@@ -928,23 +909,33 @@ void OpenGLObject::InitShaders()
 		("assets/shaders/Oui_Uninteractive_models_sprites.vert", "assets/shaders/Oui_Uninteractive_models_sprites.frag")
 	};
 
+	VectorPairStrStr LIGHTINGSHADER{
+		std::make_pair<std::string, std::string>
+		("assets/shaders/Oui_Uninteractive_lighting.vert", "assets/shaders/Oui_Uninteractive_lighting.frag")
+	};
 
+	std::cout << "Loading Shaders: \n";
 	// Initialize the Shader Program for Models
-	std::cout << "Initializing model shader" << std::endl;
+	std::cout << "Initializing model shader <0>... \n";
 	init_shdrpgms_cont(MODELSSHADER);
 
 	// Initialize the Shader Program for Fonts
-	std::cout << "Initializing font shader" << std::endl;
+	std::cout << "Initializing font shader <1>... \n";
 	init_shdrpgms_cont(FONTSHADER);
 
 	// Initialize the Shader Program for Camera
-	std::cout << "Initializing camera shader" << std::endl;
+	std::cout << "Initializing camera shader <2>... \n";
 	init_shdrpgms_cont(CAMERASHADER);
 
 	// Initialize the Shader Program for Sprites
-	std::cout << "Initializing sprite shader" << std::endl;
+	std::cout << "Initializing sprite shader <3>... \n";
 	init_shdrpgms_cont(SPRITESHADER);
 
+	std::cout << "Initializing lighting shader <4>... \n\n";
+	init_shdrpgms_cont(LIGHTINGSHADER);
+
+
+	std::cout << "Shaders loaded successfully... \n";
 }
 
 
@@ -1016,7 +1007,36 @@ void OpenGLObject::InitFont()
 /*=======================================================================================================================*/
 
 
+void OpenGLObject::InitLighting()
+{
+	// Initialize the Projection matrix for the fonts to render into the screen
+	//fontProjection = glm::ortho(0.0f, static_cast<float>(windowSize.first), 0.0f, static_cast<float>(windowSize.second));
+	// Use the shader
+	int lightingShader = static_cast<int>(SHADER_ORDER::SPRITES);
 
+
+	shdrpgms[lightingShader].Use();
+
+	// Set uniform values
+
+	glUniform3f(glGetUniformLocation(shdrpgms[lightingShader].GetHandle(), "ambient_light"), 0.0f, 0.0f, 0.f);
+	glUniform3f(glGetUniformLocation(shdrpgms[lightingShader].GetHandle(), "point_light_pos"), 0.0f, 0.0f, 0.0f); // Adjust as needed
+	glUniform3f(glGetUniformLocation(shdrpgms[lightingShader].GetHandle(), "point_light_col"), 1.f, 1.f, 1.f);
+	glUniform1f(glGetUniformLocation(shdrpgms[lightingShader].GetHandle(), "point_light_intensity"), 0.5f);
+
+	glm::vec3 viewPos(0.0f, 0.0f, 0.0f);  // Set your camera position here
+	float visionRadius = 1.0f;  // Set the radius of the circular vision
+	float spotAngle = 22.0f;   // Set your spotlight angle in degrees
+	glUniform3fv(glGetUniformLocation(shdrpgms[lightingShader].GetHandle(), "view_pos"), 1, glm::value_ptr(viewPos));
+	glUniform1f(glGetUniformLocation(shdrpgms[lightingShader].GetHandle(), "vision_radius"), visionRadius);
+	glUniform1f(glGetUniformLocation(shdrpgms[lightingShader].GetHandle(), "spot_angle"), spotAngle);
+
+
+	GLint visionRadiusLoc = glGetUniformLocation(shdrpgms[lightingShader].GetHandle(), "vision_radius");
+
+
+
+}
 
 
 /*=======================================================================================================================*/
@@ -1039,9 +1059,7 @@ void OpenGLObject::InitFont()
 @return void
 *************************************************************************/
 void OpenGLObject::FrameBufferMouseCoords(GLFWwindow* originalWindow, double* x, double* y, OpenGLObject::Camera2D camera)
-{
-
-	
+{	
 	(void)originalWindow;
 	// set a variable original X and Y
 	double originalX = *x - Editor::gameWindowOrigin.first;
