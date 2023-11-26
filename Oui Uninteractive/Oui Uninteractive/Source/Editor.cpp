@@ -684,28 +684,33 @@ void Editor::CreateRenderWindow() {
 		ImGui::Image(reinterpret_cast<ImTextureID>(static_cast<uintptr_t>(OpenGLObject::FrameTexture)), wsize, ImVec2(0.0f, 1.0f), ImVec2(1.0f, 0.0f)); // Replace thirdTexture with handle to FBO when graphics done rendering to FBO	
 		// Setup drag and drop checks within window
 		if (ImGui::BeginDragDropTarget()) {
-			if (selected != nullptr) {	// Object is being selected		
-				if (!selected->IsUsingSprite()) {
+			if (selected != nullptr) {	// OBJECT IS SELECTED		
+				if (!selected->IsUsingSprite()) { // Selected object utilizes textures
 					if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("PAYLOAD_TEXTURE")) {
 						std::string dropTextureName = static_cast<const char*>(payload->Data);
 						selected->SetTexture(dropTextureName);		
 					}
 				}
-				else if (selected->IsUsingSprite()) {
+				else if (selected->IsUsingSprite()) { // Selected object utilizes sprites
 					if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("PAYLOAD_SPRITE")) {
-						std::string dropTextureName = static_cast<const char*>(payload->Data);			
-						selected->SetTexture(dropTextureName);
+						std::string dropSpriteName = static_cast<const char*>(payload->Data);			
+						selected->SetTexture(dropSpriteName);
 					}
 					else if (!ImGui::IsDragDropPayloadBeingAccepted()) {
 						std::cout << "WRTONG PL";
 					}
 				}
 			}
-			else {
+			else { // NO OBJECT SELECTED
 				if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("PAYLOAD_AUDIO_BGM")) {
-					std::string dropAudioName = static_cast<const char*>(payload->Data);
+					std::string dropBGMName = static_cast<const char*>(payload->Data);
+					std::cout << dropBGMName;
 					soundManager->StopAll();
-					soundManager->PlayBGM(dropAudioName);
+					soundManager->PlayBGM(dropBGMName);
+				}
+				else if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("PAYLOAD_AUDIO_SFX")) {
+					std::string dropSFXName = static_cast<const char*>(payload->Data);
+					soundManager->PlaySFX(dropSFXName);
 				}
 			}
 			itemDrag = false;
@@ -1953,7 +1958,6 @@ void Editor::RenderDirectoryV2(const std::string& filePath) {
 		const std::string entryExt = entry.path().extension().string();
 		std::string texNameWithoutExt = entry.path().stem().string();
 		// Set correct icons
-		//ImTextureID iconTexture = isDirectory ? reinterpret_cast<ImTextureID>(static_cast<uintptr_t>(assetManager.GetTexture("folder_icon"))) : reinterpret_cast<ImTextureID>(static_cast<uintptr_t>(assetManager.GetTexture("file_icon")));
 		ImTextureID iconTexture = nullptr;
 		if (isDirectory) { // For folders
 			iconTexture = reinterpret_cast<ImTextureID>(static_cast<uintptr_t>(assetManager.GetTexture("folder_icon")));
@@ -2055,7 +2059,7 @@ void Editor::RenderDirectoryV2(const std::string& filePath) {
 				}
 				else {
 					ImGui::SetDragDropPayload("PAYLOAD_AUDIO_SFX", entryName.c_str(), entryName.size() + 1);
-				}			
+				}							
 			}
 			// Display held item
 			ImGui::Image(iconTexture, ImVec2(EditorSettings::iconSize / 4, EditorSettings::iconSize / 4));
