@@ -21,7 +21,7 @@ SceneManager::SceneManager() {
 }
 void SceneManager::Initialize() {
 	sceneMap.insert(std::pair<size_t, IScene*>(GameStateList::STATE_GRAPHICS_TEST, new Scene1(0)));
-	sceneMap.insert(std::pair<size_t, IScene*>(GameStateList::STATE_LEVEL_TEST, new Scene2(0)));
+	sceneMap.insert(std::pair<size_t, IScene*>(GameStateList::STATE_LEVEL_TEST, new Scene2(1)));
 	currScene = sceneMap[0];
 	currSceneID = currScene->sceneID;
 	nextSceneID = currSceneID;

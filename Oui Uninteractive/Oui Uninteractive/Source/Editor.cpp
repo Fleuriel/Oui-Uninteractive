@@ -684,7 +684,7 @@ void Editor::CreateRenderWindow() {
 		ImGui::Image(reinterpret_cast<ImTextureID>(static_cast<uintptr_t>(OpenGLObject::FrameTexture)), wsize, ImVec2(0.0f, 1.0f), ImVec2(1.0f, 0.0f)); // Replace thirdTexture with handle to FBO when graphics done rendering to FBO	
 		// Setup drag and drop checks within window
 		if (ImGui::BeginDragDropTarget()) {
-			if (selected != nullptr) {			
+			if (selected != nullptr) {	// Object is being selected		
 				if (!selected->IsUsingSprite()) {
 					if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("PAYLOAD_TEXTURE")) {
 						std::string dropTextureName = static_cast<const char*>(payload->Data);
@@ -694,14 +694,20 @@ void Editor::CreateRenderWindow() {
 				else if (selected->IsUsingSprite()) {
 					if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("PAYLOAD_SPRITE")) {
 						std::string dropTextureName = static_cast<const char*>(payload->Data);			
-						std::cout << dropTextureName << std::endl;
 						selected->SetTexture(dropTextureName);
 					}
 					else if (!ImGui::IsDragDropPayloadBeingAccepted()) {
 						std::cout << "WRTONG PL";
 					}
 				}
-			}		
+			}
+			else {
+				if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("PAYLOAD_AUDIO_BGM")) {
+					std::string dropAudioName = static_cast<const char*>(payload->Data);
+					soundManager->StopAll();
+					soundManager->PlayBGM(dropAudioName);
+				}
+			}
 			itemDrag = false;
 			ImGui::EndDragDropTarget();
 		}
@@ -735,15 +741,7 @@ void Editor::CreatePrefabPanel() {
 	std::map<std::string, Prefab*>::iterator it = copy.begin();
 	static std::string selectedName = it->first;
 
-	// Refresh list of prefabs from file directory
-	//if (ImGui::Button("Refresh")) {
-	//	std::filesystem::path prefabPath{ FILEPATH_PREFAB_DEFAULT };
-	//	if (std::filesystem::is_directory(prefabPath)) {
-	//		for (const auto& entry : std::filesystem::directory_iterator(prefabPath)) {
-	//			
-	//		}
-	//	}
-	//}
+
 	if (ImGui::Button("Spawn Objects")) {
 		size_t highestNumber = 0; // Initialize with the lowest possible ID
 
@@ -1323,6 +1321,7 @@ void Editor::CreateObjectList() {
 			else {
 				if (objectFactory->GetGameObjectByID(gameobjID) != nullptr) {
 					ImGui::Text("Object ID: %d", objectFactory->GetGameObjectByID(gameobjID)->GetGameObjectID());
+					ImGui::Text("Object Type: %s", objectFactory->GetGameObjectByID(gameobjID)->GetType());
 					if (objectFactory->GetGameObjectByID(gameobjID)->Has(ComponentType::TRANSFORM) != -1) {
 
 						xPos = GET_COMPONENT(objectFactory->GetGameObjectByID(gameobjID), Transform, ComponentType::TRANSFORM)->position.x;
@@ -1906,13 +1905,6 @@ void Editor::CreateDebugPanel() {
 			}
 		}
 
-		/*size_t countToDisplay = std::min(static_cast<size_t>(EditorSettings::pieChartDisplayCount), avgSysTimes.size());
-		for (size_t i = 0; i < countToDisplay; i++) {
-			if (!avgSysTimes.empty()) {
-				chartLabels.push_back(avgSysTimes[i].first.c_str());
-				data.push_back(avgSysTimes[i].second);
-			}
-		}*/
 		static ImPlotPieChartFlags flags = 0;
 		// Draw pie chart
 		
@@ -2044,28 +2036,68 @@ void Editor::RenderDirectoryV2(const std::string& filePath) {
 		// Render button
 		ImGui::ImageButton(iconTexture, ImVec2(EditorSettings::iconSize, EditorSettings::iconSize));
 
-		// Set drag sourece for textures
-		if (filePath == FILEPATH_TEXTURES) {
-			if (ImGui::BeginDragDropSource(ImGuiDragDropFlags_None)) {
-				itemDrag = true;
+		//// Set drag sourece for textures
+		//if (filePath == FILEPATH_TEXTURES) {
+		//	if (ImGui::BeginDragDropSource(ImGuiDragDropFlags_None)) {
+		//		itemDrag = true;
+		//		// Set payload type
+		//		ImGui::SetDragDropPayload("PAYLOAD_TEXTURE", texNameWithoutExt.c_str(), texNameWithoutExt.size() + 1);
+		//		// Display held item
+		//		ImGui::EndDragDropSource();
+		//	}
+		//}
+		//if (filePath == FILEPATH_SPRITES) {
+		//	if (ImGui::BeginDragDropSource(ImGuiDragDropFlags_None)) {
+		//		itemDrag = true;
+		//		// Set payload type
+		//		ImGui::SetDragDropPayload("PAYLOAD_SPRITE", texNameWithoutExt.c_str(), texNameWithoutExt.size() + 1);
+		//		// Display held item
+		//		ImGui::Image(iconTexture, ImVec2(EditorSettings::iconSize / 4, EditorSettings::iconSize / 4));
+		//		ImGui::EndDragDropSource();
+		//	}
+		//}
+		//if (filePath == FILEPATH_SOUNDS_BGM || filePath == FILEPATH_SOUNDS_SFX) {
+		//	if (ImGui::BeginDragDropSource(ImGuiDragDropFlags_None)) {
+		//		itemDrag = true;
+		//		// Set payload type
+		//		if (filePath == FILEPATH_SOUNDS_BGM) {
+		//			ImGui::SetDragDropPayload("PAYLOAD_AUDIO_BGM", entryName.c_str(), entryName.size() + 1);
+		//		}
+		//		else {
+		//			ImGui::SetDragDropPayload("PAYLOAD_AUDIO_SFX", entryName.c_str(), entryName.size() + 1);
+		//		}			
+		//		// Display held item
+		//		ImGui::Image(iconTexture, ImVec2(EditorSettings::iconSize / 4, EditorSettings::iconSize / 4));
+		//		ImGui::EndDragDropSource();
+		//	}
+		//}
+		// Set Drag Source
+		if (ImGui::BeginDragDropSource(ImGuiDragDropFlags_None)) {
+			itemDrag = true;
+			if (filePath == FILEPATH_TEXTURES) {			 		
 				// Set payload type
-				ImGui::SetDragDropPayload("PAYLOAD_TEXTURE", texNameWithoutExt.c_str(), texNameWithoutExt.size() + 1);
-				// Display held item
-				ImGui::Image(iconTexture, ImVec2(EditorSettings::iconSize / 4, EditorSettings::iconSize / 4));
-				ImGui::EndDragDropSource();
+				ImGui::SetDragDropPayload("PAYLOAD_TEXTURE", texNameWithoutExt.c_str(), texNameWithoutExt.size() + 1);					
 			}
-		}
-		if (filePath == FILEPATH_SPRITES) {
-			if (ImGui::BeginDragDropSource(ImGuiDragDropFlags_None)) {
-				itemDrag = true;
+			if (filePath == FILEPATH_SPRITES) {
 				// Set payload type
-				ImGui::SetDragDropPayload("PAYLOAD_SPRITE", texNameWithoutExt.c_str(), texNameWithoutExt.size() + 1);
-				// Display held item
-				ImGui::Image(iconTexture, ImVec2(EditorSettings::iconSize / 4, EditorSettings::iconSize / 4));
-				ImGui::EndDragDropSource();
+				ImGui::SetDragDropPayload("PAYLOAD_SPRITE", texNameWithoutExt.c_str(), texNameWithoutExt.size() + 1);			
 			}
+			if (filePath == FILEPATH_SOUNDS_BGM || filePath == FILEPATH_SOUNDS_SFX) {				
+				// Set payload type
+				if (filePath == FILEPATH_SOUNDS_BGM) {
+					ImGui::SetDragDropPayload("PAYLOAD_AUDIO_BGM", entryName.c_str(), entryName.size() + 1);
+				}
+				else {
+					ImGui::SetDragDropPayload("PAYLOAD_AUDIO_SFX", entryName.c_str(), entryName.size() + 1);
+				}			
+			}
+			// Display held item
+			ImGui::Image(iconTexture, ImVec2(EditorSettings::iconSize / 4, EditorSettings::iconSize / 4));
+			ImGui::EndDragDropSource();
 		}
+			
 		
+
 		// Reset button style
 		if (browserSelectedItem == entryName) {
 			ImGui::PopStyleColor(3);

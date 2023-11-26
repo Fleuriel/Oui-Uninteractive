@@ -11,6 +11,7 @@
 #include <Cheats.h>
 #include <algorithm>
 #include <iostream>
+#include <SceneManager.h>
 
 std::vector<std::string> cheatCodes{
 	"skiplevel", // skip to next level
@@ -25,39 +26,39 @@ bool CheckCheatCode(const std::string& cheatCode) {
 }
 
 void Cheat(std::string cheatCode) {
-	if (cheatCode == "skiplevel") {
+	if (cheatCode == "skiplevel")
 		SkipLevel();
-	}
-	if (cheatCode == "victory") {
+	if (cheatCode == "victory")
 		Victory();
-	}
-	if (cheatCode == "defeat") {
+	if (cheatCode == "defeat")
 		Defeat();
-	}
-	if (cheatCode == "godmodeon") {
+	if (cheatCode == "godmodeon")
 		GodModeOn();
-	}
-	if (cheatCode == "godmodeoff") {
+	if (cheatCode == "godmodeoff")
 		GodModeOff();
-	}
 }
 
 void SkipLevel() {
+	sceneManager->nextSceneID++;
 	std::cout << "SKIPLEVEL" << std::endl;
 }
 
 void Victory() {
+	//sceneManager->nextSceneID = victorysceneid
 	std::cout << "VICTORY" << std::endl;
 }
 
 void Defeat() {
+	//sceneManager->nextSceneID = defeatsceneid
 	std::cout << "DEFEAT" << std::endl;
 }
 
 void GodModeOn() {
+	// wait Austin gor gor push code
 	std::cout << "GODMODEON" << std::endl;
 }
 
 void GodModeOff() {
+	// wait Austin gor gor push code
 	std::cout << "DOGMODEON" << std::endl;
 }
