@@ -1098,7 +1098,7 @@ void Editor::CreatePrefabPanel() {
 				saveFlag = true;
 			}
 
-			ImGui::BeginChild("Script List");
+			
 			LogicComponent* prefabLogic = GET_PREFAB_COMPONENT(copy[selectedName], LogicComponent, ComponentType::LOGICCOMPONENT);
 			if (prefabLogic != nullptr) {
 				if (initialized == false) {
@@ -1109,7 +1109,7 @@ void Editor::CreatePrefabPanel() {
 					ImGui::Text(logicSystem->scriptVec[*itLogic]->name.c_str());
 				}
 			}
-			ImGui::EndChild();
+			
 
 		}
 		// Render Collider
