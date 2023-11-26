@@ -74,16 +74,6 @@ public:
 											closestDistance = tempo;
 											closestID = i;
 										}
-										//int tempo2 = Vector2DDistance(inventory2().Bodies[i]->txPtr->position, playerBody1->txPtr->position);
-										/*if (tempo < tempo2) {
-											playerBodyFinale = inventory2().Bodies[z];
-										}
-										else {
-											playerBodyFinale = inventory2().Bodies[i];
-											tempo = tempo2;
-											inventory2().Bodies[z] = inventory2().Bodies[i];
-											z++;
-										}*/
 									}
 									else {
 										continue;

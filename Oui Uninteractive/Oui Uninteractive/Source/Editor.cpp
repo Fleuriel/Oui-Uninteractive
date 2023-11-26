@@ -273,7 +273,7 @@ void Editor::Update() {
 			Transform* tx = GET_COMPONENT(gObj.second, Transform, ComponentType::TRANSFORM);
 			if (inputSystem.GetMouseState(GLFW_MOUSE_BUTTON_1)) {
 				if (tx != nullptr) {
-					if (CollisionPointRotateRect(tx->position, tx->scale.x + scaleOutline, tx->scale.y + scaleOutline, mouseX, mouseY, tx->rotation)) {
+					if (CollisionPointRotateRect(tx->position, tx->scale.x, tx->scale.y, mouseX, mouseY, tx->rotation)) {
 						if (translateMode != true && scaleMode != true && scaleMode2 != true && scaleMode3 != true && scaleMode4 != true && rotateMode != true && itemDrag != true) {
 							selected = gObj.second;
 						}
