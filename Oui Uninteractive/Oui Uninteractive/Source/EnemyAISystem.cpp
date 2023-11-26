@@ -13,17 +13,17 @@
 #include "Transform.h"
 #include "Vector2D.h"
 
-EnemyAISystem* enemyAISystem = nullptr;
+EnemyAISystem* enemyAISys = nullptr;
 
 /**************************************************************************
 * @brief Constructor
 *************************************************************************/
 EnemyAISystem::EnemyAISystem() {
-	if (enemyAISystem != nullptr) {
+	if (enemyAISys != nullptr) {
 		return;
 	}
 	else {
-		enemyAISystem = this;
+		enemyAISys = this;
 	}
 }
 

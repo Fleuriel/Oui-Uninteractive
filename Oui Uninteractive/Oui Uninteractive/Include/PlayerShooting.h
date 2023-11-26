@@ -31,14 +31,16 @@ public:
 	/**************************************************************************
 	* @brief Constructor
 	*************************************************************************/
-	PlayerShooting(std::string newName) : IScript(newName), bulletNumber(0), bulletSpawnPos(Vec2()), bulletSpawnAngle(0.f), bulletSpawnOffset(0.f), shootingInterval(0) {}
+	PlayerShooting(std::string newName, bool gameplayFlag) : IScript(newName, gameplayFlag), bulletNumber(0), bulletSpawnPos(Vec2()), bulletSpawnAngle(0.f), bulletSpawnOffset(0.f), shootingInterval(0) {}
 
 	/**************************************************************************
 	* @brief Initialize the PlayerShooting script
 	* @return void
 	*************************************************************************/
 	void Initialize() {
+		
 		logicSystem->AddLogicScript(this);
+		
 	}
 
 	/**************************************************************************

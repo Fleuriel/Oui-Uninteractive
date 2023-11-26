@@ -22,7 +22,7 @@ HealthComponent::HealthComponent() : maxHealth{}, currentHealth(maxHealth) {
 *************************************************************************/
 HealthComponent::~HealthComponent() {
 	if (GetOwner() != nullptr) {
-		healthSystem->healthComponentMap.erase(GetOwner()->GetGameObjectID());
+		healthSys->healthComponentMap.erase(GetOwner()->GetGameObjectID());
 	}
 }
 
@@ -31,7 +31,7 @@ HealthComponent::~HealthComponent() {
 * @return void
 *************************************************************************/
 void HealthComponent::Initialize() {
-	healthSystem->healthComponentMap.insert(std::pair<size_t, HealthComponent*>(GetOwner()->GetGameObjectID(), this));
+	healthSys->healthComponentMap.insert(std::pair<size_t, HealthComponent*>(GetOwner()->GetGameObjectID(), this));
 }
 
 /**************************************************************************

@@ -13,6 +13,7 @@
 #include <iostream>
 #include <SceneManager.h>
 #include <HealthComponent.h>
+#include <Background.h>
 
 std::vector<std::string> cheatCodes{
 	"skiplevel", // skip to next level
@@ -52,6 +53,7 @@ void Victory() {
 void Defeat() {
 	//sceneManager->nextSceneID = defeatsceneid
 	//Should change background to defeat screen (not the entire defeat screen as an object, then objects as buttons to click
+	background.SetBackGround(assetManager.GetTexture("Defeatscreen"));
 	objectFactory->BuildObjectFromFile(std::string("assets/scenes/DefeatScreen.json"));  //temporary
 	std::cout << "DEFEAT" << std::endl;
 }

@@ -127,4 +127,5 @@ private:
 	
 };
 
+extern Background background;
 #endif 

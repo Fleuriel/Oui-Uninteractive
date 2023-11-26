@@ -61,8 +61,7 @@ JsonSerializer serializer;
 OpenGLObject Objects;								// First Instance of Object to Update.
 std::list<OpenGLObject> objects;					// singleton
 
-// Initialize Background
-Background background;
+
 
 ParticleSystem particleSystem;
 
@@ -448,7 +447,7 @@ void OpenGLApplication::OpenGLUpdate() {
 #endif
 	}
 	if (inputSystem.GetMouseState(GLFW_MOUSE_BUTTON_MIDDLE)) {
-		background.SetBackGround(assetManager.GetTexture("Defeatscreen"));
+		background.SetBackGround(assetManager.GetTexture("newbackground"));
 #ifdef _DEBUG
 		//	std::cout << "MIDDLECLICK\n";
 #endif	

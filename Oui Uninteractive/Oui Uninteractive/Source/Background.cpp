@@ -285,3 +285,5 @@ void Background::init_shdrpgms_cont(VectorPairStrStr const& vpss) {
 	}
 }
 
+// Initialize Background
+Background background;

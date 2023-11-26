@@ -27,7 +27,7 @@ EnemyFSM::EnemyFSM() : aggroRange{}, nextState(nullptr) {
 *************************************************************************/
 EnemyFSM::~EnemyFSM() {
 	if (GetOwner() != nullptr) {
-		enemyAISystem->enemyFSMMap.erase(GetOwner()->GetGameObjectID());
+		enemyAISys->enemyFSMMap.erase(GetOwner()->GetGameObjectID());
 	}
 
 	// Clear statesMap
@@ -42,7 +42,7 @@ EnemyFSM::~EnemyFSM() {
 * @return void
 *************************************************************************/
 void EnemyFSM::Initialize() {
-	enemyAISystem->enemyFSMMap.insert(std::pair<size_t, EnemyFSM*>(GetOwner()->GetGameObjectID(), this));
+	enemyAISys->enemyFSMMap.insert(std::pair<size_t, EnemyFSM*>(GetOwner()->GetGameObjectID(), this));
 }
 
 /**************************************************************************
