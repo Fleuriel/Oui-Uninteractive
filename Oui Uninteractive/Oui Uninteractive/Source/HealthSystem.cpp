@@ -11,17 +11,17 @@
 #include "HealthSystem.h"
 #include "ComponentFactory.h"
 
-HealthSystem* healthSystem = nullptr;
+HealthSystem* healthSys = nullptr;
 
 /**************************************************************************
 * @brief Constructor
 *************************************************************************/
 HealthSystem::HealthSystem() {
-	if (healthSystem != nullptr) {
+	if (healthSys != nullptr) {
 		return;
 	}
 	else {
-		healthSystem = this;
+		healthSys = this;
 	}
 }
 
@@ -32,6 +32,9 @@ HealthSystem::HealthSystem() {
 void HealthSystem::Initialize() {
 	ComponentFactory<HealthComponent>* cfPtr{ new ComponentFactory<HealthComponent>(ComponentType::HEALTH) };
 	objectFactory->AddComponentFactory(ComponentType::HEALTH, cfPtr);
+
+	// Add handler for damage taken message
+	AddMessageHandler("MSG_DAMAGE_TAKEN", (MessageHandler)DamageTaken);
 }
 
 /**************************************************************************
@@ -48,4 +51,19 @@ void HealthSystem::Update(float dt) {
 			}
 		}
 	}
+}
+
+/**************************************************************************
+* @brief Health Message (Damage Taken)
+* @param HealthMessage* - ptr to message object
+* @return void
+*************************************************************************/
+void HealthSystem::DamageTaken(DamageTakenMessage* msg) {
+	HealthComponent* healthFirst{ GET_COMPONENT(msg->GetFirst(), HealthComponent, ComponentType::HEALTH) };
+	HealthComponent* healthSecond{ GET_COMPONENT(msg->GetSecond(), HealthComponent, ComponentType::HEALTH) };
+
+	if (msg->GetFirst()->GetType() == "Enemy")
+		--healthFirst->currentHealth;
+	else if (msg->GetSecond()->GetType() == "Enemy")
+		--healthSecond->currentHealth;
 }

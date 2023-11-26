@@ -41,6 +41,6 @@ public:
 };
 
 //Global pointer
-extern EnemyAISystem* enemyAISystem;
+extern EnemyAISystem* enemyAISys;
 
 #endif

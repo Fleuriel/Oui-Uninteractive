@@ -14,6 +14,7 @@
 #ifndef COLLIDERSYS_H
 #define COLLIDERSYS_H
 
+#include <map>
 #include "Collider.h"
 #include "Collision.h"
 #include "ISystem.h"
@@ -21,8 +22,9 @@
 #include "ComponentFactory.h"
 #include "ComponentType.h"
 #include "Editor.h"
-#include <map>
 #include "HealthComponent.h"
+#include "HealthSystem.h"
+
 class ColliderSystem : public ISystem {
 public:
 	/**************************************************************************
