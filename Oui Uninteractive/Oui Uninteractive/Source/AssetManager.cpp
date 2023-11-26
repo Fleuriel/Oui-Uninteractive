@@ -172,9 +172,27 @@ bool AssetManager::LoadTextures() {
 
                     // Construct the full destination path including the file name
                     fs::path destinationPath = FILEPATH_TRASHBIN / entry.path().filename();
+                    fs::path trashbin = FILEPATH_TRASHBIN;
+                    if (fs::exists(destinationPath)) {
+                        int counter = 1;
+                        std::string nameWithoutExtension = entry.path().stem().string();
+                        std::string Extension = entry.path().extension().string();
 
-                    // Perform the move operation
-                    fs::rename(entry.path(), destinationPath);
+                        std::string addstr = nameWithoutExtension + "(" + std::to_string(counter) + ")" + Extension;
+
+                        fs::path finalDestination = trashbin / addstr;
+
+                        while (fs::exists(finalDestination)) {
+                            counter++;
+                            addstr = nameWithoutExtension + "(" + std::to_string(counter) + ")" + Extension;
+                            finalDestination = trashbin / addstr;
+                        }
+
+                        fs::rename(entry.path(), finalDestination);
+                    }
+                    else {
+                        fs::rename(entry.path(), destinationPath);
+                    }
 
                     continue;
                 }
@@ -549,9 +567,27 @@ bool AssetManager::LoadSprites() {
 
                     // Construct the full destination path including the file name
                     fs::path destinationPath = FILEPATH_TRASHBIN / entry.path().filename();
+                    fs::path trashbin = FILEPATH_TRASHBIN;
+                    if (fs::exists(destinationPath)) {
+                        int counter = 1;
+                        std::string nameWithoutExtension = entry.path().stem().string();
+                        std::string Extension = entry.path().extension().string();
 
-                    // Perform the move operation
-                    fs::rename(entry.path(), destinationPath);
+                        std::string addstr = nameWithoutExtension + "(" + std::to_string(counter) + ")" + Extension;
+
+                        fs::path finalDestination = trashbin / addstr;
+
+                        while (fs::exists(finalDestination)) {
+                            counter++;
+                            addstr = nameWithoutExtension + "(" + std::to_string(counter) + ")" + Extension;
+                            finalDestination = trashbin / addstr;
+                        }
+
+                        fs::rename(entry.path(), finalDestination);
+                    }
+                    else {
+                        fs::rename(entry.path(), destinationPath);
+                    }
 
                     continue;
                 }
@@ -733,9 +769,27 @@ bool AssetManager::LoadBGM() {
 
                 // Construct the full destination path including the file name
                 fs::path destinationPath = FILEPATH_TRASHBIN / entry.path().filename();
+                fs::path trashbin = FILEPATH_TRASHBIN;
+                if (fs::exists(destinationPath)) {
+                    int counter = 1;
+                    std::string nameWithoutExtension = entry.path().stem().string();
+                    std::string Extension = entry.path().extension().string();
 
-                // Perform the move operation
-                fs::rename(entry.path(), destinationPath);
+                    std::string addstr = nameWithoutExtension + "(" + std::to_string(counter) + ")" + Extension;
+
+                    fs::path finalDestination = trashbin / addstr;
+
+                    while (fs::exists(finalDestination)) {
+                        counter++;
+                        addstr = nameWithoutExtension + "(" + std::to_string(counter) + ")" + Extension;
+                        finalDestination = trashbin / addstr;
+                    }
+
+                    fs::rename(entry.path(), finalDestination);
+                }
+                else {
+                    fs::rename(entry.path(), destinationPath);
+                }
 
                 continue;
             }
@@ -805,9 +859,27 @@ bool AssetManager::LoadSFX() {
 
                 // Construct the full destination path including the file name
                 fs::path destinationPath = FILEPATH_TRASHBIN / entry.path().filename();
+                fs::path trashbin = FILEPATH_TRASHBIN;
+                if (fs::exists(destinationPath)) {
+                    int counter = 1;
+                    std::string nameWithoutExtension = entry.path().stem().string();
+                    std::string Extension = entry.path().extension().string();
 
-                // Perform the move operation
-                fs::rename(entry.path(), destinationPath);
+                    std::string addstr = nameWithoutExtension + "(" + std::to_string(counter) + ")" + Extension;
+
+                    fs::path finalDestination = trashbin / addstr;
+
+                    while (fs::exists(finalDestination)) {
+                        counter++;
+                        addstr = nameWithoutExtension + "(" + std::to_string(counter) + ")" + Extension;
+                        finalDestination = trashbin / addstr;
+                    }
+
+                    fs::rename(entry.path(), finalDestination);
+                }
+                else {
+                    fs::rename(entry.path(), destinationPath);
+                }
 
                 continue;
             }
@@ -1013,12 +1085,29 @@ bool AssetManager::LoadFonts() {
 
                 MessageBox(hwnd, boxMessage, L"Load Failure", MB_OK | MB_ICONERROR);
 
-
                 // Construct the full destination path including the file name
                 fs::path destinationPath = FILEPATH_TRASHBIN / entry.path().filename();
+                fs::path trashbin = FILEPATH_TRASHBIN;
+                if (fs::exists(destinationPath)) {
+                    int counter = 1;
+                    std::string nameWithoutExtension = entry.path().stem().string();
+                    std::string Extension = entry.path().extension().string();
 
-                // Perform the move operation
-                fs::rename(entry.path(), destinationPath);
+                    std::string addstr = nameWithoutExtension + "(" + std::to_string(counter) + ")" + Extension;
+
+                    fs::path finalDestination = trashbin / addstr;
+
+                    while (fs::exists(finalDestination)) {
+                        counter++;
+                        addstr = nameWithoutExtension + "(" + std::to_string(counter) + ")" + Extension;
+                        finalDestination = trashbin / addstr;
+                    }
+
+                    fs::rename(entry.path(), finalDestination);
+                }
+                else {
+                    fs::rename(entry.path(), destinationPath);
+                }
 
                 continue;
             }
@@ -1187,9 +1276,27 @@ bool AssetManager::LoadScenes() {
 
                 // Construct the full destination path including the file name
                 fs::path destinationPath = FILEPATH_TRASHBIN / entry.path().filename();
+                fs::path trashbin = FILEPATH_TRASHBIN;
+                if (fs::exists(destinationPath)) {
+                    int counter = 1;
+                    std::string nameWithoutExtension = entry.path().stem().string();
+                    std::string Extension = entry.path().extension().string();
 
-                // Perform the move operation
-                fs::rename(entry.path(), destinationPath);
+                    std::string addstr = nameWithoutExtension + "(" + std::to_string(counter) + ")" + Extension;
+
+                    fs::path finalDestination = trashbin / addstr;
+
+                    while (fs::exists(finalDestination)) {
+                        counter++;
+                        addstr = nameWithoutExtension + "(" + std::to_string(counter) + ")" + Extension;
+                        finalDestination = trashbin / addstr;
+                    }
+
+                    fs::rename(entry.path(), finalDestination);
+                }
+                else {
+                    fs::rename(entry.path(), destinationPath);
+                }
 
                 continue;
             }
