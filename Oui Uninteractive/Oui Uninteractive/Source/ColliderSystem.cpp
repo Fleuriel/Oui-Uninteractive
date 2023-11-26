@@ -35,8 +35,9 @@ void ColliderSystem::Initialize() {
 	ComponentFactory<Collider>* testPtr = new ComponentFactory<Collider>(ComponentType::COLLIDER);
 	objectFactory->AddComponentFactory(ComponentType::COLLIDER, testPtr);
 
-	// Register physics system as an observer
+	// Register physics and health system as an observer
 	RegisterObserver("MSG_COLLISION", &physicsSys->observer);
+	RegisterObserver("MSG_DAMAGE_TAKEN", &healthSys->observer);
 }
 
 /**************************************************************************
@@ -75,17 +76,16 @@ void ColliderSystem::Update(float dt) {
 						//Collision Response
 						if (collided) {
 							didCollide = true;
-							if (pBody1->GetOwner()->GetType() == "BulletPrefab") {
-								objectFactory->DestroyObject(pBody1->GetOwner());
-								if (pBody2->GetOwner()->GetType() == "Enemy") {
-									--GET_COMPONENT(pBody2->GetOwner(), HealthComponent, ComponentType::HEALTH)->currentHealth;
+							if (pBody1->GetOwner()->GetType() == "BulletPrefab" || pBody2->GetOwner()->GetType() == "BulletPrefab") {
+								// Bullet collision with enemy
+								if (pBody1->GetOwner()->GetType() == "BulletPrefab") {
+									objectFactory->DestroyObject(pBody1->GetOwner());
 								}
-							}
-							if (pBody2->GetOwner()->GetType() == "BulletPrefab") {
-								objectFactory->DestroyObject(pBody2->GetOwner());
-								if (pBody1->GetOwner()->GetType() == "Enemy") {
-									--GET_COMPONENT(pBody1->GetOwner(), HealthComponent, ComponentType::HEALTH)->currentHealth;
+								else if (pBody2->GetOwner()->GetType() == "BulletPrefab") {
+									objectFactory->DestroyObject(pBody2->GetOwner());
 								}
+								DamageTakenMessage dmgMessage(pBody1->GetOwner(), pBody2->GetOwner());
+								SendToObservers(&dmgMessage);
 							}
 							else {
 								if (!pBody2->isStatic) {
