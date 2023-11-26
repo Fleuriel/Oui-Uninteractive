@@ -44,6 +44,9 @@
 #define FILEPATH_PREFABS					std::string("assets\\prefabs")
 #define FILEPATH_PREFAB_DEFAULT				std::string("assets\\prefabs\\Prefab.JSON")
 
+// PREFABS //
+#define FILEPATH_TRASHBIN					std::string("assets\\trashbin")
+
 
 // TESTS //
 
