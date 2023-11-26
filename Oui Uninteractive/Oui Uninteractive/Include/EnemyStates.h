@@ -66,7 +66,7 @@ private:
 	Vec2 bulletSpawnPos;
 	float bulletSpawnAngle;
 	float bulletSpawnOffset;
-	int shootingInterval; // Scuffed method for now
+	float shootingInterval;
 
 public:
 	/**************************************************************************

@@ -26,21 +26,19 @@ public:
 	Vec2 bulletSpawnPos;
 	float bulletSpawnAngle;
 	float bulletSpawnOffset;
-	int shootingInterval; // Scuffed method for now
+	float shootingInterval;
 
 	/**************************************************************************
 	* @brief Constructor
 	*************************************************************************/
-	PlayerShooting(std::string newName, bool gameplayFlag) : IScript(newName, gameplayFlag), bulletNumber(0), bulletSpawnPos(Vec2()), bulletSpawnAngle(0.f), bulletSpawnOffset(0.f), shootingInterval(0) {}
+	PlayerShooting(std::string newName, bool gameplayFlag) : IScript(newName, gameplayFlag), bulletNumber(0), bulletSpawnPos(Vec2()), bulletSpawnAngle(0.f), bulletSpawnOffset(0.f), shootingInterval(0.f) {}
 
 	/**************************************************************************
 	* @brief Initialize the PlayerShooting script
 	* @return void
 	*************************************************************************/
 	void Initialize() {
-		
 		logicSystem->AddLogicScript(this);
-		
 	}
 
 	/**************************************************************************
@@ -102,11 +100,11 @@ public:
 				// Set bullet velocity
 				GET_COMPONENT(bullet, PhysicsBody, ComponentType::PHYSICS_BODY)->velocity = shootingDirection * GET_COMPONENT(bullet, PhysicsBody, ComponentType::PHYSICS_BODY)->speed;
 				soundManager->PlaySFX("futuristic Machinegun_1.wav");
-				++shootingInterval;
+				shootingInterval += static_cast<float>(GetDT());
 			}
 			else {
-				++shootingInterval;
-				if (shootingInterval >= 60) {
+				shootingInterval += static_cast<float>(GetDT());
+				if (shootingInterval >= 0.2f) {
 					shootingInterval = 0;
 				}
 			}
