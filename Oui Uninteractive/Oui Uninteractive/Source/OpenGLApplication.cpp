@@ -285,13 +285,6 @@ void OpenGLApplication::OpenGLUpdate() {
 	}
 
 
-	if (objectFactory->GetGameObjectByName("JSONPlayer") != nullptr)
-	{
-		float sXX = GET_COMPONENT(objectFactory->GetGameObjectByName("JSONPlayer"), Collider, ComponentType::COLLIDER)->boundingbox->center.x;
-		float sYY = GET_COMPONENT(objectFactory->GetGameObjectByName("JSONPlayer"), Collider, ComponentType::COLLIDER)->boundingbox->center.y;
-
-		//std::cout << sXX << '\t' << sYY << '\n';
-	}
 
 	OpenGLObject::cameraObject.Update(windowNew, static_cast<int>(positionX), static_cast<int>(positionY));
 	// Create x and y pos variables to collect data from the mouse position.
@@ -305,9 +298,6 @@ void OpenGLApplication::OpenGLUpdate() {
 	OpenGLObject::FrameBufferMouseCoords(windowNew, &xpos, &ypos, OpenGLObject::cameraObject);
 	MouseX = xpos;
 	MouseY = ypos;
-
-	//std::cout << xpos << '\t' << ypos << '\n';
-
 
 
 	// Clear the FBO and render.
@@ -510,7 +500,8 @@ void OpenGLApplication::OpenGLUpdate() {
 	if (angle > 360)
 		angle = 0;
 	// Set the Background Color.
-	OpenGLSetBackgroundColor(0.5f, 0.5f, 0.5f, 1.0f);
+//	OpenGLSetBackgroundColor(0.5f, 0.5f, 0.5f, 1.0f);
+	OpenGLSetBackgroundColor(0.f, 0.f, 0.f, 1.0f);
 	// Clear the Color Buffer Bit to enable 'reloading'
 	
 
@@ -518,7 +509,6 @@ void OpenGLApplication::OpenGLUpdate() {
 	// Draws the Background
 	background.Draw();
 
-//	std::cout << "Position: " << positionX << '\t';
 
 
 	for (OpenGLObject& obj : objects) {

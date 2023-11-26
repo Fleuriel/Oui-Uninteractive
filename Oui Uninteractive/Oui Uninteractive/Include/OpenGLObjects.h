@@ -33,7 +33,8 @@ enum class SHADER_ORDER {
 	MODEL = 0,
 	FONT = 1,
 	CAMERA = 2,
-	SPRITES = 3
+	SPRITES = 3,
+	LIGHTING = 4
 };
 
 class OpenGLObject {
@@ -151,7 +152,7 @@ public:
 	struct Camera2D {
 
 		Camera2D() : up(0, 0), right(0, 0), view_xform(0),
-			CameraWindow_to_NDC_xform(0), World_to_NDC_xform(0), aspectRatio(0), posX(0), posY(0), Cam(nullptr) {}
+			CameraWindow_to_NDC_xform(0), World_to_NDC_xform(0), posX(0), posY(0), Cam(nullptr) {}
 
 
 		OpenGLObject* Cam;
@@ -160,22 +161,13 @@ public:
 
 		glm::vec2 up, right;
 
-
-		float Left, Right, Top, Bottom;
-
-
-		glm::mat3 cameraProjection;
 		glm::mat3 view_xform, CameraWindow_to_NDC_xform, World_to_NDC_xform;
+
+
 
 		GLfloat height{ 1300 }; // Current Height of the depth i.e. Zoom
 		GLfloat min_height{ 0 };
 		GLfloat max_height{ 5000 };
-
-
-		GLfloat aspectRatio;
-
-		GLint heightChangeValue{ 5 };
-
 
 
 
@@ -295,6 +287,8 @@ public:
 	static void InitShaders();
 
 	static void InitFont();
+
+	static void InitLighting();
 	//static void 
 	static void FrameBufferMouseCoords(GLFWwindow*, double* x, double* y, Camera2D);
 

@@ -119,7 +119,7 @@ int main(){
 		}
 
 		// Before anything, cleanup as it is out of the state loop
-	//	GameCleanup();
+
 		sceneManager->Free();
 		// QUIT [ After cleanup ]
 		if (sceneManager->currSceneID == STATE_QUIT)
