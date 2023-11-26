@@ -66,10 +66,13 @@ std::pair<int, int> GetStartNodePosition(Vec2 currentEnemyPos, BFS* bfs, float s
 /**************************************************************************
 * @brief Constructor for EnemyRoam
 *************************************************************************/
-EnemyRoam::EnemyRoam() : bfs(new BFS(tilemapLoader->GetTilemap())), transitioned(false), pathFound(false), pathPrinted(false), pathIndex(0) {
+EnemyRoam::EnemyRoam() : bfs(nullptr), transitioned(false), pathFound(false), pathPrinted(false), pathIndex(0), scale(0.f) {
+    if (tilemapLoader->GetTilemap().size() != 0) {
+        bfs = new BFS(tilemapLoader->GetTilemap());
+        scale = windowHeight / static_cast<float>(bfs->GetRows());
+    }
     windowWidth = static_cast<float>(windowSize.first);
     windowHeight = static_cast<float>(windowSize.second);
-    scale = windowHeight / static_cast<float>(bfs->GetRows());
 }
 
 /**************************************************************************
@@ -78,6 +81,9 @@ EnemyRoam::EnemyRoam() : bfs(new BFS(tilemapLoader->GetTilemap())), transitioned
 * @return void
 *************************************************************************/
 void EnemyRoam::Update(size_t gameObjectID) {
+	if (bfs == nullptr)
+		return;
+
     if (!transitioned) {
         std::cout << "\nTRANSITIONED TO ROAM STATE" << std::endl;
         transitioned = true;
@@ -229,10 +235,13 @@ EnemyAttack::~EnemyAttack() {
 /**************************************************************************
 * @brief Constructor for EnemyFlee
 *************************************************************************/
-EnemyFlee::EnemyFlee() : bfs(new BFS(tilemapLoader->GetTilemap())), transitioned(false), pathFound(false), pathPrinted(false), pathIndex(0) {
+EnemyFlee::EnemyFlee() : bfs(nullptr), transitioned(false), pathFound(false), pathPrinted(false), pathIndex(0), scale(0.f) {
+    if (tilemapLoader->GetTilemap().size() != 0) {
+        bfs = new BFS(tilemapLoader->GetTilemap());
+        scale = windowHeight / static_cast<float>(bfs->GetRows());
+    }
     windowWidth = static_cast<float>(windowSize.first);
     windowHeight = static_cast<float>(windowSize.second);
-    scale = windowHeight / static_cast<float>(bfs->GetRows());
 }
 
 /**************************************************************************

@@ -684,7 +684,7 @@ void Editor::CreateRenderWindow() {
 		ImGui::Image(reinterpret_cast<ImTextureID>(static_cast<uintptr_t>(OpenGLObject::FrameTexture)), wsize, ImVec2(0.0f, 1.0f), ImVec2(1.0f, 0.0f)); // Replace thirdTexture with handle to FBO when graphics done rendering to FBO	
 		// Setup drag and drop checks within window
 		if (ImGui::BeginDragDropTarget()) {
-			if (selected != nullptr) {			
+			if (selected != nullptr) {	// Object is being selected		
 				if (!selected->IsUsingSprite()) {
 					if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("PAYLOAD_TEXTURE")) {
 						std::string dropTextureName = static_cast<const char*>(payload->Data);
@@ -694,14 +694,20 @@ void Editor::CreateRenderWindow() {
 				else if (selected->IsUsingSprite()) {
 					if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("PAYLOAD_SPRITE")) {
 						std::string dropTextureName = static_cast<const char*>(payload->Data);			
-						std::cout << dropTextureName << std::endl;
 						selected->SetTexture(dropTextureName);
 					}
 					else if (!ImGui::IsDragDropPayloadBeingAccepted()) {
 						std::cout << "WRTONG PL";
 					}
 				}
-			}		
+			}
+			else {
+				if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("PAYLOAD_AUDIO_BGM")) {
+					std::string dropAudioName = static_cast<const char*>(payload->Data);
+					soundManager->StopAll();
+					soundManager->PlayBGM(dropAudioName);
+				}
+			}
 			itemDrag = false;
 			ImGui::EndDragDropTarget();
 		}
@@ -720,7 +726,8 @@ void Editor::CreateRenderWindow() {
 void Editor::CreatePrefabPanel() {
 	ImGui::Begin("Prefab Editor");
 	static float phyRotSpeed, phySpeed, phyMass, phyFriction, transXpos, transYpos, transRot, transScaleX, transScaleY, colScaleX, colScaleY, colRot, aggRange;
-	static bool phyIsStatic, physicsFlag, transformFlag, logicFlag, colliderFlag, enemyfsmFlag, saveFlag, loadedFlag = false;
+	static int maxHp;
+	static bool phyIsStatic, physicsFlag, transformFlag, logicFlag, colliderFlag, enemyfsmFlag, hpFlag, saveFlag, loadedFlag = false;
 
 	static int currentScriptIndex;
 	static std::set<unsigned int> tempLogicSet;
@@ -734,15 +741,7 @@ void Editor::CreatePrefabPanel() {
 	std::map<std::string, Prefab*>::iterator it = copy.begin();
 	static std::string selectedName = it->first;
 
-	// Refresh list of prefabs from file directory
-	//if (ImGui::Button("Refresh")) {
-	//	std::filesystem::path prefabPath{ FILEPATH_PREFAB_DEFAULT };
-	//	if (std::filesystem::is_directory(prefabPath)) {
-	//		for (const auto& entry : std::filesystem::directory_iterator(prefabPath)) {
-	//			
-	//		}
-	//	}
-	//}
+
 	if (ImGui::Button("Spawn Objects")) {
 		size_t highestNumber = 0; // Initialize with the lowest possible ID
 
@@ -797,6 +796,8 @@ void Editor::CreatePrefabPanel() {
 		bool transformUpdateFlag = false;
 		bool logicUpdateFlag = false;
 		bool colliderUpdateFlag = false;
+		bool enemyfsmUpdateFlag = false; 
+		bool hpUpdateFlag = false;
 		
 		ImGui::SameLine();
 		std::map<size_t, GameObject*> copyMap = objectFactory->GetGameObjectIDMap();
@@ -863,16 +864,28 @@ void Editor::CreatePrefabPanel() {
 			}
 
 			// Handle saving/deleteion for enemy FSM component
-			/*if (enemyfsmFlag && objectFactory->GetPrefabByName(selectedName)->Has(ComponentType::ENEMY_FSM) == -1) {
+			if (enemyfsmFlag && objectFactory->GetPrefabByName(selectedName)->Has(ComponentType::ENEMY_FSM) == -1) {
 				objectFactory->GetPrefabByName(selectedName)->AddComponent(new EnemyFSM(), ComponentType::ENEMY_FSM);
 			}
 			if (objectFactory->GetPrefabByName(selectedName)->Has(ComponentType::ENEMY_FSM) != -1) {
 				GET_PREFAB_COMPONENT(objectFactory->GetPrefabByName(selectedName), EnemyFSM, ComponentType::ENEMY_FSM)->aggroRange = aggRange;
-				enemyfsmFlag = true;
+				enemyfsmUpdateFlag = true;
 			}
 			if (!enemyfsmFlag && objectFactory->GetPrefabByName(selectedName)->Has(ComponentType::ENEMY_FSM) != -1) {
 				objectFactory->GetPrefabByName(selectedName)->RemoveComponent(GET_PREFAB_COMPONENT(objectFactory->GetPrefabByName(selectedName), EnemyFSM, ComponentType::ENEMY_FSM));
-			}*/
+			}
+
+			// Handle saving/deleteion for health component
+			if (hpFlag && objectFactory->GetPrefabByName(selectedName)->Has(ComponentType::HEALTH) == -1) {
+				objectFactory->GetPrefabByName(selectedName)->AddComponent(new HealthComponent(), ComponentType::HEALTH);
+			}
+			if (objectFactory->GetPrefabByName(selectedName)->Has(ComponentType::HEALTH) != -1) {
+				GET_PREFAB_COMPONENT(objectFactory->GetPrefabByName(selectedName), HealthComponent, ComponentType::HEALTH)->maxHealth = maxHp;
+				hpUpdateFlag = true;
+			}
+			if (!hpFlag && objectFactory->GetPrefabByName(selectedName)->Has(ComponentType::HEALTH) != -1) {
+				objectFactory->GetPrefabByName(selectedName)->RemoveComponent(GET_PREFAB_COMPONENT(objectFactory->GetPrefabByName(selectedName), HealthComponent, ComponentType::HEALTH));
+			}
 
 			for (std::map<size_t, GameObject*>::iterator itGameObject = copyMap.begin(); itGameObject != copyMap.end(); itGameObject++) {
 				if ((*itGameObject).second->GetType() == objectFactory->GetPrefabByName(selectedName)->GetType()) {
@@ -904,12 +917,16 @@ void Editor::CreatePrefabPanel() {
 						objCollider->tx->scale = prefabCollider->tx->scale;
 						objCollider->tx->rotation = prefabCollider->tx->rotation;
 					}
-					/*EnemyFSM* objFSM = GET_COMPONENT(objectFactory->GetGameObjectByID((*it).second->GetGameObjectID()), EnemyFSM, ComponentType::ENEMY_FSM);
+					EnemyFSM* objFSM = GET_COMPONENT(objectFactory->GetGameObjectByID((*itGameObject).second->GetGameObjectID()), EnemyFSM, ComponentType::ENEMY_FSM);
 					if (objFSM != nullptr) {
 						EnemyFSM* prefabFSM = GET_PREFAB_COMPONENT(objectFactory->GetPrefabByName(selectedName), EnemyFSM, ComponentType::ENEMY_FSM);
-						EnemyFSM* objFSM = GET_COMPONENT(objectFactory->GetGameObjectByID((*it).second->GetGameObjectID()), EnemyFSM, ComponentType::ENEMY_FSM);
 						objFSM->aggroRange = prefabFSM->aggroRange;
-					}*/
+					}
+					HealthComponent* objMaxHp = GET_COMPONENT(objectFactory->GetGameObjectByID((*itGameObject).second->GetGameObjectID()), HealthComponent, ComponentType::HEALTH);
+					if (objMaxHp != nullptr) {
+						HealthComponent* prefabMaxHp = GET_PREFAB_COMPONENT(objectFactory->GetPrefabByName(selectedName), HealthComponent, ComponentType::HEALTH);
+						objMaxHp->maxHealth = prefabMaxHp->maxHealth;
+					}
 
 				}
 			}
@@ -947,11 +964,14 @@ void Editor::CreatePrefabPanel() {
 						objCollider->tx->scale.y = colScaleY;
 						objCollider->tx->rotation = colRot;
 					}
-
-					/*EnemyFSM* objFSM = GET_COMPONENT(objectFactory->GetGameObjectByID((*it).second->GetGameObjectID()), EnemyFSM, ComponentType::ENEMY_FSM);
+					EnemyFSM* objFSM = GET_COMPONENT(objectFactory->GetGameObjectByID((*itPreview).second->GetGameObjectID()), EnemyFSM, ComponentType::ENEMY_FSM);
 					if (objFSM != nullptr) {
 						objFSM->aggroRange = aggRange;
-					}*/
+					}
+					HealthComponent* objMaxHp = GET_COMPONENT(objectFactory->GetGameObjectByID((*itPreview).second->GetGameObjectID()), HealthComponent, ComponentType::HEALTH);
+					if (objMaxHp != nullptr) {
+						objMaxHp->maxHealth = maxHp;
+					}
 					
 				}
 			}
@@ -997,9 +1017,12 @@ void Editor::CreatePrefabPanel() {
 					colScaleX = GET_PREFAB_COMPONENT(objectFactory->GetPrefabByName(selectedName), Collider, ComponentType::COLLIDER)->tx->scale.x;
 					colScaleY = GET_PREFAB_COMPONENT(objectFactory->GetPrefabByName(selectedName), Collider, ComponentType::COLLIDER)->tx->scale.y;
 				}
-				/*if (copy[selectedName]->Has(ComponentType::ENEMY_FSM) != -1) {
+				if (copy[selectedName]->Has(ComponentType::ENEMY_FSM) != -1) {
 					aggRange = GET_PREFAB_COMPONENT(objectFactory->GetPrefabByName(selectedName), EnemyFSM, ComponentType::ENEMY_FSM)->aggroRange;
-				}*/
+				}
+				if (copy[selectedName]->Has(ComponentType::HEALTH) != -1) {
+					maxHp = GET_PREFAB_COMPONENT(objectFactory->GetPrefabByName(selectedName), HealthComponent, ComponentType::HEALTH)->maxHealth;
+				}
 			}
 		}
 		ImGui::EndChild();
@@ -1110,9 +1133,8 @@ void Editor::CreatePrefabPanel() {
 			if (ImGui::InputFloat("Rotation##", &colRot)) saveFlag = true;
 			ImGui::Unindent();
 		}
-
 		// Render EnemyFSM
-		/*if (ImGui::Checkbox("##EnemyFSM", &enemyfsmFlag)) {
+		if (ImGui::Checkbox("##EnemyFSM", &enemyfsmFlag)) {
 			saveFlag = true;
 		}
 		ImGui::SameLine();
@@ -1120,7 +1142,17 @@ void Editor::CreatePrefabPanel() {
 			ImGui::Indent();
 			if (ImGui::InputFloat("Aggro Range", &aggRange)) saveFlag = true;
 			ImGui::Unindent();
-		}*/
+		}
+		// Render HealthComponent
+		if (ImGui::Checkbox("##HealthComponent", &hpFlag)) {
+			saveFlag = true;
+		}
+		ImGui::SameLine();
+		if (ImGui::CollapsingHeader("Health Component")) {
+			ImGui::Indent();
+			if (ImGui::InputInt("Max Health", &maxHp)) saveFlag = true;
+			ImGui::Unindent();
+		}
 
 
 		ImGui::EndChild();
@@ -1289,6 +1321,7 @@ void Editor::CreateObjectList() {
 			else {
 				if (objectFactory->GetGameObjectByID(gameobjID) != nullptr) {
 					ImGui::Text("Object ID: %d", objectFactory->GetGameObjectByID(gameobjID)->GetGameObjectID());
+					ImGui::Text("Object Type: %s", objectFactory->GetGameObjectByID(gameobjID)->GetType());
 					if (objectFactory->GetGameObjectByID(gameobjID)->Has(ComponentType::TRANSFORM) != -1) {
 
 						xPos = GET_COMPONENT(objectFactory->GetGameObjectByID(gameobjID), Transform, ComponentType::TRANSFORM)->position.x;
@@ -1872,13 +1905,6 @@ void Editor::CreateDebugPanel() {
 			}
 		}
 
-		/*size_t countToDisplay = std::min(static_cast<size_t>(EditorSettings::pieChartDisplayCount), avgSysTimes.size());
-		for (size_t i = 0; i < countToDisplay; i++) {
-			if (!avgSysTimes.empty()) {
-				chartLabels.push_back(avgSysTimes[i].first.c_str());
-				data.push_back(avgSysTimes[i].second);
-			}
-		}*/
 		static ImPlotPieChartFlags flags = 0;
 		// Draw pie chart
 		
@@ -2010,28 +2036,68 @@ void Editor::RenderDirectoryV2(const std::string& filePath) {
 		// Render button
 		ImGui::ImageButton(iconTexture, ImVec2(EditorSettings::iconSize, EditorSettings::iconSize));
 
-		// Set drag sourece for textures
-		if (filePath == FILEPATH_TEXTURES) {
-			if (ImGui::BeginDragDropSource(ImGuiDragDropFlags_None)) {
-				itemDrag = true;
+		//// Set drag sourece for textures
+		//if (filePath == FILEPATH_TEXTURES) {
+		//	if (ImGui::BeginDragDropSource(ImGuiDragDropFlags_None)) {
+		//		itemDrag = true;
+		//		// Set payload type
+		//		ImGui::SetDragDropPayload("PAYLOAD_TEXTURE", texNameWithoutExt.c_str(), texNameWithoutExt.size() + 1);
+		//		// Display held item
+		//		ImGui::EndDragDropSource();
+		//	}
+		//}
+		//if (filePath == FILEPATH_SPRITES) {
+		//	if (ImGui::BeginDragDropSource(ImGuiDragDropFlags_None)) {
+		//		itemDrag = true;
+		//		// Set payload type
+		//		ImGui::SetDragDropPayload("PAYLOAD_SPRITE", texNameWithoutExt.c_str(), texNameWithoutExt.size() + 1);
+		//		// Display held item
+		//		ImGui::Image(iconTexture, ImVec2(EditorSettings::iconSize / 4, EditorSettings::iconSize / 4));
+		//		ImGui::EndDragDropSource();
+		//	}
+		//}
+		//if (filePath == FILEPATH_SOUNDS_BGM || filePath == FILEPATH_SOUNDS_SFX) {
+		//	if (ImGui::BeginDragDropSource(ImGuiDragDropFlags_None)) {
+		//		itemDrag = true;
+		//		// Set payload type
+		//		if (filePath == FILEPATH_SOUNDS_BGM) {
+		//			ImGui::SetDragDropPayload("PAYLOAD_AUDIO_BGM", entryName.c_str(), entryName.size() + 1);
+		//		}
+		//		else {
+		//			ImGui::SetDragDropPayload("PAYLOAD_AUDIO_SFX", entryName.c_str(), entryName.size() + 1);
+		//		}			
+		//		// Display held item
+		//		ImGui::Image(iconTexture, ImVec2(EditorSettings::iconSize / 4, EditorSettings::iconSize / 4));
+		//		ImGui::EndDragDropSource();
+		//	}
+		//}
+		// Set Drag Source
+		if (ImGui::BeginDragDropSource(ImGuiDragDropFlags_None)) {
+			itemDrag = true;
+			if (filePath == FILEPATH_TEXTURES) {			 		
 				// Set payload type
-				ImGui::SetDragDropPayload("PAYLOAD_TEXTURE", texNameWithoutExt.c_str(), texNameWithoutExt.size() + 1);
-				// Display held item
-				ImGui::Image(iconTexture, ImVec2(EditorSettings::iconSize / 4, EditorSettings::iconSize / 4));
-				ImGui::EndDragDropSource();
+				ImGui::SetDragDropPayload("PAYLOAD_TEXTURE", texNameWithoutExt.c_str(), texNameWithoutExt.size() + 1);					
 			}
-		}
-		if (filePath == FILEPATH_SPRITES) {
-			if (ImGui::BeginDragDropSource(ImGuiDragDropFlags_None)) {
-				itemDrag = true;
+			if (filePath == FILEPATH_SPRITES) {
 				// Set payload type
-				ImGui::SetDragDropPayload("PAYLOAD_SPRITE", texNameWithoutExt.c_str(), texNameWithoutExt.size() + 1);
-				// Display held item
-				ImGui::Image(iconTexture, ImVec2(EditorSettings::iconSize / 4, EditorSettings::iconSize / 4));
-				ImGui::EndDragDropSource();
+				ImGui::SetDragDropPayload("PAYLOAD_SPRITE", texNameWithoutExt.c_str(), texNameWithoutExt.size() + 1);			
 			}
+			if (filePath == FILEPATH_SOUNDS_BGM || filePath == FILEPATH_SOUNDS_SFX) {				
+				// Set payload type
+				if (filePath == FILEPATH_SOUNDS_BGM) {
+					ImGui::SetDragDropPayload("PAYLOAD_AUDIO_BGM", entryName.c_str(), entryName.size() + 1);
+				}
+				else {
+					ImGui::SetDragDropPayload("PAYLOAD_AUDIO_SFX", entryName.c_str(), entryName.size() + 1);
+				}			
+			}
+			// Display held item
+			ImGui::Image(iconTexture, ImVec2(EditorSettings::iconSize / 4, EditorSettings::iconSize / 4));
+			ImGui::EndDragDropSource();
 		}
+			
 		
+
 		// Reset button style
 		if (browserSelectedItem == entryName) {
 			ImGui::PopStyleColor(3);

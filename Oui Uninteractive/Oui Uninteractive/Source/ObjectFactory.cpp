@@ -462,10 +462,10 @@ void ObjectFactory::SavePrefabsToFile(const std::string& filePath) {
 		jsonObj.AddMember("Name", stringVar, allocator);
 		stringVar.SetString(prefab->prefabName.c_str(), allocator);
 		jsonObj.AddMember("Type", stringVar, allocator);
-		stringVar.SetBool(prefab->usingSprite);
-		jsonObj.AddMember("UsingSprite", stringVar, allocator);
 		stringVar.SetString(prefab->textureName.c_str(), allocator);
 		jsonObj.AddMember("Texture", stringVar, allocator);
+		stringVar.SetBool(prefab->usingSprite);
+		jsonObj.AddMember("UsingSprite", stringVar, allocator);
 
 		// Components object
 		rapidjson::Value components(rapidjson::kObjectType);
@@ -506,6 +506,9 @@ void ObjectFactory::SavePrefabsToFile(const std::string& filePath) {
 				individualComponent.AddMember("ColliderSizeX", GET_COMPONENT(it.second, Collider, ComponentType::COLLIDER)->tx->scale.x, allocator);
 				individualComponent.AddMember("ColliderSizeY", GET_COMPONENT(it.second, Collider, ComponentType::COLLIDER)->tx->scale.y, allocator);
 				individualComponent.AddMember("ColliderRotation", GET_COMPONENT(it.second, Collider, ComponentType::COLLIDER)->tx->rotation, allocator);
+			}
+			else if (componentName == "EnemyFSM") {
+				individualComponent.AddMember("AggroRange", GET_COMPONENT(it.second, EnemyFSM, ComponentType::ENEMY_FSM)->aggroRange, allocator);
 			}
 			else if (componentName == "HealthComponent") {
 				individualComponent.AddMember("MaxHealth", GET_COMPONENT(it.second, HealthComponent, ComponentType::HEALTH)->maxHealth, allocator);

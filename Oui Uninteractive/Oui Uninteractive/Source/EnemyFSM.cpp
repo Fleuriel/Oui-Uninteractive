@@ -52,7 +52,9 @@ void EnemyFSM::Initialize() {
 *************************************************************************/
 void EnemyFSM::Serialize(rapidjson::Value::ConstMemberIterator& itr) {
 	const rapidjson::Value& components{ itr->value };
-	aggroRange = components["AggroRange"].GetFloat();
+	if (components.HasMember("AggroRange")) {
+		aggroRange = components["AggroRange"].GetFloat();
+	}
 }
 
 /**************************************************************************

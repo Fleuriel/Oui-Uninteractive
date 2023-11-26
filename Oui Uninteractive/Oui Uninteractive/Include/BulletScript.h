@@ -37,7 +37,7 @@ public:
 	* @return void
 	*************************************************************************/
 	void Update(size_t gameObjectID) {
-		GameObject* bullet{ objectFactory->GetGameObjectByID(gameObjectID) };
+		/*GameObject* bullet{objectFactory->GetGameObjectByID(gameObjectID)};
 		
 		// Variables for bullet collision check
 		float contactTime{};
@@ -58,7 +58,7 @@ public:
 					}
 				}
 			}
-		}
+		}*/
 	}
 
 	/**************************************************************************
