@@ -231,9 +231,16 @@ void KeyCallBack(GLFWwindow* window3, int key, int scancode, int action, int mod
 				std::cout << newchar;
 			}
 			if (key == GLFW_KEY_ENTER) {
-				if (inputSystem.hiddenconsole == "developermodeon") {
-					inputSystem.cheater = true;
+				
+				if (inputSystem.cheater == true) {
+					if (inputSystem.hiddenconsole == "developermodeoff")
+						inputSystem.cheater = false;
+
+					if (CheckCheatCode(inputSystem.hiddenconsole))
+						Cheat(inputSystem.hiddenconsole);
 				}
+				else if (inputSystem.hiddenconsole == "developermodeon")
+					inputSystem.cheater = true;
 
 				inputSystem.typePW = false;
 				inputSystem.hiddenconsole = std::string("");
