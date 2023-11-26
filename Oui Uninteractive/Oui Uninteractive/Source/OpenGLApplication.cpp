@@ -252,6 +252,13 @@ void OpenGLApplication::OpenGLUpdate() {
 		triggerEveryQuarterSecond += static_cast<float>(GetDT());
 		if (triggerEveryQuarterSecond >= 0.25) {
 			spritecol++;
+			if (objectFactory->GetGameObjectByName("JSONPlayer") != nullptr) {
+				if (Vector2DLength(GET_COMPONENT(objectFactory->GetGameObjectByName("JSONPlayer"), PhysicsBody, ComponentType::PHYSICS_BODY)->velocity) > 20) {
+					soundManager->PlaySFX("Johnson_Concrete_Footsteps_5.wav");
+
+				}
+			}
+					
 			if (spritecol >= 6)
 				spritecol = 0;
 			triggerEveryQuarterSecond = 0;
