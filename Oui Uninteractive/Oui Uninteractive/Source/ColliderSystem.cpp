@@ -74,32 +74,45 @@ void ColliderSystem::Update(float dt) {
 				//Collision Response
 				if (collided) {
 					didCollide = true;
-
-					if (!pBody2->isStatic) {
-						//both objects can move
-						float secondNorm = 0.f;
-						float dp = Vector2DDotProduct(nextCycleVel, nextCycleVel2);
-						if (dp > 0) {
-							secondNorm = 1.f;
+					if (pBody1->GetOwner()->GetType() == "BulletPrefab"){
+						if (pBody2->GetOwner()->GetType() == "Enemy") {
+							--GET_COMPONENT(pBody2->GetOwner(), HealthComponent, ComponentType::HEALTH)->currentHealth;
 						}
-						pBody1->forceManager.DeactivateForce(0);
-						pBody1->forceManager.DeactivateForce(1);
-						pBody2->forceManager.DeactivateForce(0);
-						pBody2->forceManager.DeactivateForce(1);
-						CollisionMessage collisionMessage(collider, body2, contactTime, normal, secondNorm, -normal);
-						SendToObservers(&collisionMessage);
-
+						objectFactory->DestroyObject(pBody1->GetOwner());
+					}
+					if (pBody2->GetOwner()->GetType() == "BulletPrefab") {
+						objectFactory->DestroyObject(pBody2->GetOwner());
+						if (pBody1->GetOwner()->GetType() == "Enemy") {
+							--GET_COMPONENT(pBody1->GetOwner(), HealthComponent, ComponentType::HEALTH)->currentHealth;
+						}
 					}
 					else {
-						//coll response
-						if (pBody2->isStatic) {
+						if (!pBody2->isStatic) {
+							//both objects can move
+							float secondNorm = 0.f;
+							float dp = Vector2DDotProduct(nextCycleVel, nextCycleVel2);
+							if (dp > 0) {
+								secondNorm = 1.f;
+							}
 							pBody1->forceManager.DeactivateForce(0);
 							pBody1->forceManager.DeactivateForce(1);
-							CollisionMessage collisionMessage(collider, body2, contactTime, normal, 1.f, normal);
+							pBody2->forceManager.DeactivateForce(0);
+							pBody2->forceManager.DeactivateForce(1);
+							CollisionMessage collisionMessage(collider, body2, contactTime, normal, secondNorm, -normal);
 							SendToObservers(&collisionMessage);
-						}
 
+						}
+						else {
+							//coll response
+							if (pBody2->isStatic) {
+								pBody1->forceManager.DeactivateForce(0);
+								pBody1->forceManager.DeactivateForce(1);
+								CollisionMessage collisionMessage(collider, body2, contactTime, normal, 1.f, normal);
+								SendToObservers(&collisionMessage);
+							}
+						}
 					}
+					
 				}//Collision Response end		
 			}
 			}

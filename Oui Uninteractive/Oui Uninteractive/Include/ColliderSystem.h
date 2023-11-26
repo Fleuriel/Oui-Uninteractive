@@ -22,6 +22,7 @@
 #include "ComponentType.h"
 #include "Editor.h"
 #include <map>
+#include "HealthComponent.h"
 class ColliderSystem : public ISystem {
 public:
 	/**************************************************************************
