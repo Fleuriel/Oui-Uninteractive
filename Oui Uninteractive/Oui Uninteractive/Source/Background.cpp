@@ -39,6 +39,8 @@ int backgroundTexture;	//Texture for background
 
 extern AssetManager assetManager;
 
+
+
 /**************************************************************************
  * @brief Initialize the Background class.
  *
@@ -183,6 +185,9 @@ void Background::Update(float newX, float newY, float scaleX, float scaleY) {
 
 }
 
+void Background::SetBackGround(int tex) {
+	backgroundTexture = tex;
+}
 
 /**************************************************************************
 * @brief Render the background using OpenGL.
@@ -195,17 +200,9 @@ void Background::Update(float newX, float newY, float scaleX, float scaleY) {
  *       `shdrpgms`, and OpenGL bindings are available and properly defined.
 *************************************************************************/
 void Background::Draw() const {
-	// Bind the background texture to texture image unit 6
-	int tex{};
-	switch (texID) {
-	case 0:
-		tex = backgroundTexture;
-		break;
-	default:
-		break;
-	}
 
-	glBindTextureUnit(6, tex);
+
+	glBindTextureUnit(6, backgroundTexture);
 
 	shdrpgms[shd_ref].Use(); // Use the shader program for rendering
 
