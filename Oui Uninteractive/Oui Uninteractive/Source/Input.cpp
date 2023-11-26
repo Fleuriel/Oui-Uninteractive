@@ -361,7 +361,7 @@ void InputSystem::UpdateStatesForNextFrame() {
  *************************************************************************/
 void WindowCloseCallback(GLFWwindow* window6){
 	(void)window6;
-	NextGameState = STATE_QUIT;
+	sceneManager->nextSceneID = STATE_QUIT;
 }
 
 
