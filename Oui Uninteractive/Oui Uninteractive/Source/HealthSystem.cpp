@@ -18,7 +18,7 @@ extern std::pair<int, int> windowSize;
 /**************************************************************************
 * @brief Constructor
 *************************************************************************/
-HealthSystem::HealthSystem() {
+HealthSystem::HealthSystem() : nextMaxHP{}, nextCurrentHP{} {
 	if (healthSys != nullptr) {
 		return;
 	}
@@ -56,28 +56,51 @@ void HealthSystem::Update(float dt) {
 			}
 			
 			if (it.second->GetOwner()->GetType() == "Player") {
-				for (size_t i{}; i < playerHealthbar.size(); ++i) {
-					objectFactory->DestroyObject(playerHealthbar[i]);
-				}
-				playerHealthbar.clear();
+				if (nextMaxHP != it.second->maxHealth || nextCurrentHP != it.second->currentHealth) {
+					for (size_t i{}; i < playerHealthbar.size(); ++i) {
+						objectFactory->DestroyObject(playerHealthbar[i]);
+					}
+					playerHealthbar.clear();
 
-				// Create player healthbar
-				for (int i{}; i < it.second->maxHealth; ++i) {
-					// Create bullet object from prefab
-					std::string heartName{ "Heart" + std::to_string(i + 1) };
-					GameObject* heart = objectFactory->BuildObjectFromPrefab(heartName, "HeartPrefab");
-					GET_COMPONENT(heart, Transform, ComponentType::TRANSFORM)->position.x = (static_cast<float>(-windowSize.first) / 3.f) + i * GET_COMPONENT(heart, Transform, ComponentType::TRANSFORM)->scale.x;
-					GET_COMPONENT(heart, Transform, ComponentType::TRANSFORM)->position.y = (static_cast<float>(windowSize.second) / 3.f);
+					if (it.second->maxHealth <= 10) {
+						// Create player healthbar
+						for (int i{}; i < it.second->maxHealth; ++i) {
+							// Create bullet object from prefab
+							std::string heartName{ "Heart" + std::to_string(i + 1) };
+							GameObject* heart = objectFactory->BuildObjectFromPrefab(heartName, "HeartPrefab");
+							GET_COMPONENT(heart, Transform, ComponentType::TRANSFORM)->position.x = (static_cast<float>(-windowSize.first) / 3.f) + i * GET_COMPONENT(heart, Transform, ComponentType::TRANSFORM)->scale.x;
+							GET_COMPONENT(heart, Transform, ComponentType::TRANSFORM)->position.y = (static_cast<float>(windowSize.second) / 3.f);
 
-					playerHealthbar.push_back(heart);
-				}
+							playerHealthbar.push_back(heart);
+						}
 
-				// Update player healthbar textures
-				for (int i{}; i < it.second->currentHealth - 1; ++i) {
-					playerHealthbar[i]->SetTexture("Heart");
-				}
-				for (int i{ it.second->currentHealth }; i < it.second->maxHealth; ++i) {
-					playerHealthbar[i]->SetTexture("Heart-BG");
+						// Update player healthbar textures
+						for (int i{}; i < it.second->currentHealth - 1; ++i) {
+							playerHealthbar[i]->SetTexture("Heart");
+						}
+						for (int i{ it.second->currentHealth }; i < it.second->maxHealth; ++i) {
+							playerHealthbar[i]->SetTexture("Heart-BG");
+						}
+
+						nextMaxHP = it.second->maxHealth;
+						nextCurrentHP = it.second->currentHealth;
+					}
+					else {
+						// godmode
+						// Create player healthbar
+						std::string heartName{ "HeartGodmode" };
+						GameObject* heart = objectFactory->BuildObjectFromPrefab(heartName, "HeartPrefab");
+						GET_COMPONENT(heart, Transform, ComponentType::TRANSFORM)->position.x = (static_cast<float>(-windowSize.first) / 3.f);
+						GET_COMPONENT(heart, Transform, ComponentType::TRANSFORM)->position.y = (static_cast<float>(windowSize.second) / 3.f);
+
+						playerHealthbar.push_back(heart);
+
+						// Update player healthbar textures
+						playerHealthbar[0]->SetTexture("InfinityHeart");
+
+						nextMaxHP = it.second->maxHealth;
+						nextCurrentHP = it.second->currentHealth;
+					}
 				}
 			}
 		}
