@@ -81,7 +81,7 @@ public:
 
 				bulletSpawnAngle = atan2(mousePos.y - playerPos.y, mousePos.x - playerPos.x);
 				bulletSpawnOffset = (playerScaleX >= playerScaleY) ? playerScaleX : playerScaleY;
-				bulletSpawnOffset *= 1.1f;
+				bulletSpawnOffset *= 0.75f;
 				bulletSpawnPos.x = playerPos.x + bulletSpawnOffset * cos(bulletSpawnAngle);
 				bulletSpawnPos.y = playerPos.y + bulletSpawnOffset * sin(bulletSpawnAngle);
 				GET_COMPONENT(bullet, Transform, ComponentType::TRANSFORM)->position = bulletSpawnPos;
@@ -101,7 +101,7 @@ public:
 
 				// Set bullet velocity
 				GET_COMPONENT(bullet, PhysicsBody, ComponentType::PHYSICS_BODY)->velocity = shootingDirection * GET_COMPONENT(bullet, PhysicsBody, ComponentType::PHYSICS_BODY)->speed;
-
+				soundManager->PlaySFX("futuristic Machinegun_1.wav");
 				++shootingInterval;
 			}
 			else {

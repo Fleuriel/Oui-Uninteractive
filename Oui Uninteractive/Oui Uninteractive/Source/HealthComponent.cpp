@@ -14,7 +14,6 @@
  * @brief Constructor
  *************************************************************************/
 HealthComponent::HealthComponent() : maxHealth{}, currentHealth(maxHealth) {
-	
 }
 
 /**************************************************************************

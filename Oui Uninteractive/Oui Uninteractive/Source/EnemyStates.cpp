@@ -131,7 +131,7 @@ void EnemyRoam::Update(size_t gameObjectID) {
         }
     }
     else {
-        /*if (!pathPrinted) {
+        if (!pathPrinted) {
             // Start traversing path
             std::cout << "Start\n";
             
@@ -142,7 +142,7 @@ void EnemyRoam::Update(size_t gameObjectID) {
             std::cout << "End" << std::endl;
 
             pathPrinted = true;
-        }*/
+        }
 
 		if (pathIndex < pathToTake.size()) {
             // Enemy to traverse along path to take
@@ -163,7 +163,7 @@ void EnemyRoam::Update(size_t gameObjectID) {
             else if (Vector2DDistance(currentEnemyPos, nodePos) <= 3) {
                 GET_COMPONENT(currentEnemy, PhysicsBody, ComponentType::PHYSICS_BODY)->velocity = Vec2(0, 0);
                 ++pathIndex;
-                std::cout << "Travelled to node (" << currentNode.x << ", " << currentNode.y << ")" << std::endl;
+                //std::cout << "Travelled to node (" << currentNode.x << ", " << currentNode.y << ")" << std::endl;
             }
 		}
         else {
@@ -202,7 +202,14 @@ EnemyRoam::~EnemyRoam() {
 /**************************************************************************
 * @brief Constructor for EnemyAttack
 *************************************************************************/
-EnemyAttack::EnemyAttack() : transitioned(false) {}
+//EnemyAttack::EnemyAttack() : transitioned(false), bulletNumber(0), bulletSpawnPos(Vec2(0.f, 0.f)), bulletSpawnAngle(0.f), bulletSpawnOffset(0.f), shootingInterval(0) {}
+EnemyAttack::EnemyAttack() : transitioned(false) {
+    bulletNumber = 0;
+	bulletSpawnPos = Vec2(0.f, 0.f);
+	bulletSpawnAngle = 0.f;
+	bulletSpawnOffset = 0.f;
+	shootingInterval = 0;
+}
 
 /**************************************************************************
 * @brief Update the EnemyAttack state
@@ -211,9 +218,62 @@ EnemyAttack::EnemyAttack() : transitioned(false) {}
 *************************************************************************/
 void EnemyAttack::Update(size_t gameObjectID) {
     (void)gameObjectID;
+    if (objectFactory->GetGameObjectsByType("Player").size() == 0)
+        return;
+
     if (!transitioned) {
         std::cout << "\nTRANSITIONED TO ATTACK STATE" << std::endl;
         transitioned = true;
+    }
+
+    if (shootingInterval == 0) {
+        // Create bullet object from prefab
+        std::string bulletName{ "EnemyBullet" + std::to_string(bulletNumber) };
+        GameObject* bullet = objectFactory->BuildObjectFromPrefab(bulletName, "EnemyBulletPrefab");
+        ++bulletNumber;
+        if (bulletNumber >= 100) {
+            bulletNumber = 0;
+        }
+
+        // Get current enemy
+        Vec2 enemyPos{ GET_COMPONENT(objectFactory->GetGameObjectByID(gameObjectID), Transform, ComponentType::TRANSFORM)->position };
+        float enemyScaleX{ GET_COMPONENT(objectFactory->GetGameObjectByID(gameObjectID), Transform, ComponentType::TRANSFORM)->scale.x };
+        float enemyScaleY{ GET_COMPONENT(objectFactory->GetGameObjectByID(gameObjectID), Transform, ComponentType::TRANSFORM)->scale.y };
+
+        // Get player
+		Vec2 playerPos{ GET_COMPONENT(objectFactory->GetGameObjectsByType("Player")[0], Transform, ComponentType::TRANSFORM)->position};
+
+        // Set bullet spawn point
+        bulletSpawnAngle = atan2(playerPos.y - enemyPos.y, playerPos.x - enemyPos.x);
+        bulletSpawnOffset = (enemyScaleX >= enemyScaleY) ? enemyScaleX : enemyScaleY;
+        bulletSpawnOffset *= 0.75f;
+        bulletSpawnPos.x = enemyPos.x + bulletSpawnOffset * cos(bulletSpawnAngle);
+        bulletSpawnPos.y = enemyPos.y + bulletSpawnOffset * sin(bulletSpawnAngle);
+        GET_COMPONENT(bullet, Transform, ComponentType::TRANSFORM)->position = bulletSpawnPos;
+        GET_COMPONENT(bullet, Transform, ComponentType::TRANSFORM)->rotation = bulletSpawnAngle;
+
+        // Set bullet shooting direction
+        Vec2 shootingDirection;
+        if (Vector2DDistance(enemyPos, playerPos) >= bulletSpawnOffset) {
+            shootingDirection.x = static_cast<float>(playerPos.x) - enemyPos.x;
+            shootingDirection.y = static_cast<float>(playerPos.y) - enemyPos.y;
+        }
+        else {
+            shootingDirection.x = bulletSpawnPos.x - enemyPos.x;
+            shootingDirection.y = bulletSpawnPos.y - enemyPos.y;
+        }
+        Vector2DNormalize(shootingDirection, shootingDirection);
+
+        // Set bullet velocity
+        GET_COMPONENT(bullet, PhysicsBody, ComponentType::PHYSICS_BODY)->velocity = shootingDirection * GET_COMPONENT(bullet, PhysicsBody, ComponentType::PHYSICS_BODY)->speed;
+
+        ++shootingInterval;
+    }
+    else {
+        ++shootingInterval;
+        if (shootingInterval >= 30) {
+            shootingInterval = 0;
+        }
     }
 }
 
@@ -295,7 +355,7 @@ void EnemyFlee::Update(size_t gameObjectID) {
         }
     }
     else {
-        /*if (!pathPrinted) {
+        if (!pathPrinted) {
             // Start traversing path
             std::cout << "Start (fleeing)\n";
 
@@ -306,7 +366,7 @@ void EnemyFlee::Update(size_t gameObjectID) {
             std::cout << "End" << std::endl;
 
             pathPrinted = true;
-        }*/
+        }
 
         if (pathIndex < pathToTake.size()) {
             // Enemy to traverse along path to take
@@ -327,7 +387,7 @@ void EnemyFlee::Update(size_t gameObjectID) {
             else if (Vector2DDistance(currentEnemyPos, nodePos) <= 3) {
                 GET_COMPONENT(currentEnemy, PhysicsBody, ComponentType::PHYSICS_BODY)->velocity = Vec2(0, 0);
                 ++pathIndex;
-                std::cout << "Travelled to node (" << currentNode.x << ", " << currentNode.y << ")" << std::endl;
+                //std::cout << "Travelled to node (" << currentNode.x << ", " << currentNode.y << ")" << std::endl;
             }
         }
         /* else {

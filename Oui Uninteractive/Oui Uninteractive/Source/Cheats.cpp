@@ -53,12 +53,15 @@ void Victory() {
 void Defeat() {
 	//sceneManager->nextSceneID = defeatsceneid
 	//Should change background to defeat screen (not the entire defeat screen as an object, then objects as buttons to click
-	background.SetBackGround(assetManager.GetTexture("Defeatscreen"));
+	background.SetBackGround(assetManager.GetTexture("DefeatScreen"));
 	objectFactory->BuildObjectFromFile(std::string("assets/scenes/DefeatScreen.json"));  //temporary
 	std::cout << "DEFEAT" << std::endl;
 }
 
 void GodModeOn() {
+	if (objectFactory->GetGameObjectsByType("Player").size() == 0)
+		return;
+
 	int invincibilityHP = 696969;
 	GameObject* player = objectFactory->GetGameObjectsByType("Player")[0];
 	if (player != nullptr){
@@ -71,6 +74,9 @@ void GodModeOn() {
 
 void GodModeOff() {
 	// wait Austin gor gor push code
+	if (objectFactory->GetGameObjectsByType("Player").size() == 0)
+		return;
+
 	GameObject* player = objectFactory->GetGameObjectsByType("Player")[0];
 	if (player != nullptr) {
 		auto playercomponent = GET_COMPONENT(player, HealthComponent, ComponentType::HEALTH);

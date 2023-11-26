@@ -1,0 +1,204 @@
+{
+    "ObjectCount": 6,
+    "Objects": [
+        {
+            "Name": "JSONPlayer",
+            "Type": "Player",
+            "Texture": "Player",
+            "UsingSprite": true,
+            "Components": {
+                "PhysicsBody": {
+                    "VelocityX": 0.0,
+                    "VelocityY": 0.0,
+                    "RotationSpeed": 200.0,
+                    "Speed": 100.0,
+                    "Mass": 140.0,
+                    "IsStatic": false,
+                    "FrictionForce": 20.0
+                },
+                "Transform": {
+                    "PositionX": 184.50914001464844,
+                    "PositionY": 117.46430206298828,
+                    "Rotation": 0.0,
+                    "ScaleX": 200.0,
+                    "ScaleY": 200.0
+                },
+                "LogicComponent": {
+                    "ScriptID": [1, 3]
+                },
+                "Collider": {
+                    "ColliderSizeX": 200.0,
+                    "ColliderSizeY": 200.0,
+                    "ColliderRotation": 0.0
+                },
+                "HealthComponent": {
+                    "MaxHealth": 3
+                }
+            }
+        },
+        {
+            "Name": "JSONEnemy1",
+            "Type": "Enemy",
+            "Texture": "CommonGuard",
+            "UsingSprite": true,
+            "Components": {
+                "PhysicsBody": {
+                    "VelocityX": 0.0,
+                    "VelocityY": 0.0,
+                    "RotationSpeed": 20.0,
+                    "Speed": 120.0,
+                    "Mass": 10.0,
+                    "IsStatic": false,
+                    "FrictionForce": 20.0
+                },
+                "Transform": {
+                    "PositionX": -812.6199951171875,
+                    "PositionY": -400.0,
+                    "Rotation": 0.0,
+                    "ScaleX": 130.0,
+                    "ScaleY": 130.0
+                },
+                "LogicComponent": {
+                    "ScriptID": [0]
+                },
+                "Collider": {
+                    "ColliderSizeX": 140.0,
+                    "ColliderSizeY": 140.0,
+                    "ColliderRotation": 0.0
+                },
+                "HealthComponent": {
+                    "MaxHealth": 3
+                }
+            }
+        },
+        {
+            "Name": "JSONEnemy2",
+            "Type": "Enemy",
+            "Texture": "CommonGuard",
+            "UsingSprite": true,
+            "Components": {
+                "PhysicsBody": {
+                    "VelocityX": 0.0,
+                    "VelocityY": 0.0,
+                    "RotationSpeed": 60.29999923706055,
+                    "Speed": 500.0,
+                    "Mass": 80.0,
+                    "IsStatic": true,
+                    "FrictionForce": 20.0
+                },
+                "Transform": {
+                    "PositionX": 700.0,
+                    "PositionY": 300.0,
+                    "Rotation": 0.0,
+                    "ScaleX": 220.0,
+                    "ScaleY": 220.0
+                },
+                "Collider": {
+                    "ColliderSizeX": 220.0,
+                    "ColliderSizeY": 220.0,
+                    "ColliderRotation": 0.0
+                },
+                "HealthComponent": {
+                    "MaxHealth": 3
+                }
+            }
+        },
+        {
+            "Name": "Object4",
+            "Type": "Enemy",
+            "Texture": "CommonGuard",
+            "UsingSprite": true,
+            "Components": {
+                "PhysicsBody": {
+                    "VelocityX": 0.0,
+                    "VelocityY": 0.0,
+                    "RotationSpeed": 60.29999923706055,
+                    "Speed": 500.0,
+                    "Mass": 80.0,
+                    "IsStatic": false,
+                    "FrictionForce": 20.0
+                },
+                "Transform": {
+                    "PositionX": -215.41000366210938,
+                    "PositionY": 300.0,
+                    "Rotation": 0.0,
+                    "ScaleX": 220.0,
+                    "ScaleY": 220.0
+                },
+                "Collider": {
+                    "ColliderSizeX": 220.0,
+                    "ColliderSizeY": 220.0,
+                    "ColliderRotation": 0.0
+                },
+                "HealthComponent": {
+                    "MaxHealth": 3
+                }
+            }
+        },
+        {
+            "Name": "Object5",
+            "Type": "Enemy",
+            "Texture": "CommonGuard",
+            "UsingSprite": true,
+            "Components": {
+                "PhysicsBody": {
+                    "VelocityX": 0.0,
+                    "VelocityY": 0.0,
+                    "RotationSpeed": 60.29999923706055,
+                    "Speed": 500.0,
+                    "Mass": 80.0,
+                    "IsStatic": false,
+                    "FrictionForce": 20.0
+                },
+                "Transform": {
+                    "PositionX": 206.88999938964844,
+                    "PositionY": -338.1099853515625,
+                    "Rotation": 0.0,
+                    "ScaleX": 220.0,
+                    "ScaleY": 220.0
+                },
+                "Collider": {
+                    "ColliderSizeX": 220.0,
+                    "ColliderSizeY": 220.0,
+                    "ColliderRotation": 0.0
+                },
+                "HealthComponent": {
+                    "MaxHealth": 3
+                }
+            }
+        },
+        {
+            "Name": "Object6",
+            "Type": "Enemy",
+            "Texture": "CommonGuard",
+            "UsingSprite": true,
+            "Components": {
+                "PhysicsBody": {
+                    "VelocityX": 0.0,
+                    "VelocityY": 0.0,
+                    "RotationSpeed": 60.29999923706055,
+                    "Speed": 500.0,
+                    "Mass": 80.0,
+                    "IsStatic": false,
+                    "FrictionForce": 20.0
+                },
+                "Transform": {
+                    "PositionX": -566.5599975585938,
+                    "PositionY": -175.82000732421875,
+                    "Rotation": 0.0,
+                    "ScaleX": 220.0,
+                    "ScaleY": 220.0
+                },
+                "Collider": {
+                    "ColliderSizeX": 220.0,
+                    "ColliderSizeY": 220.0,
+                    "ColliderRotation": 0.0
+                },
+                "HealthComponent": {
+                    "MaxHealth": 3
+                }
+            }
+        }
+        
+    ]
+}

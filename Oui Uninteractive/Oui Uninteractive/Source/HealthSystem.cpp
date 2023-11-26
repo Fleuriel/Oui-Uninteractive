@@ -42,7 +42,7 @@ void HealthSystem::Initialize() {
 * @return void
 *************************************************************************/
 void HealthSystem::Update(float dt) {
-	if (sysManager->isPaused == false) {
+	if (!sysManager->isPaused) {
 		(void)dt;
 
 		for (auto& it : healthComponentMap) {
@@ -62,8 +62,19 @@ void HealthSystem::DamageTaken(DamageTakenMessage* msg) {
 	HealthComponent* healthFirst{ GET_COMPONENT(msg->GetFirst(), HealthComponent, ComponentType::HEALTH) };
 	HealthComponent* healthSecond{ GET_COMPONENT(msg->GetSecond(), HealthComponent, ComponentType::HEALTH) };
 
-	if (msg->GetFirst()->GetType() == "Enemy")
-		--healthFirst->currentHealth;
-	else if (msg->GetSecond()->GetType() == "Enemy")
-		--healthSecond->currentHealth;
+	// Player bullet and enemy collision
+	if (msg->GetFirst()->GetType() == "Enemy" && msg->GetSecond()->GetType() == "BulletPrefab") {
+		healthFirst->currentHealth -= healthSecond->maxHealth;
+	}
+	else if (msg->GetSecond()->GetType() == "Enemy" && msg->GetFirst()->GetType() == "BulletPrefab") {
+		healthSecond->currentHealth -= healthFirst->maxHealth;
+	}
+
+	// Player bullet and enemy collision
+	if (msg->GetFirst()->GetType() == "Player" && msg->GetSecond()->GetType() == "EnemyBulletPrefab") {
+		healthFirst->currentHealth -= healthSecond->maxHealth;
+	}
+	else if (msg->GetSecond()->GetType() == "Player" && msg->GetFirst()->GetType() == "EnemyBulletPrefab") {
+		healthSecond->currentHealth -= healthFirst->maxHealth;
+	}
 }

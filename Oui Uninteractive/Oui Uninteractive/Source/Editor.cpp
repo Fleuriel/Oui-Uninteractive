@@ -20,6 +20,7 @@ bool Editor::fileBrowserOpen;
 bool Editor::consoleEntered;
 bool Editor::itemDrag;
 bool Editor::gameWindowHover;
+bool Editor::mismatchPayload;
 Editor::SystemTime Editor::timeRecorder;
 
 std::vector<float> Editor::fpsData;
@@ -98,7 +99,11 @@ void UsingImGui::Init(GLFWwindow* glfwWindow, const char* glsl_vers) {
 void UsingImGui::LoadFonts() {
 	ImGuiIO& io = ImGui::GetIO();
 	for (const auto& entry : std::filesystem::directory_iterator(FILEPATH_FONTS)) {
-		io.Fonts->AddFontFromFileTTF(entry.path().string().c_str(), 20.0f);
+		std::string extName = entry.path().extension().string();
+		std::transform(extName.begin(), extName.end(), extName.begin(), ::tolower);
+		if (extName == ".ttf" || extName == ".otf") {
+			io.Fonts->AddFontFromFileTTF(entry.path().string().c_str(), 20.0f);
+		}
 	}
 }
 
@@ -685,115 +690,76 @@ void Editor::CreateRenderWindow() {
 		ImVec2 wsize = ImGui::GetWindowSize();
 		// Invert V from openGL
 		ImGui::Image(reinterpret_cast<ImTextureID>(static_cast<uintptr_t>(OpenGLObject::FrameTexture)), wsize, ImVec2(0.0f, 1.0f), ImVec2(1.0f, 0.0f)); // Replace thirdTexture with handle to FBO when graphics done rendering to FBO	
-		//// Setup drag and drop checks within window
-		//if (ImGui::BeginDragDropTarget()) {
-		//	if (selected != nullptr) {	// OBJECT IS SELECTED		
-		//		if (!selected->IsUsingSprite()) { // Selected object utilizes textures
-		//			if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("PAYLOAD_TEXTURE")) {
-		//				std::string dropTextureName = static_cast<const char*>(payload->Data);
-		//				selected->SetTexture(dropTextureName);		
-		//			}
-		//		}
-		//		else if (selected->IsUsingSprite()) { // Selected object utilizes sprites
-		//			if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("PAYLOAD_SPRITE")) {
-		//				std::string dropSpriteName = static_cast<const char*>(payload->Data);			
-		//				selected->SetTexture(dropSpriteName);
-		//			}
-		//			else if (!ImGui::IsDragDropPayloadBeingAccepted()) {
-		//				std::cout << "WRTONG PL";
-		//			}
-		//		}
-		//	}
-		//	else { // NO OBJECT SELECTED
-		//		if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("PAYLOAD_AUDIO_BGM")) {
-		//			std::string dropBGMName = static_cast<const char*>(payload->Data);
-		//			//std::cout << dropBGMName;
-		//			soundManager->StopAll();
-		//			soundManager->PlayBGM(dropBGMName);
-		//		}
-		//		if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("PAYLOAD_AUDIO_SFX")) {
-		//			std::string dropSFXName = static_cast<const char*>(payload->Data);
-		//			soundManager->PlaySFX(dropSFXName);
-		//		}
-		//	}
-		//	itemDrag = false;
-		//	ImGui::EndDragDropTarget();
-		//}
-
 
 		// Setup drag and drop checks within window
 		if (ImGui::BeginDragDropTarget()) {
 			const ImGuiPayload* payload = ImGui::GetDragDropPayload();
 			// OBJECT IS SELECTED
-			if (selected != nullptr) { 
+			if (selected != nullptr) {
 				if (!selected->IsUsingSprite()) { // Selected object utilizes textures
 					// Payload matches object type (Texture onto a texture)
-					if (payload->IsDataType("PAYLOAD_TEXTURE")) { 
-						std::string dropTextureName = static_cast<const char*>(payload->Data);
-						selected->SetTexture(dropTextureName);
+					if (payload->IsDataType("PAYLOAD_TEXTURE")) {
+						mismatchPayload = false;
+						if (const ImGuiPayload* droppedPayload = ImGui::AcceptDragDropPayload("PAYLOAD_TEXTURE")) {
+							std::string dropTextureName = static_cast<const char*>(droppedPayload->Data);
+							selected->SetTexture(dropTextureName);
+						}
 					} // Payload mismatch object type (Anything else onto a texture)
 					else {
 						// ERROR ICON IMPLEMENTATION
+						mismatchPayload = true;
 					}
 				}
 				else if (selected->IsUsingSprite()) { // Selected object utilizes sprites
 					// Payload matchers object type (Sprite onto a sprite)
 					if (payload->IsDataType("PAYLOAD_SPRITE")) {
-						std::string dropSpriteName = static_cast<const char*>(payload->Data);
-						selected->SetTexture(dropSpriteName);
+						mismatchPayload = false;
+						if (const ImGuiPayload* droppedPayload = ImGui::AcceptDragDropPayload("PAYLOAD_SPRITE")) {
+							std::string dropSpriteName = static_cast<const char*>(droppedPayload->Data);
+							selected->SetTexture(dropSpriteName);
+						}
 					} // Payload mismatch object type (Anything else onto a sprite)
 					else {
 						// ERROR ICON IMPLEMENTATION
+						mismatchPayload = true;
 					}
 				}
 			}
 			else { // NO OBJECT SELECTED
 				if (payload->IsDataType("PAYLOAD_AUDIO_BGM")) {
-					std::string dropBGMName = static_cast<const char*>(payload->Data);
-					soundManager->StopAll();
-					soundManager->PlayBGM(dropBGMName);
+					mismatchPayload = false;
+					if (const ImGuiPayload* droppedPayload = ImGui::AcceptDragDropPayload("PAYLOAD_AUDIO_BGM")) {
+						std::string dropBGMName = static_cast<const char*>(droppedPayload->Data);
+						soundManager->StopAll();
+						soundManager->PlayBGM(dropBGMName);
+					}				
 				}
 				if (payload->IsDataType("PAYLOAD_AUDIO_SFX")) {
-					std::string dropSFXName = static_cast<const char*>(payload->Data);
-					soundManager->PlaySFX(dropSFXName);
+					mismatchPayload = false;
+					if (const ImGuiPayload* droppedPayload = ImGui::AcceptDragDropPayload("PAYLOAD_AUDIO_SFX")) {
+						std::string dropSFXName = static_cast<const char*>(droppedPayload->Data);
+						soundManager->PlaySFX(dropSFXName);
+					}
+				}
+				if (payload->IsDataType("PAYLOAD_SCENE")) {
+					mismatchPayload = false;
+					if (const ImGuiPayload* droppedPayload = ImGui::AcceptDragDropPayload("PAYLOAD_SCENE")) {
+						std::string dropSceneName = static_cast<const char*>(droppedPayload->Data);
+						sysManager->isPaused = false;
+						dropSceneName = FILEPATH_SCENES + "\\" + dropSceneName;
+						objectFactory->DestroyAllObjects();
+						tilemapLoader->LoadTilemap(dropSceneName);
+						objectFactory->BuildObjectFromFile(dropSceneName);
+						tilemapLoader->CreateGrid();
+					}
 				}
 			}
 
 
-			//if (selected != nullptr) {	// OBJECT IS SELECTED		
-			//	if (!selected->IsUsingSprite()) { // Selected object utilizes textures
-			//		if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("PAYLOAD_TEXTURE")) {
-			//			std::string dropTextureName = static_cast<const char*>(payload->Data);
-			//			selected->SetTexture(dropTextureName);
-			//		}
-			//	}
-			//	else if (selected->IsUsingSprite()) { // Selected object utilizes sprites
-			//		if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("PAYLOAD_SPRITE")) {
-			//			std::string dropSpriteName = static_cast<const char*>(payload->Data);
-			//			selected->SetTexture(dropSpriteName);
-			//		}
-			//		else if (!ImGui::IsDragDropPayloadBeingAccepted()) {
-			//			std::cout << "WRTONG PL";
-			//		}
-			//	}
-			//}
-			//else { // NO OBJECT SELECTED
-			//	if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("PAYLOAD_AUDIO_BGM")) {
-			//		std::string dropBGMName = static_cast<const char*>(payload->Data);
-			//		//std::cout << dropBGMName;
-			//		soundManager->StopAll();
-			//		soundManager->PlayBGM(dropBGMName);
-			//	}
-			//	if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("PAYLOAD_AUDIO_SFX")) {
-			//		std::string dropSFXName = static_cast<const char*>(payload->Data);
-			//		soundManager->PlaySFX(dropSFXName);
-			//	}
-			//}
 			itemDrag = false;
 			ImGui::EndDragDropTarget();
+
 		}
-
-
 	
 	}
 	ImGui::EndChild();
@@ -1792,9 +1758,8 @@ void Editor::CreateObjectList() {
 					ImGui::SameLine();
 					if (ImGui::CollapsingHeader("Health Component")) {
 						if (objectFactory->GetGameObjectByID(gameobjID)->Has(ComponentType::HEALTH) != -1) {
-							int maxHpTemp = GET_COMPONENT(objectFactory->GetGameObjectByID(gameobjID), HealthComponent, ComponentType::HEALTH)->maxHealth;
 							currentHp2 = GET_COMPONENT(objectFactory->GetGameObjectByID(gameobjID), HealthComponent, ComponentType::HEALTH)->currentHealth;
-							if (ImGui::SliderInt("Current Health", &maxHp2, 0, 50, "%d")) { // Slider for Current Health
+							if (ImGui::SliderInt("Current Health", &currentHp2, 0, 50, "%d")) { // Slider for Current Health
 								GET_COMPONENT(objectFactory->GetGameObjectByID(gameobjID), HealthComponent, ComponentType::HEALTH)->currentHealth = currentHp2;
 							}
 							maxHp2 = GET_COMPONENT(objectFactory->GetGameObjectByID(gameobjID), HealthComponent, ComponentType::HEALTH)->maxHealth;
@@ -1836,6 +1801,7 @@ void Editor::CreateAssetBrowser() {
 
 	if (ImGui::InputText("##FilePath", &browserInputPath, ImGuiInputTextFlags_EnterReturnsTrue) || (ImGui::SameLine(), ImGui::Button("Go")) || browserDoubleClicked) {  // Enter if "enter" is pressed
 		browserSelectedItem = "";
+		mismatchPayload = false;
 		if (std::filesystem::exists(browserInputPath) && std::filesystem::is_directory(browserInputPath)) {
 			currFilePath = browserInputPath;
 			validPath = true;
@@ -1851,6 +1817,7 @@ void Editor::CreateAssetBrowser() {
 	ImGui::SameLine();
 	if (ImGui::Button("Back")) {
 		browserSelectedItem = "";
+		mismatchPayload = false;
 		std::filesystem::path temp = currFilePath;
 		if (std::filesystem::exists(temp) && temp.string() != FILEPATH_MASTER) {
 			browserInputPath = temp.parent_path().string();
@@ -1864,10 +1831,15 @@ void Editor::CreateAssetBrowser() {
 		browserInputPath = FILEPATH_MASTER;
 		currFilePath = browserInputPath;
 		browserSelectedItem = "";
+		mismatchPayload = false;
 		validPath = true;
 	}
 
 	ImGui::SameLine();
+	if (ImGui::Button("Reload")) {
+		assetManager.ReloadAll();
+	}
+
 	ImGui::Spacing();
 	if (ImGui::Button("Add File")) {	
 		// Get absolute path of working directory
@@ -1902,11 +1874,12 @@ void Editor::CreateAssetBrowser() {
 			}
 			else {
 				MessageBox(hwnd, L"Error adding file to folder: Souce file does not exist!", L"Failure", MB_OK | MB_ICONERROR);
-			}
+			}	
+			// Rset working directory to the project folder
+			std::filesystem::current_path(exePath);
+			assetManager.ReloadAll();
 		}
-		fileBrowserOpen = false;
-		// Rset working directory to the project folder
-		std::filesystem::current_path(exePath);
+		fileBrowserOpen = false;	
 	}
 
 	ImGui::SameLine();
@@ -2194,15 +2167,15 @@ void Editor::RenderDirectoryV2(const std::string& filePath) {
 
 		
 		// Set Drag Source
-		if (ImGui::BeginDragDropSource(ImGuiDragDropFlags_None)) {			
+		if (ImGui::BeginDragDropSource(ImGuiDragDropFlags_None)) {
 			itemDrag = true;
-			if (filePath == FILEPATH_TEXTURES) {			 		
+			if (filePath == FILEPATH_TEXTURES) {
 				// Set payload type
-				ImGui::SetDragDropPayload("PAYLOAD_TEXTURE", texNameWithoutExt.c_str(), texNameWithoutExt.size() + 1);					
+				ImGui::SetDragDropPayload("PAYLOAD_TEXTURE", texNameWithoutExt.c_str(), texNameWithoutExt.size() + 1);
 			}
 			if (filePath == FILEPATH_SPRITES) {
 				// Set payload type
-				ImGui::SetDragDropPayload("PAYLOAD_SPRITE", texNameWithoutExt.c_str(), texNameWithoutExt.size() + 1);			
+				ImGui::SetDragDropPayload("PAYLOAD_SPRITE", texNameWithoutExt.c_str(), texNameWithoutExt.size() + 1);
 			}
 			if (filePath == FILEPATH_SOUNDS_BGM) {
 				ImGui::SetDragDropPayload("PAYLOAD_AUDIO_BGM", browserSelectedItem.c_str(), browserSelectedItem.size() + 1);
@@ -2210,7 +2183,13 @@ void Editor::RenderDirectoryV2(const std::string& filePath) {
 			if (filePath == FILEPATH_SOUNDS_SFX) {
 				ImGui::SetDragDropPayload("PAYLOAD_AUDIO_SFX", browserSelectedItem.c_str(), browserSelectedItem.size() + 1);
 			}
+			if (filePath == FILEPATH_SCENES) {
+				ImGui::SetDragDropPayload("PAYLOAD_SCENE", browserSelectedItem.c_str(), browserSelectedItem.size() + 1);
+			}
 			// Display held item
+			if (mismatchPayload) {
+				iconTexture = reinterpret_cast<ImTextureID>(static_cast<uintptr_t>(assetManager.GetTexture("error_icon")));
+			}
 			ImGui::Image(iconTexture, ImVec2(EditorSettings::iconSize / 4, EditorSettings::iconSize / 4));
 			ImGui::EndDragDropSource();
 		}
