@@ -99,7 +99,11 @@ void UsingImGui::Init(GLFWwindow* glfwWindow, const char* glsl_vers) {
 void UsingImGui::LoadFonts() {
 	ImGuiIO& io = ImGui::GetIO();
 	for (const auto& entry : std::filesystem::directory_iterator(FILEPATH_FONTS)) {
-		io.Fonts->AddFontFromFileTTF(entry.path().string().c_str(), 20.0f);
+		std::string extName = entry.path().extension().string();
+		std::transform(extName.begin(), extName.end(), extName.begin(), ::tolower);
+		if (extName == ".ttf" || extName == ".otf") {
+			io.Fonts->AddFontFromFileTTF(entry.path().string().c_str(), 20.0f);
+		}
 	}
 }
 
@@ -1829,6 +1833,10 @@ void Editor::CreateAssetBrowser() {
 	}
 
 	ImGui::SameLine();
+	if (ImGui::Button("Reload")) {
+		assetManager.ReloadAll();
+	}
+
 	ImGui::Spacing();
 	if (ImGui::Button("Add File")) {	
 		// Get absolute path of working directory
@@ -1863,11 +1871,12 @@ void Editor::CreateAssetBrowser() {
 			}
 			else {
 				MessageBox(hwnd, L"Error adding file to folder: Souce file does not exist!", L"Failure", MB_OK | MB_ICONERROR);
-			}
+			}	
+			// Rset working directory to the project folder
+			std::filesystem::current_path(exePath);
+			assetManager.ReloadAll();
 		}
-		fileBrowserOpen = false;
-		// Rset working directory to the project folder
-		std::filesystem::current_path(exePath);
+		fileBrowserOpen = false;	
 	}
 
 	ImGui::SameLine();
