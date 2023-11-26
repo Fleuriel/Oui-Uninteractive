@@ -4,7 +4,7 @@
     "Objects": [{
             "Name": "Quit",
             "Type": "PauseMenu",
-            "UsingSprite": true,
+            "UsingSprite": false,
             "Texture": "",
             "Components": {
                 "Transform": {
@@ -26,7 +26,7 @@
         }, {
             "Name": "Resume",
             "Type": "PauseMenu",
-            "UsingSprite": true,
+            "UsingSprite": false,
             "Texture": "",
             "Components": {
                 "Transform": {

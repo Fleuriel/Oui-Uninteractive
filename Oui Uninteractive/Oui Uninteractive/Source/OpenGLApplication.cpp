@@ -266,7 +266,7 @@ void OpenGLApplication::OpenGLUpdate() {
 		// set the window to CLOSE.
 		glfwSetWindowShouldClose(windowNew, GLFW_TRUE);
 		// Set game state to quit to exit the while loop
-		CurrentGameState = STATE_QUIT;
+		sceneManager->nextSceneID = STATE_QUIT;
 	}
 	//glBindFramebuffer(GL_FRAMEBUFFER, OpenGLObject::FBO);
 
