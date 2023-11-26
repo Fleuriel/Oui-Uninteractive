@@ -16,7 +16,6 @@ uniform int row_To_Draw;
 uniform mat3 uModel_to_NDC;
 
 
-out vec3 Normal;
 out vec3 FragPos;
 
 
@@ -39,12 +38,9 @@ void main(void){
 
 	vTex = vec2(width , height) + vec2(float(col_To_Draw)/float(cols),float(row_To_Draw)/float(rows));
 
-
-	// Lighting?
 	TexCoord = aVertexTexture;
 
 
-        //Normal = normalMatrix;
 
 
         // Pass the world-space position to the fragment shader
