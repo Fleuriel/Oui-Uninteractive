@@ -84,7 +84,7 @@ public:
 				// Set bullet spawn point
 				bulletSpawnAngle = atan2(mousePos.y - playerPos.y, mousePos.x - playerPos.x);
 				bulletSpawnOffset = (playerScaleX >= playerScaleY) ? playerScaleX : playerScaleY;
-				bulletSpawnOffset *= 1.1f;
+				bulletSpawnOffset *= 0.75f;
 				bulletSpawnPos.x = playerPos.x + bulletSpawnOffset * cos(bulletSpawnAngle);
 				bulletSpawnPos.y = playerPos.y + bulletSpawnOffset * sin(bulletSpawnAngle);
 				GET_COMPONENT(bullet, Transform, ComponentType::TRANSFORM)->position = bulletSpawnPos;
