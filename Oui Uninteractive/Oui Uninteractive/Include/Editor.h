@@ -99,6 +99,7 @@ public:
 	static bool consoleEntered;
 	static bool itemDrag;
 	static bool gameWindowHover;
+	static bool mismatchPayload;
 	static std::string browserInputPath;
 	static std::string consoleTextInput;
 	static bool browserDoubleClicked;
