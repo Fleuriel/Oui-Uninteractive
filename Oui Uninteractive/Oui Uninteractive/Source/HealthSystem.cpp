@@ -62,10 +62,10 @@ void HealthSystem::DamageTaken(DamageTakenMessage* msg) {
 	HealthComponent* healthFirst{ GET_COMPONENT(msg->GetFirst(), HealthComponent, ComponentType::HEALTH) };
 	HealthComponent* healthSecond{ GET_COMPONENT(msg->GetSecond(), HealthComponent, ComponentType::HEALTH) };
 
-	if (msg->GetFirst()->GetType() == "Enemy") {
-		--healthFirst->currentHealth;
+	if (msg->GetFirst()->GetType() == "Enemy" && msg->GetSecond()->GetType() == "BulletPrefab") {
+		healthFirst->currentHealth -= healthSecond->maxHealth;
 	}
-	else if (msg->GetSecond()->GetType() == "Enemy") {
-		--healthSecond->currentHealth;
+	else if (msg->GetSecond()->GetType() == "Enemy" && msg->GetFirst()->GetType() == "BulletPrefab") {
+		healthSecond->currentHealth -= healthFirst->maxHealth;
 	}
 }

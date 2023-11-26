@@ -131,7 +131,7 @@ void EnemyRoam::Update(size_t gameObjectID) {
         }
     }
     else {
-        /*if (!pathPrinted) {
+        if (!pathPrinted) {
             // Start traversing path
             std::cout << "Start\n";
             
@@ -142,7 +142,7 @@ void EnemyRoam::Update(size_t gameObjectID) {
             std::cout << "End" << std::endl;
 
             pathPrinted = true;
-        }*/
+        }
 
 		if (pathIndex < pathToTake.size()) {
             // Enemy to traverse along path to take
@@ -163,7 +163,7 @@ void EnemyRoam::Update(size_t gameObjectID) {
             else if (Vector2DDistance(currentEnemyPos, nodePos) <= 3) {
                 GET_COMPONENT(currentEnemy, PhysicsBody, ComponentType::PHYSICS_BODY)->velocity = Vec2(0, 0);
                 ++pathIndex;
-                std::cout << "Travelled to node (" << currentNode.x << ", " << currentNode.y << ")" << std::endl;
+                //std::cout << "Travelled to node (" << currentNode.x << ", " << currentNode.y << ")" << std::endl;
             }
 		}
         else {
@@ -295,7 +295,7 @@ void EnemyFlee::Update(size_t gameObjectID) {
         }
     }
     else {
-        /*if (!pathPrinted) {
+        if (!pathPrinted) {
             // Start traversing path
             std::cout << "Start (fleeing)\n";
 
@@ -306,7 +306,7 @@ void EnemyFlee::Update(size_t gameObjectID) {
             std::cout << "End" << std::endl;
 
             pathPrinted = true;
-        }*/
+        }
 
         if (pathIndex < pathToTake.size()) {
             // Enemy to traverse along path to take
@@ -327,7 +327,7 @@ void EnemyFlee::Update(size_t gameObjectID) {
             else if (Vector2DDistance(currentEnemyPos, nodePos) <= 3) {
                 GET_COMPONENT(currentEnemy, PhysicsBody, ComponentType::PHYSICS_BODY)->velocity = Vec2(0, 0);
                 ++pathIndex;
-                std::cout << "Travelled to node (" << currentNode.x << ", " << currentNode.y << ")" << std::endl;
+                //std::cout << "Travelled to node (" << currentNode.x << ", " << currentNode.y << ")" << std::endl;
             }
         }
         /* else {

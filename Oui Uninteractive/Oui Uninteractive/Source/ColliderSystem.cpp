@@ -48,6 +48,7 @@ void ColliderSystem::Initialize() {
 void ColliderSystem::Update(float dt) {
 	if (sysManager->isPaused == false) {
 		dt;
+		bool bulletDestroyed{ false };
 		TimeProfiler profiler(Editor::timeRecorder.colliderTime);
 		for (int step = 0; step < sysManager->currentNumberOfSteps; step++) {
 			for (std::map<size_t, Collider*>::iterator it = colliderMap.begin(); it != colliderMap.end(); it++) {
@@ -77,15 +78,19 @@ void ColliderSystem::Update(float dt) {
 						if (collided) {
 							didCollide = true;
 							if (pBody1->GetOwner()->GetType() == "BulletPrefab" || pBody2->GetOwner()->GetType() == "BulletPrefab") {
+								
 								// Bullet collision with enemy
-								if (pBody1->GetOwner()->GetType() == "BulletPrefab") {
+								if (pBody1->GetOwner()->GetType() == "BulletPrefab" && !bulletDestroyed) {
 									objectFactory->DestroyObject(pBody1->GetOwner());
 								}
-								else if (pBody2->GetOwner()->GetType() == "BulletPrefab") {
+								else if (pBody2->GetOwner()->GetType() == "BulletPrefab" && !bulletDestroyed) {
 									objectFactory->DestroyObject(pBody2->GetOwner());
 								}
-								DamageTakenMessage dmgMessage(pBody1->GetOwner(), pBody2->GetOwner());
-								SendToObservers(&dmgMessage);
+								if (!bulletDestroyed) {
+									DamageTakenMessage dmgMessage(pBody1->GetOwner(), pBody2->GetOwner());
+									SendToObservers(&dmgMessage);
+									bulletDestroyed = true;
+								}
 							}
 							else {
 								if (!pBody2->isStatic) {
