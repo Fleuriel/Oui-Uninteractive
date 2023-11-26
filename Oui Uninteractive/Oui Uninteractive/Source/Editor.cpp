@@ -83,9 +83,11 @@ void UsingImGui::Init(GLFWwindow* glfwWindow, const char* glsl_vers) {
 
 	// Load fonts for editor
 	LoadFonts();
-
-	io.FontDefault = io.Fonts->Fonts[0];
-
+ 
+	if (!io.Fonts->Fonts.empty()) {
+		io.FontDefault = io.Fonts->Fonts[0];
+	}
+	
 	// Config Flags
 	io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
 	//io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;
