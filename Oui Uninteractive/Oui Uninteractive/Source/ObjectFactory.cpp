@@ -23,6 +23,7 @@
  *			- DestroyAllObjects
  *			- GetGameObjectByID
  *			- GetGameObjectByName
+ *			- GetGameObjectByType
  *			- GetGameObjectIDMap
  *			- GetPrefabMap
  *			- AddComponentFactory
@@ -244,7 +245,6 @@ void ObjectFactory::LoadPrefab(const std::string& filePath) {
 	if (serializer.ReadJSONFile(filePath, objDoc)) {
 		// For each object in Objects array (in JSON file)
 		for (auto& obj : objDoc["Objects"].GetArray()) {
-			
 			Prefab* prefab{ new Prefab(obj["Name"].GetString(), obj["Type"].GetString()) };
 			prefab->SetUsingSprite(obj["UsingSprite"].GetBool());
 			prefab->SetTexture(obj["Texture"].GetString());

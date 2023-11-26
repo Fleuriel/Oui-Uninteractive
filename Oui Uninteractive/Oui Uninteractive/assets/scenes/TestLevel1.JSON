@@ -10,7 +10,7 @@
         [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1], 
         [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
     ],
-    "ObjectCount": 3,
+    "ObjectCount": 5,
     "Objects": [{
             "Name": "JSONPlayer",
             "Type": "Player",
@@ -21,7 +21,7 @@
                     "VelocityX": 0.0,
                     "VelocityY": 0.0,
                     "RotationSpeed": 200.0,
-                    "Speed": 120.0,
+                    "Speed": 60.0,
                     "Mass": 10.0,
                     "IsStatic": false,
                     "FrictionForce": 20.0
@@ -119,6 +119,51 @@
                 },
                 "HealthComponent": {
                     "MaxHealth": 3
+                }
+            }
+        },
+        {
+            "Name": "Quit",
+            "Type": "PauseMenu",
+            "UsingSprite": false,
+            "Texture": "ButtonBG",
+            "Components": {
+                "Transform": {
+                    "PositionX": 315.5,
+                    "PositionY": 0.0,
+                    "Rotation": 0.0,
+                    "ScaleX": 200.0,
+                    "ScaleY": 140.0
+                },
+                "Collider": {
+                    "ColliderSizeX": 200.0,
+                    "ColliderSizeY": 200.0,
+                    "ColliderRotation": 0.0
+                },
+                "LogicComponent": {
+                    "ScriptID": [5]
+                }
+            }
+        }, {
+            "Name": "Resume",
+            "Type": "PauseMenu",
+            "UsingSprite": false,
+            "Texture": "ButtonBG",
+            "Components": {
+                "Transform": {
+                    "PositionX": -315.5,
+                    "PositionY": 0.0,
+                    "Rotation": 0.0,
+                    "ScaleX": 200.0,
+                    "ScaleY": 140.0
+                },
+                "Collider": {
+                    "ColliderSizeX": 200.0,
+                    "ColliderSizeY": 200.0,
+                    "ColliderRotation": 0.0
+                },
+                "LogicComponent": {
+                    "ScriptID": [5]
                 }
             }
         }

@@ -19,6 +19,7 @@
 #include "TilemapLoader.h"
 #include "Transform.h"
 #include "PhysicsBody.h"
+#include <TransformSystem.h>
 
 /**************************************************************************
 * @brief Get the start node's X and Y position
@@ -202,14 +203,7 @@ EnemyRoam::~EnemyRoam() {
 /**************************************************************************
 * @brief Constructor for EnemyAttack
 *************************************************************************/
-//EnemyAttack::EnemyAttack() : transitioned(false), bulletNumber(0), bulletSpawnPos(Vec2(0.f, 0.f)), bulletSpawnAngle(0.f), bulletSpawnOffset(0.f), shootingInterval(0) {}
-EnemyAttack::EnemyAttack() : transitioned(false) {
-    bulletNumber = 0;
-	bulletSpawnPos = Vec2(0.f, 0.f);
-	bulletSpawnAngle = 0.f;
-	bulletSpawnOffset = 0.f;
-	shootingInterval = 0;
-}
+EnemyAttack::EnemyAttack() : transitioned(false), bulletNumber(0), bulletSpawnPos(Vec2(0.f, 0.f)), bulletSpawnAngle(0.f), bulletSpawnOffset(0.f), shootingInterval(0.f) {}
 
 /**************************************************************************
 * @brief Update the EnemyAttack state
@@ -267,11 +261,11 @@ void EnemyAttack::Update(size_t gameObjectID) {
         // Set bullet velocity
         GET_COMPONENT(bullet, PhysicsBody, ComponentType::PHYSICS_BODY)->velocity = shootingDirection * GET_COMPONENT(bullet, PhysicsBody, ComponentType::PHYSICS_BODY)->speed;
 
-        ++shootingInterval;
+        shootingInterval += static_cast<float>(GetDT());
     }
     else {
-        ++shootingInterval;
-        if (shootingInterval >= 30) {
+        shootingInterval += static_cast<float>(GetDT());
+        if (shootingInterval >= 0.5f) {
             shootingInterval = 0;
         }
     }

@@ -13,6 +13,7 @@
 #include "OpenGLObjects.h"
 #include "OpenGLApplication.h"
 #include "SystemManager.h"
+#include "Editor.h"
 
 // Create singleton for shader program, for shader usage.
 //std::vector<OpenGLShader> OpenGLObject::shdrpgms;
@@ -90,8 +91,21 @@ void FontManager::RenderText(std::string fontName, std::string text, float xPos,
 				Character ch = charMapIt->second;
 
 				// Setup dimensions
-				float renderX = xPos + ch.glyphBearing.x * scale;
-				float renderY = yPos - (ch.glyphSize.y - ch.glyphBearing.y) * scale;
+				float positionX = xPos, positionY = yPos;
+				if (Editor::editorOn)
+				{
+					positionX += Editor::gameWindowSize.first / 2;
+					positionY += Editor::gameWindowSize.second / 2;
+				}
+				else
+				{
+					positionX += windowSize.first / 2;
+					positionY += windowSize.second / 2;
+				}
+
+
+				float renderX = positionX + ch.glyphBearing.x * scale;
+				float renderY = positionY - (ch.glyphSize.y - ch.glyphBearing.y) * scale;
 
 				float renderWidth = ch.glyphSize.x * scale;
 				float renderHeight = ch.glyphSize.y * scale;

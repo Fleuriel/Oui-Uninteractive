@@ -192,7 +192,7 @@ public:
 	* @param Vec2 bodyVelocity - velocity in current frame
 	* @return void
 	*************************************************************************/
-	void CapVelocity(Vec2 originalVelocity, Vec2& bodyVelocity);
+	void CapVelocity(Vec2 originalVelocity, Vec2& bodyVelocity, Vec2 maxVel);
 
 	/**************************************************************************
 	* @brief Collision Response Message

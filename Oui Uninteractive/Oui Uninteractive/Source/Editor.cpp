@@ -360,7 +360,7 @@ void Editor::Update() {
 				}
 
 				if (buttonDown) {
-					tx->position = Vec2(mouseX, mouseY);
+					tx->position = Vec2(static_cast<float>(mouseX), static_cast<float>(mouseY));
 				}
 			}
 		}
@@ -384,14 +384,14 @@ void Editor::Update() {
 					Vec2 dir = edgePt - tx->position;
 					Vector2DNormalize(dir, dir);
 
-					float dp = Vector2DDotProduct(Vec2(mouseX, mouseY) - tx->position, Vec2(1, 0));
-					float mags = Vector2DLength(Vec2(mouseX, mouseY) - tx->position) * Vector2DLength(Vec2(1, 0));
+					float dp = Vector2DDotProduct(Vec2(static_cast<float>(mouseX), static_cast<float>(mouseY)) - tx->position, Vec2(1, 0));
+					float mags = Vector2DLength(Vec2(static_cast<float>(mouseX), static_cast<float>(mouseY)) - tx->position) * Vector2DLength(Vec2(1, 0));
 					float angle = acosf(dp / mags);
 					angle = angle * static_cast<float>((180.f / PI));
 					if (tx->rotation > 180.f) {
 						angle = 360.f - angle;
 					}
-					Vec2 mouseVec = Vector2DRotate(Vec2(mouseX, mouseY), -angle, Vec2(0,0));
+					Vec2 mouseVec = Vector2DRotate(Vec2(static_cast<float>(mouseX), static_cast<float>(mouseY)), -angle, Vec2(0,0));
 					
 					float displacement = (mouseVec.x - (tx->position.x + tx->scale.x / 2));
 					tx->scale.x += displacement;
@@ -420,14 +420,14 @@ void Editor::Update() {
 					Vec2 dir = edgePt - tx->position;
 					Vector2DNormalize(dir, dir);
 
-					float dp = Vector2DDotProduct(Vec2(mouseX, mouseY) - tx->position, Vec2(1, 0));
-					float mags = Vector2DLength(Vec2(mouseX, mouseY) - tx->position) * Vector2DLength(Vec2(1, 0));
+					float dp = Vector2DDotProduct(Vec2(static_cast<float>(mouseX), static_cast<float>(mouseY)) - tx->position, Vec2(1, 0));
+					float mags = Vector2DLength(Vec2(static_cast<float>(mouseX), static_cast<float>(mouseY)) - tx->position) * Vector2DLength(Vec2(1, 0));
 					float angle = acosf(dp / mags);
 					angle = angle * static_cast<float>((180.f / PI));
 					if (tx->rotation < 180.f) {
 						angle = 360.f - angle;
 					}
-					Vec2 mouseVec = Vector2DRotate(Vec2(mouseX, mouseY), 180 - angle, Vec2(0, 0));
+					Vec2 mouseVec = Vector2DRotate(Vec2(static_cast<float>(mouseX), static_cast<float>(mouseY)), 180 - angle, Vec2(0, 0));
 
 					if (mouseVec.x < (tx->position.x - tx->scale.x / 2)) {
 						tx->scale.x += abs((mouseVec.x - (tx->position.x - tx->scale.x / 2)));
@@ -461,14 +461,14 @@ void Editor::Update() {
 					Vec2 dir = edgePt - tx->position;
 					Vector2DNormalize(dir, dir);
 
-					float dp = Vector2DDotProduct(Vec2(mouseX, mouseY) - tx->position, Vec2(0, 1));
-					float mags = Vector2DLength(Vec2(mouseX, mouseY) - tx->position) * Vector2DLength(Vec2(0, 1));
+					float dp = Vector2DDotProduct(Vec2(static_cast<float>(mouseX), static_cast<float>(mouseY)) - tx->position, Vec2(0, 1));
+					float mags = Vector2DLength(Vec2(static_cast<float>(mouseX), static_cast<float>(mouseY)) - tx->position) * Vector2DLength(Vec2(0, 1));
 					float angle = acosf(dp / mags);
 					angle = angle * static_cast<float>((180 / PI));
 					if (tx->rotation > 180.f) {
 						angle = 360.f - angle;
 					}
-					Vec2 mouseVec = Vector2DRotate(Vec2(mouseX, mouseY), -angle, Vec2(0, 0));
+					Vec2 mouseVec = Vector2DRotate(Vec2(static_cast<float>(mouseX), static_cast<float>(mouseY)), -angle, Vec2(0, 0));
 					tx->scale.y += (mouseVec.y - (tx->position.y + tx->scale.y / 2));
 					if (tx->scale.y < 0) {
 						tx->scale.y = 0;
@@ -495,14 +495,14 @@ void Editor::Update() {
 					Vec2 dir = edgePt - tx->position;
 					Vector2DNormalize(dir, dir);
 
-					float dp = Vector2DDotProduct(Vec2(mouseX, mouseY) - tx->position, Vec2(0, 1));
-					float mags = Vector2DLength(Vec2(mouseX, mouseY) - tx->position) * Vector2DLength(Vec2(0, 1));
+					float dp = Vector2DDotProduct(Vec2(static_cast<float>(mouseX), static_cast<float>(mouseY)) - tx->position, Vec2(0, 1));
+					float mags = Vector2DLength(Vec2(static_cast<float>(mouseX), static_cast<float>(mouseY)) - tx->position) * Vector2DLength(Vec2(0, 1));
 					float angle = acosf(dp / mags);
 					angle = angle * static_cast<float>((180.f / PI));
 					if (tx->rotation < 180.f) {
 						angle = 360.f - angle;
 					}
-					Vec2 mouseVec = Vector2DRotate(Vec2(mouseX, mouseY),180 - angle, Vec2(0, 0));
+					Vec2 mouseVec = Vector2DRotate(Vec2(static_cast<float>(mouseX), static_cast<float>(mouseY)),180 - angle, Vec2(0, 0));
 					if (mouseVec.y < (tx->position.y - tx->scale.y / 2)) {
 						tx->scale.y += abs((mouseVec.y - (tx->position.y - tx->scale.y / 2)));
 					}
@@ -528,8 +528,8 @@ void Editor::Update() {
 					rotateMode = false;
 				}
 				if (buttonDown) {
-						float dp = Vector2DDotProduct(Vec2(mouseX, mouseY) - tx->position, Vec2(0,1));
-					float mags = Vector2DLength(Vec2(mouseX, mouseY) - tx->position) * Vector2DLength(Vec2(0,1));
+						float dp = Vector2DDotProduct(Vec2(static_cast<float>(mouseX), static_cast<float>(mouseY)) - tx->position, Vec2(0,1));
+					float mags = Vector2DLength(Vec2(static_cast<float>(mouseX), static_cast<float>(mouseY)) - tx->position) * Vector2DLength(Vec2(0,1));
 					float angle = acosf(dp / mags);
 					angle = angle * static_cast<float>((180.f / PI));
 					if (mouseX > tx->position.x) {

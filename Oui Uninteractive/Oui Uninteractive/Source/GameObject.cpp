@@ -30,7 +30,6 @@
 GameObject::GameObject(const std::string& name, const std::string& type) : gameObjectID{}, gameObjAnimationFrame{}, usingSprite(false) {
 	gameObjectName = name;
 	gameObjectType = type;
-	
 }
 
 /**************************************************************************
@@ -107,9 +106,16 @@ size_t GameObject::GetGameObjectID() {
 std::string GameObject::GetName() {
 	return gameObjectName;
 }
+
+/**************************************************************************
+* @brief Set game object name
+* @param newName - new game object name
+* @return void
+*************************************************************************/
 void GameObject::SetName(std::string newName) {
 	gameObjectName = newName;
 }
+
 /**************************************************************************
 * @brief Get game object type
 * @return std::string - game object type

@@ -28,7 +28,6 @@ Node::Node(int x_, int y_, int parentX_ = -1, int parentY_ = -1) : x(x_), y(y_),
 * @brief Constructor
 * @param tilemap - 2D vector of tilemap
 *************************************************************************/
-
 BFS::BFS(std::vector<std::vector<int>> tilemap) : rows{}, cols{}  {
     // Initialize containers
     for (size_t i{}; i < tilemap.size(); ++i) {
