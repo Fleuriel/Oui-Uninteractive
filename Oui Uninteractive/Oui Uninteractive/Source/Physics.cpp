@@ -84,7 +84,7 @@ void Physics::Update(float dt) {
 				}
 
 
-				CapVelocity(originalVelocity, body->velocity);
+				CapVelocity(originalVelocity, body->velocity, Vec2(body->speed, body->speed));
 				if (body->txPtr != nullptr) {
 					//Position	
 					body->txPtr->previousPosition = body->txPtr->position;
@@ -226,18 +226,18 @@ Vec2 Physics::AngleToVec(float angle) {
 * @param Vec2 bodyVelocity - velocity in current frame
 * @return void
 *************************************************************************/
-void Physics::CapVelocity(Vec2 originalVelocity, Vec2& bodyVelocity) {
-	if (bodyVelocity.x > maxVelocity) {
-		bodyVelocity.x = maxVelocity;
+void Physics::CapVelocity(Vec2 originalVelocity, Vec2& bodyVelocity,Vec2 maxVel) {
+	if (bodyVelocity.x > maxVel.x) {
+		bodyVelocity.x = maxVel.x;
 	}
-	if (bodyVelocity.x < -maxVelocity) {
-		bodyVelocity.x = -maxVelocity;
+	if (bodyVelocity.x < -maxVel.x) {
+		bodyVelocity.x = -maxVel.x;
 	}
-	if (bodyVelocity.y > maxVelocity) {
-		bodyVelocity.y = maxVelocity;
+	if (bodyVelocity.y > maxVel.y) {
+		bodyVelocity.y = maxVel.y;
 	}
-	if (bodyVelocity.y < -maxVelocity) {
-		bodyVelocity.y = -maxVelocity;
+	if (bodyVelocity.y < -maxVel.y) {
+		bodyVelocity.y = -maxVel.y;
 	}
 
 	if (originalVelocity.x > 0 ) {
