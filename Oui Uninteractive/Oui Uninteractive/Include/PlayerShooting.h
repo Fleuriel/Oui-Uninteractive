@@ -72,8 +72,6 @@ public:
 				else
 					OpenGLObject::windowMouseCoords(windowNew, &convertedMouseX, &convertedMouseY, OpenGLObject::cameraObject);
 
-
-
 				mousePos.x = static_cast<float>(convertedMouseX);
 				mousePos.y = static_cast<float>(convertedMouseY);
 
