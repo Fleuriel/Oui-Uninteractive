@@ -89,7 +89,9 @@ public:
 	bool FreeSFX();									//Function to free SFX sounds
 	bool ReloadSounds();							//Function to reload sounds (BGM + SFX)
 	bool ReloadBGM();								//Function to reload BGM sounds
-	bool ReloadSFX();								//Function to reload SFX sounds
+	bool ReloadSFX();	
+	std::map <SoundManager::SoundType, std::map<std::string, FMOD::Sound*>> GetSoundMap();
+	//Function to reload SFX sounds
 	
 
 	// Font functions

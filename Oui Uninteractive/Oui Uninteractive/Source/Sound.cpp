@@ -46,6 +46,15 @@ void SoundManager::Initialize() {
 	if (result != FMOD_OK) {
 		std::cout << "FMOD error: " << FMOD_ErrorString(result);
 	}
+	// Create channel groups
+	for (int i = 0; i < SGCOUNT; i++) {
+		FMOD::ChannelGroup* channelGroup;
+		result = system->createChannelGroup(nullptr, &channelGroup);
+		if (result != FMOD_OK) {
+			std::cout << "FMOD error: " << FMOD_ErrorString(result);
+		}
+		soundGroups[i] = channelGroup;
+	}
 }
 
 

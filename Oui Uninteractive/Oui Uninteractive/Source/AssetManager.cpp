@@ -943,6 +943,10 @@ bool AssetManager::ReloadSFX() {
     return (AssetManager::FreeSFX() && AssetManager::LoadSFX());
 }
 
+std::map<SoundManager::SoundType, std::map<std::string, FMOD::Sound*>> AssetManager::GetSoundMap() {
+    return assetManager.soundMap;
+}
+
 /**************************************************************************
  * @brief Reloads all sound resources, including BGM and SFX.
  *

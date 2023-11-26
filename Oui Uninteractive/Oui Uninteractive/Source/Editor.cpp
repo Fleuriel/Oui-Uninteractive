@@ -1272,33 +1272,76 @@ void Editor::CreateSoundPanel() {
 	//	ImGui::RadioButton("SFX 1", &sfxChoice, 0); ImGui::SameLine();
 	//	ImGui::RadioButton("SFX 2", &sfxChoice, 1); ImGui::SameLine();
 	//	ImGui::RadioButton("SFX 3", &sfxChoice, 2);
-	if (ImGui::Button("PlaySFX1")) {
-		//soundManager->sfxChoice = sfxChoice;
-		//soundManager->PlaySFXSounds();
-		soundManager->PlaySFX("Gunshot.wav");
-	}
-	if (ImGui::Button("PlaySFX2")) {
-		//soundManager->sfxChoice = sfxChoice;
-		//soundManager->PlaySFXSounds();
-		soundManager->PlaySFX("Door.wav");
-	}
-	if (ImGui::Button("PlayBGM")) {
-		//soundManager->sfxChoice = sfxChoice;
-		//soundManager->PlaySFXSounds();
-		soundManager->PlayBGM("Nightshift__BGM2_Loop_70bpm.wav");
-	}
-	if (ImGui::Button("Pause All")) {
-		soundManager->PauseAll();
-	}
-	if (ImGui::Button("Resume All")) {
-		soundManager->ResumeAll();
-	}
-	if (ImGui::Button("Stop All")) {
-		soundManager->StopAll();
-	}
-	//	ImGui::TreePop();
-	//}
 
+	// Get copy of sound map
+	auto soundMap = assetManager.GetSoundMap();
+	// Do SFX stuff
+	auto& sfxSounds = soundMap[SoundManager::SoundType::SFX];
+	static std::string currSelectedSFX; 
+	if (ImGui::BeginCombo("SFX Sounds", currSelectedSFX.c_str())) {
+		for (const auto& soundPair : sfxSounds) {
+			bool isSelected = (currSelectedSFX == soundPair.first);
+			if (ImGui::Selectable(soundPair.first.c_str(), isSelected)) {
+				currSelectedSFX = soundPair.first;
+			}
+			// Set focus
+			if (isSelected) {
+				ImGui::SetItemDefaultFocus();
+			}
+		}
+		ImGui::EndCombo();
+	}
+	if (ImGui::Button("Play##SFX")) {
+		if (!currSelectedSFX.empty()) {
+			soundManager->PlaySFX(currSelectedSFX);
+		}
+	}
+	ImGui::SameLine();
+	if (ImGui::Button("Pause##SFX")) {
+		soundManager->PauseGroup(SoundManager::SGSFX);
+	}
+	ImGui::SameLine();
+	if (ImGui::Button("Resume##SFX")) {
+		soundManager->ResumeGroup(SoundManager::SGSFX);
+	}
+	ImGui::SameLine();
+	if (ImGui::Button("Stop##SFX")) {
+		soundManager->StopGroup(SoundManager::SGSFX);
+	}
+	
+	// Do BGM stuff
+	auto& bgmSounds = soundMap[SoundManager::SoundType::BGM];
+	static std::string currSelectedBGM;
+	if (ImGui::BeginCombo("BGM Sounds", currSelectedBGM.c_str())) {
+		for (const auto& soundPair : bgmSounds) {
+			bool isSelected = (currSelectedBGM == soundPair.first);
+			if (ImGui::Selectable(soundPair.first.c_str(), isSelected)) {
+				currSelectedBGM = soundPair.first;
+			}
+			// Set focus
+			if (isSelected) {
+				ImGui::SetItemDefaultFocus();
+			}
+		}
+		ImGui::EndCombo();
+	}
+	if (ImGui::Button("Play##BGM")) {
+		if (!currSelectedSFX.empty()) {
+			soundManager->PlayBGM(currSelectedBGM);
+		}
+	}
+	ImGui::SameLine();
+	if (ImGui::Button("Pause##BGM")) {
+		soundManager->PauseGroup(SoundManager::SGBGM);
+	}
+	ImGui::SameLine();
+	if (ImGui::Button("Resume##BGM")) {
+		soundManager->ResumeGroup(SoundManager::SGBGM);
+	}
+	ImGui::SameLine();
+	if (ImGui::Button("Stop##BGM")) {
+		soundManager->StopGroup(SoundManager::SGBGM);
+	}
 	ImGui::End();
 }
 
@@ -2120,8 +2163,11 @@ void Editor::RenderDirectoryV2(const std::string& filePath) {
 		std::string texNameWithoutExt = entry.path().stem().string();
 		// Set correct icons
 		ImTextureID iconTexture = nullptr;
-		if (isDirectory) { // For folders
+		if (isDirectory && entry.path().string() != FILEPATH_TRASHBIN) { // For folders
 			iconTexture = reinterpret_cast<ImTextureID>(static_cast<uintptr_t>(assetManager.GetTexture("folder_icon")));
+		}
+		else if (isDirectory && entry.path().string() == FILEPATH_TRASHBIN) {
+			iconTexture = reinterpret_cast<ImTextureID>(static_cast<uintptr_t>(assetManager.GetTexture("trash_icon")));
 		}
 		else { // Non-folder icons
 			// For image files
