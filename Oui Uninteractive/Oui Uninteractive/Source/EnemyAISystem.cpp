@@ -41,59 +41,61 @@ void EnemyAISystem::Initialize() {
 * @return void
 *************************************************************************/
 void EnemyAISystem::Update(float dt) {
-	(void)dt;
+	if (sysManager->isPaused == false) {
+		(void)dt;
 
-	for (auto& it : enemyFSMMap) {
-		// Update game object's current state
-		if (it.second->currentState != nullptr)
-			it.second->currentState->Update(it.first);
+		for (auto& it : enemyFSMMap) {
+			// Update game object's current state
+			if (it.second->currentState != nullptr)
+				it.second->currentState->Update(it.first);
 
-		// If within range of player, enter attack state
-		Vec2 playerPos = Vec2(0, 0);
-		Vec2 enemyPos = Vec2(0, 0);
-		GameObject* player = objectFactory->GetGameObjectsByType("Player")[0];
-		GameObject* enemy = objectFactory->GetGameObjectByName(it.second->GetOwner()->GetName());
-		std::string enemyType{};
+			// If within range of player, enter attack state
+			Vec2 playerPos = Vec2(0, 0);
+			Vec2 enemyPos = Vec2(0, 0);
+			GameObject* player = objectFactory->GetGameObjectsByType("Player")[0];
+			GameObject* enemy = objectFactory->GetGameObjectByName(it.second->GetOwner()->GetName());
+			std::string enemyType{};
 
-		if (player != nullptr) {
-			Transform* playerTx = GET_COMPONENT(player, Transform, ComponentType::TRANSFORM);
-			if (playerTx != nullptr) {
-				playerPos = playerTx->position;
+			if (player != nullptr) {
+				Transform* playerTx = GET_COMPONENT(player, Transform, ComponentType::TRANSFORM);
+				if (playerTx != nullptr) {
+					playerPos = playerTx->position;
+				}
 			}
+			if (enemy != nullptr) {
+				enemyType = enemy->GetTexture(); // GetTexture() gets the enemy's type
+				Transform* enemyTx = GET_COMPONENT(enemy, Transform, ComponentType::TRANSFORM);
+				if (enemyTx != nullptr) {
+					enemyPos = enemyTx->position;
+				}
+			}
+
+			// "Common Guard" enemy changes state if player is within aggro range
+			if (enemyType == "CommonGuard") {
+				if (Vector2DDistance(playerPos, enemyPos) < it.second->aggroRange) {
+					it.second->nextState = it.second->statesMap["EnemyAttack"];
+				}
+				else {
+					it.second->nextState = it.second->statesMap["EnemyRoam"];
+				}
+			}
+			// "Target" enemy flees if player is within aggro range
+			else if (enemyType == "Target") {
+				if (Vector2DDistance(playerPos, enemyPos) < it.second->aggroRange) {
+					it.second->nextState = it.second->statesMap["EnemyFlee"];
+				}
+				else {
+					it.second->nextState = it.second->currentState;
+				}
+			}
+
+			// If next state is different from current state, exit current state
+			if (it.second->nextState != it.second->currentState) {
+				it.second->currentState->ExitState();
+			}
+
+			// Transition to the next state
+			it.second->currentState = it.second->nextState;
 		}
-		if (enemy != nullptr) {
-			enemyType = enemy->GetTexture(); // GetTexture() gets the enemy's type
-			Transform* enemyTx = GET_COMPONENT(enemy, Transform, ComponentType::TRANSFORM);
-			if (enemyTx != nullptr) {
-				enemyPos = enemyTx->position;
-			}
-		}
-
-		// "Common Guard" enemy changes state if player is within aggro range
-		if (enemyType == "CommonGuard") {
-			if (Vector2DDistance(playerPos, enemyPos) < it.second->aggroRange) {
-				it.second->nextState = it.second->statesMap["EnemyAttack"];
-			}
-			else {
-				it.second->nextState = it.second->statesMap["EnemyRoam"];
-			}
-		}
-		// "Target" enemy flees if player is within aggro range
-		else if (enemyType == "Target") {
-			if (Vector2DDistance(playerPos, enemyPos) < it.second->aggroRange) {
-				it.second->nextState = it.second->statesMap["EnemyFlee"];
-			}
-			else {
-				it.second->nextState = it.second->currentState;
-			}
-		}
-
-		// If next state is different from current state, exit current state
-		if (it.second->nextState != it.second->currentState) {
-			it.second->currentState->ExitState();
-		}
-
-		// Transition to the next state
-		it.second->currentState = it.second->nextState;
 	}
 }

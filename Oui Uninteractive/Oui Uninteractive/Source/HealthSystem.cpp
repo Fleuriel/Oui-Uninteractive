@@ -41,11 +41,13 @@ void HealthSystem::Initialize() {
 * @return void
 *************************************************************************/
 void HealthSystem::Update(float dt) {
-	(void)dt;
+	if (sysManager->isPaused == false) {
+		(void)dt;
 
-	for (auto& it : healthComponentMap) {
-		if (it.second->currentHealth <= 0) {
-			objectFactory->DestroyObject(it.second->GetOwner());
+		for (auto& it : healthComponentMap) {
+			if (it.second->currentHealth <= 0) {
+				objectFactory->DestroyObject(it.second->GetOwner());
+			}
 		}
 	}
 }

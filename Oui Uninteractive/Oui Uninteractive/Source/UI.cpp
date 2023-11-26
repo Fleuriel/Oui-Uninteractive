@@ -43,55 +43,57 @@ void UIManager::Initialize() {
 * @return No return
 *************************************************************************/
 void UIManager::Update(float dt) {
-	// Start time profiling for sound system
-	//TimeProfiler profiler(Editor::timeRecorder.soundTime);
-	
-	if (inputSystem.GetMouseState(GLFW_MOUSE_BUTTON_LEFT)) {
-		std::pair<double, double> convertedMousePos;
-		double mouseX, mouseY;
-		glfwGetCursorPos(windowNew, &mouseX, &mouseY);
-		convertedMousePos.first = mouseX;
-		convertedMousePos.second = mouseY;
+	if (sysManager->isPaused == false) {
+		// Start time profiling for sound system
+		//TimeProfiler profiler(Editor::timeRecorder.soundTime);
 
-		// Put here or else wont get correct coords.
-		OpenGLObject::FrameBufferMouseCoords(windowNew, &convertedMousePos.first, &convertedMousePos.second, OpenGLObject::cameraObject);
+		if (inputSystem.GetMouseState(GLFW_MOUSE_BUTTON_LEFT)) {
+			std::pair<double, double> convertedMousePos;
+			double mouseX, mouseY;
+			glfwGetCursorPos(windowNew, &mouseX, &mouseY);
+			convertedMousePos.first = mouseX;
+			convertedMousePos.second = mouseY;
 
-		//std::cout << "Current Coords: " << convertedMousePos.first << ", " << convertedMousePos.second << '\n';
+			// Put here or else wont get correct coords.
+			OpenGLObject::FrameBufferMouseCoords(windowNew, &convertedMousePos.first, &convertedMousePos.second, OpenGLObject::cameraObject);
+
+			//std::cout << "Current Coords: " << convertedMousePos.first << ", " << convertedMousePos.second << '\n';
 
 
-		//float gameWindowMouseX = mouseX - Editor::gameWindowOrigin.first;
-		//float gameWindowMouseY = mouseY - Editor::gameWindowOrigin.second;
-		//convertedMousePos.first = gameWindowMouseX - Editor::gameWindowSize.first * 0.5f;
-		//convertedMousePos.second = (Editor::gameWindowSize.second * 0.5f) - gameWindowMouseY;
+			//float gameWindowMouseX = mouseX - Editor::gameWindowOrigin.first;
+			//float gameWindowMouseY = mouseY - Editor::gameWindowOrigin.second;
+			//convertedMousePos.first = gameWindowMouseX - Editor::gameWindowSize.first * 0.5f;
+			//convertedMousePos.second = (Editor::gameWindowSize.second * 0.5f) - gameWindowMouseY;
 
-		//std::cout << "converted pos: " << convertedMousePos.first << ", " << convertedMousePos.second << std::endl;
-		//std::cout << Editor::gameWindowSize.first << ", " << Editor::gameWindowSize.second << std::endl;
+			//std::cout << "converted pos: " << convertedMousePos.first << ", " << convertedMousePos.second << std::endl;
+			//std::cout << Editor::gameWindowSize.first << ", " << Editor::gameWindowSize.second << std::endl;
 
-		std::map<size_t, GameObject*> copyMap = objectFactory->GetGameObjectIDMap();
-		std::map<size_t, GameObject*>::iterator it = copyMap.begin();
+			std::map<size_t, GameObject*> copyMap = objectFactory->GetGameObjectIDMap();
+			std::map<size_t, GameObject*>::iterator it = copyMap.begin();
 
-		//for (; it != objectFactory->GetGameObjectIDMap().end(); it++) {
-		for (; it != copyMap.end(); it++) {
-			//std::cout << it->second->GetName() << std::endl;
-			if (it->second->GetType() == "Button") {
-				if (it->second->GetName() == "Exit Button") {
-					//std::cout << it->second->GetName();
-					Collider* collider = GET_COMPONENT(it->second, Collider, ComponentType::COLLIDER);
+			//for (; it != objectFactory->GetGameObjectIDMap().end(); it++) {
+			for (; it != copyMap.end(); it++) {
+				//std::cout << it->second->GetName() << std::endl;
+				if (it->second->GetType() == "Button") {
+					if (it->second->GetName() == "Exit Button") {
+						//std::cout << it->second->GetName();
+						Collider* collider = GET_COMPONENT(it->second, Collider, ComponentType::COLLIDER);
 
-					//std::cout << collider->boundingbox->min.x << ", " << collider->boundingbox->min.y <<'\t' << collider->boundingbox->max.x << ", " << collider->boundingbox->max.y << '\n';
+						//std::cout << collider->boundingbox->min.x << ", " << collider->boundingbox->min.y <<'\t' << collider->boundingbox->max.x << ", " << collider->boundingbox->max.y << '\n';
 
-					if (CollisionMouseRect(*(collider->boundingbox), static_cast<float>(convertedMousePos.first), static_cast<float>(convertedMousePos.second))) {
-						// For tristan. Put the stuff here
-						sceneManager->currSceneID = STATE_QUIT;
-						
-						std::cout << "YESSS";
+						if (CollisionMouseRect(*(collider->boundingbox), static_cast<float>(convertedMousePos.first), static_cast<float>(convertedMousePos.second))) {
+							// For tristan. Put the stuff here
+							sceneManager->currSceneID = STATE_QUIT;
+
+							std::cout << "YESSS";
+						}
 					}
 				}
-			}
 
+			}
 		}
+		(void)dt;
 	}
-	(void)dt;
 }
 
 

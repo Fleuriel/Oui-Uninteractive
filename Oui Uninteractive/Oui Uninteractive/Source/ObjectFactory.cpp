@@ -106,6 +106,7 @@ std::string ObjectFactory::EnumToString(ComponentType ct) {
 * @brief Object Factory Constructor
 *************************************************************************/
 ObjectFactory::ObjectFactory() : gameObjectCurrentID{} {
+
 	if (objectFactory != NULL) {
 		return;
 	}
@@ -537,19 +538,21 @@ void ObjectFactory::SavePrefabsToFile(const std::string& filePath) {
 * @return void
 *************************************************************************/
 void ObjectFactory::Update(float dt) {
-	(void)dt;
-	std::set<GameObject*>::iterator setIt = gameObjectDestroyList.begin();
+	if (sysManager->isPaused == false) {
+		(void)dt;
+		std::set<GameObject*>::iterator setIt = gameObjectDestroyList.begin();
 
-	// Destroy game objects in destroy list
-	for (; setIt != gameObjectDestroyList.end(); ++setIt) {
-		GameObject* gameObject = *setIt;
-		std::map<size_t, GameObject*>::iterator mapIt = gameObjectIDMap.find(gameObject->gameObjectID);
+		// Destroy game objects in destroy list
+		for (; setIt != gameObjectDestroyList.end(); ++setIt) {
+			GameObject* gameObject = *setIt;
+			std::map<size_t, GameObject*>::iterator mapIt = gameObjectIDMap.find(gameObject->gameObjectID);
 
-		delete gameObject;
-		gameObjectIDMap.erase(mapIt);
+			delete gameObject;
+			gameObjectIDMap.erase(mapIt);
+		}
+
+		gameObjectDestroyList.clear();
 	}
-
-	gameObjectDestroyList.clear();
 }
 
 /**************************************************************************

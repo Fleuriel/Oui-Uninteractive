@@ -140,7 +140,9 @@ std::vector<std::vector<int>> TilemapLoader::GetTilemap() {
 * @return void
 *************************************************************************/
 void TilemapLoader::Update(float dt) {
-	(void)dt;
+	if (sysManager->isPaused == false) {
+		(void)dt;
+	}
 }
 
 /**************************************************************************

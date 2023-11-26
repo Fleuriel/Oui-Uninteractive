@@ -49,57 +49,59 @@ void Physics::Initialize() {
 * @return void
 *************************************************************************/
 void Physics::Update(float dt) {
-	// Start time profiling for physics system
-	TimeProfiler profiler(Editor::timeRecorder.physicsTime);
-	for (int step = 0; step < sysManager->currentNumberOfSteps; step++) {
-	
-		std::map<size_t, PhysicsBody*>::iterator it = bodyList.begin();
-		for (; it != bodyList.end(); it++) {
-			
-			PhysicsBody* body = it->second;
-			if (body->isStatic) {
-				continue;
-			}
-			if (body->txPtr != nullptr) {
-				Vector2DNormalize(body->direction, body->direction + AngleToVec(body->txPtr->rotation * (static_cast<float>(M_PI) / 180.0f)));
-			}
-			//Check update
-			//calculate physics
-			//Direction
-			
-			Vec2 summedForce = body->forceManager.CalculateResultantForce();
-			body->acceleration = (summedForce) * body->mass;
+	if (sysManager->isPaused == false) {
+		// Start time profiling for physics system
+		TimeProfiler profiler(Editor::timeRecorder.physicsTime);
+		for (int step = 0; step < sysManager->currentNumberOfSteps; step++) {
 
-			//Velocity
-			Vec2 originalVelocity = body->velocity;
-			Collider* collider = GET_COMPONENT(body->GetOwner(), Collider, ComponentType::COLLIDER);
-			Vec2 previousVelocity = body->velocity;
-			if (collider != nullptr) {
-				body->velocity = (body->velocity + body->acceleration * static_cast<float>(sysManager->fixedDeltaTime)) * (collider->contactTime);//GetDT();//* sysManager->fixedDeltaTime;
-				
-			}
-			else {
-				body->velocity = body->velocity + body->acceleration * static_cast<float>(sysManager->fixedDeltaTime);
-			}
-			
-			
-			CapVelocity(originalVelocity, body->velocity);
-			if (body->txPtr != nullptr) {
-				//Position	
-				body->txPtr->previousPosition = body->txPtr->position;
+			std::map<size_t, PhysicsBody*>::iterator it = bodyList.begin();
+			for (; it != bodyList.end(); it++) {
 
-				body->txPtr->position = body->txPtr->position + (body->velocity * static_cast<float>(sysManager->fixedDeltaTime));//* sysManager->fixedDeltaTime;
+				PhysicsBody* body = it->second;
+				if (body->isStatic) {
+					continue;
+				}
+				if (body->txPtr != nullptr) {
+					Vector2DNormalize(body->direction, body->direction + AngleToVec(body->txPtr->rotation * (static_cast<float>(M_PI) / 180.0f)));
+				}
+				//Check update
+				//calculate physics
+				//Direction
 
-				//Rotation
-				body->txPtr->rotation = body->txPtr->rotation + body->currentRotationSpeed * dt;
-				if (body->txPtr->rotation >= 360.0f || body->txPtr->rotation <= -360.0f)
-					body->txPtr->rotation = 0.0f;
+				Vec2 summedForce = body->forceManager.CalculateResultantForce();
+				body->acceleration = (summedForce)*body->mass;
+
+				//Velocity
+				Vec2 originalVelocity = body->velocity;
+				Collider* collider = GET_COMPONENT(body->GetOwner(), Collider, ComponentType::COLLIDER);
+				Vec2 previousVelocity = body->velocity;
+				if (collider != nullptr) {
+					body->velocity = (body->velocity + body->acceleration * static_cast<float>(sysManager->fixedDeltaTime)) * (collider->contactTime);//GetDT();//* sysManager->fixedDeltaTime;
+
+				}
+				else {
+					body->velocity = body->velocity + body->acceleration * static_cast<float>(sysManager->fixedDeltaTime);
+				}
+
+
+				CapVelocity(originalVelocity, body->velocity);
+				if (body->txPtr != nullptr) {
+					//Position	
+					body->txPtr->previousPosition = body->txPtr->position;
+
+					body->txPtr->position = body->txPtr->position + (body->velocity * static_cast<float>(sysManager->fixedDeltaTime));//* sysManager->fixedDeltaTime;
+
+					//Rotation
+					body->txPtr->rotation = body->txPtr->rotation + body->currentRotationSpeed * dt;
+					if (body->txPtr->rotation >= 360.0f || body->txPtr->rotation <= -360.0f)
+						body->txPtr->rotation = 0.0f;
+				}
+				Vec2 normalizedVel = Vec2(0, 0);
+				Vector2DNormalize(normalizedVel, body->velocity);
+				body->forceManager.forceVec[FORCE_INDEX::FRICTION]->direction = -normalizedVel;
+				body->forceManager.Update(static_cast<float>(sysManager->fixedDeltaTime));
+
 			}
-			Vec2 normalizedVel = Vec2(0, 0);
-			Vector2DNormalize(normalizedVel, body->velocity);
-			body->forceManager.forceVec[FORCE_INDEX::FRICTION]->direction = -normalizedVel;
-			body->forceManager.Update(static_cast<float>(sysManager->fixedDeltaTime));
-		
 		}
 	}
 	

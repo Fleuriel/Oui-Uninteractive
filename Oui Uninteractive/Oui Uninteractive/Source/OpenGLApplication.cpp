@@ -618,7 +618,9 @@ void OpenGLApplication::Initialize() {
 void OpenGLApplication::Update(float dt)
 {
 	dt;
-	OpenGLUpdate();
+	if (sysManager->isPaused == false) {
+		OpenGLUpdate();
+	}
 }
 
 OpenGLApplication::~OpenGLApplication() {

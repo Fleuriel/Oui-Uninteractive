@@ -88,18 +88,28 @@ int main(){
 	//	GameInit();
 		
 		while (sceneManager->currSceneID == sceneManager->nextSceneID){
+			static bool buttonDown = false;
+			bool released = false;
 			// Acquire Time Updates, setup for deltaTime
 			// For FPS, DeltaTime and Runtime
+			if (inputSystem.GetKeyState(GLFW_KEY_T)) {
+				buttonDown = true;	
+			}
+			else {
+				if (buttonDown == true) {
+					released = true;
+				}
+				buttonDown = false;
+			}
+			if (released) {
+				sysManager->isPaused = !sysManager->isPaused;
+				released = false;
+			}
 			TimeUpdate();
-			
-
-
-			sysManager->UpdateSystems(static_cast<float>(GetDT()));			
-
-			
+							
+			sysManager->UpdateSystems(static_cast<float>(GetDT()));
 			// Swap Buffers with the window, similar to GOL in Y1T1 [OpenGL Function]
 			glfwSwapBuffers(windowNew);
-
 			// Poll the events from the window. [OpenGL Function]
 			glfwPollEvents();
 

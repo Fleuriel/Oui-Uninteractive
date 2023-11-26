@@ -40,6 +40,7 @@
 #include "ISystem.h"
 #include "GameObject.h"
 #include "Prefab.h"
+#include "SystemManager.h"
 
 #define GET_COMPONENT(GameObject, Component, ComponentType) (GameObject->GetComponentType<Component>(ComponentType))
 #define GET_PREFAB_COMPONENT(Prefab, Component, ComponentType) (Prefab->GetComponentType<Component>(ComponentType))

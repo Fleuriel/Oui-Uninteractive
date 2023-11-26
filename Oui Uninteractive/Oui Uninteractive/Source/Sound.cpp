@@ -12,6 +12,7 @@
 #include "Sound.h"
 #include "Editor.h"
 #include "AssetManager.h"
+#include "SystemManager.h"
 
  // Initialize global pointer
 SoundManager* soundManager = nullptr;
@@ -54,26 +55,28 @@ void SoundManager::Initialize() {
 * @return No return
 *************************************************************************/
 void SoundManager::Update(float dt) {
-	// Start time profiling for sound system
-	TimeProfiler profiler(Editor::timeRecorder.soundTime);
-		
-	system->update();
+	if (sysManager->isPaused == false) {
+		// Start time profiling for sound system
+		TimeProfiler profiler(Editor::timeRecorder.soundTime);
 
-	// Check which channel is still playing for automatic removal once stopped
-	std::vector<int> removeCHs;
-	for (auto& [id, channel] : soundChannels) {
-		bool isPlaying = false;
-		channel->isPlaying(&isPlaying);
-		if (!isPlaying) {
-			removeCHs.push_back(id);
+		system->update();
+
+		// Check which channel is still playing for automatic removal once stopped
+		std::vector<int> removeCHs;
+		for (auto& [id, channel] : soundChannels) {
+			bool isPlaying = false;
+			channel->isPlaying(&isPlaying);
+			if (!isPlaying) {
+				removeCHs.push_back(id);
+			}
 		}
+		// Recycle channels to pool
+		for (int id : removeCHs) {
+			soundChannels.erase(id);
+			recycleChannelID(id);
+		}
+		(void)dt;
 	}
-	// Recycle channels to pool
-	for (int id : removeCHs) {
-		soundChannels.erase(id);
-		recycleChannelID(id);
-	}
-	(void)dt;
 }
 
 

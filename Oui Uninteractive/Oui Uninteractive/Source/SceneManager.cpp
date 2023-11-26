@@ -43,16 +43,18 @@ void SceneManager::InitScene() {
 	currScene->Initialize();
 }
 void SceneManager::Update(float dt) {
-	// Start time profiling for scenemanager
-	TimeProfiler profiler(Editor::timeRecorder.scenemanagerTime);
-	currScene->Update(dt);
-	// if quit, exit
-	if (currSceneID == STATE_QUIT)
-		return;
-	//  window is closed, exit
-	if (glfwWindowShouldClose(windowNew)) {
-		currSceneID = STATE_QUIT;
-		return;
+	if (sysManager->isPaused == false) {
+		// Start time profiling for scenemanager
+		TimeProfiler profiler(Editor::timeRecorder.scenemanagerTime);
+		currScene->Update(dt);
+		// if quit, exit
+		if (currSceneID == STATE_QUIT)
+			return;
+		//  window is closed, exit
+		if (glfwWindowShouldClose(windowNew)) {
+			currSceneID = STATE_QUIT;
+			return;
+		}
 	}
 }
 void SceneManager::Draw() {

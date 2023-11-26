@@ -12,6 +12,7 @@
 #include "FontManager.h"
 #include "OpenGLObjects.h"
 #include "OpenGLApplication.h"
+#include "SystemManager.h"
 
 // Create singleton for shader program, for shader usage.
 //std::vector<OpenGLShader> OpenGLObject::shdrpgms;
@@ -51,7 +52,9 @@ void FontManager::Initialize() {
 * @return No return
 *************************************************************************/
 void FontManager::Update(float dt) {
-	(void)dt;
+	if (sysManager->isPaused == false) {
+		(void)dt;
+	}
 }
 
 
