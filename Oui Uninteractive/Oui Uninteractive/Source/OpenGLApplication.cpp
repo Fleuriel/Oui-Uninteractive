@@ -558,11 +558,11 @@ void OpenGLApplication::OpenGLUpdate() {
 					if (gObj.second->GetType() == "PauseMenu" && sysManager->isPaused == false) {
 						continue;
 					}
-					GET_COMPONENT(gObj.second, Transform, ComponentType::TRANSFORM)->shape->Draw({});
+					GET_COMPONENT(gObj.second, Transform, ComponentType::TRANSFORM)->shape->Draw(gObj.second->GetTexture());
 				}
 				else {
 					if (gObj.second->GetType() == "PauseMenu") {
-						GET_COMPONENT(gObj.second, Transform, ComponentType::TRANSFORM)->shape->Draw({});
+						GET_COMPONENT(gObj.second, Transform, ComponentType::TRANSFORM)->shape->Draw(gObj.second->GetTexture());
 					}
 				}
 				
