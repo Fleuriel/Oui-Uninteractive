@@ -61,8 +61,7 @@ JsonSerializer serializer;
 OpenGLObject Objects;								// First Instance of Object to Update.
 std::list<OpenGLObject> objects;					// singleton
 
-// Initialize Background
-Background background;
+
 
 ParticleSystem particleSystem;
 

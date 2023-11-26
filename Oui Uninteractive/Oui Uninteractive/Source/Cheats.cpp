@@ -53,7 +53,6 @@ void Victory() {
 void Defeat() {
 	//sceneManager->nextSceneID = defeatsceneid
 	//Should change background to defeat screen (not the entire defeat screen as an object, then objects as buttons to click
-	Background background;
 	background.SetBackGround(assetManager.GetTexture("Defeatscreen"));
 	objectFactory->BuildObjectFromFile(std::string("assets/scenes/DefeatScreen.json"));  //temporary
 	std::cout << "DEFEAT" << std::endl;
