@@ -160,7 +160,7 @@
                     "FrictionForce": 35.9379997253418
                 },
                 "HealthComponent": {
-                    "MaxHealth": 3
+                    "MaxHealth": 5
                 }
             }
         }, {
