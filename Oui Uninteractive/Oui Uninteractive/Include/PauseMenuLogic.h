@@ -13,7 +13,7 @@ class PauseMenuLogic : public IScript {
 			
 		}
 		void Update(size_t gameObjectID) {
-			fontManager->RenderText("Next_Sunday.ttf", "Resume", 500, 500, 1.0f, glm::vec3(236.0f / 255.0f, 1.0f, 220.0f / 255.0f));
+		
 			if (sysManager->isPaused) {
 				double mouseX; // = io.MousePos.x;
 				double mouseY; // = io.MousePos.y;
