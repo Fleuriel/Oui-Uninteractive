@@ -51,7 +51,7 @@ void EnemyAISystem::Update(float dt) {
 		// If within range of player, enter attack state
 		Vec2 playerPos = Vec2(0, 0);
 		Vec2 enemyPos = Vec2(0, 0);
-		GameObject* player = objectFactory->GetGameObjectByName("JSONPlayer");
+		GameObject* player = objectFactory->GetGameObjectsByType("Player")[0];
 		GameObject* enemy = objectFactory->GetGameObjectByName(it.second->GetOwner()->GetName());
 		std::string enemyType{};
 

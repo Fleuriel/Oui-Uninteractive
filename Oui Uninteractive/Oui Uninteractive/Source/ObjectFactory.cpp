@@ -627,6 +627,29 @@ GameObject* ObjectFactory::GetGameObjectByName(const std::string& name) {
 }
 
 /**************************************************************************
+* @brief Get a list of GameObject pointers of a specified type
+* @param name - type of GameObject
+* @return std::vector<GameObject*>
+*************************************************************************/
+std::vector<GameObject*> ObjectFactory::GetGameObjectsByType(const std::string& type) {
+	std::map<size_t, GameObject*>::iterator it{ gameObjectIDMap.begin() };
+	std::vector<GameObject*> objects;
+
+	while (it != gameObjectIDMap.end()) {
+		if (it->second->gameObjectType == type) {
+			objects.push_back(it->second);
+
+			if (type == "Player")
+				break;
+		}
+
+		++it;
+	}
+
+	return objects;
+}
+
+/**************************************************************************
 * @brief Get a prefab by name
 * @param name - name of Prefab
 * @return Prefab*

@@ -184,6 +184,13 @@ public:
 	GameObject* GetGameObjectByName(const std::string& name);
 
 	/**************************************************************************
+	* @brief Get a list of GameObject pointers of a specified type
+	* @param name - type of GameObject
+	* @return std::vector<GameObject*>
+	*************************************************************************/
+	std::vector<GameObject*> GetGameObjectsByType(const std::string& name);
+
+	/**************************************************************************
 	* @brief Get a prefab by name
 	* @param name - name of Prefab
 	* @return Prefab*
