@@ -27,8 +27,7 @@ void Scene1::Initialize() {
 	#ifdef _DEBUG	
 		std::cout << "Updating JSONEnemy2 during initialization... completed." << std::endl;
 	#endif*/
-
-	objectFactory->BuildObjectFromFile(std::string("assets/scenes/CollisionScene.json"));
+	//objectFactory->BuildObjectFromFile(std::string("assets/scenes/DefeatScreen.json"));
 }
 void Scene1::Update(float dt) {
 	dt;
