@@ -1327,7 +1327,7 @@ void Editor::CreateObjectList() {
 			else {
 				if (objectFactory->GetGameObjectByID(gameobjID) != nullptr) {
 					ImGui::Text("Object ID: %d", objectFactory->GetGameObjectByID(gameobjID)->GetGameObjectID());
-					ImGui::Text("Object Type: %s", objectFactory->GetGameObjectByID(gameobjID)->GetType());
+					ImGui::Text("Object Type: %s", objectFactory->GetGameObjectByID(gameobjID)->GetType().c_str());
 					if (objectFactory->GetGameObjectByID(gameobjID)->Has(ComponentType::TRANSFORM) != -1) {
 
 						xPos = GET_COMPONENT(objectFactory->GetGameObjectByID(gameobjID), Transform, ComponentType::TRANSFORM)->position.x;
