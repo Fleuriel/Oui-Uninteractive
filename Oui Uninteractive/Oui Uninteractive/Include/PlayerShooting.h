@@ -104,7 +104,7 @@ public:
 
 				// Set bullet velocity
 				GET_COMPONENT(bullet, PhysicsBody, ComponentType::PHYSICS_BODY)->velocity = shootingDirection * GET_COMPONENT(bullet, PhysicsBody, ComponentType::PHYSICS_BODY)->speed;
-
+				soundManager->PlaySFX("futuristic Machinegun_1.wav");
 				++shootingInterval;
 			}
 			else {
