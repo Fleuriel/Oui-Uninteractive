@@ -13,12 +13,13 @@ class PauseMenuLogic : public IScript {
 			
 		}
 		void Update(size_t gameObjectID) {
+			fontManager->RenderText("Next_Sunday.ttf", "Resume", 500, 500, 1.0f, glm::vec3(236.0f / 255.0f, 1.0f, 220.0f / 255.0f));
 			if (sysManager->isPaused) {
 				double mouseX; // = io.MousePos.x;
 				double mouseY; // = io.MousePos.y;
 
 				glfwGetCursorPos(windowNew, &mouseX, &mouseY);
-				background.SetBackGround(assetManager.GetTexture("Background3"));
+				background.SetBackGround(assetManager.GetTexture("GreenBG1920"));
 				OpenGLObject::FrameBufferMouseCoords(windowNew, &mouseX, &mouseY, OpenGLObject::cameraObject);
 				GameObject* gObj = objectFactory->GetGameObjectByID(gameObjectID);
 				if (gObj != nullptr) {
@@ -28,6 +29,7 @@ class PauseMenuLogic : public IScript {
 							if (gObj->GetName() == "Resume") {
 								//position game object in camera
 								tx->position = Vec2(OpenGLObject::cameraObject.posX - Editor::gameWindowSize.first / 4.f, OpenGLObject::cameraObject.posY);
+								
 							}
 							else if (gObj->GetName() == "Quit") {
 								tx->position = Vec2(OpenGLObject::cameraObject.posX + Editor::gameWindowSize.first / 4.f , OpenGLObject::cameraObject.posY);
