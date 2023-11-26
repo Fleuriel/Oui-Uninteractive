@@ -12,6 +12,7 @@
 #include <algorithm>
 #include <iostream>
 #include <SceneManager.h>
+#include <HealthComponent.h>
 
 std::vector<std::string> cheatCodes{
 	"skiplevel", // skip to next level
@@ -50,15 +51,28 @@ void Victory() {
 
 void Defeat() {
 	//sceneManager->nextSceneID = defeatsceneid
+	//Should change background to defeat screen (not the entire defeat screen as an object, then objects as buttons to click
+	objectFactory->BuildObjectFromFile(std::string("assets/scenes/DefeatScreen.json"));  //temporary
 	std::cout << "DEFEAT" << std::endl;
 }
 
 void GodModeOn() {
-	// wait Austin gor gor push code
+	int invincibilityHP = 696969;
+	GameObject* player = objectFactory->GetGameObjectsByType("Player")[0];
+	if (player != nullptr){
+		auto playercomponent = GET_COMPONENT(player, HealthComponent, ComponentType::HEALTH);
+		playercomponent->currentHealth = invincibilityHP;
+	}
+
 	std::cout << "GODMODEON" << std::endl;
 }
 
 void GodModeOff() {
 	// wait Austin gor gor push code
+	GameObject* player = objectFactory->GetGameObjectsByType("Player")[0];
+	if (player != nullptr) {
+		auto playercomponent = GET_COMPONENT(player, HealthComponent, ComponentType::HEALTH);
+		playercomponent->currentHealth = playercomponent->maxHealth;
+	}
 	std::cout << "DOGMODEON" << std::endl;
 }

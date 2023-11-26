@@ -10,8 +10,6 @@
  *************************************************************************/
 #include "HealthSystem.h"
 #include "ComponentFactory.h"
-//#include "Transform.h"
-//#include "Vector2D.h"
 
 HealthSystem* healthSystem = nullptr;
 
