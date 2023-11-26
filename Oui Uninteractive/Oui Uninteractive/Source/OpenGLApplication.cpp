@@ -453,6 +453,12 @@ void OpenGLApplication::OpenGLUpdate() {
 	//	std::cout << "RCLICK\n";
 #endif
 	}
+	if (inputSystem.GetMouseState(GLFW_MOUSE_BUTTON_MIDDLE)) {
+		background.SetBackGround(assetManager.GetTexture("Defeatscreen"));
+#ifdef _DEBUG
+		//	std::cout << "MIDDLECLICK\n";
+#endif	
+	}
 
 	if (inputSystem.GetScrollState() == 1) {
 #ifdef _DEBUG

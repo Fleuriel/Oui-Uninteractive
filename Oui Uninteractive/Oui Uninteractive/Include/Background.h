@@ -72,6 +72,8 @@ public:
 	*************************************************************************/
 	void Update(float newX, float newY, float scaleX, float scaleY);
 
+	void SetBackGround(int);
+
 	/**************************************************************************
 	* @brief Render the background using OpenGL.
 	*

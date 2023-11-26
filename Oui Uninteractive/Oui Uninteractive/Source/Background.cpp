@@ -39,6 +39,8 @@ int backgroundTexture;	//Texture for background
 
 extern AssetManager assetManager;
 
+
+
 /**************************************************************************
  * @brief Initialize the Background class.
  *
@@ -183,6 +185,9 @@ void Background::Update(float newX, float newY, float scaleX, float scaleY) {
 
 }
 
+void Background::SetBackGround(int tex) {
+	backgroundTexture = tex;
+}
 
 /**************************************************************************
 * @brief Render the background using OpenGL.
