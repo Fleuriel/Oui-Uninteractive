@@ -681,42 +681,116 @@ void Editor::CreateRenderWindow() {
 		// Get draw size of window
 		ImVec2 wsize = ImGui::GetWindowSize();
 		// Invert V from openGL
-		//ImGui::Image(reinterpret_cast<ImTextureID>(0), wsize, ImVec2(0, 1), ImVec2(1, 0));
 		ImGui::Image(reinterpret_cast<ImTextureID>(static_cast<uintptr_t>(OpenGLObject::FrameTexture)), wsize, ImVec2(0.0f, 1.0f), ImVec2(1.0f, 0.0f)); // Replace thirdTexture with handle to FBO when graphics done rendering to FBO	
+		//// Setup drag and drop checks within window
+		//if (ImGui::BeginDragDropTarget()) {
+		//	if (selected != nullptr) {	// OBJECT IS SELECTED		
+		//		if (!selected->IsUsingSprite()) { // Selected object utilizes textures
+		//			if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("PAYLOAD_TEXTURE")) {
+		//				std::string dropTextureName = static_cast<const char*>(payload->Data);
+		//				selected->SetTexture(dropTextureName);		
+		//			}
+		//		}
+		//		else if (selected->IsUsingSprite()) { // Selected object utilizes sprites
+		//			if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("PAYLOAD_SPRITE")) {
+		//				std::string dropSpriteName = static_cast<const char*>(payload->Data);			
+		//				selected->SetTexture(dropSpriteName);
+		//			}
+		//			else if (!ImGui::IsDragDropPayloadBeingAccepted()) {
+		//				std::cout << "WRTONG PL";
+		//			}
+		//		}
+		//	}
+		//	else { // NO OBJECT SELECTED
+		//		if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("PAYLOAD_AUDIO_BGM")) {
+		//			std::string dropBGMName = static_cast<const char*>(payload->Data);
+		//			//std::cout << dropBGMName;
+		//			soundManager->StopAll();
+		//			soundManager->PlayBGM(dropBGMName);
+		//		}
+		//		if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("PAYLOAD_AUDIO_SFX")) {
+		//			std::string dropSFXName = static_cast<const char*>(payload->Data);
+		//			soundManager->PlaySFX(dropSFXName);
+		//		}
+		//	}
+		//	itemDrag = false;
+		//	ImGui::EndDragDropTarget();
+		//}
+
+
 		// Setup drag and drop checks within window
 		if (ImGui::BeginDragDropTarget()) {
-			if (selected != nullptr) {	// OBJECT IS SELECTED		
+			const ImGuiPayload* payload = ImGui::GetDragDropPayload();
+			// OBJECT IS SELECTED
+			if (selected != nullptr) { 
 				if (!selected->IsUsingSprite()) { // Selected object utilizes textures
-					if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("PAYLOAD_TEXTURE")) {
+					// Payload matches object type (Texture onto a texture)
+					if (payload->IsDataType("PAYLOAD_TEXTURE")) { 
 						std::string dropTextureName = static_cast<const char*>(payload->Data);
-						selected->SetTexture(dropTextureName);		
+						selected->SetTexture(dropTextureName);
+					} // Payload mismatch object type (Anything else onto a texture)
+					else {
+						// ERROR ICON IMPLEMENTATION
 					}
 				}
 				else if (selected->IsUsingSprite()) { // Selected object utilizes sprites
-					if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("PAYLOAD_SPRITE")) {
-						std::string dropSpriteName = static_cast<const char*>(payload->Data);			
+					// Payload matchers object type (Sprite onto a sprite)
+					if (payload->IsDataType("PAYLOAD_SPRITE")) {
+						std::string dropSpriteName = static_cast<const char*>(payload->Data);
 						selected->SetTexture(dropSpriteName);
-					}
-					else if (!ImGui::IsDragDropPayloadBeingAccepted()) {
-						std::cout << "WRTONG PL";
+					} // Payload mismatch object type (Anything else onto a sprite)
+					else {
+						// ERROR ICON IMPLEMENTATION
 					}
 				}
 			}
 			else { // NO OBJECT SELECTED
-				if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("PAYLOAD_AUDIO_BGM")) {
+				if (payload->IsDataType("PAYLOAD_AUDIO_BGM")) {
 					std::string dropBGMName = static_cast<const char*>(payload->Data);
-					//std::cout << dropBGMName;
 					soundManager->StopAll();
 					soundManager->PlayBGM(dropBGMName);
 				}
-				if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("PAYLOAD_AUDIO_SFX")) {
+				if (payload->IsDataType("PAYLOAD_AUDIO_SFX")) {
 					std::string dropSFXName = static_cast<const char*>(payload->Data);
 					soundManager->PlaySFX(dropSFXName);
 				}
 			}
+
+
+			//if (selected != nullptr) {	// OBJECT IS SELECTED		
+			//	if (!selected->IsUsingSprite()) { // Selected object utilizes textures
+			//		if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("PAYLOAD_TEXTURE")) {
+			//			std::string dropTextureName = static_cast<const char*>(payload->Data);
+			//			selected->SetTexture(dropTextureName);
+			//		}
+			//	}
+			//	else if (selected->IsUsingSprite()) { // Selected object utilizes sprites
+			//		if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("PAYLOAD_SPRITE")) {
+			//			std::string dropSpriteName = static_cast<const char*>(payload->Data);
+			//			selected->SetTexture(dropSpriteName);
+			//		}
+			//		else if (!ImGui::IsDragDropPayloadBeingAccepted()) {
+			//			std::cout << "WRTONG PL";
+			//		}
+			//	}
+			//}
+			//else { // NO OBJECT SELECTED
+			//	if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("PAYLOAD_AUDIO_BGM")) {
+			//		std::string dropBGMName = static_cast<const char*>(payload->Data);
+			//		//std::cout << dropBGMName;
+			//		soundManager->StopAll();
+			//		soundManager->PlayBGM(dropBGMName);
+			//	}
+			//	if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("PAYLOAD_AUDIO_SFX")) {
+			//		std::string dropSFXName = static_cast<const char*>(payload->Data);
+			//		soundManager->PlaySFX(dropSFXName);
+			//	}
+			//}
 			itemDrag = false;
 			ImGui::EndDragDropTarget();
 		}
+
+
 	
 	}
 	ImGui::EndChild();
