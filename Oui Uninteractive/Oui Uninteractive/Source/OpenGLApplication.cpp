@@ -602,8 +602,6 @@ void OpenGLApplication::OpenGLUpdate() {
 				min = colliderSys->colliderMap[gameobjID]->boundingbox->min;
 
 
-
-
 				GET_COMPONENT(objectFactory->GetGameObjectByID(gameobjID), Transform, ComponentType::TRANSFORM)->shape->DrawCollisionBox(min, max);
 			}
 		}
@@ -612,8 +610,8 @@ void OpenGLApplication::OpenGLUpdate() {
 
 	UpdateAnimationTimers();
 	UpdateAnimation();
-	fontManager->RenderText("Next_Sunday.ttf", "The quick brown fox jumps over the lazy dog.", 100, 200, 1.0f, glm::vec3(236.0f/255.0f, 1.0f, 220.0f/255.0f));
-	fontManager->RenderText("Valoon.ttf", "0123456789 .:,; '\" (!?) +-*/ = ", 100, 100, 1.0f, glm::vec3(0.4, 0.7, 0.9));
+	fontManager->RenderText("Next_Sunday.ttf", "The quick brown fox jumps over the lazy dog.", -400, -200, 1.0f, glm::vec3(236.0f/255.0f, 1.0f, 220.0f/255.0f));
+	fontManager->RenderText("Valoon.ttf", "0123456789 .:,; '\" (!?) +-*/ = ", 0, 0, 1.0f, glm::vec3(0.4, 0.7, 0.9));
 	Draw();
 	particleSystem.Draw();
 
