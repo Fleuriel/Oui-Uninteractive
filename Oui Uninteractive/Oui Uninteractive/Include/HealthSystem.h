@@ -46,7 +46,7 @@ public:
 
 class HealthSystem : public ISystem {
 private:
-
+	std::vector<GameObject*> playerHealthbar;
 public:
 	/**************************************************************************
 	* @brief Constructor
@@ -71,6 +71,12 @@ public:
 	* @return void
 	*************************************************************************/
 	static void DamageTaken(DamageTakenMessage* msg);
+
+	/**************************************************************************
+	* @brief Clear healthbar vector
+	* @return void
+	*************************************************************************/
+	void ClearHealthbar();
 
 	// Map of HealthComponent
 	std::map<size_t, HealthComponent*> healthComponentMap;

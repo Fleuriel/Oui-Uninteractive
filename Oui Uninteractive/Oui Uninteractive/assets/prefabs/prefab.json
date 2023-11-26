@@ -191,5 +191,19 @@
                     "FrictionForce": 0.0
                 }
             }
+        }, {
+            "Name": "HeartPrefab",
+            "Type": "HeartPrefab",
+            "Texture": "Heart",
+            "UsingSprite": false,
+            "Components": {
+                "Transform": {
+                    "PositionX": 0.0,
+                    "PositionY": 0.0,
+                    "Rotation": 0.0,
+                    "ScaleX": 100.0,
+                    "ScaleY": 100.0
+                }
+            }
         }]
 }

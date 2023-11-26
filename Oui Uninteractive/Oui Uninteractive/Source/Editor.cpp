@@ -12,6 +12,7 @@
 #include "Editor.h"
 #include "Collision.h"
 #include "Cheats.h"
+#include "HealthSystem.h"
 #define PI 3.141592653589793
 
  // Defining static variables
@@ -257,10 +258,7 @@ void Editor::Update() {
 
 	glfwGetCursorPos(windowNew, &mouseX, &mouseY);
 
-	if (Editor::editorOn)
-		OpenGLObject::FrameBufferMouseCoords(windowNew, &mouseX, &mouseY, OpenGLObject::cameraObject);
-	else
-		OpenGLObject::windowMouseCoords(windowNew, &mouseX, &mouseY, OpenGLObject::cameraObject);
+	OpenGLObject::FrameBufferMouseCoords(windowNew, &mouseX, &mouseY, OpenGLObject::cameraObject);
 
 	double ogMouseX; 
 	double ogMouseY;
@@ -668,6 +666,7 @@ void Editor::CreateMasterPanel() {
 		tilemapLoader->LoadTilemap(sceneFileName);
 		objectFactory->BuildObjectFromFile(sceneFileName);
 		tilemapLoader->CreateGrid();
+		healthSys->ClearHealthbar();
 	}
 
 	ImGui::End();

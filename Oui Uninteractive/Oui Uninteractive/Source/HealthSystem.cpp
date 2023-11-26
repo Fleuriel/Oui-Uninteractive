@@ -10,8 +10,10 @@
  *************************************************************************/
 #include "HealthSystem.h"
 #include "ComponentFactory.h"
+#include "Transform.h"
 
 HealthSystem* healthSys = nullptr;
+extern std::pair<int, int> windowSize;
 
 /**************************************************************************
 * @brief Constructor
@@ -49,6 +51,28 @@ void HealthSystem::Update(float dt) {
 			if (it.second->currentHealth <= 0) {
 				objectFactory->DestroyObject(it.second->GetOwner());
 			}
+			
+			if (it.second->GetOwner()->GetType() == "Player" && playerHealthbar.size() == 0) {
+				// Create player healthbar
+				for (int i{}; i < it.second->maxHealth; ++i) {
+					// Create bullet object from prefab
+					std::string heartName{ "Heart" + std::to_string(i + 1) };
+					GameObject* heart = objectFactory->BuildObjectFromPrefab(heartName, "HeartPrefab");
+					GET_COMPONENT(heart, Transform, ComponentType::TRANSFORM)->position.x = (static_cast<float>(-windowSize.first) / 3.f) + i * GET_COMPONENT(heart, Transform, ComponentType::TRANSFORM)->scale.x;
+					GET_COMPONENT(heart, Transform, ComponentType::TRANSFORM)->position.y = (static_cast<float>(windowSize.second) / 3.f);
+
+					playerHealthbar.push_back(heart);
+				}
+			}
+			else if (it.second->GetOwner()->GetType() == "Player") {
+				// Update player healthbar textures
+				for (int i{}; i < it.second->currentHealth - 1; ++i) {
+					playerHealthbar[i]->SetTexture("Heart");
+				}
+				for (int i{ it.second->currentHealth }; i < it.second->maxHealth; ++i) {
+					playerHealthbar[i]->SetTexture("Heart-BG");
+				}
+			}
 		}
 	}
 }
@@ -72,9 +96,18 @@ void HealthSystem::DamageTaken(DamageTakenMessage* msg) {
 
 	// Player bullet and enemy collision
 	if (msg->GetFirst()->GetType() == "Player" && msg->GetSecond()->GetType() == "EnemyBulletPrefab") {
+		//objectFactory->GetGameObjectByName("Heart" + std::to_string(healthFirst->currentHealth))->SetTexture("Heart-BG");
 		healthFirst->currentHealth -= healthSecond->maxHealth;
 	}
 	else if (msg->GetSecond()->GetType() == "Player" && msg->GetFirst()->GetType() == "EnemyBulletPrefab") {
 		healthSecond->currentHealth -= healthFirst->maxHealth;
 	}
+}
+
+/**************************************************************************
+* @brief Clear healthbar vector
+* @return void
+*************************************************************************/
+void HealthSystem::ClearHealthbar() {
+	playerHealthbar.clear();
 }
