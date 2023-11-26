@@ -1,9 +1,35 @@
 {
-    "ObjectCount": 4,
+    "ObjectCount": 5,
     "Objects": [{
+            "Name": "ArmouredGuardPrefab",
+            "Type": "ArmouredGuardPrefab",
+            "Texture": "ArmouredGuard",
+            "UsingSprite": true,
+            "Components": {
+                "LogicComponent": {
+                    "ScriptID": [0]
+                },
+                "PhysicsBody": {
+                    "VelocityX": 0.0,
+                    "VelocityY": 0.0,
+                    "RotationSpeed": 140.625,
+                    "Speed": 140.8780059814453,
+                    "Mass": 174.7570037841797,
+                    "IsStatic": false,
+                    "FrictionForce": 44.98400115966797
+                },
+                "Transform": {
+                    "PositionX": 0.0,
+                    "PositionY": 0.0,
+                    "Rotation": 0.0,
+                    "ScaleX": 100.0,
+                    "ScaleY": 100.0
+                }
+            }
+        }, {
             "Name": "BulletPrefab",
             "Type": "BulletPrefab",
-            "Texture": "",
+            "Texture": "error_icon",
             "UsingSprite": false,
             "Components": {
                 "Transform": {
@@ -38,7 +64,7 @@
             "UsingSprite": true,
             "Components": {
                 "LogicComponent": {
-                    "ScriptID": [0]
+                    "ScriptID": []
                 },
                 "PhysicsBody": {
                     "VelocityX": 0.0,
@@ -55,32 +81,10 @@
                     "Rotation": 0.0,
                     "ScaleX": 100.0,
                     "ScaleY": 100.0
-                }
-            }
-        }, {
-            "Name": "ArmouredGuardPrefab",
-            "Type": "ArmouredGuardPrefab",
-            "Texture": "ArmouredGuard",
-            "UsingSprite": true,
-            "Components": {
-                "LogicComponent": {
-                    "ScriptID": [0]
                 },
-                "PhysicsBody": {
-                    "VelocityX": 0.0,
-                    "VelocityY": 0.0,
-                    "RotationSpeed": 140.625,
-                    "Speed": 140.8780059814453,
-                    "Mass": 174.7570037841797,
-                    "IsStatic": false,
-                    "FrictionForce": 44.98400115966797
-                },
-                "Transform": {
-                    "PositionX": 0.0,
-                    "PositionY": 0.0,
-                    "Rotation": 0.0,
-                    "ScaleX": 100.0,
-                    "ScaleY": 100.0
+                "EnemyFSM": {},
+                "HealthComponent": {
+                    "MaxHealth": 5
                 }
             }
         }, {

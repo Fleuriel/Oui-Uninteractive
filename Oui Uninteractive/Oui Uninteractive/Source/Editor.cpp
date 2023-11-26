@@ -720,7 +720,8 @@ void Editor::CreateRenderWindow() {
 void Editor::CreatePrefabPanel() {
 	ImGui::Begin("Prefab Editor");
 	static float phyRotSpeed, phySpeed, phyMass, phyFriction, transXpos, transYpos, transRot, transScaleX, transScaleY, colScaleX, colScaleY, colRot, aggRange;
-	static bool phyIsStatic, physicsFlag, transformFlag, logicFlag, colliderFlag, enemyfsmFlag, saveFlag, loadedFlag = false;
+	static int maxHp;
+	static bool phyIsStatic, physicsFlag, transformFlag, logicFlag, colliderFlag, enemyfsmFlag, hpFlag, saveFlag, loadedFlag = false;
 
 	static int currentScriptIndex;
 	static std::set<unsigned int> tempLogicSet;
@@ -797,6 +798,8 @@ void Editor::CreatePrefabPanel() {
 		bool transformUpdateFlag = false;
 		bool logicUpdateFlag = false;
 		bool colliderUpdateFlag = false;
+		bool enemyfsmUpdateFlag = false; 
+		bool hpUpdateFlag = false;
 		
 		ImGui::SameLine();
 		std::map<size_t, GameObject*> copyMap = objectFactory->GetGameObjectIDMap();
@@ -863,16 +866,28 @@ void Editor::CreatePrefabPanel() {
 			}
 
 			// Handle saving/deleteion for enemy FSM component
-			/*if (enemyfsmFlag && objectFactory->GetPrefabByName(selectedName)->Has(ComponentType::ENEMY_FSM) == -1) {
+			if (enemyfsmFlag && objectFactory->GetPrefabByName(selectedName)->Has(ComponentType::ENEMY_FSM) == -1) {
 				objectFactory->GetPrefabByName(selectedName)->AddComponent(new EnemyFSM(), ComponentType::ENEMY_FSM);
 			}
 			if (objectFactory->GetPrefabByName(selectedName)->Has(ComponentType::ENEMY_FSM) != -1) {
 				GET_PREFAB_COMPONENT(objectFactory->GetPrefabByName(selectedName), EnemyFSM, ComponentType::ENEMY_FSM)->aggroRange = aggRange;
-				enemyfsmFlag = true;
+				enemyfsmUpdateFlag = true;
 			}
 			if (!enemyfsmFlag && objectFactory->GetPrefabByName(selectedName)->Has(ComponentType::ENEMY_FSM) != -1) {
 				objectFactory->GetPrefabByName(selectedName)->RemoveComponent(GET_PREFAB_COMPONENT(objectFactory->GetPrefabByName(selectedName), EnemyFSM, ComponentType::ENEMY_FSM));
-			}*/
+			}
+
+			// Handle saving/deleteion for health component
+			if (hpFlag && objectFactory->GetPrefabByName(selectedName)->Has(ComponentType::HEALTH) == -1) {
+				objectFactory->GetPrefabByName(selectedName)->AddComponent(new HealthComponent(), ComponentType::HEALTH);
+			}
+			if (objectFactory->GetPrefabByName(selectedName)->Has(ComponentType::HEALTH) != -1) {
+				GET_PREFAB_COMPONENT(objectFactory->GetPrefabByName(selectedName), HealthComponent, ComponentType::HEALTH)->maxHealth = maxHp;
+				hpUpdateFlag = true;
+			}
+			if (!hpFlag && objectFactory->GetPrefabByName(selectedName)->Has(ComponentType::HEALTH) != -1) {
+				objectFactory->GetPrefabByName(selectedName)->RemoveComponent(GET_PREFAB_COMPONENT(objectFactory->GetPrefabByName(selectedName), HealthComponent, ComponentType::HEALTH));
+			}
 
 			for (std::map<size_t, GameObject*>::iterator itGameObject = copyMap.begin(); itGameObject != copyMap.end(); itGameObject++) {
 				if ((*itGameObject).second->GetType() == objectFactory->GetPrefabByName(selectedName)->GetType()) {
@@ -904,12 +919,16 @@ void Editor::CreatePrefabPanel() {
 						objCollider->tx->scale = prefabCollider->tx->scale;
 						objCollider->tx->rotation = prefabCollider->tx->rotation;
 					}
-					/*EnemyFSM* objFSM = GET_COMPONENT(objectFactory->GetGameObjectByID((*it).second->GetGameObjectID()), EnemyFSM, ComponentType::ENEMY_FSM);
+					EnemyFSM* objFSM = GET_COMPONENT(objectFactory->GetGameObjectByID((*itGameObject).second->GetGameObjectID()), EnemyFSM, ComponentType::ENEMY_FSM);
 					if (objFSM != nullptr) {
 						EnemyFSM* prefabFSM = GET_PREFAB_COMPONENT(objectFactory->GetPrefabByName(selectedName), EnemyFSM, ComponentType::ENEMY_FSM);
-						EnemyFSM* objFSM = GET_COMPONENT(objectFactory->GetGameObjectByID((*it).second->GetGameObjectID()), EnemyFSM, ComponentType::ENEMY_FSM);
 						objFSM->aggroRange = prefabFSM->aggroRange;
-					}*/
+					}
+					HealthComponent* objMaxHp = GET_COMPONENT(objectFactory->GetGameObjectByID((*itGameObject).second->GetGameObjectID()), HealthComponent, ComponentType::HEALTH);
+					if (objMaxHp != nullptr) {
+						HealthComponent* prefabMaxHp = GET_PREFAB_COMPONENT(objectFactory->GetPrefabByName(selectedName), HealthComponent, ComponentType::HEALTH);
+						objMaxHp->maxHealth = prefabMaxHp->maxHealth;
+					}
 
 				}
 			}
@@ -947,11 +966,14 @@ void Editor::CreatePrefabPanel() {
 						objCollider->tx->scale.y = colScaleY;
 						objCollider->tx->rotation = colRot;
 					}
-
-					/*EnemyFSM* objFSM = GET_COMPONENT(objectFactory->GetGameObjectByID((*it).second->GetGameObjectID()), EnemyFSM, ComponentType::ENEMY_FSM);
+					EnemyFSM* objFSM = GET_COMPONENT(objectFactory->GetGameObjectByID((*itPreview).second->GetGameObjectID()), EnemyFSM, ComponentType::ENEMY_FSM);
 					if (objFSM != nullptr) {
 						objFSM->aggroRange = aggRange;
-					}*/
+					}
+					HealthComponent* objMaxHp = GET_COMPONENT(objectFactory->GetGameObjectByID((*itPreview).second->GetGameObjectID()), HealthComponent, ComponentType::HEALTH);
+					if (objMaxHp != nullptr) {
+						objMaxHp->maxHealth = maxHp;
+					}
 					
 				}
 			}
@@ -997,9 +1019,12 @@ void Editor::CreatePrefabPanel() {
 					colScaleX = GET_PREFAB_COMPONENT(objectFactory->GetPrefabByName(selectedName), Collider, ComponentType::COLLIDER)->tx->scale.x;
 					colScaleY = GET_PREFAB_COMPONENT(objectFactory->GetPrefabByName(selectedName), Collider, ComponentType::COLLIDER)->tx->scale.y;
 				}
-				/*if (copy[selectedName]->Has(ComponentType::ENEMY_FSM) != -1) {
+				if (copy[selectedName]->Has(ComponentType::ENEMY_FSM) != -1) {
 					aggRange = GET_PREFAB_COMPONENT(objectFactory->GetPrefabByName(selectedName), EnemyFSM, ComponentType::ENEMY_FSM)->aggroRange;
-				}*/
+				}
+				if (copy[selectedName]->Has(ComponentType::HEALTH) != -1) {
+					maxHp = GET_PREFAB_COMPONENT(objectFactory->GetPrefabByName(selectedName), HealthComponent, ComponentType::HEALTH)->maxHealth;
+				}
 			}
 		}
 		ImGui::EndChild();
@@ -1110,9 +1135,8 @@ void Editor::CreatePrefabPanel() {
 			if (ImGui::InputFloat("Rotation##", &colRot)) saveFlag = true;
 			ImGui::Unindent();
 		}
-
 		// Render EnemyFSM
-		/*if (ImGui::Checkbox("##EnemyFSM", &enemyfsmFlag)) {
+		if (ImGui::Checkbox("##EnemyFSM", &enemyfsmFlag)) {
 			saveFlag = true;
 		}
 		ImGui::SameLine();
@@ -1120,7 +1144,17 @@ void Editor::CreatePrefabPanel() {
 			ImGui::Indent();
 			if (ImGui::InputFloat("Aggro Range", &aggRange)) saveFlag = true;
 			ImGui::Unindent();
-		}*/
+		}
+		// Render HealthComponent
+		if (ImGui::Checkbox("##HealthComponent", &hpFlag)) {
+			saveFlag = true;
+		}
+		ImGui::SameLine();
+		if (ImGui::CollapsingHeader("Health Component")) {
+			ImGui::Indent();
+			if (ImGui::InputInt("Max Health", &maxHp)) saveFlag = true;
+			ImGui::Unindent();
+		}
 
 
 		ImGui::EndChild();
