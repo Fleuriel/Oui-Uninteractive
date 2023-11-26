@@ -21,14 +21,16 @@ public:
 	/**************************************************************************
 	* @brief Constructor
 	*************************************************************************/
-	BulletScript(std::string newName) : IScript(newName) {}
+	BulletScript(std::string newName, bool gameplayFlag) : IScript(newName, gameplayFlag) {}
 
 	/**************************************************************************
 	* @brief Initialize the PlayerShooting script
 	* @return void
 	*************************************************************************/
 	void Initialize() {
+		
 		logicSystem->AddLogicScript(this);
+		
 	}
 
 	/**************************************************************************

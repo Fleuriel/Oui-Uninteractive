@@ -34,7 +34,7 @@ public:
 	/**************************************************************************
     * @brief Constructor
     *************************************************************************/
-	WeaponPickupScript(std::string newName) : IScript(newName) {
+	WeaponPickupScript(std::string newName, bool gameplayFlag) : IScript(newName, gameplayFlag) {
 		
 	};
 	/**************************************************************************

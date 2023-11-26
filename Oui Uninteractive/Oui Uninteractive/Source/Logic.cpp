@@ -41,22 +41,22 @@ void LogicSystem::Initialize() {
 	objectFactory->AddComponentFactory(ComponentType::LOGICCOMPONENT, testPtr);
 	//SCRIPTS
 
-	TestScript* testScript = new TestScript(std::string("testScript"));
+	TestScript* testScript = new TestScript(std::string("testScript"), true);
 	testScript->Initialize();
 
-	TestScript2* testScript2 = new TestScript2(std::string("testScript2"));
+	TestScript2* testScript2 = new TestScript2(std::string("testScript2"), true);
 	testScript2->Initialize();
 
-	WeaponPickupScript* weaponPickupScript = new WeaponPickupScript(std::string("WeaponPickupScript"));
+	WeaponPickupScript* weaponPickupScript = new WeaponPickupScript(std::string("WeaponPickupScript"), true);
 	weaponPickupScript->Initialize();
 
-	PlayerShooting* playerShootingScript = new PlayerShooting(std::string("PlayerShooting"));
+	PlayerShooting* playerShootingScript = new PlayerShooting(std::string("PlayerShooting"), true);
 	playerShootingScript->Initialize();
 
-	BulletScript* bulletScript = new BulletScript(std::string("BulletScript"));
+	BulletScript* bulletScript = new BulletScript(std::string("BulletScript"), true);
 	bulletScript->Initialize();
 
-	PauseMenuLogic* pauseMenuScript = new PauseMenuLogic(std::string("PauseMenuLogic"));
+	PauseMenuLogic* pauseMenuScript = new PauseMenuLogic(std::string("PauseMenuLogic"), false);
 	pauseMenuScript->Initialize();
 
 
@@ -66,13 +66,14 @@ void LogicSystem::Initialize() {
 * @param dt - delta time
 * @return void
 *************************************************************************/
-void LogicSystem::Update(float dt) {
-	if (sysManager->isPaused == false) {
-		(void)dt;
-		for (auto& iter : logicComponentMap) {
-			for (unsigned int index : iter.second->scriptIndexSet) {
-				scriptVec[index]->Update(iter.second->GetOwner()->GetGameObjectID());
+void LogicSystem::Update(float dt) {	
+	(void)dt;
+	for (auto& iter : logicComponentMap) {
+		for (unsigned int index : iter.second->scriptIndexSet) {
+			if (scriptVec[index]->isGameplay && sysManager->isPaused) {
+				continue;
 			}
+			scriptVec[index]->Update(iter.second->GetOwner()->GetGameObjectID());
 		}
 	}
 }
@@ -83,6 +84,10 @@ void LogicSystem::Update(float dt) {
 *************************************************************************/
 void LogicSystem::AddLogicScript(IScript* newScript) {
 	scriptVec.push_back(newScript);
+}
+
+void LogicSystem::AddLogicScriptToPaused(IScript* newScript) {
+	pausedScriptVec.push_back(newScript);
 }
 /**************************************************************************
 	* @brief Destructor for Collider System

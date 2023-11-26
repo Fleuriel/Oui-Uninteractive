@@ -6,11 +6,17 @@
 
 class TestScript : public IScript {
 public:
-	TestScript(std::string newName) : IScript(newName) {
+	TestScript(std::string newName, bool gameplayFlag) : IScript(newName, gameplayFlag) {
 		
 	};
 	void Initialize() {
-		logicSystem->AddLogicScript(this);
+		if (isGameplay) {
+			logicSystem->AddLogicScript(this);
+		}
+		else {
+			logicSystem->AddLogicScriptToPaused(this);
+		}
+		
 	};
 
 	void Update(size_t gameObjectID) {
@@ -72,11 +78,13 @@ public:
 
 class TestScript2 : public IScript {
 public:
-	TestScript2(std::string newName) : IScript(newName) {
+	TestScript2(std::string newName, bool gameplayFlag) : IScript(newName, gameplayFlag) {
 
 	};
 	void Initialize() {
-		logicSystem->AddLogicScript(this);
+		
+			logicSystem->AddLogicScript(this);
+		
 	};
 
 	void Update(size_t gameObjectID) {

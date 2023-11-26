@@ -47,6 +47,7 @@ public:
 	* @return void
 	*************************************************************************/
 	void AddLogicScript(IScript* newScript);
+	void AddLogicScriptToPaused(IScript* newScript);
 	/**************************************************************************
 	* @brief Destructor for Logic System
 	*************************************************************************/
@@ -54,6 +55,7 @@ public:
 
 	//insert script container
 	std::vector<IScript*> scriptVec;
+	std::vector<IScript*> pausedScriptVec;
 	//insert logic component container
 	std::map<size_t, LogicComponent*> logicComponentMap;
 };
