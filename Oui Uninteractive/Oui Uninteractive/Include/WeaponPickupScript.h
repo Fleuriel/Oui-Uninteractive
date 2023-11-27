@@ -12,30 +12,33 @@
 #include "Physics.h"
 #include "ObjectFactory.h"
 #include "Logic.h"
+#include "Background.h"
+#include "InventoryComponent.h"
 
-class inventory {
-public:
-	GameObject* knife = objectFactory->GetGameObjectByID(0);
-	GameObject* rifle = objectFactory->GetGameObjectByID(1);
-	GameObject* pistol = objectFactory->GetGameObjectByID(2);
-	GameObject* bag[3] = { knife, rifle, pistol };
-};
-
-class inventory2 {
-public:
-	PhysicsBody* playerBodyFirst = GET_COMPONENT(inventory().bag[0], PhysicsBody, ComponentType::PHYSICS_BODY);
-	PhysicsBody* playerBodySecond = GET_COMPONENT(inventory().bag[1], PhysicsBody, ComponentType::PHYSICS_BODY);
-	PhysicsBody* playerBodyThird = GET_COMPONENT(inventory().bag[2], PhysicsBody, ComponentType::PHYSICS_BODY);
-	PhysicsBody* Bodies[3] = { playerBodyFirst, playerBodySecond, playerBodyThird };
-};
+ //class inventory {
+ //public:
+ //	GameObject* knife = objectFactory->GetGameObjectByID(0);
+ //	GameObject* rifle = objectFactory->GetGameObjectByID(1);
+ //	GameObject* pistol = objectFactory->GetGameObjectByID(2);
+ //	GameObject* bag[3] = { knife, rifle, pistol };
+ //};
+ //
+ //class inventory2 {
+ //public:
+ //	PhysicsBody* playerBodyFirst = GET_COMPONENT(inventory().bag[0], PhysicsBody, ComponentType::PHYSICS_BODY);
+ //	PhysicsBody* playerBodySecond = GET_COMPONENT(inventory().bag[1], PhysicsBody, ComponentType::PHYSICS_BODY);
+ //	PhysicsBody* playerBodyThird = GET_COMPONENT(inventory().bag[2], PhysicsBody, ComponentType::PHYSICS_BODY);
+ //	PhysicsBody* Bodies[3] = { playerBodyFirst, playerBodySecond, playerBodyThird };
+ //};
 
 class WeaponPickupScript : public IScript {
 public:
+	bool initialized;
 	/**************************************************************************
-    * @brief Constructor
-    *************************************************************************/
+	* @brief Constructor
+	*************************************************************************/
 	WeaponPickupScript(std::string newName, bool gameplayFlag) : IScript(newName, gameplayFlag) {
-		
+		initialized = false;
 	};
 	/**************************************************************************
 	* @brief Initialize the WeaponPickup script
@@ -43,6 +46,8 @@ public:
 	*************************************************************************/
 	void Initialize() {
 		logicSystem->AddLogicScript(this);
+		ComponentFactory<InventoryComponent>* cfPtr{ new ComponentFactory<InventoryComponent>(ComponentType::INVENTORY) };
+		objectFactory->AddComponentFactory(ComponentType::INVENTORY, cfPtr);
 	};
 	/**************************************************************************
 	* @brief Update the WeaponPickup script
@@ -62,63 +67,67 @@ public:
 				//Set playerBody1 as the player (permanent)
 				GameObject* player = objectFactory->GetGameObjectByName("JSONPlayer");
 				if (player != nullptr) {
-					PhysicsBody* playerBody1 = GET_COMPONENT(player, PhysicsBody, ComponentType::PHYSICS_BODY);
+					//Player's physics body
+					//Transform* playerBody1 = GET_COMPONENT(player, Transform, ComponentType::);
+				InventoryComponent* playerInventory = GET_COMPONENT(player, InventoryComponent, ComponentType::INVENTORY);
 					//Declare a temporary physics body for the final weapon chosen
-					if (playerBody1 != nullptr) {
-						static PhysicsBody* playerBodyFinale = GET_COMPONENT(objectFactory->GetGameObjectByID(0), PhysicsBody, ComponentType::PHYSICS_BODY);
-						if (playerBodyFinale != nullptr) {
-							//Checking key pressed to enable weapon pickup / drop off
-							if (inputSystem.GetKeyState(GLFW_KEY_X)) {
-								count = 0;
-								pickedup = false;
+					if (tx != nullptr && playerInventory != nullptr) {
 
-							}
-							if (inputSystem.GetKeyState(GLFW_KEY_C)) {
-								count = 1;
-								pickedup = true;
-							}
-							//While there's no pickup, check for the closest object to the player
-							if (pickedup == false) {
-								int closestID = 0;
-								float closestDistance = 0;
-								bool initialized = false;
-								for (int i = 0; i < 3; i++) {
-									if (inventory2().Bodies[i] != nullptr) {
-										float tempo = Vector2DDistance(inventory2().Bodies[i]->txPtr->position, playerBody1->txPtr->position);
+						//Checking key pressed to enable weapon pickup / drop off
+						if (inputSystem.GetKeyState(GLFW_KEY_X)) {
+							count = 1;
+							int closestID = -1;
+							float closestDistance = 0;
+							//bool initialized = false;
 
+							std::map<size_t, GameObject*> copy = objectFactory->GetGameObjectIDMap();
+							for (std::map<size_t, GameObject*>::iterator it = copy.begin(); it != copy.end(); it++) {
+								if (it->second->GetType() == "Weapon") {
+									Transform* xform = GET_COMPONENT(it->second, Transform, ComponentType::TRANSFORM);
+									if (xform != nullptr) {
+										float tempo = Vector2DDistance(tx->position, xform->position);
 										if (tempo < closestDistance || initialized == false) {
+											
 											initialized = true;
 											closestDistance = tempo;
-											closestID = i;
+											closestID = xform->GetOwner()->GetGameObjectID();
+
 										}
 									}
-									else {
-										continue;
-									}
-									
 								}
-								//Setting the closest object after comparing distances
-								playerBodyFinale = inventory2().Bodies[closestID];
 							}
-							//Offset the amount of distance 
-							if (count == 1) {
-								if (playerBodyFinale != nullptr && playerBody1 != nullptr) {
-									if (playerBodyFinale->txPtr != nullptr && playerBody1->txPtr != nullptr) {
-										playerBodyFinale->txPtr->position.x = playerBody1->txPtr->position.x + 30;
-										playerBodyFinale->txPtr->position.y = playerBody1->txPtr->position.y - 20;
-									}
-									
+							if (objectFactory->GetGameObjectByID(closestID) != nullptr) {
+								std::vector<std::string>::iterator it = playerInventory->Inventory.begin();
+								if (std::find(playerInventory->Inventory.begin(), playerInventory->Inventory.end(), objectFactory->GetGameObjectByID(closestID)->GetName()) == 
+									std::end(playerInventory->Inventory)) {
+									playerInventory->Inventory.push_back(objectFactory->GetGameObjectByID(closestID)->GetName());
+									playerInventory->currentWeaponID = closestID;
 								}
-							
+								
 							}
+							pickedup = false;
+
 						}
+						//Offset the amount of distance 
+						//if (playerInventory->Inventory.size() >= 1) {
+						//	Transform* pBodyFinale = GET_COMPONENT(playerInventory->Inventory[playerInventory->currentWeaponID], 
+						//		Transform, ComponentType::TRANSFORM);//objectFactory->GetGameObjectByID(playerInventory->currentWeaponID), Transform, ComponentType::TRANSFORM);
+						//	if (pBodyFinale != nullptr && tx != nullptr) {
+						//		pBodyFinale->position.x = tx->position.x + 30;
+						//		pBodyFinale->position.y = tx->position.y - 20;
+						//	}
+						//}
+						}
+
+						//While there's no pickup, check for the closest object to the player
 						
-					}
+							
 						
+					
 				}
 			}
 		}
-
+		initialized = false;
 	};
 
 	/**************************************************************************
@@ -129,5 +138,7 @@ public:
 	/**************************************************************************
 	* @brief Destructor
 	*************************************************************************/
-	~WeaponPickupScript() {}
+	~WeaponPickupScript() {
+		initialized = false;
+	}
 };
