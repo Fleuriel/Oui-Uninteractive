@@ -628,9 +628,11 @@ bool AssetManager::LoadSprites() {
                             columns = std::stoi(spriteRowsAndColumns.substr(xPos + 1));
                         }
                         catch (const std::invalid_argument& e) {
+                            e;
                             correctnamingconvention = false;
                         }
                         catch (const std::out_of_range& e) {
+                            e;
                             correctnamingconvention = false;
                         }
                     }

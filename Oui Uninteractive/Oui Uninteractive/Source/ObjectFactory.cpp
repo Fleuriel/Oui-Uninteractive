@@ -162,9 +162,6 @@ void ObjectFactory::BuildObjectFromFile(const std::string& filePath) {
 
 			for (rapidjson::Value::ConstMemberIterator itr{ components.MemberBegin() }; itr != components.MemberEnd(); ++itr) {
 				componentName = itr->name.GetString();
-				if (componentName == "InventoryComponent") {
-					int deez = 0;
-				}
 				ComponentType type = StringToEnum(componentName);
 
 				if (!componentFactoryMap.contains(type)) {

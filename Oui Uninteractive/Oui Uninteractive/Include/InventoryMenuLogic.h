@@ -38,6 +38,7 @@ public:
 	* @return void
 	*************************************************************************/
 	void Update(size_t gameObjectID) {
+		(void)gameObjectID;
 		if (initialised == false) {
 			//gObj = 
 			slotVec.push_back("InventoryObject1");
