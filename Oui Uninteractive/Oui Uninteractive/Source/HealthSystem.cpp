@@ -1,12 +1,11 @@
 /**************************************************************************
- * @file EnemyAISystem.h
- * @author HWANG Jing Rui, Austin
+ * @file HealthSystem.cpp
+ * @author HWANG Jing Rui, Austin - 100%
  * @par DP email: jingruiaustin.hwang@digipen.edu
  * @par Course:	CSD 2401
  * @par Software Engineering Project 3
- * @date 08-11-2023
- * @brief This file contains the definition of the EnemyAISystem class.
- *		  This system handles the state machine for the enemies.
+ * @date 25-11-2023
+ * @brief This file contains the definition of the HealthSystem class.
  *************************************************************************/
 #include "HealthSystem.h"
 #include "ComponentFactory.h"

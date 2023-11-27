@@ -1,12 +1,12 @@
 /**************************************************************************
- * @file WeaponPickupScript.h
- * @author QUEK Cheng Kwang, Emery
- * @par DP email: c.quek@digipen.edu
- * @par Course:	CSD 2401
- * @par Software Engineering Project 3
- * @date 26-11-2023
- * @brief This file contains the script for picking up weapon objects
- *************************************************************************/
+* @file WeaponPickupScript.h
+* @author QUEK Cheng Kwang, Emery - 100%
+* @par DP email: c.quek@digipen.edu
+* @par Course:	CSD 2401
+* @par Software Engineering Project 3
+* @date 26-11-2023
+* @brief This file contains the script for picking up weapon objects
+*************************************************************************/
 
 #include "IScript.h"
 #include "Physics.h"

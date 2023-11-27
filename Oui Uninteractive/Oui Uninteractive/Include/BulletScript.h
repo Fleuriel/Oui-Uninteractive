@@ -1,12 +1,12 @@
 /**************************************************************************
- * @file BulletScript.h
- * @author HWANG Jing Rui, Austin
- * @par DP email: jingruiaustin.hwang@digipen.edu
- * @par Course:	CSD 2401
- * @par Software Engineering Project 3
- * @date 10-11-2023
- * @brief This file contains the script for player's bullet.
- *************************************************************************/
+* @file BulletScript.h
+* @author HWANG Jing Rui, Austin - 100%
+* @par DP email: jingruiaustin.hwang@digipen.edu
+* @par Course:	CSD 2401
+* @par Software Engineering Project 3
+* @date 10-11-2023
+* @brief This file contains the script for player's bullet.
+*************************************************************************/
 #ifndef BULLET_SCRIPT_H
 #define BULLET_SCRIPT_H
 
@@ -28,9 +28,7 @@ public:
 	* @return void
 	*************************************************************************/
 	void Initialize() {
-		
 		logicSystem->AddLogicScript(this);
-		
 	}
 
 	/**************************************************************************

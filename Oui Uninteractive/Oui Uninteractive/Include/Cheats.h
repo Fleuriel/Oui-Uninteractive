@@ -1,12 +1,14 @@
 /**************************************************************************
  * @file Cheats.h
- * @author CHAN Aaron Jun Xiang
+ * @author CHAN Aaron Jun Xiang - 100%
  * @par DP email: aaronjunxiang.chan@digipen.edu
  * @par Course: CSD 2401
  * @par Software Engineering Project 3
  * @date 09-05-2023
  * @brief Implementation of cheat code functionalities for the game.
  *************************************************************************/
+#ifndef CHEATS_H
+#define CHEATS_H
 
 #include <vector>
 #include <string>
@@ -53,3 +55,5 @@ void GodModeOff();
  * @param cheatCode The cheat code to apply.
  *************************************************************************/
 void Cheat(std::string);
+
+#endif

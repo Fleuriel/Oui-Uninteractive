@@ -1,12 +1,12 @@
 /**************************************************************************
- * @file PlayerShooting.h
- * @author HWANG Jing Rui, Austin
- * @par DP email: jingruiaustin.hwang@digipen.edu
- * @par Course:	CSD 2401
- * @par Software Engineering Project 3
- * @date 29-10-2023
- * @brief This file contains the script for player shooting.
- *************************************************************************/
+* @file PlayerShooting.h
+* @author HWANG Jing Rui, Austin - 100%
+* @par DP email: jingruiaustin.hwang@digipen.edu
+* @par Course:	CSD 2401
+* @par Software Engineering Project 3
+* @date 29-10-2023
+* @brief This file contains the script for player shooting.
+*************************************************************************/
 #ifndef PLAYER_SHOOTING_H
 #define PLAYER_SHOOTING_H
 

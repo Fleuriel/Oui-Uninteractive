@@ -35,3 +35,4 @@ Debug Panel -> Tools -> Display bounding box
     5) After pressing 'Ok' and returning to the application window, the game window viewport gets messed up (Bug).
     6) Once another scene is loaded, this bug is gone.
 - In general, coordinates may be off in some areas (e.g. mouse, font)
+- If player presses/taps "RIGHT MOUSE BUTTON" quickly to shoot, the shooting is slightly faster than when pressing and holding "RIGHT MOUSE BUTTON".

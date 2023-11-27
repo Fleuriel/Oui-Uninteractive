@@ -1,22 +1,17 @@
 /**************************************************************************
  * @file SceneManager.cpp
- * @author CHEAH Tristan Tze Hong
+ * @author CHEAH Tristan Tze Hong - 100%
  * @par DP email: t.cheah@digipen.edu
  * @par Course: CSD 2401
  * @par Software Engineering Project 3
- * @date 08-09-2023
- * @brief This file contains the declaration of the SceneManager to manage
- *		  Scenes.
+ * @date 17-10-2023
+ * @brief This file contains the definition of the SceneManager class.
  *************************************************************************/
-
-#pragma once
 #include "SceneManager.h"
 #include "OpenGLApplication.h"
 #include "Editor.h"
 // Game State List Enumeration
 
-#ifndef SCENEMANAGER_H
-#define SCENEMANAGER_H
 SceneManager* sceneManager = nullptr;
 
 
@@ -121,5 +116,3 @@ void SceneManager::Free() {
 *************************************************************************/
 void SceneManager::Unload() {
 }
-
-#endif

@@ -1,23 +1,20 @@
 /**************************************************************************
  * @file SceneManager.h
- * @author CHEAH Tristan Tze Hong
+ * @author CHEAH Tristan Tze Hong - 100%
  * @par DP email: t.cheah@digipen.edu
  * @par Course: CSD 2401
  * @par Software Engineering Project 3
- * @date 08-09-2023
- * @brief This file contains the declaration of the SceneManager to manage
- *		  Scenes.
+ * @date 17-10-2023
+ * @brief This file contains the declaration of the SceneManager class.
  *************************************************************************/
+#ifndef SCENEMANAGER_H
+#define SCENEMANAGER_H
 
-#pragma once
 #include "ISystem.h"
 #include "IScene.h"
 #include "Scene1.h"
 #include "Scene2.h"
 #include <map>
-
-#ifndef SCENEMANAGER_H
-#define SCENEMANAGER
 // Game State List Enumeration
 enum GameStateList
 {

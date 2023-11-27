@@ -1,6 +1,6 @@
 /**************************************************************************
  * @file AssetManager.cpp
- * @author Aaron Chan Jun Xiang
+ * @author Aaron Chan Jun Xiang - 100%
  * @par DP email: aaronjunxiang.chan@digipen.edu
  * @par Course: CSD 2401
  * @par Software Engineering Project 3
@@ -600,30 +600,68 @@ bool AssetManager::LoadSprites() {
                     continue;
                 }
 
+                bool correctnamingconvention{true};
+
+                // find '(' in the name
+                size_t lBracketPos = entry.path().filename().string().find_last_of('(');
+
+                // find ')' in the name
+                size_t rBracketPos = entry.path().filename().string().find_last_of(')');
+
+                int rows{}, columns{};
+
+                // Check if both '(' and ')' are present and in the correct order
+                if (lBracketPos != std::string::npos && rBracketPos != std::string::npos && lBracketPos < rBracketPos) {
+                    // Get the string containing rows and columns from the name
+                    std::string spriteRowsAndColumns = entry.path().filename().string().substr(lBracketPos + 1, rBracketPos - lBracketPos - 1);
+
+                    // Find the 'x' in the string that separates the rows and columns
+                    size_t xPos = spriteRowsAndColumns.find_last_of('x');
+
+                    // Check if 'x' is present
+                    if (xPos != std::string::npos) {
+                        try {
+                            // Get the rows
+                            rows = std::stoi(spriteRowsAndColumns.substr(0, xPos));
+
+                            // Get the columns
+                            columns = std::stoi(spriteRowsAndColumns.substr(xPos + 1));
+                        }
+                        catch (const std::invalid_argument& e) {
+                            correctnamingconvention = false;
+                        }
+                        catch (const std::out_of_range& e) {
+                            correctnamingconvention = false;
+                        }
+                    }
+                    else
+                        correctnamingconvention = false;
+                }
+                else {
+                    correctnamingconvention = false;
+                }
+
+                if (!correctnamingconvention) {
+                        std::string file(entry.path().filename().string());
+                        std::wstring widefile(file.begin(), file.end());
+                        HWND hwnd = GetActiveWindow();
+                        std::string filepath(FILEPATH_SPRITES);
+                        // Convert std::string to std::wstring
+                        std::wstring widefilepath(filepath.begin(), filepath.end());
+
+                        std::wstring message = L"File with incompatible naming convention (\"" + widefile + L"\") detected in \"" + widefilepath + L"\" folder!\n\nFile not loaded!";
+                        LPCWSTR boxMessage = message.c_str();
+
+                        MessageBox(hwnd, boxMessage, L"Load Failure", MB_OK | MB_ICONERROR);
+                        continue;
+                }
+
                 // create new sprite class
                 Sprite newsprite;
                 
                 // set the texture
                 newsprite.SetTexture(AssetManager::SetUpTexture(spriteFilePath));
                 //std::cout << textures[nameWithoutExtension] << " success!\n";
-
-                // find '(' in the name
-                size_t lBracketPos = entry.path().filename().string().find_last_of('(');
-
-                // get the string containing rows and columns from the name
-                std::string spriteRowsAndColumns = entry.path().filename().string().substr(lBracketPos + 1, extensionPos - lBracketPos - 2);
-                //std::cout << spriteRowsAndColumns<<std::endl;
-
-                // find the 'x' in the string that separates the rows and columns
-                size_t xPos = spriteRowsAndColumns.find_last_of('x');
-
-                // get the rows
-                int rows = std::stoi(spriteRowsAndColumns.substr(0, xPos));
-                //std::cout << rows << std::endl;
-                
-                // get the columns
-                int columns = std::stoi(spriteRowsAndColumns.substr(xPos + 1));
-                //std::cout << columns << std::endl;
 
                 // set the rows and columns of the sprite
                 newsprite.SetRowsAndColumns(rows, columns);

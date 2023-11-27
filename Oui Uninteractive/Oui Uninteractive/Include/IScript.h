@@ -1,17 +1,17 @@
 /**************************************************************************
- * @file IScript.h
- * @author CHEAH Tristan Tze Hong
- * @par DP email: t.cheah@digipen.edu
- * @par Course: CSD 2401
- * @par Software Engineering Project 3
- * @date 27-11-2023
- * @brief This file contains the declaration of the IScript Class to enable
- *		  Script transition between entities in the game.
- *************************************************************************/
-
-#pragma once
+* @file IScript.h
+* @author CHEAH Tristan Tze Hong - 100%
+* @par DP email: t.cheah@digipen.edu
+* @par Course:	CSD 2401
+* @par Software Engineering Project 3
+* @date 06-10-2023
+* @brief This file contains the script interface.
+*************************************************************************/
+#ifndef ISCRIPT_H
+#define ISCRIPT_H
 
 #include <string>
+
 class IScript {
 public:
 
@@ -52,3 +52,5 @@ public:
 
 	bool isGameplay;
 };
+
+#endif

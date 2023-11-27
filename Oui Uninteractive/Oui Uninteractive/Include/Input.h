@@ -1,6 +1,6 @@
 /**************************************************************************
  * @file InputKeys.h
- * @author CHAN Aaron Jun Xiang
+ * @author CHAN Aaron Jun Xiang - 100%
  * @par DP email: aaronjunxiang.chan@digipen.edu
  * @par Course: CSD 2401
  * @par Software Engineering Project 3

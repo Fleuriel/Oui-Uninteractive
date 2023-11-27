@@ -1,6 +1,6 @@
 /**************************************************************************
  * @file EnemyStates.cpp
- * @author HWANG Jing Rui, Austin
+ * @author HWANG Jing Rui, Austin - 100%
  * @par DP email: jingruiaustin.hwang@digipen.edu
  * @par Course:	CSD 2401
  * @par	Software Engineering Project 3
@@ -9,6 +9,7 @@
  *		  The enemy states consists of:
  *		  - Roam
  *		  - Attack
+ *        - Flee
  *        This file should only contain the behavior of enemies during
  *        its respective states.
  *************************************************************************/

@@ -1,14 +1,12 @@
 /**************************************************************************
- * @file InventoryMenuLogic.h
- * @author CHEAH Tristan Tze Hong
- * @par DP email: t.cheah@digipen.edu
- * @par Course: CSD 2401
- * @par Software Engineering Project 3
- * @date 27-11-2023
- * @brief This file contains the declaration of the InventorYMenuLogic Class,
- *		  which is a subset of IScript to enable Inventory System in Gameplay
- *************************************************************************/
-
+* @file InventoryMenuLogic.h
+* @author QUEK Cheng Kwang, Emery - 100%
+* @par DP email: c.quek@digipen.edu
+* @par Course:	CSD 2401
+* @par Software Engineering Project 3
+* @date 27-11-2023
+* @brief This file contains the script for the inventory menu.
+*************************************************************************/
 #include "IScript.h"
 #include "Physics.h"
 #include "ObjectFactory.h"
@@ -25,9 +23,8 @@ public:
 	*************************************************************************/
 	InventoryMenuLogic(std::string newName, bool gameplayFlag) : IScript(newName, gameplayFlag) {}
 
-
 	/**************************************************************************
-	* @brief Initializes Inventory Menu Logics
+	* @brief Initialize the InventoryMenuLogic script
 	* @return void
 	*************************************************************************/
 	void Initialize() {
@@ -35,8 +32,9 @@ public:
 		logicSystem->AddLogicScript(this);
 		initialised = false;
 	}
+
 	/**************************************************************************
-	* @brief Update  Inventory menu
+	* @brief Update the InventoryMenuLogic
 	* @return void
 	*************************************************************************/
 	void Update(size_t gameObjectID) {
@@ -87,10 +85,6 @@ public:
 					}
 				}
 			}
-			
-				
-			
-		
 		}
 
 		GameObject* player = objectFactory->GetGameObjectByName("JSONPlayer");
@@ -128,73 +122,11 @@ public:
 				}
 			}
 		}
-		
-		//if (gObj != nullptr) {
-		//	Transform* tx = GET_COMPONENT(gObj, Transform, ComponentType::TRANSFORM);
-		//	if (tx != nullptr) {
-
-		//		if (gObj->GetName() == "Background2") {
-		//			tx->position = Vec2(OpenGLObject::cameraObject.posX - Editor::gameWindowSize.first + 1262.f, OpenGLObject::cameraObject.posY -Editor::gameWindowSize.second / 2.f);
-		//			
-		//		}
-		//		if (gObj->GetType() == "InventoryObject") {
-		//			if (gObj->GetName() == "InventoryObject1") {
-		//				//position game object in camera
-		//				tx->position = Vec2(OpenGLObject::cameraObject.posX + Editor::gameWindowSize.first / 6.f, OpenGLObject::cameraObject.posY - Editor::gameWindowSize.second / 2.f);
-		//				slotVec[0] = tx->position;
-		//			}
-		//			else if (gObj->GetName() == "InventoryObject2") {
-		//				//position game object in camera
-		//				tx->position = Vec2(OpenGLObject::cameraObject.posX + Editor::gameWindowSize.first / 3.3f, OpenGLObject::cameraObject.posY - Editor::gameWindowSize.second / 2.f);
-		//				slotVec[1] = tx->position;
-		//			}
-		//			else if (gObj->GetName() == "InventoryObject3") {
-		//				//position game object in camera
-		//				tx->position = Vec2(OpenGLObject::cameraObject.posX + Editor::gameWindowSize.first / 2.3f, OpenGLObject::cameraObject.posY - Editor::gameWindowSize.second / 2.f);
-		//				slotVec[2] = tx->position;
-		//			}
-		//			else if (gObj->GetName() == "InventoryObject4") {
-		//				//position game object in camera
-		//				tx->position = Vec2(OpenGLObject::cameraObject.posX + Editor::gameWindowSize.first / 1.75f, OpenGLObject::cameraObject.posY - Editor::gameWindowSize.second / 2.f);
-		//				slotVec[3] = tx->position;
-		//			}
-		//		}
-
-		//		
-		//		
-		//		
-
-		//		float pickuprange = 50.f;
-		//		//if (gObj->GetType() == "Weapon") {
-		//		//	if (gObj->GetName() == "Rifle") {
-		//		//		//Vector2DDistance(tx->position);
-		//		//	}
-
-		//		//}
-		//		static int i = 0;
-
-		//		/*if (inputSystem.GetKeyState(GLFW_KEY_C)) {
-		//			i = 2;
-		//		}
-
-		//		if (i > 1) {
-		//			if (gObj->GetName() == "Rifle")
-		//				tx->position = slot2;
-
-		//			if (gObj->GetName() == "Pistol")
-		//				tx->position = slot3;
-
-		//			if (gObj->GetName() == "Knife")
-		//				tx->position = slot1;
-		//		}*/
-		//	}
-		//}
-
 
 	};
 
 	/**************************************************************************
-	* @brief End Inventory menu
+	* @brief End the InventoryMenuLogic script
 	* @return void
 	*************************************************************************/
 	void End() {}

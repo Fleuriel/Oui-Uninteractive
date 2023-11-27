@@ -1,13 +1,13 @@
 /**************************************************************************
  * @file GameObject.h
- * @author HWANG Jing Rui, Austin
- * @co-author CHEAH Tristan Tze Hong
+ * @author HWANG Jing Rui, Austin - 80%
+ * @co-author CHEAH Tristan Tze Hong - 20%
  * @par DP email: jingruiaustin.hwang@digipen.edu
  * @par DP email: t.cheah@digipen.edu
  * @par Course:	CSD 2401
  * @par	Software Engineering Project 3
  * @date 08-09-2023
- * @brief This file contains the definition of the GameObject class.
+ * @brief This file contains the declaration of the GameObject class.
  *		  The functions include:
  *			- Initialize
  *			- AddComponent
@@ -15,9 +15,17 @@
  *			- Has
  *			- GetGameObjectID
  *			- GetName
+ *			- SetName
  *			- GetType
  *			- GetComponent
  *			- GetComponentType
+ *			- GetSpriteDirection
+ *			- GetAnimationFrame
+ *			- SetAnimationFrame
+ *			- IsUsingSprite
+ *			- SetUsingSprite
+ *			- GetTexture
+ *			- SetTexture
  *************************************************************************/
 #ifndef GAME_OBJECT_H
 #define GAME_OBJECT_H

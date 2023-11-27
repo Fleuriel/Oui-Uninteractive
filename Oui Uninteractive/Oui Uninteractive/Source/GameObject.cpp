@@ -1,7 +1,7 @@
 /**************************************************************************
  * @file GameObject.cpp
- * @author HWANG Jing Rui, Austin
- * @co-author CHEAH Tristan Tze Hong
+ * @author HWANG Jing Rui, Austin - 80%
+ * @co-author CHEAH Tristan Tze Hong - 20%
  * @par DP email: jingruiaustin.hwang@digipen.edu
  * @par DP email: t.cheah@digipen.edu
  * @par Course:	CSD 2401
@@ -15,9 +15,17 @@
  *			- Has
  *			- GetGameObjectID
  *			- GetName
+ *			- SetName
  *			- GetType
  *			- GetComponent
  *			- GetComponentType
+ *			- GetSpriteDirection
+ *			- GetAnimationFrame
+ *			- SetAnimationFrame
+ *			- IsUsingSprite
+ *			- SetUsingSprite
+ *			- GetTexture
+ *			- SetTexture
  *************************************************************************/
 #include <algorithm>
 #include <iostream>
