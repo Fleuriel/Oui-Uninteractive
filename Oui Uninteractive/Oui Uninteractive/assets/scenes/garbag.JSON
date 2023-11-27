@@ -1,0 +1,209 @@
+{
+    "ObjectCount": 5,
+    "Objects": [{
+            "Name": "ArmouredGuardPrefab",
+            "Type": "ArmouredGuardPrefab",
+            "Texture": "ArmouredGuard",
+            "UsingSprite": true,
+            "Components": {
+                "LogicComponent": {
+                    "ScriptID": []
+                },
+                "PhysicsBody": {
+                    "VelocityX": 0.0,
+                    "VelocityY": 0.0,
+                    "RotationSpeed": 140.625,
+                    "Speed": 140.8780059814453,
+                    "Mass": 174.7570037841797,
+                    "IsStatic": false,
+                    "FrictionForce": 44.98400115966797
+                },
+                "Transform": {
+                    "PositionX": 0.0,
+                    "PositionY": 0.0,
+                    "Rotation": 0.0,
+                    "ScaleX": 100.0,
+                    "ScaleY": 100.0
+                },
+                "HealthComponent": {
+                    "MaxHealth": 8
+                }
+            }
+        }, {
+            "Name": "BulletPrefab",
+            "Type": "BulletPrefab",
+            "Texture": "bullet",
+            "UsingSprite": false,
+            "Components": {
+                "Transform": {
+                    "PositionX": 0.0,
+                    "PositionY": 0.0,
+                    "Rotation": 0.0,
+                    "ScaleX": 15.0,
+                    "ScaleY": 15.0
+                },
+                "PhysicsBody": {
+                    "VelocityX": 0.0,
+                    "VelocityY": 0.0,
+                    "RotationSpeed": 0.0,
+                    "Speed": 1000.0,
+                    "Mass": 0.0,
+                    "IsStatic": false,
+                    "FrictionForce": 0.0
+                },
+                "LogicComponent": {
+                    "ScriptID": [4]
+                },
+                "Collider": {
+                    "ColliderSizeX": 15.0,
+                    "ColliderSizeY": 15.0,
+                    "ColliderRotation": 0.0
+                },
+                "HealthComponent": {
+                    "MaxHealth": 1
+                }
+            }
+        }, {
+            "Name": "EnemyBulletPrefab",
+            "Type": "EnemyBulletPrefab",
+            "Texture": "flower",
+            "UsingSprite": false,
+            "Components": {
+                "Transform": {
+                    "PositionX": 0.0,
+                    "PositionY": 0.0,
+                    "Rotation": 0.0,
+                    "ScaleX": 50.0,
+                    "ScaleY": 50.0
+                },
+                "PhysicsBody": {
+                    "VelocityX": 0.0,
+                    "VelocityY": 0.0,
+                    "RotationSpeed": 0.0,
+                    "Speed": 500.0,
+                    "Mass": 0.0,
+                    "IsStatic": false,
+                    "FrictionForce": 0.0
+                },
+                "LogicComponent": {
+                    "ScriptID": [4]
+                },
+                "Collider": {
+                    "ColliderSizeX": 50.0,
+                    "ColliderSizeY": 50.0,
+                    "ColliderRotation": 0.0
+                },
+                "HealthComponent": {
+                    "MaxHealth": 1
+                }
+            }
+        }, {
+            "Name": "CommonGuardPrefab",
+            "Type": "CommonGuardPrefab",
+            "Texture": "CommonGuard",
+            "UsingSprite": true,
+            "Components": {
+                "LogicComponent": {
+                    "ScriptID": []
+                },
+                "PhysicsBody": {
+                    "VelocityX": 0.0,
+                    "VelocityY": 0.0,
+                    "RotationSpeed": 140.625,
+                    "Speed": 140.8780059814453,
+                    "Mass": 174.7570037841797,
+                    "IsStatic": false,
+                    "FrictionForce": 44.98400115966797
+                },
+                "Transform": {
+                    "PositionX": 0.0,
+                    "PositionY": 0.0,
+                    "Rotation": 0.0,
+                    "ScaleX": 100.0,
+                    "ScaleY": 100.0
+                },
+                "EnemyFSM": {
+                    "AggroRange": 0.0
+                },
+                "HealthComponent": {
+                    "MaxHealth": 5
+                }
+            }
+        }, {
+            "Name": "PlayerPrefab",
+            "Type": "PlayerPrefab",
+            "Texture": "Player",
+            "UsingSprite": true,
+            "Components": {
+                "LogicComponent": {
+                    "ScriptID": [0, 1, 2]
+                },
+                "Collider": {
+                    "ColliderSizeX": 75.0,
+                    "ColliderSizeY": 75.0,
+                    "ColliderRotation": 0.0
+                },
+                "Transform": {
+                    "PositionX": 0.0,
+                    "PositionY": 0.0,
+                    "Rotation": 0.0,
+                    "ScaleX": 100.0,
+                    "ScaleY": 100.0
+                },
+                "PhysicsBody": {
+                    "VelocityX": 0.0,
+                    "VelocityY": 0.0,
+                    "RotationSpeed": 525.0,
+                    "Speed": 428.125,
+                    "Mass": 387.5,
+                    "IsStatic": false,
+                    "FrictionForce": 35.9379997253418
+                },
+                "HealthComponent": {
+                    "MaxHealth": 5
+                }
+            }
+        }, {
+            "Name": "WallPrefab",
+            "Type": "WallPrefab",
+            "Texture": "Wall3",
+            "UsingSprite": false,
+            "Components": {
+                "Collider": {
+                    "ColliderSizeX": 75.0,
+                    "ColliderSizeY": 75.0,
+                    "ColliderRotation": 0.0
+                },
+                "Transform": {
+                    "PositionX": 0.0,
+                    "PositionY": 0.0,
+                    "Rotation": 0.0,
+                    "ScaleX": 75.0,
+                    "ScaleY": 75.0
+                },
+                "PhysicsBody": {
+                    "VelocityX": 0.0,
+                    "VelocityY": 0.0,
+                    "RotationSpeed": 0.0,
+                    "Speed": 0.0,
+                    "Mass": 1000.0,
+                    "IsStatic": true,
+                    "FrictionForce": 0.0
+                }
+            }
+        }, {
+            "Name": "HeartPrefab",
+            "Type": "HeartPrefab",
+            "Texture": "Heart",
+            "UsingSprite": false,
+            "Components": {
+                "Transform": {
+                    "PositionX": 0.0,
+                    "PositionY": 0.0,
+                    "Rotation": 0.0,
+                    "ScaleX": 100.0,
+                    "ScaleY": 100.0
+                }
+            }
+        }]
+}
