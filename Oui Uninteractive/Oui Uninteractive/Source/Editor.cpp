@@ -12,6 +12,7 @@
 #include "Editor.h"
 #include "Collision.h"
 #include "Cheats.h"
+#include "HealthSystem.h"
 #define PI 3.141592653589793
 
  // Defining static variables
@@ -20,6 +21,7 @@ bool Editor::fileBrowserOpen;
 bool Editor::consoleEntered;
 bool Editor::itemDrag;
 bool Editor::gameWindowHover;
+bool Editor::mismatchPayload;
 Editor::SystemTime Editor::timeRecorder;
 
 std::vector<float> Editor::fpsData;
@@ -81,9 +83,11 @@ void UsingImGui::Init(GLFWwindow* glfwWindow, const char* glsl_vers) {
 
 	// Load fonts for editor
 	LoadFonts();
-
-	io.FontDefault = io.Fonts->Fonts[0];
-
+ 
+	if (!io.Fonts->Fonts.empty()) {
+		io.FontDefault = io.Fonts->Fonts[0];
+	}
+	
 	// Config Flags
 	io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
 	//io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;
@@ -95,10 +99,18 @@ void UsingImGui::Init(GLFWwindow* glfwWindow, const char* glsl_vers) {
 }
 
 
+/**************************************************************************
+* @brief This function loads fonts for use with ImGui Editor
+* @return void
+*************************************************************************/
 void UsingImGui::LoadFonts() {
 	ImGuiIO& io = ImGui::GetIO();
 	for (const auto& entry : std::filesystem::directory_iterator(FILEPATH_FONTS)) {
-		io.Fonts->AddFontFromFileTTF(entry.path().string().c_str(), 20.0f);
+		std::string extName = entry.path().extension().string();
+		std::transform(extName.begin(), extName.end(), extName.begin(), ::tolower);
+		if (extName == ".ttf" || extName == ".otf") {
+			io.Fonts->AddFontFromFileTTF(entry.path().string().c_str(), 20.0f);
+		}
 	}
 }
 
@@ -210,6 +222,11 @@ void Editor::Init() {
 	SetIconExtList();
 }
 
+
+/**************************************************************************
+* @brief This function loads fonts for use with ImGui Editor
+* @return void
+*************************************************************************/
 void Editor::SetFileFilters() {
 	fileFilterList.clear();
 	fileFilterList.insert(std::make_pair(FILEPATH_MASTER, L"All Files (*.*)\0*.*\0"));
@@ -223,6 +240,10 @@ void Editor::SetFileFilters() {
 }
 
 
+/**************************************************************************
+* @brief This function sets up the different file icons to be used with the various extension types
+* @return void
+*************************************************************************/
 void Editor::SetIconExtList() {
 	iconExtList.clear();
 	iconExtList.insert(std::make_pair(".ttf", "font_icon"));
@@ -354,7 +375,7 @@ void Editor::Update() {
 				}
 
 				if (buttonDown) {
-					tx->position = Vec2(mouseX, mouseY);
+					tx->position = Vec2(static_cast<float>(mouseX), static_cast<float>(mouseY));
 				}
 			}
 		}
@@ -378,14 +399,14 @@ void Editor::Update() {
 					Vec2 dir = edgePt - tx->position;
 					Vector2DNormalize(dir, dir);
 
-					float dp = Vector2DDotProduct(Vec2(mouseX, mouseY) - tx->position, Vec2(1, 0));
-					float mags = Vector2DLength(Vec2(mouseX, mouseY) - tx->position) * Vector2DLength(Vec2(1, 0));
+					float dp = Vector2DDotProduct(Vec2(static_cast<float>(mouseX), static_cast<float>(mouseY)) - tx->position, Vec2(1, 0));
+					float mags = Vector2DLength(Vec2(static_cast<float>(mouseX), static_cast<float>(mouseY)) - tx->position) * Vector2DLength(Vec2(1, 0));
 					float angle = acosf(dp / mags);
 					angle = angle * static_cast<float>((180.f / PI));
 					if (tx->rotation > 180.f) {
 						angle = 360.f - angle;
 					}
-					Vec2 mouseVec = Vector2DRotate(Vec2(mouseX, mouseY), -angle, Vec2(0,0));
+					Vec2 mouseVec = Vector2DRotate(Vec2(static_cast<float>(mouseX), static_cast<float>(mouseY)), -angle, Vec2(0,0));
 					
 					float displacement = (mouseVec.x - (tx->position.x + tx->scale.x / 2));
 					tx->scale.x += displacement;
@@ -414,14 +435,14 @@ void Editor::Update() {
 					Vec2 dir = edgePt - tx->position;
 					Vector2DNormalize(dir, dir);
 
-					float dp = Vector2DDotProduct(Vec2(mouseX, mouseY) - tx->position, Vec2(1, 0));
-					float mags = Vector2DLength(Vec2(mouseX, mouseY) - tx->position) * Vector2DLength(Vec2(1, 0));
+					float dp = Vector2DDotProduct(Vec2(static_cast<float>(mouseX), static_cast<float>(mouseY)) - tx->position, Vec2(1, 0));
+					float mags = Vector2DLength(Vec2(static_cast<float>(mouseX), static_cast<float>(mouseY)) - tx->position) * Vector2DLength(Vec2(1, 0));
 					float angle = acosf(dp / mags);
 					angle = angle * static_cast<float>((180.f / PI));
 					if (tx->rotation < 180.f) {
 						angle = 360.f - angle;
 					}
-					Vec2 mouseVec = Vector2DRotate(Vec2(mouseX, mouseY), 180 - angle, Vec2(0, 0));
+					Vec2 mouseVec = Vector2DRotate(Vec2(static_cast<float>(mouseX), static_cast<float>(mouseY)), 180 - angle, Vec2(0, 0));
 
 					if (mouseVec.x < (tx->position.x - tx->scale.x / 2)) {
 						tx->scale.x += abs((mouseVec.x - (tx->position.x - tx->scale.x / 2)));
@@ -455,14 +476,14 @@ void Editor::Update() {
 					Vec2 dir = edgePt - tx->position;
 					Vector2DNormalize(dir, dir);
 
-					float dp = Vector2DDotProduct(Vec2(mouseX, mouseY) - tx->position, Vec2(0, 1));
-					float mags = Vector2DLength(Vec2(mouseX, mouseY) - tx->position) * Vector2DLength(Vec2(0, 1));
+					float dp = Vector2DDotProduct(Vec2(static_cast<float>(mouseX), static_cast<float>(mouseY)) - tx->position, Vec2(0, 1));
+					float mags = Vector2DLength(Vec2(static_cast<float>(mouseX), static_cast<float>(mouseY)) - tx->position) * Vector2DLength(Vec2(0, 1));
 					float angle = acosf(dp / mags);
 					angle = angle * static_cast<float>((180 / PI));
 					if (tx->rotation > 180.f) {
 						angle = 360.f - angle;
 					}
-					Vec2 mouseVec = Vector2DRotate(Vec2(mouseX, mouseY), -angle, Vec2(0, 0));
+					Vec2 mouseVec = Vector2DRotate(Vec2(static_cast<float>(mouseX), static_cast<float>(mouseY)), -angle, Vec2(0, 0));
 					tx->scale.y += (mouseVec.y - (tx->position.y + tx->scale.y / 2));
 					if (tx->scale.y < 0) {
 						tx->scale.y = 0;
@@ -489,14 +510,14 @@ void Editor::Update() {
 					Vec2 dir = edgePt - tx->position;
 					Vector2DNormalize(dir, dir);
 
-					float dp = Vector2DDotProduct(Vec2(mouseX, mouseY) - tx->position, Vec2(0, 1));
-					float mags = Vector2DLength(Vec2(mouseX, mouseY) - tx->position) * Vector2DLength(Vec2(0, 1));
+					float dp = Vector2DDotProduct(Vec2(static_cast<float>(mouseX), static_cast<float>(mouseY)) - tx->position, Vec2(0, 1));
+					float mags = Vector2DLength(Vec2(static_cast<float>(mouseX), static_cast<float>(mouseY)) - tx->position) * Vector2DLength(Vec2(0, 1));
 					float angle = acosf(dp / mags);
 					angle = angle * static_cast<float>((180.f / PI));
 					if (tx->rotation < 180.f) {
 						angle = 360.f - angle;
 					}
-					Vec2 mouseVec = Vector2DRotate(Vec2(mouseX, mouseY),180 - angle, Vec2(0, 0));
+					Vec2 mouseVec = Vector2DRotate(Vec2(static_cast<float>(mouseX), static_cast<float>(mouseY)),180 - angle, Vec2(0, 0));
 					if (mouseVec.y < (tx->position.y - tx->scale.y / 2)) {
 						tx->scale.y += abs((mouseVec.y - (tx->position.y - tx->scale.y / 2)));
 					}
@@ -522,8 +543,8 @@ void Editor::Update() {
 					rotateMode = false;
 				}
 				if (buttonDown) {
-						float dp = Vector2DDotProduct(Vec2(mouseX, mouseY) - tx->position, Vec2(0,1));
-					float mags = Vector2DLength(Vec2(mouseX, mouseY) - tx->position) * Vector2DLength(Vec2(0,1));
+						float dp = Vector2DDotProduct(Vec2(static_cast<float>(mouseX), static_cast<float>(mouseY)) - tx->position, Vec2(0,1));
+					float mags = Vector2DLength(Vec2(static_cast<float>(mouseX), static_cast<float>(mouseY)) - tx->position) * Vector2DLength(Vec2(0,1));
 					float angle = acosf(dp / mags);
 					angle = angle * static_cast<float>((180.f / PI));
 					if (mouseX > tx->position.x) {
@@ -546,7 +567,10 @@ void Editor::Update() {
 /* ============================================
 	CREATING INDIVIDUAL DOCKABLE IMGUI PANELS
    ============================================ */
-
+/**************************************************************************
+* @brief This function renders the menu bar at the top of the window
+* @return void
+*************************************************************************/
 void Editor::CreateMenuBar() {
 	static bool showAssBrowserSettings = false;
 	static bool showPerformanceSettings = false;
@@ -573,10 +597,10 @@ void Editor::CreateMenuBar() {
 		//ImGui::SliderFloat("Icon Size", &iconSize, 32, 2048);
 		//ImGui::SliderFloat("Icon Padding", &iconPadding, 0, 128);
 		if (ImGui::SliderInt("Icon Size", &exp1, 5, 10)) {
-			EditorSettings::iconSize = std::powf(2.0f, exp1);
+			EditorSettings::iconSize = static_cast<int>(std::powf(2.0f, static_cast<float>(exp1)));
 		}
 		if (ImGui::SliderInt("Icon Padding", &exp2, 0, 10)) {
-			EditorSettings::iconPadding = std::powf(2.0f, exp2);
+			EditorSettings::iconPadding = static_cast<int>(std::powf(2.0f, static_cast<float>(exp2)));
 		}
 		ImGui::End();
 	}
@@ -611,7 +635,7 @@ void Editor::CreateMasterPanel() {
 	}
 
 
-	ImGui::SeparatorText("Scene controls");
+	ImGui::SeparatorText("Scene Controls");
 	static int selectedScene = 0;
 	static std::string sceneFileName;
 	// Render drop menu for scene file selector
@@ -628,7 +652,6 @@ void Editor::CreateMasterPanel() {
 		}
 		ImGui::EndCombo();
 	}
-	//std::cout << sceneFileName << std::endl;
 	// Save level to file
 	if (ImGui::Button("Save scene")) {
 		// Get rapidjson documents of tilemap and game objects
@@ -660,6 +683,8 @@ void Editor::CreateMasterPanel() {
 		tilemapLoader->LoadTilemap(sceneFileName);
 		objectFactory->BuildObjectFromFile(sceneFileName);
 		tilemapLoader->CreateGrid();
+		healthSys->ClearHealthbar();
+		healthSys->DrawHealthbar();
 	}
 
 	ImGui::End();
@@ -678,120 +703,82 @@ void Editor::CreateRenderWindow() {
 		gameWindowOrigin.second = static_cast<int>(ImGui::GetWindowPos().y);
 		gameWindowSize.first = static_cast<int>(ImGui::GetWindowSize().x);
 		gameWindowSize.second = static_cast<int>(ImGui::GetWindowSize().y);
+
 		// Get draw size of window
 		ImVec2 wsize = ImGui::GetWindowSize();
 		// Invert V from openGL
 		ImGui::Image(reinterpret_cast<ImTextureID>(static_cast<uintptr_t>(OpenGLObject::FrameTexture)), wsize, ImVec2(0.0f, 1.0f), ImVec2(1.0f, 0.0f)); // Replace thirdTexture with handle to FBO when graphics done rendering to FBO	
-		//// Setup drag and drop checks within window
-		//if (ImGui::BeginDragDropTarget()) {
-		//	if (selected != nullptr) {	// OBJECT IS SELECTED		
-		//		if (!selected->IsUsingSprite()) { // Selected object utilizes textures
-		//			if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("PAYLOAD_TEXTURE")) {
-		//				std::string dropTextureName = static_cast<const char*>(payload->Data);
-		//				selected->SetTexture(dropTextureName);		
-		//			}
-		//		}
-		//		else if (selected->IsUsingSprite()) { // Selected object utilizes sprites
-		//			if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("PAYLOAD_SPRITE")) {
-		//				std::string dropSpriteName = static_cast<const char*>(payload->Data);			
-		//				selected->SetTexture(dropSpriteName);
-		//			}
-		//			else if (!ImGui::IsDragDropPayloadBeingAccepted()) {
-		//				std::cout << "WRTONG PL";
-		//			}
-		//		}
-		//	}
-		//	else { // NO OBJECT SELECTED
-		//		if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("PAYLOAD_AUDIO_BGM")) {
-		//			std::string dropBGMName = static_cast<const char*>(payload->Data);
-		//			//std::cout << dropBGMName;
-		//			soundManager->StopAll();
-		//			soundManager->PlayBGM(dropBGMName);
-		//		}
-		//		if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("PAYLOAD_AUDIO_SFX")) {
-		//			std::string dropSFXName = static_cast<const char*>(payload->Data);
-		//			soundManager->PlaySFX(dropSFXName);
-		//		}
-		//	}
-		//	itemDrag = false;
-		//	ImGui::EndDragDropTarget();
-		//}
-
 
 		// Setup drag and drop checks within window
 		if (ImGui::BeginDragDropTarget()) {
 			const ImGuiPayload* payload = ImGui::GetDragDropPayload();
 			// OBJECT IS SELECTED
-			if (selected != nullptr) { 
+			if (selected != nullptr) {
 				if (!selected->IsUsingSprite()) { // Selected object utilizes textures
 					// Payload matches object type (Texture onto a texture)
-					if (payload->IsDataType("PAYLOAD_TEXTURE")) { 
-						std::string dropTextureName = static_cast<const char*>(payload->Data);
-						selected->SetTexture(dropTextureName);
+					if (payload->IsDataType("PAYLOAD_TEXTURE")) {
+						mismatchPayload = false;
+						if (const ImGuiPayload* droppedPayload = ImGui::AcceptDragDropPayload("PAYLOAD_TEXTURE")) {
+							std::string dropTextureName = static_cast<const char*>(droppedPayload->Data);
+							selected->SetTexture(dropTextureName);
+						}
 					} // Payload mismatch object type (Anything else onto a texture)
 					else {
 						// ERROR ICON IMPLEMENTATION
+						mismatchPayload = true;
 					}
 				}
 				else if (selected->IsUsingSprite()) { // Selected object utilizes sprites
 					// Payload matchers object type (Sprite onto a sprite)
 					if (payload->IsDataType("PAYLOAD_SPRITE")) {
-						std::string dropSpriteName = static_cast<const char*>(payload->Data);
-						selected->SetTexture(dropSpriteName);
+						mismatchPayload = false;
+						if (const ImGuiPayload* droppedPayload = ImGui::AcceptDragDropPayload("PAYLOAD_SPRITE")) {
+							std::string dropSpriteName = static_cast<const char*>(droppedPayload->Data);
+							selected->SetTexture(dropSpriteName);
+						}
 					} // Payload mismatch object type (Anything else onto a sprite)
 					else {
 						// ERROR ICON IMPLEMENTATION
+						mismatchPayload = true;
 					}
+				}
+				else if (payload->IsDataType("PAYLOAD_UNKNOWN")) {
+					mismatchPayload = true;					
 				}
 			}
 			else { // NO OBJECT SELECTED
 				if (payload->IsDataType("PAYLOAD_AUDIO_BGM")) {
-					std::string dropBGMName = static_cast<const char*>(payload->Data);
-					soundManager->StopAll();
-					soundManager->PlayBGM(dropBGMName);
+					mismatchPayload = false;
+					if (const ImGuiPayload* droppedPayload = ImGui::AcceptDragDropPayload("PAYLOAD_AUDIO_BGM")) {
+						std::string dropBGMName = static_cast<const char*>(droppedPayload->Data);
+						soundManager->StopAll();
+						soundManager->PlayBGM(dropBGMName);
+					}				
 				}
-				if (payload->IsDataType("PAYLOAD_AUDIO_SFX")) {
-					std::string dropSFXName = static_cast<const char*>(payload->Data);
-					soundManager->PlaySFX(dropSFXName);
+				else if (payload->IsDataType("PAYLOAD_AUDIO_SFX")) {
+					mismatchPayload = false;
+					if (const ImGuiPayload* droppedPayload = ImGui::AcceptDragDropPayload("PAYLOAD_AUDIO_SFX")) {
+						std::string dropSFXName = static_cast<const char*>(droppedPayload->Data);
+						soundManager->PlaySFX(dropSFXName);
+					}
+				}
+				else if (payload->IsDataType("PAYLOAD_SCENE")) {
+					mismatchPayload = false;
+					if (const ImGuiPayload* droppedPayload = ImGui::AcceptDragDropPayload("PAYLOAD_SCENE")) {
+						std::string dropSceneName = static_cast<const char*>(droppedPayload->Data);
+						sysManager->isPaused = false;
+						dropSceneName = FILEPATH_SCENES + "\\" + dropSceneName;
+						objectFactory->DestroyAllObjects();
+						tilemapLoader->LoadTilemap(dropSceneName);
+						objectFactory->BuildObjectFromFile(dropSceneName);
+						tilemapLoader->CreateGrid();
+					}
 				}
 			}
-
-
-			//if (selected != nullptr) {	// OBJECT IS SELECTED		
-			//	if (!selected->IsUsingSprite()) { // Selected object utilizes textures
-			//		if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("PAYLOAD_TEXTURE")) {
-			//			std::string dropTextureName = static_cast<const char*>(payload->Data);
-			//			selected->SetTexture(dropTextureName);
-			//		}
-			//	}
-			//	else if (selected->IsUsingSprite()) { // Selected object utilizes sprites
-			//		if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("PAYLOAD_SPRITE")) {
-			//			std::string dropSpriteName = static_cast<const char*>(payload->Data);
-			//			selected->SetTexture(dropSpriteName);
-			//		}
-			//		else if (!ImGui::IsDragDropPayloadBeingAccepted()) {
-			//			std::cout << "WRTONG PL";
-			//		}
-			//	}
-			//}
-			//else { // NO OBJECT SELECTED
-			//	if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("PAYLOAD_AUDIO_BGM")) {
-			//		std::string dropBGMName = static_cast<const char*>(payload->Data);
-			//		//std::cout << dropBGMName;
-			//		soundManager->StopAll();
-			//		soundManager->PlayBGM(dropBGMName);
-			//	}
-			//	if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("PAYLOAD_AUDIO_SFX")) {
-			//		std::string dropSFXName = static_cast<const char*>(payload->Data);
-			//		soundManager->PlaySFX(dropSFXName);
-			//	}
-			//}
 			itemDrag = false;
 			ImGui::EndDragDropTarget();
+
 		}
-
-
-	
 	}
 	ImGui::EndChild();
 	ImGui::End();
@@ -1058,9 +1045,6 @@ void Editor::CreatePrefabPanel() {
 		}
 	}
 
-
-
-
 	// Left Plane
 	{
 		ImGui::BeginChild("left pane", ImVec2(150, 0), true);
@@ -1185,9 +1169,7 @@ void Editor::CreatePrefabPanel() {
 			if (ImGui::Button("Delete Script")) {
 				tempLogicSet.erase(currentScriptIndex);
 				saveFlag = true;
-			}
-
-			
+			}		
 			LogicComponent* prefabLogic = GET_PREFAB_COMPONENT(copy[selectedName], LogicComponent, ComponentType::LOGICCOMPONENT);
 			if (prefabLogic != nullptr) {
 				if (initialized == false) {
@@ -1198,8 +1180,6 @@ void Editor::CreatePrefabPanel() {
 					ImGui::Text(logicSystem->scriptVec[*itLogic]->name.c_str());
 				}
 			}
-			
-
 		}
 		// Render Collider
 		if (ImGui::Checkbox("##Collider", &colliderFlag)) {
@@ -1233,8 +1213,6 @@ void Editor::CreatePrefabPanel() {
 			if (ImGui::InputInt("Max Health", &maxHp)) saveFlag = true;
 			ImGui::Unindent();
 		}
-
-
 		ImGui::EndChild();
 		ImGui::EndGroup();
 	}
@@ -1248,86 +1226,78 @@ void Editor::CreatePrefabPanel() {
 *************************************************************************/
 void Editor::CreateSoundPanel() {
 	ImGui::Begin("Sound Control Panel");
-	//if (ImGui::TreeNode("Tracks")) {
-	//	ImGui::SeparatorText("BGM");
-	//	static int bgmChoice = 0;
-	//	static float volValue = 1.0f, bgmVol1 = 1.0f, bgmVol2 = 1.0f;
-	//	bool pauseStatus1 = true, pauseStatus2 = true;
-
-	//	// Check pause status for bgmch1	
-	//	soundManager->bgmChannels[0]->getPaused(&pauseStatus1);
-	//	if (pauseStatus1) {
-	//		ImGui::PushStyleColor(ImGuiCol_Text, redColour); // Red if not playing	
-	//	}
-	//	else {
-	//		ImGui::PushStyleColor(ImGuiCol_Text, greenColour); // Green if playing
-	//	}
-	//	if (ImGui::RadioButton("BGM 1", &bgmChoice, 0)) { // On radio button 1 click
-	//		volValue = bgmVol1;
-	//	} ImGui::SameLine();
-	//	ImGui::PopStyleColor();
-
-	//	// Check pause status for bgmch2
-	//	soundManager->bgmChannels[1]->getPaused(&pauseStatus2);
-	//	if (pauseStatus2) {
-	//		ImGui::PushStyleColor(ImGuiCol_Text, redColour); // Red if not playing
-	//	}
-	//	else {
-	//		ImGui::PushStyleColor(ImGuiCol_Text, greenColour); // Green if playing
-	//	}
-	//	if (ImGui::RadioButton("BGM 2", &bgmChoice, 1)) { // On radio button 2 click
-	//		volValue = bgmVol2;
-	//	}
-	//	ImGui::PopStyleColor();
-
-	//	// On Volume slider click
-	//	if (ImGui::SliderFloat("Volume", &volValue, 0.0f, 1.0f, "%.2f")) {
-	//		if (bgmChoice == 0) {
-	//			bgmVol1 = volValue;
-	//		}
-	//		else if (bgmChoice == 1) {
-	//			bgmVol2 = volValue;
-	//		}
-	//		soundManager->bgmChannels[bgmChoice]->setVolume(volValue);
-	//	}
-	//	// On play button click
-	//	if (ImGui::Button("Play/Pause")) {
-	//		soundManager->PlayBGMSounds();
-	//		soundManager->TogglePlayChannel(soundManager->bgmChannels[bgmChoice]);
-	//	}
-
-	//	ImGui::SeparatorText("SFX");
-	//	static int sfxChoice = 0;
-	//	ImGui::RadioButton("SFX 1", &sfxChoice, 0); ImGui::SameLine();
-	//	ImGui::RadioButton("SFX 2", &sfxChoice, 1); ImGui::SameLine();
-	//	ImGui::RadioButton("SFX 3", &sfxChoice, 2);
-	if (ImGui::Button("PlaySFX1")) {
-		//soundManager->sfxChoice = sfxChoice;
-		//soundManager->PlaySFXSounds();
-		soundManager->PlaySFX("Gunshot.wav");
+	// Get copy of sound map
+	auto soundMap = assetManager.GetSoundMap();
+	// Do SFX stuff
+	auto& sfxSounds = soundMap[SoundManager::SoundType::SFX];
+	static std::string currSelectedSFX; 
+	if (ImGui::BeginCombo("SFX Sounds", currSelectedSFX.c_str())) {
+		for (const auto& soundPair : sfxSounds) {
+			bool isSelected = (currSelectedSFX == soundPair.first);
+			if (ImGui::Selectable(soundPair.first.c_str(), isSelected)) {
+				currSelectedSFX = soundPair.first;
+			}
+			// Set focus
+			if (isSelected) {
+				ImGui::SetItemDefaultFocus();
+			}
+		}
+		ImGui::EndCombo();
 	}
-	if (ImGui::Button("PlaySFX2")) {
-		//soundManager->sfxChoice = sfxChoice;
-		//soundManager->PlaySFXSounds();
-		soundManager->PlaySFX("Door.wav");
+	if (ImGui::Button("Start##SFX")) {
+		if (!currSelectedSFX.empty()) {
+			soundManager->PlayAdvanced(currSelectedSFX, SoundManager::SoundType::SFX, 0.7f, false, SoundManager::SG2);
+		}
 	}
-	if (ImGui::Button("PlayBGM")) {
-		//soundManager->sfxChoice = sfxChoice;
-		//soundManager->PlaySFXSounds();
-		soundManager->PlayBGM("Nightshift__BGM2_Loop_70bpm.wav");
+	ImGui::SameLine();
+	if (ImGui::Button("Pause##SFX")) {
+		soundManager->PauseGroup(SoundManager::SG2);
 	}
-	if (ImGui::Button("Pause All")) {
-		soundManager->PauseAll();
+	ImGui::SameLine();
+	if (ImGui::Button("Resume##SFX")) {
+		soundManager->ResumeGroup(SoundManager::SG2);
 	}
-	if (ImGui::Button("Resume All")) {
-		soundManager->ResumeAll();
+	ImGui::SameLine();
+	if (ImGui::Button("Stop##SFX")) {
+		soundManager->StopGroup(SoundManager::SG2);
+	}
+	
+	// Do BGM stuff
+	auto& bgmSounds = soundMap[SoundManager::SoundType::BGM];
+	static std::string currSelectedBGM;
+	if (ImGui::BeginCombo("BGM Sounds", currSelectedBGM.c_str())) {
+		for (const auto& soundPair : bgmSounds) {
+			bool isSelected = (currSelectedBGM == soundPair.first);
+			if (ImGui::Selectable(soundPair.first.c_str(), isSelected)) {
+				currSelectedBGM = soundPair.first;
+			}
+			// Set focus
+			if (isSelected) {
+				ImGui::SetItemDefaultFocus();
+			}
+		}
+		ImGui::EndCombo();
+	}
+	if (ImGui::Button("Start##BGM")) {
+		if (!currSelectedBGM.empty()) {
+			soundManager->PlayAdvanced(currSelectedBGM, SoundManager::SoundType::BGM, 1.0f, true, SoundManager::SG3);
+		}
+	}
+	ImGui::SameLine();
+	if (ImGui::Button("Pause##BGM")) {
+		soundManager->PauseGroup(SoundManager::SG3);
+	}
+	ImGui::SameLine();
+	if (ImGui::Button("Resume##BGM")) {
+		soundManager->ResumeGroup(SoundManager::SG3);
+	}
+	ImGui::SameLine();
+	if (ImGui::Button("Stop##BGM")) {
+		soundManager->StopGroup(SoundManager::SG3);
 	}
 	if (ImGui::Button("Stop All")) {
 		soundManager->StopAll();
 	}
-	//	ImGui::TreePop();
-	//}
-
 	ImGui::End();
 }
 
@@ -1789,13 +1759,12 @@ void Editor::CreateObjectList() {
 					ImGui::SameLine();
 					if (ImGui::CollapsingHeader("Health Component")) {
 						if (objectFactory->GetGameObjectByID(gameobjID)->Has(ComponentType::HEALTH) != -1) {
-							int maxHpTemp = GET_COMPONENT(objectFactory->GetGameObjectByID(gameobjID), HealthComponent, ComponentType::HEALTH)->maxHealth;
 							currentHp2 = GET_COMPONENT(objectFactory->GetGameObjectByID(gameobjID), HealthComponent, ComponentType::HEALTH)->currentHealth;
-							if (ImGui::SliderInt("Current Health", &maxHp2, 0, 50, "%d")) { // Slider for Current Health
+							if (ImGui::SliderInt("Current Health", &currentHp2, 1, maxHp2, "%d")) { // Slider for Current Health
 								GET_COMPONENT(objectFactory->GetGameObjectByID(gameobjID), HealthComponent, ComponentType::HEALTH)->currentHealth = currentHp2;
 							}
 							maxHp2 = GET_COMPONENT(objectFactory->GetGameObjectByID(gameobjID), HealthComponent, ComponentType::HEALTH)->maxHealth;
-							if (ImGui::SliderInt("Max Health", &maxHp2, 0, 50, "%d")) { // Slider for Max Health
+							if (ImGui::SliderInt("Max Health", &maxHp2, 1, 10, "%d")) { // Slider for Max Health
 								GET_COMPONENT(objectFactory->GetGameObjectByID(gameobjID), HealthComponent, ComponentType::HEALTH)->maxHealth = maxHp2;
 							}
 						}
@@ -1806,13 +1775,9 @@ void Editor::CreateObjectList() {
 					ImGui::Unindent();
 				}
 			}
-
 			ImGui::Separator();
 		}
-
-
 		ImGui::EndChild();
-
 		ImGui::EndGroup();
 	}
 	ImGui::End();
@@ -1833,6 +1798,7 @@ void Editor::CreateAssetBrowser() {
 
 	if (ImGui::InputText("##FilePath", &browserInputPath, ImGuiInputTextFlags_EnterReturnsTrue) || (ImGui::SameLine(), ImGui::Button("Go")) || browserDoubleClicked) {  // Enter if "enter" is pressed
 		browserSelectedItem = "";
+		mismatchPayload = false;
 		if (std::filesystem::exists(browserInputPath) && std::filesystem::is_directory(browserInputPath)) {
 			currFilePath = browserInputPath;
 			validPath = true;
@@ -1844,10 +1810,10 @@ void Editor::CreateAssetBrowser() {
 		}
 		browserDoubleClicked = false;
 	}
-
 	ImGui::SameLine();
 	if (ImGui::Button("Back")) {
 		browserSelectedItem = "";
+		mismatchPayload = false;
 		std::filesystem::path temp = currFilePath;
 		if (std::filesystem::exists(temp) && temp.string() != FILEPATH_MASTER) {
 			browserInputPath = temp.parent_path().string();
@@ -1861,10 +1827,15 @@ void Editor::CreateAssetBrowser() {
 		browserInputPath = FILEPATH_MASTER;
 		currFilePath = browserInputPath;
 		browserSelectedItem = "";
+		mismatchPayload = false;
 		validPath = true;
 	}
 
 	ImGui::SameLine();
+	if (ImGui::Button("Reload")) {
+		assetManager.ReloadAll();
+	}
+
 	ImGui::Spacing();
 	if (ImGui::Button("Add File")) {	
 		// Get absolute path of working directory
@@ -1899,11 +1870,12 @@ void Editor::CreateAssetBrowser() {
 			}
 			else {
 				MessageBox(hwnd, L"Error adding file to folder: Souce file does not exist!", L"Failure", MB_OK | MB_ICONERROR);
-			}
+			}	
+			// Rset working directory to the project folder
+			std::filesystem::current_path(exePath);
+			assetManager.ReloadAll();
 		}
-		fileBrowserOpen = false;
-		// Rset working directory to the project folder
-		std::filesystem::current_path(exePath);
+		fileBrowserOpen = false;	
 	}
 
 	ImGui::SameLine();
@@ -1915,7 +1887,6 @@ void Editor::CreateAssetBrowser() {
 		ImGui::SameLine();
 		HelpMarker("Drag and drop assets to load onto selected object");
 	}
-
 
 	if (ImGui::BeginPopupModal("NO TAKEBACKS", NULL, ImGuiWindowFlags_AlwaysAutoResize)) {
 		static std::string msg("Are you sure you want to delete the selected item:\n\n" + browserSelectedItem);
@@ -1961,8 +1932,6 @@ void Editor::CreateAssetBrowser() {
 		ImGui::PopStyleColor();
 	}
 	ImGui::EndChild();
-
-
 	ImGui::End();
 }
 
@@ -1979,7 +1948,7 @@ void Editor::CreateDebugPanel() {
 		static std::map<std::string, float> sysTimeAccumulators;
 		static std::vector<std::pair<std::string, float>> avgSysTimes;
 		static int sysTimeSampleCount = 0;
-		int sampleCounter = EditorSettings::dataAvgPeriod * 60;
+		//int sampleCounter = EditorSettings::dataAvgPeriod * 60;
 		static std::vector<float> fpsSamples;
 		static float timeAccumulator = 0.0f;
 		// Record system times
@@ -2060,12 +2029,11 @@ void Editor::CreateDebugPanel() {
 		}
 
 		static ImPlotPieChartFlags flags = 0;
-		// Draw pie chart
-		
+		// Draw pie chart	
 		if (ImPlot::BeginPlot("##PieSystemTime", ImVec2(ImGui::GetWindowWidth(), 250), ImPlotFlags_Equal | ImPlotFlags_NoMouseText)) {
 			ImPlot::SetupAxes(nullptr, nullptr, ImPlotAxisFlags_NoDecorations, ImPlotAxisFlags_NoDecorations);
 			ImPlot::SetupAxesLimits(0, 1, 0, 1);
-			ImPlot::PlotPieChart(chartLabels.data(), data.data(), data.size(), 0.5, 0.5, 0.4, "%.2f", 90, flags);
+			ImPlot::PlotPieChart(chartLabels.data(), data.data(), static_cast<int>(data.size()), 0.5, 0.5, 0.4, "%.2f", 90, flags);
 			ImPlot::EndPlot();
 		}	
 
@@ -2123,10 +2091,14 @@ void Editor::CreateDebugPanel() {
 }
 
 
-
+/**************************************************************************
+* @brief This function renders file directories
+* @param[in] filePath - Current file path of the asset browser
+* @return void
+*************************************************************************/
 void Editor::RenderDirectoryV2(const std::string& filePath) {
 	// Calculate how many icons per column
-	float gridSize = EditorSettings::iconSize + EditorSettings::iconPadding;
+	float gridSize = static_cast<float>(EditorSettings::iconSize + EditorSettings::iconPadding);
 	ImVec2 panelSize = ImGui::GetContentRegionAvail();
 	int colCount = static_cast<int>(panelSize.x / gridSize);
 	if (colCount < 1) {
@@ -2142,8 +2114,11 @@ void Editor::RenderDirectoryV2(const std::string& filePath) {
 		std::string texNameWithoutExt = entry.path().stem().string();
 		// Set correct icons
 		ImTextureID iconTexture = nullptr;
-		if (isDirectory) { // For folders
+		if (isDirectory && entry.path().string() != FILEPATH_TRASHBIN) { // For folders
 			iconTexture = reinterpret_cast<ImTextureID>(static_cast<uintptr_t>(assetManager.GetTexture("folder_icon")));
+		}
+		else if (isDirectory && entry.path().string() == FILEPATH_TRASHBIN) { // For trash folder
+			iconTexture = reinterpret_cast<ImTextureID>(static_cast<uintptr_t>(assetManager.GetTexture("trash_icon")));
 		}
 		else { // Non-folder icons
 			// For image files
@@ -2187,28 +2162,40 @@ void Editor::RenderDirectoryV2(const std::string& filePath) {
 		}
 
 		// Render button
-		ImGui::ImageButton(iconTexture, ImVec2(EditorSettings::iconSize, EditorSettings::iconSize));
+		ImGui::ImageButton(iconTexture, ImVec2(static_cast<float>(EditorSettings::iconSize), static_cast<float>(EditorSettings::iconSize)));
 
 		
 		// Set Drag Source
-		if (ImGui::BeginDragDropSource(ImGuiDragDropFlags_None)) {			
+		if (ImGui::BeginDragDropSource(ImGuiDragDropFlags_None)) {
 			itemDrag = true;
-			if (filePath == FILEPATH_TEXTURES) {			 		
+			if (filePath == FILEPATH_TEXTURES) {
 				// Set payload type
-				ImGui::SetDragDropPayload("PAYLOAD_TEXTURE", texNameWithoutExt.c_str(), texNameWithoutExt.size() + 1);					
+				ImGui::SetDragDropPayload("PAYLOAD_TEXTURE", texNameWithoutExt.c_str(), texNameWithoutExt.size() + 1);
 			}
-			if (filePath == FILEPATH_SPRITES) {
+			else if (filePath == FILEPATH_SPRITES) {
 				// Set payload type
-				ImGui::SetDragDropPayload("PAYLOAD_SPRITE", texNameWithoutExt.c_str(), texNameWithoutExt.size() + 1);			
+				ImGui::SetDragDropPayload("PAYLOAD_SPRITE", texNameWithoutExt.c_str(), texNameWithoutExt.size() + 1);
 			}
-			if (filePath == FILEPATH_SOUNDS_BGM) {
+			else if (filePath == FILEPATH_SOUNDS_BGM) {
 				ImGui::SetDragDropPayload("PAYLOAD_AUDIO_BGM", browserSelectedItem.c_str(), browserSelectedItem.size() + 1);
 			}
-			if (filePath == FILEPATH_SOUNDS_SFX) {
+			else if (filePath == FILEPATH_SOUNDS_SFX) {
 				ImGui::SetDragDropPayload("PAYLOAD_AUDIO_SFX", browserSelectedItem.c_str(), browserSelectedItem.size() + 1);
 			}
+			/*else if (filePath == FILEPATH_SCENES) {
+				ImGui::SetDragDropPayload("PAYLOAD_SCENE", browserSelectedItem.c_str(), browserSelectedItem.size() + 1);
+			}*/
+			else if (filePath == FILEPATH_FONTS) {
+				ImGui::SetDragDropPayload("PAYLOAD_FONT", browserSelectedItem.c_str(), browserSelectedItem.size() + 1);
+			}
+			else {
+				ImGui::SetDragDropPayload("PAYLOAD_UNKNOWN", browserSelectedItem.c_str(), browserSelectedItem.size() + 1);
+			}
 			// Display held item
-			ImGui::Image(iconTexture, ImVec2(EditorSettings::iconSize / 4, EditorSettings::iconSize / 4));
+			if (mismatchPayload) {
+				iconTexture = reinterpret_cast<ImTextureID>(static_cast<uintptr_t>(assetManager.GetTexture("error_icon")));
+			}
+			ImGui::Image(iconTexture, ImVec2(static_cast<float>(EditorSettings::iconSize / 4), static_cast<float>(EditorSettings::iconSize / 4)));
 			ImGui::EndDragDropSource();
 		}
 			
@@ -2244,7 +2231,10 @@ void Editor::RenderDirectoryV2(const std::string& filePath) {
 	ImGui::Columns(1);
 }
 
-
+/**************************************************************************
+* @brief This function renders console panel used to enter commands and cheat codes
+* @return void
+*************************************************************************/
 void Editor::CreateConsolePanel() {
 	ImGui::Begin("Console");
 

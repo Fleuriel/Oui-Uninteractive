@@ -23,6 +23,7 @@
  *			- DestroyAllObjects
  *			- GetGameObjectByID
  *			- GetGameObjectByName
+ *			- GetGameObjectByType
  *			- GetGameObjectIDMap
  *			- GetPrefabMap
  *			- AddComponentFactory

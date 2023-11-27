@@ -13,13 +13,17 @@ class PauseMenuLogic : public IScript {
 			
 		}
 		void Update(size_t gameObjectID) {
+		
 			if (sysManager->isPaused) {
 				double mouseX; // = io.MousePos.x;
 				double mouseY; // = io.MousePos.y;
+				glfwGetCursorPos(windowNew, &mouseX, &mouseY);				
+				background.SetBackGround(assetManager.GetTexture("GreenBG1920"));
+				if (Editor::editorOn)
+					OpenGLObject::FrameBufferMouseCoords(windowNew, &mouseX, &mouseY, OpenGLObject::cameraObject);
+				else
+					OpenGLObject::windowMouseCoords(windowNew, &mouseX, &mouseY, OpenGLObject::cameraObject);
 
-				glfwGetCursorPos(windowNew, &mouseX, &mouseY);
-				background.SetBackGround(assetManager.GetTexture("DefeatScreen"));
-				OpenGLObject::FrameBufferMouseCoords(windowNew, &mouseX, &mouseY, OpenGLObject::cameraObject);
 				GameObject* gObj = objectFactory->GetGameObjectByID(gameObjectID);
 				if (gObj != nullptr) {
 					Transform* tx = GET_COMPONENT(gObj, Transform, ComponentType::TRANSFORM);
@@ -27,10 +31,15 @@ class PauseMenuLogic : public IScript {
 						if (gObj->GetType() == "PauseMenu") {
 							if (gObj->GetName() == "Resume") {
 								//position game object in camera
-								tx->position = Vec2(OpenGLObject::cameraObject.posX - Editor::gameWindowSize.first / 4.f, OpenGLObject::cameraObject.posY);
+								tx->scale = Vec2(windowSize.first / 4.f, windowSize.second / 8.f);
+								tx->position = Vec2(-windowSize.first/4.f ,0);
+								fontManager->RenderText("Valoon.ttf", "Resume Game", tx->position.x + windowSize.first/16.f, tx->position.y, 1.0f, glm::vec3(0.4, 0.7, 0.9));
+
 							}
 							else if (gObj->GetName() == "Quit") {
-								tx->position = Vec2(OpenGLObject::cameraObject.posX + Editor::gameWindowSize.first / 4.f , OpenGLObject::cameraObject.posY);
+								tx->scale = Vec2(windowSize.first / 4.f, windowSize.second / 8.f);
+								tx->position = Vec2(windowSize.first / 4.f, 0);
+								fontManager->RenderText("Valoon.ttf", "Quit Game", tx->position.x - windowSize.first / 16.f, tx->position.y, 1.0f, glm::vec3(0.4, 0.7, 0.9));
 							}
 						}
 						if (inputSystem.GetMouseState(GLFW_MOUSE_BUTTON_1) && CollisionPointRotateRect(tx->position, tx->scale.x, tx->scale.y, mouseX, mouseY, tx->rotation)) {

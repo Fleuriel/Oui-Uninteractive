@@ -92,7 +92,7 @@ int main(){
 			bool released = false;
 			// Acquire Time Updates, setup for deltaTime
 			// For FPS, DeltaTime and Runtime
-			if (inputSystem.GetKeyState(GLFW_KEY_T)) {
+			if (inputSystem.GetKeyState(GLFW_KEY_ESCAPE)) {
 				buttonDown = true;	
 			}
 			else {

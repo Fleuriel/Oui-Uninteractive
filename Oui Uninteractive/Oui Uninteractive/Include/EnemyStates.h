@@ -15,6 +15,7 @@
 
 #include "IState.h"
 #include "BFS.h"
+#include "Vector2D.h"
 
 extern std::pair<int, int> windowSize;
 
@@ -61,6 +62,11 @@ public:
 class EnemyAttack : public IState {
 private:
 	bool transitioned;
+	size_t bulletNumber;
+	Vec2 bulletSpawnPos;
+	float bulletSpawnAngle;
+	float bulletSpawnOffset;
+	float shootingInterval;
 
 public:
 	/**************************************************************************

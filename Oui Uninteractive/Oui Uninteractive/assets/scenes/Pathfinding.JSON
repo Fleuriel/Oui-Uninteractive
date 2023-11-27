@@ -12,7 +12,7 @@
     ],
     "ObjectCount": 2,
     "Objects": [{
-            "Name": "JSONPlayer",
+            "Name": "Player",
             "Type": "Player",
             "Texture": "Player",
             "UsingSprite": true,
@@ -21,7 +21,7 @@
                     "VelocityX": 0.0,
                     "VelocityY": 0.0,
                     "RotationSpeed": 200.0,
-                    "Speed": 120.0,
+                    "Speed": 60.0,
                     "Mass": 10.0,
                     "IsStatic": false,
                     "FrictionForce": 20.0
@@ -79,7 +79,7 @@
                     "AggroRange": 250.0
                 },                
                 "HealthComponent": {
-                    "MaxHealth": 15
+                    "MaxHealth": 5
                 }
             }
         }]

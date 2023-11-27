@@ -120,7 +120,7 @@ void OpenGLApplication::OpenGLWindowInit() {
 		return;
 	}
 
-	//toggleFullScreen();
+	toggleFullScreen();
 
 	// Tell GLFW we are using OpenGL 4.5
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
@@ -252,6 +252,13 @@ void OpenGLApplication::OpenGLUpdate() {
 		triggerEveryQuarterSecond += static_cast<float>(GetDT());
 		if (triggerEveryQuarterSecond >= 0.25) {
 			spritecol++;
+			if (objectFactory->GetGameObjectByName("JSONPlayer") != nullptr) {
+				if (Vector2DLength(GET_COMPONENT(objectFactory->GetGameObjectByName("JSONPlayer"), PhysicsBody, ComponentType::PHYSICS_BODY)->velocity) > 20) {
+					soundManager->PlaySFX("Johnson_Concrete_Footsteps_5.wav");
+
+				}
+			}
+					
 			if (spritecol >= 6)
 				spritecol = 0;
 			triggerEveryQuarterSecond = 0;
@@ -262,12 +269,14 @@ void OpenGLApplication::OpenGLUpdate() {
 	// Start time profiling for grpahics system
 	//TimeProfiler profiler(Editor::timeRecorder.graphicsTime);
 	// End the Game.
-	if (inputSystem.GetKeyState(GLFW_KEY_ESCAPE)) {
-		// set the window to CLOSE.
-		glfwSetWindowShouldClose(windowNew, GLFW_TRUE);
-		// Set game state to quit to exit the while loop
-		sceneManager->nextSceneID = STATE_QUIT;
-	}
+
+	//if (inputSystem.GetKeyState(GLFW_KEY_ESCAPE)) {
+	//	// set the window to CLOSE.
+	//	glfwSetWindowShouldClose(windowNew, GLFW_TRUE);
+	//	// Set game state to quit to exit the while loop
+	//	sceneManager->nextSceneID = STATE_QUIT;
+	//}
+
 	//glBindFramebuffer(GL_FRAMEBUFFER, OpenGLObject::FBO);
 
 
@@ -294,7 +303,18 @@ void OpenGLApplication::OpenGLUpdate() {
 	double MouseX, MouseY;
 
 	// Change the position of mouse coordinates to frame buffer coordinates.
-	OpenGLObject::FrameBufferMouseCoords(windowNew, &xpos, &ypos, OpenGLObject::cameraObject);
+	if (Editor::editorOn)
+	{
+		OpenGLObject::FrameBufferMouseCoords(windowNew, &xpos, &ypos, OpenGLObject::cameraObject);
+	}
+	else
+	{
+		OpenGLObject::windowMouseCoords(windowNew, &xpos, &ypos, OpenGLObject::cameraObject);
+	}
+	
+
+	//std::cout << "mousePos " << xpos << "\t" << ypos << '\n';
+
 	MouseX = xpos;
 	MouseY = ypos;
 
@@ -321,58 +341,58 @@ void OpenGLApplication::OpenGLUpdate() {
 
 
 	// Create Object using SPACE. with tag ID of 2.
-	if (inputSystem.GetKeyState(GLFW_KEY_SPACE) == 1) {
-		// Create Object Tag ID , 2
-		OpenGLObject newObject(2);
-
-#ifdef _DEBUG
-		std::cout << "Tag ID: " << newObject.TagID << '\n';
-#endif
-		// Init Objects
-		newObject.InitObjects();
-
-		// Emplace back into the container.
-		objects.emplace_back(newObject);
-
-	}
+//	if (inputSystem.GetKeyState(GLFW_KEY_SPACE) == 1) {
+//		// Create Object Tag ID , 2
+//		OpenGLObject newObject(2);
+//
+//#ifdef _DEBUG
+//		std::cout << "Tag ID: " << newObject.TagID << '\n';
+//#endif
+//		// Init Objects
+//		newObject.InitObjects();
+//
+//		// Emplace back into the container.
+//		objects.emplace_back(newObject);
+//
+//	}
 	// Create Object using R-SHIFT, with tag ID of 1.
-	if (inputSystem.GetKeyState(GLFW_KEY_RIGHT_SHIFT) == 1) {
-		OpenGLObject newObject1(1);
-#ifdef _DEBUG
-		std::cout << "Tag ID: " << newObject1.TagID << '\n';
-#endif
+//	if (inputSystem.GetKeyState(GLFW_KEY_RIGHT_SHIFT) == 1) {
+//		OpenGLObject newObject1(1);
+//#ifdef _DEBUG
+//		std::cout << "Tag ID: " << newObject1.TagID << '\n';
+//#endif
+//
+//		newObject1.InitObjects();
+//
+//		// Emplace back into the container.
+//		objects.emplace_back(newObject1);
+//	}
 
-		newObject1.InitObjects();
-
-		// Emplace back into the container.
-		objects.emplace_back(newObject1);
-	}
-
-	if (inputSystem.GetKeyState(GLFW_KEY_LEFT_SHIFT) == 1) {
-		OpenGLObject newObject1(4);
-#ifdef _DEBUG
-		std::cout << "Tag ID: " << newObject1.TagID << '\n';
-#endif
-
-		newObject1.InitObjects();
-
-		// Emplace back into the container.
-		objects.emplace_back(newObject1);
-	}
+//	if (inputSystem.GetKeyState(GLFW_KEY_LEFT_SHIFT) == 1) {
+//		OpenGLObject newObject1(4);
+//#ifdef _DEBUG
+//		std::cout << "Tag ID: " << newObject1.TagID << '\n';
+//#endif
+//
+//		newObject1.InitObjects();
+//
+//		// Emplace back into the container.
+//		objects.emplace_back(newObject1);
+//	}
 
 	// Moves Object left. can add positionY to change as well.
-	if (inputSystem.GetKeyState(GLFW_KEY_KP_4) == 2) {
-		positionX-= 5;
-	}
-	if (inputSystem.GetKeyState(GLFW_KEY_KP_6) == 2) {
-		positionX+= 5;
-	}
-	if (inputSystem.GetKeyState(GLFW_KEY_KP_8) == 2) {
-		positionY+= 5;
-	}
-	if (inputSystem.GetKeyState(GLFW_KEY_KP_2) == 2) {
-		positionY-= 5;
-	}
+	//if (inputSystem.GetKeyState(GLFW_KEY_4) == 2) {
+	//	positionX-= 5;
+	//}
+	//if (inputSystem.GetKeyState(GLFW_KEY_3) == 2) {
+	//	positionX+= 5;
+	//}
+	//if (inputSystem.GetKeyState(GLFW_KEY_2) == 2) {
+	//	positionY+= 5;
+	//}
+	//if (inputSystem.GetKeyState(GLFW_KEY_1) == 2) {
+	//	positionY-= 5;
+	//}
 
 
 //	std::cout << positionX << positionY << '\n';
@@ -584,8 +604,6 @@ void OpenGLApplication::OpenGLUpdate() {
 				min = colliderSys->colliderMap[gameobjID]->boundingbox->min;
 
 
-
-
 				GET_COMPONENT(objectFactory->GetGameObjectByID(gameobjID), Transform, ComponentType::TRANSFORM)->shape->DrawCollisionBox(min, max);
 			}
 		}
@@ -594,8 +612,8 @@ void OpenGLApplication::OpenGLUpdate() {
 
 	UpdateAnimationTimers();
 	UpdateAnimation();
-	fontManager->RenderText("Next_Sunday.ttf", "The quick brown fox jumps over the lazy dog.", 100, 200, 1.0f, glm::vec3(236.0f/255.0f, 1.0f, 220.0f/255.0f));
-	fontManager->RenderText("Valoon.ttf", "0123456789 .:,; '\" (!?) +-*/ = ", 100, 100, 1.0f, glm::vec3(0.4, 0.7, 0.9));
+	//fontManager->RenderText("Next_Sunday.ttf", "The quick brown fox jumps over the lazy dog.", -400, -200, 1.0f, glm::vec3(236.0f/255.0f, 1.0f, 220.0f/255.0f));
+	//fontManager->RenderText("Valoon.ttf", "0123456789 .:,; '\" (!?) +-*/ = ", 0, 0, 1.0f, glm::vec3(0.4, 0.7, 0.9));
 	Draw();
 	particleSystem.Draw();
 
@@ -710,7 +728,10 @@ void OpenGLApplication::OpenGLWindowResizeCallback(GLFWwindow* window2, int widt
 	// Update the window dimensions once changed
 	// set callback for the window size
 	glViewport(0, 0, width, height);
-	Editor::gameWindowSize.first = width;
-	Editor::gameWindowSize.second = height;
+	//Editor::gameWindowSize.first = width;
+	//Editor::gameWindowSize.second = height;
+
+	windowSize.first = width;
+	windowSize.second = height;
 
 }

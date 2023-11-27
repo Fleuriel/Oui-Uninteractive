@@ -165,10 +165,38 @@ bool AssetManager::LoadTextures() {
                     // Convert std::string to std::wstring
                     std::wstring widefilepath(filepath.begin(), filepath.end());
 
-                    std::wstring message = L"Incompatible file \"" + widefile + L"\" detected in \"" + widefilepath + L"\" folder!\n\nFile not loaded!";
+                    std::wstring message = L"Incompatible file \"" + widefile + L"\" detected in \"" + widefilepath + L"\" folder!\n\nFile moved to trash bin!";
                     LPCWSTR boxMessage = message.c_str();
 
                     MessageBox(hwnd, boxMessage, L"Load Failure", MB_OK | MB_ICONERROR);
+
+                    // Construct the full destination path including the file name
+                    fs::path destinationPath = FILEPATH_TRASHBIN / entry.path().filename();
+                    fs::path trashbin = FILEPATH_TRASHBIN;
+
+                    if (!fs::exists(trashbin))
+                        fs::create_directory(trashbin);
+
+                    if (fs::exists(destinationPath)) {
+                        int counter = 1;
+                        std::string nameWithoutExtension = entry.path().stem().string();
+                        std::string Extension = entry.path().extension().string();
+
+                        std::string addstr = nameWithoutExtension + "(" + std::to_string(counter) + ")" + Extension;
+
+                        fs::path finalDestination = trashbin / addstr;
+
+                        while (fs::exists(finalDestination)) {
+                            counter++;
+                            addstr = nameWithoutExtension + "(" + std::to_string(counter) + ")" + Extension;
+                            finalDestination = trashbin / addstr;
+                        }
+
+                        fs::rename(entry.path(), finalDestination);
+                    }
+                    else {
+                        fs::rename(entry.path(), destinationPath);
+                    }
 
                     continue;
                 }
@@ -536,10 +564,38 @@ bool AssetManager::LoadSprites() {
                     // Convert std::string to std::wstring
                     std::wstring widefilepath(filepath.begin(), filepath.end());
 
-                    std::wstring message = L"Incompatible file \"" + widefile + L"\" detected in \"" + widefilepath + L"\" folder!\n\nFile not loaded!";
+                    std::wstring message = L"Incompatible file \"" + widefile + L"\" detected in \"" + widefilepath + L"\" folder!\n\nFile moved to trash bin!";
                     LPCWSTR boxMessage = message.c_str();
 
                     MessageBox(hwnd, boxMessage, L"Load Failure", MB_OK | MB_ICONERROR);
+
+                    // Construct the full destination path including the file name
+                    fs::path destinationPath = FILEPATH_TRASHBIN / entry.path().filename();
+                    fs::path trashbin = FILEPATH_TRASHBIN;
+
+                    if (!fs::exists(trashbin))
+                        fs::create_directory(trashbin);
+
+                    if (fs::exists(destinationPath)) {
+                        int counter = 1;
+                        std::string nameWithoutExtension = entry.path().stem().string();
+                        std::string Extension = entry.path().extension().string();
+
+                        std::string addstr = nameWithoutExtension + "(" + std::to_string(counter) + ")" + Extension;
+
+                        fs::path finalDestination = trashbin / addstr;
+
+                        while (fs::exists(finalDestination)) {
+                            counter++;
+                            addstr = nameWithoutExtension + "(" + std::to_string(counter) + ")" + Extension;
+                            finalDestination = trashbin / addstr;
+                        }
+
+                        fs::rename(entry.path(), finalDestination);
+                    }
+                    else {
+                        fs::rename(entry.path(), destinationPath);
+                    }
 
                     continue;
                 }
@@ -714,10 +770,38 @@ bool AssetManager::LoadBGM() {
                 // Convert std::string to std::wstring
                 std::wstring widefilepath(filepath.begin(), filepath.end());
 
-                std::wstring message = L"Incompatible file \"" + widefile + L"\" detected in \"" + widefilepath + L"\" folder!\n\nFile not loaded!";
+                std::wstring message = L"Incompatible file \"" + widefile + L"\" detected in \"" + widefilepath + L"\" folder!\n\nFile moved to trash bin!";
                 LPCWSTR boxMessage = message.c_str();
 
                 MessageBox(hwnd, boxMessage, L"Load Failure", MB_OK | MB_ICONERROR);
+
+                // Construct the full destination path including the file name
+                fs::path destinationPath = FILEPATH_TRASHBIN / entry.path().filename();
+                fs::path trashbin = FILEPATH_TRASHBIN;
+
+                if (!fs::exists(trashbin))
+                    fs::create_directory(trashbin);
+
+                if (fs::exists(destinationPath)) {
+                    int counter = 1;
+                    std::string nameWithoutExtension = entry.path().stem().string();
+                    std::string Extension = entry.path().extension().string();
+
+                    std::string addstr = nameWithoutExtension + "(" + std::to_string(counter) + ")" + Extension;
+
+                    fs::path finalDestination = trashbin / addstr;
+
+                    while (fs::exists(finalDestination)) {
+                        counter++;
+                        addstr = nameWithoutExtension + "(" + std::to_string(counter) + ")" + Extension;
+                        finalDestination = trashbin / addstr;
+                    }
+
+                    fs::rename(entry.path(), finalDestination);
+                }
+                else {
+                    fs::rename(entry.path(), destinationPath);
+                }
 
                 continue;
             }
@@ -780,10 +864,38 @@ bool AssetManager::LoadSFX() {
                 // Convert std::string to std::wstring
                 std::wstring widefilepath(filepath.begin(), filepath.end());
 
-                std::wstring message = L"Incompatible file \"" + widefile + L"\" detected in \"" + widefilepath + L"\" folder!\n\nFile not loaded!";
+                std::wstring message = L"Incompatible file \"" + widefile + L"\" detected in \"" + widefilepath + L"\" folder!\n\nFile moved to trash bin!";
                 LPCWSTR boxMessage = message.c_str();
 
                 MessageBox(hwnd, boxMessage, L"Load Failure", MB_OK | MB_ICONERROR);
+
+                // Construct the full destination path including the file name
+                fs::path destinationPath = FILEPATH_TRASHBIN / entry.path().filename();
+                fs::path trashbin = FILEPATH_TRASHBIN;
+
+                if (!fs::exists(trashbin))
+                    fs::create_directory(trashbin);
+
+                if (fs::exists(destinationPath)) {
+                    int counter = 1;
+                    std::string nameWithoutExtension = entry.path().stem().string();
+                    std::string Extension = entry.path().extension().string();
+
+                    std::string addstr = nameWithoutExtension + "(" + std::to_string(counter) + ")" + Extension;
+
+                    fs::path finalDestination = trashbin / addstr;
+
+                    while (fs::exists(finalDestination)) {
+                        counter++;
+                        addstr = nameWithoutExtension + "(" + std::to_string(counter) + ")" + Extension;
+                        finalDestination = trashbin / addstr;
+                    }
+
+                    fs::rename(entry.path(), finalDestination);
+                }
+                else {
+                    fs::rename(entry.path(), destinationPath);
+                }
 
                 continue;
             }
@@ -920,6 +1032,17 @@ bool AssetManager::ReloadSFX() {
 }
 
 /**************************************************************************
+ * @brief Getter for the sound asset map
+ *
+ * This function gets the sound asset map.
+ *
+ * @return Map of the sound assets.
+ *************************************************************************/
+std::map<SoundManager::SoundType, std::map<std::string, FMOD::Sound*>> AssetManager::GetSoundMap() {
+    return assetManager.soundMap;
+}
+
+/**************************************************************************
  * @brief Reloads all sound resources, including BGM and SFX.
  *
  * This function unloads and reloads all sound resources, including background
@@ -980,10 +1103,38 @@ bool AssetManager::LoadFonts() {
                 // Convert std::string to std::wstring
                 std::wstring widefilepath(filepath.begin(), filepath.end());
 
-                std::wstring message = L"Incompatible file \"" + widefile + L"\" detected in \"" + widefilepath + L"\" folder!\n\nFile not loaded!";
+                std::wstring message = L"Incompatible file \"" + widefile + L"\" detected in \"" + widefilepath + L"\" folder!\n\nFile moved to trash bin!";
                 LPCWSTR boxMessage = message.c_str();
 
                 MessageBox(hwnd, boxMessage, L"Load Failure", MB_OK | MB_ICONERROR);
+
+                // Construct the full destination path including the file name
+                fs::path destinationPath = FILEPATH_TRASHBIN / entry.path().filename();
+                fs::path trashbin = FILEPATH_TRASHBIN;
+
+                if (!fs::exists(trashbin))
+                    fs::create_directory(trashbin);
+
+                if (fs::exists(destinationPath)) {
+                    int counter = 1;
+                    std::string nameWithoutExtension = entry.path().stem().string();
+                    std::string Extension = entry.path().extension().string();
+
+                    std::string addstr = nameWithoutExtension + "(" + std::to_string(counter) + ")" + Extension;
+
+                    fs::path finalDestination = trashbin / addstr;
+
+                    while (fs::exists(finalDestination)) {
+                        counter++;
+                        addstr = nameWithoutExtension + "(" + std::to_string(counter) + ")" + Extension;
+                        finalDestination = trashbin / addstr;
+                    }
+
+                    fs::rename(entry.path(), finalDestination);
+                }
+                else {
+                    fs::rename(entry.path(), destinationPath);
+                }
 
                 continue;
             }
@@ -1145,10 +1296,38 @@ bool AssetManager::LoadScenes() {
                 // Convert std::string to std::wstring
                 std::wstring widefilepath(filepath.begin(), filepath.end());
 
-                std::wstring message = L"Incompatible file \"" + widefile + L"\" detected in \"" + widefilepath + L"\" folder!\n\nFile not loaded!";
+                std::wstring message = L"Incompatible file \"" + widefile + L"\" detected in \"" + widefilepath + L"\" folder!\n\nFile moved to trash bin!";
                 LPCWSTR boxMessage = message.c_str();
 
                 MessageBox(hwnd, boxMessage, L"Load Failure", MB_OK | MB_ICONERROR);
+
+                // Construct the full destination path including the file name
+                fs::path destinationPath = FILEPATH_TRASHBIN / entry.path().filename();
+                fs::path trashbin = FILEPATH_TRASHBIN;
+
+                if (!fs::exists(trashbin))
+                    fs::create_directory(trashbin);
+
+                if (fs::exists(destinationPath)) {
+                    int counter = 1;
+                    std::string nameWithoutExtension = entry.path().stem().string();
+                    std::string Extension = entry.path().extension().string();
+
+                    std::string addstr = nameWithoutExtension + "(" + std::to_string(counter) + ")" + Extension;
+
+                    fs::path finalDestination = trashbin / addstr;
+
+                    while (fs::exists(finalDestination)) {
+                        counter++;
+                        addstr = nameWithoutExtension + "(" + std::to_string(counter) + ")" + Extension;
+                        finalDestination = trashbin / addstr;
+                    }
+
+                    fs::rename(entry.path(), finalDestination);
+                }
+                else {
+                    fs::rename(entry.path(), destinationPath);
+                }
 
                 continue;
             }

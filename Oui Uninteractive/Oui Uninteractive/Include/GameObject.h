@@ -97,7 +97,14 @@ public:
 	* @return std::string - game object name
 	*************************************************************************/
 	std::string GetName();
+
+	/**************************************************************************
+	* @brief Set game object name
+	* @param newName - new game object name
+	* @return void
+	*************************************************************************/
 	void SetName(std::string newName);
+
 	/**************************************************************************
 	* @brief Get game object type
 	* @return std::string - game object type

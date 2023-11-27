@@ -26,21 +26,19 @@ public:
 	Vec2 bulletSpawnPos;
 	float bulletSpawnAngle;
 	float bulletSpawnOffset;
-	int shootingInterval; // Scuffed method for now
+	float shootingInterval;
 
 	/**************************************************************************
 	* @brief Constructor
 	*************************************************************************/
-	PlayerShooting(std::string newName, bool gameplayFlag) : IScript(newName, gameplayFlag), bulletNumber(0), bulletSpawnPos(Vec2()), bulletSpawnAngle(0.f), bulletSpawnOffset(0.f), shootingInterval(0) {}
+	PlayerShooting(std::string newName, bool gameplayFlag) : IScript(newName, gameplayFlag), bulletNumber(0), bulletSpawnPos(Vec2()), bulletSpawnAngle(0.f), bulletSpawnOffset(0.f), shootingInterval(0.f) {}
 
 	/**************************************************************************
 	* @brief Initialize the PlayerShooting script
 	* @return void
 	*************************************************************************/
 	void Initialize() {
-		
 		logicSystem->AddLogicScript(this);
-		
 	}
 
 	/**************************************************************************
@@ -69,19 +67,14 @@ public:
 				glfwGetCursorPos(windowNew, &mouseX, &mouseY);
 				convertedMouseX = mouseX;
 				convertedMouseY = mouseY;
-				OpenGLObject::FrameBufferMouseCoords(windowNew, &convertedMouseX, &convertedMouseY, OpenGLObject::cameraObject);
+				if (Editor::editorOn)
+					OpenGLObject::FrameBufferMouseCoords(windowNew, &convertedMouseX, &convertedMouseY, OpenGLObject::cameraObject);
+				else
+					OpenGLObject::windowMouseCoords(windowNew, &convertedMouseX, &convertedMouseY, OpenGLObject::cameraObject);
 
-				// Determine mouse coordinates to use
-				if (Editor::editorOn) {
-					mousePos.x = static_cast<float>(convertedMouseX);
-					mousePos.y = static_cast<float>(convertedMouseY);
-				}
-				else {
-					mousePos.x = static_cast<float>(mouseX) - static_cast<float>(windowSize.first) / 2.f;
-					mousePos.y = static_cast<float>(windowSize.second) / 2.f - static_cast<float>(mouseY);
-				}
+				mousePos.x = static_cast<float>(convertedMouseX);
+				mousePos.y = static_cast<float>(convertedMouseY);
 
-				// Set bullet spawn point
 				bulletSpawnAngle = atan2(mousePos.y - playerPos.y, mousePos.x - playerPos.x);
 				bulletSpawnOffset = (playerScaleX >= playerScaleY) ? playerScaleX : playerScaleY;
 				bulletSpawnOffset *= 0.75f;
@@ -104,12 +97,12 @@ public:
 
 				// Set bullet velocity
 				GET_COMPONENT(bullet, PhysicsBody, ComponentType::PHYSICS_BODY)->velocity = shootingDirection * GET_COMPONENT(bullet, PhysicsBody, ComponentType::PHYSICS_BODY)->speed;
-
-				++shootingInterval;
+				soundManager->PlaySFX("futuristic Machinegun_1.wav");
+				shootingInterval += static_cast<float>(GetDT());
 			}
 			else {
-				++shootingInterval;
-				if (shootingInterval >= 60) {
+				shootingInterval += static_cast<float>(GetDT());
+				if (shootingInterval >= 0.2f) {
 					shootingInterval = 0;
 				}
 			}

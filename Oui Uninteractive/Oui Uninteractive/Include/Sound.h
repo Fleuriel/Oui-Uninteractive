@@ -24,9 +24,6 @@ public:
 	virtual void Update(float dt);
 	int getAvailableChannelID();
 	void recycleChannelID(int id);
-	//void PlayBGMSounds();
-	//void PlaySFXSounds();
-	//void TogglePlayChannel(FMOD::Channel* selectedChannel);
 	~SoundManager();
 
 	FMOD_RESULT result{ FMOD_OK }; // To store FMOD function results

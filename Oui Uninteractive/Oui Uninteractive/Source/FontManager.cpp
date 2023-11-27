@@ -13,6 +13,7 @@
 #include "OpenGLObjects.h"
 #include "OpenGLApplication.h"
 #include "SystemManager.h"
+#include "Editor.h"
 
 // Create singleton for shader program, for shader usage.
 //std::vector<OpenGLShader> OpenGLObject::shdrpgms;
@@ -89,9 +90,43 @@ void FontManager::RenderText(std::string fontName, std::string text, float xPos,
 				// Find character with char key
 				Character ch = charMapIt->second;
 
+
 				// Setup dimensions
-				float renderX = xPos + ch.glyphBearing.x * scale;
-				float renderY = yPos - (ch.glyphSize.y - ch.glyphBearing.y) * scale;
+				float positionX = xPos, positionY = yPos;
+				if (Editor::editorOn)
+				{
+
+					float fromBottomCoordY = Editor::gameWindowOrigin.second + Editor::gameWindowSize.second;
+					float bottomCoordY = windowSize.second - fromBottomCoordY;
+					//std::cout << bottomCoordY << '\t';
+
+
+					positionX += Editor::gameWindowSize.first /2.0f;
+					std::cout << positionX << '\t';
+
+
+					positionY += (bottomCoordY + (Editor::gameWindowSize.second/2));
+					std::cout << positionY << '\n';
+				}
+				else
+				{
+
+
+					positionX += windowSize.first / 2;
+					positionY += windowSize.second / 2;
+				}
+				//																 /\
+				//																/__\
+				// Set to middle of the font (i.e. A, will be between both the /    \ )
+				//																 ^ Middle here
+
+				positionX -= 15 * static_cast<int>(text.size());
+
+				positionX -= OpenGLObject::cameraObject.posX / 1.3;
+				positionY -= OpenGLObject::cameraObject.posY / 1.3;
+
+				float renderX = positionX + ch.glyphBearing.x * scale;
+				float renderY = positionY - (ch.glyphSize.y - ch.glyphBearing.y) * scale;
 
 				float renderWidth = ch.glyphSize.x * scale;
 				float renderHeight = ch.glyphSize.y * scale;

@@ -1,4 +1,6 @@
 #include "Scene1.h"
+#include "TilemapLoader.h"
+#include "HealthSystem.h"
 
 Scene1::Scene1(unsigned int id) : IScene(id) {
 	sceneID = id;
@@ -27,7 +29,11 @@ void Scene1::Initialize() {
 	#ifdef _DEBUG	
 		std::cout << "Updating JSONEnemy2 during initialization... completed." << std::endl;
 	#endif*/
-	//objectFactory->BuildObjectFromFile(std::string("assets/scenes/DefeatScreen.json"));
+	objectFactory->DestroyAllObjects();
+	tilemapLoader->LoadTilemap("assets/scenes/TestLevel1.json");
+	objectFactory->BuildObjectFromFile("assets/scenes/TestLevel1.json");
+	tilemapLoader->CreateGrid();
+	healthSys->ClearHealthbar();
 }
 void Scene1::Update(float dt) {
 	dt;

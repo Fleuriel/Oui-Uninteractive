@@ -395,7 +395,11 @@ void OpenGLObject::Draw(std::string type, bool spriteUsage, Vec2 vel) const {
 			double mouseX; // = io.MousePos.x;
 			double mouseY; // = io.MousePos.y;
 			glfwGetCursorPos(windowNew, &mouseX, &mouseY);
-			OpenGLObject::FrameBufferMouseCoords(windowNew, &mouseX, &mouseY, OpenGLObject::cameraObject);
+			if (Editor::editorOn)
+				OpenGLObject::FrameBufferMouseCoords(windowNew, &mouseX, &mouseY, OpenGLObject::cameraObject);
+			else
+				OpenGLObject::windowMouseCoords(windowNew, &mouseX, &mouseY, OpenGLObject::cameraObject);
+			
 			Vec2 playerPos = Vec2(0, 0);
 			if (objectFactory->GetGameObjectByName("JSONPlayer") != nullptr) {
 				playerPos = GET_COMPONENT(objectFactory->GetGameObjectByName("JSONPlayer"), Transform, ComponentType::TRANSFORM)->position;
@@ -752,19 +756,19 @@ void OpenGLObject::Camera2D::Update(GLFWwindow* camWindow, int positionX, int po
 
 	// ZOOM in
 	//if (inputSystem.GetScrollState() == 1) 
-	if (inputSystem.GetKeyState(GLFW_KEY_UP) == 2)
-	{
-		// Height Decrement by 1.1f
-		height -= 50;
-	}
-
-	// ZOOM OUT
-	//if (inputSystem.GetScrollState() == -1)
-	if (inputSystem.GetKeyState(GLFW_KEY_DOWN) == 2)
-	{
-		// Height Increment by 1.1f
-		height += 50;
-	}
+	//if (inputSystem.GetKeyState(GLFW_KEY_UP) == 2)
+	//{
+	//	// Height Decrement by 1.1f
+	//	height -= 50;
+	//}
+	//
+	//// ZOOM OUT
+	////if (inputSystem.GetScrollState() == -1)
+	//if (inputSystem.GetKeyState(GLFW_KEY_DOWN) == 2)
+	//{
+	//	// Height Increment by 1.1f
+	//	height += 50;
+	//}
 
 	// Set minimum parameter of height < Depth >
 	if (height <= min_height)
@@ -997,6 +1001,7 @@ void OpenGLObject::InitFont()
 	glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 4 * sizeof(float), 0);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 	glBindVertexArray(0);
+
 }
 
 /*=======================================================================================================================*/
@@ -1101,5 +1106,34 @@ void OpenGLObject::FrameBufferMouseCoords(GLFWwindow* originalWindow, double* x,
 
 	//std::cout << '\n';
 	//std::cout << *x << '\t' << *y <<'\t' <<" Camera PositionX: " << cameraObject.posX << '\t' << cameraObject.posY << '\n';
+
+}
+
+
+void OpenGLObject::windowMouseCoords(GLFWwindow* originalWindow, double* x, double* y, OpenGLObject::Camera2D camera)
+{
+	(void)originalWindow;
+
+
+	double originalX = *x; // - windowSize.first;
+	double originalY = *y - windowSize.second;// -windowSize.second;
+
+
+
+	int centerX = windowSize.first / 2.0;
+	int centerY = windowSize.second / 2.0;
+
+
+	double correctedX = (originalX -centerX) + camera.posX ;
+	double correctedY = (originalY + centerY) - camera.posY;
+
+	correctedY = -correctedY;
+
+	correctedX /= 1.18;
+	correctedY /= 1.02;
+
+	std::cout << correctedX << ' ' << correctedY << '\n';
+	*x = correctedX;
+	*y = correctedY;
 
 }

@@ -38,6 +38,7 @@ public:
 	* @return void
 	*************************************************************************/
 	void Update(size_t gameObjectID) {
+		(void)gameObjectID;
 		/*GameObject* bullet{objectFactory->GetGameObjectByID(gameObjectID)};
 		
 		// Variables for bullet collision check

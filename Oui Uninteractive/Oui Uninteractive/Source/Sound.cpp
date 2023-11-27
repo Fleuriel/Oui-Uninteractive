@@ -46,6 +46,15 @@ void SoundManager::Initialize() {
 	if (result != FMOD_OK) {
 		std::cout << "FMOD error: " << FMOD_ErrorString(result);
 	}
+	// Create channel groups
+	for (int i = 0; i < SGCOUNT; i++) {
+		FMOD::ChannelGroup* channelGroup;
+		result = system->createChannelGroup(nullptr, &channelGroup);
+		if (result != FMOD_OK) {
+			std::cout << "FMOD error: " << FMOD_ErrorString(result);
+		}
+		soundGroups[i] = channelGroup;
+	}
 }
 
 
@@ -80,10 +89,12 @@ void SoundManager::Update(float dt) {
 }
 
 
-
+/**************************************************************************
+* @brief This helper function gets the next available channel ID for assignment
+* @return Returns an integer of the next available ID
+*************************************************************************/
 int SoundManager::getAvailableChannelID() {
 	static int currID = 0;
-	
 	if (!availableIDs.empty()) {
 		int id = availableIDs.front();
 		availableIDs.pop();
@@ -93,11 +104,21 @@ int SoundManager::getAvailableChannelID() {
 }
 
 
+/**************************************************************************
+* @brief This helper function recycles channel IDs
+* @param[in] id - IDs to be recycled
+* @return void
+*************************************************************************/
 void SoundManager::recycleChannelID(int id) {
 	availableIDs.push(id);
 }
 
 
+/**************************************************************************
+* @brief This function handles playing of SFX
+* @param[in] sound - Name of the sound file to be played
+* @return void
+*************************************************************************/
 void SoundManager::PlaySFX(const std::string& sound) {
 	FMOD::Sound* sfxSound = assetManager.GetSFX(sound);
 	FMOD::Channel* channel;
@@ -111,6 +132,11 @@ void SoundManager::PlaySFX(const std::string& sound) {
 }
 
 
+/**************************************************************************
+* @brief This function handles playing of BGM
+* @param[in] sound - Name of the sound file to be played
+* @return void
+*************************************************************************/
 void SoundManager::PlayBGM(const std::string& sound) {
 	FMOD::Sound* bgmSound = assetManager.GetBGM(sound);
 	FMOD::Channel* channel;
@@ -125,6 +151,15 @@ void SoundManager::PlayBGM(const std::string& sound) {
 }
 
 
+/**************************************************************************
+* @brief This function handles playing sounds with advanced options 
+* @param[in] sound - Name of the sound file to be played
+* @param[in] type - Type of sound to be played (BGM/SFX)
+* @param[in] volume - Volume modifier of the sound when played
+* @param[in] looping - Boolean to determine if sound loops after ending
+* @param[in] group - Sound group to play the sound within
+* @return void
+*************************************************************************/
 void SoundManager::PlayAdvanced(const std::string& sound, SoundType type, float volume, bool looping, SoundGroup group) {
 	FMOD::Sound* fetchedSound = nullptr;
 	FMOD::Channel* channel;
@@ -148,6 +183,11 @@ void SoundManager::PlayAdvanced(const std::string& sound, SoundType type, float 
 	soundChannels[channelID] = channel;
 }
 
+
+/**************************************************************************
+* @brief This function handles pausing of all sounds
+* @return void
+*************************************************************************/
 void SoundManager::PauseAll() {
 	for (auto& [id, channel] : soundChannels) {
 		channel->setPaused(true);
@@ -155,22 +195,41 @@ void SoundManager::PauseAll() {
 }
 
 
+/**************************************************************************
+* @brief This function handles pausing of all sounds within a given group
+* @param[in] group - Sound group to pause
+* @return void
+*************************************************************************/
 void SoundManager::PauseGroup(SoundGroup group) {
 	soundGroups[group]->setPaused(true);
 }
 
 
+/**************************************************************************
+* @brief This function handles resumption of all sounds
+* @return void
+*************************************************************************/
 void SoundManager::ResumeAll() {
 	for (auto& [id, channel] : soundChannels) {
 		channel->setPaused(false);
 	}
 }
 
+
+/**************************************************************************
+* @brief This function handles resumption of all sound groups
+* @param[in] group - Sound group to resume
+* @return void
+*************************************************************************/
 void SoundManager::ResumeGroup(SoundGroup group) {
 	soundGroups[group]->setPaused(false);
 }
 
 
+/**************************************************************************
+* @brief This function handles stopping of all sounds
+* @return void
+*************************************************************************/
 void SoundManager::StopAll() {
 	for (auto& [id, channel] : soundChannels) {
 		channel->stop();
@@ -179,6 +238,11 @@ void SoundManager::StopAll() {
 }
 
 
+/**************************************************************************
+* @brief This function handles stopping of all sound groups
+* @param[in] group - Sound group to stop
+* @return void
+*************************************************************************/
 void SoundManager::StopGroup(SoundGroup group) {
 	std::vector<int> channelsToRemove;
 	for (auto& [id, channel] : soundChannels) {
@@ -196,73 +260,28 @@ void SoundManager::StopGroup(SoundGroup group) {
 }
 
 
+/**************************************************************************
+* @brief This function sets the volume of sounds within a sound group
+* @param[in] group - Sound group to pause
+* @param[in] volume - Volume to set the group to
+* @return void
+*************************************************************************/
 void SoundManager::SetGroupVolume(SoundGroup group, float volume) {
 	soundGroups[group]->setVolume(volume);
 }
 
 
+
+/**************************************************************************
+* @brief This function gets the volume of sounds within a sound group
+* @param[in] group - Sound group to pause
+* @return Returns float of the volume of the sound group
+*************************************************************************/
 float SoundManager::GetGroupVolume(SoundGroup group) {
 	float volume;
 	soundGroups[group]->getVolume(&volume);
 	return volume;
 }
-
-
-
-
-//**************************************************************************
-//* @brief This function plays the BGM sounds
-//* @return No return
-//*************************************************************************/
-//void SoundManager::PlayBGMSounds() {
-//	// Play BGM once clicked
-//	bool playStatus1, playStatus2;
-//	bgmChannels[0]->isPlaying(&playStatus1);
-//	if (bgmChannels[0] == nullptr || !playStatus1) {
-//		result = system->playSound(assetManager.GetBGM("Nightshift__BGM2_Loop_70bpm.wav"), nullptr, true, &bgmChannels[0]);
-//		if (result != FMOD_OK) {
-//			std::cout << "FMOD error: " << FMOD_ErrorString(result);
-//			return;
-//		}
-//	}
-//	
-//	bgmChannels[1]->isPlaying(&playStatus2);
-//	if (bgmChannels[1] == nullptr || !playStatus2) {
-//		result = system->playSound(assetManager.GetBGM("Suspense.wav"), nullptr, true, &bgmChannels[1]);
-//		if (result != FMOD_OK) {
-//			std::cout << "FMOD error: " << FMOD_ErrorString(result);
-//			return;
-//		}
-//	}
-//	
-//}
-//
-//
-///**************************************************************************
-//* @brief This function plays the SFX sounds
-//* @return No return
-//*************************************************************************/
-//void SoundManager::PlaySFXSounds() {
-//	// Play SFX once clicked
-//	sfxChannels[0]->stop();
-//	result = system->playSound(assetManager.GetSFX("Gunshot.wav"), nullptr, false, &sfxChannels[0]);
-//	if (result != FMOD_OK) {
-//		std::cout << "FMOD error: " << FMOD_ErrorString(result);
-//	}
-//}
-//
-//
-//
-///**************************************************************************
-//* @brief These functions handle pausing the channels
-//* @param selectedChannel - Pointer to a FMOD channel to play sound to
-//* @return No return
-//*************************************************************************/
-//void SoundManager::TogglePlayChannel(FMOD::Channel* selectedChannel) {
-//	bool pausedState;
-//	selectedChannel->getPaused(&pausedState);
-//	selectedChannel->setPaused(!pausedState);
-//}
 
 
 /**************************************************************************
