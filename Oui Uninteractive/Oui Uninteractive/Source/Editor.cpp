@@ -1294,6 +1294,9 @@ void Editor::CreateSoundPanel() {
 	if (ImGui::Button("Stop##BGM")) {
 		soundManager->StopGroup(SoundManager::SG3);
 	}
+	if (ImGui::Button("Stop All")) {
+		soundManager->StopAll();
+	}
 	ImGui::End();
 }
 
@@ -2178,9 +2181,9 @@ void Editor::RenderDirectoryV2(const std::string& filePath) {
 			else if (filePath == FILEPATH_SOUNDS_SFX) {
 				ImGui::SetDragDropPayload("PAYLOAD_AUDIO_SFX", browserSelectedItem.c_str(), browserSelectedItem.size() + 1);
 			}
-			else if (filePath == FILEPATH_SCENES) {
+			/*else if (filePath == FILEPATH_SCENES) {
 				ImGui::SetDragDropPayload("PAYLOAD_SCENE", browserSelectedItem.c_str(), browserSelectedItem.size() + 1);
-			}
+			}*/
 			else if (filePath == FILEPATH_FONTS) {
 				ImGui::SetDragDropPayload("PAYLOAD_FONT", browserSelectedItem.c_str(), browserSelectedItem.size() + 1);
 			}
