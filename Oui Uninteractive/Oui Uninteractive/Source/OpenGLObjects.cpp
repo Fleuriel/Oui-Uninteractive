@@ -813,11 +813,11 @@ void OpenGLObject::CameraUpdate(int posX, int posY) {
 	//Scale the model based on float variable.
 	scaleModel = glm::vec2(0, 0);
 
-	position = glm::vec2(posX, posY);
+	position = glm::vec2(static_cast<GLfloat>(posX), static_cast<GLfloat>(posY));
 
 
-	cameraObject.posX = posX;
-	cameraObject.posY = posY;
+	cameraObject.posX = static_cast<GLfloat>(posX);
+	cameraObject.posY = static_cast<GLfloat>(posY);
 
 
 	// in case user does not set, angleDisplacement will be in the range of
@@ -1025,7 +1025,7 @@ void OpenGLObject::InitLighting()
 	glUniform1f(glGetUniformLocation(shdrpgms[lightingShader].GetHandle(), "spot_angle"), spotAngle);
 
 
-	GLint visionRadiusLoc = glGetUniformLocation(shdrpgms[lightingShader].GetHandle(), "vision_radius");
+	// GLint visionRadiusLoc = glGetUniformLocation(shdrpgms[lightingShader].GetHandle(), "vision_radius");
 
 
 
@@ -1079,7 +1079,6 @@ void OpenGLObject::FrameBufferMouseCoords(GLFWwindow* originalWindow, double* x,
 	// Scale by division of 0.77 to the camera NDC to world coordinates.
 	valueX /= static_cast<double>(0.77);
 	valueY /= static_cast<double>(0.77);
-
 
 
 
