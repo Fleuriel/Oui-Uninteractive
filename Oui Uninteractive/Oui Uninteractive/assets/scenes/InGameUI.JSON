@@ -5,7 +5,7 @@
             "Name": "Quit",
             "Type": "PauseMenu",
             "UsingSprite": false,
-            "Texture": "ButtonBG",
+            "Texture": "Quit",
             "Components": {
                 "Transform": {
                     "PositionX": 315.5,
@@ -27,7 +27,7 @@
             "Name": "Resume",
             "Type": "PauseMenu",
             "UsingSprite": false,
-            "Texture": "ButtonBG",
+            "Texture": "Resume",
             "Components": {
                 "Transform": {
                     "PositionX": -315.5,

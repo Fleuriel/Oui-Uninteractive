@@ -6,7 +6,7 @@
 #include "Input.h"
 class InventoryMenuLogic : public IScript {
 public:
-	std::vector<GameObject*> slotVec;
+	std::vector<std::string> slotVec;
 	bool initialised;
 	InventoryMenuLogic(std::string newName, bool gameplayFlag) : IScript(newName, gameplayFlag) {}
 	void Initialize() {
@@ -16,26 +16,26 @@ public:
 	}
 	void Update(size_t gameObjectID) {
 		if (initialised == false) {
-			GameObject* gObj = objectFactory->GetGameObjectByName("Background2");
-			slotVec.push_back(gObj);
+			//gObj = 
+			slotVec.push_back("InventoryObject1");
 
 			//gObj = 
-			slotVec.push_back(objectFactory->GetGameObjectByName("InventoryObject1"));
+			slotVec.push_back("InventoryObject2");
 
 			//gObj = 
-			slotVec.push_back(objectFactory->GetGameObjectByName("InventoryObject2"));
-
-			//gObj = 
-			slotVec.push_back(objectFactory->GetGameObjectByName("InventoryObject3"));
+			slotVec.push_back("InventoryObject3");
 
 			//gObj =
-			slotVec.push_back(objectFactory->GetGameObjectByName("InventoryObject4"));
+			slotVec.push_back("InventoryObject4");
 
 			initialised = true;
 		}
 		
-		for (GameObject* gObj : slotVec) {
-			if (gObj != nullptr) {
+		for (std::string str : slotVec) {
+			
+			GameObject* gObj = objectFactory->GetGameObjectByName(str);
+			if (gObj != nullptr)
+			{
 				Transform* tx = GET_COMPONENT(gObj, Transform, ComponentType::TRANSFORM);
 				if (tx != nullptr) {
 					if (gObj->GetName() == "Background2") {
@@ -44,25 +44,27 @@ public:
 					if (gObj->GetName() == "InventoryObject1") {
 						//position game object in camera
 						tx->position = Vec2(OpenGLObject::cameraObject.posX + Editor::gameWindowSize.first / 6.f, OpenGLObject::cameraObject.posY - Editor::gameWindowSize.second / 2.f);
-						
+
 					}
 					else if (gObj->GetName() == "InventoryObject2") {
 						//position game object in camera
 						tx->position = Vec2(OpenGLObject::cameraObject.posX + Editor::gameWindowSize.first / 3.3f, OpenGLObject::cameraObject.posY - Editor::gameWindowSize.second / 2.f);
-						
+
 					}
 					else if (gObj->GetName() == "InventoryObject3") {
 						//position game object in camera
 						tx->position = Vec2(OpenGLObject::cameraObject.posX + Editor::gameWindowSize.first / 2.3f, OpenGLObject::cameraObject.posY - Editor::gameWindowSize.second / 2.f);
-						
+
 					}
 					else if (gObj->GetName() == "InventoryObject4") {
 						//position game object in camera
 						tx->position = Vec2(OpenGLObject::cameraObject.posX + Editor::gameWindowSize.first / 1.75f, OpenGLObject::cameraObject.posY - Editor::gameWindowSize.second / 2.f);
 					}
 				}
-				
 			}
+			
+				
+			
 		
 		}
 
@@ -70,33 +72,25 @@ public:
 		if (player != nullptr) {
 			InventoryComponent* inv = GET_COMPONENT(player, InventoryComponent, ComponentType::INVENTORY);
 			if (inv != nullptr) {
-				int index = 1;
+				int index = 0;
 				for (std::string str : inv->Inventory) {
 
-					/*if (pair.second->GetName() == "Rifle") {
-						tx2->position = slotVec[index];
-					}
-
-
-					else if (pair.second->GetName() == "Pistol") {
-						tx2->position = slotVec[index];
-					}*/
-
-
 					if (str == "Knife") {
-
-						if (slotVec[index] != nullptr) {
-							slotVec[index]->SetTexture("Knife(Weapon)");
+						GameObject* gObj = objectFactory->GetGameObjectByName(slotVec[index]);
+						if (gObj != nullptr) {
+							gObj->SetTexture("Knife(Weapon)");
 						}
 					}
 					else if (str == "Pistol") {
-						if (slotVec[index] != nullptr) {
-							slotVec[index]->SetTexture("Pistol(Weapon)");
+						GameObject* gObj = objectFactory->GetGameObjectByName(slotVec[index]);
+						if (gObj != nullptr) {
+							gObj->SetTexture("Pistol(Weapon)");
 						}
 					}
 					else if (str == "Rifle") {
-						if (slotVec[index] != nullptr) {
-							slotVec[index]->SetTexture("Rifle(Weapon)");
+						GameObject* gObj = objectFactory->GetGameObjectByName(slotVec[index]);
+						if (gObj != nullptr) {
+							gObj->SetTexture("Rifle(Weapon)");
 						}
 					}
 
