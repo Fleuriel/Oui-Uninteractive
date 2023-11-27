@@ -1061,8 +1061,8 @@ void OpenGLObject::FrameBufferMouseCoords(GLFWwindow* originalWindow, double* x,
 
 
 	// get the center coordinates of the frame buffer window.
-	int centerX = Editor::gameWindowSize.first / 2.0;
-	int centerY = Editor::gameWindowSize.second / 2.0;
+	double centerX = Editor::gameWindowSize.first / 2.0;
+	double centerY = Editor::gameWindowSize.second / 2.0;
 
 
 	// Calculate corrected coordinates relative to the camera's position.
@@ -1073,12 +1073,12 @@ void OpenGLObject::FrameBufferMouseCoords(GLFWwindow* originalWindow, double* x,
 
 	// set value of X and Y, (valueX, valueY) to the respective y values,
 	// Y no change as no difference. X, on the other hand needs to be multiplied with the multiplier of height.,
-	float valueX = correctedX;
-	float valueY = correctedY;
+	double valueX = correctedX;
+	double valueY = correctedY;
 
 	// Scale by division of 0.77 to the camera NDC to world coordinates.
-	valueX /= 0.77;
-	valueY /= 0.77;
+	valueX /= static_cast<double>(0.77);
+	valueY /= static_cast<double>(0.77);
 
 
 
@@ -1123,8 +1123,8 @@ void OpenGLObject::windowMouseCoords(GLFWwindow* originalWindow, double* x, doub
 
 
 
-	int centerX = windowSize.first / 2.0;
-	int centerY = windowSize.second / 2.0;
+	double centerX = windowSize.first / 2.0;
+	double centerY = windowSize.second / 2.0;
 
 
 	double correctedX = (originalX -centerX) + camera.posX ;

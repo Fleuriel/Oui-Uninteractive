@@ -35,7 +35,6 @@
     <ClCompile Include="Source\FontManager.cpp" />
     <ClCompile Include="Source\GameObject.cpp" />
     <ClCompile Include="Source\GameStateManager.cpp" />
-    <ClCompile Include="Source\Global.cpp" />
     <ClCompile Include="Source\HealthComponent.cpp" />
     <ClCompile Include="Source\HealthSystem.cpp" />
     <ClCompile Include="Source\InventoryComponent.cpp" />
@@ -87,7 +86,6 @@
     <ClInclude Include="Include\FontManager.h" />
     <ClInclude Include="Include\GameObject.h" />
     <ClInclude Include="Include\GameStateManager.h" />
-    <ClInclude Include="Include\Global.h" />
     <ClInclude Include="Include\HealthComponent.h" />
     <ClInclude Include="Include\HealthSystem.h" />
     <ClInclude Include="Include\IComponent.h" />
