@@ -1,7 +1,7 @@
 /**************************************************************************
  * @file InventoryComponent.h
- * @author QUEK
- * @par DP email: jingruiaustin.hwang@digipen.edu
+ * @author QUEK Cheng Kwang, Emery - 100%
+ * @par DP email: c.quek@digipen.edu
  * @par Course:	CSD 2401
  * @par Software Engineering Project 3
  * @date 25-11-2023
