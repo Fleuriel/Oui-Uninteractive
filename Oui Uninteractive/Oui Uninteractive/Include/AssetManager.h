@@ -122,9 +122,7 @@ private:
 	//Containers	
 	std::map<std::string, int> textures{};										//Container for textures
 	std::map<std::string, Sprite> sprites{};									//Container for sprites
-	//std::map<std::string, FMOD::Sound*> bgmSounds{};							//Container for bgm sounds
-	//std::map<std::string, FMOD::Sound*> sfxSounds{};							//Container for sfx sounds
-	std::map <SoundManager::SoundType, std::map<std::string, FMOD::Sound*>> soundMap;
+	std::map <SoundManager::SoundType, std::map<std::string, FMOD::Sound*>> soundMap; // Container for all sounds
 	std::map<std::string, std::map<char, FontManager::Character>> fontCharsMap; //Container for all glyphs for all fonts
 	std::vector<std::string> scenes{};											//Container for scenes
 };
