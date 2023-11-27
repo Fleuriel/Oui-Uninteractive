@@ -600,13 +600,6 @@ bool AssetManager::LoadSprites() {
                     continue;
                 }
 
-                // create new sprite class
-                Sprite newsprite;
-                
-                // set the texture
-                newsprite.SetTexture(AssetManager::SetUpTexture(spriteFilePath));
-                //std::cout << textures[nameWithoutExtension] << " success!\n";
-
                 // find '(' in the name
                 size_t lBracketPos = entry.path().filename().string().find_last_of('(');
 
@@ -620,10 +613,33 @@ bool AssetManager::LoadSprites() {
                 // get the rows
                 int rows = std::stoi(spriteRowsAndColumns.substr(0, xPos));
                 //std::cout << rows << std::endl;
-                
+
                 // get the columns
                 int columns = std::stoi(spriteRowsAndColumns.substr(xPos + 1));
                 //std::cout << columns << std::endl;
+
+                if (lBracketPos == std::string::npos || xPos == std::string::npos || rows == 0 || columns == 0) {
+                    std::string file(entry.path().filename().string());
+                    std::wstring widefile(file.begin(), file.end());
+                    HWND hwnd = GetActiveWindow();
+                    std::string filepath(FILEPATH_SPRITES);
+                    // Convert std::string to std::wstring
+                    std::wstring widefilepath(filepath.begin(), filepath.end());
+
+                    std::wstring message = L"File with incompatible naming convention (\"" + widefile + L"\") detected in \"" + widefilepath + L"\" folder!\n\nFile not loaded!";
+                    LPCWSTR boxMessage = message.c_str();
+
+                    MessageBox(hwnd, boxMessage, L"Load Failure", MB_OK | MB_ICONERROR);
+                    continue;
+                }
+
+
+                // create new sprite class
+                Sprite newsprite;
+                
+                // set the texture
+                newsprite.SetTexture(AssetManager::SetUpTexture(spriteFilePath));
+                //std::cout << textures[nameWithoutExtension] << " success!\n";
 
                 // set the rows and columns of the sprite
                 newsprite.SetRowsAndColumns(rows, columns);
