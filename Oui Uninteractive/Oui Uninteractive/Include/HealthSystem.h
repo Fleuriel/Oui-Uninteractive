@@ -80,6 +80,12 @@ public:
 	*************************************************************************/
 	void ClearHealthbar();
 
+	/**************************************************************************
+	* @brief Draw healthbar
+	* @return void
+	*************************************************************************/
+	void DrawHealthbar();
+
 	// Map of HealthComponent
 	std::map<size_t, HealthComponent*> healthComponentMap;
 };
