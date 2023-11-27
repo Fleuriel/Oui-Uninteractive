@@ -1,3 +1,14 @@
+/**************************************************************************
+ * @file TestScript.h
+ * @author CHEAH Tristan Tze Hong
+ * @par DP email: t.cheah@digipen.edu
+ * @par Course: CSD 2401
+ * @par Software Engineering Project 3
+ * @date 27-11-2023
+ * @brief This file contains the declaration of the TestScript to be used
+ *		  as a testing for script to be used. THIS IS A TEST SCRIPT CLASS.
+ *************************************************************************/
+
 #include "IScript.h"
 #include "Physics.h"
 #include "ObjectFactory.h"
@@ -6,9 +17,17 @@
 
 class TestScript : public IScript {
 public:
+	/**************************************************************************
+	* @brief Constructor
+	*************************************************************************/
 	TestScript(std::string newName, bool gameplayFlag) : IScript(newName, gameplayFlag) {
 		
 	};
+
+	/**************************************************************************
+	* @brief Initializes TestScript
+	* @return void
+	*************************************************************************/
 	void Initialize() {
 		if (isGameplay) {
 			logicSystem->AddLogicScript(this);
@@ -18,7 +37,11 @@ public:
 		}
 		
 	};
-
+	/**************************************************************************
+	* @brief Updates TestScript
+	* @param size_t ID of gameObject to update
+	* @return void
+	*************************************************************************/
 	void Update(size_t gameObjectID) {
 		GameObject* gObj = objectFactory->GetGameObjectByID(gameObjectID);
 		if (gObj != nullptr) {
@@ -71,22 +94,44 @@ public:
 		}
 		
 	};
-
+	/**************************************************************************
+	* @brief End TestScript
+	* @return void
+	*************************************************************************/
 	void End() {}
+
+	/**************************************************************************
+	* @brief Destructor
+	*************************************************************************/
 	~TestScript() {}
 };
 
 class TestScript2 : public IScript {
 public:
+
+	/**************************************************************************
+	* @brief Constructor
+	*************************************************************************/
 	TestScript2(std::string newName, bool gameplayFlag) : IScript(newName, gameplayFlag) {
 
 	};
+
+	/**************************************************************************
+	* @brief Initializes TestScript2
+	* @return void
+	*************************************************************************/
 	void Initialize() {
 		
 			logicSystem->AddLogicScript(this);
 		
 	};
 
+
+	/**************************************************************************
+	* @brief Updates TestScript2
+	* @param size_t ID of gameObject to update
+	* @return void
+	*************************************************************************/
 	void Update(size_t gameObjectID) {
 		GameObject* gObj = objectFactory->GetGameObjectByID(gameObjectID);
 		if (gObj != nullptr) {
@@ -230,7 +275,14 @@ public:
 		}
 		
 	};
-
+	/**************************************************************************
+	* @brief End TestScript2
+	* @return void
+	*************************************************************************/
 	void End() {}
+
+	/**************************************************************************
+	* @brief Destructor
+	*************************************************************************/
 	~TestScript2() {}
 };

@@ -1,3 +1,14 @@
+/**************************************************************************
+ * @file InventoryMenuLogic.h
+ * @author CHEAH Tristan Tze Hong
+ * @par DP email: t.cheah@digipen.edu
+ * @par Course: CSD 2401
+ * @par Software Engineering Project 3
+ * @date 27-11-2023
+ * @brief This file contains the declaration of the InventorYMenuLogic Class,
+ *		  which is a subset of IScript to enable Inventory System in Gameplay
+ *************************************************************************/
+
 #include "IScript.h"
 #include "Physics.h"
 #include "ObjectFactory.h"
@@ -8,12 +19,26 @@ class InventoryMenuLogic : public IScript {
 public:
 	std::vector<std::string> slotVec;
 	bool initialised;
+
+	/**************************************************************************
+	* @brief Constructor
+	*************************************************************************/
 	InventoryMenuLogic(std::string newName, bool gameplayFlag) : IScript(newName, gameplayFlag) {}
+
+
+	/**************************************************************************
+	* @brief Initializes Inventory Menu Logics
+	* @return void
+	*************************************************************************/
 	void Initialize() {
 
 		logicSystem->AddLogicScript(this);
 		initialised = false;
 	}
+	/**************************************************************************
+	* @brief Update  Inventory menu
+	* @return void
+	*************************************************************************/
 	void Update(size_t gameObjectID) {
 		if (initialised == false) {
 			//gObj = 
@@ -168,6 +193,9 @@ public:
 
 	};
 
-	
+	/**************************************************************************
+	* @brief End Inventory menu
+	* @return void
+	*************************************************************************/
 	void End() {}
 };

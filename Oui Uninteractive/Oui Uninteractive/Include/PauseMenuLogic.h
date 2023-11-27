@@ -1,3 +1,16 @@
+/**************************************************************************
+ * @file PauseMenuLogic.h
+ * @author CHEAH Tristan Tze Hong
+ * @par DP email: t.cheah@digipen.edu
+ * @par Course: CSD 2401
+ * @par Software Engineering Project 3
+ * @date 27-11-2023
+ * @brief This file contains the declaration of the PauseMenuLogic class
+ *		  which is a subset of IScript to enable logic of pause
+ *************************************************************************/
+
+
+
 #include "IScript.h"
 #include "Logic.h"
 #include "SceneManager.h"
@@ -6,12 +19,25 @@
 #include "Background.h"
 class PauseMenuLogic : public IScript {
 	public:
+		/**************************************************************************
+		* @brief Constructor
+		*************************************************************************/
 		PauseMenuLogic(std::string newName, bool gameplayFlag) : IScript(newName, gameplayFlag) {}
+
+		/**************************************************************************
+		* @brief Initializes PauseMenuLogic
+		* @return void
+		*************************************************************************/
 		void Initialize() {
 		
 			logicSystem->AddLogicScript(this);
 			
 		}
+		/**************************************************************************
+		* @brief Updates PauseMenuLogic
+		* @param size_t GameObject ID
+		* @return void
+		*************************************************************************/
 		void Update(size_t gameObjectID) {
 		
 			if (sysManager->isPaused) {
@@ -63,5 +89,10 @@ class PauseMenuLogic : public IScript {
 			}
 			
 		}
+
+		/**************************************************************************
+		* @brief Ends PauseMenuLogic
+		* @return void
+		*************************************************************************/
 		void End() {}
 };
