@@ -32,13 +32,13 @@ class PauseMenuLogic : public IScript {
 								//position game object in camera
 								tx->scale = Vec2(windowSize.first / 4.f, windowSize.second / 8.f);
 								tx->position = Vec2(-windowSize.first/4.f ,0);
-								fontManager->RenderText("Valoon.ttf", "Resume", tx->position.x - OpenGLObject::cameraObject.posX, tx->position.y + OpenGLObject::cameraObject.posY, 1.0f, glm::vec3(0.4, 0.7, 0.9));
+								fontManager->RenderText("Valoon.ttf", "Resume", tx->position.x + windowSize.first/18.f, tx->position.y, 1.0f, glm::vec3(0.4, 0.7, 0.9));
 
 							}
 							else if (gObj->GetName() == "Quit") {
 								tx->scale = Vec2(windowSize.first / 4.f, windowSize.second / 8.f);
 								tx->position = Vec2(windowSize.first / 4.f, 0);
-								fontManager->RenderText("Valoon.ttf", "Quit", tx->position.x - OpenGLObject::cameraObject.posX, tx->position.y + OpenGLObject::cameraObject.posY, 1.0f, glm::vec3(0.4, 0.7, 0.9));
+								fontManager->RenderText("Valoon.ttf", "Quit", tx->position.x - windowSize.first / 17.f, tx->position.y, 1.0f, glm::vec3(0.4, 0.7, 0.9));
 							}
 						}
 						if (inputSystem.GetMouseState(GLFW_MOUSE_BUTTON_1) && CollisionPointRotateRect(tx->position, tx->scale.x, tx->scale.y, mouseX, mouseY, tx->rotation)) {

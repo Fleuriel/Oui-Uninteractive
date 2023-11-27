@@ -122,6 +122,8 @@ void FontManager::RenderText(std::string fontName, std::string text, float xPos,
 
 				positionX -= 15 * static_cast<int>(text.size());
 
+				positionX -= OpenGLObject::cameraObject.posX / 1.3;
+				positionY -= OpenGLObject::cameraObject.posY / 1.3;
 
 				float renderX = positionX + ch.glyphBearing.x * scale;
 				float renderY = positionY - (ch.glyphSize.y - ch.glyphBearing.y) * scale;
