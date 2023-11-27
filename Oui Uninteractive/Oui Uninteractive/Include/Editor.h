@@ -1,7 +1,9 @@
 /**************************************************************************
  * @file Editor.h
- * @author LOW Wang Chun, Mark
+ * @author LOW Wang Chun, Mark - 75%
+ * @co-author CHEAH Tristan Tze Hong - 25%
  * @par DP email: l.wangchunmark@digipen.edu
+ * @par DP email: t.cheah@digipen.edu
  * @par Course: CSD 2401
  * @par Software Engineering Project 3
  * @date 13-09-2023
