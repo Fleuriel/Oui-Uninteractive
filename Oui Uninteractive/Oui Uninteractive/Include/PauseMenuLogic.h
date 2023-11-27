@@ -23,6 +23,7 @@ class PauseMenuLogic : public IScript {
 					OpenGLObject::FrameBufferMouseCoords(windowNew, &mouseX, &mouseY, OpenGLObject::cameraObject);
 				else
 					OpenGLObject::windowMouseCoords(windowNew, &mouseX, &mouseY, OpenGLObject::cameraObject);
+
 				GameObject* gObj = objectFactory->GetGameObjectByID(gameObjectID);
 				if (gObj != nullptr) {
 					Transform* tx = GET_COMPONENT(gObj, Transform, ComponentType::TRANSFORM);
