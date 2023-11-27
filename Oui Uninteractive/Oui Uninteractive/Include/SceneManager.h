@@ -7,15 +7,14 @@
  * @date 17-10-2023
  * @brief This file contains the declaration of the SceneManager class.
  *************************************************************************/
+#ifndef SCENEMANAGER_H
+#define SCENEMANAGER_H
 
 #include "ISystem.h"
 #include "IScene.h"
 #include "Scene1.h"
 #include "Scene2.h"
 #include <map>
-
-#ifndef SCENEMANAGER_H
-#define SCENEMANAGER_H
 // Game State List Enumeration
 enum GameStateList
 {
