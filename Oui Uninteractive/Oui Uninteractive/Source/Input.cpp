@@ -156,8 +156,8 @@ void toggleFullScreen() {
 	}
 	else {
 		// If fullscreen, make it windowed
-		GLFWmonitor* primaryMonitor = glfwGetPrimaryMonitor();
-		const GLFWvidmode* primaryMode = glfwGetVideoMode(primaryMonitor);
+		//GLFWmonitor* primaryMonitor = glfwGetPrimaryMonitor();
+		//const GLFWvidmode* primaryMode = glfwGetVideoMode(primaryMonitor);
 
 		glfwSetWindowMonitor(windowNew, nullptr, windowedXPos, windowedYPos, windowedWidth, windowedHeight, GLFW_DONT_CARE);
 
@@ -402,6 +402,7 @@ void WindowCloseCallback(GLFWwindow* window6){
  * @param focused An integer indicating whether the window has gained (GLFW_TRUE) or lost (GLFW_FALSE) focus.
  *************************************************************************/
 void windowFocusCallback(GLFWwindow* window, int focused) {
+	window;
 	// If alt tabbed away
 	if (focused == GLFW_FALSE) {
 		// Minimizes window if alt tabbed away

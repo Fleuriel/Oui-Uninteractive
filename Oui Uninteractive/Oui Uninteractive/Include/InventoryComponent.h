@@ -18,7 +18,7 @@ class InventoryComponent : public IComponent {
 public:
 	/*std::map<size_t, GameObject*> Inventory;*/
 	std::vector<std::string> Inventory;
-	size_t currentWeaponID;
+	int currentWeaponID;
 
 public:
 	/**************************************************************************

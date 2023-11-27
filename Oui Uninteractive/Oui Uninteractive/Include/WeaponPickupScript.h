@@ -90,7 +90,7 @@ public:
 											
 											initialized = true;
 											closestDistance = tempo;
-											closestID = xform->GetOwner()->GetGameObjectID();
+											closestID = static_cast<int>(xform->GetOwner()->GetGameObjectID());
 
 										}
 									}

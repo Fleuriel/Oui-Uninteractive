@@ -96,7 +96,7 @@ void FontManager::RenderText(std::string fontName, std::string text, float xPos,
 				if (Editor::editorOn)
 				{
 
-					float fromBottomCoordY = Editor::gameWindowOrigin.second + Editor::gameWindowSize.second;
+					float fromBottomCoordY = static_cast<float>(Editor::gameWindowOrigin.second + Editor::gameWindowSize.second);
 					float bottomCoordY = windowSize.second - fromBottomCoordY;
 					//std::cout << bottomCoordY << '\t';
 
@@ -122,8 +122,8 @@ void FontManager::RenderText(std::string fontName, std::string text, float xPos,
 
 				positionX -= 15 * static_cast<int>(text.size());
 
-				positionX -= OpenGLObject::cameraObject.posX / 1.3;
-				positionY -= OpenGLObject::cameraObject.posY / 1.3;
+				positionX -= OpenGLObject::cameraObject.posX / 1.3f;
+				positionY -= OpenGLObject::cameraObject.posY / 1.3f;
 
 				float renderX = positionX + ch.glyphBearing.x * scale;
 				float renderY = positionY - (ch.glyphSize.y - ch.glyphBearing.y) * scale;

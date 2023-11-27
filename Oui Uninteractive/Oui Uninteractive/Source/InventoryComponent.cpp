@@ -37,7 +37,7 @@ void InventoryComponent::Initialize() {
 * @return void
 *************************************************************************/
 void InventoryComponent::Serialize(rapidjson::Value::ConstMemberIterator& itr) {
-	
+	itr;
 }
 
 /**************************************************************************
