@@ -379,18 +379,18 @@ void OpenGLApplication::OpenGLUpdate() {
 //	}
 
 	// Moves Object left. can add positionY to change as well.
-	if (inputSystem.GetKeyState(GLFW_KEY_4) == 2) {
-		positionX-= 5;
-	}
-	if (inputSystem.GetKeyState(GLFW_KEY_3) == 2) {
-		positionX+= 5;
-	}
-	if (inputSystem.GetKeyState(GLFW_KEY_2) == 2) {
-		positionY+= 5;
-	}
-	if (inputSystem.GetKeyState(GLFW_KEY_1) == 2) {
-		positionY-= 5;
-	}
+	//if (inputSystem.GetKeyState(GLFW_KEY_4) == 2) {
+	//	positionX-= 5;
+	//}
+	//if (inputSystem.GetKeyState(GLFW_KEY_3) == 2) {
+	//	positionX+= 5;
+	//}
+	//if (inputSystem.GetKeyState(GLFW_KEY_2) == 2) {
+	//	positionY+= 5;
+	//}
+	//if (inputSystem.GetKeyState(GLFW_KEY_1) == 2) {
+	//	positionY-= 5;
+	//}
 
 
 //	std::cout << positionX << positionY << '\n';
