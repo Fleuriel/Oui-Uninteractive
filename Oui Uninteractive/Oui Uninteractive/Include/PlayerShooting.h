@@ -70,7 +70,11 @@ public:
 				/*if (Editor::editorOn)
 					OpenGLObject::FrameBufferMouseCoords(windowNew, &convertedMouseX, &convertedMouseY, OpenGLObject::cameraObject);
 				else*/
+				std::cout << convertedMouseX  << '\t' << convertedMouseY << '\t';
+
 					OpenGLObject::windowMouseCoords(windowNew, &convertedMouseX, &convertedMouseY, OpenGLObject::cameraObject);
+
+					std::cout << convertedMouseX << '\t' << convertedMouseY << '\n';
 
 				mousePos.x = static_cast<float>(convertedMouseX);
 				mousePos.y = static_cast<float>(convertedMouseY);

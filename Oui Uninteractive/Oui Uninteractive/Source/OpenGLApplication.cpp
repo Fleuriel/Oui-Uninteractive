@@ -309,7 +309,7 @@ void OpenGLApplication::OpenGLUpdate() {
 	}*/
 	
 	OpenGLObject::windowMouseCoords(windowNew, &xpos, &ypos, OpenGLObject::cameraObject);
-	//std::cout << "mousePos " << xpos << "\t" << ypos << '\n';
+	std::cout << "mousePos " << xpos << "\t" << ypos << '\n';
 
 	MouseX = xpos;
 	MouseY = ypos;
@@ -337,44 +337,44 @@ void OpenGLApplication::OpenGLUpdate() {
 
 
 	// Create Object using SPACE. with tag ID of 2.
-//	if (inputSystem.GetKeyState(GLFW_KEY_SPACE) == 1) {
-//		// Create Object Tag ID , 2
-//		OpenGLObject newObject(2);
-//
-//#ifdef _DEBUG
-//		std::cout << "Tag ID: " << newObject.TagID << '\n';
-//#endif
-//		// Init Objects
-//		newObject.InitObjects();
-//
-//		// Emplace back into the container.
-//		objects.emplace_back(newObject);
-//
-//	}
-	// Create Object using R-SHIFT, with tag ID of 1.
-//	if (inputSystem.GetKeyState(GLFW_KEY_RIGHT_SHIFT) == 1) {
-//		OpenGLObject newObject1(1);
-//#ifdef _DEBUG
-//		std::cout << "Tag ID: " << newObject1.TagID << '\n';
-//#endif
-//
-//		newObject1.InitObjects();
-//
-//		// Emplace back into the container.
-//		objects.emplace_back(newObject1);
-//	}
+	if (inputSystem.GetKeyState(GLFW_KEY_SPACE) == 1) {
+		// Create Object Tag ID , 2
+		OpenGLObject newObject(2);
 
-//	if (inputSystem.GetKeyState(GLFW_KEY_LEFT_SHIFT) == 1) {
-//		OpenGLObject newObject1(4);
-//#ifdef _DEBUG
-//		std::cout << "Tag ID: " << newObject1.TagID << '\n';
-//#endif
-//
-//		newObject1.InitObjects();
-//
-//		// Emplace back into the container.
-//		objects.emplace_back(newObject1);
-//	}
+#ifdef _DEBUG
+		std::cout << "Tag ID: " << newObject.TagID << '\n';
+#endif
+		// Init Objects
+		newObject.InitObjects();
+
+		// Emplace back into the container.
+		objects.emplace_back(newObject);
+
+	}
+// Create Object using R-SHIFT, with tag ID of 1.
+	if (inputSystem.GetKeyState(GLFW_KEY_RIGHT_SHIFT) == 1) {
+		OpenGLObject newObject1(1);
+#ifdef _DEBUG
+		std::cout << "Tag ID: " << newObject1.TagID << '\n';
+#endif
+
+		newObject1.InitObjects();
+
+		// Emplace back into the container.
+		objects.emplace_back(newObject1);
+	}
+
+	if (inputSystem.GetKeyState(GLFW_KEY_LEFT_SHIFT) == 1) {
+		OpenGLObject newObject1(4);
+#ifdef _DEBUG
+		std::cout << "Tag ID: " << newObject1.TagID << '\n';
+#endif
+
+		newObject1.InitObjects();
+
+		// Emplace back into the container.
+		objects.emplace_back(newObject1);
+	}
 
 	// Moves Object left. can add positionY to change as well.
 	//if (inputSystem.GetKeyState(GLFW_KEY_4) == 2) {
