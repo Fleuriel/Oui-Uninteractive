@@ -684,6 +684,7 @@ void Editor::CreateMasterPanel() {
 		objectFactory->BuildObjectFromFile(sceneFileName);
 		tilemapLoader->CreateGrid();
 		healthSys->ClearHealthbar();
+		healthSys->DrawHealthbar();
 	}
 
 	ImGui::End();
@@ -1759,11 +1760,11 @@ void Editor::CreateObjectList() {
 					if (ImGui::CollapsingHeader("Health Component")) {
 						if (objectFactory->GetGameObjectByID(gameobjID)->Has(ComponentType::HEALTH) != -1) {
 							currentHp2 = GET_COMPONENT(objectFactory->GetGameObjectByID(gameobjID), HealthComponent, ComponentType::HEALTH)->currentHealth;
-							if (ImGui::SliderInt("Current Health", &currentHp2, 0, maxHp2, "%d")) { // Slider for Current Health
+							if (ImGui::SliderInt("Current Health", &currentHp2, 1, maxHp2, "%d")) { // Slider for Current Health
 								GET_COMPONENT(objectFactory->GetGameObjectByID(gameobjID), HealthComponent, ComponentType::HEALTH)->currentHealth = currentHp2;
 							}
 							maxHp2 = GET_COMPONENT(objectFactory->GetGameObjectByID(gameobjID), HealthComponent, ComponentType::HEALTH)->maxHealth;
-							if (ImGui::SliderInt("Max Health", &maxHp2, 0, 10, "%d")) { // Slider for Max Health
+							if (ImGui::SliderInt("Max Health", &maxHp2, 1, 10, "%d")) { // Slider for Max Health
 								GET_COMPONENT(objectFactory->GetGameObjectByID(gameobjID), HealthComponent, ComponentType::HEALTH)->maxHealth = maxHp2;
 							}
 						}
