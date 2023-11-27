@@ -93,8 +93,7 @@ void FontManager::RenderText(std::string fontName, std::string text, float xPos,
 
 				// Setup dimensions
 				float positionX = xPos, positionY = yPos;
-				if (Editor::editorOn)
-				{
+				if (Editor::editorOn) {
 
 					float fromBottomCoordY = static_cast<float>(Editor::gameWindowOrigin.second + Editor::gameWindowSize.second);
 					float bottomCoordY = windowSize.second - fromBottomCoordY;
