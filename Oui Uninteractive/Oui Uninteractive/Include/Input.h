@@ -219,6 +219,24 @@ void ScrollCallBack(GLFWwindow* window, double xOffset, double yOffset);
  *************************************************************************/
 void WindowCloseCallback(GLFWwindow* window);
 
+/**************************************************************************
+ * @brief Callback function for handling window focus changes.
+ *
+ * This function is registered as a callback to be called when the focus of the
+ * GLFW window changes. It is designed to respond to the window losing or gaining focus,
+ * particularly when the user alt-tabs away from or back to the window.
+ *
+ * If the window loses focus (alt-tabbed away), it checks whether certain conditions
+ * are met (not currently loading assets or the file browser not being open), and
+ * if so, it minimizes the window and pauses all sounds using GLFW's `glfwIconifyWindow`
+ * and a sound manager.
+ *
+ * If the window gains focus (alt-tabbed back), it restores the window using `glfwRestoreWindow`
+ * and resumes all sounds through the sound manager.
+ *
+ * @param window The GLFW window that triggered the callback.
+ * @param focused An integer indicating whether the window has gained (GLFW_TRUE) or lost (GLFW_FALSE) focus.
+ *************************************************************************/
 void windowFocusCallback(GLFWwindow* window, int focused);
 
 
