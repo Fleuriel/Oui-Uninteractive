@@ -185,6 +185,15 @@ void Background::Update(float newX, float newY, float scaleX, float scaleY) {
 
 }
 
+/**************************************************************************
+ * @brief Sets the background texture for the Background class.
+ *
+ * This method allows the user to set the background texture of an instance of the
+ * Background class. The provided texture ID (`tex`) is assigned to the `backgroundTexture`
+ * member variable, allowing for dynamic changes to the background appearance.
+ *
+ * @param tex The texture ID to be set as the background texture.
+ *************************************************************************/
 void Background::SetBackGround(int tex) {
 	backgroundTexture = tex;
 }

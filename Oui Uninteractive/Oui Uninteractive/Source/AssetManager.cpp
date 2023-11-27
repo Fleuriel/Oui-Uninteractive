@@ -179,8 +179,6 @@ bool AssetManager::LoadTextures() {
 
                     if (fs::exists(destinationPath)) {
                         int counter = 1;
-                        std::string nameWithoutExtension = entry.path().stem().string();
-                        std::string Extension = entry.path().extension().string();
 
                         std::string addstr = nameWithoutExtension + "(" + std::to_string(counter) + ")" + Extension;
 
@@ -579,7 +577,6 @@ bool AssetManager::LoadSprites() {
                     if (fs::exists(destinationPath)) {
                         int counter = 1;
                         std::string nameWithoutExtension = entry.path().stem().string();
-                        std::string Extension = entry.path().extension().string();
 
                         std::string addstr = nameWithoutExtension + "(" + std::to_string(counter) + ")" + Extension;
 
@@ -825,7 +822,6 @@ bool AssetManager::LoadBGM() {
                 if (fs::exists(destinationPath)) {
                     int counter = 1;
                     std::string nameWithoutExtension = entry.path().stem().string();
-                    std::string Extension = entry.path().extension().string();
 
                     std::string addstr = nameWithoutExtension + "(" + std::to_string(counter) + ")" + Extension;
 
@@ -919,7 +915,6 @@ bool AssetManager::LoadSFX() {
                 if (fs::exists(destinationPath)) {
                     int counter = 1;
                     std::string nameWithoutExtension = entry.path().stem().string();
-                    std::string Extension = entry.path().extension().string();
 
                     std::string addstr = nameWithoutExtension + "(" + std::to_string(counter) + ")" + Extension;
 
@@ -1158,7 +1153,6 @@ bool AssetManager::LoadFonts() {
                 if (fs::exists(destinationPath)) {
                     int counter = 1;
                     std::string nameWithoutExtension = entry.path().stem().string();
-                    std::string Extension = entry.path().extension().string();
 
                     std::string addstr = nameWithoutExtension + "(" + std::to_string(counter) + ")" + Extension;
 
@@ -1351,7 +1345,6 @@ bool AssetManager::LoadScenes() {
                 if (fs::exists(destinationPath)) {
                     int counter = 1;
                     std::string nameWithoutExtension = entry.path().stem().string();
-                    std::string Extension = entry.path().extension().string();
 
                     std::string addstr = nameWithoutExtension + "(" + std::to_string(counter) + ")" + Extension;
 
