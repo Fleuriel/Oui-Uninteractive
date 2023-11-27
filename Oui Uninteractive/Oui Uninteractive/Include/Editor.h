@@ -91,7 +91,6 @@ public:
 	static void CreateAssetBrowser();
 	static void CreateConsolePanel();
 
-	//static void RenderDirectory(const std::string& path); // Helper function to render asset browser directory
 	static void RenderDirectoryV2(const std::string& filePath); // Tester function for asset browser
 public:
 	static bool editorOn;

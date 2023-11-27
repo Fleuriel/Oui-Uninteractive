@@ -4,14 +4,32 @@
 #include "ObjectFactory.h" 
 #include "Collision.h"
 #include "Background.h"
+/**************************************************************************
+ * @file PauseMenuLogic.h
+ * @author CHEAH Tristan Tze Hong - 100%
+ * @par DP email: t.cheah@digipen.edu
+ * @par Course: CSD 2401
+ * @par Software Engineering Project 3
+ * @date 02-11-2023
+ * @brief This file contains the definition of a Script containing the logic 
+ *		  for the Pause Menu
+ *************************************************************************/
 class PauseMenuLogic : public IScript {
 	public:
 		PauseMenuLogic(std::string newName, bool gameplayFlag) : IScript(newName, gameplayFlag) {}
+		/**************************************************************************
+		* @brief Initialize function for Pause Menu Logic script
+		* @return void
+		*************************************************************************/
 		void Initialize() {
 		
 			logicSystem->AddLogicScript(this);
 			
 		}
+		/**************************************************************************
+		* @brief Update function for Pause Menu Logic script
+		* @return void
+		*************************************************************************/
 		void Update(size_t gameObjectID) {
 		
 			if (sysManager->isPaused) {
@@ -63,5 +81,9 @@ class PauseMenuLogic : public IScript {
 			}
 			
 		}
+		/**************************************************************************
+		* @brief End function for Pause Menu Logic script
+		* @return void
+		*************************************************************************/
 		void End() {}
 };

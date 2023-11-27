@@ -1,3 +1,14 @@
+
+/**************************************************************************
+ * @file TestScript.h 
+ * @author CHEAH Tristan Tze Hong - 100%
+ * @par DP email: t.cheah@digipen.edu
+ * @par Course: CSD 2401
+ * @par Software Engineering Project 3
+ * @date 02-11-2023
+ * @brief This file contains the definition of a Script containing movement script
+ *************************************************************************/
+
 #include "IScript.h"
 #include "Physics.h"
 #include "ObjectFactory.h"
@@ -9,6 +20,10 @@ public:
 	TestScript(std::string newName, bool gameplayFlag) : IScript(newName, gameplayFlag) {
 		
 	};
+	/**************************************************************************
+		* @brief Initialize function for TestScript (movement script)
+		* @return void
+		*************************************************************************/
 	void Initialize() {
 		if (isGameplay) {
 			logicSystem->AddLogicScript(this);
@@ -18,7 +33,10 @@ public:
 		}
 		
 	};
-
+	/**************************************************************************
+		* @brief Update function for TestScript (movement script)
+		* @return void
+		*************************************************************************/
 	void Update(size_t gameObjectID) {
 		GameObject* gObj = objectFactory->GetGameObjectByID(gameObjectID);
 		if (gObj != nullptr) {
@@ -71,7 +89,10 @@ public:
 		}
 		
 	};
-
+	/**************************************************************************
+		* @brief End function for TestScript (movement script)
+		* @return void
+		*************************************************************************/
 	void End() {}
 	~TestScript() {}
 };
@@ -81,12 +102,19 @@ public:
 	TestScript2(std::string newName, bool gameplayFlag) : IScript(newName, gameplayFlag) {
 
 	};
+	/**************************************************************************
+		* @brief Initialize function for TestScript2 (movement script)
+		* @return void
+		*************************************************************************/
 	void Initialize() {
 		
 			logicSystem->AddLogicScript(this);
 		
 	};
-
+	/**************************************************************************
+		* @brief Update function for TestScript2 (movement script)
+		* @return void
+		*************************************************************************/
 	void Update(size_t gameObjectID) {
 		GameObject* gObj = objectFactory->GetGameObjectByID(gameObjectID);
 		if (gObj != nullptr) {
@@ -230,7 +258,10 @@ public:
 		}
 		
 	};
-
+	/**************************************************************************
+		* @brief End function for TestScript2 (movement script)
+		* @return void
+	*************************************************************************/
 	void End() {}
 	~TestScript2() {}
 };
