@@ -600,39 +600,61 @@ bool AssetManager::LoadSprites() {
                     continue;
                 }
 
+                bool correctnamingconvention{true};
+
                 // find '(' in the name
                 size_t lBracketPos = entry.path().filename().string().find_last_of('(');
 
-                // get the string containing rows and columns from the name
-                std::string spriteRowsAndColumns = entry.path().filename().string().substr(lBracketPos + 1, extensionPos - lBracketPos - 2);
-                //std::cout << spriteRowsAndColumns<<std::endl;
+                // find ')' in the name
+                size_t rBracketPos = entry.path().filename().string().find_last_of(')');
 
-                // find the 'x' in the string that separates the rows and columns
-                size_t xPos = spriteRowsAndColumns.find_last_of('x');
+                int rows{}, columns{};
 
-                // get the rows
-                int rows = std::stoi(spriteRowsAndColumns.substr(0, xPos));
-                //std::cout << rows << std::endl;
+                // Check if both '(' and ')' are present and in the correct order
+                if (lBracketPos != std::string::npos && rBracketPos != std::string::npos && lBracketPos < rBracketPos) {
+                    // Get the string containing rows and columns from the name
+                    std::string spriteRowsAndColumns = entry.path().filename().string().substr(lBracketPos + 1, rBracketPos - lBracketPos - 1);
 
-                // get the columns
-                int columns = std::stoi(spriteRowsAndColumns.substr(xPos + 1));
-                //std::cout << columns << std::endl;
+                    // Find the 'x' in the string that separates the rows and columns
+                    size_t xPos = spriteRowsAndColumns.find_last_of('x');
 
-                if (lBracketPos == std::string::npos || xPos == std::string::npos || rows == 0 || columns == 0) {
-                    std::string file(entry.path().filename().string());
-                    std::wstring widefile(file.begin(), file.end());
-                    HWND hwnd = GetActiveWindow();
-                    std::string filepath(FILEPATH_SPRITES);
-                    // Convert std::string to std::wstring
-                    std::wstring widefilepath(filepath.begin(), filepath.end());
+                    // Check if 'x' is present
+                    if (xPos != std::string::npos) {
+                        try {
+                            // Get the rows
+                            rows = std::stoi(spriteRowsAndColumns.substr(0, xPos));
 
-                    std::wstring message = L"File with incompatible naming convention (\"" + widefile + L"\") detected in \"" + widefilepath + L"\" folder!\n\nFile not loaded!";
-                    LPCWSTR boxMessage = message.c_str();
-
-                    MessageBox(hwnd, boxMessage, L"Load Failure", MB_OK | MB_ICONERROR);
-                    continue;
+                            // Get the columns
+                            columns = std::stoi(spriteRowsAndColumns.substr(xPos + 1));
+                        }
+                        catch (const std::invalid_argument& e) {
+                            correctnamingconvention = false;
+                        }
+                        catch (const std::out_of_range& e) {
+                            correctnamingconvention = false;
+                        }
+                    }
+                    else
+                        correctnamingconvention = false;
+                }
+                else {
+                    correctnamingconvention = false;
                 }
 
+                if (!correctnamingconvention) {
+                        std::string file(entry.path().filename().string());
+                        std::wstring widefile(file.begin(), file.end());
+                        HWND hwnd = GetActiveWindow();
+                        std::string filepath(FILEPATH_SPRITES);
+                        // Convert std::string to std::wstring
+                        std::wstring widefilepath(filepath.begin(), filepath.end());
+
+                        std::wstring message = L"File with incompatible naming convention (\"" + widefile + L"\") detected in \"" + widefilepath + L"\" folder!\n\nFile not loaded!";
+                        LPCWSTR boxMessage = message.c_str();
+
+                        MessageBox(hwnd, boxMessage, L"Load Failure", MB_OK | MB_ICONERROR);
+                        continue;
+                }
 
                 // create new sprite class
                 Sprite newsprite;
