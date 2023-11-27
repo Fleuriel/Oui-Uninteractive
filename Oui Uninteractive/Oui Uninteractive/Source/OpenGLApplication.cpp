@@ -269,12 +269,14 @@ void OpenGLApplication::OpenGLUpdate() {
 	// Start time profiling for grpahics system
 	//TimeProfiler profiler(Editor::timeRecorder.graphicsTime);
 	// End the Game.
-	if (inputSystem.GetKeyState(GLFW_KEY_ESCAPE)) {
-		// set the window to CLOSE.
-		glfwSetWindowShouldClose(windowNew, GLFW_TRUE);
-		// Set game state to quit to exit the while loop
-		sceneManager->nextSceneID = STATE_QUIT;
-	}
+
+	//if (inputSystem.GetKeyState(GLFW_KEY_ESCAPE)) {
+	//	// set the window to CLOSE.
+	//	glfwSetWindowShouldClose(windowNew, GLFW_TRUE);
+	//	// Set game state to quit to exit the while loop
+	//	sceneManager->nextSceneID = STATE_QUIT;
+	//}
+
 	//glBindFramebuffer(GL_FRAMEBUFFER, OpenGLObject::FBO);
 
 
