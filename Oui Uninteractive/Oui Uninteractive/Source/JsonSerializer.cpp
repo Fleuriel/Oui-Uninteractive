@@ -1,6 +1,6 @@
 /**************************************************************************
  * @file JsonSerializer.cpp
- * @author Mark Low
+ * @author LOW Wang Chun, Mark - 100%
  * @par DP email: l.wangchunmark@digipen.edu
  * @par Course: CSD 2401
  * @par Software Engineering Project 3

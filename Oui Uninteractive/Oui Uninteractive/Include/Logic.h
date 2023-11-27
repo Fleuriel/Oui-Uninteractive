@@ -1,6 +1,6 @@
 /**************************************************************************
  * @file Logic.h
- * @author CHEAH Tristan Tze Hong
+ * @author CHEAH Tristan Tze Hong - 100%
  * @par DP email: t.cheah@digipen.edu
  * @par Course: CSD 2401
  * @par Software Engineering Project 3
@@ -9,8 +9,9 @@
  *		  This system is responsible for running the different scripts
  *		  attached to a logic component
  *************************************************************************/
+#ifndef LOGIC_H
+#define LOGIC_H
 
-#pragma once
 #include "ISystem.h"
 #include "IScript.h"
 #include "LogicComponent.h"
@@ -61,3 +62,5 @@ public:
 	std::map<size_t, LogicComponent*> logicComponentMap;
 };
 extern LogicSystem* logicSystem;
+
+#endif

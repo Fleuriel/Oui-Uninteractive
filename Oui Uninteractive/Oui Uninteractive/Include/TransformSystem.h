@@ -1,7 +1,6 @@
-#pragma once
 /**************************************************************************
  * @file TransformSystem.h
- * @author CHEAH Tristan Tze Hong
+ * @author CHEAH Tristan Tze Hong - 100%
  * @par DP email: t.cheah@digipen.edu
  * @par Course: CSD 2401
  * @par Software Engineering Project 3
@@ -9,6 +8,9 @@
  * @brief This file contains the declaration of the Transform System.
  *		  This system is responsible updating the positions of the transforms
  *************************************************************************/
+#ifndef TRANFORMSYSTEM_H
+#define TRANSFORMSYSTEM_H
+
 #include "ISystem.h"
 #include "Transform.h"
 #include "ComponentFactory.h"
@@ -27,3 +29,5 @@ class TransformSystem : public ISystem {
 	*************************************************************************/
 	void Update(float dt);
 };
+
+#endif

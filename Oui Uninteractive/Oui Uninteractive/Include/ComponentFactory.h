@@ -1,7 +1,7 @@
 /**************************************************************************
  * @file ComponentFactory.h
- * @author HWANG Jing Rui, Austin
- * @co-author CHEAH Tristan Tze Hong
+ * @author HWANG Jing Rui, Austin - 50%
+ * @co-author CHEAH Tristan Tze Hong -  - 50%
  * @par DP email: jingruiaustin.hwang@digipen.edu
  * @par DP email: t.cheah@digipen.edu
  * @par Course:	CSD 2401

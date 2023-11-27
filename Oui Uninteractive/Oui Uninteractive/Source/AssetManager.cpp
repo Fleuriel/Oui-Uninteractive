@@ -1,6 +1,6 @@
 /**************************************************************************
  * @file AssetManager.cpp
- * @author Aaron Chan Jun Xiang
+ * @author Aaron Chan Jun Xiang - 100%
  * @par DP email: aaronjunxiang.chan@digipen.edu
  * @par Course: CSD 2401
  * @par Software Engineering Project 3

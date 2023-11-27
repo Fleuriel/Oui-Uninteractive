@@ -1,4 +1,13 @@
-#pragma once
+/**************************************************************************
+ * @file SceneManager.h
+ * @author CHEAH Tristan Tze Hong - 100%
+ * @par DP email: t.cheah@digipen.edu
+ * @par Course: CSD 2401
+ * @par Software Engineering Project 3
+ * @date 17-10-2023
+ * @brief This file contains the declaration of the SceneManager class.
+ *************************************************************************/
+
 #include "ISystem.h"
 #include "IScene.h"
 #include "Scene1.h"

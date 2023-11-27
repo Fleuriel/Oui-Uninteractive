@@ -1,4 +1,12 @@
-#pragma once
+/**************************************************************************
+ * @file SceneManager.cpp
+ * @author CHEAH Tristan Tze Hong - 100%
+ * @par DP email: t.cheah@digipen.edu
+ * @par Course: CSD 2401
+ * @par Software Engineering Project 3
+ * @date 17-10-2023
+ * @brief This file contains the definition of the SceneManager class.
+ *************************************************************************/
 #include "SceneManager.h"
 #include "OpenGLApplication.h"
 #include "Editor.h"

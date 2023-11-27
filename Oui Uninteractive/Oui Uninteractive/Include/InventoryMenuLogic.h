@@ -1,3 +1,12 @@
+/**************************************************************************
+* @file InventoryMenuLogic.h
+* @author QUEK Cheng Kwang, Emery - 100%
+* @par DP email: c.quek@digipen.edu
+* @par Course:	CSD 2401
+* @par Software Engineering Project 3
+* @date 27-11-2023
+* @brief This file contains the script for the inventory menu.
+*************************************************************************/
 #include "IScript.h"
 #include "Physics.h"
 #include "ObjectFactory.h"
@@ -8,12 +17,26 @@ class InventoryMenuLogic : public IScript {
 public:
 	std::vector<std::string> slotVec;
 	bool initialised;
+
+	/**************************************************************************
+	* @brief Constructor
+	*************************************************************************/
 	InventoryMenuLogic(std::string newName, bool gameplayFlag) : IScript(newName, gameplayFlag) {}
+
+	/**************************************************************************
+	* @brief Initialize the InventoryMenuLogic script
+	* @return void
+	*************************************************************************/
 	void Initialize() {
 
 		logicSystem->AddLogicScript(this);
 		initialised = false;
 	}
+
+	/**************************************************************************
+	* @brief Update the InventoryMenuLogic
+	* @return void
+	*************************************************************************/
 	void Update(size_t gameObjectID) {
 		if (initialised == false) {
 			//gObj = 
@@ -62,10 +85,6 @@ public:
 					}
 				}
 			}
-			
-				
-			
-		
 		}
 
 		GameObject* player = objectFactory->GetGameObjectByName("JSONPlayer");
@@ -168,6 +187,9 @@ public:
 
 	};
 
-	
+	/**************************************************************************
+	* @brief End the InventoryMenuLogic script
+	* @return void
+	*************************************************************************/
 	void End() {}
 };

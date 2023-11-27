@@ -1,7 +1,7 @@
 /**************************************************************************
  * @file ObjectFactory.h
- * @author HWANG Jing Rui, Austin
- * @co-author CHEAH Tristan Tze Hong
+ * @author HWANG Jing Rui, Austin - 70%
+ * @co-author CHEAH Tristan Tze Hong - 30%
  * @par DP email: jingruiaustin.hwang@digipen.edu
  * @par DP email: t.cheah@digipen.edu
  * @par Course:	CSD 2401

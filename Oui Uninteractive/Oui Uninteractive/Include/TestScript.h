@@ -1,13 +1,12 @@
-
 /**************************************************************************
- * @file TestScript.h 
- * @author CHEAH Tristan Tze Hong - 100%
- * @par DP email: t.cheah@digipen.edu
- * @par Course: CSD 2401
- * @par Software Engineering Project 3
- * @date 02-11-2023
- * @brief This file contains the definition of a Script containing movement script
- *************************************************************************/
+* @file TestScript.h 
+* @author CHEAH Tristan Tze Hong - 100%
+* @par DP email: t.cheah@digipen.edu
+* @par Course: CSD 2401
+* @par Software Engineering Project 3
+* @date 02-11-2023
+* @brief This file contains the definition of a Script containing movement script
+*************************************************************************/
 
 #include "IScript.h"
 #include "Physics.h"
