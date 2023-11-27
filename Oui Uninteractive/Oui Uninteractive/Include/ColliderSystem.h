@@ -21,7 +21,6 @@
 #include "ObjectFactory.h"
 #include "ComponentFactory.h"
 #include "ComponentType.h"
-#include "Editor.h"
 #include "HealthComponent.h"
 #include "HealthSystem.h"
 

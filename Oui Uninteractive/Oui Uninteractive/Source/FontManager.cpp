@@ -13,7 +13,6 @@
 #include "OpenGLObjects.h"
 #include "OpenGLApplication.h"
 #include "SystemManager.h"
-#include "Editor.h"
 
 // Create singleton for shader program, for shader usage.
 //std::vector<OpenGLShader> OpenGLObject::shdrpgms;

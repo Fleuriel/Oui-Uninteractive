@@ -17,7 +17,6 @@
 #include <array>
 #include <functional>
 #include <Physics.h>
-#include <Editor.h>	
 #include <ParticleSystem.h>
 #include <Cheats.h>
 #include <AssetManager.h>

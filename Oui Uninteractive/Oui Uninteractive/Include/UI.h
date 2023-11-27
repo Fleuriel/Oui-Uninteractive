@@ -14,7 +14,6 @@
 #include "ObjectFactory.h"
 #include "ISystem.h"
 #include "Collision.h"
-#include "Editor.h"
 #include "Input.h"
 #include "SceneManager.h"
 #include <array>

@@ -23,7 +23,6 @@
 #include <glm/gtc/type_ptr.hpp>
 #include <stb_image.h>
 #include "AssetManager.h"
-#include "Editor.h"
 
 
 std::vector<OpenGLShader> Background::shdrpgms; //singleton

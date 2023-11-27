@@ -27,7 +27,8 @@
 #include <RandomUtilities.h>
 #include <GameStateManager.h>
 #include <stb_image.h>
-#include "Editor.h"
+#include <ObjectFactory.h>
+#include <Transform.h>
 
 
 unsigned int OpenGLObject::mdl_ref = 0; // Define and initialize mdl_ref

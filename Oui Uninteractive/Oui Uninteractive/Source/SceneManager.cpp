@@ -1,7 +1,6 @@
 #pragma once
 #include "SceneManager.h"
 #include "OpenGLApplication.h"
-#include "Editor.h"
 // Game State List Enumeration
 
 #ifndef SCENEMANAGER_H

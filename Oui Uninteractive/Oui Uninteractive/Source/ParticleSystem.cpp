@@ -26,7 +26,6 @@
 #include <ParticleSystem.h>
 #include <Physics.h>
 #include <OpenGLObjects.h>
-#include "Editor.h"
 #include "GameStateManager.h"
 
 

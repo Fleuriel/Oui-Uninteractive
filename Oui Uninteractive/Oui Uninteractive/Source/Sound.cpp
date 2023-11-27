@@ -10,7 +10,6 @@
 
 #include <iostream>
 #include "Sound.h"
-#include "Editor.h"
 #include "AssetManager.h"
 #include "SystemManager.h"
 

@@ -22,7 +22,6 @@
 #include <RandomUtilities.h>
 #include <glm/gtc/matrix_transform.hpp>
 #include "SceneManager.h"
-#include <Editor.h>
 #include <ObjectFactory.h>
 #include <Physics.h>
 #include <JsonSerializer.h>
@@ -155,7 +154,6 @@ void OpenGLApplication::OpenGLWindowInit() {
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-	//Editor::editorOn = true;
 }
 
 
@@ -176,7 +174,6 @@ void OpenGLApplication::OpenGLWindowCleanup() {
 	};
 
 	assetManager.FreeAll();
-	/*myImGui.Exit();*/
 	glfwTerminate();
 }
 
@@ -208,20 +205,6 @@ void OpenGLApplication::OpenGLInit() {
 	// Creates an Object to Initialize it.
 	Objects.Initialize();
 	objects.emplace_back(OpenGLObject::cameraTranslator);
-
-
-	//// Initializing ImGui
-	//if (!imguiInitialized) {
-	//	myImGui.Init(windowNew, glsl_vers);
-	//	imguiInitialized = true;
-	//}
-	//// Initializing Editor
-	//myEditor.Init();
-	//
-	
-
-
-	
 	assetManager.LoadAll();
 	background.Init();
 	
@@ -238,11 +221,6 @@ void OpenGLApplication::OpenGLInit() {
 * @return void
 *************************************************************************/
 void OpenGLApplication::OpenGLUpdate() {
-
-	// Toggle editor state
-	/*if (inputSystem.GetKeyState(GLFW_KEY_GRAVE_ACCENT) == 1) {
-		Editor::editorOn = !Editor::editorOn;		
-	}*/
 
 	
 		triggerEveryQuarterSecond += static_cast<float>(GetDT());
@@ -262,31 +240,6 @@ void OpenGLApplication::OpenGLUpdate() {
 	
 	
 
-	// Start time profiling for grpahics system
-	//TimeProfiler profiler(Editor::timeRecorder.graphicsTime);
-	// End the Game.
-
-	//if (inputSystem.GetKeyState(GLFW_KEY_ESCAPE)) {
-	//	// set the window to CLOSE.
-	//	glfwSetWindowShouldClose(windowNew, GLFW_TRUE);
-	//	// Set game state to quit to exit the while loop
-	//	sceneManager->nextSceneID = STATE_QUIT;
-	//}
-
-	//glBindFramebuffer(GL_FRAMEBUFFER, OpenGLObject::FBO);
-
-
-	//if (Editor::editorOn) {
-	//	myImGui.CreateFrame();
-	//	myEditor.Update();
-	//	myImGui.Update();
-
-
-	//	// Clear the original window
-	//	glClear(GL_COLOR_BUFFER_BIT);
-	//	// Bind the FBO for rendering
-	//	glBindFramebuffer(GL_FRAMEBUFFER, OpenGLObject::FBO);
-	//}
 
 
 
@@ -298,15 +251,6 @@ void OpenGLApplication::OpenGLUpdate() {
 
 	double MouseX, MouseY;
 
-	// Change the position of mouse coordinates to frame buffer coordinates.
-	/*if (Editor::editorOn)
-	{
-		OpenGLObject::FrameBufferMouseCoords(windowNew, &xpos, &ypos, OpenGLObject::cameraObject);
-	}
-	else
-	{
-		
-	}*/
 	
 	OpenGLObject::windowMouseCoords(windowNew, &xpos, &ypos, OpenGLObject::cameraObject);
 	std::cout << "mousePos " << xpos << "\t" << ypos << '\n';
@@ -508,7 +452,6 @@ void OpenGLApplication::OpenGLUpdate() {
 	/*-----------------------------------
 	|       ImGui Stuff Testing         |
 	-----------------------------------*/
-//	myEditor.Update();
 
 	particleSystem.Update();
 
@@ -550,16 +493,6 @@ void OpenGLApplication::OpenGLUpdate() {
 		
 
 	}
-	/*if (Editor::selected != nullptr) {
-		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-		Editor::selectedOutline.Draw(std::string(""), true);
-		Editor::selectedOutline1.Draw(std::string(""), true);
-		Editor::selectedOutline2.Draw(std::string(""), true);
-		Editor::selectedOutline3.Draw(std::string(""), true);
-		Editor::selectedOutline4.Draw(std::string(""), true);
-		Editor::rotatedWidget.Draw(std::string(""), true);
-		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-	}*/
 	
 	// Updates the Game Object
 	for (std::pair<size_t, GameObject*> gObj : objectFactory->GetGameObjectIDMap()) {
@@ -608,21 +541,12 @@ void OpenGLApplication::OpenGLUpdate() {
 
 	UpdateAnimationTimers();
 	UpdateAnimation();
-	//fontManager->RenderText("Next_Sunday.ttf", "The quick brown fox jumps over the lazy dog.", -400, -200, 1.0f, glm::vec3(236.0f/255.0f, 1.0f, 220.0f/255.0f));
-	//fontManager->RenderText("Valoon.ttf", "0123456789 .:,; '\" (!?) +-*/ = ", 0, 0, 1.0f, glm::vec3(0.4, 0.7, 0.9));
 	Draw();
 	particleSystem.Draw();
 
 	// Unbind the FBO to restore the default framebuffer
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
-	/*if (Editor::editorOn) {
-		myImGui.Draw();
-	}
-	*/
-
-	
-	
 	
 }
 
@@ -724,8 +648,6 @@ void OpenGLApplication::OpenGLWindowResizeCallback(GLFWwindow* window2, int widt
 	// Update the window dimensions once changed
 	// set callback for the window size
 	glViewport(0, 0, width, height);
-	//Editor::gameWindowSize.first = width;
-	//Editor::gameWindowSize.second = height;
 
 	windowSize.first = width;
 	windowSize.second = height;
