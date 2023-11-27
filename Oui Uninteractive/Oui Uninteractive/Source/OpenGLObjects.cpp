@@ -754,21 +754,6 @@ void OpenGLObject::Camera2D::Update(GLFWwindow* camWindow, int positionX, int po
 
 	(void)camWindow;	
 
-	// ZOOM in
-	//if (inputSystem.GetScrollState() == 1) 
-	//if (inputSystem.GetKeyState(GLFW_KEY_UP) == 2)
-	//{
-	//	// Height Decrement by 1.1f
-	//	height -= 50;
-	//}
-	//
-	//// ZOOM OUT
-	////if (inputSystem.GetScrollState() == -1)
-	//if (inputSystem.GetKeyState(GLFW_KEY_DOWN) == 2)
-	//{
-	//	// Height Increment by 1.1f
-	//	height += 50;
-	//}
 
 	// Set minimum parameter of height < Depth >
 	if (height <= min_height)
@@ -975,7 +960,7 @@ void OpenGLObject::init_shdrpgms_cont(VectorPairStrStr const& vpss) {
 /*=======================================================================================================================*/
 
 /**************************************************************************
-* @brief  Initialize the Shaders for Graphics Pipeline for fonts.
+* @brief  Initialize Fonts shaders and vertex etc, for Graphics Pipeline for fonts.
 *
 *
 * @param  NONE
@@ -1070,46 +1055,61 @@ void OpenGLObject::FrameBufferMouseCoords(GLFWwindow* originalWindow, double* x,
 	double originalX = *x - Editor::gameWindowOrigin.first;
 	double originalY = *y - Editor::gameWindowOrigin.second;
 
-	//std::cout << originalX << '\t' << originalY << '\t';
 
 
 	// get the center coordinates of the frame buffer window.
 	int centerX = Editor::gameWindowSize.first / 2.0;
 	int centerY = Editor::gameWindowSize.second / 2.0;
 
-	//std::cout << centerX << '\t' << centerY << '\t';
 
 	// Calculate corrected coordinates relative to the camera's position.
 	double correctedX = (originalX - centerX) + camera.posX * 0.77;
 	double correctedY = centerY - originalY + camera.posY * 0.77;  // Note the y-coordinate inversion
 
 
-	//std::cout << correctedX << '\t' << correctedY << '\t';
 
 	// set value of X and Y, (valueX, valueY) to the respective y values,
 	// Y no change as no difference. X, on the other hand needs to be multiplied with the multiplier of height.,
 	float valueX = correctedX;
 	float valueY = correctedY;
 
-
+	// Scale by division of 0.77 to the camera NDC to world coordinates.
 	valueX /= 0.77;
 	valueY /= 0.77;
 
-	// set valueX to multiply by camera height.
-	//valueX *= camera.height;
 
 
 
+	// make the value x and y to be a integer value
 	*x = std::floor(valueX);
 	*y = std::floor(valueY);
 	
 
-	//std::cout << '\n';
-	//std::cout << *x << '\t' << *y <<'\t' <<" Camera PositionX: " << cameraObject.posX << '\t' << cameraObject.posY << '\n';
 
 }
 
+/**************************************************************************
+* @brief  Change the mouse coordinates from getMousePosition to  window
+*		  coordinates cenetered at 0,0 
+*						   ^ y
+* 						   |
+* 						   |
+* 						   |
+* 						   |
+*			---------------+--------------->x
+* 					  (0,0)|
+* 						   |
+* 						   |
+* 						   |
+*
+* @param  GLFWwindow*	pointer to the window
+* @param  double*		sets a value in return. [x]
+* @param  double*		sets a value in return. [y]
+* @param  Camera2D		camera object of original class: OpenGLObject.
 
+
+@return void
+*************************************************************************/
 void OpenGLObject::windowMouseCoords(GLFWwindow* originalWindow, double* x, double* y, OpenGLObject::Camera2D camera)
 {
 	(void)originalWindow;
@@ -1132,7 +1132,7 @@ void OpenGLObject::windowMouseCoords(GLFWwindow* originalWindow, double* x, doub
 	correctedX /= 1.18;
 	correctedY /= 1.02;
 
-	std::cout << correctedX << ' ' << correctedY << '\n';
+//	std::cout << correctedX << ' ' << correctedY << '\n';
 	*x = correctedX;
 	*y = correctedY;
 
