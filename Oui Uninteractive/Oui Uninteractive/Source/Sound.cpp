@@ -66,7 +66,7 @@ void SoundManager::Initialize() {
 void SoundManager::Update(float dt) {
 	if (sysManager->isPaused == false) {
 		// Start time profiling for sound system
-		TimeProfiler profiler(Editor::timeRecorder.soundTime);
+		/*TimeProfiler profiler(Editor::timeRecorder.soundTime);*/
 
 		system->update();
 

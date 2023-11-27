@@ -51,10 +51,6 @@ GLFWwindow* windowNew;
 // To store the window dimensions for duration of program
 std::pair<int, int> windowSize;
 
-// ImGui and Editor instance
-UsingImGui myImGui;
-Editor myEditor;
-
 // Serializer instance
 JsonSerializer serializer;
 
@@ -159,7 +155,7 @@ void OpenGLApplication::OpenGLWindowInit() {
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-	Editor::editorOn = true;
+	//Editor::editorOn = true;
 }
 
 
@@ -180,7 +176,7 @@ void OpenGLApplication::OpenGLWindowCleanup() {
 	};
 
 	assetManager.FreeAll();
-	myImGui.Exit();
+	/*myImGui.Exit();*/
 	glfwTerminate();
 }
 
@@ -214,14 +210,14 @@ void OpenGLApplication::OpenGLInit() {
 	objects.emplace_back(OpenGLObject::cameraTranslator);
 
 
-	// Initializing ImGui
-	if (!imguiInitialized) {
-		myImGui.Init(windowNew, glsl_vers);
-		imguiInitialized = true;
-	}
-	// Initializing Editor
-	myEditor.Init();
-	
+	//// Initializing ImGui
+	//if (!imguiInitialized) {
+	//	myImGui.Init(windowNew, glsl_vers);
+	//	imguiInitialized = true;
+	//}
+	//// Initializing Editor
+	//myEditor.Init();
+	//
 	
 
 
@@ -244,9 +240,9 @@ void OpenGLApplication::OpenGLInit() {
 void OpenGLApplication::OpenGLUpdate() {
 
 	// Toggle editor state
-	if (inputSystem.GetKeyState(GLFW_KEY_GRAVE_ACCENT) == 1) {
+	/*if (inputSystem.GetKeyState(GLFW_KEY_GRAVE_ACCENT) == 1) {
 		Editor::editorOn = !Editor::editorOn;		
-	}
+	}*/
 
 	
 		triggerEveryQuarterSecond += static_cast<float>(GetDT());
@@ -280,17 +276,17 @@ void OpenGLApplication::OpenGLUpdate() {
 	//glBindFramebuffer(GL_FRAMEBUFFER, OpenGLObject::FBO);
 
 
-	if (Editor::editorOn) {
-		myImGui.CreateFrame();
-		myEditor.Update();
-		myImGui.Update();
+	//if (Editor::editorOn) {
+	//	myImGui.CreateFrame();
+	//	myEditor.Update();
+	//	myImGui.Update();
 
 
-		// Clear the original window
-		glClear(GL_COLOR_BUFFER_BIT);
-		// Bind the FBO for rendering
-		glBindFramebuffer(GL_FRAMEBUFFER, OpenGLObject::FBO);
-	}
+	//	// Clear the original window
+	//	glClear(GL_COLOR_BUFFER_BIT);
+	//	// Bind the FBO for rendering
+	//	glBindFramebuffer(GL_FRAMEBUFFER, OpenGLObject::FBO);
+	//}
 
 
 
@@ -303,16 +299,16 @@ void OpenGLApplication::OpenGLUpdate() {
 	double MouseX, MouseY;
 
 	// Change the position of mouse coordinates to frame buffer coordinates.
-	if (Editor::editorOn)
+	/*if (Editor::editorOn)
 	{
 		OpenGLObject::FrameBufferMouseCoords(windowNew, &xpos, &ypos, OpenGLObject::cameraObject);
 	}
 	else
 	{
-		OpenGLObject::windowMouseCoords(windowNew, &xpos, &ypos, OpenGLObject::cameraObject);
-	}
+		
+	}*/
 	
-
+	OpenGLObject::windowMouseCoords(windowNew, &xpos, &ypos, OpenGLObject::cameraObject);
 	//std::cout << "mousePos " << xpos << "\t" << ypos << '\n';
 
 	MouseX = xpos;
@@ -554,7 +550,7 @@ void OpenGLApplication::OpenGLUpdate() {
 		
 
 	}
-	if (Editor::selected != nullptr) {
+	/*if (Editor::selected != nullptr) {
 		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 		Editor::selectedOutline.Draw(std::string(""), true);
 		Editor::selectedOutline1.Draw(std::string(""), true);
@@ -563,7 +559,7 @@ void OpenGLApplication::OpenGLUpdate() {
 		Editor::selectedOutline4.Draw(std::string(""), true);
 		Editor::rotatedWidget.Draw(std::string(""), true);
 		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-	}
+	}*/
 	
 	// Updates the Game Object
 	for (std::pair<size_t, GameObject*> gObj : objectFactory->GetGameObjectIDMap()) {
@@ -620,10 +616,10 @@ void OpenGLApplication::OpenGLUpdate() {
 	// Unbind the FBO to restore the default framebuffer
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
-	if (Editor::editorOn) {
+	/*if (Editor::editorOn) {
 		myImGui.Draw();
 	}
-	
+	*/
 
 	
 	

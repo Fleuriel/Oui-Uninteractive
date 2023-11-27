@@ -39,26 +39,26 @@ public:
 				Transform* tx = GET_COMPONENT(gObj, Transform, ComponentType::TRANSFORM);
 				if (tx != nullptr) {
 					if (gObj->GetName() == "Background2") {
-						tx->position = Vec2(OpenGLObject::cameraObject.posX - Editor::gameWindowSize.first + 1262.f, OpenGLObject::cameraObject.posY - Editor::gameWindowSize.second / 2.f);
+						tx->position = Vec2(OpenGLObject::cameraObject.posX, OpenGLObject::cameraObject.posY - windowSize.second / 2.f);
 					}
 					if (gObj->GetName() == "InventoryObject1") {
 						//position game object in camera
-						tx->position = Vec2(OpenGLObject::cameraObject.posX + Editor::gameWindowSize.first / 6.f, OpenGLObject::cameraObject.posY - Editor::gameWindowSize.second / 2.f);
+						tx->position = Vec2(OpenGLObject::cameraObject.posX + windowSize.first / 6.f, OpenGLObject::cameraObject.posY - windowSize.second / 2.f);
 
 					}
 					else if (gObj->GetName() == "InventoryObject2") {
 						//position game object in camera
-						tx->position = Vec2(OpenGLObject::cameraObject.posX + Editor::gameWindowSize.first / 3.3f, OpenGLObject::cameraObject.posY - Editor::gameWindowSize.second / 2.f);
+						tx->position = Vec2(OpenGLObject::cameraObject.posX + windowSize.first / 3.3f, OpenGLObject::cameraObject.posY - windowSize.second / 2.f);
 
 					}
 					else if (gObj->GetName() == "InventoryObject3") {
 						//position game object in camera
-						tx->position = Vec2(OpenGLObject::cameraObject.posX + Editor::gameWindowSize.first / 2.3f, OpenGLObject::cameraObject.posY - Editor::gameWindowSize.second / 2.f);
+						tx->position = Vec2(OpenGLObject::cameraObject.posX + windowSize.first / 2.3f, OpenGLObject::cameraObject.posY - windowSize.second / 2.f);
 
 					}
 					else if (gObj->GetName() == "InventoryObject4") {
 						//position game object in camera
-						tx->position = Vec2(OpenGLObject::cameraObject.posX + Editor::gameWindowSize.first / 1.75f, OpenGLObject::cameraObject.posY - Editor::gameWindowSize.second / 2.f);
+						tx->position = Vec2(OpenGLObject::cameraObject.posX + windowSize.first / 1.75f, OpenGLObject::cameraObject.posY - windowSize.second / 2.f);
 					}
 				}
 			}
@@ -103,69 +103,7 @@ public:
 				}
 			}
 		}
-		
-		//if (gObj != nullptr) {
-		//	Transform* tx = GET_COMPONENT(gObj, Transform, ComponentType::TRANSFORM);
-		//	if (tx != nullptr) {
-
-		//		if (gObj->GetName() == "Background2") {
-		//			tx->position = Vec2(OpenGLObject::cameraObject.posX - Editor::gameWindowSize.first + 1262.f, OpenGLObject::cameraObject.posY -Editor::gameWindowSize.second / 2.f);
-		//			
-		//		}
-		//		if (gObj->GetType() == "InventoryObject") {
-		//			if (gObj->GetName() == "InventoryObject1") {
-		//				//position game object in camera
-		//				tx->position = Vec2(OpenGLObject::cameraObject.posX + Editor::gameWindowSize.first / 6.f, OpenGLObject::cameraObject.posY - Editor::gameWindowSize.second / 2.f);
-		//				slotVec[0] = tx->position;
-		//			}
-		//			else if (gObj->GetName() == "InventoryObject2") {
-		//				//position game object in camera
-		//				tx->position = Vec2(OpenGLObject::cameraObject.posX + Editor::gameWindowSize.first / 3.3f, OpenGLObject::cameraObject.posY - Editor::gameWindowSize.second / 2.f);
-		//				slotVec[1] = tx->position;
-		//			}
-		//			else if (gObj->GetName() == "InventoryObject3") {
-		//				//position game object in camera
-		//				tx->position = Vec2(OpenGLObject::cameraObject.posX + Editor::gameWindowSize.first / 2.3f, OpenGLObject::cameraObject.posY - Editor::gameWindowSize.second / 2.f);
-		//				slotVec[2] = tx->position;
-		//			}
-		//			else if (gObj->GetName() == "InventoryObject4") {
-		//				//position game object in camera
-		//				tx->position = Vec2(OpenGLObject::cameraObject.posX + Editor::gameWindowSize.first / 1.75f, OpenGLObject::cameraObject.posY - Editor::gameWindowSize.second / 2.f);
-		//				slotVec[3] = tx->position;
-		//			}
-		//		}
-
-		//		
-		//		
-		//		
-
-		//		float pickuprange = 50.f;
-		//		//if (gObj->GetType() == "Weapon") {
-		//		//	if (gObj->GetName() == "Rifle") {
-		//		//		//Vector2DDistance(tx->position);
-		//		//	}
-
-		//		//}
-		//		static int i = 0;
-
-		//		/*if (inputSystem.GetKeyState(GLFW_KEY_C)) {
-		//			i = 2;
-		//		}
-
-		//		if (i > 1) {
-		//			if (gObj->GetName() == "Rifle")
-		//				tx->position = slot2;
-
-		//			if (gObj->GetName() == "Pistol")
-		//				tx->position = slot3;
-
-		//			if (gObj->GetName() == "Knife")
-		//				tx->position = slot1;
-		//		}*/
-		//	}
-		//}
-
-
+	
 	};
 
 	

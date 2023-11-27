@@ -28,7 +28,7 @@ void TransformSystem::Initialize() {
 *************************************************************************/
 void TransformSystem::Update(float) {
 	
-		TimeProfiler profiler(Editor::timeRecorder.transformTime);
+		/*TimeProfiler profiler(Editor::timeRecorder.transformTime);*/
 		std::map<size_t, GameObject*> copyMap = objectFactory->GetGameObjectIDMap();
 		std::map<size_t, GameObject*>::iterator it = copyMap.begin();
 

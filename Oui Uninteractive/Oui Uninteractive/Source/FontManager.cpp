@@ -93,28 +93,9 @@ void FontManager::RenderText(std::string fontName, std::string text, float xPos,
 
 				// Setup dimensions
 				float positionX = xPos, positionY = yPos;
-				if (Editor::editorOn)
-				{
-
-					float fromBottomCoordY = Editor::gameWindowOrigin.second + Editor::gameWindowSize.second;
-					float bottomCoordY = windowSize.second - fromBottomCoordY;
-					//std::cout << bottomCoordY << '\t';
-
-
-					positionX += Editor::gameWindowSize.first /2.0f;
-					std::cout << positionX << '\t';
-
-
-					positionY += (bottomCoordY + (Editor::gameWindowSize.second/2));
-					std::cout << positionY << '\n';
-				}
-				else
-				{
-
-
-					positionX += windowSize.first / 2;
-					positionY += windowSize.second / 2;
-				}
+				
+				positionX += windowSize.first / 2;
+				positionY += windowSize.second / 2;
 				//																 /\
 				//																/__\
 				// Set to middle of the font (i.e. A, will be between both the /    \ )

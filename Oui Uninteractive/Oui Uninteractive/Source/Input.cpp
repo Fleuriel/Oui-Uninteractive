@@ -378,9 +378,7 @@ void windowFocusCallback(GLFWwindow* window, int focused) {
 	// If alt tabbed away
 	if (focused == GLFW_FALSE) {
 
-		// Minimizes window if alt tabbed away
-		if (!(assetManager.Currentlyloading || Editor::fileBrowserOpen))
-			glfwIconifyWindow(windowNew);
+		glfwIconifyWindow(windowNew);
 		soundManager->PauseAll();
 
 	}

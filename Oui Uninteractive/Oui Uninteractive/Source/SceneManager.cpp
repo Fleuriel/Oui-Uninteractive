@@ -45,7 +45,7 @@ void SceneManager::InitScene() {
 void SceneManager::Update(float dt) {
 	if (sysManager->isPaused == false) {
 		// Start time profiling for scenemanager
-		TimeProfiler profiler(Editor::timeRecorder.scenemanagerTime);
+		/*TimeProfiler profiler(Editor::timeRecorder.scenemanagerTime);*/
 		currScene->Update(dt);
 		// if quit, exit
 		if (currSceneID == STATE_QUIT)

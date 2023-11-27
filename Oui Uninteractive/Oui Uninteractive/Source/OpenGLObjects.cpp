@@ -272,8 +272,8 @@ void OpenGLObject::Update(float newX, float newY, float scaleX, float scaleY, fl
 
 	// Compute the scaling matrix to map from world coordinates to NDC coordinates
 	glm::mat3 ScaleToWorldToNDC = glm::mat3(
-		2.0f / (Editor::gameWindowSize.first), 0.0f, 0.0f,
-		0.0f, 2.0f / (Editor::gameWindowSize.second), 0.0f,
+		2.0f / (windowSize.first), 0.0f, 0.0f,
+		0.0f, 2.0f / (windowSize.second), 0.0f,
 		0.0f, 0.0f, 1.0f
 	);
 
@@ -322,8 +322,8 @@ void OpenGLObject::Update(Matrix3x3 scale, Matrix3x3 rotate, Matrix3x3 translate
 
 	// Compute the scaling matrix to map from world coordinates to NDC coordinates
 	glm::mat3 ScaleToWorldToNDC = glm::mat3(
-		2.0f / (Editor::gameWindowSize.first), 0.0f, 0.0f,
-		0.0f, 2.0f / (Editor::gameWindowSize.second), 0.0f,
+		2.0f / (windowSize.first), 0.0f, 0.0f,
+		0.0f, 2.0f / (windowSize.second), 0.0f,
 		0.0f, 0.0f, 1.0f
 	);
 
@@ -395,9 +395,9 @@ void OpenGLObject::Draw(std::string type, bool spriteUsage, Vec2 vel) const {
 			double mouseX; // = io.MousePos.x;
 			double mouseY; // = io.MousePos.y;
 			glfwGetCursorPos(windowNew, &mouseX, &mouseY);
-			if (Editor::editorOn)
+			/*if (Editor::editorOn)
 				OpenGLObject::FrameBufferMouseCoords(windowNew, &mouseX, &mouseY, OpenGLObject::cameraObject);
-			else
+			else*/
 				OpenGLObject::windowMouseCoords(windowNew, &mouseX, &mouseY, OpenGLObject::cameraObject);
 			
 			Vec2 playerPos = Vec2(0, 0);
@@ -595,8 +595,8 @@ void OpenGLObject::DrawCollisionBox(Vector2D min, Vector2D max) {
 	angleDisplacment = 0;
 
 	glm::mat3 ScaleToWorldToNDC = glm::mat3(
-		2.0f / Editor::gameWindowSize.first, 0.0f, 0.0f,
-		0.0f, 2.0f / Editor::gameWindowSize.second, 0.0f,
+		2.0f / windowSize.first, 0.0f, 0.0f,
+		0.0f, 2.0f / windowSize.second, 0.0f,
 		0.0f, 0.0f, 1.0f
 	);
 
@@ -728,8 +728,8 @@ void OpenGLObject::Camera2D::Init(GLFWwindow* camWindow, OpenGLObject* ptr) {
 	};
 	// Camera to NDC
 	CameraWindow_to_NDC_xform = glm::mat3{
-		2.f / (Editor::gameWindowSize.first) * (1000 / cameraObject.height), 0, 0,
-		0, 2.f / Editor::gameWindowSize.second * (1000 / cameraObject.height), 0,
+		2.f / (windowSize.first) * (1000 / cameraObject.height), 0, 0,
+		0, 2.f / windowSize.second * (1000 / cameraObject.height), 0,
 		0, 0, 1
 	};
 
@@ -792,8 +792,8 @@ void OpenGLObject::Camera2D::Update(GLFWwindow* camWindow, int positionX, int po
 
 	// Set the Camer Window to NDC xform
 	CameraWindow_to_NDC_xform = glm::mat3{
-		2.f / (Editor::gameWindowSize.first) * (1000 /cameraObject.height ), 0, 0,
-		0, 2.f / Editor::gameWindowSize.second * (1000 /cameraObject.height), 0,
+		2.f / (windowSize.first) * (1000 /cameraObject.height ), 0, 0,
+		0, 2.f / windowSize.second * (1000 /cameraObject.height), 0,
 		0, 0, 1
 	};
 
@@ -863,8 +863,8 @@ void OpenGLObject::CameraUpdate(int posX, int posY) {
 
 	// Compute the scaling matrix to map from world coordinates to NDC coordinates
 	glm::mat3 ScaleToWorldToNDC = glm::mat3(
-		2.0f / Editor::gameWindowSize.first, 0.0f, 0.0f,
-		0.0f, 2.0f / Editor::gameWindowSize.second, 0.0f,
+		2.0f / windowSize.first, 0.0f, 0.0f,
+		0.0f, 2.0f / windowSize.second, 0.0f,
 		0.0f, 0.0f, 1.0f
 	);
 
@@ -1067,15 +1067,15 @@ void OpenGLObject::FrameBufferMouseCoords(GLFWwindow* originalWindow, double* x,
 {	
 	(void)originalWindow;
 	// set a variable original X and Y
-	double originalX = *x - Editor::gameWindowOrigin.first;
-	double originalY = *y - Editor::gameWindowOrigin.second;
+	double originalX = *x - windowSize.first;
+	double originalY = *y - windowSize.second;
 
 	//std::cout << originalX << '\t' << originalY << '\t';
 
 
 	// get the center coordinates of the frame buffer window.
-	int centerX = Editor::gameWindowSize.first / 2.0;
-	int centerY = Editor::gameWindowSize.second / 2.0;
+	int centerX = windowSize.first / 2.0;
+	int centerY = windowSize.second / 2.0;
 
 	//std::cout << centerX << '\t' << centerY << '\t';
 

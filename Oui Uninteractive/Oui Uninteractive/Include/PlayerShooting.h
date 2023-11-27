@@ -67,9 +67,9 @@ public:
 				glfwGetCursorPos(windowNew, &mouseX, &mouseY);
 				convertedMouseX = mouseX;
 				convertedMouseY = mouseY;
-				if (Editor::editorOn)
+				/*if (Editor::editorOn)
 					OpenGLObject::FrameBufferMouseCoords(windowNew, &convertedMouseX, &convertedMouseY, OpenGLObject::cameraObject);
-				else
+				else*/
 					OpenGLObject::windowMouseCoords(windowNew, &convertedMouseX, &convertedMouseY, OpenGLObject::cameraObject);
 
 				mousePos.x = static_cast<float>(convertedMouseX);

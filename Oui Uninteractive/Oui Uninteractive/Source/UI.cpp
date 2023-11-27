@@ -55,9 +55,9 @@ void UIManager::Update(float dt) {
 			convertedMousePos.second = mouseY;
 
 			// Put here or else wont get correct coords.
-			if (Editor::editorOn)
+			/*if (Editor::editorOn)
 				OpenGLObject::FrameBufferMouseCoords(windowNew, &mouseX, &mouseY, OpenGLObject::cameraObject);
-			else
+			else*/
 				OpenGLObject::windowMouseCoords(windowNew, &mouseX, &mouseY, OpenGLObject::cameraObject);
 
 			//std::cout << "Current Coords: " << convertedMousePos.first << ", " << convertedMousePos.second << '\n';

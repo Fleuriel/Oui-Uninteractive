@@ -49,7 +49,6 @@ void ColliderSystem::Update(float dt) {
 	if (sysManager->isPaused == false) {
 		dt;
 		bool bulletDestroyed{ false };
-		TimeProfiler profiler(Editor::timeRecorder.colliderTime);
 		for (int step = 0; step < sysManager->currentNumberOfSteps; step++) {
 			for (std::map<size_t, Collider*>::iterator it = colliderMap.begin(); it != colliderMap.end(); it++) {
 				Collider* collider = it->second;

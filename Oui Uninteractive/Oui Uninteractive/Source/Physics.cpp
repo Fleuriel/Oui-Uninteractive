@@ -51,7 +51,7 @@ void Physics::Initialize() {
 void Physics::Update(float dt) {
 	if (sysManager->isPaused == false) {
 		// Start time profiling for physics system
-		TimeProfiler profiler(Editor::timeRecorder.physicsTime);
+		/*TimeProfiler profiler(Editor::timeRecorder.physicsTime);*/
 		for (int step = 0; step < sysManager->currentNumberOfSteps; step++) {
 
 			std::map<size_t, PhysicsBody*>::iterator it = bodyList.begin();

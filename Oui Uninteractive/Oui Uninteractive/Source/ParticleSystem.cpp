@@ -147,7 +147,7 @@ void Particle::Draw() {
  *************************************************************************/
 void ParticleSystem::Update() {
     // Start time profiling for particle system
-    TimeProfiler profiler(Editor::timeRecorder.particlesTime);
+   /* TimeProfiler profiler(Editor::timeRecorder.particlesTime);*/
     // Iterate through the particles
     for (size_t i = 0; i<particles.size();++i){
         // Print debug information about the current particle's position.

@@ -59,9 +59,6 @@
     <Filter Include="Engine">
       <UniqueIdentifier>{5959c380-a160-4886-9a38-721b83772859}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Engine\Editor">
-      <UniqueIdentifier>{a6d76de0-a11f-4176-b644-97fd47114783}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Composition">
       <UniqueIdentifier>{fd1707a7-8e14-49a6-bf3d-91de14c943a2}</UniqueIdentifier>
     </Filter>
@@ -207,9 +204,6 @@
     </ClCompile>
     <ClCompile Include="Source\Input.cpp">
       <Filter>Systems\Input</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Editor.cpp">
-      <Filter>Engine\Editor</Filter>
     </ClCompile>
     <ClCompile Include="Source\main.cpp">
       <Filter>Engine</Filter>
@@ -366,9 +360,6 @@
     </ClInclude>
     <ClInclude Include="Include\Input.h">
       <Filter>Systems\Input</Filter>
-    </ClInclude>
-    <ClInclude Include="Include\Editor.h">
-      <Filter>Engine\Editor</Filter>
     </ClInclude>
     <ClInclude Include="Include\CoordinateSystem.h">
       <Filter>Engine\CoordinateSystem</Filter>
