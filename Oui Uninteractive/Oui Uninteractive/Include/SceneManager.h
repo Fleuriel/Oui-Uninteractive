@@ -15,7 +15,7 @@
 #include <map>
 
 #ifndef SCENEMANAGER_H
-#define SCENEMANAGER
+#define SCENEMANAGER_H
 // Game State List Enumeration
 enum GameStateList
 {
