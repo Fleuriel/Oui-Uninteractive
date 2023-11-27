@@ -32,21 +32,21 @@ public:
 	~InventoryComponent();
 
 	/**************************************************************************
-	* @brief Initialize the health component
+	* @brief Initialize the Inventory component
 	* @return void
 	*************************************************************************/
 	void Initialize() override;
 
 	/**************************************************************************
-	* @brief Serialize health component data from JSON
+	* @brief Serialize Inventory component data from JSON
 	* @param itr - iterator for JSON object
 	* @return void
 	*************************************************************************/
 	void Serialize(rapidjson::Value::ConstMemberIterator& itr) override;
 
 	/**************************************************************************
-	* @brief Clone health component
-	* @return HealthComponent* - pointer to cloned health component
+	* @brief Clone Inventory component
+	* @return InventoryComponent* - pointer to cloned Inventory component
 	*************************************************************************/
 	InventoryComponent* Clone() const override;
 };
