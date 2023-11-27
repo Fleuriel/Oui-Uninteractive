@@ -120,7 +120,7 @@ void OpenGLApplication::OpenGLWindowInit() {
 		return;
 	}
 
-	toggleFullScreen();
+	//toggleFullScreen();
 
 	// Tell GLFW we are using OpenGL 4.5
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
@@ -339,56 +339,56 @@ void OpenGLApplication::OpenGLUpdate() {
 
 
 	// Create Object using SPACE. with tag ID of 2.
-	if (inputSystem.GetKeyState(GLFW_KEY_SPACE) == 1) {
-		// Create Object Tag ID , 2
-		OpenGLObject newObject(2);
-
-#ifdef _DEBUG
-		std::cout << "Tag ID: " << newObject.TagID << '\n';
-#endif
-		// Init Objects
-		newObject.InitObjects();
-
-		// Emplace back into the container.
-		objects.emplace_back(newObject);
-
-	}
+//	if (inputSystem.GetKeyState(GLFW_KEY_SPACE) == 1) {
+//		// Create Object Tag ID , 2
+//		OpenGLObject newObject(2);
+//
+//#ifdef _DEBUG
+//		std::cout << "Tag ID: " << newObject.TagID << '\n';
+//#endif
+//		// Init Objects
+//		newObject.InitObjects();
+//
+//		// Emplace back into the container.
+//		objects.emplace_back(newObject);
+//
+//	}
 	// Create Object using R-SHIFT, with tag ID of 1.
-	if (inputSystem.GetKeyState(GLFW_KEY_RIGHT_SHIFT) == 1) {
-		OpenGLObject newObject1(1);
-#ifdef _DEBUG
-		std::cout << "Tag ID: " << newObject1.TagID << '\n';
-#endif
+//	if (inputSystem.GetKeyState(GLFW_KEY_RIGHT_SHIFT) == 1) {
+//		OpenGLObject newObject1(1);
+//#ifdef _DEBUG
+//		std::cout << "Tag ID: " << newObject1.TagID << '\n';
+//#endif
+//
+//		newObject1.InitObjects();
+//
+//		// Emplace back into the container.
+//		objects.emplace_back(newObject1);
+//	}
 
-		newObject1.InitObjects();
-
-		// Emplace back into the container.
-		objects.emplace_back(newObject1);
-	}
-
-	if (inputSystem.GetKeyState(GLFW_KEY_LEFT_SHIFT) == 1) {
-		OpenGLObject newObject1(4);
-#ifdef _DEBUG
-		std::cout << "Tag ID: " << newObject1.TagID << '\n';
-#endif
-
-		newObject1.InitObjects();
-
-		// Emplace back into the container.
-		objects.emplace_back(newObject1);
-	}
+//	if (inputSystem.GetKeyState(GLFW_KEY_LEFT_SHIFT) == 1) {
+//		OpenGLObject newObject1(4);
+//#ifdef _DEBUG
+//		std::cout << "Tag ID: " << newObject1.TagID << '\n';
+//#endif
+//
+//		newObject1.InitObjects();
+//
+//		// Emplace back into the container.
+//		objects.emplace_back(newObject1);
+//	}
 
 	// Moves Object left. can add positionY to change as well.
-	if (inputSystem.GetKeyState(GLFW_KEY_KP_4) == 2) {
+	if (inputSystem.GetKeyState(GLFW_KEY_4) == 2) {
 		positionX-= 5;
 	}
-	if (inputSystem.GetKeyState(GLFW_KEY_KP_6) == 2) {
+	if (inputSystem.GetKeyState(GLFW_KEY_3) == 2) {
 		positionX+= 5;
 	}
-	if (inputSystem.GetKeyState(GLFW_KEY_KP_8) == 2) {
+	if (inputSystem.GetKeyState(GLFW_KEY_2) == 2) {
 		positionY+= 5;
 	}
-	if (inputSystem.GetKeyState(GLFW_KEY_KP_2) == 2) {
+	if (inputSystem.GetKeyState(GLFW_KEY_1) == 2) {
 		positionY-= 5;
 	}
 

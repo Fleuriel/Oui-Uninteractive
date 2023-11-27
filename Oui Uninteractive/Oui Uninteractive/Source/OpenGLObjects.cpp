@@ -756,19 +756,19 @@ void OpenGLObject::Camera2D::Update(GLFWwindow* camWindow, int positionX, int po
 
 	// ZOOM in
 	//if (inputSystem.GetScrollState() == 1) 
-	if (inputSystem.GetKeyState(GLFW_KEY_UP) == 2)
-	{
-		// Height Decrement by 1.1f
-		height -= 50;
-	}
-
-	// ZOOM OUT
-	//if (inputSystem.GetScrollState() == -1)
-	if (inputSystem.GetKeyState(GLFW_KEY_DOWN) == 2)
-	{
-		// Height Increment by 1.1f
-		height += 50;
-	}
+	//if (inputSystem.GetKeyState(GLFW_KEY_UP) == 2)
+	//{
+	//	// Height Decrement by 1.1f
+	//	height -= 50;
+	//}
+	//
+	//// ZOOM OUT
+	////if (inputSystem.GetScrollState() == -1)
+	//if (inputSystem.GetKeyState(GLFW_KEY_DOWN) == 2)
+	//{
+	//	// Height Increment by 1.1f
+	//	height += 50;
+	//}
 
 	// Set minimum parameter of height < Depth >
 	if (height <= min_height)
