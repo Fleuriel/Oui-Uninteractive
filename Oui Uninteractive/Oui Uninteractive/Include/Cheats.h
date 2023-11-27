@@ -7,6 +7,8 @@
  * @date 09-05-2023
  * @brief Implementation of cheat code functionalities for the game.
  *************************************************************************/
+#ifndef CHEATS_H
+#define CHEATS_H
 
 #include <vector>
 #include <string>
@@ -53,3 +55,5 @@ void GodModeOff();
  * @param cheatCode The cheat code to apply.
  *************************************************************************/
 void Cheat(std::string);
+
+#endif
