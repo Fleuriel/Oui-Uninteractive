@@ -27,7 +27,7 @@
 
 class GameObject {
 private:
-	// ID to reperesent game object
+	// ID to represent game object
 	size_t gameObjectID;
 
 	// String to represent game object name

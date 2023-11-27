@@ -69,6 +69,9 @@ ComponentType ObjectFactory::StringToEnum(std::string str) {
 	else if (str == "HealthComponent") {
 		return ComponentType::HEALTH;
 	}
+	else if (str == "InventoryComponent") {
+		return ComponentType::INVENTORY;
+	}
 	else {
 		return ComponentType::COUNT;
 	}
@@ -97,6 +100,9 @@ std::string ObjectFactory::EnumToString(ComponentType ct) {
 	}
 	else if (ct == ComponentType::HEALTH) {
 		return "HealthComponent";
+	}
+	else if (ct == ComponentType::INVENTORY) {
+		return "InventoryComponent";
 	}
 	else {
 		return "None";
@@ -156,6 +162,9 @@ void ObjectFactory::BuildObjectFromFile(const std::string& filePath) {
 
 			for (rapidjson::Value::ConstMemberIterator itr{ components.MemberBegin() }; itr != components.MemberEnd(); ++itr) {
 				componentName = itr->name.GetString();
+				if (componentName == "InventoryComponent") {
+					int deez = 0;
+				}
 				ComponentType type = StringToEnum(componentName);
 
 				if (!componentFactoryMap.contains(type)) {

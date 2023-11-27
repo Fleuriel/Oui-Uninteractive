@@ -59,6 +59,9 @@ void LogicComponent::Serialize(rapidjson::Value::ConstMemberIterator& itr) {
 			case 5:
 				scriptIndexSet.insert(LOGIC_ENUM::PAUSE_MENU);
 				break;
+			case 6:
+				scriptIndexSet.insert(LOGIC_ENUM::INVENTORY_MENU);
+				break;
 			default:
 				scriptIndexSet.insert(LOGIC_ENUM::TEST_SCRIPT1);
 			}

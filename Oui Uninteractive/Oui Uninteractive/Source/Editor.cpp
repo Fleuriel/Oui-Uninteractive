@@ -679,8 +679,8 @@ void Editor::CreateMasterPanel() {
 		sysManager->isPaused = false;
 		objectFactory->DestroyAllObjects();
 		tilemapLoader->LoadTilemap(sceneFileName);
-		objectFactory->BuildObjectFromFile(sceneFileName);
 		tilemapLoader->CreateGrid();
+		objectFactory->BuildObjectFromFile(sceneFileName);
 		healthSys->ClearHealthbar();
 		healthSys->DrawHealthbar();
 	}

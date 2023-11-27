@@ -425,7 +425,10 @@ void OpenGLObject::Draw(std::string type, bool spriteUsage, Vec2 vel) const {
 				spriterow = 0;
 		}
 
-		shdrpgms[static_cast<int>(SHADER_ORDER::SPRITES)].SetUniform("col_To_Draw", spritecol);
+		if (assetManager.GetSprite(type + movement).GetColumns())
+			shdrpgms[static_cast<int>(SHADER_ORDER::SPRITES)].SetUniform("col_To_Draw", spritecol % assetManager.GetSprite(type + movement).GetColumns());
+		else
+			shdrpgms[static_cast<int>(SHADER_ORDER::SPRITES)].SetUniform("col_To_Draw", 0);
 		shdrpgms[static_cast<int>(SHADER_ORDER::SPRITES)].SetUniform("rows", assetManager.GetSprite(type + movement).GetRows());
 		shdrpgms[static_cast<int>(SHADER_ORDER::SPRITES)].SetUniform("cols", assetManager.GetSprite(type + movement).GetColumns());
 		shdrpgms[static_cast<int>(SHADER_ORDER::SPRITES)].SetUniform("row_To_Draw", spriterow);

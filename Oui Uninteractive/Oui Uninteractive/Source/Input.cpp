@@ -123,10 +123,7 @@ float InputSystem::GetScrollTotalYOffset() {
 }
 
 
-int windowedWidth{};
-int windowedHeight{};
-int windowedXPos{};
-int windowedYPos{};
+int windowedWidth{}, windowedHeight{}, windowedXPos{}, windowedYPos{};
 bool fullScreen{};
 
 void toggleFullScreen() {

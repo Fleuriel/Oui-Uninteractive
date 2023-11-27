@@ -140,6 +140,9 @@
     <Filter Include="Systems\HealthSystem">
       <UniqueIdentifier>{9d5f2b11-a15c-4efc-971d-04c4ff781b7c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Component\InventoryComponent">
+      <UniqueIdentifier>{33560e11-2714-43e3-8421-d581404eec6d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\GameStateManager.cpp">
@@ -298,6 +301,9 @@
     </ClCompile>
     <ClCompile Include="Source\HealthSystem.cpp">
       <Filter>Systems\HealthSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\InventoryComponent.cpp">
+      <Filter>Component\InventoryComponent</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -476,6 +482,12 @@
     </ClInclude>
     <ClInclude Include="Include\PauseMenuLogic.h">
       <Filter>Scripts</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\InventoryMenuLogic.h">
+      <Filter>Scripts</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\InventoryComponent.h">
+      <Filter>Component\InventoryComponent</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
