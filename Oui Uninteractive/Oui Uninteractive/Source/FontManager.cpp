@@ -115,11 +115,11 @@ void FontManager::RenderText(std::string fontName, std::string text, float xPos,
 					positionX += windowSize.first / 2;
 					positionY += windowSize.second / 2;
 				}
-				//																 /\
-				//																/__\
-				// Set to middle of the font (i.e. A, will be between both the /    \ )
-				//																 ^ Middle here
-
+				/*																 /\
+																				/__\
+				   Set to middle of the font (i.e. A, will be between both the /    \ )
+																				 ^ Middle here
+				*/	
 				positionX -= 15 * static_cast<int>(text.size());
 
 				positionX -= OpenGLObject::cameraObject.posX / 1.3;
