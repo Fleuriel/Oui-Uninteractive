@@ -123,6 +123,19 @@ float InputSystem::GetScrollTotalYOffset() {
 }
 
 
+/**************************************************************************
+ * @brief Toggles the fullscreen state of the GLFW window.
+ *
+ * This function checks if the GLFW window is currently in fullscreen mode.
+ * If it is not in fullscreen mode, it makes the window fullscreen by setting
+ * it to the primary monitor's dimensions. It also stores the window dimensions
+ * and position before going fullscreen to restore them when switching back to
+ * windowed mode.
+ *
+ * If the window is already in fullscreen mode, it switches it back to windowed
+ * mode using the stored dimensions and position.
+ *************************************************************************/
+
 int windowedWidth{}, windowedHeight{}, windowedXPos{}, windowedYPos{};
 bool fullScreen{};
 
@@ -370,25 +383,38 @@ void WindowCloseCallback(GLFWwindow* window6){
 
 
 
-
+/**************************************************************************
+ * @brief Callback function for handling window focus changes.
+ *
+ * This function is registered as a callback to be called when the focus of the
+ * GLFW window changes. It is designed to respond to the window losing or gaining focus,
+ * particularly when the user alt-tabs away from or back to the window.
+ *
+ * If the window loses focus (alt-tabbed away), it checks whether certain conditions
+ * are met (not currently loading assets or the file browser not being open), and
+ * if so, it minimizes the window and pauses all sounds using GLFW's `glfwIconifyWindow`
+ * and a sound manager.
+ *
+ * If the window gains focus (alt-tabbed back), it restores the window using `glfwRestoreWindow`
+ * and resumes all sounds through the sound manager.
+ *
+ * @param window The GLFW window that triggered the callback.
+ * @param focused An integer indicating whether the window has gained (GLFW_TRUE) or lost (GLFW_FALSE) focus.
+ *************************************************************************/
 void windowFocusCallback(GLFWwindow* window, int focused) {
 	// If alt tabbed away
 	if (focused == GLFW_FALSE) {
-
 		// Minimizes window if alt tabbed away
 		if (!(assetManager.Currentlyloading || Editor::fileBrowserOpen))
 			glfwIconifyWindow(windowNew);
 		soundManager->PauseAll();
-
 	}
 	// If alt tabbed back to window
 	else {
-
 		// Resores window if alt tabbed back
 		glfwRestoreWindow(windowNew);
 		soundManager->ResumeAll();
 
 	}
-
 }
 
