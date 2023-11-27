@@ -173,6 +173,10 @@ bool AssetManager::LoadTextures() {
                     // Construct the full destination path including the file name
                     fs::path destinationPath = FILEPATH_TRASHBIN / entry.path().filename();
                     fs::path trashbin = FILEPATH_TRASHBIN;
+
+                    if (!fs::exists(trashbin))
+                        fs::create_directory(trashbin);
+
                     if (fs::exists(destinationPath)) {
                         int counter = 1;
                         std::string nameWithoutExtension = entry.path().stem().string();
@@ -568,6 +572,10 @@ bool AssetManager::LoadSprites() {
                     // Construct the full destination path including the file name
                     fs::path destinationPath = FILEPATH_TRASHBIN / entry.path().filename();
                     fs::path trashbin = FILEPATH_TRASHBIN;
+
+                    if (!fs::exists(trashbin))
+                        fs::create_directory(trashbin);
+
                     if (fs::exists(destinationPath)) {
                         int counter = 1;
                         std::string nameWithoutExtension = entry.path().stem().string();
@@ -770,6 +778,10 @@ bool AssetManager::LoadBGM() {
                 // Construct the full destination path including the file name
                 fs::path destinationPath = FILEPATH_TRASHBIN / entry.path().filename();
                 fs::path trashbin = FILEPATH_TRASHBIN;
+
+                if (!fs::exists(trashbin))
+                    fs::create_directory(trashbin);
+
                 if (fs::exists(destinationPath)) {
                     int counter = 1;
                     std::string nameWithoutExtension = entry.path().stem().string();
@@ -860,6 +872,10 @@ bool AssetManager::LoadSFX() {
                 // Construct the full destination path including the file name
                 fs::path destinationPath = FILEPATH_TRASHBIN / entry.path().filename();
                 fs::path trashbin = FILEPATH_TRASHBIN;
+
+                if (!fs::exists(trashbin))
+                    fs::create_directory(trashbin);
+
                 if (fs::exists(destinationPath)) {
                     int counter = 1;
                     std::string nameWithoutExtension = entry.path().stem().string();
@@ -1095,6 +1111,10 @@ bool AssetManager::LoadFonts() {
                 // Construct the full destination path including the file name
                 fs::path destinationPath = FILEPATH_TRASHBIN / entry.path().filename();
                 fs::path trashbin = FILEPATH_TRASHBIN;
+
+                if (!fs::exists(trashbin))
+                    fs::create_directory(trashbin);
+
                 if (fs::exists(destinationPath)) {
                     int counter = 1;
                     std::string nameWithoutExtension = entry.path().stem().string();
@@ -1284,6 +1304,10 @@ bool AssetManager::LoadScenes() {
                 // Construct the full destination path including the file name
                 fs::path destinationPath = FILEPATH_TRASHBIN / entry.path().filename();
                 fs::path trashbin = FILEPATH_TRASHBIN;
+
+                if (!fs::exists(trashbin))
+                    fs::create_directory(trashbin);
+
                 if (fs::exists(destinationPath)) {
                     int counter = 1;
                     std::string nameWithoutExtension = entry.path().stem().string();
