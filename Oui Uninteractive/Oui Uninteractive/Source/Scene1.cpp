@@ -31,8 +31,9 @@ void Scene1::Initialize() {
 	#endif*/
 	objectFactory->DestroyAllObjects();
 	tilemapLoader->LoadTilemap("assets/scenes/TestLevel1.json");
-	objectFactory->BuildObjectFromFile("assets/scenes/TestLevel1.json");
+	
 	tilemapLoader->CreateGrid();
+	objectFactory->BuildObjectFromFile("assets/scenes/TestLevel1.json");
 	healthSys->ClearHealthbar();
 }
 void Scene1::Update(float dt) {

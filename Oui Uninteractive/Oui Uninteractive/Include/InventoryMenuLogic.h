@@ -67,44 +67,46 @@ public:
 		}
 
 		GameObject* player = objectFactory->GetGameObjectByName("JSONPlayer");
-		InventoryComponent* inv = GET_COMPONENT(player, InventoryComponent, ComponentType::INVENTORY);
-		if (inv != nullptr) {
-			int index = 1;
-			for (std::string str : inv->Inventory) {
+		if (player != nullptr) {
+			InventoryComponent* inv = GET_COMPONENT(player, InventoryComponent, ComponentType::INVENTORY);
+			if (inv != nullptr) {
+				int index = 1;
+				for (std::string str : inv->Inventory) {
 
-				/*if (pair.second->GetName() == "Rifle") {
-					tx2->position = slotVec[index];
-				}
-
-
-				else if (pair.second->GetName() == "Pistol") {
-					tx2->position = slotVec[index];
-				}*/
-
-
-				if (str == "Knife") {
-
-					if (slotVec[index] != nullptr) {
-						slotVec[index]->SetTexture("Knife(Weapon)");
+					/*if (pair.second->GetName() == "Rifle") {
+						tx2->position = slotVec[index];
 					}
-				}
-				else if (str == "Pistol") {
-					if (slotVec[index] != nullptr) {
-						slotVec[index]->SetTexture("Pistol(Weapon)");
+
+
+					else if (pair.second->GetName() == "Pistol") {
+						tx2->position = slotVec[index];
+					}*/
+
+
+					if (str == "Knife") {
+
+						if (slotVec[index] != nullptr) {
+							slotVec[index]->SetTexture("Knife(Weapon)");
+						}
 					}
-				}
-				else if (str == "Rifle") {
-					if (slotVec[index] != nullptr) {
-						slotVec[index]->SetTexture("Rifle(Weapon)");
+					else if (str == "Pistol") {
+						if (slotVec[index] != nullptr) {
+							slotVec[index]->SetTexture("Pistol(Weapon)");
+						}
 					}
+					else if (str == "Rifle") {
+						if (slotVec[index] != nullptr) {
+							slotVec[index]->SetTexture("Rifle(Weapon)");
+						}
+					}
+
+
+					index++;
+					if (index > slotVec.size() - 1) {
+						break;
+					}
+
 				}
-
-
-				index++;
-				if (index > slotVec.size() - 1) {
-					break;
-				}
-
 			}
 		}
 		
