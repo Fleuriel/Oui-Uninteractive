@@ -12,8 +12,6 @@
 #include "Editor.h"
 // Game State List Enumeration
 
-#ifndef SCENEMANAGER_H
-#define SCENEMANAGER_H
 SceneManager* sceneManager = nullptr;
 SceneManager::SceneManager() {
 	currScene = nullptr;
@@ -73,5 +71,3 @@ void SceneManager::Free() {
 }
 void SceneManager::Unload() {
 }
-
-#endif
