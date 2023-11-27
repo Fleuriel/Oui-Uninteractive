@@ -17,6 +17,7 @@ typedef enum class ComponentType {
 	COLLIDER,
 	ENEMY_FSM,
 	HEALTH,
+	INVENTORY,
 	COUNT
 } componentType;
 

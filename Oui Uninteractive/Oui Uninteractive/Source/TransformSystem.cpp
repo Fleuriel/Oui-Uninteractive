@@ -39,7 +39,12 @@ void TransformSystem::Update(float) {
 			Collider* collider = it2->second;
 			//Update bounding box position
 			if (GET_COMPONENT(collider->GetOwner(), Transform, ComponentType::TRANSFORM) != nullptr) {
-				collider->tx->position = GET_COMPONENT(collider->GetOwner(), Transform, ComponentType::TRANSFORM)->position;
+				if (collider != nullptr) {
+					if (collider->tx != nullptr) {
+						collider->tx->position = GET_COMPONENT(collider->GetOwner(), Transform, ComponentType::TRANSFORM)->position;
+					}
+				}
+				
 			}
 
 			//collider->tx->scale = (100, 100);

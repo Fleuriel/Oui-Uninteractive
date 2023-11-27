@@ -594,8 +594,6 @@ void Editor::CreateMenuBar() {
 	if (showAssBrowserSettings) {
 		static int exp1 = 7, exp2 = 4;
 		ImGui::Begin("Asset Browser Settings", &showAssBrowserSettings);
-		//ImGui::SliderFloat("Icon Size", &iconSize, 32, 2048);
-		//ImGui::SliderFloat("Icon Padding", &iconPadding, 0, 128);
 		if (ImGui::SliderInt("Icon Size", &exp1, 5, 10)) {
 			EditorSettings::iconSize = static_cast<int>(std::powf(2.0f, static_cast<float>(exp1)));
 		}
@@ -681,8 +679,8 @@ void Editor::CreateMasterPanel() {
 		sysManager->isPaused = false;
 		objectFactory->DestroyAllObjects();
 		tilemapLoader->LoadTilemap(sceneFileName);
-		objectFactory->BuildObjectFromFile(sceneFileName);
 		tilemapLoader->CreateGrid();
+		objectFactory->BuildObjectFromFile(sceneFileName);
 		healthSys->ClearHealthbar();
 		healthSys->DrawHealthbar();
 	}
@@ -1806,7 +1804,6 @@ void Editor::CreateAssetBrowser() {
 		else {
 			validPath = false;
 			std::cout << "invalid path" << std::endl;
-
 		}
 		browserDoubleClicked = false;
 	}
@@ -2022,7 +2019,6 @@ void Editor::CreateDebugPanel() {
 			data.clear();
 			size_t countToDisplay = std::min(static_cast<size_t>(EditorSettings::pieChartDisplayCount), avgSysTimes.size());
 			for (size_t i = 0; i < countToDisplay; i++) {
-				//std::cout << avgSysTimes[i].second << std::endl;
 				chartLabels.push_back(avgSysTimes[i].first.c_str());
 				data.push_back(avgSysTimes[i].second);
 			}

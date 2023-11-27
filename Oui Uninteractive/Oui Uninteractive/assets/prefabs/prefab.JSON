@@ -166,7 +166,7 @@
         }, {
             "Name": "WallPrefab",
             "Type": "WallPrefab",
-            "Texture": "",
+            "Texture": "Wall3",
             "UsingSprite": false,
             "Components": {
                 "Collider": {

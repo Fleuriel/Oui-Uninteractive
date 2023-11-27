@@ -18,6 +18,7 @@
 #include "BulletScript.h"
 #include "WeaponPickupScript.h"
 #include "PauseMenuLogic.h"
+#include "InventoryMenuLogic.h"
 
 LogicSystem* logicSystem = nullptr;
 /**************************************************************************
@@ -58,6 +59,9 @@ void LogicSystem::Initialize() {
 
 	PauseMenuLogic* pauseMenuScript = new PauseMenuLogic(std::string("PauseMenuLogic"), false);
 	pauseMenuScript->Initialize();
+
+	InventoryMenuLogic* inventoryMenuScript = new InventoryMenuLogic(std::string("InventoryMenuLogic"), true);
+	inventoryMenuScript->Initialize();
 
 
 }
